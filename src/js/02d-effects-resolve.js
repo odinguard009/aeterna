@@ -27,10 +27,10 @@ function collectFx(ev) {
   if (!FX_TRIGGERS.includes(trigger)) { fxUnknown('trigger', trigger); return []; }   // v0.59.4 strict effects
   const opp = G.p[other(owner.key)], out = [];
   const add = (trg, f, e, idx) => out.push({ owner, opp, f, idx, e, trg, trigger, ctx });
-  const collect = (trg, f) => { const card = CARDS[f.id]; if (card.effects) card.effects.forEach((e, idx) => { if (e.trigger === trg) add(trg, f, e, idx); }); };
+  const collect = (trg, f) => { for (const { e, idx } of fxEntries(f)) if (e.trigger === trg) add(trg, f, e, idx); };
   if (trigger === 'ADVENT') { const card = CARDS[src.id]; if (card.effects) card.effects.forEach((e, idx) => { if (e.trigger === 'ADVENT' || (e.trigger === 'SUMMONED' && e.alsoAdvent)) add(e.trigger, src, e, idx); }); ctx.subject = src; }
   else if (trigger === 'SUMMONED' || trigger === 'ATTACKS' || trigger === 'MANIFEST' || trigger === 'DESTROYED' || trigger === 'BATTLE_WIN') collect(trigger, src);
-  else if (trigger === 'BLOCKS') { const card = CARDS[src.id]; if (card.effects) card.effects.forEach((e, idx) => { if (e.trigger === 'BLOCKS' || (e.trigger === 'ATTACKS' && e.alsoBlocks)) add('BLOCKS', src, e, idx); }); }
+  else if (trigger === 'BLOCKS') { for (const { e, idx } of fxEntries(src)) { if (e.trigger === 'BLOCKS' || (e.trigger === 'ATTACKS' && e.alsoBlocks)) add('BLOCKS', src, e, idx); } }
   else if (trigger === 'MIRAGE_OWN_LIFE' || trigger === 'MIRAGE_OPP_LIFE') { if (owner.mirage) collect(trigger, owner.mirage); }
   else for (const f of fieldList(owner)) collect(trigger, f);
   if (trigger === 'ALLY_BLOCKED' || trigger === 'SILVER_WHEEL') for (const h of owner.hand) collect(trigger, h);           // zone:'hand' effects (e.g. deploy this from the Hand)
@@ -266,7 +266,7 @@ async function revealedFx(p) {
 /* v0.35 Saga Brave on a Grandwalker Nexus (manual p. 38): the Nexus gains the Brave's [While Combined with a Nexus] effects (nexusBrave:true), indexed from 100 */
 const NB_IDX = 100;
 function actList(f) {
-  const out = (CARDS[f.id].effects || []).map((e, idx) => ({ e, idx })).filter(x => !x.e.nexusBrave);
+  const out = fxEntries(f).map(({ e, idx }) => ({ e, idx }));
   if (f.brave && CARDS[f.id].type === 'Nexus') (CARDS[f.brave.id].effects || []).forEach((e, j) => { if (e.nexusBrave) out.push({ e, idx: NB_IDX + j }); });
   return out;
 }

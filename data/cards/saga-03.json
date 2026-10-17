@@ -761,6 +761,102 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS14-067",
+  "name": "Lagian",
+  "name_jp": "ラギアン",
+  "type": "Brave",
+  "color": "red",
+  "cost": 4,
+  "reduction": {
+   "red": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Machine Dragon",
+   "Terra Dragon"
+  ],
+  "text": "When Braved Flash - Awaken\nYou can put any number of cores from Spirits you control to this Spirit.",
+  "image": "Lagian.png",
+  "block": "14",
+  "saga": 3,
+  "brave": {
+   "bp": 4000,
+   "costGe": 4
+  },
+  "mechanics": [
+   "Awaken"
+  ],
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "once": false,
+    "cpuSkip": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "AWAKEN"
+     }
+    ],
+    "braved": true
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS14-072",
+  "name": "Gurangatch",
+  "name_jp": "グランガッチ",
+  "type": "Brave",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {
+   "blue": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Fusion Beast"
+  ],
+  "text": "[When Braved] (When Brave Attacks) Destroy an opposing Cost 3 or less Spirit.",
+  "image": "Gurangatch.png",
+  "block": "14",
+  "saga": 3,
+  "brave": {
+   "bp": 4000,
+   "costGe": 4
+  },
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "DESTROY",
+      "costLe": 3
+     }
+    ],
+    "braved": true
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS15-002",
   "name": "Pygmygator",
   "name_jp": "ピグミゲーター",
@@ -1003,6 +1099,52 @@
   "image": "Rammer-Golem.png",
   "block": "15",
   "saga": 3,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS15-056",
+  "name": "Knight-Anole",
+  "name_jp": "ナイト・アノール",
+  "type": "Brave",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Evil Shadow"
+  ],
+  "text": "[LV1] (When Summoned) Send one core from any opposing Spirit to the Reserve.",
+  "image": "Knight-Anole.png",
+  "block": "15",
+  "saga": 3,
+  "brave": {
+   "bp": 3000,
+   "costGe": 4
+  },
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 1
+     }
+    ]
+   }
+  ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },

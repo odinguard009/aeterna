@@ -510,6 +510,24 @@
  "BS10-052": [],
  "BS10-055": [],
  "BS10-057": [],
+ "BS10-067": [
+  "T_SUMMONED",
+  "A_REFRESH",
+  "A_VOID",
+  "C_LEVEL",
+  "T_BATTLE_WIN"
+ ],
+ "BS10-068": [
+  "A_EXHAUST",
+  "K_BRAVE"
+ ],
+ "BS10-075": [
+  "T_ALLY_LIFE_HIT",
+  "A_VOID",
+  "K_BRAVE",
+  "K_HOLY_LIFE",
+  "A_VOID_TO_LIFE"
+ ],
  "BS11-001": [
   "C_LEVEL",
   "T_DESTROYED"
@@ -545,6 +563,12 @@
  ],
  "BS11-035": [],
  "BS11-044": [],
+ "BS11-059": [
+  "T_SUMMONED",
+  "C_LEVEL",
+  "K_BRAVE",
+  "K_CRUSH"
+ ],
  "BS12-002": [],
  "BS12-009": [
   "C_LEVEL"
@@ -609,6 +633,13 @@
  "BS14-056": [],
  "BS14-058": [],
  "BS14-063": [],
+ "BS14-067": [
+  "A_AWAKEN",
+  "M_OPTIONAL"
+ ],
+ "BS14-072": [
+  "K_BRAVE"
+ ],
  "BS15-002": [],
  "BS15-010": [],
  "BS15-019": [],
@@ -620,6 +651,10 @@
  "BS15-029": [],
  "BS15-037": [],
  "BS15-046": [],
+ "BS15-056": [
+  "T_SUMMONED",
+  "C_LEVEL"
+ ],
  "BS16-004": [],
  "BS16-010": [],
  "BS16-020": [],
@@ -711,6 +746,12 @@
  "BS19-056": [],
  "BS19-058": [],
  "BS19-063": [],
+ "BS19-071": [
+  "T_SUMMONED",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "K_BRAVE"
+ ],
  "BS19-109": [
   "A_BP_MINUS"
  ],
@@ -762,6 +803,13 @@
   "C_LEVEL",
   "K_RUSH"
  ],
+ "BS20-055": [
+  "A_BP_PLUS",
+  "K_BRAVE"
+ ],
+ "BS20-057": [
+  "K_BRAVE"
+ ],
  "BS20-074": [],
  "BS21-005": [],
  "BS21-008": [
@@ -801,6 +849,12 @@
   "A_VOID_TO_LIFE"
  ],
  "BS21-049": [],
+ "BS21-055": [
+  "T_SUMMONED",
+  "A_BP_PLUS",
+  "C_LEVEL",
+  "K_BRAVE"
+ ],
  "BS22-001": [],
  "BS22-013": [],
  "BS22-022": [],
@@ -813,6 +867,18 @@
  ],
  "BS22-037": [],
  "BS22-046": [],
+ "BS22-057": [
+  "T_SUMMONED",
+  "C_LEVEL"
+ ],
+ "BS22-061": [
+  "S_UNAFFECTED"
+ ],
+ "BS22-064": [
+  "T_SUMMONED",
+  "C_LEVEL",
+  "A_BP_MINUS"
+ ],
  "BS23-001": [
   "A_EXHAUST",
   "C_LEVEL",
@@ -871,6 +937,7 @@
  "BS32-030": [],
  "BS32-037": [],
  "BS32-050": [],
+ "BS32-059": [],
  "BS33-005": [],
  "BS33-012": [],
  "BS33-022": [

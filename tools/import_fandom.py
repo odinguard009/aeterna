@@ -78,6 +78,40 @@ def reduction_of(r):
     return out
 
 
+BRAVE_SRC = os.path.join(ROOT, 'data/sources/fandom-brave-combine.tsv')
+BRAVE_COST = r'(?:A )?[Cc]ost (?:of )?(\d+) or (?:more|above)'
+
+
+def brave_of(cond, bp):
+    """v0.60.0: Brave combine data from the Fandom page fields (the export drops them). Returns the card's `brave` dict,
+    or None when the condition is not one the engine can check yet (two-sided, Grandwalker Nexus, Ultimates, symbol or
+    keyword holders, "or less" costs, family OR cost). braveFits: name/family are OR'd, costGe is AND'd."""
+    c = re.sub(r"\[\[|\]\]|'{3}", '', cond).strip()
+    m = re.match(r'^\+?(\d+)$', bp.strip())
+    if not m: return None
+    out = {'bp': int(m.group(1))}
+    if re.match(r'^No printed effects?$', c, re.I): return out
+    if re.search(r'<br|\[(Left|Right)|Ultimate|Nexus|symbol|holder|less|\{\{|"', c, re.I): return None
+    m = re.match('^' + BRAVE_COST + '$', c)
+    if m: out['costGe'] = int(m.group(1)); return out
+    m = re.match(r'^([A-Z][\w ]*?) & ' + BRAVE_COST + '$', c)
+    if m: out['family'] = [m.group(1)]; out['costGe'] = int(m.group(2)); return out
+    fams = [x.strip() for x in c.split('/')]
+    if all(re.match(r'^[A-Z][A-Za-z ]+$', x) and not re.search(r'\bCost\b', x) for x in fams):
+        out['family'] = fams; return out
+    return None
+
+
+def brave_table():
+    t = {}
+    if not os.path.exists(BRAVE_SRC): return t
+    for line in open(BRAVE_SRC, encoding='utf8'):
+        if line.startswith('#') or not line.strip(): continue
+        title, cond, bp = line.rstrip('\n').split('\t')
+        t[title] = brave_of(cond, bp)
+    return t
+
+
 def convert(r, image):
     t = r['type'] or ''
     t_fixed = {'Spirt': 'Spirit'}.get(t, t)
@@ -110,6 +144,7 @@ def main():
     check = '--check' in sys.argv
     rows = json.load(open(SRC))['cards']
     by_set, by_name = build_image_index()
+    braves = brave_table()
     have = {c['id'] for f in glob.glob(os.path.join(ROOT, 'data/cards/saga-[0-9][0-9].json')) for c in json.load(open(f))}
     rep = collections.defaultdict(list)
     groups = collections.OrderedDict()
@@ -145,6 +180,10 @@ def main():
             rep['merged'].append(cid)
         if prob:
             rep['image_problems'].append({'id': cid, 'name': chosen['name'], 'problem': prob})
+        if card['type'] == 'Brave':
+            key = (card.get('source') or '').split('/wiki/')[-1]
+            if braves.get(key): card['brave'] = braves[key]
+            else: rep['brave_unparsed' if key in braves else 'brave_no_data'].append(cid)
         if card['saga'] is None:
             rep['no_saga'].append(cid)
             continue

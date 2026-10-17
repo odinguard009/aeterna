@@ -165,8 +165,8 @@ function costAltActive(p, card) {                 // e.g. Wurm Draw: "(Once per 
 function extraReduction(p, card) {
   const out = []; if (!G) return out; const opp = G.p[other(p.key)];
   for (const src of fieldList(p)) {
-    const sc = CARDS[src.id]; if (!sc.effects) continue; const L = lvNo(src);
-    for (const e of sc.effects) {
+    const L = lvNo(src);
+    for (const { e } of fxEntries(src)) {
       if (e.trigger !== 'STATIC' || e.flag !== 'EXTRA_REDUCTION' || (e.lv && !e.lv.includes(L)) || !fxMatch(card, e.match) || !fxIf(p, opp, e.if)) continue;
       for (let i = 0; i < (e.n || 1); i++) out.push(e.color);
     }
@@ -250,7 +250,7 @@ function removeSpirit(p, s, why, byOpponent) {
 /* v0.57.0 Standby state (JP 17.0 revision notice item 4): a card that left the Field waits in p.standby while the queued
    events naming it (When Destroyed, ally lost) resolve; its symbols still reduce costs (fieldSymbols withStandby); then it
    goes to its destination (standbyTo: 'trash' or 'removed'). force = release every waiting card (new turn, game over). */
-const lostHeard = p => fieldList(p).some(f => (CARDS[f.id].effects || []).some(e => e.trigger === 'ALLY_LOST'));   // someone can react to "an ally is lost"
+const lostHeard = p => fieldList(p).some(f => fxEntries(f).some(({ e }) => e.trigger === 'ALLY_LOST'));   // someone can react to "an ally is lost"
 function leaveStandby(p, s) {
   if (!removeFrom(p.standby, s)) return;
   const to = s.standbyTo || 'trash'; delete s.standbyTo;

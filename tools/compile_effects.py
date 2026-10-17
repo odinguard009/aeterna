@@ -16,7 +16,7 @@ sentence not in the tables below. The output still has to pass the game's parseC
 import json, glob, os, re, sys, collections
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
-KEEP = ('id', 'name', 'name_jp', 'type', 'color', 'cost', 'reduction', 'symbols', 'levels', 'families', 'text', 'image', 'block', 'saga')
+KEEP = ('id', 'name', 'name_jp', 'type', 'color', 'cost', 'reduction', 'symbols', 'levels', 'families', 'text', 'image', 'block', 'saga', 'brave')
 NUM = {'a': 1, 'an': 1, 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8}
 num = lambda s: int(s) if s.isdigit() else NUM[s.lower()]
 W = r'(\d+|a|an|one|two|three|four|five)'
@@ -216,7 +216,21 @@ def spirit_paragraph(p, card):
         raise Review('Rush on a paragraph without a triggered effect: ' + p[:60])
     return effects, flags
 
+BRAVED_PARA = re.compile(r'^(?:\[When Braved\]|When Braved|During (?:Spirit )?Brave)\s+(?!on\b)')
+
+
 def spirit_paragraph_main(p, card, rush):
+    mb = BRAVED_PARA.match(p)
+    if mb:      # v0.60: [When Braved] / During (Spirit) Brave = while a Brave is combined with this Spirit (JP 合体時); effects get braved:true
+        body = re.sub(r'\(When (?:This Spirit )?Brave Attacks?\)', '(When Attacks)', p[mb.end():].strip())
+        if card['type'] == 'Brave' and re.match(r'^\[LV\d', body): raise Review('braved paragraph with a level on a Brave')
+        if BRAVED_PARA.match(body): raise Review('braved paragraph twice')
+        e, f = spirit_paragraph_main(body, card, rush)
+        if f or not e: raise Review('braved paragraph with card flags: ' + body[:60])
+        for x in e:
+            if x['trigger'] in ('DESTROYED', 'SUMMONED', 'ADVENT', 'REVEALED', 'ACCEL') or x.get('zone') or x.get('nexusBrave'): raise Review('braved paragraph trigger ' + x['trigger'])
+            x['braved'] = True
+        return e, f
     mu = UT_PARA.match(p)
     if mu and card['type'] == 'Ultimate':      # v0.56: Ultimate Trigger [LVn] (When Attacks) When Ultimate Trigger hits, <actions>
         if rush: raise Review('Rush with Ultimate Trigger')

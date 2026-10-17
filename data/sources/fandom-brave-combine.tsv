@@ -1,0 +1,443 @@
+# Brave combine data from the Fandom card pages (wikitext fields `bravecondition` and the Brave line of `level`), read 2026-10-17 via the wiki API.
+# The Fandom export (fandom-cards-bs01-bs77.json) drops these fields. Columns: page title, brave condition (as written), braved BP.
+The_BladeArmoredDragon_Buster-Dragon	No printed effect	+2000
+The_GunDragon_Phoenix-Cannon	Cost 3 or more	+3000
+The_JavelinBeast_Balli-Star	Cost 5 or more	+4000
+The_SkullTank_Geparberd	No printed effects	2000
+Hedgebolg	Cost 4 or more	+3000
+The_KnightSnake_Pendragon	Cost 3 or more	+4000
+The_KarakuriDog_Shiba	No printed effects	+2000
+Beam-Beetle	Cost 4 or more	+2000
+The_SwordBird_Kacrane	Cost 5 or more	+5000
+The_ArmoredHorse_Alfothr	No printed effect	+2000
+Fenrircannon_Type-B	Cost 4 or more	+3000
+Sabershark	Cost 5 or more	+3000
+Angedoll	No printed effects	+2000
+The_Kigurumi_Kumattar	Cost 4 or more	+4000
+Oniyurin	Cost 5 or more	+3000
+Bazooka-Arms	No printed effects	+2000
+Gyokuryuun	Cost 4 or more	+3000
+The_SacredArmoredBeast_Ammead	Cost 5 or more	+4000
+Jambi-Olepis	Cost 3 or more	+2000
+The_ClawDragon_Powered-Tusker	Cost 5 or more	+4000
+Evil-Fisher	Cost 4 or more	+2000
+The_EvilGun_Vesper	Cost 5 or more	+3000
+Karmula_One	Cost 4 or more	+3000
+The_SpearBird_Spineed-Hayato	Cost 5 or more	+5000
+Janome-Shielder	Cost 3 or more	+3000
+The_StarSwordShuttle_Polar-Caliber	Cost 5 or more	+6000
+Butterhorn	Cost 3 or more	+2000
+The_DivineBowBird_Perytorn	Cost 5 or more	+4000
+Reticle-Arms	Cost 3 or more	+2000
+The_ThunderSacredArtillery_Cannon-Arms	Cost 5 or more	+5000
+Amphisbaenar	[[Astral Deity]]/[[Galaxian]]/[[Astral Soul]]	+4000
+The_ChargingMachineDragon_Archaelancer	Cost 3 or more	+3000
+The_Exoskeleton_Bone-Loader	[[Astral Deity]]/[[Galaxian]]/[[Astral Soul]]	+3000
+Death-Haze	Cost 4 or more	+4000
+Oodsutsunanafushi	Cost 3 or more	+2000
+Manekicat	[[Astral Deity]]/ [[Galaxian]] / [[Astral Soul]]	+3000
+Gecko-Glider	[[Astral Deity]]/ [[Galaxian]] / [[Astral Soul]]	+4000
+Jet-Ray	Cost 5 or more	+4000
+Hydrandea	Cost 2 or more	+2000
+The_DivineBird_Thunder-Bird	[[Astral Deity]]/[[Galaxian]]/[[Astral Soul]]	+3000
+Shoggoleth	Cost 3 or more	+4000
+Vulcan-Arms	[[Astral Deity]]/[[Galaxian]]/[[Astral Soul]]	+5000
+Irritaban	Cost 4 or more	+2000
+The_ShineDragon_Shine-Blazer	Cost 5 or more	+5000
+Zuganake	Cost 4 or more	+4000
+Evilglider	Cost 3 or more	4000
+Mokubaoh	Cost 3 or more	+4000
+Hyo-Katchu	Cost 4 or more	3000
+The_HeavyArmoredBrave_Shield-Dragon_Mk-II	Cost 4 or more	3000
+Hawk-Breaker	Cost 5 or more	+3000
+Poppor	Cost 4 or more	+2000
+Chihyu	Cost 4 or more	+5000
+Forbbid-Vulture	Cost 3 or more	+4000
+Tres-Beluga	[[Galaxian]]	+6000
+Lagian	Cost 4 or more	+4000
+Stolast	Cost 4 or more	+3000
+Taranty	Cost 4 or above	+4000
+Diyadokari	Cost 4 or more	+3000
+Trumpn	Cost 4 or more	+3000
+Gurangatch	Cost 4 or more	+4000
+Matadora	A cost of 4 or more	+3000
+Knight-Anole	Cost 4 or more	+3000
+Kamen-Fukurou	Cost 4 or above/ Spirit With '''[[Windstorm]]'''	+3000
+Double-Camel	Cost 4 or more	+3000
+Starham	Cost 4 or more	+2000
+Bandit-Arms	Cost 5 or more/{{tk|Crush}} holder	+4000
+Armstronger	Cost 4 or more	+3000
+Shifgator	[[Supreme Hero]]/[[Great General]]	+5000
+Kotetsu-Tiger	A cost of 5 or more	+5000
+Satellide-Bird	A cost of 5 or more	+5000
+Kaimeiju	A cost of 5 or more	+4000
+Technohyude	[[Supreme Hero]]/[[Great General]]	+5000
+Yasakani-Wing	[[Supreme Hero]]/ [[Great General]]/ [[Dragon Warrior]]	+5000
+Aroundizar	[[Supreme Hero]]/ [[Great General]]/ [[Evil Shadow]]	+3000
+Gyokuzeeg	Cost 0/1/2	+2000
+Osebering	Cost of 5 or more	+4000
+Horus-Jeter	[[Supreme Hero]]/ [[Great General]]/ [[Dark Artes]]	+3000
+Jinn-Arms	[[Supreme Hero]]/ [[Great General]]/ [[Creator]]	+4000
+Drake-Baya	Cost 4 or more	+3000
+The_HolySwordDragon_Ex-Wyvern	Cost of 4 or more / [[Evil Shadow]]	+3000
+Gearzelle	Two symbols or more	+2000
+Gun-Horse	Cost 6 or more	+3000
+Zacka-Panzer	Cost 4 or more	+4000
+Chariot-Arms	Cost 4 or more	+3000
+Gaimimus	Cost 4 or more	+3000
+The_ElectricArtifactDragon_Transfer-Dragon	Cost 4 or more	+2000
+Baboon-Bone	Cost 0/1/2/3	+2000
+The_ArmoredBattleship_Blade-Hind	Cost 4 or more	+3000
+Bambull	Cost 3 or more	+2000
+Akkeshigumo	Cost 4 or more	+3000
+The_GunMachine_Toradoll	Cost 4 or more	+3000
+The_CannonBeast_Aquidry	Cost 4 or more	+4000
+Kongoushouki	Cost 4 or more	+3000
+Jackkuri	Cost 4 or more	+2000
+Fuscina-Arms	{{tk|Charge}} holder	+3000
+The_SeaCreature_Gulon	Cost 4 or more	+2000
+The_BlackInsectDemonBlade_Usubakagero	Cost 5 or more	+5000
+The_AzureOceanGreatSword_Maelstrom	Cost 5 or more	+5000
+Tylok-Cephale	Cost 4 or more	+4000
+HotJupiter-Dragon	Cost 3 or more	+3000
+Snakurse	Cost of 4 or more	+3000
+Skullplane	Cost 5 or more	+3000
+Susukinkei	Cost 5 or more	+3000
+Karakuribatta	Cost 4 or more	+4000
+The_ImperialMachine_Messenger	Cost 4 or more	+3000
+Catapuseal	Cost 4 or more	+2000
+Urvancle	Cost 4 or more	+3000
+Angel_Egg	Cost 4 or more	+3000
+Cyclo-Arms	Cost 4 or more	+4000
+Konohaganin	Cost 4 or more	+3000
+The_Criminal's_SkullBlade_Executioners	Cost 5 or more	+5000
+The_LightWingsDivineBlade_Angelicfeather	Cost 5 or more	+5000
+Gornic-Eagle	Cost 3 or more	+3000
+Pteranostone	Cost 4 or more	+3000
+The_HellBeastRider_Sitri	Cost 3 or more	+0
+Gargoylas	Cost 4 or more	+2000
+Karakuripelican	Green symbol holder	+4000
+The_InsectivoreGrass_Drosella	Cost 4 or more	+3000
+The_SatelliteMachine_Pioneer_V	White symbol holder	+3000
+The_CrossArrowBeast_Cross-Bongo	Cost 4 or more	+3000
+GurumiPanda	Cost 4 or more	+2000
+BurikiTiger	Cost 3 or more	+3000
+Dive-Arms	Blue symbol holder	+4000
+The_DeepSeaDragon_Lovliss	Cost 4 or more	+4000
+The_SkyLightSword_Crown-Solar	Cost 5 or more	+7000
+The_AbyssGiantSword_Abyss-Apocalypse	Cost 5 or more	+5000
+The_SwordStarDragon_Stardust-Caliburn	Cost 4 or more	+4000
+The_ArmorCuttingDragon_Rugops	Cost 5 or more	+5000
+Skull-Garuda	Cost 4 or more	+4000
+Saw-Snake	Cost 5 or more	+3000
+Ootoki_Kite	Cost 4 or more	+3000
+Scissor_Cactus	Cost 4 or more	+4000
+The_ImperialMachine_Hullnote_No.1	Cost 4 or more	+4000
+The_BeastBomb_Manatee-Marauder	Cost 4 or more	+4000
+Pentan_Brave	Cost 4 or more	+3000
+Sweets_Fighter	Cost 4 or more	+2000
+Blue-Arms	Cost 5 or more	+0
+Coral-Jaguar	Cost 5 or more	+2000
+The_HurricaneTwinBlade_Kamui-Hayate	Cost 6 or more	+5000
+The_FantasyHeavenBlade_Twilight-Fantasia	Cost 5 or more	+5000
+The_MidnightSunTreasuredSword_Midnight-Sun	Cost 5 or more	+5000
+The_SunBlade_Cardinal-Sun	[[Fencer]]	+3000
+The_BlazeMoonBlade_Scarlet-Moon	Cost 5 or more	+4000
+Zaguna-Orix	Cost 4 or more	+3000
+The_DemonSword_Deathscythe	Cost 4 or more	+2000
+Hanmyoru	Cost 5 or more	+3000
+The_JadeKodachi_Nichirinmaru	Cost 4 or more	+3000
+Phantomjetter	[[Armed Machine]]	+2000
+The_AuroraSword_Sol_Breaker	Cost 3 or more	+4000
+The_HaloBlade_Angelhalo	Cost 4 or more	+2000
+The_AnnihilationAngelia_Nephilim	Cost 5 or more	+8000
+The_OceanEmperorBlade_Triwave	[[Fencer]]	+4000
+Hydra-Arms	Cost 3 or more	+4000
+The_True_Sword_of_Judgment_Truth-Eden	Cost 5 or more	+6000
+The_FlashSoulBlade_Lightning-Shion	Cost 5 or more	+5000
+The_Sword_of_Judgment_Re-Genesis	Cost 8 or more	+10000
+Pterfighter	A cost of 3 or more	+4000
+ArmoredHarley	Cost 3 or more	+0
+Kuwagatank	A cost of 4 or more	+4000
+Busterfalcon21	A cost of 4 or more	+4000
+WingArrow	Cost 4 or more	+3000
+Lobs-Arms	Cost 4 or more	+4000
+The_GunAstralArmored_Baldo-Lizard	A cost of 4 or more	+3000
+The_BirdAstralArmored_Shisobird	Cost 5 or more	+5000
+The_DevilAstralArmored_Flybeat	A cost of 4 or more	+4000
+The_SnakeAstralArmored_Snakers	Cost 4 or more	+3000
+The_EarthAstralArmored_Foxstar	Cost 4 or more	+3000
+The_SkyAstralArmored_Eaglet	Cost 3 or more	+3000
+The_ShieldAstralArmored_Shieldtank	A cost of 4 or more	+3000
+The_SwordAstralArmored_Swordfish	A cost of 4 or more	+4000
+The_RabbitAstralArmored_Rabitta	Cost 4 or more	+3000
+The_VirgoAstralArmored_VirgoBrave	Cost 4 or more	+5000
+The_ShipAstralArmored_BraveArgo	{{tk|Summon Bolt}} holder	+4000
+The_ScorpioAstralArmored_BraveScorpion	Cost 4 or more	+5000
+The_PiscesAstralArmored_BravePisces	Cost 3 or more	+4000
+The_CancerAstralArmored_BraveCancer	Cost 5 or more	+5000
+The_WaterCarrierAstralArmored_BraveAquarius	Cost 5 or more	+7000
+The_BullAstralArmored_BraveTaurus	[[Astral Guardian]]/Cost 8	+3000
+The_BraveAstralArmored_Boll-Bear	Cost 4 or more	+3000
+The_GuardianAstralArmored_Equu-Leus	{{tk|Poison Blade}} Holder	+5000
+The_CapricornusAstralArmored_BraveCapricorn	Cost 4 or more	+5000
+The_WhiteAstralArmored_Cygnus-Wing	Cost 4 or more	+3000
+The_AriesAstralArmored_AriesBrave	Cost 4 or more	+3000
+The_BraveAstralArmored_Leo-Minor	[[Astral Guardian]]/[[Astral Soul]]/[[Armed Machine]]	+3000
+The_HeavenAstralArmored_Blanc-Pegase	Cost 3 or more	+1000
+The_TwinsAstralArmored_BraveGemini	Cost 4 or more	+5000
+The_DogAstralArmored_Tossa-Sirius	Cost 4 or more	+2000
+The_SagittariusAstralArmored_BraveSagittarius	Cost 5 or more	+5000
+The_LeoAstralArmored_LeoBrave	[[Astral Guardian]]/Cost 8 or more	+5000
+The_LibraAstralArmored_BraveLibra	Cost 5 or more	+5000
+The_AstralKnightSpear_Gacrux	Cost 3 or more Spirit/Ultimate	+3000
+The_PoisonSnakeScythe_Alphard	Cost 3 or more Ultimate	+1000
+The_DragonBow_Rastaban	Cost 3 or more Spirit/Ultimate	+3000
+The_AttackClaw_Adhara	Cost 3 or more Ultimate	+1000
+The_AstralBeastSpear_Sirius	Cost 3 or more Spirit/Ultimate	+3000
+The_LionShieldArmor_Regulus	Cost 3 or more Ultimate	+1000
+The_AstralGun_Fomalhaut	Cost 3 or more Spirit/Ultimate	+3000
+The_StarDivineStaff_Spica	Cost 3 or more Spirit/Ultimate	+2000
+The_VenusDeitySword_VenusSaber	Cost 3 or more Ultimate	+3000
+The_TwinBlade_Rigeledge	Cost 3 or more Spirit/Ultimate	+2000
+The_MercuryDeitySword_MercuryBlade	Cost 5 or more Ultimate	+4000
+The_MarsDeitySword_MarsBringer	Cost 6 or more Ultimate	+5000
+The_SnakeEmperorAstralArmored_BravePiooze	Cost 5 or more	+5000
+The_AstralShieldSword_Arcturus	Cost 3 or more Spirit/Ultimate	+3000
+The_BigAstralAxe_Aldebaran	Cost 4 or more Ultimate	+3000
+The_SnakeAstralWhip_Sabik	Cost 3 or more Spirit/Ultimate	+2000
+The_SaturnDeitySword_SaturnSleif	Cost 4 or more Ultimate	+4000
+The_AstralHillHalberd_Benetnasch	Cost 4 or more Spirit/Ultimate	+2000
+The_AstralBattleStick_Algieba	Cost 4 or more Spirit/Ultimate	+3000
+The_MoonlightDeitySword_WingOfLuna	Cost 5 or more Ultimates	+3000
+The_HeavenAstralBlade_Schedar	Cost 3 or more Spirit/Ultimate	+2000
+The_AstralLyreFan_Vega	Cost 4 or more Spirit/Ultimate	+3000
+The_KeelStick_Canopus	Cost 3 or more Spirit/Ultimate	+2000
+The_AstralBayonet_Antares	Cost 4 or more Spirit/Ultimate	+2000
+The_JupiterDeitySword_JupiterSaber	Cost 4 or more Ultimate	+5000
+The_RubyFlameFist_HinokoKnuckle	Cost 3 or more Spirit/Ultimate	+2000
+The_DevilBlade_DavidScissor	Cost 3 or more Spirit/Ultimate	+2000
+The_EmeraldPhoenixBox_NixBow	Cost 3 or more Spirit/Ultimate	+2000
+The_ElectricGodSpear_TrainLance	Cost 3 or more Spirit/Ultimate	+2000
+The_HolyHeavenWand_SkyRod	Cost 3 or more Spirit/Ultimate	+2000
+The_SapphireBeastMallet_PantherHammer	Cost 3 or more Spirit/Ultimate	+2000
+The_DragonArmor_Dragmaru	Cost 4 or more	+4000
+The_ArmoredFlyingDragon_Oosodelgar	Cost 1 or more	+3000
+Origamibird	Cost 4 or more	+4000
+Origamihorse	Cost 3 or more	+3000
+Hagurugama	Cost 3 or more	+2000
+Karakuriookami	Cost 4 or more	+3000
+The_ArmoredTank_Hitterkabuto	Cost 4 or more	+4000
+The_ArmoredWing_Fighter	Cost 3 or more	+3000
+Oborogissha	Cost 4 or more	+4000
+Oukikaku	Cost 4 or more	+2000
+The_TwinDragonBoat_Hydraship	Cost 4 or more	+4000
+Jet_Karura	Cost 1 or more	+4000
+The_ArmorDragonBlade_Gouten	Cost 4 or more	+3000
+The_FlameDragonKatana_Onimaru	Cost 5 or more	+5000
+Origamimonkey	Cost 3 or more with a Purple/White/Yellow symbol	+3000
+The_ArmoredBird_Khirenjack	Cost 4 or more	+3000
+The_TortoiseshellBeast_Kabutogame	Cost 4 or more	+10000
+Himeneko	Cost 4 or more	+4000
+Gohou-Golem	Cost 4 or more	+4000
+The_FlameDragonKatana_Onimaru-Shin'uchi	Cost 5 or more	+5000
+Kaigyuu-Arms	No printed effects	+6000
+War_Dragon_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 4 or more	+4000
+Shiki_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 4 or more	+6000
+Shinobi_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 4 or more	+3000
+Clever_Machine_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 4 or more	+5000
+Demon-God_Princess	[Right] Cost 4 or more<br>[Left] Cost 4 or more	+4000
+Shark_Demon-God	[Right] Cost 5 or more<br>[Left] Cost 5 or more	+4000
+Fire_Demon-God	[Right] Cost 3 or less<br>[Left] Cost 3 or less	+4000
+Mystic_Demon-God	[Right] Cost 4 or less<br>[Left] Cost 4 or less	+2000
+Fang_Demon-God	[Right] Cost 3 or less<br>[Left] Cost 3 or less	+2000
+Wolf_Demon-God	[Right] Cost 4 or less<br>[Left] Cost 4 or less	+3000
+Mythril_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 4 or more	+5000
+Pudding_Demon-God	[Right] Cost 4 or less<br>[Left] Cost 4 or less	+2000
+Divine_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 4 or more	+4000
+Lobster_Demon-God	[Right] Cost 4 or less<br>[Left] Cost 4 or less	+3000
+Bronze_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 4 or more	+3000
+Bear_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 4 or more	+3000
+Evil_Dragon_Demon-God	[Right] Cost 5 or more<br>[Left] Cost 4 or more	+4000
+Kabuto_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 4 or more	+3000
+Headbutt_Demon-God	[Right] Cost 5 or more<br>[Left] Cost 4 or more	+5000
+Monkey_Demon-God	[Right] Cost 5 or more<br>[Left] Cost 4 or more	+4000
+Elephant_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 4 or more	+3000
+Super-Flame_Demon-God	[Left/Right] Cost 4 or more	+5000
+Super-Wind_Demon-God	[Left/Right] Cost 4 or more	+5000
+Explosive_Demon-God	[Left/Right] Cost 4 or more	+4000
+Ocean_Demon-God	[Left/Right] Cost 4 or more	+5000
+The_BlackWingDragon_Burn-Crow	Cost 5 or more	+2000
+Thunder_Demon-God	[Left/Right] Cost 4 or more	+4000
+Red_Demon-God	[Left/Right] Cost 6 or more	+6000
+Time_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 4 or more	+3000
+Purple_Demon-God	[Left/Right] Cost 6 or more	+6000
+Green_Demon-God	[Left/Right] Cost 6 or more	+6000
+Wing_Demon-God	[Right/Left] Cost 4 or more	+4000
+Illusion_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 4 or more	+3000
+White_Demon-God	[Left/Right] Cost 6 or more	+6000
+Magic_Demon-God	[Right] Cost 8 or more<br>[Left] Cost 3 or less	+3000
+Yellow_Demon-God	[Left/Right] Cost 6 or more	+6000
+Roaring_Demon-God	[Left/Right] Cost 4 or more	+3000
+Blue_Demon-God	[Left/Right] Cost 6 or more	+6000
+The_BladeWolf_Beo-Wulf	Cost 5 or more	+3000
+The_ShelledGun_Kuwaga-Shima	Cost 4 or more	+3000
+The_WindGodGun_Behexhaust	Cost 4 or more	+5000
+The_NobleGun_Rebellion	Cost 4 or more	+4000
+The_TwinkleDragonGunblade_Guns-Balmung_-Gun_Mode-	Cost 5 or more	+6000
+The_ThreeHeadedGun_Greed-Lock-Gun	Cost 4 or more	+4000
+The_Pirate'sSpeargun_Zeroy-Shooter	Cost 5 or more	+6000
+The_DinosaurGun_Dinolock_Gun	Cost 5 or more	+5000
+The_TwinkleStarGun_Wurmshooter	Cost 4 or more	+6000
+The_CorpseGun_Draghead	Cost 4 or more	+4000
+The_DarkSnakeGun_Snail_Skelter	Cost 4 or more	+4000
+The_DivinePunishmentGun_Heaven's_Vengeance	Cost 4 or more	+5000
+The_WonderRifle_Parasolaika	Cost 6 or more	+4000
+Drag-Pulsar	Cost 3 or more	+3000
+The_EarthSnake_Sa-Ta	Cost 4 or more	+3000
+The_BladeWolfArmor_Belio-Wulf	Cost 5 or more	+5000
+Bowgunner-Eagle	Cost 4 or more	+2000
+The_DivineChariot_Merkabah	Cost 5 or more	+3000
+Jackal-Arms	Cost 4 or more	+3000
+The_ConvictionDownfallSword_Judgment-Dragon-Sword	Cost 9 or more	+10000
+The_SacredEmperorWeapon_Siegfrieden-Cannon	Cost 6 or more	+5000
+Apollosword_&_Strikeblade	[Right/Left] Cost 6 or more	+7000
+Astral_Dragon_Demon-God	[Left/Right] Cost 4 or more	+5000
+Dark_Snake_Demon-God	Cost 4 or more	+3000
+Talarian-Panther	Cost 4 or more	+4000
+Machine_Beast_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 4 or more	+4000
+Aset-Kite	Cost 4 or more Spirit/Ultimate	+4000
+Set'ani-Arms	Cost 4 or more Spirit/Ultimate	+5000
+The_EarthDeitySword_Gaianohoko	Cost 5 or more Ultimate	+5000
+The_IllustriousArmor_Thunder-Z-Brave	Cost 4 or more	+4000
+The_DeadOgreKingDragon_Death-Ladon	[[Ogre Wizard]] & Cost 4 or more	+3000
+Blade_Beast_Demon-God	[Left/Right] Cost 3 or more	+3000
+The_SteelHolyArmor_Brave_Owl	Cost 4 or more	+5000
+The_Sun_Ship	Cost 2 or more	+3000
+Sandsea_Demon-God	[Left/Right] Cost 4 or more Spirit/Ultimate	+5000
+Z_Demon-God	[Left/Right] Cost 4 or more	+5000
+Queen_Demon-God	[Left/Right] [[Ogre Wizard]] & Cost 4 or more	+4000
+The_SkyBirdArmor_Falcom	Cost 4 or more Spirit/Ultimate	+5000
+Steel_Demon-God	[Left/Right] Cost 4 or more	+3000
+The_HieroglyphBirdArmor_Ibis_Bird	Cost 4 or more Spirit/Ultimate	+4000
+Sacred_Beast_Demon-God	[[Imaginary Beast]] & Cost 2/4/6/8	+3000
+The_GrandseaArmor_Gun-Poseido	[[Fusion Beast]]	+4000
+The_LotusDivineBlade_Rigveda	Cost 4 or more<br>[[Hindida]] & Grandwalker Nexus	+5000
+The_DivineTwinSword_God_Edge	Cost 4 or more<br>Grandwalker Nexus	+4000
+The_DestroyerDragonSpear_Trishula	Cost 4 or more<br>[[Hindida]] & Grandwalker Nexus	+4000
+The_DivineEvilTalon_Godnail	Cost 4 or more<br>Grandwalker Nexus	+4000
+The_SkyTwinBlades_Har-Edge	Cost 4 or more Ultimate<br>"Grandwalker Horus"	+4000
+The_DivineFangblade_Godfang	Cost 4 or more<br>Grandwalker Nexus	+4000
+The_HieroglyphDivineGun_Jehut-Glyph	Cost 5 or more Ultimate<br>"Grandwalker Thoth"	+3000
+The_DivineMightySpear_Godlance	Cost 4 or more<br>Grandwalker Nexus	+4000
+The_CharisSpiritWand_Butterfly-Effect	Cost 4 or more<br>[[Olym]] & Grandwalker Nexus	+4000
+The_DivineStarStaff_Godstaff	Cost 5 or more Ultimate<br>Grandwalker Nexus	+4000
+The_GrandseaTrident_Triaina-Giga	[[Fusion Beast]] & Cost 4 or more <br>"Grandwalker Poseidon"	+4000
+The_DivineMagicSword_Godblade	Cost 4 or more Ultimate<br>Grandwalker Nexus	+4000
+The_TreasureSagaBlade_Grand-Daeva	Cost 6 or more<br>Grandwalker Nexus	+4000
+The_HellKanabou_Gokusotsu	Cost 4 or more<br>Grandwalker Nexus	+3000
+The_RitualSpiritBlade_Darkris	Purple & Cost 5 or more<br>Purple-only & [[Olym]] & Grandwalker Nexus	+2000
+The_CancerSacredSword_Kanikiri	Cost 5 or more<br>Green-only & Grandwalker Nexus	+4000
+The_BatteringHalberd_Rampart-Breaker	Cost 4 or more<br>"Grandwalker Ares"	+6000
+The_SacredDragonFlute_Bhagavad-Gita	Cost 5 or more<br>[[Hindida]] & Grandwalker Nexus	+5000
+The_DivineSpiritQueenStaff_Was-Scepter	Cost 5 or more Ultimate<br>[[Egyt]] & Grandwalker Nexus	+4000
+The_WildWaveSpiritBlade_Aranami	Cost 5 or more<br>Grandwalker Nexus	+3000
+The_GalaxyStarblade_Grand_Chariot	Cost 4 or more <br>[[Galaxian]] & Grandwalker Nexus	+4000
+The_DragonRiderEvilBow_Sagittobow	Cost 6 or more<br>"Apollon"-named Grandwalker Nexus	+5000
+Onmyou_Talisman	[[Evil Shadow]]/[[Youkai]]<br>[[Amahara]] & Grandwalker Nexus	+2000
+The_ClearSkyKaiken_Phoedec-Dagger	Cost 4 or more Spirit/Ultimate<br>Grandwalker Nexus	+4000
+The_LionDeityEvilGun_Leo-Blaster	Cost 5 or above<br>White & Grandwalker Nexus	+4000
+The_GrandTransformer_Axe-Arms	Cost 4 or more <br> Blue & Grandwalker Nexus	+3000
+The_GrandTransformer_Lance-Arms	Cost 4 or more <br>Blue & Grandwalker Nexus	+4000
+The_GrandHammer_Meteorforge	Cost 4 or more <br>[[Olym]] & Grandwalker Nexus	+5000
+The_ThreeTreasureDragonSwords_Ancientcalibur	[[Ancient Dragon]] & Cost 5 or more/[[Creation]]<br>Red & Grandwalker Nexus	+6000
+The_ThreeTreasureDragonSwords_Necrocalibur	Cost 4 or more<br>[[Hindida]] & Grandwalker Nexus	+6000
+The_ThreeTreasureDragonSwords_Absolutecalibur	Cost 5 or more<br>Grandwalker Nexus	+6000
+The_HeavenlyBlade_Crimson_Dawn	Cost 4 or more<br>Grandwalker Nexus	+4000
+The_NetherGrandblade_Dios-Flugel	Cost 4 or more<br>Purple & Grandwalker Nexus	+5000
+The_GrandInstrument_Savitr-Veena	Cost 5 or more<br>"Grandwalker Sarasvati"	+1000
+The_TrueHeavenSpear_Dawning_Sky	Cost 4 or more<br>Grandwalker Nexus	+4000
+The_GrandTransformer_Hammer-Arms	[[Artificial Soldier]] & Cost 4 or more <br>"Grandwalker Hephaestus"	+4000
+The_ScorpioSpear_Scorlance	Cost 5 or more <br>Grandwalker Nexus	+4000
+Shield_of_Aegis	Cost 5 or more<br>Grandwalker Nexus	+8000
+The_DarknessDemonSword_Dark-Blade	Cost 5 or more	+5000
+The_Spear_and_Shield_of_Genesis	Cost 5 or more<br>Grandwalker Nexus	+6000
+The_DivineOrb_Puruna-Karasha	[[Primal]] & [[Fighting Spirit]]<br>[[Hindida]] & Grandwalker Nexus	+3000
+The_GenesisOrb_Hexa-Talisman	[[Primal]] & Cost 3 or more<br>[[Primal]] & Grandwalker Nexus	+3000
+True-Flame_Demon-God	[Left/Right] Cost 4 or more	+6000
+The_WaterLilyDragonSpear_Trishula	Cost 4 or more<br>"Grandwalker Parvati"	+5000
+The_AncientHammer_Baltica_Hammer	[[Scarlet Flame]]	+3000
+Savage_Axe	[[Scarlet Flame]] & Cost 4 or more	+3000
+Dinowing	[[Scarlet Flame]] & Cost 4 or more	+5000
+The_BloodOgreBlade_Chishibuki	[[Blood Crystal]]	+2000
+Lycoris_Bow	[[Jade Thunder]] & Cost 6 or more	+5000
+The_SpinyLeafSpear_Alospear	Cost 4 or more	+5000
+Bugs_Rod	Cost 4 or more	+2000
+The_TwinkleFlashSword_RaySaber	[[Silver Zero]]	+3000
+Solid_Slasher	Cost 5 or more	+4000
+Bounty_Hunt	{{tk|Load}}/{{tk|Fast Draw}}-holder	+4000
+The_Spellbook_of_Numerology	[[Golden Cloud]]	+2000
+Lio_Knuckle	"Raon"/{{tk|AFO}}-holder	+5000
+The_SpinningReversalBlade_Zweizar	[[Scarlet Flame]] & Cost 4 or more	+4000
+The_EmeraldFlowerLance_Bloom-Stem	[[Jade Thunder]] & Cost 4 or more	+6000
+The_AstralZeroSword_Foranswer	[[Silver Zero]]	+3000
+The_MagicBayonet_Hajar-Azraq	[[Blood Crystal]]	+3000
+The_MagicBayonet_Hell-Costilla	[[Blood Crystal]] & Cost 4 or more	+5000
+The_FantasyStaff_Phantasmagoria	[[Golden Cloud]]	+3000
+The_SummonBadge_Unicorn_Medaille	[[Golden Cloud]] & Cost 4 or more	+5000
+Type_RV99_Flame_Launcher	[[Artificial Contract]]	+3000
+CZN-68_Chainsword	[[Azure Wave]] & Cost 4 or more	+5000
+The_DivineMagicGun_Acinqtetes	[[Blood Crystal]] & Cost 4 or more	+6000
+The_SummonStaff_Summon-Peak	[[Golden Cloud]]	+5000
+The_StarCrushHammer_Daedalossa	[[Azure Wave]] & Cost 5 or more	+6000
+The_DragonHalberd_Drag_Halberd	[[Scarlet Flame]]	+4000
+The_SerpentineCreatorDagger_Ce-Acatl	[[Dark Snake]] & Cost 5 or more	+5000
+The_HurricaneBlade_Rafaga	Cost 4 or more	+4000
+The_ArmorBreakingLongSword_Ome-Acatl	[[Armored Beast]] & Cost 5 or more	+6000
+Calendula_Sword	Cost 4 or more Ultimates	+4000
+The_GrandseaHarpoon_Tidal_Harpoon	[[Azure Wave]]	+2000
+The_BurningContractSword_Heat_Riser	[[Scarlet Flame]] & Cost 4 or more	+7000
+The_RumblingContractBlade_Thunder_Edge	[[Jade Thunder]]	+5000
+The_GrandseaContractAnchor_Abyssal_Anchor	[[Azure Wave]]	+5000
+The_UltimateNovaSword_Zero-Sword	Cost 4 or more Ultimates	+5000
+The_ShadowyBlade_Shadow_Dagger	[[Blood Crystal]]	+1000
+The_JudgmentFangGun_Tribal_Claw	[[Judgment]] & Cost 4 or more	+3000
+The_AccelSword_Boost_Blade	[[Silver Zero]]	+2000
+MercurBlade-Teardrop	[[Silver Zero]]	+3000
+The_CuttingAce_Spade_Sword	[[Golden Cloud]] & Cost 4 or more	+5000
+The_JudgmentGun_Judgment_Day	Cost 4 or more	+5000
+The_HolyEvilContractLance_Elysione	[[Blood Crystal]]	+3000
+The_DawnLightContractGun_Celestoul	[[Silver Zero]]	+7000
+The_DestinyContractStaff_Phoenix_Feather	[[Golden Cloud]]	+6000
+The_SilverRingSword_Silverwheel	Cost 4 or more <br>"The SilverWheelContractor Brigit"	+6000
+The_HeavenEarthCreationStaff_Diastima	[[Primordial]] & Cost 4 or more<br>"Gaia"/"Uranus" & Grandwalker Nexus	+5000
+Silver_Wheel_Shield	Cost 5 or more <br>"The SilverWheelContractor Brigit"	+4000
+The_StationeryRobot_Stationer	Cost 4 or more	+3000
+Lugh's_Spear	[[Martial]] <br>"The MartialArtsContractor Lugh"	+3000
+ZZ_Demon-God	[Left/Right] Cost 4 or more	+6000
+The_PhantomThinSword_Estocker	[[Darkling]] & Cost 5 or more <br>"The NightlyDarknessContractor Nyx"	+3000
+Darkling_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 7 or more	+4000
+Rose_Demon-God	[Right] [[Jade Thunder]] & Cost 5 or more<br>[Left] [[Flower Contract]]	+6000
+Veslim-Manti	[[Weapon Insect]] & Cost 3 or more	+5000
+Shield_Demon-God	[Right] [[Machine Beast]] & Cost 3 or less<br>[Left] [[Machine Beast]]	+3000
+Bow_Demon-God	[Left/Right] [[Machine Beast]] & Cost 4 or more	+5000
+Hydrangea_Demon-God	[Left/Right] "Imaginate"	+2000
+The_AnnihilationDemon-God_Nephilim	[Right] Cost 8 or more<br>[Left] "Angelia Avrielle"	+10000
+Nuadha's_Sword	[[Scalostle]] & Cost 5 or more <br>"The SilverArmContractor Nuadha"	+10000
+Artificial_Dragon_Demon-God	[Right] Cost 4 or more<br>[Left] Cost 6 or more	+5000
+The_GrandDivineSword_Answerer	[[Devotee]]/[[Concluser]] & Cost 4 or more<br>[[Celtica]] & Grandwalker Nexus	+5000
+Moonlight_Demon-God	[Right] [[Devotee]]/[[Concluser]] & Cost 4 or more<br>[Left] Contract Grandwalker Nexus	+5000
+Weapons_of_LeoDragon,_Lion_Sword_&_Howl_Shield	[[Martial]] & Cost 4 or more<br>"The MartialArtsContractor Lugh"	+4000
+The_FlameDragonKatana_Onimaru-Shin'uchi_X	[[Rekka]] & C6 or more<br>"Rekka Yukimura" & Grandwalker Nexus	+5000
+The_GrandThunderBlade_Lightning-Sabre	[[Martial]] & Cost 4 or more<br>"The MartialArtsContractor Lugh"	+3000
+Fox_Demon-God	[Left/Right] [[Bannerace]] & Cost 4 or more	+3000
+Racoon_Dog_Demon-God	[Right] [[Bannerace]] & Cost 4 or more<br>[Left] [[Bannerace]] & Cost 4 or more	+3000
+The_SilverRingBlade_Twinwheel	[[Frostling]] & C8 or more <br>"The SilverWheelContractor Brigit"	+4000
+Lotus_Bow	[[Hunter Beast]] & Cost 4 or more<br>"Parvati" & Grandwalker Nexus	+4000
+Imaginate_Queen_Demon-God	[Left/Right] "Imaginate" & Cost 5 or more	+3000
+Imaginate_Acrobatics_Demon-God	[Left/Right] "Imaginate" & Cost 6 or more	+5000
+Hammer_Axe	[[Artificial Soldier]]<br>[[Olym]] & Grandwalker Nexus	+3000
+The_GrandSpearHammer_Hammerspear	[[Artificial Soldier]] & Cost 4 or more<br>[[Olym]] & Grandwalker Nexus	+5000
+Absolute_Wind_Demon-God	[Left/Right] Cost 4 or more	+7000
+Adventure_Demon-God	[Left/Right] [[Bannerace]] & Cost 4 or more	+3000
+Glow_Insect_Demon-God	[Left/Right] "Platinum Bug"/"Fala"	+4000

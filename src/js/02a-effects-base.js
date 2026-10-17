@@ -22,6 +22,15 @@ function fxUnknown(kind, name) {
 const FX_COND_KEYS = new Set(['soulGe', 'oppHandGe', 'voidGe', 'controlName', 'oppTurn', 'soulLe', 'putGe', 'hasName', 'prev', 'sealed', 'lifeLe', 'lifeGe', 'anyLifeLe', 'counterGe', 'soulOn', 'attackStep', 'nexusBraved', 'oppSpiritsLe', 'oppNoAB', 'oppNexusGe', 'oppRemovedGe', 'oppRemovedSpirit', 'byOpp', 'hasSymbol', 'removedGe', 'utHit', 'ctrl']);
 const FX_TRIGGERS = ['SUMMONED', 'ATTACKS', 'ALLY_ATTACKS', 'ALLY_BLOCKED', 'ALLY_SUMMONED', 'ADVENT', 'ACTIVATE', 'STATIC', 'OPP_HAND_UP', 'ALLY_LIFE_HIT', 'ALLY_LOST', 'START_ATTACK', 'MIRAGE_OWN_LIFE', 'MIRAGE_OPP_LIFE', 'SOUL_PLACED', 'MANIFEST', 'BLOCKS', 'DESTROYED', 'REVEALED', 'ALLY_DESTROYS', 'OPP_REMOVED', 'ACCEL', 'SILVER_WHEEL', 'BATTLE_WIN', 'OPP_ATTACKS'];
 const FX_TRIGGER_TEXT = { OPP_ATTACKS: 'When an opposing Spirit attacks', BATTLE_WIN: 'When Battles (only the opposing Spirit is destroyed by BP comparison)', ACCEL: 'Accel', SILVER_WHEEL: 'When you activate Silver Wheel', SUMMONED: 'When Summoned', ATTACKS: 'When Attacks', ALLY_ATTACKS: 'When an ally attacks', ALLY_BLOCKED: 'When an ally is blocked', ALLY_SUMMONED: 'When an ally is summoned', ADVENT: 'When Advents', ACTIVATE: 'Activate', OPP_HAND_UP: 'When the opposing Hand increases by an opposing effect', ALLY_LIFE_HIT: 'When an ally attack reduces the Life', ALLY_LOST: 'When an ally is depleted/destroyed by the opponent', START_ATTACK: 'Start of your Attack Step', MIRAGE_OWN_LIFE: 'Mirage: when your Life is reduced', MIRAGE_OPP_LIFE: 'Mirage: when the opposing Life is reduced', SOUL_PLACED: 'When your Soul Core is sent to a Nexus', MANIFEST: 'When Manifests', BLOCKS: 'When Blocks', DESTROYED: 'When Destroyed', REVEALED: 'When revealed from the deck', ALLY_DESTROYS: 'When your X destroys an opposing Spirit in battle', OPP_REMOVED: 'When cards are put onto the opposing Removed Zone' };
+/* v0.60.0 Brave completion: a Spirit combined with a Brave gains the Brave's [When Braved] / During (Spirit) Brave effects (braved:true; JP 合体時);
+   an effect with braved:true is off while its card is not combined (a Brave alone in Spirit form, an unbraved Spirit). Brave effects are indexed from BR_IDX. */
+const BR_IDX = 200;
+function fxEntries(f) {
+  const card = CARDS[f.id], out = [];
+  (card.effects || []).forEach((e, idx) => { if (!e.nexusBrave && (!e.braved || f.brave)) out.push({ e, idx }); });
+  if (f.brave && card.type !== 'Nexus' && CARDS[f.brave.id]) (CARDS[f.brave.id].effects || []).forEach((e, j) => { if (e.braved && !e.nexusBrave) out.push({ e, idx: BR_IDX + j, fromBrave: true }); });
+  return out;
+}
 function fxMatch(card, m) {
   if (!m || (!m.name && !m.family && m.costGe == null && !m.type && !m.color && !m.noUlt)) return true;
   if (m.noUlt && card.type === 'Ultimate') return false;      // v0.59: the text says "Spirit"; texts that include Ultimates print "Spirit/Ultimate"
@@ -88,9 +97,8 @@ function flagActive(owner, flag, subject, pred) {
   if (!G || !owner || !subject) return false;
   const opp = G.p[other(owner.key)];
   for (const src of fieldList(owner)) {
-    const card = CARDS[src.id]; if (!card.effects) continue;
     const L = lvNo(src);
-    for (const e of card.effects) {
+    for (const { e } of fxEntries(src)) {
       if (e.trigger !== 'STATIC' || e.flag !== flag || (pred && !pred(e))) continue;
       if (e.lv && !e.lv.includes(L)) continue;
       if (e.oc && !ocActive(src)) continue;
@@ -132,9 +140,8 @@ function staticBp(i) {
   const o = ownerOf(i); if (!o) return 0;
   const opp = G.p[other(o.key)]; let sum = 0;
   for (const src of fieldList(o)) {
-    const card = CARDS[src.id]; if (!card.effects) continue;
     const L = lvNo(src);
-    for (const e of card.effects) {
+    for (const { e } of fxEntries(src)) {
       if (e.trigger !== 'STATIC' || !e.bp) continue;
       if (e.lv && !e.lv.includes(L)) continue;
       if (e.oc && !ocActive(src)) continue;

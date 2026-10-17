@@ -92,7 +92,7 @@ function parseEffects(arr) {
     if (e.match != null) { const m = e.match; if (typeof m !== 'object' || [].concat(m.name || [], m.family || []).some(x => typeof x !== 'string')) return { error: '"match" must look like {"name":["Crimson"],"family":["Lava Fish"]}' }; if (m.costGe != null && !Number.isInteger(m.costGe)) return { error: '"match.costGe" must be a whole number' }; if (m.type != null && !['Spirit', 'Nexus', 'Magic', 'Brave'].includes(m.type)) return { error: '"match.type" must be Spirit, Nexus, Magic or Brave' }; o.match = { name: m.name ? m.name.map(String) : undefined, family: m.family ? m.family.map(String) : undefined, costGe: m.costGe != null ? m.costGe : undefined, type: m.type || undefined, color: m.color || undefined, noUlt: m.noUlt === true || undefined }; }
     if (e.trigger === 'STATIC' && e.flag != null) {
       if (!STATIC_FLAGS.includes(e.flag)) return { error: `STATIC "flag" must be one of ${STATIC_FLAGS.join(', ')}` };
-      o.flag = e.flag; o.to = e.to === 'own' ? 'own' : 'self';
+      o.flag = e.flag; o.to = e.to === 'own' ? 'own' : 'self'; if (e.braved === true) o.braved = true;      // v0.60 [When Braved] static effects
       if (e.flag === 'EXTRA_REDUCTION') {                          // v0.40: "all your Thunderive cards gain an extra yellow reduction symbol" (Indra Contract Field, Shimavajdra)
         if (!COLORS.includes(e.color)) return { error: 'EXTRA_REDUCTION needs a "color"' };
         o.color = e.color; o.n = Number.isInteger(e.n) && e.n >= 1 && e.n <= 3 ? e.n : 1;
@@ -110,7 +110,7 @@ function parseEffects(arr) {
       }
     } else if (e.trigger === 'STATIC') {
       if (!Number.isInteger(e.bp) || e.bp === 0 || Math.abs(e.bp) > 30000) return { error: 'STATIC effect needs a whole-number "bp"' };
-      o.bp = e.bp; o.to = e.to === 'own' ? 'own' : 'self'; if (e.attackingOnly) o.attackingOnly = true;
+      o.bp = e.bp; o.to = e.to === 'own' ? 'own' : 'self'; if (e.attackingOnly) o.attackingOnly = true; if (e.braved === true) o.braved = true;
     } else {
       if (!Array.isArray(e.actions) || !e.actions.length || e.actions.length > 6) return { error: 'every triggered effect needs 1-6 "actions"' };
       const ar = parseActionList(e.actions); if (ar.error) return { error: ar.error };

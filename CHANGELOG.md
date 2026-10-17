@@ -2,6 +2,16 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.60.0
+- **Brave completion, part 1** (card session; 593 -> 608 of 8,041 playable, +15 Braves):
+  - Combine data: the Fandom export drops the Brave condition and braved BP, so they were read from the 441 Fandom card pages (wiki API, owner's built-in browser) into `data/sources/fandom-brave-combine.tsv`; `tools/import_fandom.py` `brave_of()` gives 287 of 460 staged Braves their `brave` data (cost N or more, families, family & cost, no condition). Conditions the engine cannot check yet stay without data (report `brave_unparsed`: two-sided Left/Right, onto Ultimates, Grandwalker Nexus, symbol/keyword holders).
+  - Compiler: `[When Braved]`, `When Braved`, `During Brave`, `During Spirit Brave` paragraphs (JP 合体時) compile to effects with `braved: true`; "(When Brave Attacks)" / "(When This Spirit Brave Attacks)" = (When Attacks) while combined. `brave` is kept through compiling.
+  - Engine: a Spirit combined with a Brave now uses the Brave's braved effects (triggers, Flash activations, STATIC flags and BP) through `fxEntries()` (indexed from 200); a Brave alone in Spirit form and an unbraved Spirit do not. The parser keeps `braved` on STATIC effects.
+  - Promoted: BS10-067, BS10-068, BS10-075, BS11-059, BS14-067, BS14-072, BS15-056, BS19-071, BS20-055, BS20-057, BS21-055, BS22-057, BS22-061, BS22-064, BS32-059 (each text read against its compiled JSON).
+  - Measured first (lever report + scratch recompile): combine data alone +4, braved paragraphs +11; the next Brave levers are "summon a Brave card from your Hand" (~24 cards blocked) and two-sided Braves.
+  - Tests B60-01..24 (`tests/unit/brave60.test.mjs`). Player-view check: `npm test` 1123/1123 (CPU-vs-CPU properties included).
+  - Revert: `git revert` of the v0.60.0 commit.
+
 ## v0.59.8
 - **Match fuzzer in Regression** (F1, owner approved; workflow only, no change to the game):
   - New job `fuzz` in the Regression workflow, next to the 5 Python parts: `node tools/fuzz.mjs --runs N --seed <run id mod 1e9>` (dispatch input `fuzz`, default 20; `0` skips it). Every run plays new seeds, so rare crashes, invariant breaks and endless matches turn up without spending session tokens.
