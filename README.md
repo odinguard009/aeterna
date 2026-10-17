@@ -50,6 +50,7 @@ Unofficial non-commercial fan project; card names, text and trademarks belong to
   - `docs/code-review.md` (v0.24.0 record) and `docs/card-sources.md` (2026-10-13 site check) folded into `docs/ARCHITECTURE.md` and `docs/ai/cards-and-rules.md`, then deleted (git history keeps them). `docs/saga-map.md` stays: the card-image skill uses it.
   - Generators rerun with unchanged results: rules audit 242 items (84 confirmed, 47 house, 0 conflict, 111 open); playable 593 / 8,041.
   - Brand note: the brand mapping's exclude `docs/compile-review.md` becomes `docs/reports/*` (Project copy updated; the archived vault copy is read-only, so the v1.0 restore must use the Project copy).
+  - Release checks: CI green (run 39018677530) and Regression green (run 39018681671, Python parts 1-3 + legacy, 30 CPU-vs-CPU sims) for v0.59.2 + v0.59.3. Backup branch `backup/v0.59.3` (5 releases since backup/v0.57.0).
   - Revert: `git revert` of the v0.59.3 commit.
 
 ## v0.59.2
