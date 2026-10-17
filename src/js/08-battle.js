@@ -32,7 +32,7 @@ async function doBattleInner(attKey, att) {
   log(`${who(A)} ${A.cpu ? 'attacks' : 'attack'} with ${CARDS[att.id].name} (${bpOf(att)} BP).`);
   G.attacker = att;
   render(); await wait(450);
-  await fireFxMulti([{ owner: A, trigger: 'ATTACKS', src: att, ctx: { attacker: att } }, { owner: A, trigger: 'ALLY_ATTACKS', src: att, ctx: { attacker: att } }]);   // one simultaneous pool
+  await fireFxMulti([{ owner: A, trigger: 'ATTACKS', src: att, ctx: { attacker: att } }, { owner: A, trigger: 'ALLY_ATTACKS', src: att, ctx: { attacker: att } }, { owner: D, trigger: 'OPP_ATTACKS', src: att, ctx: { attacker: att } }]);   // one simultaneous pool
   if (G.over) { G.attacker = null; return; }
   att = (await flashTiming(attKey, att, null))[0];
   if (G.over) return;

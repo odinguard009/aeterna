@@ -2,7 +2,7 @@
 
 A fan-made, single-file web simulator for a trading card game. You play against a CPU. It runs on PC and phone with no install.
 
-Current build: **v0.58.0** (589 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
+Current build: **v0.59.0** (593 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
 
 This repository starts at v0.57.0 with one snapshot commit (2026-10-17); the earlier history, issue threads and backup branches stay in the owner's private archive. Issue numbers in the older release notes refer to that archive.
 
@@ -14,7 +14,7 @@ This repository starts at v0.57.0 with one snapshot commit (2026-10-17); the ear
 - Separate PC (playmat) and phone layouts
 
 ## Not done yet
-Most staged cards still need their effects compiled or a missing mechanic; the plan is `docs/ai/roadmap-open.md` and the mind map `docs/roadmap.html`. Next: the Ultimate Trigger level/timing data for 110 Ultimates, then mechanics by unlock count (Ultimates as targets, Brave completion, When Destroyed).
+Most staged cards still need their effects compiled or a missing mechanic; the plan is `docs/ai/roadmap-open.md` and the mind map `docs/roadmap.html`. Next: the starting-Hand redraw with a Contract card (owner report, v0.59.1), then mechanics by measured unlocks (`tools/lever_report.py`); the Ultimate Trigger level/timing data for 110 Ultimates needs the owner present.
 
 ## Data
 Card data is kept per Saga (BS75 cards sit in Saga 16, BS76 cards in Saga 17, as in the asset folders):
@@ -42,6 +42,16 @@ Card images are not included; import your own images in the game.
 ## Disclaimer
 Unofficial non-commercial fan project; card names, text and trademarks belong to their owners.
 
+
+## v0.59.0
+- **Ultimates as targets: measured, then step-prefixed attack triggers** (heavy item, Opus): +4 cards (593 / 8,041 playable).
+  - Sizing (scratch recompile, `tools/lever_report.py`): reading every "Spirit/Ultimate" as "Spirit" in the 2,015 staged non-Ultimate cards that mention Ultimates unlocks **0** cards on its own (opposing "Spirit/Ultimate" targets already compile since v0.54.0; each of these cards has another blocker). The ~738-824 in `docs/unlock-report.md` are tag upper bounds. Of the 253 staged Ultimates, adding the missing `[LVn] (When Attacks)` line to the 110 Ultimate Trigger cards makes only 1 compile (their bodies need other sentences), so that data work is low yield. Recorded in `docs/ai/roadmap-open.md`.
+  - New engine trigger `OPP_ATTACKS` ("when an opposing Spirit attacks"): fired for the defending player in the same pool as the attacker's `ATTACKS` / `ALLY_ATTACKS` (`src/js/08-battle.js`). New match key `noUlt` (`fxMatch`): the text says "Spirit", so an attacking Ultimate does not trigger these.
+  - Compiler: "(Your Attack Step) When your "X" family Spirit attacks, ..." -> `ALLY_ATTACKS` + `match { family, noUlt }`; "(Opposing Attack Step) When an opposing Spirit attacks, ..." -> `OPP_ATTACKS`; "that Spirit gains +N BP" after an ally attack trigger -> `BP_PLUS` to the attacker.
+  - Promoted (every text/JSON pair read): BS11-031 The Valkyrie-Mist, BS18-021 The SteedGeneral Muqali, BS21-016 Death-Hydra, BS21-032 The HoundMachine Asterio-Venera 9.
+  - Test I17 (staged image ratio) now also takes an absolute bound: promoting cards with images lowered the staged ratio to 93.99 % although no image was lost.
+  - Tests C59-01 to C59-10 (`tests/unit/compile59.test.mjs`, C59-09 on the real-card scenario `valkyrie-mist-opposing-attack-exhausts`). Player-view pass before this minor release (`node tools/player_view.mjs`): 95 cards in 6 decks, 0 problems, PC and phone layouts render; property tests 48/48.
+  - Revert: `git revert` of the v0.59.0 commit (engine `OPP_ATTACKS` / `noUlt` in `src/js/02a-effects-base.js`, `02c-effects-parse.js`, `02d-effects-resolve.js`, `08-battle.js`; compiler step triggers in `tools/compile_effects.py`; the 4 promoted cards).
 
 ## v0.58.0
 - **Effect priority and "unaffected"** (rules audit R3 item 2, JP 17.0 revision notice item 9, with session E; heavy, Opus): +16 cards (589 / 8,041 playable).

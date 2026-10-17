@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "17 Oct 2026",
-  "next": "next: v0.59.0 Ultimates as targets (&quot;Spirit/Ultimate&quot; in Spirit and Magic text) + Ultimate-card leftovers (Opus, heavy alone); Ultimate Trigger level/timing data needs a session with the owner present (Fandom approval); 589 of 8,041 cards playable"
+  "next": "next: v0.59.1 starting-Hand redraw with a Contract card (owner report 2026-10-17: check the rules, then fix or explain; Sonnet), then mechanics by measured unlocks (Brave completion, When Destroyed; Opus); 593 of 8,041 cards playable"
  },
  "phases": [
   {
@@ -43,6 +43,10 @@
     {
      "s": "done",
      "t": "Seeded RNG, replays, scenarios"
+    },
+    {
+     "s": "next",
+     "t": "Starting-Hand redraw with a Contract card (owner report 2026-10-17): re-check manual p. 12, then keep the Contract card or say so in the dialog (v0.59.1)"
     }
    ]
   },
@@ -179,7 +183,11 @@
     },
     {
      "s": "later",
-     "t": "Ultimate Trigger [LVn] (timing) for 110 cards from live Fandom pages (session with the owner present: Fandom pages need an approval prompt), then compile and promote"
+     "t": "Ultimate Trigger [LVn] (timing) for 110 cards from live Fandom pages (session with the owner present: Fandom pages need an approval prompt), then compile and promote (measured in v0.59.0: only ~1 card compiles after that, the bodies need other sentences)"
+    },
+    {
+     "s": "done",
+     "t": "Ultimates as targets measured (v0.59.0): 0 real unlocks alone; step-prefixed attack triggers instead (OPP_ATTACKS, ally family attacks, that Spirit +BP): +4 cards, 593 / 8,041"
     }
    ]
   },
@@ -301,7 +309,7 @@
     },
     {
      "s": "next",
-     "t": "Ultimate Trigger, Spirit-only effects skipping Ultimates, Ultra Advent (Grand-Sagitto-Nova is not in the card data), \"can't be prevented\""
+     "t": "Ultimate Trigger variants (Double, When Braved, step timings), Ultra Advent (Grand-Sagitto-Nova is not in the card data), \"can't be prevented\"; Spirit-only attack triggers skip Ultimates since v0.59.0 (match noUlt)"
     },
     {
      "s": "next",
@@ -662,6 +670,14 @@
    "calls": "~45",
    "basis": "measured",
    "note": "Scheduled auto run on Opus. Budget-counter difference read before the commit; the release steps add a little."
+  },
+  {
+   "ver": "v0.59.0",
+   "date": "17 Oct 2026",
+   "tokens": 290000,
+   "calls": "~60",
+   "basis": "measured",
+   "note": "Manual session on Opus (owner present). Budget-counter difference read before the commit; the release steps add a little. The heavy item was sized first and turned out to unlock 0 cards, so a smaller lever shipped."
   }
  ]
 }

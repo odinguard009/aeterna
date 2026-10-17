@@ -538,6 +538,11 @@
  ],
  "BS11-022": [],
  "BS11-029": [],
+ "BS11-031": [
+  "A_EXHAUST",
+  "C_LEVEL",
+  "S_UNAFFECTED"
+ ],
  "BS11-035": [],
  "BS11-044": [],
  "BS12-002": [],
@@ -666,6 +671,11 @@
  "BS18-007": [],
  "BS18-010": [],
  "BS18-019": [],
+ "BS18-021": [
+  "T_ALLY_ATTACKS",
+  "A_VOID",
+  "C_LEVEL"
+ ],
  "BS18-024": [
   "A_BP_PLUS",
   "C_LEVEL"
@@ -760,10 +770,18 @@
   "S_MUST_BLOCK"
  ],
  "BS21-010": [],
+ "BS21-016": [
+  "T_ALLY_ATTACKS",
+  "C_LEVEL"
+ ],
  "BS21-019": [
   "K_HIGH_SPEED"
  ],
  "BS21-020": [],
+ "BS21-032": [
+  "A_REFRESH",
+  "C_LEVEL"
+ ],
  "BS21-035": [
   "A_BP_PLUS",
   "C_LEVEL",

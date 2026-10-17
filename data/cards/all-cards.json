@@ -8465,6 +8465,75 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS11-031",
+  "name": "The Valkyrie-Mist",
+  "name_jp": "ワルキューレ・ミスト",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 5,
+  "reduction": {
+   "white": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 5,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Android"
+  ],
+  "text": "[LV1][LV2][LV3]\nThis Spirit is unaffected by opposing Spirit/Magic effects.\n\n[LV2][LV3] (Opposing Attack Step)\nWhen an opposing Spirit attacks, exhaust an opposing Spirit.",
+  "image": "The Valkyrie-Mist.jpg",
+  "block": "11",
+  "saga": 2,
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "from": {
+     "types": [
+      "Spirit",
+      "Magic"
+     ]
+    }
+   },
+   {
+    "trigger": "OPP_ATTACKS",
+    "lv": [
+     2,
+     3
+    ],
+    "match": {
+     "noUlt": true
+    },
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS11-035",
   "name": "The HandicraftFairy Lepra",
   "name_jp": "物作りの妖精レプラ",
@@ -10991,6 +11060,58 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS18-021",
+  "name": "The SteedGeneral Muqali",
+  "name_jp": "駿将ムカリ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Great General",
+   "Blade Beast"
+  ],
+  "text": "[LV2] (Your Attack Step)\nWhen your \"Great General\" family Spirit attacks, put a core from the Void to your Reserve.",
+  "image": "The SteedGeneral Muqali.jpg",
+  "block": "18",
+  "saga": 3,
+  "effects": [
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     2
+    ],
+    "match": {
+     "family": [
+      "Great General"
+     ],
+     "noUlt": true
+    },
+    "actions": [
+     {
+      "do": "VOID_TO_RESERVE",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS18-024",
   "name": "The SteedGeneral Boroqul",
   "name_jp": "駿将ボロクル",
@@ -12606,6 +12727,65 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS21-016",
+  "name": "Death-Hydra",
+  "name_jp": "デス・ヒュードラ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Dark Snake",
+   "Astral Soul"
+  ],
+  "text": "[LV1][LV2][LV3] (Your Attack Step)\nWhen your \"Astral Soul\" family Spirit attacks, send a core from any opposing Spirits to their Reserve.",
+  "image": "BS21-016.jpg",
+  "block": "21",
+  "saga": 4,
+  "effects": [
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "match": {
+     "family": [
+      "Astral Soul"
+     ],
+     "noUlt": true
+    },
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS21-019",
   "name": "Quick-Mosqui",
   "name_jp": "クイック・モスキー",
@@ -12670,6 +12850,65 @@
   "image": "BS21-020.jpg",
   "block": "21",
   "saga": 4,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS21-032",
+  "name": "The HoundMachine Asterio-Venera 9",
+  "name_jp": "猟犬機アステリオ・ベネラ9号",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 5,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Armed Machine",
+   "Astral Soul"
+  ],
+  "text": "[LV1][LV2][LV3] (Opposing Attack Step)\nWhen an opposing Spirit attacks, refresh an \"Astral Soul\" family Spirit you control.",
+  "image": "BS21-032.jpg",
+  "block": "21",
+  "saga": 4,
+  "effects": [
+   {
+    "trigger": "OPP_ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "match": {
+     "noUlt": true
+    },
+    "actions": [
+     {
+      "do": "REFRESH_SPIRIT",
+      "match": {
+       "family": [
+        "Astral Soul"
+       ]
+      }
+     }
+    ]
+   }
+  ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },

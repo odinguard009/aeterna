@@ -75,9 +75,10 @@ test('I15 every report entry without image really has no image field', () => {
 test('I16 image file names have a known extension', () => {
   for (const c of all) if (c.image) assert.match(c.image, /\.(png|jpe?g|gif|webp)$/i, c.id);
 });
-test('I17 most cards are matched to an image (>= 94%)', () => {
+test('I17 most cards are matched to an image (>= 93%, at most 460 staged cards without one)', () => {
+  // v0.59: an absolute bound too, because promoting cards (which have images) lowers the staged ratio although nothing got worse
   const withImg = all.filter(c => c.image).length;
-  assert.ok(withImg / all.length >= 0.94, `${withImg}/${all.length}`);
+  assert.ok(withImg / all.length >= 0.93 && all.length - withImg <= 460, `${withImg}/${all.length}`);
 });
 test('I18 cards of data/cards (hand-verified) are not duplicated in staging', () => {
   for (const c of all) assert.ok(!curated.has(c.id), c.id);

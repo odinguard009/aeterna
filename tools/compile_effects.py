@@ -82,6 +82,9 @@ def action_of(s, ctx):
     fam = [   # v0.54: family names keep their case
         (r'^refresh an? "([^"]+)" family spirit (?:you control|of yours)$', lambda m: [{'do': 'REFRESH_SPIRIT', 'match': {'family': [m.group(1)]}}]),
     ]
+    if 'ALLY_ATTACKS' in (ctx.get('trigger') or ()):      # v0.59: "that Spirit" = the attacking ally (engine target 'attacker')
+        m = re.match(r'^that spirit (?:gains|gets) \+(\d[\d,]*) ?bp(?: (?:during|until the end of) this turn)?$', L)
+        if m: return [{'do': 'BP_PLUS', 'n': bp(m.group(1)), 'to': 'attacker'}], opt
     for p, f in fam:
         m = re.match(p, x, re.I)
         if m: return f(m), opt
@@ -283,10 +286,15 @@ def spirit_paragraph_main(p, card, rush):
         if lv: e['lv'] = lv
         return [e], flags
     # trigger
-    trig = None
+    trig, tmatch = None, None
     for rx, ts in TRIGGERS:
         mm = re.match(r'^' + rx + r'\s*', p)
         if mm: trig = ts; p = p[mm.end():]; break
+    if trig is None:      # v0.59: step-prefixed attack triggers (the step is implied by the attack itself)
+        mm = re.match(r'^\(Your Attack Step\)\s*When (?:one of )?your "([^"]+)" family Spirits? attacks?,\s*', p)
+        if mm: trig, tmatch, p = ['ALLY_ATTACKS'], {'family': [mm.group(1)], 'noUlt': True}, p[mm.end():]
+        mm = None if trig else re.match(r'^\(Opposing Attack Step\)\s*When an opposing Spirit attacks,\s*', p)
+        if mm: trig, tmatch, p = ['OPP_ATTACKS'], {'noUlt': True}, p[mm.end():]
     if trig is None:
         mm = re.match(r'^\(Your Attack Step\)\s*All (?:your|of your) (?:"([^"]+)" family )?Spirits (?:gain|get) \+(\d[\d,]*) ?BP\.?$', p, re.I)
         if mm:      # v0.54: static BP for your Spirits during your Attack Step
@@ -330,6 +338,7 @@ def spirit_paragraph_main(p, card, rush):
     for t in trig:
         e = {'trigger': 'ATTACKS', 'alsoBlocks': True} if t == 'ATTACKS+BLOCKS' else {'trigger': 'DESTROYED'} if t == 'DESTROYED_OPP' else {'trigger': t}
         if lv: e['lv'] = lv
+        if tmatch: e['match'] = dict(tmatch)
         if t == 'DESTROYED_OPP': e['if'] = {'byOpp': True}
         if opt: e['optional'] = True
         e['actions'] = acts
