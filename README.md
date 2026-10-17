@@ -2,7 +2,7 @@
 
 A fan-made, single-file web simulator for a trading card game. You play against a CPU. It runs on PC and phone with no install.
 
-Current build: **v0.59.5** (593 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
+Current build: **v0.59.6** (593 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
 
 This repository starts at v0.57.0 with one snapshot commit (2026-10-17); the earlier history, issue threads and backup branches stay in the owner's private archive. Issue numbers in the older release notes refer to that archive.
 
@@ -14,7 +14,7 @@ This repository starts at v0.57.0 with one snapshot commit (2026-10-17); the ear
 - Separate PC (playmat) and phone layouts
 
 ## Not done yet
-Most staged cards still need their effects compiled or a missing mechanic; the plan is `docs/ai/roadmap-open.md` and the mind map `docs/roadmap.html`. Next: the Q1 quality bundle (strict effects mode, in-game error report, match fuzzer), then mechanics by measured unlocks (`tools/lever_report.py`); the Ultimate Trigger level/timing data for 110 Ultimates needs the owner present.
+Most staged cards still need their effects compiled or a missing mechanic; the plan is `docs/ai/roadmap-open.md` and the mind map `docs/roadmap.html`. Next: a card session (the next mechanic by measured unlocks), then the M1 workspace skeleton + Q2 test waits, then mechanics by measured unlocks (`tools/lever_report.py`); the Ultimate Trigger level/timing data for 110 Ultimates needs the owner present.
 
 ## Data
 Card data is kept per Saga (BS75 cards sit in Saga 16, BS76 cards in Saga 17, as in the asset folders):
@@ -42,6 +42,13 @@ Card images are not included; import your own images in the game.
 ## Disclaimer
 Unofficial non-commercial fan project; card names, text and trademarks belong to their owners.
 
+
+## v0.59.6
+- **Match fuzzer** (Q1 quality bundle, Aegis idea; no change to normal play):
+  - CPU hook `FUZZ` / `fuzzPick` (`src/js/09a-cpu-eval.js`, `BS.setFuzz`): while on for a side, that CPU picks a uniformly random legal option or passes at its play, attack and block decisions, using the seeded game rng, so a fuzzed match replays exactly from seed + mode + fuzz setting. Off by default.
+  - `node tools/fuzz.mjs [--runs 20] [--seed S] [--timeout 90000] [--modes ...]`: headless Playwright, 10 deck pairings in turn; any page/console error, error notice, invariant break or match not over in time is saved as `tests/fuzz-cases/<mode>-<seed>.json` (version, reason, replay record). First run: 40 of 40 matches healthy (master seed 20261017, all 10 pairings), so no case was saved.
+  - Tests F596-01..04 (`tests/unit/fuzz596.test.mjs`, slow file: runs in CI `npm test`, kept out of the quick loop): seeded uniform picks, fuzzed match reproducible and different from the normal CPU, a 3-match live batch, replay of every saved case. `simMatch` takes `fuzz`.
+  - Revert: `git revert` of the v0.59.6 commit.
 
 ## v0.59.5
 - **In-game error catcher** (Q1 quality bundle, Aegis idea; UI addition):

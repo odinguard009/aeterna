@@ -68,8 +68,8 @@ successor, flashTiming, battleEndAttack, attackStepOver, doBattle, doBattleInner
 ## 09-cpu.js (160 lines, ~2.6k tokens) — CPU
 cpuCanPlay, cpuLevelUp, cpuBurstFlash, cpuFlashChoice, cpuCastMain, cpuMain, cpuBrave, cpuAttack, startAttackFx, cpuTurn
 
-## 09a-cpu-eval.js (112 lines, ~1.8k tokens) — CPU EVALUATION POLICY (v0.32, Aegis study point 7)
-CPU_PROFILES, CPU_PROFILE_NAMES, CPU_SIM_PROFILES, cpuProfileName, cpuW, lifeValue, lifeLoss, symOf, unitValue, cpuEval, cpuPlayScore, cpuPlayChoice, cpuKeepMagicOrPay, cpuLethal, guardNeed, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile
+## 09a-cpu-eval.js (120 lines, ~2k tokens) — CPU EVALUATION POLICY (v0.32, Aegis study point 7)
+CPU_PROFILES, CPU_PROFILE_NAMES, CPU_SIM_PROFILES, cpuProfileName, cpuW, lifeValue, lifeLoss, symOf, unitValue, cpuEval, cpuPlayScore, FUZZ, fuzzPick, cpuPlayChoice, cpuKeepMagicOrPay, cpuLethal, guardNeed, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile
 
 ## 10-modals.js (140 lines, ~2.1k tokens) — MODALS (promise based)
 paintModal, modal, PEEK, endPeek, paintPeek, startPeek, peekRefresh, closeModal, modalPress, ask, PICK, clearPick, pickFromField, info, askBlock, askPayment

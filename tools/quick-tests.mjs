@@ -3,7 +3,7 @@
 import { readdirSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 
-const SLOW = new Set(['props.test.mjs']);
+const SLOW = new Set(['props.test.mjs', 'fuzz596.test.mjs']);      // v0.59.6: the fuzz replays run in CI (npm test)
 const files = readdirSync('tests/unit')
   .filter((f) => f.endsWith('.test.mjs') && !SLOW.has(f))
   .sort()

@@ -36,7 +36,7 @@ export async function quietBoard() {
 /** Plays one CPU-vs-CPU match with a fixed seed. mode: 'white' (Red prebuilt vs white Mitra) or 'mirror' (Red vs Red).
  *  profiles: optional CPU weight profile per side, e.g. {player:'aggressive', opponent:'defensive'}.
  *  Checks BS.checkInvariants() every pollMs. Returns a plain summary. */
-export async function simMatch(seed, { mode = 'white', timeoutMs = 60000, pollMs = 40, keepPage = false, profiles = null } = {}) {
+export async function simMatch(seed, { mode = 'white', timeoutMs = 60000, pollMs = 40, keepPage = false, profiles = null, fuzz = null } = {}) {
   const { page, errors } = await openGame('?sim=1');
   try {
     await page.evaluate(({ mode, white }) => {
@@ -47,6 +47,7 @@ export async function simMatch(seed, { mode = 'white', timeoutMs = 60000, pollMs
       return 1;
     }, { mode, white: WHITE });
     if (profiles) await page.evaluate(o => { BS.setSimProfiles(o); return 1; }, profiles);
+    if (fuzz) await page.evaluate(o => { BS.setFuzz(o); return 1; }, fuzz);       // v0.59.6 match fuzzer: random legal CPU choices
     await page.evaluate(s => { BS.startNewGame({ seed: s }); return 1; }, seed);
     const inv = [], t0 = Date.now(); let over = false;
     while (Date.now() - t0 < timeoutMs) {

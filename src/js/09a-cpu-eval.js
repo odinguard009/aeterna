@@ -38,7 +38,13 @@ function cpuPlayScore(p, h, W = cpuW(p)) {
   const bp0 = (c.levels[0] && c.levels[0].bp) || 0;
   return W.spirit + W.bp * bp0 / 1000 + W.symbol * (c.symbols || 0) + W.cost * (c.cost || 0) + (c.cost || 0) * 0.05 - W.coreUse * ec;
 }
+/* v0.59.6 MATCH FUZZER hook (Q1 quality bundle, Aegis idea): while FUZZ[side] is on, that CPU picks a uniformly random legal option
+   (or passes) at its play, attack and block decisions, drawing from the seeded game rng, so a fuzzed match replays from its seed +
+   the same FUZZ setting (tools/fuzz.mjs, tests/fuzz-cases). Off in normal play. */
+let FUZZ = {};
+function fuzzPick(p, opts) { if (!p || !FUZZ[p.key] || !opts.length) return undefined; const i = Math.floor(rng() * (opts.length + 1)); return i < opts.length ? opts[i] : null; }
 function cpuPlayChoice(p, opts) {
+  const fz = fuzzPick(p, opts); if (fz !== undefined) return fz;
   let best = null;
   for (const h of opts) { const sc = cpuPlayScore(p, h); if (sc > 0 && (!best || sc > best.sc)) best = { h, sc }; }
   return best ? best.h : null;
@@ -78,6 +84,7 @@ function cpuAttackScore(p, a, W = cpuW(p)) {
 function cpuAttackChoice(p) {
   const ready = p.spirits.filter(s => !s.exhausted && !s.noAB && abTaxOK(p, s)).sort((a, b) => bpOf(b) - bpOf(a));
   if (!ready.length) return null;
+  const fz = fuzzPick(p, ready); if (fz !== undefined) return fz;
   if (cpuLethal(p)) return ready.slice().sort((a, b) => symOf(b) - symOf(a) || bpOf(b) - bpOf(a))[0];
   const W = cpuW(p), keep = guardNeed(p, W);
   if (ready.length <= keep) return null;
@@ -95,6 +102,7 @@ function cpuBlockScore(d, att, b, W = cpuW(d)) {
 function cpuChooseBlock(d, att) {
   const blockers = d.spirits.filter(s => !s.exhausted && !s.noAB);
   if (!blockers.length) return null;
+  const fz = fuzzPick(d, blockers); if (fz !== undefined) return fz;
   const W = cpuW(d), lethalHit = symOf(att) >= d.life;
   let best = null;
   for (const b of blockers) {
