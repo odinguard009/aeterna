@@ -39,7 +39,7 @@ Top-level functions stay global (inline handlers, `window.BS` and the tests rely
 - **Rules source:** the official manuals; decisions and page references in `docs/manual-notes.md`, coverage in `docs/rules-coverage.md`, audit in `docs/reports/rules-audit.md`, per-mechanic records in `docs/mechanics/`.
 
 ## 3. Effect engine (data-driven)
-A card's `effects` list holds entries of **trigger** (`FX_TRIGGERS`) + **actions** (`FX_ACTIONS`) + **conditions** (`fxIf`, the `if` field) + options (`lv`, `once`, `optional`, `zone`, `oc`, ...). `parseEffects` / `parseBurst` read card data; `fxDescribe` renders the text.
+A card's `effects` list holds entries of **trigger** (`FX_TRIGGERS`) + **actions** (`FX_ACTIONS`) + **conditions** (`fxIf`, the `if` field) + options (`lv`, `once`, `optional`, `zone`, `oc`, ...). `parseEffects` / `parseBurst` read card data; `fxDescribe` renders the text. Strict effects (v0.59.4): an unknown trigger, action, condition or STATIC flag name at run time goes through `fxUnknown` (`02a-effects-base.js`): it throws in automated runs (`navigator.webdriver` or `?strict=1`) and warns once + skips in the release build (tests S594).
 
 Resolution (`02d-effects-resolve.js`):
 1. An event calls `fireFx` / `fireFxMulti`; `collectFx` gathers every matching effect on the field (plus Hand, Trash or Mirage for the triggers that look there).

@@ -9,6 +9,17 @@
              v0.55: BATTLE_WIN (this card attacked or blocked and only the opposing Spirit was destroyed by BP comparison, Standard CR 8-1-6-2);
              conditions byOpp (DESTROYED by an opposing effect or BP comparison, CR 12-2-1-12-1) and hasSymbol (Rush: "while you have a X symbol")
    --------------------------------------------------------------------- */
+/* v0.59.4 STRICT EFFECTS (Q1, Aegis idea): an unknown trigger, action, condition or STATIC flag name is a bug, never a silent no-op.
+   Strict (automated runs: navigator.webdriver = Playwright tests and sims, or ?strict=1): throw. Release: warn once per name and skip it. */
+let FX_STRICT = (() => { try { return !!(navigator.webdriver || /[?&]strict=1(&|$)/.test(location.search)); } catch (e) { return false; } })();
+const FX_WARNED = new Set();
+function fxUnknown(kind, name) {
+  const m = `unknown effect ${kind} "${name}"`;
+  if (FX_STRICT) throw new Error(m);
+  if (!FX_WARNED.has(m)) { FX_WARNED.add(m); try { console.warn('[effects] ' + m); } catch (e) { /* no console */ } }
+  return false;
+}
+const FX_COND_KEYS = new Set(['soulGe', 'oppHandGe', 'voidGe', 'controlName', 'oppTurn', 'soulLe', 'putGe', 'hasName', 'prev', 'sealed', 'lifeLe', 'lifeGe', 'anyLifeLe', 'counterGe', 'soulOn', 'attackStep', 'nexusBraved', 'oppSpiritsLe', 'oppNoAB', 'oppNexusGe', 'oppRemovedGe', 'oppRemovedSpirit', 'byOpp', 'hasSymbol', 'removedGe', 'utHit', 'ctrl']);
 const FX_TRIGGERS = ['SUMMONED', 'ATTACKS', 'ALLY_ATTACKS', 'ALLY_BLOCKED', 'ALLY_SUMMONED', 'ADVENT', 'ACTIVATE', 'STATIC', 'OPP_HAND_UP', 'ALLY_LIFE_HIT', 'ALLY_LOST', 'START_ATTACK', 'MIRAGE_OWN_LIFE', 'MIRAGE_OPP_LIFE', 'SOUL_PLACED', 'MANIFEST', 'BLOCKS', 'DESTROYED', 'REVEALED', 'ALLY_DESTROYS', 'OPP_REMOVED', 'ACCEL', 'SILVER_WHEEL', 'BATTLE_WIN', 'OPP_ATTACKS'];
 const FX_TRIGGER_TEXT = { OPP_ATTACKS: 'When an opposing Spirit attacks', BATTLE_WIN: 'When Battles (only the opposing Spirit is destroyed by BP comparison)', ACCEL: 'Accel', SILVER_WHEEL: 'When you activate Silver Wheel', SUMMONED: 'When Summoned', ATTACKS: 'When Attacks', ALLY_ATTACKS: 'When an ally attacks', ALLY_BLOCKED: 'When an ally is blocked', ALLY_SUMMONED: 'When an ally is summoned', ADVENT: 'When Advents', ACTIVATE: 'Activate', OPP_HAND_UP: 'When the opposing Hand increases by an opposing effect', ALLY_LIFE_HIT: 'When an ally attack reduces the Life', ALLY_LOST: 'When an ally is depleted/destroyed by the opponent', START_ATTACK: 'Start of your Attack Step', MIRAGE_OWN_LIFE: 'Mirage: when your Life is reduced', MIRAGE_OPP_LIFE: 'Mirage: when the opposing Life is reduced', SOUL_PLACED: 'When your Soul Core is sent to a Nexus', MANIFEST: 'When Manifests', BLOCKS: 'When Blocks', DESTROYED: 'When Destroyed', REVEALED: 'When revealed from the deck', ALLY_DESTROYS: 'When your X destroys an opposing Spirit in battle', OPP_REMOVED: 'When cards are put onto the opposing Removed Zone' };
 function fxMatch(card, m) {
@@ -22,6 +33,7 @@ function fxMatch(card, m) {
 }
 function fxIf(owner, opp, c, ctx) {
   if (!c) return true;
+  for (const k in c) if (!FX_COND_KEYS.has(k)) return fxUnknown('condition', k);     // v0.59.4 strict effects
   if (c.soulGe != null && !(owner.soulState.length >= c.soulGe)) return false;
   if (c.oppHandGe != null && !(opp.hand.length >= c.oppHandGe)) return false;
   if (c.voidGe != null && !(owner.void >= c.voidGe)) return false;
@@ -72,6 +84,7 @@ function unaffectedBy(owner, t, src) {
   return flagActive(owner, 'UNAFFECTED', t, e => !e.from || ((!e.from.colors || e.from.colors.some(x => cols.includes(x))) && (!e.from.types || e.from.types.includes(k.type))));
 }
 function flagActive(owner, flag, subject, pred) {
+  if (!STATIC_FLAGS.includes(flag)) return fxUnknown('flag', flag);                  // v0.59.4 strict effects
   if (!G || !owner || !subject) return false;
   const opp = G.p[other(owner.key)];
   for (const src of fieldList(owner)) {

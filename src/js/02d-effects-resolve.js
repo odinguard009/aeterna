@@ -1,5 +1,5 @@
 /* an effect can resolve when at least one action that does not depend on a previous action ({"prev":true}) is possible */
-function fxCan(c, e) { return e.actions.some(a => !(a.if && a.if.prev === true) && (!FX_ACTIONS[a.do].can || FX_ACTIONS[a.do].can(c, a))); }
+function fxCan(c, e) { return e.actions.some(a => { const d = FX_ACTIONS[a.do]; if (!d) return fxUnknown('action', a.do); return !(a.if && a.if.prev === true) && (!d.can || d.can(c, a)); }); }
 /* run the actions of one effect. Each action sets ctx.did = false when it could not do anything; the next action can test {"prev":true/false} */
 async function runActions(c, e, trg) {
   let last = false;
@@ -8,6 +8,7 @@ async function runActions(c, e, trg) {
     c.ctx.prev = last; last = false;
     if (!fieldList(c.p).includes(c.src) && trg !== 'SUMMONED' && a.do === 'REFRESH') continue;
     if (a.if && !fxIf(c.p, c.opp, a.if, c.ctx)) continue;
+    if (!FX_ACTIONS[a.do]) { fxUnknown('action', a.do); continue; }             // v0.59.4 strict effects (release: skip it)
     c.ctx.did = true;
     await FX_ACTIONS[a.do].run(c, a);
     last = c.ctx.did !== false;
@@ -23,6 +24,7 @@ async function fireFx(owner, trigger, src, ctx) { return fireFxMulti([{ owner, t
 function collectFx(ev) {
   const owner = ev.owner, trigger = ev.trigger, src = ev.src, ctx = ev.ctx || {};
   if (trigger === 'SUMMONED') ctx.subject = src;
+  if (!FX_TRIGGERS.includes(trigger)) { fxUnknown('trigger', trigger); return []; }   // v0.59.4 strict effects
   const opp = G.p[other(owner.key)], out = [];
   const add = (trg, f, e, idx) => out.push({ owner, opp, f, idx, e, trg, trigger, ctx });
   const collect = (trg, f) => { const card = CARDS[f.id]; if (card.effects) card.effects.forEach((e, idx) => { if (e.trigger === trg) add(trg, f, e, idx); }); };

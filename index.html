@@ -707,7 +707,7 @@ const SYMBOL_KINDS = ['ultimate', 'god'];          // special symbols besides th
    type: 'Spirit' | 'Nexus' | 'Magic'      symbol: card color     symbols: number of symbols
    reduction: {color: n}         levels: [{cores, bp}]  (Nexus levels have no bp)
    --------------------------------------------------------------------- */
-const VERSION = '0.59.3';
+const VERSION = '0.59.4';
 document.title = 'Aeterna - Engine v' + VERSION;
 const CARDS = {};
 function defCard(o) {
@@ -912,6 +912,17 @@ function loadPack(b64) { return unpackCards(JSON.parse(new TextDecoder().decode(
              v0.55: BATTLE_WIN (this card attacked or blocked and only the opposing Spirit was destroyed by BP comparison, Standard CR 8-1-6-2);
              conditions byOpp (DESTROYED by an opposing effect or BP comparison, CR 12-2-1-12-1) and hasSymbol (Rush: "while you have a X symbol")
    --------------------------------------------------------------------- */
+/* v0.59.4 STRICT EFFECTS (Q1, Aegis idea): an unknown trigger, action, condition or STATIC flag name is a bug, never a silent no-op.
+   Strict (automated runs: navigator.webdriver = Playwright tests and sims, or ?strict=1): throw. Release: warn once per name and skip it. */
+let FX_STRICT = (() => { try { return !!(navigator.webdriver || /[?&]strict=1(&|$)/.test(location.search)); } catch (e) { return false; } })();
+const FX_WARNED = new Set();
+function fxUnknown(kind, name) {
+  const m = `unknown effect ${kind} "${name}"`;
+  if (FX_STRICT) throw new Error(m);
+  if (!FX_WARNED.has(m)) { FX_WARNED.add(m); try { console.warn('[effects] ' + m); } catch (e) { /* no console */ } }
+  return false;
+}
+const FX_COND_KEYS = new Set(['soulGe', 'oppHandGe', 'voidGe', 'controlName', 'oppTurn', 'soulLe', 'putGe', 'hasName', 'prev', 'sealed', 'lifeLe', 'lifeGe', 'anyLifeLe', 'counterGe', 'soulOn', 'attackStep', 'nexusBraved', 'oppSpiritsLe', 'oppNoAB', 'oppNexusGe', 'oppRemovedGe', 'oppRemovedSpirit', 'byOpp', 'hasSymbol', 'removedGe', 'utHit', 'ctrl']);
 const FX_TRIGGERS = ['SUMMONED', 'ATTACKS', 'ALLY_ATTACKS', 'ALLY_BLOCKED', 'ALLY_SUMMONED', 'ADVENT', 'ACTIVATE', 'STATIC', 'OPP_HAND_UP', 'ALLY_LIFE_HIT', 'ALLY_LOST', 'START_ATTACK', 'MIRAGE_OWN_LIFE', 'MIRAGE_OPP_LIFE', 'SOUL_PLACED', 'MANIFEST', 'BLOCKS', 'DESTROYED', 'REVEALED', 'ALLY_DESTROYS', 'OPP_REMOVED', 'ACCEL', 'SILVER_WHEEL', 'BATTLE_WIN', 'OPP_ATTACKS'];
 const FX_TRIGGER_TEXT = { OPP_ATTACKS: 'When an opposing Spirit attacks', BATTLE_WIN: 'When Battles (only the opposing Spirit is destroyed by BP comparison)', ACCEL: 'Accel', SILVER_WHEEL: 'When you activate Silver Wheel', SUMMONED: 'When Summoned', ATTACKS: 'When Attacks', ALLY_ATTACKS: 'When an ally attacks', ALLY_BLOCKED: 'When an ally is blocked', ALLY_SUMMONED: 'When an ally is summoned', ADVENT: 'When Advents', ACTIVATE: 'Activate', OPP_HAND_UP: 'When the opposing Hand increases by an opposing effect', ALLY_LIFE_HIT: 'When an ally attack reduces the Life', ALLY_LOST: 'When an ally is depleted/destroyed by the opponent', START_ATTACK: 'Start of your Attack Step', MIRAGE_OWN_LIFE: 'Mirage: when your Life is reduced', MIRAGE_OPP_LIFE: 'Mirage: when the opposing Life is reduced', SOUL_PLACED: 'When your Soul Core is sent to a Nexus', MANIFEST: 'When Manifests', BLOCKS: 'When Blocks', DESTROYED: 'When Destroyed', REVEALED: 'When revealed from the deck', ALLY_DESTROYS: 'When your X destroys an opposing Spirit in battle', OPP_REMOVED: 'When cards are put onto the opposing Removed Zone' };
 function fxMatch(card, m) {
@@ -925,6 +936,7 @@ function fxMatch(card, m) {
 }
 function fxIf(owner, opp, c, ctx) {
   if (!c) return true;
+  for (const k in c) if (!FX_COND_KEYS.has(k)) return fxUnknown('condition', k);     // v0.59.4 strict effects
   if (c.soulGe != null && !(owner.soulState.length >= c.soulGe)) return false;
   if (c.oppHandGe != null && !(opp.hand.length >= c.oppHandGe)) return false;
   if (c.voidGe != null && !(owner.void >= c.voidGe)) return false;
@@ -975,6 +987,7 @@ function unaffectedBy(owner, t, src) {
   return flagActive(owner, 'UNAFFECTED', t, e => !e.from || ((!e.from.colors || e.from.colors.some(x => cols.includes(x))) && (!e.from.types || e.from.types.includes(k.type))));
 }
 function flagActive(owner, flag, subject, pred) {
+  if (!STATIC_FLAGS.includes(flag)) return fxUnknown('flag', flag);                  // v0.59.4 strict effects
   if (!G || !owner || !subject) return false;
   const opp = G.p[other(owner.key)];
   for (const src of fieldList(owner)) {
@@ -1733,7 +1746,7 @@ function parseEffects(arr) {
   return { effects: out.length ? out : null };
 }
 /* an effect can resolve when at least one action that does not depend on a previous action ({"prev":true}) is possible */
-function fxCan(c, e) { return e.actions.some(a => !(a.if && a.if.prev === true) && (!FX_ACTIONS[a.do].can || FX_ACTIONS[a.do].can(c, a))); }
+function fxCan(c, e) { return e.actions.some(a => { const d = FX_ACTIONS[a.do]; if (!d) return fxUnknown('action', a.do); return !(a.if && a.if.prev === true) && (!d.can || d.can(c, a)); }); }
 /* run the actions of one effect. Each action sets ctx.did = false when it could not do anything; the next action can test {"prev":true/false} */
 async function runActions(c, e, trg) {
   let last = false;
@@ -1742,6 +1755,7 @@ async function runActions(c, e, trg) {
     c.ctx.prev = last; last = false;
     if (!fieldList(c.p).includes(c.src) && trg !== 'SUMMONED' && a.do === 'REFRESH') continue;
     if (a.if && !fxIf(c.p, c.opp, a.if, c.ctx)) continue;
+    if (!FX_ACTIONS[a.do]) { fxUnknown('action', a.do); continue; }             // v0.59.4 strict effects (release: skip it)
     c.ctx.did = true;
     await FX_ACTIONS[a.do].run(c, a);
     last = c.ctx.did !== false;
@@ -1757,6 +1771,7 @@ async function fireFx(owner, trigger, src, ctx) { return fireFxMulti([{ owner, t
 function collectFx(ev) {
   const owner = ev.owner, trigger = ev.trigger, src = ev.src, ctx = ev.ctx || {};
   if (trigger === 'SUMMONED') ctx.subject = src;
+  if (!FX_TRIGGERS.includes(trigger)) { fxUnknown('trigger', trigger); return []; }   // v0.59.4 strict effects
   const opp = G.p[other(owner.key)], out = [];
   const add = (trg, f, e, idx) => out.push({ owner, opp, f, idx, e, trg, trigger, ctx });
   const collect = (trg, f) => { const card = CARDS[f.id]; if (card.effects) card.effects.forEach((e, idx) => { if (e.trigger === trg) add(trg, f, e, idx); }); };
@@ -5343,7 +5358,7 @@ function testSetup() {            // dev hook: a quiet board with no match loop 
   switchView('view-playmat'); render(); return G;
 }
 const defBuiltin = o => { defCard(o); BUILTIN_IDS.add(o.id); };      // test fixtures register through this so their ids stay reserved
-window.BS = { releaseStandby, leaveStandby, renderDeckBuilder, dbChange, dbUndo, dbSheet, DBF, get DB_UNDO() { return DB_UNDO.length; }, accelList, accelCost, accelOK, accelSources, useAccel, removedSummonable, summonFromRemoved, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel, highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, isSealed, soulToLife, lifeTake, braveSummonedFx, abTaxOK, payAbTax, oppAttackHandFx, sentToTrashFx, magicFxAt, summonOK, lvNo, isUlt, noBlockActive, burstFlash, cpuBurstFlash, humanAttack, cpuAttack, attackStepOver, endAttackLocked, battleEndAttack, isGW, freeCores, moveCore, swapSoul, payCost, cpuCanPlay, coresAvailable, addCore, cpuKeepMagicOrPay, nameHTML, switchView, SET_KEY, dbFilterOK, cardColors, contractToDeck, redrawHand, cpuWantsRedraw, setHeavy, refreshOne, toRemoved, fxIf, costDestroyBonus, sendToken, canSendToken, tokenHome, attackSymbols, TOKEN_SUPPLY, isSpiritForm, ocActive, braveFits, braveTargets, combineBrave, braveSummon, separateBrave, canSeparate, braveRecheck, braveAfford, cpuBrave, handButtons, minCores, openFieldModal, cpuMain, VERSION, defBuiltin, beginTurn, endStep, newGame, takeFromVoid, checkDepletion, removeSpirit, lvIndex, mirageUsable, cpuCastMain, magicFx, magicText, costAltActive, flagActive, coresSent, startAttackFx, win, recordMatch, HISTORY: () => HISTORY, toggleLog, effectTextHTML, effectLines, titleCase, liveStatusHTML, openZoom, modal, closeModal, startPeek, SETTINGS, SLOTS: () => SLOTS, get ACTIVE_SLOT() { return ACTIVE_SLOT; }, switchSlot, loadPrebuilt, PREBUILT, cpuDeckFor, saveSettings, PACK_IDS, registerPack, clearImported, summonPaid, reviveTargets, doRevive, handUp, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, soulCoreHolder, rng, seedRng, newSeed, runReplay, lastReplay, fireFxMulti, asResolving, replayOf, loadScenario, gameAct, matchSummary, get REPLAY() { return REPLAY; }, soulSource, soulToNexus, fxImmune, residualHTML, cardDetailHTML, setSimDeckB(d) { SIM_DECK_B = d; }, activatable, activateFx, cpuActivate, toSoulState, bounceCard, runActions, maybeBurst, flushBursts, summonFree, parseBurst, parseActionList, BURST_WHEN, fireFx, parseEffects, staticBp, FX_ACTIONS, removeNexus, magicUsable, magicTargets, castMagic, flashTiming, cpuFlashChoice, setFormat, validateDeck, legalityOf, banStatus, get FORMAT() { return FORMAT; }, isPC, applyLayout, testSetup, mkInst, render, takeCores, IMG, importCards, importImages, textToDeck, deckToText, parseCard, loadImages, get PLAYER_DECK() { return PLAYER_DECK; }, get G() { return G; }, startNewGame, checkInvariants, CARDS, PRESET_DECK, humanCan, onNext, cpuTurn, doBattle, summon, effCost, canPlayCard, setBurst, fieldList, bpOf, get SESSION() { return SESSION; }, CPU_PROFILES, cpuProfileName, cpuEval, cpuPlayScore, cpuPlayChoice, cpuLethal, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, lifeValue, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, extraReduction };
+window.BS = { get FX_STRICT() { return FX_STRICT; }, setFxStrict(v) { FX_STRICT = !!v; }, FX_WARNED, collectFx, releaseStandby, leaveStandby, renderDeckBuilder, dbChange, dbUndo, dbSheet, DBF, get DB_UNDO() { return DB_UNDO.length; }, accelList, accelCost, accelOK, accelSources, useAccel, removedSummonable, summonFromRemoved, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel, highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, isSealed, soulToLife, lifeTake, braveSummonedFx, abTaxOK, payAbTax, oppAttackHandFx, sentToTrashFx, magicFxAt, summonOK, lvNo, isUlt, noBlockActive, burstFlash, cpuBurstFlash, humanAttack, cpuAttack, attackStepOver, endAttackLocked, battleEndAttack, isGW, freeCores, moveCore, swapSoul, payCost, cpuCanPlay, coresAvailable, addCore, cpuKeepMagicOrPay, nameHTML, switchView, SET_KEY, dbFilterOK, cardColors, contractToDeck, redrawHand, cpuWantsRedraw, setHeavy, refreshOne, toRemoved, fxIf, costDestroyBonus, sendToken, canSendToken, tokenHome, attackSymbols, TOKEN_SUPPLY, isSpiritForm, ocActive, braveFits, braveTargets, combineBrave, braveSummon, separateBrave, canSeparate, braveRecheck, braveAfford, cpuBrave, handButtons, minCores, openFieldModal, cpuMain, VERSION, defBuiltin, beginTurn, endStep, newGame, takeFromVoid, checkDepletion, removeSpirit, lvIndex, mirageUsable, cpuCastMain, magicFx, magicText, costAltActive, flagActive, coresSent, startAttackFx, win, recordMatch, HISTORY: () => HISTORY, toggleLog, effectTextHTML, effectLines, titleCase, liveStatusHTML, openZoom, modal, closeModal, startPeek, SETTINGS, SLOTS: () => SLOTS, get ACTIVE_SLOT() { return ACTIVE_SLOT; }, switchSlot, loadPrebuilt, PREBUILT, cpuDeckFor, saveSettings, PACK_IDS, registerPack, clearImported, summonPaid, reviveTargets, doRevive, handUp, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, soulCoreHolder, rng, seedRng, newSeed, runReplay, lastReplay, fireFxMulti, asResolving, replayOf, loadScenario, gameAct, matchSummary, get REPLAY() { return REPLAY; }, soulSource, soulToNexus, fxImmune, residualHTML, cardDetailHTML, setSimDeckB(d) { SIM_DECK_B = d; }, activatable, activateFx, cpuActivate, toSoulState, bounceCard, runActions, maybeBurst, flushBursts, summonFree, parseBurst, parseActionList, BURST_WHEN, fireFx, parseEffects, staticBp, FX_ACTIONS, removeNexus, magicUsable, magicTargets, castMagic, flashTiming, cpuFlashChoice, setFormat, validateDeck, legalityOf, banStatus, get FORMAT() { return FORMAT; }, isPC, applyLayout, testSetup, mkInst, render, takeCores, IMG, importCards, importImages, textToDeck, deckToText, parseCard, loadImages, get PLAYER_DECK() { return PLAYER_DECK; }, get G() { return G; }, startNewGame, checkInvariants, CARDS, PRESET_DECK, humanCan, onNext, cpuTurn, doBattle, summon, effCost, canPlayCard, setBurst, fieldList, bpOf, get SESSION() { return SESSION; }, CPU_PROFILES, cpuProfileName, cpuEval, cpuPlayScore, cpuPlayChoice, cpuLethal, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, lifeValue, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, extraReduction };
 renderLobby();
 loadImages();
 if (SIM) startNewGame();

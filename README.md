@@ -2,7 +2,7 @@
 
 A fan-made, single-file web simulator for a trading card game. You play against a CPU. It runs on PC and phone with no install.
 
-Current build: **v0.59.3** (593 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
+Current build: **v0.59.4** (593 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
 
 This repository starts at v0.57.0 with one snapshot commit (2026-10-17); the earlier history, issue threads and backup branches stay in the owner's private archive. Issue numbers in the older release notes refer to that archive.
 
@@ -42,6 +42,12 @@ Card images are not included; import your own images in the game.
 ## Disclaimer
 Unofficial non-commercial fan project; card names, text and trademarks belong to their owners.
 
+
+## v0.59.4
+- **Strict effects mode** (Q1 quality bundle, Aegis idea):
+  - An unknown effect trigger (`collectFx`), action (`runActions`, `fxCan`), condition key (`fxIf`) or STATIC flag (`flagActive`) is no longer a silent no-op: `fxUnknown` throws in automated runs (Playwright tests, CPU-vs-CPU sims: `navigator.webdriver`; or `?strict=1`) and in the release build warns once per name in the console and skips it (condition not met, no effects collected, the action is skipped and the next one runs). The parser already rejected unknown names in card data; this catches names written in engine code and hand-made effect objects.
+  - Tests S594-01..05 (`tests/unit/strict594.test.mjs`): strict throws for all four kinds, release skip + warn-once, every parser condition key known to `fxIf`, every built-in card effect uses known action/flag names. CPU-vs-CPU property tests 48/48 under strict mode.
+  - Revert: `git revert` of the v0.59.4 commit.
 
 ## v0.59.3
 - **Docs tidy** (repo cleanup C2, docs and generator paths only, no game change):
