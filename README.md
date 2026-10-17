@@ -51,6 +51,7 @@ Unofficial non-commercial fan project; card names, text and trademarks belong to
   - Promoted (every text/JSON pair read): BS02-040, BS02-044, BS02-045, BS03-037, BS03-043, BS03-044, BS04-034, BS05-028, BS06-037, BS07-028, BS10-032, BS14-035, BS17-035, BS20-035, BS22-033, BS29-023. Most Armor/unaffected cards are still blocked by other mechanics (Burst, Brave data, Advent, Contract, Mirage), so the real unlock is 16, not the ~139 the tag count suggested.
   - Rules audit: the effect-priority conflicts are confirmed (84 confirmed, 0 conflicts).
   - Tests A58-01 to A58-14 (`tests/unit/armor58.test.mjs`, A58-14 on the real-card scenario `heavy-armor-red-purple-unaffected`). Player-view pass before this minor release (`node tools/player_view.mjs`): 95 cards in 6 decks, 0 problems, PC and phone layouts start without errors; property tests 48/48.
+  - Release checks: CI green (run 39007869443) and Regression green (run 39007874969, Python parts 1-3 + legacy, 30 CPU-vs-CPU sims). No backup due (1 release since backup/v0.57.0).
   - Revert: `git revert` of the v0.58.0 commit (engine: `fxImmune` / `unaffectedBy` in `src/js/02a-effects-base.js`, `src/js/02k-effects-immunity.js`, `handSafe` / `handLocked` in `src/js/02e-effects-removed.js`, must-block in `src/js/08-battle.js`; compiler `unaffected_para` / `flag_para`; the 16 promoted cards).
 
 ## v0.57.0
