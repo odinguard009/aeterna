@@ -18,7 +18,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/odinguard009/aeterna"
 DEST="${BS_DEST:-aeterna}"
-WITH_SOURCES=0; FORCE=0
+WITH_SOURCES=0; FORCE=0; BUSY=""
 for a in "$@"; do [ "$a" = "--with-sources" ] && WITH_SOURCES=1; [ "$a" = "--force" ] && FORCE=1; done
 
 # Already inside a clone?
