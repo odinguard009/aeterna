@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "17 Oct 2026",
-  "next": "next: Q1 quality bundle (Opus: strict effects mode, in-game error report, match fuzzer), then a card session; monorepo, quality and UI-language sessions alternate with card sessions; 593 of 8,041 cards playable"
+  "next": "next: a card session (Opus, minor): the next mechanic by measured unlocks (Brave completion, When Destroyed or Grandwalker Nexus effects, sized with tools/lever_report.py first); then M1 workspace skeleton + Q2 test waits; 593 of 8,041 cards playable"
  },
  "phases": [
   {
@@ -492,12 +492,12 @@
      "t": "Q1 (v0.59.4-v0.59.6): strict effects mode, in-game error report with replay, match fuzzer (<code>tools/fuzz.mjs</code>)"
     },
     {
-     "s": "next",
-     "t": "C5: short front page like Aegis; release notes to CHANGELOG.md and the Releases page (workflow), game file on each release"
+     "s": "done",
+     "t": "C5 (v0.59.7): short front page like Aegis; release notes to CHANGELOG.md and the Releases page (workflow), game file on each release"
     },
     {
-     "s": "next",
-     "t": "F1: match fuzzer in the Regression workflow (20 fuzzed matches per run, failing seeds as artifacts)"
+     "s": "done",
+     "t": "F1 (v0.59.8): match fuzzer in the Regression workflow (20 fuzzed matches per run, failing seeds as artifacts)"
     },
     {
      "s": "later",
@@ -776,7 +776,15 @@
    "calls": "~50",
    "basis": "measured",
    "note": "Manual session on Opus: Q1 quality bundle (strict effects, error catcher, match fuzzer; 40/40 fuzzed matches healthy). Budget-counter difference read before the last commit."
+  },
+  {
+   "ver": "v0.59.7-v0.59.8",
+   "date": "17 Oct 2026",
+   "tokens": 270000,
+   "calls": "~45",
+   "basis": "measured",
+   "note": "Manual session on Opus: C5 front page + CHANGELOG + release workflow (first run backfilled v0.58.0-v0.59.6 releases), F1 fuzzer job in Regression. Budget-counter difference read before the last commit."
   }
  ],
- "next": "next: one patch bundle (Opus): C5 front page + releases (short Aegis-style README, CHANGELOG.md, release workflow) and F1 fuzzer in Regression (20 fuzzed matches per run); then a card session (next mechanic by measured unlocks); 593 of 8,041 cards playable"
+ "next": "next: a card session (Opus, minor): the next mechanic by measured unlocks (Brave completion, When Destroyed or Grandwalker Nexus effects, sized with tools/lever_report.py first); then M1 workspace skeleton + Q2 test waits; 593 of 8,041 cards playable"
 }

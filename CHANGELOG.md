@@ -6,7 +6,8 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 - **Match fuzzer in Regression** (F1, owner approved; workflow only, no change to the game):
   - New job `fuzz` in the Regression workflow, next to the 5 Python parts: `node tools/fuzz.mjs --runs N --seed <run id mod 1e9>` (dispatch input `fuzz`, default 20; `0` skips it). Every run plays new seeds, so rare crashes, invariant breaks and endless matches turn up without spending session tokens.
   - A failure names mode + seed as annotations (sessions cannot read raw logs); the case JSON is uploaded as run artifact `fuzz-cases`, since workflows do not commit. The next session downloads it, commits it to `tests/fuzz-cases/` (test F596 replays it) and fixes it first.
-  - Budget: about 7 s per match locally (3 matches in 20 s), so 20 matches stay well under the slowest Python part (the whole Regression took about 6 minutes on v0.59.6).
+  - Budget: first run (Regression run 39026263504) took 86 s for the fuzz job including the Playwright install, against 372 s for the slowest Python part (legacy), so the default of 20 stays.
+  - Release checks for v0.59.7-v0.59.8: CI green on both commits, Regression green (Python parts 1-3 + legacy, 30 sims, fuzz 20), Release workflow green: releases v0.58.0-v0.59.8 now exist with their game files, v0.59.8 is "Latest". No backup due (4 releases since `backup/v0.59.4`).
   - Tests F598-01..03 (`tests/unit/fuzzci598.test.mjs`): job, input, run-id seed, failing exit, annotations, artifact.
   - Revert: `git revert` of the v0.59.8 commit.
 
