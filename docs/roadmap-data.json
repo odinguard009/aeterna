@@ -768,7 +768,7 @@
   {
    "ver": "v0.59.4-v0.59.6",
    "date": "17 Oct 2026",
-   "tokens": 0,
+   "tokens": 260000,
    "calls": "~50",
    "basis": "measured",
    "note": "Manual session on Opus: Q1 quality bundle (strict effects, error catcher, match fuzzer; 40/40 fuzzed matches healthy). Budget-counter difference read before the last commit."

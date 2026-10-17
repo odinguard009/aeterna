@@ -48,6 +48,7 @@ Unofficial non-commercial fan project; card names, text and trademarks belong to
   - CPU hook `FUZZ` / `fuzzPick` (`src/js/09a-cpu-eval.js`, `BS.setFuzz`): while on for a side, that CPU picks a uniformly random legal option or passes at its play, attack and block decisions, using the seeded game rng, so a fuzzed match replays exactly from seed + mode + fuzz setting. Off by default.
   - `node tools/fuzz.mjs [--runs 20] [--seed S] [--timeout 90000] [--modes ...]`: headless Playwright, 10 deck pairings in turn; any page/console error, error notice, invariant break or match not over in time is saved as `tests/fuzz-cases/<mode>-<seed>.json` (version, reason, replay record). First run: 40 of 40 matches healthy (master seed 20261017, all 10 pairings), so no case was saved.
   - Tests F596-01..04 (`tests/unit/fuzz596.test.mjs`, slow file: runs in CI `npm test`, kept out of the quick loop): seeded uniform picks, fuzzed match reproducible and different from the normal CPU, a 3-match live batch, replay of every saved case. `simMatch` takes `fuzz`.
+  - Release checks: CI green (run 39022456850) and Regression green (run 39022456284, Python parts 1-3 + legacy, 30 CPU-vs-CPU sims) for v0.59.4-v0.59.6; player-view pass (`node tools/player_view.mjs`): 95 cards in 6 decks, 0 problems, PC and phone layouts render. No backup due (2 releases since `backup/v0.59.4`).
   - Revert: `git revert` of the v0.59.6 commit.
 
 ## v0.59.5
