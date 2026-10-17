@@ -2,13 +2,6 @@
 
 A fan-made, single-file web simulator for a trading card game. You play against a CPU. It runs on PC and phone with no install.
 
-**[Download](https://github.com/odinguard009/aeterna/releases/latest)** · [Releases](https://github.com/odinguard009/aeterna/releases) · [Changelog](CHANGELOG.md) · [Roadmap](docs/ai/roadmap-open.md) · [Architecture](docs/ARCHITECTURE.md)
-
-<p>
-  <img src="docs/images/match-pc.jpg" alt="Match on a PC screen" width="68%">
-  <img src="docs/images/match-phone.jpg" alt="Match on a phone screen" width="28%">
-</p>
-
 ## What it does
 - Play a full match against the CPU on PC (playmat layout) or phone (stacked layout), from one HTML file with no install and no network.
 - Card pool: all 8,041 cards of Saga 1-17 load from a compact built-in pack; the cards whose effects are wired and tested are playable (count below).
@@ -16,13 +9,6 @@ A fan-made, single-file web simulator for a trading card game. You play against 
 - Eternal and Standard formats with the ban list; the rules follow the official manuals, with sources and open points tracked in `docs/manual-notes.md`.
 - Data-driven rules engine: card effects are data (triggers, actions, conditions), compiled from card text and checked by tests.
 - Seeded matches and replays: any match can be replayed from its seed and inputs; a CPU-vs-CPU fuzzer hunts rare bugs.
-
-## Screens
-| Match (PC) | Match (phone) |
-|---|---|
-| <img src="docs/images/match-pc.jpg" alt="Match, PC" width="420"> | <img src="docs/images/match-phone.jpg" alt="Match, phone" width="200"> |
-| **Deck builder** | **Lobby** |
-| <img src="docs/images/deckbuilder.jpg" alt="Deck builder" width="420"> | <img src="docs/images/lobby.jpg" alt="Lobby" width="420"> |
 
 Card images are not included; you can import your own in the game (Library).
 

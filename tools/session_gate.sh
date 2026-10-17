@@ -20,7 +20,7 @@
 #   status           one-line summary for the owner ("otomatis status")
 #   busy             exit 3 when a LOCK or MANUAL session is active (used by session_start.sh)
 R=odinguard009/aeterna; L=1
-IDLE_MIN=30      # owner rule: start only after 30 minutes without a session or owner activity
+IDLE_MIN=20      # owner rule (2026-10-17, was 30): start only after 20 minutes without a session or owner activity
 STALE_H=5        # a LOCK older than this is a crashed auto session
 MANUAL_H=3       # a MANUAL older than this is a crashed manual session
 NOPROG=3         # auto sessions without a new v* commit before the switch goes OFF by itself

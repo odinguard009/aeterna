@@ -10,6 +10,8 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
   - Promoted: BS10-067, BS10-068, BS10-075, BS11-059, BS14-067, BS14-072, BS15-056, BS19-071, BS20-055, BS20-057, BS21-055, BS22-057, BS22-061, BS22-064, BS32-059 (each text read against its compiled JSON).
   - Measured first (lever report + scratch recompile): combine data alone +4, braved paragraphs +11; the next Brave levers are "summon a Brave card from your Hand" (~24 cards blocked) and two-sided Braves.
   - Tests B60-01..24 (`tests/unit/brave60.test.mjs`). Player-view check: `npm test` 1123/1123 (CPU-vs-CPU properties included).
+  - Release checks: CI, Regression (Python parts 1-3 + legacy, 30 sims, fuzz 20) and the Release workflow green on the v0.60.0 commit. Backup `backup/v0.60.0` (5 releases since `backup/v0.59.4`).
+  - Owner, 2026-10-17: the README link line and the screenshots (`docs/images/`) are removed until v1.0 (restore notes in `docs/ai/roadmap-open.md`); auto mode ON with a 20-minute idle delay (three hourly Opus tasks at :18, :38, :58).
   - Revert: `git revert` of the v0.60.0 commit.
 
 ## v0.59.8

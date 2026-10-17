@@ -16,7 +16,7 @@ One home per kind of content; other files link it instead of repeating it.
 | Rule notes and coverage | `docs/manual-notes.md`, `docs/rules-coverage.md` (rows link the mechanic file) |
 | Generated reports (rewritten by a tool) | `docs/reports/` (first line names the tool) |
 | Release notes | `CHANGELOG.md` (newest first; GitHub Releases are made from it by `.github/workflows/release.yml`) |
-| Front page | `README.md` (short, under 120 lines, no release notes; screenshots in `docs/images/` from `node tools/screens.mjs`) |
+| Front page | `README.md` (short, under 120 lines, no release notes; no link buttons and no screenshots until v1.0 (owner, 2026-10-17); then screenshots in `docs/images/` from `node tools/screens.mjs`) |
 | Raw inputs (exports, indexes) | `data/sources/` (not in the light clone), `data/index/` |
 | Card data | `data/import` (staging), `data/cards` (playable) |
 | Workflows for one kind of task | `.claude/skills/<name>/SKILL.md` |

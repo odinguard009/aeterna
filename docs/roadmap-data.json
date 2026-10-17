@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "17 Oct 2026",
-  "next": "next: a card session (Opus, minor): the next mechanic by measured unlocks (Brave completion, When Destroyed or Grandwalker Nexus effects, sized with tools/lever_report.py first); then M1 workspace skeleton + Q2 test waits; 593 of 8,041 cards playable"
+  "next": "next: M1 workspace skeleton + Q2 test waits (Opus), then a card session (Brave part 2: summon a Brave card from the Hand, two-sided Braves; or When Destroyed / Grandwalker, sized with tools/lever_report.py first); 608 of 8,041 cards playable"
  },
  "phases": [
   {
@@ -188,6 +188,10 @@
     {
      "s": "done",
      "t": "Ultimates as targets measured (v0.59.0): 0 real unlocks alone; step-prefixed attack triggers instead (OPP_ATTACKS, ally family attacks, that Spirit +BP): +4 cards, 593 / 8,041"
+    },
+    {
+     "s": "done",
+     "t": "Brave completion part 1 (v0.60.0): combine data for 287 Braves from the Fandom pages, braved effects on the combined Spirit: +15 cards, 608 / 8,041"
     }
    ]
   },
@@ -784,7 +788,15 @@
    "calls": "~45",
    "basis": "measured",
    "note": "Manual session on Opus: C5 front page + CHANGELOG + release workflow (first run backfilled v0.58.0-v0.59.6 releases), F1 fuzzer job in Regression. Budget-counter difference read before the last commit."
+  },
+  {
+   "ver": "v0.60.0",
+   "date": "17 Oct 2026",
+   "tokens": 240000,
+   "calls": "~75",
+   "basis": "measured",
+   "note": "Manual session on Opus: Brave completion part 1 (combine data from 441 Fandom pages, braved effects on the combined Spirit, +15 cards); README links and screenshots removed until v1.0; auto mode ON with a 20-minute delay. Budget-counter difference read before the last commit."
   }
  ],
- "next": "next: a card session (Opus, minor): the next mechanic by measured unlocks (Brave completion, When Destroyed or Grandwalker Nexus effects, sized with tools/lever_report.py first); then M1 workspace skeleton + Q2 test waits; 593 of 8,041 cards playable"
+ "next": "next: M1 workspace skeleton + Q2 test waits (Opus), then a card session (Brave part 2: summon a Brave card from the Hand, two-sided Braves; or When Destroyed / Grandwalker, sized with tools/lever_report.py first); 608 of 8,041 cards playable"
 }

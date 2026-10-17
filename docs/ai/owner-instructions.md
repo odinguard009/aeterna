@@ -26,7 +26,7 @@ Copy of the claude.ai Project instructions of "Aeterna" and of the owner's auto-
 4. Mode otomatis harus mudah di-on/off-kan.
 5. Semua data dan instruksi disimpan di repo.
 
-Implementation and its limits (scheduled runs cannot see chats; the real delay is 30 minutes plus up to one schedule interval; no per-run model setting): `docs/ai/next-session-prompt.md`.
+Implementation and its limits (scheduled runs cannot see chats; the real delay is 20 minutes (owner, 2026-10-17; was 30) plus up to one schedule interval; no per-run model setting): `docs/ai/next-session-prompt.md`.
 
 ## Deck builder (2026-10-16, chat)
 

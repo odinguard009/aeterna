@@ -1,7 +1,7 @@
 // v0.59.7 (C5): short README front page, release notes in CHANGELOG.md, GitHub Releases made by a workflow.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { ROOT } from './lib/game.mjs';
@@ -21,14 +21,11 @@ test('C597-02 every local link and image in README and CHANGELOG exists', () => 
     for (const u of localLinks(rd(f))) assert.ok(existsSync(join(ROOT, u)), `${f}: ${u} does not exist`);
   }
 });
-test('C597-03 README screenshots exist, are JPEGs and stay small', () => {
-  const imgs = [...rd('README.md').matchAll(/src="(docs\/images\/[^"]+)"/g)].map(m => m[1]);
-  assert.ok(new Set(imgs).size >= 4, 'four screens');
-  for (const p of imgs) {
-    const b = readFileSync(join(ROOT, p));
-    assert.equal(b[0], 0xff); assert.equal(b[1], 0xd8);
-    assert.ok(statSync(join(ROOT, p)).size < 400_000, p + ' over 400 KB');
-  }
+test('C597-03 until v1.0 the README has no link buttons and no screenshots (owner, 2026-10-17)', () => {
+  const r = rd('README.md');
+  assert.doesNotMatch(r, /<img|docs\/images\//, 'screenshots come back at v1.0 (node tools/screens.mjs)');
+  assert.doesNotMatch(r, /\*\*\[Download\]/, 'link line comes back at v1.0');
+  assert.ok(!existsSync(join(ROOT, 'docs/images')) || readdirSync(join(ROOT, 'docs/images')).length === 0, 'docs/images is empty');
 });
 test('C597-04 CHANGELOG newest heading is the current VERSION and headings are unique', () => {
   const heads = [...rd('CHANGELOG.md').matchAll(/^## (v\d[\d.]*)\s*$/gm)].map(m => m[1]);
