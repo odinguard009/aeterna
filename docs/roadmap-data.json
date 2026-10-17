@@ -488,8 +488,8 @@
      "t": "C1+C2 (v0.59.2-v0.59.3): <code>docs/ARCHITECTURE.md</code>, doc index, doc-convention skill, reports in <code>docs/reports/</code>, mechanic records in <code>docs/mechanics/</code>"
     },
     {
-     "s": "next",
-     "t": "Q1: strict effects mode, in-game error report with replay, match fuzzer"
+     "s": "done",
+     "t": "Q1 (v0.59.4-v0.59.6): strict effects mode, in-game error report with replay, match fuzzer (<code>tools/fuzz.mjs</code>)"
     },
     {
      "s": "next",
@@ -513,7 +513,7 @@
    "phase": {
     "name": "Online + offline platform",
     "sub": "One engine for the offline file and an online server; no hosting until the owner decides.",
-    "ver": "after Q1",
+    "ver": "after C5 + a card session",
     "open": true,
     "kind": "leaves"
    },
@@ -764,6 +764,15 @@
    "calls": "~45",
    "basis": "measured",
    "note": "Manual session on Opus: repo cleanup C1+C2 (docs only). Budget-counter difference read before the last commit."
+  },
+  {
+   "ver": "v0.59.4-v0.59.6",
+   "date": "17 Oct 2026",
+   "tokens": 0,
+   "calls": "~50",
+   "basis": "measured",
+   "note": "Manual session on Opus: Q1 quality bundle (strict effects, error catcher, match fuzzer; 40/40 fuzzed matches healthy). Budget-counter difference read before the last commit."
   }
- ]
+ ],
+ "next": "next: C5 front page + releases (short Aegis-style README, CHANGELOG.md, release workflow; patch), then a card session (next mechanic by measured unlocks); monorepo, quality and UI-language sessions alternate with card sessions; 593 of 8,041 cards playable"
 }

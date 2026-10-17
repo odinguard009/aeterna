@@ -4,7 +4,6 @@ Read the lines for the colour or mechanic you touch before starting. Newest firs
 
 ## Session order (owner, 2026-10-17; replaces the plan order below where they differ)
 Opus for every session. Migration and quality sessions alternate with card sessions (card session = the next mechanic by measured unlocks from "Plan from the audit" below: Brave completion, When Destroyed, Grandwalker Nexus effects, ...). Delete each line when done.
-2. **Q1 quality bundle** (small, Aegis ideas): strict effects mode (unknown trigger/action/condition names throw in tests and the dev build, warn once in the release build); in-game error catcher (`window.onerror` + `unhandledrejection` -> notice with "Copy report" = message, stack, version, input record); match fuzzer (random legal actions, many seeds, headless in Node or Playwright; any crash or stuck turn saves its seed + record as a regression case).
 2b. **C5 front page + releases** (owner, 2026-10-17, next update after Q1; patch): short Aegis-style `README.md`, release notes moved to `CHANGELOG.md`, GitHub Releases created by a workflow after CI (sessions cannot create releases), game file attached to each release: `docs/ai/repo-cleanup-plan.md` "C5".
 3. Card session.
 4. **M1 workspace skeleton** + **Q2 test waits**: replace the fixed `wait_for_timeout` calls in `tests/suites` (318 on 2026-10-17) with waits on a visible state (modal open, step label, log line); the count is a shrink-only ratchet.
