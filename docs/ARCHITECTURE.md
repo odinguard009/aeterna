@@ -38,6 +38,8 @@ Top-level functions stay global (inline handlers, `window.BS` and the tests rely
 - **Randomness:** seeded RNG (`seedRng`, `rng`); every match keeps an input record, so `BS.runReplay(record)` reproduces it.
 - **Rules source:** the official manuals; decisions and page references in `docs/manual-notes.md`, coverage in `docs/rules-coverage.md`, audit in `docs/reports/rules-audit.md`, per-mechanic records in `docs/mechanics/`.
 
+In-game error catcher (v0.59.5, `src/js/00b-errors.js`): window `error` / `unhandledrejection` -> notice `#err-notice` with "Copy report" (`errReport()`: message, stack, version, match turn/step and `replayOf(G)` record) and "Close"; the events are not cancelled (tests E595).
+
 ## 3. Effect engine (data-driven)
 A card's `effects` list holds entries of **trigger** (`FX_TRIGGERS`) + **actions** (`FX_ACTIONS`) + **conditions** (`fxIf`, the `if` field) + options (`lv`, `once`, `optional`, `zone`, `oc`, ...). `parseEffects` / `parseBurst` read card data; `fxDescribe` renders the text. Strict effects (v0.59.4): an unknown trigger, action, condition or STATIC flag name at run time goes through `fxUnknown` (`02a-effects-base.js`): it throws in automated runs (`navigator.webdriver` or `?strict=1`) and warns once + skips in the release build (tests S594).
 

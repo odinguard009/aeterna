@@ -5,6 +5,9 @@ Top-level names per source part. Find the part here, then `grep -n "<name>" src/
 ## 00-config.js (91 lines, ~2.6k tokens)
 SIM, STEPS, STEPS_STANDARD, FORMAT_KEY, FORMAT, STANDARD_BLOCKS, BAN_LIST_INFO, BANNED, LIMITED1, normCardNo, banStatus, maxCopies, standardLegal, legalityOf, ABORT, $, other, esc, cap, TC_MINOR, titleCase, RNG_STATE, seedRng, rng, newSeed, shuffle, removeFrom, KEYWORD_GLOSSARY, MAGIC_FX, MAGIC_TIMINGS, SYMBOL_KINDS
 
+## 00b-errors.js (48 lines, ~0.8k tokens) — IN-GAME ERROR CATCHER (v0.59.5, Q1 quality bundle, Aegis idea)
+ERR_LOG, errReport, errNotice, onGameError
+
 ## 01-cards.js (33 lines, ~0.6k tokens) — CARD DATABASE (Training cards + the built-in pack is registered further below)
 VERSION, CARDS, defCard, TRAIN, PRESET_DECK
 

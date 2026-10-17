@@ -2,7 +2,7 @@
 
 A fan-made, single-file web simulator for a trading card game. You play against a CPU. It runs on PC and phone with no install.
 
-Current build: **v0.59.4** (593 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
+Current build: **v0.59.5** (593 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
 
 This repository starts at v0.57.0 with one snapshot commit (2026-10-17); the earlier history, issue threads and backup branches stay in the owner's private archive. Issue numbers in the older release notes refer to that archive.
 
@@ -42,6 +42,13 @@ Card images are not included; import your own images in the game.
 ## Disclaimer
 Unofficial non-commercial fan project; card names, text and trademarks belong to their owners.
 
+
+## v0.59.5
+- **In-game error catcher** (Q1 quality bundle, Aegis idea; UI addition):
+  - New part `src/js/00b-errors.js`: an uncaught error or unhandled promise rejection shows a small notice at the top of the screen ("Something went wrong (N errors). The game may be stuck.") with **Copy report** and **Close**. The report holds the version, browser, the last 10 errors (message + stack), the match turn/step and the input record of the running match (`replayOf(G)`: seed, decks, inputs), so a stuck game can be replayed. If the clipboard is blocked, the report text appears in a box to select by hand. The errors still reach the console and the test hooks (the events are not cancelled).
+  - Checked on PC (1280x720) and phone (390x844) screenshots: the notice sits above the board and does not move it.
+  - Tests E595-01..06 (`tests/unit/errors595.test.mjs`).
+  - Backup of the previous state: `backup/v0.59.4`. Revert: `git revert` of the v0.59.5 commit.
 
 ## v0.59.4
 - **Strict effects mode** (Q1 quality bundle, Aegis idea):

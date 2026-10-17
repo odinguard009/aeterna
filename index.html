@@ -459,6 +459,15 @@
   #view-deckbuilder .db-grid .db-info { min-height: 0; }
 
 .mull-note{margin-top:6px;padding:6px 8px;border-radius:6px;background:rgba(255,200,80,.12);border:1px solid rgba(255,200,80,.35);font-size:.9em}
+
+  /* v0.59.5 in-game error notice (src/js/00b-errors.js) */
+  #err-notice { position: fixed; top: 8px; left: 50%; transform: translateX(-50%); z-index: 10000; width: min(560px, calc(100vw - 32px));
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 8px;
+    background: var(--bg-panel); color: var(--text-main); border: 1px solid var(--color-red); font-size: 13px; user-select: text; }
+  #err-notice-text { flex: 1 1 200px; }
+  #err-notice button { padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-line); background: rgba(255,255,255,0.08); color: var(--text-main); font-size: 13px; cursor: pointer; }
+  #err-notice #err-copy { border-color: var(--accent); color: var(--accent); }
+  #err-text { flex: 1 1 100%; height: 140px; font: 11px monospace; background: #000; color: var(--text-main); user-select: text; }
 </style>
 </head>
 <body>
@@ -703,11 +712,59 @@ MAGIC_FX.ACTIONS = { side: null, text: (v, m) => cap((m.actions || []).map(a => 
 const MAGIC_TIMINGS = ['MAIN', 'FLASH'];
 const SYMBOL_KINDS = ['ultimate', 'god'];          // special symbols besides the six colours (rule manual p. 13)
 /* ---------------------------------------------------------------------
+   IN-GAME ERROR CATCHER (v0.59.5, Q1 quality bundle, Aegis idea)
+   window "error" + "unhandledrejection" -> a small notice at the top of the screen with "Copy report" (message, stack, version,
+   match seed/turn/step and the input record of the running match, enough to replay it) and "Close". The page keeps its own
+   error handling (the events are not cancelled), so tests and the console still see every error.
+   --------------------------------------------------------------------- */
+const ERR_LOG = [];
+function errReport() {
+  const lines = ['Aeterna error report', 'version: ' + (typeof VERSION !== 'undefined' ? VERSION : '?'), 'time: ' + new Date().toISOString()];
+  try { lines.push('browser: ' + navigator.userAgent); } catch (e) { /* no navigator */ }
+  ERR_LOG.forEach((x, i) => { lines.push('', `error ${i + 1} (${x.kind}, ${x.at}): ${x.msg}`); if (x.stack) lines.push(String(x.stack).split('\n').slice(0, 15).join('\n')); });
+  try {
+    const g = typeof G !== 'undefined' ? G : null;
+    if (g && g.rec) {
+      lines.push('', `match: turn ${g.turnNo}, step ${g.step}, active ${g.active}, over ${!!g.over}`);
+      lines.push('record: ' + JSON.stringify(replayOf(g)));
+    } else lines.push('', 'match: none');
+  } catch (e) { lines.push('record: unavailable (' + (e && e.message) + ')'); }
+  return lines.join('\n');
+}
+function errNotice() {
+  if (typeof document === 'undefined' || !document.body) return;
+  let n = document.getElementById('err-notice');
+  if (!n) {
+    n = document.createElement('div'); n.id = 'err-notice'; n.setAttribute('role', 'alert');
+    n.innerHTML = '<span id="err-notice-text"></span><button type="button" id="err-copy">Copy report</button><button type="button" id="err-close">Close</button><textarea id="err-text" readonly hidden></textarea>';
+    document.body.appendChild(n);
+    n.querySelector('#err-close').onclick = () => n.remove();
+    n.querySelector('#err-copy').onclick = async () => {
+      const txt = errReport(), box = n.querySelector('#err-text'), b = n.querySelector('#err-copy');
+      let ok = false;
+      try { await navigator.clipboard.writeText(txt); ok = true; } catch (e) { /* clipboard blocked: show the text to select by hand */ }
+      if (ok) b.textContent = 'Copied'; else { box.hidden = false; box.value = txt; box.focus(); box.select(); }
+    };
+  }
+  const k = ERR_LOG.length;
+  n.querySelector('#err-notice-text').textContent = `Something went wrong (${k} error${k === 1 ? '' : 's'}). The game may be stuck. Please send the report.`;
+  n.querySelector('#err-copy').textContent = 'Copy report';
+}
+function onGameError(kind, msg, stack) {
+  ERR_LOG.push({ kind, msg: String(msg || 'unknown error').slice(0, 500), stack: stack ? String(stack).slice(0, 4000) : '', at: new Date().toISOString() });
+  if (ERR_LOG.length > 10) ERR_LOG.shift();
+  try { errNotice(); } catch (e) { /* the notice must never throw */ }
+}
+if (typeof window !== 'undefined' && window.addEventListener) {
+  window.addEventListener('error', ev => onGameError('error', ev.message, ev.error && ev.error.stack));
+  window.addEventListener('unhandledrejection', ev => { const r = ev.reason; onGameError('promise', r && r.message || String(r), r && r.stack); });
+}
+/* ---------------------------------------------------------------------
    CARD DATABASE (Training cards + the built-in pack is registered further below)
    type: 'Spirit' | 'Nexus' | 'Magic'      symbol: card color     symbols: number of symbols
    reduction: {color: n}         levels: [{cores, bp}]  (Nexus levels have no bp)
    --------------------------------------------------------------------- */
-const VERSION = '0.59.4';
+const VERSION = '0.59.5';
 document.title = 'Aeterna - Engine v' + VERSION;
 const CARDS = {};
 function defCard(o) {
@@ -5358,7 +5415,7 @@ function testSetup() {            // dev hook: a quiet board with no match loop 
   switchView('view-playmat'); render(); return G;
 }
 const defBuiltin = o => { defCard(o); BUILTIN_IDS.add(o.id); };      // test fixtures register through this so their ids stay reserved
-window.BS = { get FX_STRICT() { return FX_STRICT; }, setFxStrict(v) { FX_STRICT = !!v; }, FX_WARNED, collectFx, releaseStandby, leaveStandby, renderDeckBuilder, dbChange, dbUndo, dbSheet, DBF, get DB_UNDO() { return DB_UNDO.length; }, accelList, accelCost, accelOK, accelSources, useAccel, removedSummonable, summonFromRemoved, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel, highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, isSealed, soulToLife, lifeTake, braveSummonedFx, abTaxOK, payAbTax, oppAttackHandFx, sentToTrashFx, magicFxAt, summonOK, lvNo, isUlt, noBlockActive, burstFlash, cpuBurstFlash, humanAttack, cpuAttack, attackStepOver, endAttackLocked, battleEndAttack, isGW, freeCores, moveCore, swapSoul, payCost, cpuCanPlay, coresAvailable, addCore, cpuKeepMagicOrPay, nameHTML, switchView, SET_KEY, dbFilterOK, cardColors, contractToDeck, redrawHand, cpuWantsRedraw, setHeavy, refreshOne, toRemoved, fxIf, costDestroyBonus, sendToken, canSendToken, tokenHome, attackSymbols, TOKEN_SUPPLY, isSpiritForm, ocActive, braveFits, braveTargets, combineBrave, braveSummon, separateBrave, canSeparate, braveRecheck, braveAfford, cpuBrave, handButtons, minCores, openFieldModal, cpuMain, VERSION, defBuiltin, beginTurn, endStep, newGame, takeFromVoid, checkDepletion, removeSpirit, lvIndex, mirageUsable, cpuCastMain, magicFx, magicText, costAltActive, flagActive, coresSent, startAttackFx, win, recordMatch, HISTORY: () => HISTORY, toggleLog, effectTextHTML, effectLines, titleCase, liveStatusHTML, openZoom, modal, closeModal, startPeek, SETTINGS, SLOTS: () => SLOTS, get ACTIVE_SLOT() { return ACTIVE_SLOT; }, switchSlot, loadPrebuilt, PREBUILT, cpuDeckFor, saveSettings, PACK_IDS, registerPack, clearImported, summonPaid, reviveTargets, doRevive, handUp, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, soulCoreHolder, rng, seedRng, newSeed, runReplay, lastReplay, fireFxMulti, asResolving, replayOf, loadScenario, gameAct, matchSummary, get REPLAY() { return REPLAY; }, soulSource, soulToNexus, fxImmune, residualHTML, cardDetailHTML, setSimDeckB(d) { SIM_DECK_B = d; }, activatable, activateFx, cpuActivate, toSoulState, bounceCard, runActions, maybeBurst, flushBursts, summonFree, parseBurst, parseActionList, BURST_WHEN, fireFx, parseEffects, staticBp, FX_ACTIONS, removeNexus, magicUsable, magicTargets, castMagic, flashTiming, cpuFlashChoice, setFormat, validateDeck, legalityOf, banStatus, get FORMAT() { return FORMAT; }, isPC, applyLayout, testSetup, mkInst, render, takeCores, IMG, importCards, importImages, textToDeck, deckToText, parseCard, loadImages, get PLAYER_DECK() { return PLAYER_DECK; }, get G() { return G; }, startNewGame, checkInvariants, CARDS, PRESET_DECK, humanCan, onNext, cpuTurn, doBattle, summon, effCost, canPlayCard, setBurst, fieldList, bpOf, get SESSION() { return SESSION; }, CPU_PROFILES, cpuProfileName, cpuEval, cpuPlayScore, cpuPlayChoice, cpuLethal, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, lifeValue, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, extraReduction };
+window.BS = { get FX_STRICT() { return FX_STRICT; }, setFxStrict(v) { FX_STRICT = !!v; }, FX_WARNED, collectFx, ERR_LOG, errReport, onGameError, releaseStandby, leaveStandby, renderDeckBuilder, dbChange, dbUndo, dbSheet, DBF, get DB_UNDO() { return DB_UNDO.length; }, accelList, accelCost, accelOK, accelSources, useAccel, removedSummonable, summonFromRemoved, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel, highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, isSealed, soulToLife, lifeTake, braveSummonedFx, abTaxOK, payAbTax, oppAttackHandFx, sentToTrashFx, magicFxAt, summonOK, lvNo, isUlt, noBlockActive, burstFlash, cpuBurstFlash, humanAttack, cpuAttack, attackStepOver, endAttackLocked, battleEndAttack, isGW, freeCores, moveCore, swapSoul, payCost, cpuCanPlay, coresAvailable, addCore, cpuKeepMagicOrPay, nameHTML, switchView, SET_KEY, dbFilterOK, cardColors, contractToDeck, redrawHand, cpuWantsRedraw, setHeavy, refreshOne, toRemoved, fxIf, costDestroyBonus, sendToken, canSendToken, tokenHome, attackSymbols, TOKEN_SUPPLY, isSpiritForm, ocActive, braveFits, braveTargets, combineBrave, braveSummon, separateBrave, canSeparate, braveRecheck, braveAfford, cpuBrave, handButtons, minCores, openFieldModal, cpuMain, VERSION, defBuiltin, beginTurn, endStep, newGame, takeFromVoid, checkDepletion, removeSpirit, lvIndex, mirageUsable, cpuCastMain, magicFx, magicText, costAltActive, flagActive, coresSent, startAttackFx, win, recordMatch, HISTORY: () => HISTORY, toggleLog, effectTextHTML, effectLines, titleCase, liveStatusHTML, openZoom, modal, closeModal, startPeek, SETTINGS, SLOTS: () => SLOTS, get ACTIVE_SLOT() { return ACTIVE_SLOT; }, switchSlot, loadPrebuilt, PREBUILT, cpuDeckFor, saveSettings, PACK_IDS, registerPack, clearImported, summonPaid, reviveTargets, doRevive, handUp, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, soulCoreHolder, rng, seedRng, newSeed, runReplay, lastReplay, fireFxMulti, asResolving, replayOf, loadScenario, gameAct, matchSummary, get REPLAY() { return REPLAY; }, soulSource, soulToNexus, fxImmune, residualHTML, cardDetailHTML, setSimDeckB(d) { SIM_DECK_B = d; }, activatable, activateFx, cpuActivate, toSoulState, bounceCard, runActions, maybeBurst, flushBursts, summonFree, parseBurst, parseActionList, BURST_WHEN, fireFx, parseEffects, staticBp, FX_ACTIONS, removeNexus, magicUsable, magicTargets, castMagic, flashTiming, cpuFlashChoice, setFormat, validateDeck, legalityOf, banStatus, get FORMAT() { return FORMAT; }, isPC, applyLayout, testSetup, mkInst, render, takeCores, IMG, importCards, importImages, textToDeck, deckToText, parseCard, loadImages, get PLAYER_DECK() { return PLAYER_DECK; }, get G() { return G; }, startNewGame, checkInvariants, CARDS, PRESET_DECK, humanCan, onNext, cpuTurn, doBattle, summon, effCost, canPlayCard, setBurst, fieldList, bpOf, get SESSION() { return SESSION; }, CPU_PROFILES, cpuProfileName, cpuEval, cpuPlayScore, cpuPlayChoice, cpuLethal, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, lifeValue, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, extraReduction };
 renderLobby();
 loadImages();
 if (SIM) startNewGame();
