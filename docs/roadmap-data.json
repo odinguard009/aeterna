@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "17 Oct 2026",
-  "next": "next: v0.59.1 starting-Hand redraw with a Contract card (owner report 2026-10-17: check the rules, then fix or explain; Sonnet), then mechanics by measured unlocks (Brave completion, When Destroyed; Opus); 593 of 8,041 cards playable"
+  "next": "next: mechanics by measured unlocks, one per session (Opus): Brave completion, When Destroyed, Grandwalker Nexus effects; size each first with a scratch recompile; 593 of 8,041 cards playable"
  },
  "phases": [
   {
@@ -45,8 +45,8 @@
      "t": "Seeded RNG, replays, scenarios"
     },
     {
-     "s": "next",
-     "t": "Starting-Hand redraw with a Contract card (owner report 2026-10-17): re-check manual p. 12, then keep the Contract card or say so in the dialog (v0.59.1)"
+     "s": "done",
+     "t": "Starting-Hand redraw with a Contract card (owner report 2026-10-17, v0.59.1): JP 17.1 and EN 17.0 manuals confirm the redraw returns it and it cannot be added again; the dialog now says so, the CPU keeps a hand with its Contract card"
     }
    ]
   },

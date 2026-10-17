@@ -5,7 +5,7 @@ Paraphrased notes from the official PDFs, so a session does not have to fetch th
 ## Sources and versions (Rules audit R1, checked 2026-10-16; `tools/rules_audit.py` -> `docs/rules-audit.md`)
 | Source | Version / date | URL | Read |
 |---|---|---|---|
-| Eternal Rule Manual, Japanese (newest) | Ver.17.1, published 2026-05-29 (news tag gamerule) | https://www.battlespirits.com/rule/official-rule-manual-eternal/ | not readable in auto runs (302 + approval prompt); 17.1 change list not found |
+| Eternal Rule Manual, Japanese (newest) | Ver.17.1, published 2026-05-29 (news tag gamerule) | https://www.battlespirits.com/rule/official-rule-manual-eternal/ | game setup page read 2026-10-17 via WebFetch (`page03.html`; `page02/04/05/09.html` are intro, basic play, turn flow, Braves); 17.1 change list not found |
 | Eternal Rule Manual, English PDF | VER.17.0 (no date in the text) | https://asia-en.battlespirits.com/pdf/official-rule-manual_eternal.pdf | yes (WebFetch); page 1 lists "Ruling Changes (Eternal)" and "Past Rule Revisions (Eternal)" without URLs; asia-en /rule/ still says Ver.16.0 |
 | JP rule revision notice for Eternal 17.0 | 2026-04-03, effective 2026-04-11 | https://www.battlespirits.com/news/2026/rule-manual-eternal17-revised.php | yes, 2026-10-16 (changes below) |
 | JP Ruling Changes page | newest entry 2022-07-22 (CB23 name spelling); no 2025-2026 entries | https://www.battlespirits.com/rule/revised_rule.html | yes |
@@ -28,7 +28,7 @@ Paraphrased notes from the official PDFs, so a session does not have to fetch th
 ## Setup and turn (Eternal manual pp. 9-12, 20-21; CR 7-3)
 - Deck 40+ cards, no upper limit; max 3 copies per name; one Contract card type, up to 3 copies.
 - 5 Life cores; Reserve 3 cores + 1 Soul Core; draw 4 (3 when a Contract card is added to the starting Hand).
-- Contract card (pp. 12, 55): taken from the Deck before shuffling and shown face down; draw 3, then reveal it and add it (adding it is optional). Redraw (p. 12): once, in turn order; the whole Hand (a Contract card too) returns to the Deck, shuffle, draw 4; a Contract card cannot be added again on a redraw.
+- Contract card (EN VER.17.0 p. 11 steps 2/5/7 and p. 54; earlier notes said pp. 12/55): taken from the Deck before shuffling and shown face down; draw 3, then reveal it and add it (adding it is optional). Redraw: once, in turn order; the whole Hand (a Contract card too) returns to the Deck, shuffle, draw 4; a Contract card cannot be added again on a redraw. Re-checked 2026-10-17 against the JP Eternal Rule Manual Ver.17.1 web page "game setup" (page03.html): same rule (v0.59.1).
 - The rock-paper-scissors winner chooses first or second (engine: coin toss, equivalent). Each player may redraw once (return the whole hand, shuffle, draw 4).
 - Steps: Start, Core (1 core **from the Void** to the Reserve, CR 7-3-2), Draw (1 card), Refresh (refresh cards, Trash cores to the Reserve), Main, Attack, End (temporary effects end).
 - The first player's first turn skips **only** the Core Step and the Attack Step (the Draw Step is not skipped). No step is skipped just because nothing happens in it.

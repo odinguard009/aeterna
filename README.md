@@ -2,7 +2,7 @@
 
 A fan-made, single-file web simulator for a trading card game. You play against a CPU. It runs on PC and phone with no install.
 
-Current build: **v0.59.0** (593 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
+Current build: **v0.59.1** (593 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
 
 This repository starts at v0.57.0 with one snapshot commit (2026-10-17); the earlier history, issue threads and backup branches stay in the owner's private archive. Issue numbers in the older release notes refer to that archive.
 
@@ -42,6 +42,14 @@ Card images are not included; import your own images in the game.
 ## Disclaimer
 Unofficial non-commercial fan project; card names, text and trademarks belong to their owners.
 
+
+## v0.59.1
+- **Starting-Hand redraw with a Contract card** (owner report 2026-10-17, patch): the rules were re-checked and the engine was already right, so the redraw dialog now explains it.
+  - Rules: JP Eternal Rule Manual Ver.17.1 (web, game setup steps 2, 5, 7) and the EN Eternal manual VER.17.0 (p. 11 steps 5-7, p. 54) agree: with a Contract card you draw 3 and add it (4 cards); a redraw returns the whole Hand, the Contract card too, shuffles and draws 4; a Contract card cannot be added again on a redraw. Recorded in `docs/manual-notes.md`.
+  - Redraw dialog: when the starting Hand holds a Contract card, a note says the redraw sends it back to the Deck and it cannot be added again. Rules summary in the lobby updated the same way.
+  - CPU: never redraws a starting Hand that holds its Contract card (before, an all-cost-4+ hand was redrawn and the Contract card was lost for the game).
+  - Code: `redrawHand` and `cpuWantsRedraw` moved to `src/js/05-state.js` (exposed on `window.BS`). Tests E21d (hand size 4 with and without a Contract card, redraw keeps 4 and the Deck total) and E21e (CPU redraw rule). Dialog checked on PC and phone (4 cards, note shown, no console errors).
+  - Revert: `git revert` of the v0.59.1 commit.
 
 ## v0.59.0
 - **Ultimates as targets: measured, then step-prefixed attack triggers** (heavy item, Opus): +4 cards (593 / 8,041 playable).

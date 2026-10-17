@@ -450,3 +450,5 @@
     .db-tog { min-height: 44px; font-size: 13px; }
   }
   #view-deckbuilder .db-grid .db-info { min-height: 0; }
+
+.mull-note{margin-top:6px;padding:6px 8px;border-radius:6px;background:rgba(255,200,80,.12);border:1px solid rgba(255,200,80,.35);font-size:.9em}

@@ -44,13 +44,11 @@ async function startNewGame(opts) {
       if (!add) { contractToDeck(G.p.player); log('You kept the Contract card in the Deck.'); }
     }
     // starting hand: each player may redraw once
-    const redraw = p => { p.deck.push(...p.hand.splice(0)); shuffle(p.deck); p.hand = p.deck.splice(0, 4); };
-    const cpuBad = hand => hand.every(h => CARDS[h.id].cost > 3);
     if (!SIM) {
-            const r = await ask({ title: '🎴 Starting Hand', html: `<div class="mull-list">${G.p.player.hand.map(h => mullCardHTML(CARDS[h.id])).join('')}</div><div style="margin-top:8px">Redraw your 4 cards? You can only do this once.</div>`, wide: true, peek: true, buttons: [{ label: 'Redraw all cards', cls: 'primary', value: true }, { label: 'Keep hand', cls: 'cancel', value: false }] });
-      if (r) { redraw(G.p.player); log('You redrew your starting hand.'); }
+            const r = await ask({ title: '🎴 Starting Hand', html: `<div class="mull-list">${G.p.player.hand.map(h => mullCardHTML(CARDS[h.id])).join('')}</div><div style="margin-top:8px">Redraw your 4 cards? You can only do this once.</div>${G.p.player.hand.some(h => CARDS[h.id].contract) ? '<div class="mull-note">📜 A redraw returns your Contract card to the Deck too, and it cannot be added to your Hand again this game (official rules).</div>' : ''}`, wide: true, peek: true, buttons: [{ label: 'Redraw all cards', cls: 'primary', value: true }, { label: 'Keep hand', cls: 'cancel', value: false }] });
+      if (r) { redrawHand(G.p.player); log('You redrew your starting hand.'); }
     }
-    if (cpuBad(G.p.opponent.hand)) { redraw(G.p.opponent); log('CPU redrew its starting hand.'); }
+    if (cpuWantsRedraw(G.p.opponent.hand)) { redrawHand(G.p.opponent); log('CPU redrew its starting hand.'); }
     if (SESSION !== my) return;
     G.next = first;
     render();

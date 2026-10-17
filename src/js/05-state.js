@@ -56,6 +56,13 @@ function contractToDeck(p) {                // setup choice (manual p.12): a Con
   p.hand.push(p.deck.splice(j < 0 ? 0 : j, 1)[0]);
   return true;
 }
+function redrawHand(p) {                    // setup redraw (Eternal manual p.11 step 7, JP 17.1 game setup): the whole Hand, a Contract card too, goes back to the Deck; shuffle; draw 4; a Contract card cannot be added again
+  p.deck.push(...p.hand.splice(0)); shuffle(p.deck); p.hand = p.deck.splice(0, 4);
+}
+function cpuWantsRedraw(hand) {             // CPU: redraw only a hand of cost 4+ cards, and never give up its Contract card (it would be lost for the game)
+  if (hand.some(h => CARDS[h.id].contract)) return false;
+  return hand.every(h => CARDS[h.id].cost > 3);
+}
 function newGame(deckA, deckB, format) {
   format = format || FORMAT;
   return {

@@ -121,6 +121,22 @@ test('E21b contractToDeck moves the Contract card back to the Deck and draws a r
     return { had, moved, n: p.hand.length, inHand: p.hand.some(i => BS.CARDS[i.id].contract), total: p.deck.length + p.hand.length === p.deckSize }; });
   assert.deepEqual(r, { had: true, moved: true, n: 4, inHand: false, total: true });
 });
+test('E21d starting Hand is 4 with or without a Contract card; a redraw returns the Contract card and draws 4', async () => {
+  const r = await ev(() => { const P = id => BS.PREBUILT.find(x => x.id === id).cards; const out = {};
+    for (const [k, d] of [['gw', 'mitra'], ['plain', 'red']]) { const g = BS.newGame(P(d), P('red')); const p = g.p.player;
+      const had = p.hand.some(i => BS.CARDS[i.id].contract); BS.redrawHand(p);
+      out[k] = { had, n0: 4, n: p.hand.length, total: p.deck.length + p.hand.length === p.deckSize }; }
+    let lost = 0; for (let s = 0; s < 20; s++) { const g = BS.newGame(P('mitra'), P('red')); const p = g.p.player; const n = p.hand.length; BS.redrawHand(p); if (n !== 4 || p.hand.length !== 4) lost++; }
+    out.loop = lost; return out; });
+  assert.equal(r.gw.had, true); assert.equal(r.gw.n, 4); assert.equal(r.gw.total, true);
+  assert.equal(r.plain.n, 4); assert.equal(r.plain.total, true); assert.equal(r.loop, 0);
+});
+test('E21e CPU keeps a starting Hand with its Contract card; redraws an all-cost-4+ hand otherwise', async () => {
+  const r = await ev(() => { const ids = Object.keys(BS.CARDS), con = ids.find(id => BS.CARDS[id].contract), hi = ids.filter(id => !BS.CARDS[id].contract && !BS.CARDS[id].token && BS.CARDS[id].cost > 3).slice(0, 4), lo = ids.find(id => !BS.CARDS[id].contract && !BS.CARDS[id].token && BS.CARDS[id].cost <= 3);
+    const h = a => a.map(id => ({ id }));
+    return { allHi: BS.cpuWantsRedraw(h(hi)), withCon: BS.cpuWantsRedraw(h([...hi.slice(0, 3), con])), withLow: BS.cpuWantsRedraw(h([...hi.slice(0, 3), lo])) }; });
+  assert.deepEqual(r, { allHi: true, withCon: false, withLow: false });
+});
 test('E21c deck builder filters match colour, cost and type', async () => {
   const r = await ev(() => { const ids = Object.keys(BS.CARDS).filter(id => !BS.CARDS[id].token), f = (c, k, t) => ids.filter(id => BS.dbFilterOK(BS.CARDS[id], c, k, t));
     return { all: f('', '', '').length === ids.length, red: f('red', '', '').every(id => BS.cardColors(BS.CARDS[id]).includes('red')), c3: f('', '3', '').every(id => BS.CARDS[id].cost === 3),

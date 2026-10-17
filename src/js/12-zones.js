@@ -52,7 +52,7 @@ function showRules() {
   info('Rules coverage (Eternal Ver.17.1 / Standard Ver.1.1)', `
     <div style="text-align:left"><b>Implemented</b>
     <ul class="rule-list"><li>40+ card decks, max 3 per name, one Contract type; Contract card added to the starting Hand</li>
-    <li>Setup: 5 Life, 3 Reserve cores + Soul Core, 4-card hand, one redraw, coin toss winner picks the turn order</li>
+    <li>Setup: 5 Life, 3 Reserve cores + Soul Core, 4-card hand (3 cards + your Contract card if you add it), coin toss winner picks the turn order, one redraw (the whole hand goes back, Contract card too; draw 4; the Contract card cannot be added again)</li>
     <li>Two formats: <b>Eternal</b> (all cards except the banned list) and <b>Standard</b> (letter block icon only; block A until Mar 2027)</li>
     <li>Banned / limited list effective 2026-09-01 is enforced in the deck builder and before a match</li>
     <li>Turn: START, CORE, DRAW, REFRESH, MAIN, ATTACK, END (Standard adds MAIN 2); the first turn skips the Core, Attack and Second Main Steps (the Draw Step still happens)</li>
