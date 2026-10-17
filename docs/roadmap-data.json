@@ -678,6 +678,14 @@
    "calls": "~60",
    "basis": "measured",
    "note": "Manual session on Opus (owner present). Budget-counter difference read before the commit; the release steps add a little. The heavy item was sized first and turned out to unlock 0 cards, so a smaller lever shipped."
+  },
+  {
+   "ver": "v0.59.1",
+   "date": "17 Oct 2026",
+   "tokens": 60000,
+   "calls": "~45",
+   "basis": "measured",
+   "note": "Manual session on Opus (Sonnet would have been enough). Sum of the budget-counter differences of each turn (the counter restarted between turns); a question about CI/Regression is included."
   }
  ]
 }
