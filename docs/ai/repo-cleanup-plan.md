@@ -57,3 +57,35 @@ The owner wants an Aegis-like monorepo with an online server plus the offline ga
 - `docs/ARCHITECTURE.md`, `docs/README.md`, `tools/README.md`, `data/README.md` exist and match the tree.
 - CLAUDE.md is shorter and routes; no rule appears in two places.
 - Old-path grep is empty; CI + Regression green; game file unchanged except the version line.
+
+## C5 Front page and releases (owner request 2026-10-17, 16:28; next update after Q1)
+Owner: "halaman repo github Aeterna terlalu panjang dan semrawut. Buat halaman seperti halaman repo github Aegis ... cari tempat lain untuk menulis hasil update dari setiap versi Aeterna, misal di halaman release." Today `README.md` is 714 lines: about 45 lines of overview, then every release note since v0.1.
+
+### Target README (about 80-100 lines, modelled on the Aegis front page)
+1. Title, one-line pitch, a link row: Download (latest release asset) · Releases · Changelog · Roadmap · Architecture.
+2. Two screenshots (PC playmat and phone layout) in `docs/images/`, taken with Playwright from the built game (no card art, neutral name only), plus the existing neutral disclaimer.
+3. "What it does": 5-6 bullets (play vs CPU on PC and phone with no install; card pool and playable count; deck builder; Eternal and Standard formats with the ban list; seeded replays; data-driven rules engine).
+4. "Screens": a 2x2 table (match PC, match phone, deck builder, card library).
+5. "Status": the build line kept by `tools/build.mjs` (`Current build: **vX.Y.Z** (N of 8,041 cards playable)`), one line on what is next, links to `docs/ai/roadmap-open.md` and the mind map.
+6. "Architecture": one small Mermaid flowchart (src -> build -> single file; card data pipeline; tests) and a link to `docs/ARCHITECTURE.md`.
+7. "Development": three commands (`node tools/build.mjs`, `npm run -s loop`, `npm test`) and links to `docs/README.md` and `CLAUDE.md`.
+8. Planned UI languages (English, Japanese, Thai, Chinese) as one line under Status.
+The "Data" and long "Development" sections move to `docs/ARCHITECTURE.md` (pipeline) and `docs/README.md` (index) if anything there is not already covered.
+
+### Where release notes go
+- `CHANGELOG.md` (new, repo root): every "## vX.Y.Z" section moved from README unchanged, newest first. This is the single source of release notes.
+- GitHub Releases: Claude sessions cannot create releases (API answer 403 "not permitted for this session type", tested 2026-10-17; tag pushes are refused too). So a workflow `.github/workflows/release.yml` creates them on GitHub's side: it runs after CI succeeds on `main` (`workflow_run`), reads the version from `package.json`, does nothing if release `vX.Y.Z` exists, otherwise builds `index.html`, creates tag + release `vX.Y.Z` with the body taken from that version's CHANGELOG section and attaches `aeterna-vX.Y.Z.html` (permissions: contents write; GITHUB_TOKEN only). Players can then download the game from the Releases page. A manual `workflow_dispatch` input `version` backfills releases for v0.57.1 onward (their commits are in this repo); versions before v0.57.0 stay in CHANGELOG only (their commits are in the private vault).
+- Release title: `vX.Y.Z - <short title>`; body: the CHANGELOG bullets, the playable count, and "CI + Regression green".
+
+### Readers to update in the same commit (grep `README` before and after)
+- `tools/gen_roadmap.mjs`: release notes from `CHANGELOG.md` instead of README (`releases(rd('README.md'))`).
+- `tools/build.mjs`: keeps the README "Current build" line (unchanged regex); add the same version check for the newest CHANGELOG heading (it must equal `VERSION`).
+- `tools/brand_guard.mjs` FILES and `tools/pack_ai.mjs`: add `CHANGELOG.md`.
+- `docs/ai/release.md` step 3 and skill `bs-session-runner`: release notes go to `CHANGELOG.md`; the end of a session checks that the release workflow created the release (one `gh api .../releases/tags/vX.Y.Z` call) instead of sending only the chat file. The chat delivery of the game file and mind map stays (owner rule).
+- `CLAUDE.md` "Roadmap (history: README release notes)" -> CHANGELOG; skill `bs-doc-convention` (root files: README = front page, CHANGELOG = release notes).
+- Brand layer: the README keeps the two neutral sentences that the vault mapping restores ("web simulator for a trading card game." and the neutral disclaimer) word for word; the Project copy of the mapping (`claude/brand-data.md`) lists `CHANGELOG.md` with README.md.
+
+### Checks
+- README under 120 lines; every link and image path exists (link check in the build or a unit test); brand guard green; `node tools/build.mjs --check` green; mind map still lists releases.
+- Patch version, docs and tooling only: CI + Regression green; release workflow run green for this version (first real run) and the backfill run.
+

@@ -492,6 +492,10 @@
      "t": "Q1: strict effects mode, in-game error report with replay, match fuzzer"
     },
     {
+     "s": "next",
+     "t": "C5: short front page like Aegis; release notes to CHANGELOG.md and the Releases page (workflow), game file on each release"
+    },
+    {
      "s": "later",
      "t": "Q2: UI tests wait on state instead of fixed sleeps (318 to 0)"
     },

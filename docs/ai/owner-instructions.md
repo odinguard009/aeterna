@@ -57,3 +57,7 @@ Applied: Opus for every manual and auto session and for subagents; the gate trea
 "oke, atur ulang kembali rencana roadmap. lalu untuk UI berbahasa Indonesia saya rasa tidak perlu, malah saya ingin ada UI berbahasa Thailand". Applied: "Session order" in `docs/ai/roadmap-open.md`.
 
 "rencana bahasa UI: 1. Inggris, 2. Jepang, 3. Thailand, 4. China, dan seterusnya mengikuti pasar populer Battle Spirits" (2026-10-17). Applied: roadmap-open.md "Session order" item 9.
+
+## Front page and releases (2026-10-17, chat)
+
+"Saya melihat halaman repo github Aeterna terlalu panjang dan semrawut. Buat halaman seperti halaman repo github Aegis yang terlihat rapi dan terstruktur. Coba cari tempat lain untuk menulis hasil update dari setiap versi Aeterna, Misal di halaman release. Masukan rencana ke update berikutnya." Plan: `docs/ai/repo-cleanup-plan.md` "C5", roadmap-open "Session order" item 2b.
