@@ -1,0 +1,444 @@
+{
+  "about": "Every official rule the engine must obey, where it comes from (page or section, as noted in docs/manual-notes.md), its status, and the test that proves it. Checked by tools/check_obligations.py (also run inside tests/suites/v29_tests.py). Status: enforced = implemented and proven by the named test; partial = implemented with a known, documented gap (see note); equivalent = a different procedure with the same game result; open = not implemented yet.",
+  "version": "0.29.0",
+  "obligations": [
+    {
+      "id": "SETUP-LIFE-RESERVE",
+      "rule": "Each player starts with 5 Life cores and a Reserve of 3 cores plus the Soul Core; the Void starts empty.",
+      "source": "Eternal manual pp. 11-12",
+      "status": "enforced",
+      "test": "v29_tests.py:[SETUP-LIFE-RESERVE]"
+    },
+    {
+      "id": "SETUP-HAND-4",
+      "rule": "Draw a starting Hand of 4 cards.",
+      "source": "Eternal manual p. 12",
+      "status": "enforced",
+      "test": "v29_tests.py:[SETUP-HAND-4]"
+    },
+    {
+      "id": "SETUP-CONTRACT",
+      "rule": "A Contract card is taken from the Deck before shuffling, the player draws 3 and adds the Contract card (4 in Hand).",
+      "source": "Eternal manual pp. 12, 55",
+      "status": "partial",
+      "note": "Adding the Contract card is optional in the manual; the engine always adds it (no choice prompt yet, UI change needs the user's approval).",
+      "test": "v29_tests.py:[SETUP-CONTRACT]"
+    },
+    {
+      "id": "SETUP-REDRAW",
+      "rule": "Each player may redraw once: the whole Hand (a Contract card too) returns to the Deck, shuffle, draw 4; the Contract card is not added again.",
+      "source": "Eternal manual p. 12",
+      "status": "enforced",
+      "test": "v29_tests.py:[SETUP-REDRAW]"
+    },
+    {
+      "id": "SETUP-FIRST-PLAYER",
+      "rule": "The rock-paper-scissors winner chooses to go first or second.",
+      "source": "Eternal manual p. 12",
+      "status": "equivalent",
+      "note": "Coin toss instead of rock-paper-scissors; the winner chooses.",
+      "test": "v29_tests.py:[SETUP-FIRST-PLAYER]"
+    },
+    {
+      "id": "TURN-FIRST-SKIPS",
+      "rule": "The first player's first turn skips only the Core Step and the Attack Step; the Draw Step is not skipped.",
+      "source": "Eternal manual pp. 20-21",
+      "status": "enforced",
+      "test": "v29_tests.py:[TURN-FIRST-SKIPS]"
+    },
+    {
+      "id": "TURN-CORE-FROM-VOID",
+      "rule": "Core Step: 1 core from the Void to the Reserve.",
+      "source": "CR 7-3-2",
+      "status": "enforced",
+      "test": "v29_tests.py:[TURN-CORE-FROM-VOID]"
+    },
+    {
+      "id": "TURN-DRAW",
+      "rule": "Draw Step: draw 1 card.",
+      "source": "Eternal manual p. 20",
+      "status": "enforced",
+      "test": "v29_tests.py:[TURN-DRAW]"
+    },
+    {
+      "id": "TURN-REFRESH",
+      "rule": "Refresh Step: refresh all your cards and move the cores in your Trash (the Soul Core too) to the Reserve.",
+      "source": "Eternal manual p. 20",
+      "status": "enforced",
+      "test": "v29_tests.py:[TURN-REFRESH]"
+    },
+    {
+      "id": "TURN-END",
+      "rule": "End Step: effects that last until the end of the turn end.",
+      "source": "Eternal manual p. 20",
+      "status": "enforced",
+      "test": "v29_tests.py:[TURN-END]"
+    },
+    {
+      "id": "DECK-OUT",
+      "rule": "A player whose Deck has 0 cards at the start step of their own turn loses; an empty Deck at any other time is not a loss.",
+      "source": "Eternal manual p. 9",
+      "status": "enforced",
+      "test": "v29_tests.py:[DECK-OUT]"
+    },
+    {
+      "id": "BATTLE-ONE-BLOCKER",
+      "rule": "Only one Spirit in the Refresh state may block; blocking exhausts it; exhausted Spirits cannot block.",
+      "source": "Eternal manual pp. 30-31",
+      "status": "enforced",
+      "test": "v29_tests.py:[BATTLE-ONE-BLOCKER]"
+    },
+    {
+      "id": "BATTLE-BP",
+      "rule": "The Spirit with lower BP is destroyed; with equal BP both are destroyed.",
+      "source": "Eternal manual pp. 30-31",
+      "status": "enforced",
+      "test": "v29_tests.py:[BATTLE-BP]"
+    },
+    {
+      "id": "BATTLE-LIFE",
+      "rule": "An unblocked attack reduces the defender's Life by the attacker's symbols; the Life cores go to the defender's Reserve; Life 0 loses.",
+      "source": "Eternal manual pp. 30-31",
+      "status": "enforced",
+      "test": "v29_tests.py:[BATTLE-LIFE]"
+    },
+    {
+      "id": "BATTLE-NO-FIRST-ATTACK",
+      "rule": "No attack on the first player's first turn (the Attack Step is skipped).",
+      "source": "Eternal manual p. 21",
+      "status": "enforced",
+      "test": "v29_tests.py:[BATTLE-NO-FIRST-ATTACK]"
+    },
+    {
+      "id": "VOID-UNLIMITED",
+      "rule": "The Void is the core supply and has no limit; when it runs out, cores are added from outside the game.",
+      "source": "CR 4-8-1, 4-8-2; Eternal manual p. 11",
+      "status": "enforced",
+      "test": "v29_tests.py:[VOID-UNLIMITED]"
+    },
+    {
+      "id": "COUNT-FROM-VOID",
+      "rule": "Count Area cores come from the Void.",
+      "source": "Eternal manual p. 60",
+      "status": "enforced",
+      "test": "v29_tests.py:[COUNT-FROM-VOID]"
+    },
+    {
+      "id": "DEPLETION",
+      "rule": "A Spirit with fewer cores than its LV1 is depleted, not destroyed: it goes to the Trash and its cores to the Reserve; destruction triggers do not fire.",
+      "source": "Eternal manual p. 28",
+      "status": "enforced",
+      "test": "v29_tests.py:[DEPLETION]"
+    },
+    {
+      "id": "SOUL-CORE-ZONES",
+      "rule": "The Soul Core is never put in the Void or Life; another core goes instead.",
+      "source": "CR 5-7-3; FAQ",
+      "status": "enforced",
+      "test": "v25_tests.py:13 Erimakilizard: 2 cores"
+    },
+    {
+      "id": "GRANDWALKER-CORES-VOID",
+      "rule": "Cores on a Grandwalker Nexus go to the Void when it leaves the Field (the Soul Core to the Reserve).",
+      "source": "Eternal manual p. 44",
+      "status": "enforced",
+      "test": "v23_tests.py:5 Soul Core on a Grandwalker Nexus goes to the Reserve"
+    },
+    {
+      "id": "GRANDWALKER-UNAFFECTED",
+      "rule": "A Grandwalker Nexus is unaffected by effects except its own and effects that target a Grandwalker Nexus.",
+      "source": "Eternal manual FAQ (About Effects in General)",
+      "status": "enforced",
+      "test": "v25_tests.py:19 Ometeotl with a Soul Core is unaffected"
+    },
+    {
+      "id": "MANIFEST-MAIN",
+      "rule": "When-Manifests effects do not activate when the Manifest happens in the Main Step.",
+      "source": "Eternal manual p. 57",
+      "status": "enforced",
+      "test": "v25_tests.py:37 official rule: a Manifest in the Main Step"
+    },
+    {
+      "id": "BY-DOING-X",
+      "rule": "By doing X, do Y: X is not done when Y cannot be done.",
+      "source": "Eternal manual FAQ Q5",
+      "status": "enforced",
+      "test": "v28_tests.py:5 Paanch without a Mitra"
+    },
+    {
+      "id": "TRIGGER-ORDER",
+      "rule": "Simultaneous effects: the turn player decides the order; an effect activated by a resolving effect resolves first.",
+      "source": "Eternal manual, Other Rules: About Activating Effects",
+      "status": "enforced",
+      "test": "v28_tests.py:16 a derived effect waits"
+    },
+    {
+      "id": "ONCE-PER-TURN-SAME-NAME",
+      "rule": "Once per Turn: Same Name allows one use for all copies of that name.",
+      "source": "Eternal manual FAQ Q9",
+      "status": "enforced",
+      "test": "mitra_tests.py:second Ek cannot activate the same turn (Same Name)"
+    },
+    {
+      "id": "BANISH",
+      "rule": "Banished cards leave the game (Banished zone).",
+      "source": "not found in the online text yet",
+      "status": "partial",
+      "note": "Engine behaviour; the manual page still has to be found.",
+      "test": "v28_tests.py:11 ... with a destroyed target: Soul Core to Ometeotl and the target is banished"
+    },
+    {
+      "id": "OVER-COUNT",
+      "rule": "OC is active while your Count meets the OC condition, regardless of Lv; it adds its BP; [During OC] effects only while met.",
+      "source": "Eternal Rule Manual VER.17.0 p. 61",
+      "status": "enforced",
+      "test": "mech34.test.mjs:V25"
+    },
+    {
+      "id": "WHEN-BLOCKS",
+      "rule": "(When Blocks) effects activate after the block is declared, in one pool with the attacker's 'when blocked' effects, before BP is compared.",
+      "source": "Eternal manual p. 30",
+      "status": "enforced",
+      "test": "mech33.test.mjs:M10"
+    },
+    {
+      "id": "WHEN-DESTROYED",
+      "rule": "(When Destroyed) effects resolve when the Spirit is destroyed (battle or effect), not when it is depleted, using the level it had.",
+      "source": "Eternal manual p. 31",
+      "status": "partial",
+      "note": "The manual resolves them before the card is placed in the Trash; the engine moves the card first and resolves right after with the stored level.",
+      "test": "mech33.test.mjs:M12"
+    },
+    {
+      "id": "WHEN-REVEALED",
+      "rule": "'When this card is revealed from the deck' effects resolve while the revealing effect resolves.",
+      "source": "not found in the manual (house ruling v0.33)",
+      "status": "partial",
+      "note": "No manual rule; Magic reveals (Star Intention REVEAL_ADD) do not fire it yet.",
+      "test": "mech33.test.mjs:M24"
+    },
+    {
+      "id": "BRAVE-COMBINE",
+      "rule": "A Brave combines with a Spirit that meets its Brave condition (Main Step, or summoned directly combined) at no cost; its cores move onto the Spirit; BP+ and symbol are added; one Brave per Spirit.",
+      "source": "Eternal Rule Manual VER.17.0 p. 34-35",
+      "status": "enforced",
+      "test": "mech34.test.mjs:V10"
+    },
+    {
+      "id": "BRAVE-SPIRIT-FORM",
+      "rule": "An uncombined Brave on the Field is treated as a Spirit; summoning it is not a Spirit summon.",
+      "source": "Eternal Rule Manual VER.17.0 p. 34-35",
+      "status": "enforced",
+      "test": "mech34.test.mjs:V09"
+    },
+    {
+      "id": "BRAVE-SEPARATE",
+      "rule": "In the Main Step a combined Spirit can separate; the Brave needs cores for Lv1; a Spirit that no longer meets the condition separates at once and a Brave that cannot keep Lv1 goes to the Trash.",
+      "source": "Eternal Rule Manual VER.17.0 p. 35",
+      "status": "enforced",
+      "test": "mech34.test.mjs:V19"
+    },
+    {
+      "id": "BRAVE-LEAVE",
+      "rule": "When the combined Spirit leaves the Field the Brave goes to the same place.",
+      "source": "Eternal Rule Manual VER.17.0 p. 36",
+      "status": "partial",
+      "note": "Soul State: the Brave goes to the Trash (house reading). Swaps and Brave-only removal are not wired.",
+      "test": "mech34.test.mjs:V15"
+    },
+    {
+      "id": "BRAVE-NEXUS",
+      "rule": "A Saga Brave can combine with a Grandwalker Nexus and adds its [While Combined with a Nexus] effect.",
+      "source": "Eternal Rule Manual VER.17.0 p. 38-39",
+      "status": "partial",
+      "note": "v0.35: combine (cores to the Reserve), direct summon without cores, separation with Lv1 cores, symbol and [While Combined with a Nexus] effects. The Nexus does not take the Brave's cost/family; the Brave's immunity to other effects is implicit (it is not a Field target).",
+      "test": "mech35.test.mjs:K32"
+    },
+    {
+      "id": "OPEN-MECHANICS",
+      "rule": "Ultimate, Seal, Heavy Exhaust, Unstackable.",
+      "source": "Eternal manual (to read when that work starts)",
+      "status": "open",
+      "note": "Roadmap issue #4 after v0.35 (Token done)."
+    },
+    {
+      "id": "TOKEN-OUTSIDE-DECK",
+      "rule": "Token cards cannot be put into the Deck; they are prepared before the game, no limit per kind, not refilled during the game.",
+      "source": "Eternal Rule Manual VER.17.0 p. 57; official \"How to Use Token Cards\" rule 1",
+      "status": "enforced",
+      "test": "mech35.test.mjs:K02"
+    },
+    {
+      "id": "TOKEN-SEND-OUT",
+      "rule": "A Token goes to the Field only by a \"send out\" effect: no cost, cores for at least Lv1 from the Field or Reserve; it is not a summon.",
+      "source": "Eternal Rule Manual VER.17.0 p. 56; official \"How to Use Token Cards\" rule 2",
+      "status": "enforced",
+      "test": "mech35.test.mjs:K04"
+    },
+    {
+      "id": "TOKEN-LEAVE",
+      "rule": "A Token that leaves the Field returns to the Token supply (not Trash, Hand, Deck or Soul State); a Brave on it goes to the Trash; \"after destroyed\" Bursts cannot activate.",
+      "source": "official \"How to Use Token Cards\" rule 3 and notes",
+      "status": "enforced",
+      "test": "mech35.test.mjs:K08"
+    },
+    {
+      "id": "COST-DESTROY",
+      "rule": "A Cost Destruction effect destroys an opposing Spirit/Ultimate with Cost N or less; the limit grows only through effects that say so (Bulwark Temple LV2, Railgun on a Nexus, five counters on Musketeer); lowest/highest-cost destruction has no limit.",
+      "source": "card text read on cardrush-bs.jp (see manual-notes: Cost Destruction effect)",
+      "status": "enforced",
+      "test": "blue37.test.mjs:B09"
+    },
+    {
+      "id": "COST-DESTROY-LIMIT",
+      "rule": "The Temple bonus counts Saga Braves you control (also a Brave combined with a Spirit) and works only at LV2 for Celtica/Scalostle sources.",
+      "source": "card text read on cardrush-bs.jp (see manual-notes: Cost Destruction effect)",
+      "status": "enforced",
+      "test": "blue37.test.mjs:B10"
+    },
+    {
+      "id": "NEXUS-BRAVE-SKILL",
+      "rule": "A Saga Brave combined with Contractor Nuadha gives its Contract Skill N: send N cores from the Nexus to the Void, Flash, either Attack Step.",
+      "source": "card text read on cardrush-bs.jp (see manual-notes: Nexus Brave Contract Skill)",
+      "status": "enforced",
+      "test": "blue37.test.mjs:B26"
+    },
+    {
+      "id": "BRAVE-BY-EFFECT",
+      "rule": "A Brave summoned by an effect is a Spirit (Lv1, no cost) and can be combined in a later Main Step.",
+      "source": "Eternal manual pp. 34-36",
+      "status": "partial",
+      "note": "Direct combining by an effect (Goibniu LV2) and summon from the Trash are not built; the manual page is read through docs/manual-notes.md (Brave).",
+      "test": "blue37.test.mjs:B32"
+    },
+    {
+      "id": "HEAVY-EXHAUST",
+      "rule": "Heavy Exhaust: only an effect applies it; the card cannot attack or block; one Refresh (Refresh Step or an effect) makes it a normal Exhausted card; a Refreshed or Exhausted Spirit can be targeted.",
+      "source": "Eternal manual pp. 60-61, FAQ p. 67",
+      "status": "enforced",
+      "note": "Shown as Exhausted; the upside-down picture needs UI approval.",
+      "test": "green38.test.mjs:G06"
+    },
+    {
+      "id": "HEAVY-EXHAUST-REFRESH-STEP",
+      "rule": "The Refresh Step turns a Heavy Exhausted card into a normal Exhausted card (not Refreshed).",
+      "source": "Eternal manual p. 20 and FAQ p. 67 (inferred: the Refresh Step is a refresh)",
+      "status": "enforced",
+      "note": "The manual summary does not state the Refresh Step case explicitly; implemented as one refresh.",
+      "test": "green38.test.mjs:G07"
+    },
+    {
+      "id": "REMOVED-ZONE",
+      "rule": "Cards put onto the Removed Zone by Hermes-deck effects leave their zone; Spirits sent there give their cores to the Reserve; 'when cards are put onto the opposing Removed Zone' effects fire once per put event.",
+      "source": "card text of the Hermes deck cards; no Removed Zone rule found in the Eternal manual text read 2026-10-14 (docs/manual-notes.md, Heavy Exhaust / Removed Zone)",
+      "status": "partial",
+      "note": "Returning cards from the zone, 'can't use' locks and the Set Aside relation are not built.",
+      "test": "green38.test.mjs:G23"
+    },
+    {
+      "id": "NO-BURST-BATTLE",
+      "rule": "An effect can stop the opponent from activating Burst effects during one battle.",
+      "source": "card text of Contractor Hermes (Contract Field); manual p. 48 names only Heavy Armor / Ultra Armor (docs/manual-notes.md)",
+      "status": "partial",
+      "note": "Only Burst effects of the Burst Area are blocked; the lock ends with the battle.",
+      "test": "green38.test.mjs:G36"
+    },
+    {
+      "id": "MANIFEST-YOUR-ATTACK",
+      "rule": "A Manifest printed '(Your Attack Step)' is a Flash only in the Attack Step of the Manifesting player.",
+      "source": "card text of Sisyphus (Manifest, Your Attack Step); Manifest rule in docs/manual-notes.md",
+      "status": "enforced",
+      "test": "green38.test.mjs:G43"
+    },
+    {
+      "id": "PURPLE-CORES-RESERVE",
+      "rule": "Cores sent to the Reserve by an effect can leave a Spirit below its Lv1 cores: it is depleted (Trash, no Destruction effects) and draws only what the card says.",
+      "source": "Eternal Rule Manual p. 28 (Depletion); card text of Vaplus",
+      "status": "enforced",
+      "test": "purple39.test.mjs:P30"
+    },
+    {
+      "id": "PURPLE-BY-DISCARD",
+      "rule": "\"By discarding a card\": the discard is the cost and is only done when the rest can be done; with an empty Hand nothing happens.",
+      "source": "Eternal Rule Manual FAQ, About Effects in General Q5",
+      "status": "enforced",
+      "test": "purple39.test.mjs:P24"
+    },
+    {
+      "id": "PURPLE-COUNT-ONCE",
+      "rule": "A once-per-turn limit that covers only the Count part of an effect does not stop the rest of the effect (Contractor Hades Contract Skill).",
+      "source": "card text of Contractor Hades",
+      "status": "enforced",
+      "test": "purple39.test.mjs:P13"
+    },
+    {
+      "id": "YELLOW-NOAB",
+      "rule": "A Spirit under \"can't attack/block\" is never offered as an attacker or blocker and stays on the Field; the flag ends when it leaves the Field.",
+      "source": "card text of Contractor Indra (Contract Skill); manual text not re-read in v0.40",
+      "status": "partial",
+      "test": "yellow40.test.mjs:Y10",
+      "note": "The Eternal manual text on can't-attack/block effects was not re-read in v0.40; the \"Neither player can ... prevented by opposing effects\" clause (Vajrawurm Unleash) is not built."
+    },
+    {
+      "id": "YELLOW-BY-ALLHAND",
+      "rule": "\"By discarding your entire Hand\": needs at least one card; the draw only happens when the discard was done.",
+      "source": "Eternal Rule Manual FAQ, About Effects in General Q5",
+      "status": "enforced",
+      "test": "yellow40.test.mjs:Y13"
+    },
+    {
+      "id": "YELLOW-EXTRA-REDUCTION",
+      "rule": "An extra reduction symbol given by a Field card lowers the cost of matching cards in the Hand, only while its Level is active.",
+      "source": "card text of Contractor Indra and Shimavajdra",
+      "status": "enforced",
+      "test": "yellow40.test.mjs:Y21"
+    },
+    {
+      "id": "YELLOW-NOSTACK",
+      "rule": "(Can't Stack): of several same-name cards the effect works once per event.",
+      "source": "card text (Thunderive)",
+      "status": "enforced",
+      "test": "yellow40.test.mjs:Y27"
+    },
+    {
+      "id": "YELLOW-LIFE-MOVE",
+      "rule": "Sending a Life to a Spirit or a Void core to the Life is not a Life reduction by damage: no Burst; the last Life is never sent by an own effect.",
+      "source": "card text of Vajdra-of-Magan and Naraka; engine ruling",
+      "status": "partial",
+      "test": "yellow40.test.mjs:Y18",
+      "note": "Built as printed on the cards; the manual has no page for moving a Life core to a Spirit or a Void core to the Life, and the \"last Life can't be sent\" rule is an engine safeguard, not a manual rule."
+    },
+    {
+      "id": "MAGIC-CLAUSES-47",
+      "rule": "Magic clauses: sent-to-Trash triggers, use from the Trash (banished), attack/block core tax, Trash symbols for the cost, Hand protection, Hand trigger at the start of the opposing Attack Step, Burst then Main effect and Brave-summon activation.",
+      "source": "card text of Whirling Tide, Thunder Counter, Hades Disaster, Plutonic Wall, Lightning Tempest, Dana Draw; engine ruling",
+      "status": "partial",
+      "test": "magic47.test.mjs:M02",
+      "note": "Built as printed; the manual has no general rule for these clauses. House readings: only a spare core pays the Plutonic Wall tax; the human uses Trash Magic from the Flash Timing list."
+    },
+    {
+      "id": "SEAL-48",
+      "rule": "Seal: a Seal effect (SEAL action, Seal Manifest, Seal Contract Advent) moves your Soul Core to your Life; you are Sealed while it is there and [During Seal] effects apply; the Soul Core in Life counts as a Life core.",
+      "source": "Eternal Rule Manual p.49 (Seal); p.28 (Soul Core places)",
+      "status": "partial",
+      "test": "seal48.test.mjs:S01",
+      "note": "Life reduction choice is fixed (normal cores first, both players); no human prompt yet. Flag Contract Advent not built: the Flag Nexus rule box is missing from the Fandom export."
+    },
+    {
+      "id": "ACCEL-50",
+      "rule": "Accel: use the Accel effect from the Hand at its timing by paying the Accel cost; afterwards the card goes to the Removed Zone; an Accel Spirit in the Removed Zone can be summoned in your Main Step by paying its cost; Accel can't be used from the Removed Zone.",
+      "source": "Battle Spirits Fandom wiki, 'Accel' (Q1-Q8); no Accel section in the Eternal manual text read",
+      "status": "partial",
+      "test": "accel50.test.mjs:A05",
+      "note": "Accel-cost reduction icons are not in the Fandom export: the full cost is paid until the cards are checked against images."
+    },
+    {
+      "id": "SILVER-WHEEL-50",
+      "rule": "Silver Wheel: a Flash effect whose cost is exhausting this card; 'when you activate Silver Wheel' effects trigger after it.",
+      "source": "Printed card text (Fandom export BS70-BS76); Eternal Rule Manual p.18/p.23 (Flash effects also in the Main Step)",
+      "status": "partial",
+      "test": "accel50.test.mjs:S01",
+      "note": "SILVER_WHEEL trigger is built but no promoted card uses it yet (Contractor Brigit's Contract Field needs the Contract Nexus data)."
+    }
+  ]
+}

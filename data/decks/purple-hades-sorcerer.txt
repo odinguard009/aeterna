@@ -1,0 +1,14 @@
+3 BS68-CX01   # The SorcererContractor Hades
+3 BS68-070   # Hades' Nether Temple
+3 BS68-012   # The Sorcerer Infernal Soldier
+3 BS68-014   # The SorcererWatchdog Hound-Beros
+3 BS68-015   # The SorcererDragonWarrior Galatiark
+3 BS68-016   # The SorcererMystic Heineza
+3 BS68-017   # The SorcererBirdGeneral Naberidus
+3 BS68-018   # The SorcererDuchess Phenlese
+3 BS68-019   # The SorcererSwordsman Javir
+3 BS68-020   # The SorcererWolf Volgoat
+3 BS68-022   # The SorcererWarrior Gadirac
+3 BS68-023   # The SorcererBeastMarquis Vaplus
+2 BS68-NX01   # The SixHellSorcerer Dells-Vajram
+2 BS68-021   # The BloodAllianceThirteenMarquess Alvanshell

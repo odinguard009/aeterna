@@ -1,0 +1,6601 @@
+[
+ {
+  "id": "BS01-001",
+  "name": "Goradon",
+  "name_jp": "ゴラドン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Reptile Beast"
+  ],
+  "text": "",
+  "image": "Gora.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-002",
+  "name": "Rokceratops",
+  "name_jp": "ロクケラトプス",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Terra Dragon"
+  ],
+  "text": "",
+  "image": "Rokceratops.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-004",
+  "name": "The Scout Dragno",
+  "name_jp": "ドラグノ偵察兵",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Dragon"
+  ],
+  "text": "[LV1][LV2] (When Attacks)\nThis Spirit gains +2000 BP.",
+  "image": "The Scout Dragno.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 2000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-005",
+  "name": "Eyeburn",
+  "name_jp": "アイバーン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Winged Dragon"
+  ],
+  "text": "",
+  "image": "Eyeburn.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-008",
+  "name": "Metalburn",
+  "name_jp": "メタルバーン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   },
+   {
+    "cores": 8,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Machine Dragon"
+  ],
+  "text": "",
+  "image": "Metalburn.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-010",
+  "name": "Chakrambat",
+  "name_jp": "チャクラムバット",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Flying Fang"
+  ],
+  "text": "[LV1][LV2] (When Attacks)\nThis Spirit gains +4000 BP.",
+  "image": "Chakrambat.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 4000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-013",
+  "name": "Taurusknight",
+  "name_jp": "タウロスナイト",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   },
+   {
+    "cores": 6,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Mounted Warrior"
+  ],
+  "text": "[LV1][LV2][LV3] Flash - Awaken\nYou can send any number of cores from your Spirits to this Spirit.",
+  "image": "Taurusknight.jpg",
+  "block": "01",
+  "saga": 1,
+  "mechanics": [
+   "Awaken"
+  ],
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "once": false,
+    "cpuSkip": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "AWAKEN"
+     }
+    ],
+    "lv": [
+     1,
+     2,
+     3
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-019",
+  "name": "Jurassickle",
+  "name_jp": "ジュラシックル",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Terra Dragon"
+  ],
+  "text": "[LV1][LV2] (When Attacks)\nThis Spirit gains +4000 BP.",
+  "image": "Jurassickle.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 4000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-020",
+  "name": "The BladeDragon Steelanodon",
+  "name_jp": "翼刃竜スティラノドン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 6,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 6,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Winged Dragon"
+  ],
+  "text": "[LV1][LV2] Flash - Awaken\nYou can send any number of cores from your Spirits to this Spirit.",
+  "image": "The BladeDragon Steelanodon.jpg",
+  "block": "01",
+  "saga": 1,
+  "mechanics": [
+   "Awaken"
+  ],
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "once": false,
+    "cpuSkip": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "AWAKEN"
+     }
+    ],
+    "lv": [
+     1,
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-026",
+  "name": "Foger",
+  "name_jp": "フォッガー",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Darkling"
+  ],
+  "text": "",
+  "image": "Foger.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-028",
+  "name": "Skulldevil",
+  "name_jp": "スカルデビル",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Ogre Wizard"
+  ],
+  "text": "",
+  "image": "Skulldevil.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-030",
+  "name": "Grip-Hands",
+  "name_jp": "グリプ・ハンズ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Darkling"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nDraw a card.",
+  "image": "Grip-Hands.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-031",
+  "name": "Death-Haides",
+  "name_jp": "デス・ハーデス",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Ogre Wizard"
+  ],
+  "text": "",
+  "image": "Death-Haides.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-034",
+  "name": "Bi-Python",
+  "name_jp": "バイ・パイソン",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Dark Snake"
+  ],
+  "text": "[LV1][LV2] (When Attacks)\nDraw a card.",
+  "image": "Bi-Python.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-038",
+  "name": "Skel-Viper",
+  "name_jp": "スケル・バイパー",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Dark Snake"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nDraw a card.",
+  "image": "Skel-Viper.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-039",
+  "name": "The Mysteryman Dionaeman",
+  "name_jp": "怪人ディオネマン",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Zombie"
+  ],
+  "text": "",
+  "image": "The Mysteryman Dionaeman.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-042",
+  "name": "Mistweasel",
+  "name_jp": "ミストウィゼル",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Spiritual Beast"
+  ],
+  "text": "[LV1][LV2] (When Destroyed)\nDraw three cards.",
+  "image": "Mistweasel.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 3
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-043",
+  "name": "Draculious",
+  "name_jp": "ドラキュリウス",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 4,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Ogre Wizard"
+  ],
+  "text": "",
+  "image": "Draculious.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-047",
+  "name": "The Witch Naja",
+  "name_jp": "魔女ナージャ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 6,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Evil Deity"
+  ],
+  "text": "[LV1][LV2] (When Battles)\nWhen only the opposing Spirit is destroyed by comparing BP, exhaust an opposing Spirit.",
+  "image": "The Witch Naja.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BATTLE_WIN",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-050",
+  "name": "Beatbeetle",
+  "name_jp": "ビートビートル",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Shell Insect"
+  ],
+  "text": "",
+  "image": "Beatbeetle.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-051",
+  "name": "Flyingmirage",
+  "name_jp": "フライングミラージュ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Shell Insect"
+  ],
+  "text": "",
+  "image": "Flyingmirage.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-054",
+  "name": "Shockeater",
+  "name_jp": "ショックイーター",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Plant Spirit"
+  ],
+  "text": "",
+  "image": "Shockeater.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-055",
+  "name": "Emeant",
+  "name_jp": "エメアント",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Parasite"
+  ],
+  "text": "[LV1][LV2] (When Destroyed)\nDuring this turn, give all your Spirits +1000 BP.",
+  "image": "Emeant.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 1000,
+      "to": "own"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-058",
+  "name": "Hercules-Geo",
+  "name_jp": "ヘラクレス・ジオ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 5,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Giant Beast"
+  ],
+  "text": "",
+  "image": "Hercules-Geo.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-060",
+  "name": "Eagrass",
+  "name_jp": "イーグラス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Winged Beast"
+  ],
+  "text": "[LV2] (When Destroyed)\nDuring this turn, all your Spirits gain +2000 BP.",
+  "image": "Eagrass.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 2000,
+      "to": "own"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-061",
+  "name": "Apewhip",
+  "name_jp": "エイプウィップ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 4,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Imp"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nPut a core from the Void to your Reserve.",
+  "image": "Apewhip.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_RESERVE",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-063",
+  "name": "Emeraldscissor",
+  "name_jp": "エメラルドシーザー",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Parasite"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nExhaust an opposing Spirit.",
+  "image": "Emeraldscissor.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-064",
+  "name": "Ziga-Wasp",
+  "name_jp": "ジガ・ワスプ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Parasite"
+  ],
+  "text": "Original = [LV1][LV2] High Speed (Flash) This spirit card may be summoned from your hand during the Flash Step. In that case, the cost of this spirit and the cores to be put on this spirit must be paid or moved from your reserve.",
+  "image": "Ziga-Wasp.jpg",
+  "block": "01",
+  "saga": 1,
+  "highSpeed": true,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-068",
+  "name": "The BlastTiger Tigald",
+  "name_jp": "風虎ティガルド",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Blade Beast"
+  ],
+  "text": "Original = [LV2] High Speed (Flash) This spirit card may be summoned from your hand during the Flash Step. In that case, the cost of this spirit and the cores to be put on this spirit must be paid or moved from your reserve.",
+  "image": "The BlastTiger Tigald.jpg",
+  "block": "01",
+  "saga": 1,
+  "highSpeed": true,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-069",
+  "name": "The AirMaster Aquilers",
+  "name_jp": "征空の翼アクィリーズ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Winged Beast"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nPut a core from the Void to one of your Spirits.",
+  "image": "The AirMaster Aquilers.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-070",
+  "name": "The MeteoriteArmor Monoqueiroz",
+  "name_jp": "月甲モノケイロス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Shellman"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nDuring this turn, all your Spirits gain +2000 BP.",
+  "image": "The MeteoriteArmor Monoqueiroz.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 2000,
+      "to": "own"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-073",
+  "name": "The GaudyFeather Vulpelture",
+  "name_jp": "極彩鳥ヴァルペルチャー",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 8,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 5,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Winged Beast"
+  ],
+  "text": "Original = [LV1][LV2] High Speed (Flash) This spirit card may be summoned from your hand during the Flash Step. In that case, the cost of this spirit and the cores to be put on this spirit must be paid or moved from your reserve.",
+  "image": "The GaudyFeather Vulpelture.jpg",
+  "block": "01",
+  "saga": 1,
+  "highSpeed": true,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-074",
+  "name": "Berserker-Gun",
+  "name_jp": "バーサーカー・ガン",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Machine"
+  ],
+  "text": "",
+  "image": "Berserker-Gun.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-075",
+  "name": "Icemaiden",
+  "name_jp": "アイスメイデン",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Machine"
+  ],
+  "text": "",
+  "image": "Icemaiden.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-077",
+  "name": "Baby-Loki",
+  "name_jp": "ベビー・ロキ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Machine"
+  ],
+  "text": "Original = [LV2] (When Blocks) This spirit gets +1000 BP until end of turn.",
+  "image": "Baby-Loki.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 1000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-080",
+  "name": "Fenrircannon",
+  "name_jp": "フェンリルキャノン",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Machine Beast"
+  ],
+  "text": "[LV1][LV2] (When Blocks)\nThis Spirit gains +1000 BP.",
+  "image": "Fenrircannon.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 1000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-081",
+  "name": "The SilverScale Nithhoggr",
+  "name_jp": "銀燐竜ニーズホッグ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Armored Dragon, Armored Beast"
+  ],
+  "text": "Original = [LV1][LV2] (When Blocks) This spirit gets +4000BP until end of turn.",
+  "image": "The SilverScale Nithhoggr.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 4000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-084",
+  "name": "Gatlingstand",
+  "name_jp": "ガトリングスタンド",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Armed Machine"
+  ],
+  "text": "",
+  "image": "Gatlingstand.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-085",
+  "name": "Elephantite",
+  "name_jp": "エレファンタイト",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Armored Beast"
+  ],
+  "text": "Original = [LV1][LV2] (When Blocks) This spirit gets +2000BP until end of turn.",
+  "image": "Elephantite.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 2000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-089",
+  "name": "Dualcannon-Bell",
+  "name_jp": "デュアルキャノン・ベル",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Android, Armed Machine"
+  ],
+  "text": "",
+  "image": "Dualcannon-Bell.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-092",
+  "name": "The CarrierWhale Mobileflow",
+  "name_jp": "空母鯨モビルフロウ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Flying Fish"
+  ],
+  "text": "",
+  "image": "The CarrierWhale Mobileflow.jpg",
+  "block": "01",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-097",
+  "name": "The SteelWyvern Valkyrious",
+  "name_jp": "飛龍ヴァルキュリウス",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 8,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   },
+   {
+    "cores": 8,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Machine Dragon"
+  ],
+  "text": "Original = [LV1][LV2][LV3] (When Blocks) This spirit gets +6000BP until end of turn.",
+  "image": "The SteelWyvern Valkyrious.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 6000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-117",
+  "name": "Double Draw",
+  "name_jp": "ダブルドロー",
+  "type": "Magic",
+  "color": "red",
+  "cost": 4,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "Main\nDraw two cards.\n\nFlash\nDuring this turn, give a Spirit +2000 BP.",
+  "image": "Double Draw.jpg",
+  "block": "01",
+  "saga": 1,
+  "magic": {
+   "timing": [
+    "MAIN",
+    "FLASH"
+   ],
+   "effect": null,
+   "value": 0,
+   "by": {
+    "MAIN": {
+     "effect": "DRAW",
+     "value": 2
+    },
+    "FLASH": {
+     "effect": "BP_PLUS",
+     "value": 2000
+    }
+   }
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-134",
+  "name": "Binding Thorn",
+  "name_jp": "バインディングソーン",
+  "type": "Magic",
+  "color": "green",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "Original (Jap Version) = Flash- Exhaust an opposing Spirit.",
+  "image": "Binding Thorn.jpg",
+  "block": "01",
+  "saga": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "EXHAUST_OPP",
+   "value": 0
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-146",
+  "name": "Dream Ribbon",
+  "name_jp": "ドリームリボン",
+  "type": "Magic",
+  "color": "white",
+  "cost": 4,
+  "reduction": {
+   "white": 3
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "Original (Jap Version) = Flash - Return an opposing Spirit to the Hand.",
+  "image": "Dream Ribbon.jpg",
+  "block": "01",
+  "saga": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BOUNCE_OPP",
+     "to": "hand",
+     "kind": "spirit"
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS01-X01",
+  "name": "The DragonEmperor Siegfried",
+  "name_jp": "龍皇ジークフリード",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 6,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   },
+   {
+    "cores": 5,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Ancient Dragon"
+  ],
+  "text": "[LV1][LV2][LV3] Flash - Awaken\nYou can send any number of cores from your Spirits to this Spirit.\n\n[LV3] (When Destroyed)\nPut a core from the Void to your Life.",
+  "image": "The DragonEmperor Siegfried.jpg",
+  "block": "01",
+  "saga": 1,
+  "mechanics": [
+   "Awaken"
+  ],
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "once": false,
+    "cpuSkip": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "AWAKEN"
+     }
+    ],
+    "lv": [
+     1,
+     2,
+     3
+    ]
+   },
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     3
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_LIFE",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-001",
+  "name": "Lizardedge",
+  "name_jp": "リザドエッジ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   },
+   {
+    "cores": 4,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Reptile Beast"
+  ],
+  "text": "",
+  "image": "Lizardedge.jpg",
+  "block": "02",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-003",
+  "name": "Dinohound",
+  "name_jp": "ディノハウンド",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Terra Dragon"
+  ],
+  "text": "",
+  "image": "Dinohound.jpg",
+  "block": "02",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-007",
+  "name": "The RiseDragon Balmung",
+  "name_jp": "昇龍バルムンク",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   },
+   {
+    "cores": 8,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Winged Dragon"
+  ],
+  "text": "[LV1][LV2][LV3] Flash - Awaken\nYou can send any number of cores from your Spirits to this Spirit.",
+  "image": "The RiseDragon Balmung.jpg",
+  "block": "02",
+  "saga": 1,
+  "mechanics": [
+   "Awaken"
+  ],
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "once": false,
+    "cpuSkip": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "AWAKEN"
+     }
+    ],
+    "lv": [
+     1,
+     2,
+     3
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-008",
+  "name": "Fisdragoon",
+  "name_jp": "フィスドラグーン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   },
+   {
+    "cores": 5,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Terra Dragon"
+  ],
+  "text": "[LV2][LV3] (When Attacks)\nThis Spirit gains +1000 BP.",
+  "image": "Fisdragoon.jpg",
+  "block": "02",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 1000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-014",
+  "name": "Phantasma",
+  "name_jp": "ファンタズマ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Spiritual Beast"
+  ],
+  "text": "",
+  "image": "Phantasma.jpg",
+  "block": "02",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-023",
+  "name": "The TwinSnake Hydram",
+  "name_jp": "双蛇ヒュドラム",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 6,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   },
+   {
+    "cores": 6,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Dark Snake"
+  ],
+  "text": "",
+  "image": "The TwinSnake Hydram.jpg",
+  "block": "02",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-025",
+  "name": "Sheeple",
+  "name_jp": "シープル",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Imp"
+  ],
+  "text": "",
+  "image": "Sheeple.jpg",
+  "block": "02",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-032",
+  "name": "Dachono",
+  "name_jp": "ダッチョーノ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Winged Beast"
+  ],
+  "text": "Jap Version = [LV1][LV2] (When Destroyed) Put two cores from the Void to your Reserve.",
+  "image": "Dachono.png",
+  "block": "02",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_RESERVE",
+      "n": 2
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-037",
+  "name": "Sphereroid",
+  "name_jp": "スフィアロイド",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Machine"
+  ],
+  "text": "[LV2] (When Blocks) This spirit gains +2000BP until end of turn.",
+  "image": "Sphereroid.png",
+  "block": "02",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 2000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-039",
+  "name": "The Sacred Mjolnir",
+  "name_jp": "神機ミョルニール",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   },
+   {
+    "cores": 5,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Armed Machine"
+  ],
+  "text": "",
+  "image": "The Sacred Mjolnir.png",
+  "block": "02",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-046",
+  "name": "Wingull",
+  "name_jp": "ウィンガル",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 6,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   },
+   {
+    "cores": 4,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Armed Machine"
+  ],
+  "text": "",
+  "image": "Wingull.jpg",
+  "block": "02",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-049",
+  "name": "Piyon",
+  "name_jp": "ピヨン",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Song Bird"
+  ],
+  "text": "",
+  "image": "Piyon.jpg",
+  "block": "02",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-051",
+  "name": "Chunpopo",
+  "name_jp": "チュンポポ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Song Bird"
+  ],
+  "text": "",
+  "image": "Chunpopo.jpg",
+  "block": "02",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-053",
+  "name": "The Fairy Tanya",
+  "name_jp": "妖精ターニャ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Fairy"
+  ],
+  "text": "",
+  "image": "The Fairy Tanya.jpg",
+  "block": "02",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-059",
+  "name": "Rom",
+  "name_jp": "ロム",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Toy Beast"
+  ],
+  "text": "",
+  "image": null,
+  "block": "02",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-066",
+  "name": "Arcanadoll-Pan",
+  "name_jp": "アルカナドール・パン",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Magician"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nYou can exhaust an opposing Spirit.",
+  "image": "Arcanadoll-Pan.jpg",
+  "block": "02",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-074",
+  "name": "The BalloonMan Barball",
+  "name_jp": "風船魔人バーバル",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 6,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Puppet Beast"
+  ],
+  "text": "",
+  "image": "The BalloonMan Barball.jpg",
+  "block": "02",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-102",
+  "name": "White Potion",
+  "name_jp": "ホワイトポーション",
+  "type": "Magic",
+  "color": "white",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "Flash\nRefresh a Spirit you control.",
+  "image": "White Potion.jpg",
+  "block": "02",
+  "saga": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "REFRESH_SPIRIT"
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-001",
+  "name": "The FireSpirit Salamandert",
+  "name_jp": "火精サラマンダート",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Flying Fang"
+  ],
+  "text": "",
+  "image": "The FireSpirit Salamandert.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-002",
+  "name": "Edgehog",
+  "name_jp": "エッジホッグ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Reptile Beast"
+  ],
+  "text": "Eng Version= [LV2] (When Attacks) This spirit gets +1000 BP until end of turn.",
+  "image": "Edgehog.jpg",
+  "block": "03",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 1000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-005",
+  "name": "Enchu",
+  "name_jp": "エンチュウ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   },
+   {
+    "cores": 5,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Lava Fish"
+  ],
+  "text": "",
+  "image": "Enchu.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-009",
+  "name": "The FireBlower Melt",
+  "name_jp": "火吹きメルト",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 5,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Clown"
+  ],
+  "text": "",
+  "image": "The FireBlower Melt.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-013",
+  "name": "Hellscorpio",
+  "name_jp": "ヘルスコルピオ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   },
+   {
+    "cores": 5,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Ogre Wizard"
+  ],
+  "text": "",
+  "image": "Hellscorpio.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-018",
+  "name": "Darkwraith",
+  "name_jp": "ダークレイス",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   },
+   {
+    "cores": 6,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Ogre Wizard"
+  ],
+  "text": "",
+  "image": "Darkwraith.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-020",
+  "name": "Mega-Humpdump",
+  "name_jp": "メガ・ハンプダンプ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 5,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Darkling"
+  ],
+  "text": "",
+  "image": "Mega-Humpdump.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-025",
+  "name": "Stagscissor",
+  "name_jp": "スタッグシザー",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Shell Insect"
+  ],
+  "text": "",
+  "image": "Stagscissor.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-026",
+  "name": "The WoodenSpirit Dryadena",
+  "name_jp": "木精ドリアドナ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 5,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Plant Spirit, Fairy"
+  ],
+  "text": "",
+  "image": "The WoodenSpirit Dryadena.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-029",
+  "name": "Machfly",
+  "name_jp": "マッハフライ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   },
+   {
+    "cores": 6,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Parasite"
+  ],
+  "text": "",
+  "image": "Machfly.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-038",
+  "name": "Angelafish",
+  "name_jp": "アンジェラフィッシュ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Flying Fish"
+  ],
+  "text": "",
+  "image": "Angelafish.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-041",
+  "name": "The Artifact Asc",
+  "name_jp": "機人アスク",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Armed Machine"
+  ],
+  "text": "",
+  "image": "The Artifact Asc.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-042",
+  "name": "The SeaCreature Dugong",
+  "name_jp": "海獣ジューゴン",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   },
+   {
+    "cores": 4,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Giant Beast"
+  ],
+  "text": "",
+  "image": "The SeaCreature Dugong.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-045",
+  "name": "The SilverFox Hati",
+  "name_jp": "銀狐ハティ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Machine Beast"
+  ],
+  "text": "[LV1][LV2] (When Blocks)\nThis Spirit gains +5000 BP.",
+  "image": "The SilverFox Hati.jpg",
+  "block": "03",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 5000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-051",
+  "name": "Dongurin",
+  "name_jp": "ドングリン",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Fairy"
+  ],
+  "text": "",
+  "image": "Dongurin.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-052",
+  "name": "Froger",
+  "name_jp": "フロッガー",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   },
+   {
+    "cores": 7,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Imp"
+  ],
+  "text": "",
+  "image": "Froger.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-060",
+  "name": "Rumpkin",
+  "name_jp": "ランプキン",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Toy Beast"
+  ],
+  "text": "",
+  "image": "Rumpkin.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-063",
+  "name": "Ponysus",
+  "name_jp": "ポニサス",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Imaginary Beast"
+  ],
+  "text": "",
+  "image": "Ponysus.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-068",
+  "name": "Forthros",
+  "name_jp": "フォルトロス",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 7,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 5,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Imaginary Beast"
+  ],
+  "text": "",
+  "image": "Forthros.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-071",
+  "name": "The BattleBeast Bulltop",
+  "name_jp": "戦闘獣ブルトップ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Fighting Beast"
+  ],
+  "text": "",
+  "image": "The BattleBeast Bulltop.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-072",
+  "name": "The Pikeman Jeffrey",
+  "name_jp": "槍兵のジェフリー",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Fighting Spirit"
+  ],
+  "text": "",
+  "image": "The Pikeman Jeffrey.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-074",
+  "name": "The BattleBeast Doben",
+  "name_jp": "戦闘獣ドーベン",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Fighting Beast"
+  ],
+  "text": "[LV1][LV2] (When Attacks) This spirit gets +1000BP until end of turn.",
+  "image": "The BattleBeast Doben.jpg",
+  "block": "03",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 1000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-076",
+  "name": "The ClawSword Lazarus",
+  "name_jp": "爪剣のラザラス",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Fighting Spirit"
+  ],
+  "text": "[LV1][LV2][LV3] Crush (When Attacks)\nDiscard a number of cards equal to this Spirit's level from opposing decktop.",
+  "image": "The ClawSword Lazarus.jpg",
+  "block": "03",
+  "saga": 1,
+  "mechanics": [
+   "Crush"
+  ],
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CRUSH",
+      "n": "lv"
+     }
+    ],
+    "lv": [
+     1,
+     2,
+     3
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-078",
+  "name": "The Berserker Troll",
+  "name_jp": "暴れトロル",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Creator"
+  ],
+  "text": "",
+  "image": "The Berserker Troll.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-080",
+  "name": "Rock-Golem",
+  "name_jp": "ロック・ゴレム",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Artificial Soldier"
+  ],
+  "text": "[LV1][LV2][LV3] Crush (When Attacks) Move cards from the top of your opponent's Deck to their trash equal to this spirit's LV.",
+  "image": "Rock-Golem.jpg",
+  "block": "03",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CRUSH",
+      "n": "lv"
+     }
+    ],
+    "lv": [
+     1,
+     2,
+     3
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-081",
+  "name": "The GiantCentaurusSoldier Danston",
+  "name_jp": "人馬巨兵ダンストン",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 2,
+    "bp": 5000
+   },
+   {
+    "cores": 6,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Fusion Beast"
+  ],
+  "text": "",
+  "image": "The GiantCentaurusSoldier Danston.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-083",
+  "name": "The BearMan Beard",
+  "name_jp": "熊男ベアード",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   },
+   {
+    "cores": 8,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Beast Head"
+  ],
+  "text": "",
+  "image": "The BearMan Beard.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-089",
+  "name": "Deep-Arnold",
+  "name_jp": "ディープ・アーノルド",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 5,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Fusion Beast"
+  ],
+  "text": "",
+  "image": "Deep-Arnold.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-091",
+  "name": "The BattleBeast Bun-Ffalo",
+  "name_jp": "戦闘獣バン・ファロー",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Fighting Beast"
+  ],
+  "text": "",
+  "image": "The BattleBeast Bun-Ffalo.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-099",
+  "name": "The IronFist Tiga",
+  "name_jp": "虎拳士タイガ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 7,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 4,
+    "bp": 8000
+   },
+   {
+    "cores": 7,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Beast Head, Soldier"
+  ],
+  "text": "",
+  "image": "The IronFist Tiga.jpg",
+  "block": "03",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-003",
+  "name": "DarkGoradon",
+  "name_jp": "ダークゴラドン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 2,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   },
+   {
+    "cores": 5,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Reptile Beast"
+  ],
+  "text": "",
+  "image": "DarkGoradon.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-005",
+  "name": "Chain-Dragon",
+  "name_jp": "チェイン・ドラゴン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Machine Dragon"
+  ],
+  "text": "",
+  "image": "Chain-Dragon.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-009",
+  "name": "The FlameEmperor Kujaraku",
+  "name_jp": "炎皇クジャラク",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 6,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 2,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 5,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Emperor Beast, Flying Fang"
+  ],
+  "text": "",
+  "image": "The FlameEmperor Kujaraku.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-012",
+  "name": "Banshee",
+  "name_jp": "バンシィ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   },
+   {
+    "cores": 4,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Darkling"
+  ],
+  "text": "",
+  "image": "Banshee.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-015",
+  "name": "Cyclo-Winder",
+  "name_jp": "サイクロ・ワインダー",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Dark Snake"
+  ],
+  "text": "",
+  "image": "Cyclo-Winder.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-019",
+  "name": "Headless Carriage",
+  "name_jp": "首無し馬車",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 6,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Zombie"
+  ],
+  "text": "",
+  "image": "Headless Carriage.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-023",
+  "name": "Giraffen",
+  "name_jp": "ジラーファン",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Imp"
+  ],
+  "text": "",
+  "image": "Giraffen.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-026",
+  "name": "BlackMachG",
+  "name_jp": "ブラックマッハジー",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Parasite"
+  ],
+  "text": "",
+  "image": "BlackMachG.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-030",
+  "name": "The AppetiteFlower Bug-Lesia",
+  "name_jp": "食蟲花バグ・レシア",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 6,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   },
+   {
+    "cores": 5,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Plant Spirit"
+  ],
+  "text": "",
+  "image": "The AppetiteFlower Bug-Lesia.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-032",
+  "name": "The SpearBeetle Lucanidos",
+  "name_jp": "槍蟲ルカニドス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 7,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 5,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Shell Insect"
+  ],
+  "text": "[LV2] (When Battles)\nWhen only the opposing Spirit is destroyed by BP comparison, refresh this Spirit.",
+  "image": "The SpearBeetle Lucanidos.jpg",
+  "block": "04",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BATTLE_WIN",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "REFRESH"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-035",
+  "name": "Berserker-Magnum",
+  "name_jp": "バーサーカー・マグナム",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Machine"
+  ],
+  "text": "",
+  "image": "Berserker-Magnum.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-038",
+  "name": "The Reconnaissance Magni",
+  "name_jp": "偵察機マグニ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Armed Machine"
+  ],
+  "text": "",
+  "image": "The Reconnaissance Magni.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-040",
+  "name": "The ArmoredBeast Gullin-Bullsty",
+  "name_jp": "鎧装獣グリン・ブルスティ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 4,
+  "reduction": {
+   "white": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 4,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Armored Beast",
+   "Giant Beast"
+  ],
+  "text": "",
+  "image": "The ArmoredBeast Gullin-Bullsty.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-046",
+  "name": "The Fairy Dorothy",
+  "name_jp": "妖精ドロシー",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Fairy"
+  ],
+  "text": "",
+  "image": "The Fairy Dorothy.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-048",
+  "name": "DarkPiyon",
+  "name_jp": "ダークピヨン",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Song Bird"
+  ],
+  "text": "",
+  "image": "DarkPiyon.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-056",
+  "name": "Braveless-Leo",
+  "name_jp": "ブレイブレス・レオ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 7,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 2,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Hunter Beast"
+  ],
+  "text": "",
+  "image": "Braveless-Leo.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-060",
+  "name": "The Soldier Gustav",
+  "name_jp": "戦士グスタフ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   },
+   {
+    "cores": 6,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Artificial Soldier"
+  ],
+  "text": "",
+  "image": "The Soldier Gustav.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-062",
+  "name": "The ApeMan Mongoku",
+  "name_jp": "猿人モンゴクウ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Beast Head, Soldier"
+  ],
+  "text": "",
+  "image": "The ApeMan Mongoku.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-064",
+  "name": "Ugarurum",
+  "name_jp": "ウガルルム",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 5,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Fusion Beast"
+  ],
+  "text": "",
+  "image": "Ugarurum.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-066",
+  "name": "The CatLady Abyssinia",
+  "name_jp": "猫人アビシニア",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Beast Head"
+  ],
+  "text": "",
+  "image": "The CatLady Abyssinia.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-070",
+  "name": "The BattleBeast Diatryma",
+  "name_jp": "戦闘獣ディアトリマー",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Fighting Beast"
+  ],
+  "text": "",
+  "image": "The BattleBeast Diatryma.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-072",
+  "name": "Rabirabi",
+  "name_jp": "ラビラビ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   },
+   {
+    "cores": 9,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Clown"
+  ],
+  "text": "",
+  "image": "Rabirabi.jpg",
+  "block": "04",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-001",
+  "name": "The BombSoldier Dragno",
+  "name_jp": "ドラグノ爆弾兵",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Dragon"
+  ],
+  "text": "Jap Version = [LV1][LV2] (When Destroyed) Destroy an opposing Spirit with one core on it.",
+  "image": "The BombSoldier Dragno.jpg",
+  "block": "05",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "coresLe": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-002",
+  "name": "The FanDragon Sordes",
+  "name_jp": "扇竜ソルデス",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   },
+   {
+    "cores": 5,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Flying Fang"
+  ],
+  "text": "Jap Version = [LV1][LV2][LV3] Flash- Awaken - You can put any number of cores from Spirits you control to this Spirit.",
+  "image": "The FanDragon Sordes.jpg",
+  "block": "05",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "once": false,
+    "cpuSkip": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "AWAKEN"
+     }
+    ],
+    "lv": [
+     1,
+     2,
+     3
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-003",
+  "name": "Dimetrodoron",
+  "name_jp": "ディメトロドロン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Terra Dragon"
+  ],
+  "text": "",
+  "image": "Dimetrodoron.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-005",
+  "name": "Wyarm",
+  "name_jp": "ワイアーム",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 5,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Winged Dragon"
+  ],
+  "text": "",
+  "image": "Wyarm.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-006",
+  "name": "The DragonicFortress Megaron",
+  "name_jp": "城塞龍メガロン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Machine Dragon"
+  ],
+  "text": "",
+  "image": "The DragonicFortress Megaron.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-010",
+  "name": "Sandman",
+  "name_jp": "サンドマン",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Darkling"
+  ],
+  "text": "",
+  "image": "Sandman.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-012",
+  "name": "Blindsnake",
+  "name_jp": "メナシヘビ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Dark Snake"
+  ],
+  "text": "",
+  "image": "Blindsnake.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-015",
+  "name": "Fallenpaladin",
+  "name_jp": "フォールンパラディン",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 6,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Evil Shadow"
+  ],
+  "text": "",
+  "image": "Fallenpaladin.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-019",
+  "name": "Pineappopotamus",
+  "name_jp": "パイナッポポタマス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Imp"
+  ],
+  "text": "",
+  "image": "Pineappopotamus.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-021",
+  "name": "Gengoron",
+  "name_jp": "ゲンゴロン",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Shell Insect"
+  ],
+  "text": "",
+  "image": "Gengoron.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-023",
+  "name": "Mothleaf",
+  "name_jp": "モスリーフ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Parasite"
+  ],
+  "text": "Jap Version = [LV1][LV2] (When Battles) When only the opposing Spirit is destroyed by comparing BP, put a core from the Void to this Spirit.\n\n [LV2] (When Battles) When only the opposing Spirit is destroyed by comparing BP, exhaust an opposing Spirit.",
+  "image": "Mothleaf.jpg",
+  "block": "05",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BATTLE_WIN",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self"
+     }
+    ]
+   },
+   {
+    "trigger": "BATTLE_WIN",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-024",
+  "name": "The Yojinbo Antman",
+  "name_jp": "用心棒アントマン",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Shellman",
+   "Parasite"
+  ],
+  "text": "",
+  "image": "The Yojinbo Antman.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-029",
+  "name": "The Artifact Embla",
+  "name_jp": "機人エムブラ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Armed Machine"
+  ],
+  "text": "",
+  "image": "The Artifact Embla.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-031",
+  "name": "The GunKnight Heavybarrel",
+  "name_jp": "銃騎士ヘビーバレル",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   },
+   {
+    "cores": 4,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Armed Machine"
+  ],
+  "text": "",
+  "image": "The GunKnight Heavybarrel7.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-033",
+  "name": "The GiantMobile Ymir",
+  "name_jp": "巨人機ユミール",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Machine"
+  ],
+  "text": "",
+  "image": "The GiantMobile Ymir.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-039",
+  "name": "The MorningFairy Napalco",
+  "name_jp": "アサガオの妖精ナパルコ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Fairy"
+  ],
+  "text": "",
+  "image": "The MorningFairy Napalco.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-041",
+  "name": "Arcanafighter-Quatre",
+  "name_jp": "アルカナファイター・カトル",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Magician"
+  ],
+  "text": "",
+  "image": "Arcanafighter-Quatre.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-045",
+  "name": "Dwarf-Seven",
+  "name_jp": "ドワッフー・セブン",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 7,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Fairy"
+  ],
+  "text": "",
+  "image": "Dwarf-Seven.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-046",
+  "name": "The BattleBeast Babeaver",
+  "name_jp": "戦闘獣バビーバー",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   },
+   {
+    "cores": 5,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Fighting Beast"
+  ],
+  "text": "",
+  "image": "The BattleBeast Babeaver.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-049",
+  "name": "The WolfMan Wolfy",
+  "name_jp": "狼人ウルフィ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   },
+   {
+    "cores": 5,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Beast Head"
+  ],
+  "text": "",
+  "image": "The WolfMan Wolfy.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-052",
+  "name": "Mithril-Golem",
+  "name_jp": "ミスリル・ゴレム",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 6,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   },
+   {
+    "cores": 4,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Artificial Soldier"
+  ],
+  "text": "",
+  "image": "Mithril-Golem.jpg",
+  "block": "05",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-002",
+  "name": "Iguaknife",
+  "name_jp": "イグアナイフ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Reptile Beast"
+  ],
+  "text": "",
+  "image": "Iguaknife.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-004",
+  "name": "The Decurion Dragron",
+  "name_jp": "ドラグロン十人隊長",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Dragon"
+  ],
+  "text": "",
+  "image": "The Decurion Dragron.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-008",
+  "name": "The Scabbardfish Espada",
+  "name_jp": "刀剣魚エスパーダ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Lava Fish"
+  ],
+  "text": "",
+  "image": "The Scabbardfish Espada.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-009",
+  "name": "The CloudBladeDragon Swordlagoon",
+  "name_jp": "雲刃竜ソードラグーン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Astral Dragon",
+   "Winged Dragon"
+  ],
+  "text": "[LV1][LV2] (When Attacks)\nThis Spirit gains +4000 BP.",
+  "image": "The CloudBladeDragon Swordlagoon.jpg",
+  "block": "06",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 4000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-012",
+  "name": "The HugeDinosaur Giganoton",
+  "name_jp": "巨竜ギガノトン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 7,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   },
+   {
+    "cores": 5,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Terra Dragon"
+  ],
+  "text": "[LV1][LV2][LV3] Clash (When Attacks)\nThe opponent must block if possible.\n\n[LV2][LV3] (When Attacks)\nDestroy an opposing 4000 BP or less Spirit.",
+  "image": "The HugeDinosaur Giganoton.jpg",
+  "block": "06",
+  "saga": 1,
+  "mechanics": [
+   "Clash"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "MUST_BLOCK",
+    "to": "self",
+    "lv": [
+     1,
+     2,
+     3
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "bpLe": 4000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-013",
+  "name": "Pigeonheadiless",
+  "name_jp": "ピジョンへディレス",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Zombie"
+  ],
+  "text": "",
+  "image": "Pigeonheadiless.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-016",
+  "name": "Bronzemaiden",
+  "name_jp": "ブロンズメイデン",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Zombie"
+  ],
+  "text": "[LV1][LV2][LV3] (When Summoned)\nDraw a card.",
+  "image": "Bronzemaiden.jpg",
+  "block": "06",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-017",
+  "name": "The HellAirMan Buney",
+  "name_jp": "冥空士ブーネイ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   },
+   {
+    "cores": 6,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Infernal Lord"
+  ],
+  "text": "",
+  "image": "The HellAirMan Buney.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-020",
+  "name": "Skullgoyle",
+  "name_jp": "スカルゴイル",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   },
+   {
+    "cores": 5,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Zombie"
+  ],
+  "text": "",
+  "image": "Skullgoyle.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-025",
+  "name": "Mepon",
+  "name_jp": "メェ～ポン",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Imp"
+  ],
+  "text": "",
+  "image": "Mepon.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-027",
+  "name": "Gazellecaid",
+  "name_jp": "ガゼルケイド",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Imp"
+  ],
+  "text": "",
+  "image": "Gazellecaid.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-030",
+  "name": "The Worker Antman",
+  "name_jp": "働きアントマン",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Shellman",
+   "Parasite"
+  ],
+  "text": "[LV2] (When Attacks)\nPut a core from the Void to your Reserve.",
+  "image": "The Worker Antman.jpg",
+  "block": "06",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_RESERVE",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-031",
+  "name": "Mitsujarashi",
+  "name_jp": "ミツジャラシ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Parasite"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nPut a core from the Void to any Spirit you control.",
+  "image": "Mitsujarashi.jpg",
+  "block": "06",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-032",
+  "name": "Woodykong",
+  "name_jp": "ウッディコング",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   },
+   {
+    "cores": 5,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Imp"
+  ],
+  "text": "",
+  "image": "Woodykong.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-039",
+  "name": "The FloatingFish Molamola",
+  "name_jp": "浮遊魚モラモラー",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Flying Fish"
+  ],
+  "text": "",
+  "image": "The FloatingFish Molamola.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-040",
+  "name": "The ChiefMaid Fulla",
+  "name_jp": "薄氷の侍女長フッラ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Ice Princess"
+  ],
+  "text": "",
+  "image": "The ChiefMaid Fulla.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-041",
+  "name": "The ArmoredBeast Audhumla",
+  "name_jp": "鎧装獣アウドムラ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Giant Beast",
+   "Armored Beast"
+  ],
+  "text": "[LV1][LV2] (When Blocks)\nPut a core from the Void onto this Spirit.",
+  "image": "The ArmoredBeast Audhumla.jpg",
+  "block": "06",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-045",
+  "name": "Tonbeaul",
+  "name_jp": "トンビュール",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   },
+   {
+    "cores": 6,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Glow Insect"
+  ],
+  "text": "",
+  "image": "Tonbeaul.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-047",
+  "name": "The ShineDragonPalace Breidhablic",
+  "name_jp": "輝竜殿ブレイザブリク",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 6,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Armored Dragon"
+  ],
+  "text": "Jap Version = [LV1][LV2][LV3] (When Blocks) Put a core from the Void to this Spirit.\n\n [LV2][LV3] (When Blocks) This Spirit gains +4000 BP.",
+  "image": "The ShineDragonPalace Breidhablic.jpg",
+  "block": "06",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self"
+     }
+    ]
+   },
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 4000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-049",
+  "name": "Pyorit",
+  "name_jp": "ピョリット",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Toy Beast"
+  ],
+  "text": "",
+  "image": "Pyorit.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-053",
+  "name": "Laserpanda",
+  "name_jp": "レーザーパンダ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Drifting Spirit"
+  ],
+  "text": "",
+  "image": "Laserpanda.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-055",
+  "name": "Cotton-Candele",
+  "name_jp": "コットン・キャンデル",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Drifting Spirit"
+  ],
+  "text": "",
+  "image": "Cotton-Candele.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-061",
+  "name": "Dolphino",
+  "name_jp": "ドルフィーノ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 5,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Beast Head"
+  ],
+  "text": "",
+  "image": "Dolphino.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-066",
+  "name": "The MuscleBraggart Humphrey",
+  "name_jp": "力自慢のハンフリー",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Fighting Spirit"
+  ],
+  "text": "Jap Version = [LV1][LV2][LV3] Crush (When Attacks) Discard cards from the opposing decktop equal to this Spirit's level.",
+  "image": "The MuscleBraggart Humphrey.jpg",
+  "block": "06",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CRUSH",
+      "n": "lv"
+     }
+    ],
+    "lv": [
+     1,
+     2,
+     3
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-067",
+  "name": "The WeaponDealer Goron-Garan",
+  "name_jp": "武器商人ゴロン・ガラン",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 5,
+    "bp": 6000
+   },
+   {
+    "cores": 6,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Creator"
+  ],
+  "text": "",
+  "image": "The WeaponDealer Goron-Garan.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-069",
+  "name": "Tsathoggua",
+  "name_jp": "ツァトゥグァ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 2,
+    "bp": 5000
+   },
+   {
+    "cores": 6,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Fusion Beast"
+  ],
+  "text": "",
+  "image": "Tsathoggua.jpg",
+  "block": "06",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS07-001",
+  "name": "Rainydle",
+  "name_jp": "レイニードル",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Astral Dragon"
+  ],
+  "text": "",
+  "image": "Rainydle.jpg",
+  "block": "07",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS07-002",
+  "name": "The WingDragman Pteradia",
+  "name_jp": "翼竜人プテラディア",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Dragon, Winged Dragon"
+  ],
+  "text": "[LV1][LV2][LV3] Flash-Awaken- You can put any number of cores from Spirits you control to this Spirit.",
+  "image": "The WingDragman Pteradia.jpg",
+  "block": "07",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "once": false,
+    "cpuSkip": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "AWAKEN"
+     }
+    ],
+    "lv": [
+     1,
+     2,
+     3
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS07-004",
+  "name": "The FuryRockWyvern Dragorock",
+  "name_jp": "怒石竜ドラゴロック",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Astral Dragon"
+  ],
+  "text": "[LV1][LV2] Clash (When Attacks) The opponent must block if possible.",
+  "image": "The FuryRockWyvern Dragorock.jpg",
+  "block": "07",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "MUST_BLOCK",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS07-010",
+  "name": "Ashtal",
+  "name_jp": "アシュタル",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Nightling"
+  ],
+  "text": "",
+  "image": "Ashtal.jpg",
+  "block": "07",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS07-019",
+  "name": "Spearmink",
+  "name_jp": "スペアミンク",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Blade Beast"
+  ],
+  "text": "",
+  "image": "Spearmink.jpg",
+  "block": "07",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS07-029",
+  "name": "Kigna-Swan",
+  "name_jp": "キグナ・スワン",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 1,
+  "reduction": {
+   "white": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Machine Beast"
+  ],
+  "text": "",
+  "image": "Kigna-Swan.jpg",
+  "block": "07",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS07-032",
+  "name": "Hail-Garf",
+  "name_jp": "ヘイル・ガルフ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Machine Beast"
+  ],
+  "text": "[LV2] (When Blocks)\nThis Spirit gains +3000 BP.",
+  "image": "Hail-Garf.jpg",
+  "block": "07",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 3000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS07-037",
+  "name": "Hippocampoo",
+  "name_jp": "ヒッポカンプー",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Imaginary Beast"
+  ],
+  "text": "",
+  "image": "Hippocampoo.jpg",
+  "block": "07",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS07-040",
+  "name": "The LilyFairy Yuly",
+  "name_jp": "百合の妖精ユリィ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Fairy"
+  ],
+  "text": "[LV2][LV3] Holy Life (When Attacks) When this Spirit's attack reduces the opposing Life, put a core from the Void to your Life.",
+  "image": null,
+  "block": "07",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ALLY_LIFE_HIT",
+    "self": true,
+    "actions": [
+     {
+      "do": "VOID_TO_LIFE",
+      "n": 1
+     }
+    ],
+    "lv": [
+     2,
+     3
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS07-046",
+  "name": "The PantherMan Berserkas",
+  "name_jp": "豹人ベルセルカス",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   },
+   {
+    "cores": 6,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Beast Head"
+  ],
+  "text": "",
+  "image": "The PantherMan Berserkas.jpg",
+  "block": "07",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS07-076",
+  "name": "Diamond Strike",
+  "name_jp": "ダイヤモンドストライク",
+  "type": "Magic",
+  "color": "white",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "Flash - Refresh an \"Armed Machine\" family Spirit you control.",
+  "image": "Diamond Strike.jpg",
+  "block": "07",
+  "saga": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "REFRESH_SPIRIT",
+     "match": {
+      "family": [
+       "Armed Machine"
+      ]
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS08-001",
+  "name": "Dinonychusaw",
+  "name_jp": "ディノニクソー",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Terra Dragon"
+  ],
+  "text": "",
+  "image": "Dinonychusaw.jpg",
+  "block": "08",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS08-011",
+  "name": "The HellWolf Armon",
+  "name_jp": "冥狼士アーモン",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 2,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   },
+   {
+    "cores": 5,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Infernal Lord"
+  ],
+  "text": "",
+  "image": "The HellWolf Armon.jpg",
+  "block": "08",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS08-019",
+  "name": "Emeantman",
+  "name_jp": "エメアントマン",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Parasite, Shellman"
+  ],
+  "text": "[LV1][LV2] (When Destroyed) Put a core from the Void to your Reserve.",
+  "image": "Emeantman.jpg",
+  "block": "08",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_RESERVE",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS08-020",
+  "name": "Dio-Mantis",
+  "name_jp": "ディオ・マンティス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Parasite"
+  ],
+  "text": "",
+  "image": "Dio-Mantis.jpg",
+  "block": "08",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS08-028",
+  "name": "Lampsquid",
+  "name_jp": "ランプスキッド",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Flying Fish"
+  ],
+  "text": "",
+  "image": "Lampsquid.jpg",
+  "block": "08",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS08-037",
+  "name": "Kikimora",
+  "name_jp": "キキーモラ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   },
+   {
+    "cores": 4,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Toy Beast"
+  ],
+  "text": "",
+  "image": "Kikimora.jpg",
+  "block": "08",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS08-046",
+  "name": "The BattleBeast Babyrouza",
+  "name_jp": "戦闘獣バビルーザ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 5,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Fighting Beast"
+  ],
+  "text": "",
+  "image": "The BattleBeast Babyrouza.jpg",
+  "block": "08",
+  "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS09-004",
+  "name": "The VampireDragon Wybat",
+  "name_jp": "吸血竜ワイバット",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   },
+   {
+    "cores": 6,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Winged Dragon",
+   "Nightling"
+  ],
+  "text": "[LV2][LV3] Clash (When Attacks)\nThe opponent must block if possible.",
+  "image": "The VampireDragon Wybat.jpg",
+  "block": "09",
+  "saga": 1,
+  "mechanics": [
+   "Clash"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "MUST_BLOCK",
+    "to": "self",
+    "lv": [
+     2,
+     3
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS09-041",
+  "name": "Aspidochelun",
+  "name_jp": "アスピドケルン",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 4,
+  "reduction": {
+   "yellow": 2,
+   "white": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Hunter Beast",
+   "Flying Fish"
+  ],
+  "text": "[LV1][LV2] (When Blocks)\nDraw a card.",
+  "image": "Aspidochelun.jpg",
+  "block": "09",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS09-069",
+  "name": "Flame Gust",
+  "name_jp": "フレイムガスト",
+  "type": "Magic",
+  "color": "red",
+  "cost": 6,
+  "reduction": {
+   "red": 3
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "Flash- Destroy an opposing 6000 BP or less Spirit.",
+  "image": "Flame Gust.jpg",
+  "block": "09",
+  "saga": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "DESTROY_BP_LE",
+   "value": 6000
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS09-078",
+  "name": "Healing Circle",
+  "name_jp": "ヒーリングサークル",
+  "type": "Magic",
+  "color": "white",
+  "cost": 5,
+  "reduction": {
+   "white": 3,
+   "yellow": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "Main- Put a core from the Void to your Life.\n\n Flash- During this turn, give a Spirit +2000 BP.",
+  "image": "Healing Circle.jpg",
+  "block": "09",
+  "saga": 1,
+  "magic": {
+   "timing": [
+    "MAIN",
+    "FLASH"
+   ],
+   "effect": null,
+   "value": 0,
+   "by": {
+    "MAIN": {
+     "effect": "ACTIONS",
+     "value": 0,
+     "actions": [
+      {
+       "do": "VOID_TO_LIFE",
+       "n": 1
+      }
+     ]
+    },
+    "FLASH": {
+     "effect": "BP_PLUS",
+     "value": 2000
+    }
+   }
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ }
+]

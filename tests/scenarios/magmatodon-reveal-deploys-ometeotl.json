@@ -1,0 +1,9 @@
+{
+  "name": "magmatodon-reveal-deploys-ometeotl",
+  "about": "Magmatodon LV2 is summoned with Ometeotl second from the top: Ometeotl is deployed (cost paid), Cladoselache goes to the Hand, the Soul Core goes to Ometeotl and an opposing 10000 BP Spirit is destroyed.",
+  "turn": 3, "active": "player", "step": 4,
+  "players": {
+    "player": { "reserve": 6, "deck": [ "BS75-001", "BS74-CX01", "BS75-012", "BS75-002", "BS75-004", "BS75-011" ], "spirits": [ { "id": "BS75-010", "cores": 2, "as": "magmatodon" } ] },
+    "opponent": { "reserve": 3, "spirits": [ { "id": "BS75-012", "cores": 2, "as": "victim" } ] }
+  }
+}

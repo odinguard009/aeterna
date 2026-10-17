@@ -1,0 +1,182 @@
+/* ---------------------------------------------------------------------
+   EFFECT ENGINE  (v0.11)  - card effects are DATA: card.effects = [ ... ]
+   Triggered effect: { trigger, lv:[1,2], if:{...}, once:true, optional:true, match:{name:[..],family:[..]}, actions:[ {do:'DRAW', n:1}, ... ] }
+   Static effect:    { trigger:'STATIC', lv:[2], if:{...}, bp:5000, to:'self'|'own', match:{...}, attackingOnly:true }
+   Triggers: SUMMONED (this card enters), ATTACKS (this card attacks), ALLY_ATTACKS (one of your cards matching "match" attacks),
+             ALLY_BLOCKED (your attacking card matching "match" is blocked; zone:'hand' = the effect works from the Hand),
+             v0.33: BLOCKS (this card blocks; an ATTACKS effect with alsoBlocks:true also activates), DESTROYED (this card is destroyed; resolved with its level at destruction),
+             REVEALED (this card is revealed from the deck by your effect), ALLY_DESTROYS (your attacker matching "match" destroys the blocker in battle)
+             v0.55: BATTLE_WIN (this card attacked or blocked and only the opposing Spirit was destroyed by BP comparison, Standard CR 8-1-6-2);
+             conditions byOpp (DESTROYED by an opposing effect or BP comparison, CR 12-2-1-12-1) and hasSymbol (Rush: "while you have a X symbol")
+   --------------------------------------------------------------------- */
+const FX_TRIGGERS = ['SUMMONED', 'ATTACKS', 'ALLY_ATTACKS', 'ALLY_BLOCKED', 'ALLY_SUMMONED', 'ADVENT', 'ACTIVATE', 'STATIC', 'OPP_HAND_UP', 'ALLY_LIFE_HIT', 'ALLY_LOST', 'START_ATTACK', 'MIRAGE_OWN_LIFE', 'MIRAGE_OPP_LIFE', 'SOUL_PLACED', 'MANIFEST', 'BLOCKS', 'DESTROYED', 'REVEALED', 'ALLY_DESTROYS', 'OPP_REMOVED', 'ACCEL', 'SILVER_WHEEL', 'BATTLE_WIN'];
+const FX_TRIGGER_TEXT = { BATTLE_WIN: 'When Battles (only the opposing Spirit is destroyed by BP comparison)', ACCEL: 'Accel', SILVER_WHEEL: 'When you activate Silver Wheel', SUMMONED: 'When Summoned', ATTACKS: 'When Attacks', ALLY_ATTACKS: 'When an ally attacks', ALLY_BLOCKED: 'When an ally is blocked', ALLY_SUMMONED: 'When an ally is summoned', ADVENT: 'When Advents', ACTIVATE: 'Activate', OPP_HAND_UP: 'When the opposing Hand increases by an opposing effect', ALLY_LIFE_HIT: 'When an ally attack reduces the Life', ALLY_LOST: 'When an ally is depleted/destroyed by the opponent', START_ATTACK: 'Start of your Attack Step', MIRAGE_OWN_LIFE: 'Mirage: when your Life is reduced', MIRAGE_OPP_LIFE: 'Mirage: when the opposing Life is reduced', SOUL_PLACED: 'When your Soul Core is sent to a Nexus', MANIFEST: 'When Manifests', BLOCKS: 'When Blocks', DESTROYED: 'When Destroyed', REVEALED: 'When revealed from the deck', ALLY_DESTROYS: 'When your X destroys an opposing Spirit in battle', OPP_REMOVED: 'When cards are put onto the opposing Removed Zone' };
+function fxMatch(card, m) {
+  if (!m || (!m.name && !m.family && m.costGe == null && !m.type && !m.color)) return true;
+  if (m.color && !(card.colors || [card.symbol]).includes(m.color)) return false;      // v0.39: "Purple" Sorcerer cards (colour = card colour)
+  if (m.costGe != null && card.cost < m.costGe) return false;
+  if (m.type && card.type !== m.type) return false;
+  if (!m.name && !m.family) return true;
+  return (m.name || []).some(n => card.name.toLowerCase().includes(n.toLowerCase())) || (m.family || []).some(n => (card.families || []).includes(n));
+}
+function fxIf(owner, opp, c, ctx) {
+  if (!c) return true;
+  if (c.soulGe != null && !(owner.soulState.length >= c.soulGe)) return false;
+  if (c.oppHandGe != null && !(opp.hand.length >= c.oppHandGe)) return false;
+  if (c.voidGe != null && !(owner.void >= c.voidGe)) return false;
+  if (c.controlName != null && !fieldList(owner).some(f => CARDS[f.id].name.toLowerCase().includes(String(c.controlName).toLowerCase()))) return false;
+  if (c.oppTurn != null && (G.active !== owner.key) !== c.oppTurn) return false;
+  if (c.soulLe != null && !(owner.soulState.length <= c.soulLe)) return false;
+  if (c.putGe != null && !((ctx && ctx.put || 0) >= c.putGe)) return false;
+  if (c.hasName != null) { const nm = String(c.hasName).toLowerCase(); if (!fieldList(owner).concat(owner.soulState).some(f => CARDS[f.id].name.toLowerCase().includes(nm))) return false; }
+  if (c.prev != null && !!(ctx && ctx.prev) !== c.prev) return false;
+  if (c.sealed != null && isSealed(owner) !== c.sealed) return false;        // v0.48 [During Seal]
+  if (c.lifeLe != null && !(owner.life <= c.lifeLe)) return false;
+  if (c.lifeGe != null && !(owner.life >= c.lifeGe)) return false;
+  if (c.anyLifeLe != null && !(owner.life <= c.anyLifeLe || opp.life <= c.anyLifeLe)) return false;
+  if (c.counterGe != null && !(owner.count >= c.counterGe)) return false;
+  if (c.soulOn != null) { const nm = String(c.soulOn).toLowerCase(); if (!owner.nexus.some(n => n.soul && CARDS[n.id].name.toLowerCase().includes(nm))) return false; }
+  if (c.attackStep != null && (G.step === 5) !== c.attackStep) return false;
+  if (c.nexusBraved != null) { const nm = String(c.nexusBraved).toLowerCase(); if (!owner.nexus.some(n => n.brave && CARDS[n.id].name.toLowerCase().includes(nm))) return false; }   // "if you control any braved Contractor Nuadha" (v0.37)
+  if (c.oppSpiritsLe != null && !(opp.spirits.length <= c.oppSpiritsLe)) return false;      // v0.39: "if the opponent doesn't control any Spirit"
+  if (c.oppNoAB != null && opp.spirits.some(s => s.noAB) !== c.oppNoAB) return false;      // v0.40: "if any opposing Spirit is under can't attack/block effects"
+  if (c.oppNexusGe != null && !(opp.nexus.length >= c.oppNexusGe)) return false;           // v0.40: "if the opponent controls any Nexus"
+  if (c.oppRemovedGe != null && !(opp.removed.length >= c.oppRemovedGe)) return false;      // v0.38: cards in the opposing Removed Zone
+  if (c.oppRemovedSpirit != null && opp.removed.some(t => ['Spirit', 'Ultimate'].includes(CARDS[t.id].type)) !== c.oppRemovedSpirit) return false;
+  if (c.byOpp != null && !!(ctx && ctx.byOpp) !== c.byOpp) return false;                  // v0.55 "(When Destroyed by the Opponent)"
+  if (c.hasSymbol != null && !((symbolsOn(owner)[c.hasSymbol] || 0) >= 1)) return false;   // v0.55 Rush: a Field symbol of that colour
+  if (c.removedGe != null && !((ctx && ctx.removedN || 0) >= c.removedGe)) return false;   // cards this effect put onto the opposing Removed Zone
+  if (c.utHit != null && !!(ctx && ctx.utHit) !== c.utHit) return false;               // v0.56 Ultimate Trigger hit
+  if (c.ctrl != null && ![].concat(c.ctrl).every(q => ctrlCount(owner, q) >= (q.n == null ? 1 : q.n))) return false;   // v0.56 Ultimate summon conditions
+  return true;
+}
+/* v0.56 "you control N or more <colour/cost/family> Spirits/Ultimates" (Ultimate summon conditions, {{Sumcon|...}}):
+   q = { n, type: 'Spirit'|'Ultimate'|'Both', colors: [any of], costGe, family }; counts the owner's Spirit-form cards on the Field */
+const ctrlCount = (owner, q) => owner.spirits.filter(f => { const k = CARDS[f.id], u = k.type === 'Ultimate';
+  return (q.type === 'Both' || (q.type === 'Ultimate') === u) && (!q.colors || q.colors.some(x => (k.colors || [k.symbol]).includes(x)))
+    && (q.costGe == null || k.cost >= q.costGe) && (!q.family || (k.families || []).includes(q.family)); }).length;
+function ownerOf(i) { if (!G) return null; for (const k of ['player', 'opponent']) if (fieldList(G.p[k]).includes(i)) return G.p[k]; return null; }
+const STATIC_FLAGS = ['MUST_BLOCK', 'NO_RETURN', 'CORES_DRAW', 'UNAFFECTED_SOUL', 'COST_DESTROY_PLUS', 'EXTRA_REDUCTION', 'NO_END_ATTACK'];
+/* flag effects: MUST_BLOCK (opposing Spirits must block this attacker), NO_RETURN (cannot be returned by opposing effects), CORES_DRAW (draw once per turn when cores are sent by your effects),
+   UNAFFECTED_SOUL (Ometeotl Contract Field: this card is unaffected by opposing effects while a Soul Core is on it),
+   NO_END_ATTACK (v0.43: while the matching Spirit of the owner attacks, the opponent can't end the Attack Step via effects; Sunya Lv3, Crimson Crater Lv2) */
+const fxImmune = (owner, t) => !!t && !!t.soul && flagActive(owner, 'UNAFFECTED_SOUL', t);
+function flagActive(owner, flag, subject) {
+  if (!G || !owner || !subject) return false;
+  const opp = G.p[other(owner.key)];
+  for (const src of fieldList(owner)) {
+    const card = CARDS[src.id]; if (!card.effects) continue;
+    const L = lvNo(src);
+    for (const e of card.effects) {
+      if (e.trigger !== 'STATIC' || e.flag !== flag) continue;
+      if (e.lv && !e.lv.includes(L)) continue;
+      if (e.oc && !ocActive(src)) continue;
+      if (e.to === 'own' ? !fxMatch(CARDS[subject.id], e.match) : src !== subject) continue;
+      if (!fxIf(owner, opp, e.if)) continue;
+      return true;
+    }
+  }
+  return false;
+}
+/* v0.37 "Cost Destruction effects" (destroy a Spirit/Ultimate with cost N or less): the limit grows with STATIC COST_DESTROY_PLUS effects of the owner's Field cards and of a Brave combined with a Nexus
+   (Bulwark Temple: +1 per Saga Brave for Celtica/Scalostle sources; Railgun on a Nexus: +1). src = the card whose effect destroys. */
+function costDestroyBonus(p, src) {
+  if (!G) return 0;
+  const sagaBraves = () => fieldList(p).reduce((n, f) => n + (CARDS[f.id].type === 'Brave' && (CARDS[f.id].families || []).includes('Saga') ? 1 : 0) + (f.brave && (CARDS[f.brave.id].families || []).includes('Saga') ? 1 : 0), 0);
+  let n = 0;
+  const one = (e, f, L, braveSrc) => {
+    if (e.trigger !== 'STATIC' || e.flag !== 'COST_DESTROY_PLUS') return;
+    if (e.lv && !e.lv.includes(L)) return;
+    if (e.srcFamily && !(src && (CARDS[src.id].families || []).some(x => e.srcFamily.includes(x)))) return;
+    n += e.n * (e.perSagaBrave ? sagaBraves() : 1);
+  };
+  for (const f of fieldList(p)) {
+    const card = CARDS[f.id], L = lvNo(f);
+    for (const e of card.effects || []) if (!e.nexusBrave) one(e, f, L);
+    if (f.brave && card.type === 'Nexus') for (const e of CARDS[f.brave.id].effects || []) if (e.nexusBrave) one(e, f, 0);
+  }
+  return n;
+}
+function coresSent(p, inst, n) {                      // call after your effect put n cores onto inst
+  if (n > 0 && flagActive(p, 'CORES_DRAW', inst)) {
+    const key = 'coresdraw:' + CARDS[inst.id].name; p.onceUsed = p.onceUsed || {};
+    if (p.onceUsed[key] === G.turnNo) return; p.onceUsed[key] = G.turnNo;
+    const k = draw(p, 1); log(`${CARDS[inst.id].name}: ${who(p)} ${p.cpu ? 'draws' : 'draw'} ${k} card (cores were sent to it).`); handUp(p, k);
+  }
+}
+function staticBp(i) {
+  if (!G || !isSpiritForm(CARDS[i.id])) return 0;
+  const o = ownerOf(i); if (!o) return 0;
+  const opp = G.p[other(o.key)]; let sum = 0;
+  for (const src of fieldList(o)) {
+    const card = CARDS[src.id]; if (!card.effects) continue;
+    const L = lvNo(src);
+    for (const e of card.effects) {
+      if (e.trigger !== 'STATIC' || !e.bp) continue;
+      if (e.lv && !e.lv.includes(L)) continue;
+      if (e.oc && !ocActive(src)) continue;
+      if ((e.to || 'self') === 'self' ? src !== i : !fxMatch(CARDS[i.id], e.match)) continue;
+      if (e.attackingOnly && G.attacker !== i) continue;
+      if (!fxIf(o, opp, e.if)) continue;
+      sum += e.bp;
+    }
+  }
+  return sum;
+}
+/* official (Standard Comprehensive Rules 4-8-1/4-8-2, Eternal Rule Manual p.11/p.20): the Void is the supply of cores and has no limit;
+   when it runs out, cores are added from outside the game. p.void is this player's Void; taking more than it holds adds new cores (made). */
+function takeFromVoid(p, n) { if (n <= 0) return 0; if (p.void < n) { p.made += n - p.void; p.void = n; } p.void -= n; return n; }
+function releaseCores(p, i) {                          // official: a Grandwalker Nexus' cores go to the Void, other cards' cores to the Reserve
+  if (isCountLv(CARDS[i.id])) p.void += i.cores; else p.reserve.n += i.cores;
+  if (i.soul) p.reserve.soul = true;
+}
+function removeNexus(p, n, why) {
+  if (!removeFrom(p.nexus, n)) return;
+  releaseCores(p, n);
+  n.cores = 0; n.soul = false; shedBrave(p, n, p.trash);
+  p.trash.push(n); log(`${poss(p)} ${CARDS[n.id].name} is ${why}.`);
+}
+async function fxPickTarget(c, cands, text) {
+  if (!cands.length) return null;
+  if (c.p.cpu) return cands.slice().sort((a, b) => (bpOf(b) - bpOf(a)) || (b.cores - a.cores))[0];
+  if (cands.length === 1) return cands[0];
+  const uid = await pickFromField({ text, uids: cands.map(t => t.uid) });
+  return cands.find(t => t.uid === uid) || cands[0];
+}
+/* ---- Soul State / Void helpers (v0.13) ---- */
+function toSoulState(p, inst) {                       // any zone (Hand, Trash, Deck, revealed, field) -> Soul State
+  if (p.spirits.includes(inst) || p.nexus.includes(inst)) {
+    removeFrom(p.spirits, inst); removeFrom(p.nexus, inst);
+    releaseCores(p, inst);
+    for (const u of inst.under) { u.under = []; p.trash.push(u); }
+    inst.under = []; shedBrave(p, inst, p.trash);
+    if (inst.token) { tokenHome(p, inst); log(`${poss(p)} ${CARDS[inst.id].name} Token returns to the Token supply.`); return false; }
+  } else if (![p.hand, p.trash, p.standby, p.deck, p.revealed, p.soulState].some(z => removeFrom(z, inst))) return false;
+  inst.cores = 0; inst.soul = false; inst.exhausted = false; inst.heavy = false; inst.noAB = false; inst.bpMod = 0; inst.mirage = false; inst.inSoulState = true;
+  p.soulState.push(inst);
+  log(`${poss(p)} ${CARDS[inst.id].name} enters Soul State.`);
+  return true;
+}
+async function chooseCard(c, L, title, text, optional) {
+  if (!L.length) return null;
+  if (c.p.cpu) return L.slice().sort((a, b) => CARDS[b.id].cost - CARDS[a.id].cost)[0];
+  const ids = Array.from(new Set(L.map(x => x.id))).slice(0, 8);
+  const buttons = ids.map(i => ({ label: CARDS[i].name, value: i }));
+  if (optional) buttons.push({ label: 'Skip', cls: 'cancel', value: null });
+  const id = await ask({ title, peek: true, wide: true, html: text + cardStripHTML(ids), buttons });
+  if (id == null) return optional ? null : L[0];
+  return L.find(x => x.id === id) || L[0];
+}
+function bounceCard(owner, t, to) {                   // return a field card to the Hand or the bottom of the Deck (cores go to the Reserve)
+  if (!removeFrom(owner.spirits, t)) removeFrom(owner.nexus, t);
+  releaseCores(owner, t);
+  t.cores = 0; t.soul = false; t.exhausted = false; t.heavy = false; t.noAB = false; t.bpMod = 0;
+  for (const u of t.under) { u.under = []; owner.trash.push(u); }
+  t.under = [];
+  if (t.token) { shedBrave(owner, t, to === 'deckBottom' ? owner.deck : owner.hand); tokenHome(owner, t); log(`${poss(owner)} ${CARDS[t.id].name} Token returns to the Token supply.`); return; }
+  if (to === 'deckBottom') owner.deck.push(t); else owner.hand.push(t);
+  shedBrave(owner, t, to === 'deckBottom' ? owner.deck : owner.hand);
+  log(`${poss(owner)} ${CARDS[t.id].name} returns to the ${to === 'deckBottom' ? 'bottom of the Deck' : 'Hand'}.`);
+}
+const SOUL_SRC = ['self', 'hand', 'trash', 'handOrTrash', 'reveal'];
+const hasMatch = m => !!m && (m.name || m.family || m.costGe != null || m.type || m.color);

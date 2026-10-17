@@ -1,0 +1,158 @@
+[
+ {
+  "id": "BS24-021",
+  "name": "Yoroikarasu",
+  "name_jp": "ヨロイカラス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 2,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Winged Beast"
+  ],
+  "text": "",
+  "image": "Yoroikarasu.jpg",
+  "block": "24",
+  "saga": 5,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS24-049",
+  "name": "Drian",
+  "name_jp": "ドライアン",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   },
+   {
+    "cores": 4,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Incarnate"
+  ],
+  "text": "",
+  "image": "Drian.jpg",
+  "block": "24",
+  "saga": 5,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS27-004",
+  "name": "The RowdyEmperor Tees-Dragon",
+  "name_jp": "暴皇ティーズ・ドラゴン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {
+   "red": 2,
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Astral Dragon, Astral Soul"
+  ],
+  "text": "[LV1][LV2][LV3] (When Attacks) Draw a card from your deck.\n{{Rush|Green}}\n(While you have a Green symbol, the following effect activates next)\n: Exhaust an opposing Spirit.",
+  "image": "The RowdyEmperor Tees-Dragon.jpg",
+  "block": "27",
+  "saga": 5,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     },
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1,
+      "if": {
+       "hasSymbol": "green"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS28-019",
+  "name": "BladeG",
+  "name_jp": "ブレイド・ジー",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 7,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Blade Insect"
+  ],
+  "text": "Flash - High Speed\nThis Spirit card in Hand can be summoned by paying the cost with cores in the Reserve. In this case, cores to be put on this Spirit must also be from the Reserve.",
+  "image": "BladeG.jpg",
+  "block": "28",
+  "saga": 5,
+  "mechanics": [
+   "High Speed"
+  ],
+  "highSpeed": true,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ }
+]

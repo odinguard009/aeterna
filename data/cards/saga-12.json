@@ -1,0 +1,48 @@
+[
+ {
+  "id": "BS58-044",
+  "name": "The WaterLilyBird Uma",
+  "name_jp": "睡蓮鳥ウマー",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {
+   "yellow": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Proximate",
+   "Hunter Beast"
+  ],
+  "text": "[LV2] (When Attacks)\nDraw a card from the deckbottom.",
+  "image": "BS58 044.png",
+  "block": "58",
+  "saga": 12,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW_BOTTOM",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ }
+]

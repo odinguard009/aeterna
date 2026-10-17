@@ -1,0 +1,9 @@
+# Cards and rules (read for rules, effect or card-data work)
+
+- **Manual first:** rules follow the official manuals (Eternal Rule Manual 17.x; Standard Comprehensive Rules 1.x, block A). Check `docs/manual-notes.md` first; fetch a PDF only for a missing rule and add it to the notes: https://asia-en.battlespirits.com/pdf/official-rule-manual_eternal.pdf, .../official-rule-manual_standard.pdf, .../comprehensive-rules-standard.pdf (WebFetch). Never trust memory or other AI output over the manual.
+- Every mechanic touched: glossary entry in `data/glossary/effects.json` with a `rule` note, obligation in `data/kb/rule-obligations.json` (page, status, proving test), line in `docs/rules-coverage.md`. Partial stays marked partial.
+- **Data first:** card data from the owner-supplied Fandom export (`data/sources`, staged in `data/import`; owner decision 2026-10-14: more accurate than reading images), gaps and doubts from official sites / yuyu-tei / cardrush-bs.jp (WebFetch the product page), then card images; never AI guesses (Gemini fabricated cards). Live Fandom is blocked (403): do not bypass. The export lacks Brave BP+/combine conditions, Neo-Core Charge targets, Nexus levels and Contract Nexus symbols: always check those. Never overwrite blindly.
+- Colour = corner icons. Saga placement follows the user's asset folders: BS75 -> Saga 16, BS76 -> Saga 17.
+- Card JSON: edit `data/cards/saga-*.json` only; query with one-line `python3 -c` (fields needed), never print whole files.
+- Engine vocabulary and workflow: skill `bs-effect-mechanic-adder`; testing: skill `bs-playwright-tester`; card images: skill `bs-card-image-reader`.
+- Bugs with a seed or replay: reproduce that exact match first (`BS.startNewGame({seed})`, `BS.runReplay`), then fix.

@@ -1,0 +1,3 @@
+#!/bin/sh
+# Brand guard on every commit message (repo migration 2026-10-17; drop at v1.0).
+exec node tools/brand_guard.mjs --msg "$1"

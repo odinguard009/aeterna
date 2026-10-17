@@ -1,0 +1,44 @@
+# Full Python Playwright regression (the release gate), run on GitHub instead of in Claude's session.
+# Triggers: "Run workflow" (Claude starts it through the REST dispatch API) or a release tag pushed by the user. The 5 parts run in parallel.
+# Claude checks the result with: gh api repos/odinguard009/aeterna/actions/runs?per_page=3
+name: Regression
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      sims:
+        description: CPU-vs-CPU games in the sims part
+        default: '30'
+jobs:
+  part:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        part: ['1', '2', '3', 'legacy', 'sims']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright (Python)
+        run: pip install playwright && python -m playwright install --with-deps chromium
+      - name: Paths the suites expect
+        run: sudo mkdir -p /mnt/user-data/outputs && sudo chown -R "$USER" /mnt/user-data
+      - name: Fixtures
+        run: python3 tests/make_fixtures.py
+      - name: Run part ${{ matrix.part }}
+        # failing lines become annotations, readable through the REST API (Claude cannot download raw logs)
+        run: |
+          python3 tests/run_all.py --part ${{ matrix.part }} --sims ${{ github.event.inputs.sims || '30' }} > run.log 2>&1 && { tail -1 run.log; exit 0; }
+          grep -vE "^ok " run.log | grep -v "^\s*$" | head -25 | while IFS= read -r l; do echo "::error::$(echo "$l" | cut -c1-400)"; done
+          exit 1
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-run-${{ matrix.part }}
+          path: tests/last-run.json
+          if-no-files-found: ignore

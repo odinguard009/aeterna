@@ -1,0 +1,9 @@
+{
+  "name": "sphinott-manifest-either-attack-step",
+  "about": "Opponent's Attack Step, 5 counters, Ometeotl with 2 cores, Sphinott-Hauser in the Hand: Manifest is possible in Flash Timing and destroys up to 20000 BP.",
+  "turn": 4, "active": "opponent", "step": 5,
+  "players": {
+    "player": { "reserve": 5, "count": 5, "hand": [ { "id": "BS75-013", "as": "sphinott" } ], "nexus": [ { "id": "BS74-CX01", "cores": 2, "as": "ometeotl" } ] },
+    "opponent": { "reserve": 3, "spirits": [ { "id": "BS75-013", "cores": 2, "as": "big" }, { "id": "BS75-012", "cores": 2, "as": "mid" }, { "id": "BS75-010", "cores": 1, "as": "small" } ] }
+  }
+}

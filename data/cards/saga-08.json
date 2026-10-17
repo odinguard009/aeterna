@@ -1,0 +1,187 @@
+[
+ {
+  "id": "BS40-001",
+  "name": "Dinoragon",
+  "name_jp": "ディノラゴン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 1,
+  "reduction": {
+   "red": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Winged Dragon",
+   "Terra Dragon"
+  ],
+  "text": "",
+  "image": "Dinoragon.jpg",
+  "block": "40",
+  "saga": 8,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS40-012",
+  "name": "Death Twins",
+  "name_jp": "デスツインズ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 1,
+  "reduction": {
+   "purple": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Ogre Wizard"
+  ],
+  "text": "[LV1][LV2] (When Destroyed by the Opponent)\nDraw a card.",
+  "image": "Death Twins.jpg",
+  "block": "40",
+  "saga": 8,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "if": {
+     "byOpp": true
+    },
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS40-014",
+  "name": "Evil Churchman",
+  "name_jp": "イビルチャーチマン",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Ogre Wizard"
+  ],
+  "text": "[LV1][LV2] (When Summoned/Destroyed)\nDraw a card.",
+  "image": "Evil Churchman.jpg",
+  "block": "40",
+  "saga": 8,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS41-037",
+  "name": "Ardworks",
+  "name_jp": "アードワークス",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 2,
+  "reduction": {
+   "white": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Machine Beast"
+  ],
+  "text": "[LV2] (When Blocks)\nThis Spirit gains +7000 BP.",
+  "image": "Ardworks.jpg",
+  "block": "41",
+  "saga": 8,
+  "effects": [
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 7000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ }
+]

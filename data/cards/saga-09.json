@@ -1,0 +1,227 @@
+[
+ {
+  "id": "BS44-049",
+  "name": "The Wonderland Horsefly",
+  "name_jp": "不思議王国モクバエ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Magician"
+  ],
+  "text": "",
+  "image": "The Wonderland Horsefly.png",
+  "block": "44",
+  "saga": 9,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS45-043",
+  "name": "Butteredfly Bread",
+  "name_jp": "バタつきパンタフライ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 1,
+  "reduction": {
+   "yellow": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Magician"
+  ],
+  "text": "",
+  "image": "Butteredfly Bread.jpg",
+  "block": "45",
+  "saga": 9,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS46-015",
+  "name": "Thunder-Z-Mammoth",
+  "name_jp": "サンダー・Z・マンモス",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 9,
+  "reduction": {
+   "red": 4
+  },
+  "symbols": 2,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 12000
+   },
+   {
+    "cores": 3,
+    "bp": 16000
+   },
+   {
+    "cores": 5,
+    "bp": 22000
+   }
+  ],
+  "families": [
+   "Emperor Beast"
+  ],
+  "text": "",
+  "image": "Thunder-Z-Mammoth.jpg",
+  "block": "46",
+  "saga": 9,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS46-016",
+  "name": "Smog-Cock",
+  "name_jp": "スモッグ・コック",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 1,
+  "reduction": {
+   "purple": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Spiritual Beast"
+  ],
+  "text": "[LV1][LV2] (When Destroyed by the Opponent) Exhaust an opposing Spirit.",
+  "image": "Smog-Cock.jpg",
+  "block": "46",
+  "saga": 9,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "if": {
+     "byOpp": true
+    },
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS46-054",
+  "name": "Snap-Dragonfly",
+  "name_jp": "燃えぶどうトンボ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Magician"
+  ],
+  "text": "",
+  "image": "Snap-Dragonfly.jpg",
+  "block": "46",
+  "saga": 9,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS46-RV008",
+  "name": "Shikitsuru",
+  "name_jp": "シキツル",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Worldswalker",
+   "Evil Shadow"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nYou can draw a card.",
+  "image": "Shikitsuru.png",
+  "block": "46",
+  "saga": 9,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ }
+]

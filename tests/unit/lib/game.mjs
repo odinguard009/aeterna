@@ -1,0 +1,70 @@
+// Shared headless browser for the Node unit tests (node --test). One Chromium per test file, one page per helper call.
+// The game file is the repo's index.html (always rebuilt from src/ first by `npm test`), so no copy is needed.
+import { loadPlaywright } from './pw.mjs';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { join, dirname } from 'node:path';
+
+export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
+export const GAME_URL = pathToFileURL(join(ROOT, 'index.html')).href;
+export const WHITE = { 'BS74-CX03': 3, 'BS74-072': 3, 'BS74-038': 3, 'BS74-040': 2, 'BS74-041': 3, 'BS74-042': 3, 'BS74-043': 2, 'BS74-045': 2, 'BS74-047': 2, 'BS74-048': 2, 'BS74-049': 2, 'BS74-050': 2, 'BS75-028': 3, 'BS75-030': 2, 'BS75-035': 3, 'BS75-037': 1, 'BS75-041': 1, 'BS75-X08': 1 };
+
+let browser = null;
+export async function getBrowser() {
+  if (!browser) { const { chromium } = await loadPlaywright(); browser = await chromium.launch(); }
+  return browser;
+}
+export async function closeBrowser() { if (browser) { await browser.close(); browser = null; } }
+
+/** Opens the game. query: '' (normal) or '?sim=1' (CPU plays both sides). Returns { page, errors }. */
+export async function openGame(query = '') {
+  const b = await getBrowser(), page = await b.newPage(), errors = [];
+  page.on('pageerror', e => errors.push('pageerror: ' + e.message.slice(0, 300)));
+  page.on('console', m => { if (m.type() === 'error') errors.push('console: ' + m.text().slice(0, 200)); });
+  page.on('dialog', d => { errors.push('dialog: ' + d.message().slice(0, 100)); d.dismiss(); });
+  await page.goto(GAME_URL + query);
+  await page.waitForFunction(() => !!window.BS);
+  return { page, errors };
+}
+
+/** A quiet board (no match loop): BS.testSetup(). */
+export async function quietBoard() {
+  const g = await openGame('');
+  await g.page.evaluate(() => { BS.testSetup(); return 1; });
+  return g;
+}
+
+/** Plays one CPU-vs-CPU match with a fixed seed. mode: 'white' (Red prebuilt vs white Mitra) or 'mirror' (Red vs Red).
+ *  profiles: optional CPU weight profile per side, e.g. {player:'aggressive', opponent:'defensive'}.
+ *  Checks BS.checkInvariants() every pollMs. Returns a plain summary. */
+export async function simMatch(seed, { mode = 'white', timeoutMs = 60000, pollMs = 40, keepPage = false, profiles = null } = {}) {
+  const { page, errors } = await openGame('?sim=1');
+  try {
+    await page.evaluate(({ mode, white }) => {
+      const red = BS.PREBUILT.find(x => x.id === 'red').cards, blue = BS.PREBUILT.find(x => x.id === 'blue').cards, green = BS.PREBUILT.find(x => x.id === 'green').cards, purple = BS.PREBUILT.find(x => x.id === 'purple').cards, yellow = BS.PREBUILT.find(x => x.id === 'yellow').cards, D = BS.PRESET_DECK;
+      for (const k of Object.keys(D)) delete D[k];
+      Object.assign(D, mode.startsWith('yellow') ? yellow : mode.startsWith('purple') ? purple : mode.startsWith('green') ? green : mode.startsWith('blue') ? blue : red);          // v0.37: 'blue' = blue vs red, 'bluewhite' = blue vs white, 'bluemirror' = blue vs blue; v0.38: 'green' = green vs red, 'greenwhite', 'greenblue', 'greenmirror'; v0.39: 'purple' = purple vs red, 'purplewhite', 'purplegreen', 'purplemirror'; v0.40: 'yellow' = yellow vs red, 'yellowwhite', 'yellowgreen', 'yellowpurple', 'yellowmirror'
+      BS.setSimDeckB(mode === 'yellowmirror' ? yellow : mode === 'yellowpurple' ? purple : mode === 'yellowgreen' ? green : mode === 'yellow' ? red : mode === 'mirror' ? red : mode === 'bluemirror' ? blue : mode === 'greenmirror' ? green : mode === 'greenblue' ? blue : mode === 'purplemirror' ? purple : mode === 'purplegreen' ? green : (mode === 'blue' || mode === 'green' || mode === 'purple') ? red : white);
+      return 1;
+    }, { mode, white: WHITE });
+    if (profiles) await page.evaluate(o => { BS.setSimProfiles(o); return 1; }, profiles);
+    await page.evaluate(s => { BS.startNewGame({ seed: s }); return 1; }, seed);
+    const inv = [], t0 = Date.now(); let over = false;
+    while (Date.now() - t0 < timeoutMs) {
+      await new Promise(r => setTimeout(r, pollMs));
+      const st = await page.evaluate(() => { let e = null; try { BS.checkInvariants(); } catch (x) { e = x.message; } return { over: !!(BS.G && BS.G.over), e }; });
+      if (st.e && inv.length < 3) inv.push(st.e);
+      if (st.over) { over = true; break; }
+    }
+    const s = await page.evaluate(() => {
+      const G = BS.G, f = (G.rec && G.rec.final) || {};
+      return { turn: G.turnNo, winner: G.winner, hist: G.history.length, hash: f.hash || null, log: f.log || null, seed: G.rec && G.rec.seed,
+        replay: BS.lastReplay(), firstPlayer: (G.history.find(x => / goes first\.$/.test(x)) || '').replace(' goes first.', ''), lives: [G.p.player.life, G.p.opponent.life], decks: [G.p.player.deck.length, G.p.opponent.deck.length] };
+    });
+    const out = { seed, mode, over, inv, errors: errors.slice(0, 3), ...s };
+    if (keepPage) out.page = page; else await page.close();
+    return out;
+  } catch (e) {
+    await page.close();
+    throw e;
+  }
+}

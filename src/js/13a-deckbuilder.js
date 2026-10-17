@@ -1,0 +1,200 @@
+/* ---------------------------------------------------------------------
+   DECK BUILDER (v0.53.0 redesign; list performance from v0.52.1)
+   PC (>= 900 px wide): filter rail | windowed card grid | deck panel. Phone: search bar + grid, filters in a bottom
+   sheet, the deck in a bottom bar that opens a full-height sheet. Tap a card = +1 copy; the (i) button or a right-click
+   opens the card detail (add / remove there too). Plan: docs/ai/deckbuilder-plan.md.
+   --------------------------------------------------------------------- */
+const DB_COLORS = ['red', 'purple', 'green', 'white', 'yellow', 'blue'];
+const DB_TYPES = ['Spirit', 'Ultimate', 'Brave', 'Nexus', 'Magic', 'Contract'];
+const DB_COSTS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+const DBF = { colors: new Set(), costs: new Set(), types: new Set(), set: '', family: '', legal: false, sort: 'default' };
+const DB_UNDO = [];
+let DB_IO = '';
+const dbArr = v => v == null || v === '' ? [] : Array.isArray(v) ? v : v instanceof Set ? [...v] : [String(v)];
+const dbTypeOf = c => c.contract ? 'Contract' : c.type;
+const dbSetOf = id => String(id).replace(/-.*$/, '');
+/** Deck builder filter test. Each filter is a value, a list or a Set; empty = no filter; cost "10" = 10 or more. */
+function dbFilterOK(c, color, cost, type) {
+  const cl = dbArr(color), co = dbArr(cost), ty = dbArr(type);
+  if (cl.length && !cardColors(c).some(x => cl.includes(x))) return false;
+  if (co.length && !co.some(k => (k === '10' ? c.cost >= 10 : c.cost === Number(k)))) return false;
+  if (ty.length && !ty.some(t => (t === 'Contract' ? !!c.contract : c.type === t && !c.contract))) return false;
+  return true;
+}
+/* v0.52.1: a search index is built once per card-data change (CARDS_VER); the filtered list is recomputed only when a
+   filter, the sort or the deck (for "In deck only") changes; the grid is windowed (spacer rows keep the scroll height). */
+const DBV = { idx: null, ver: -1, key: '', list: [], from: -1, to: -1, cols: 0, rowH: 0, raf: 0, timer: 0, pulse: '' };
+const DB_GAP = 8, DB_BUF = 2;
+const DB_COLL = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
+function dbIndex() {
+  if (!DBV.idx || DBV.ver !== CARDS_VER) {
+    DBV.idx = Object.keys(CARDS).filter(id => !CARDS[id].token).map((id, i) => { const c = CARDS[id]; return { id, i, s: (id + '\n' + c.name + '\n' + (c.desc || '')).toLowerCase(), f: (c.families || []).join(' / ').toLowerCase() }; });
+    DBV.ver = CARDS_VER; DBV.key = '';
+  }
+  return DBV.idx;
+}
+function dbSets() { return [...new Set(dbIndex().map(e => dbSetOf(e.id)))].sort(DB_COLL.compare); }
+function dbActiveCount() { return DBF.colors.size + DBF.costs.size + DBF.types.size + (DBF.set ? 1 : 0) + (DBF.family ? 1 : 0) + (DBF.legal ? 1 : 0) + ($('db-only').checked ? 1 : 0); }
+const DB_SORTS = {
+  cost: (a, b) => CARDS[a.id].cost - CARDS[b.id].cost || DB_COLL.compare(a.id, b.id),
+  name: (a, b) => DB_COLL.compare(CARDS[a.id].name, CARDS[b.id].name) || DB_COLL.compare(a.id, b.id),
+  colour: (a, b) => DB_COLORS.indexOf(cardColors(CARDS[a.id])[0]) - DB_COLORS.indexOf(cardColors(CARDS[b.id])[0]) || CARDS[a.id].cost - CARDS[b.id].cost || DB_COLL.compare(a.id, b.id),
+  set: (a, b) => DB_COLL.compare(a.id, b.id),
+};
+function dbFilter() {
+  const q = ($('db-search').value || '').trim().toLowerCase(), only = $('db-only').checked, fam = DBF.family.trim().toLowerCase();
+  const idx = dbIndex(), key = [CARDS_VER, q, only ? Object.keys(PLAYER_DECK).filter(id => PLAYER_DECK[id]).sort().join(',') : '', [...DBF.colors].join(), [...DBF.costs].join(), [...DBF.types].join(), DBF.set, fam, DBF.legal, DBF.sort, FORMAT].join('|');
+  if (key === DBV.key) return DBV.list;
+  DBV.key = key;
+  let l = idx.filter(e => (!only || PLAYER_DECK[e.id]) && (!q || e.s.includes(q)) && (!fam || e.f.includes(fam)) && (!DBF.set || dbSetOf(e.id) === DBF.set) && dbFilterOK(CARDS[e.id], DBF.colors, DBF.costs, DBF.types) && (!DBF.legal || !legalityOf(e.id, FORMAT)));
+  if (DB_SORTS[DBF.sort]) l = l.slice().sort(DB_SORTS[DBF.sort]);
+  DBV.list = l.map(e => e.id);
+  $('db-count').textContent = `${DBV.list.length} card(s) shown`;
+  return DBV.list;
+}
+function dbCardHTML(id) {
+  const c = CARDS[id], n = PLAYER_DECK[id] || 0, bp = c.levels[0] && c.levels[0].bp != null ? c.levels[0].bp : c.brave ? '+' + c.brave.bp : '-';
+  return `<div class="tcg-card ${n ? '' : 'dim'}${cardCls(c)}${imgCls(id)}${DBV.pulse === id ? ' db-pulse' : ''}" style="${colorSty(c)}${imgSty(id)}" data-a="dbcard" data-v="${id}" title="${esc(c.name)} (${id}): tap to add">
+      <div class="cost">${c.cost}</div><div class="type-badge">${c.contract ? 'CON' : c.type.substring(0, 3).toUpperCase()}${rebMark(c)}</div>
+      <div class="name">${nameHTML(c.name)}</div><div class="bp">${bp}</div>${symBadgeHTML(id)}${n ? `<div class="qty-badge">×${n}</div>` : ''}${legalityOf(id, FORMAT) ? '<div class="ban-badge" title="Not legal in this format">🚫</div>' : banStatus(id) === 'limit1' ? '<div class="ban-badge lim">1</div>' : ''}<button class="db-info" data-a="dbinfo" data-v="${id}" aria-label="Card detail" title="Card detail">i</button></div>`;
+}
+function dbWindow(force) {             // renders the rows around the visible part of the grid
+  const el = $('db-card-list'), list = DBV.list, n = list.length;
+  if (!n) { el.innerHTML = '<div class="empty-note">No cards match.</div>'; DBV.from = DBV.to = -1; return; }
+  const cs = getComputedStyle(el), cols = Math.max(1, cs.gridTemplateColumns.split(' ').filter(Boolean).length);
+  const rowH = DBV.rowH || 106, rows = Math.ceil(n / cols), top = el.scrollTop, vis = Math.ceil((el.clientHeight || 600) / rowH);
+  const r0 = Math.max(0, Math.min(rows - 1, Math.floor(top / rowH) - DB_BUF)), r1 = Math.min(rows, r0 + vis + 2 * DB_BUF + 1);
+  const from = r0 * cols, to = Math.min(n, r1 * cols);
+  if (!force && from === DBV.from && to === DBV.to && cols === DBV.cols) return;
+  DBV.from = from; DBV.to = to; DBV.cols = cols;
+  const pad = h => h > 0 ? `<div class="db-spacer" style="grid-column:1/-1;height:${h}px"></div>` : '';
+  el.innerHTML = pad(r0 * rowH - DB_GAP) + list.slice(from, to).map(dbCardHTML).join('') + pad((rows - r1) * rowH - DB_GAP);
+  el.scrollTop = top;
+  const first = el.querySelector('.tcg-card'), h = first ? first.offsetHeight + DB_GAP : 0;
+  if (h > DB_GAP && Math.abs(h - DBV.rowH) > 0.5) { DBV.rowH = h; dbWindow(true); }   // first measurement (or a layout change)
+}
+function dbScroll() { if (!DBV.raf) DBV.raf = requestAnimationFrame(() => { DBV.raf = 0; if ($('view-deckbuilder').classList.contains('active')) dbWindow(false); }); }
+function dbSearchInput() { clearTimeout(DBV.timer); DBV.timer = setTimeout(() => { DBV.timer = 0; renderDeckBuilder(); }, 120); }
+
+/* ---------- filter rail (PC column / phone bottom sheet) ---------- */
+function dbChip(group, v, label, on, sty) { return `<button class="db-chip${on ? ' on' : ''}" data-a="db-chip" data-v="${group}:${v}" aria-pressed="${on}"${sty ? ` style="${sty}"` : ''}>${label}</button>`; }
+function renderDbRail() {
+  $('db-f-colors').innerHTML = DB_COLORS.map(c => dbChip('colors', c, cap(c), DBF.colors.has(c), `--chip:${colorVar(c)}`)).join('');
+  $('db-f-costs').innerHTML = DB_COSTS.map(k => dbChip('costs', k, k === '10' ? '10+' : k, DBF.costs.has(k))).join('');
+  $('db-f-types').innerHTML = DB_TYPES.map(t => dbChip('types', t, t, DBF.types.has(t))).join('');
+  const st = $('db-set'), sets = dbSets(), sig = sets.join();
+  if (st.dataset.sig !== sig) { st.innerHTML = '<option value="">All sets</option>' + sets.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join(''); st.dataset.sig = sig; }
+  st.value = DBF.set; $('db-sort').value = DBF.sort; $('db-legal').checked = DBF.legal;
+  if (document.activeElement !== $('db-family')) $('db-family').value = DBF.family;
+  const n = dbActiveCount(); $('db-filter-btn').textContent = n ? `Filters (${n})` : 'Filters';
+}
+function dbToggle(group, v) { const s = DBF[group]; if (s.has(v)) s.delete(v); else s.add(v); renderDeckBuilder(); }
+function dbResetFilters() {
+  DBF.colors.clear(); DBF.costs.clear(); DBF.types.clear(); DBF.set = ''; DBF.family = ''; DBF.legal = false; DBF.sort = 'default';
+  $('db-only').checked = false; $('db-search').value = ''; $('db-card-list').scrollTop = 0; renderDeckBuilder();
+}
+
+/* ---------- deck changes (with undo) ---------- */
+function dbSnap() { DB_UNDO.push(JSON.stringify(PLAYER_DECK)); if (DB_UNDO.length > 30) DB_UNDO.shift(); }
+function dbCanAdd(id) { const n = PLAYER_DECK[id] || 0; return !legalityOf(id, FORMAT) && n < maxCopies(id); }
+function dbChange(id, d) {
+  const n = PLAYER_DECK[id] || 0;
+  if (d > 0 && !dbCanAdd(id)) return false;
+  if (d < 0 && n <= 0) return false;
+  dbSnap();
+  if (n + d > 0) PLAYER_DECK[id] = n + d; else delete PLAYER_DECK[id];
+  saveDeck(); DBV.pulse = d > 0 ? id : ''; renderDeckBuilder(); DBV.pulse = '';
+  return true;
+}
+function dbReplace(deck) { dbSnap(); PLAYER_DECK = deck; saveDeck(); renderDeckBuilder(); }
+function dbUndo() { if (!DB_UNDO.length) return; PLAYER_DECK = JSON.parse(DB_UNDO.pop()); saveDeck(); renderDeckBuilder(); }
+function dbTap(id) { if (!dbChange(id, 1)) showCardDetail(id, 'deck'); }   // illegal or at max: the detail says why
+async function dbImport() {
+  DB_IO = '';
+  const v = await modal({ title: 'Import deck list', html: '<div class="db-io-hint">One card per line: <b>3 BS44-001</b> or <b>3x Card Name</b>. The current cards in this slot are replaced (Undo brings them back).</div><textarea id="db-io" class="lib-area" spellcheck="false"></textarea>', buttons: [{ label: 'Import', cls: 'primary', value: 'ok' }, { label: 'Cancel', cls: 'cancel', value: null }] });
+  if (v !== 'ok') return;
+  const r = textToDeck(DB_IO);
+  if (!deckTotal(r.deck)) { info('Nothing imported', 'No cards recognised.' + (r.bad.length ? '<br>' + r.bad.slice(0, 8).map(esc).join('<br>') : '')); return; }
+  dbReplace(r.deck);
+  if (r.bad.length) info('Imported with skipped lines', esc(r.bad.slice(0, 8).join('\n')).replace(/\n/g, '<br>'));
+}
+async function dbExport() {
+  const txt = deckToText();
+  const v = await modal({ title: 'Export deck list', html: `<textarea id="db-io" class="lib-area" spellcheck="false" readonly>${esc(txt)}</textarea>`, buttons: [{ label: 'Copy', cls: 'primary', value: 'copy' }, { label: 'Close', cls: 'cancel', value: null }] });
+  if (v === 'copy') { try { await navigator.clipboard.writeText(txt); } catch (e) { /* clipboard blocked: the text stays selectable in the box */ } }
+}
+
+/* ---------- deck panel (PC column / phone full-height sheet) ---------- */
+function dbStatsHTML(v) {
+  const curve = DB_COSTS.map(() => 0), cols = {}, types = {};
+  for (const [id, n] of Object.entries(PLAYER_DECK)) {
+    const c = CARDS[id]; if (!c || !n) continue;
+    curve[Math.min(10, c.cost)] += n;
+    for (const k of cardColors(c)) cols[k] = (cols[k] || 0) + n;
+    types[dbTypeOf(c)] = (types[dbTypeOf(c)] || 0) + n;
+  }
+  const mx = Math.max(1, ...curve);
+  const bars = curve.map((n, i) => `<div class="db-bar" title="Cost ${i === 10 ? '10+' : i}: ${n}"><span class="db-bar-n">${n || ''}</span><i style="height:${Math.round(n / mx * 100)}%"></i><span class="db-bar-k">${i === 10 ? '10+' : i}</span></div>`).join('');
+  const colTxt = DB_COLORS.filter(k => cols[k]).map(k => `<span class="db-split" style="--chip:${colorVar(k)}">${cap(k)} ${cols[k]}</span>`).join('') || '<span class="db-split-none">-</span>';
+  const tyTxt = DB_TYPES.filter(t => types[t]).map(t => `<span class="db-split">${t} ${types[t]}</span>`).join('') || '<span class="db-split-none">-</span>';
+  return `<div class="db-stat-h">Cost curve</div><div class="db-curve">${bars}</div><div class="db-stat-h">Colours</div><div class="db-splits">${colTxt}</div><div class="db-stat-h">Types</div><div class="db-splits">${tyTxt}</div>`;
+}
+function dbRowsHTML() {
+  const ids = Object.keys(PLAYER_DECK).filter(id => CARDS[id] && PLAYER_DECK[id]);
+  if (!ids.length) return '<div class="empty-note db-empty">The deck is empty. Tap a card to add it.</div>';
+  return DB_TYPES.map(t => {
+    const g = ids.filter(id => dbTypeOf(CARDS[id]) === t).sort((a, b) => CARDS[a].cost - CARDS[b].cost || DB_COLL.compare(CARDS[a].name, CARDS[b].name));
+    if (!g.length) return '';
+    const tot = g.reduce((s, id) => s + PLAYER_DECK[id], 0);
+    return `<div class="db-grp"><div class="db-grp-h">${t} <span>${tot}</span></div>` + g.map(id => {
+      const c = CARDS[id], n = PLAYER_DECK[id], bad = legalityOf(id, FORMAT);
+      return `<div class="db-row${bad ? ' bad' : ''}" style="${colorSty(c)}"><span class="db-row-cost">${c.cost}</span><button class="db-row-name" data-a="dbinfo" data-v="${id}" title="${esc(id)}">${esc(c.name)}${bad ? ' 🚫' : ''}</button>
+        <button class="db-row-btn" data-a="db-row" data-v="${id}:-1" aria-label="Remove one ${esc(c.name)}">−</button><span class="db-row-n">${n}</span><button class="db-row-btn" data-a="db-row" data-v="${id}:1" aria-label="Add one ${esc(c.name)}"${dbCanAdd(id) ? '' : ' disabled'}>+</button></div>`;
+    }).join('') + '</div>';
+  }).join('');
+}
+function renderDbDeck(v) {
+  const ok = v.ok, txt = ok ? `legal in ${fmtName(FORMAT)}` : errSummary(v);
+  $('db-counter').innerHTML = `<b>${v.total}</b> / 40+`;
+  const st = $('db-status'); st.className = 'db-status ' + (ok ? 'ok' : 'bad'); st.textContent = `${fmtName(FORMAT)} · ${v.total} cards · ${ok ? 'legal' : errSummary(v)}`;
+  $('db-dk-list').innerHTML = dbRowsHTML();
+  $('db-dk-stats').innerHTML = dbStatsHTML(v);
+  $('db-undo').disabled = !DB_UNDO.length;
+  $('db-deckbar').innerHTML = `<span>Deck <b>${v.total}</b>/40</span><span class="${ok ? 'ok' : 'bad'}">${ok ? 'legal' : 'not legal'}</span><span class="db-deckbar-up">▲</span>`;
+  $('db-deckbar').className = 'db-deckbar ' + (ok ? 'ok' : 'bad'); $('db-deckbar').title = txt;
+  $('db-topcount').textContent = `${v.total}/40`; $('db-topcount').className = 'db-topcount ' + (ok ? 'ok' : 'bad');
+}
+function dbSheet(which) {             // phone: open 'filters', 'deck' or 'menu'; '' closes all
+  const vw = $('view-deckbuilder');
+  vw.classList.toggle('db-open-filters', which === 'filters');
+  vw.classList.toggle('db-open-deck', which === 'deck');
+  vw.classList.toggle('db-open-menu', which === 'menu');
+}
+
+function renderDeckBuilder() {
+  const v = validateDeck(PLAYER_DECK);
+  const fb = $('db-format'); if (fb) fb.textContent = fmtName(FORMAT);
+  const ds = $('db-slot');
+  if (ds) {
+    ds.innerHTML = SLOTS.map((sl, i) => `<option value="${i}"${i === ACTIVE_SLOT ? ' selected' : ''}>${i + 1}. ${esc(sl.name)} (${deckTotal(i === ACTIVE_SLOT ? PLAYER_DECK : sl.cards)})</option>`).join('');
+    if (document.activeElement !== $('db-name')) $('db-name').value = SLOTS[ACTIVE_SLOT].name;
+    $('db-preset').innerHTML = '<option value="">Load ready-made…</option>' + PREBUILT.map(d => `<option value="${d.id}">${esc(d.name)}</option>`).join('');
+  }
+  renderDbRail(); renderDbDeck(v);
+  dbFilter(); dbWindow(true);
+}
+document.addEventListener('contextmenu', e => {
+  const c = e.target.closest && e.target.closest('#db-card-list [data-a="dbcard"]');
+  if (c) { e.preventDefault(); showCardDetail(c.dataset.v, 'deck'); }
+});
+document.addEventListener('keydown', e => {
+  if (!$('view-deckbuilder').classList.contains('active') || $('action-modal').classList.contains('active')) return;
+  const t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT');
+  if (e.key === '/' && !typing) { e.preventDefault(); $('db-search').focus(); }
+  else if (e.key === 'Escape' && t && t.id === 'db-search') { t.value = ''; renderDeckBuilder(); }
+  else if (e.key === 'Escape') dbSheet('');
+});
+document.addEventListener('input', e => {
+  if (e.target.id === 'db-io') DB_IO = e.target.value;
+  else if (e.target.id === 'db-family') { DBF.family = e.target.value; dbSearchInput(); }
+});

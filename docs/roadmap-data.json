@@ -1,0 +1,667 @@
+{
+ "root": {
+  "title": "Aeterna",
+  "tagline": "From tested engine to a simulator that plays like Aegis",
+  "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
+  "updated": "17 Oct 2026",
+  "next": "next: rules audit R3 effect priority cannot > must > can with session E v0.58.0 (Opus, heavy alone); Ultimate Trigger level/timing data needs a session with the owner present (Fandom approval); 573 of 8,041 cards playable"
+ },
+ "phases": [
+  {
+   "phase": {
+    "name": "Engine foundation",
+    "sub": "The rules core the whole game stands on.",
+    "ver": "v0.1–v0.4",
+    "open": true,
+    "kind": "leaves"
+   },
+   "items": [
+    {
+     "s": "done",
+     "t": "Eternal turn flow, all 7 steps"
+    },
+    {
+     "s": "done",
+     "t": "Cores: Reserve, Void (unlimited), Trash, Soul Core"
+    },
+    {
+     "s": "done",
+     "t": "Summon, mandatory cost reduction by symbols, Nexus"
+    },
+    {
+     "s": "done",
+     "t": "Attack, block, BP battle, Life damage"
+    },
+    {
+     "s": "done",
+     "t": "Burst and Advent"
+    },
+    {
+     "s": "done",
+     "t": "Win checks: Life 0, deck out"
+    },
+    {
+     "s": "done",
+     "t": "Seeded RNG, replays, scenarios"
+    }
+   ]
+  },
+  {
+   "phase": {
+    "name": "Card content",
+    "sub": "Real cards in, so decks stop being placeholders.",
+    "ver": "v0.5–v0.40",
+    "open": true,
+    "kind": "leaves"
+   },
+   "items": [
+    {
+     "s": "done",
+     "t": "JSON card schema + import"
+    },
+    {
+     "s": "done",
+     "t": "Import your own card images"
+    },
+    {
+     "s": "done",
+     "t": "Deck text import / export"
+    },
+    {
+     "s": "done",
+     "t": "Saga 15–17 pack: 63 red and white cards from card images"
+    },
+    {
+     "s": "done",
+     "t": "Fandom reference data BS01–BS77 (8,158 rows) in the repo"
+    },
+    {
+     "s": "done",
+     "t": "Image index per Saga folder (name → file)"
+    },
+    {
+     "s": "done",
+     "t": "Bulk card intake tool: 7,978 cards staged in <code>data/import</code> (v0.36)"
+    },
+    {
+     "s": "done",
+     "t": "Game pack grew from 63 to 126 cards with four colour decks (v0.37–v0.40)"
+    },
+    {
+     "s": "done",
+     "t": "Data check BS74–BS76 against Fandom (v0.41.2, issue #5)"
+    },
+    {
+     "s": "done",
+     "t": "Data check of green, purple, yellow decks against Fandom (v0.41.3); 14 god-icon conflicts open"
+    },
+    {
+     "s": "done",
+     "t": "Gold icon = Ultimate reduction symbol, mapped on import (v0.41.5)"
+    },
+    {
+     "s": "next",
+     "t": "Every Saga 1–17 card playable"
+    }
+   ]
+  },
+  {
+   "phase": {
+    "name": "Card data intake",
+    "sub": "From raw data to a playable card, the same way every time.",
+    "ver": "v0.36–v0.40",
+    "open": true,
+    "kind": "flow"
+   },
+   "items": [
+    {
+     "s": "done",
+     "t": "Compact, compressed card pack: all 8,041 cards fit the single file (1.16 MB, phone-like load 2.3 s) (v0.51.0)"
+    },
+    {
+     "s": "done",
+     "t": "Effect compiler: card text to effects + smoke-checked promotion (v0.52.0, 347 cards)"
+    },
+    {
+     "s": "done",
+     "t": "Raw data",
+     "d": "Fandom card lists BS01–BS77 (<code>data/sources/fandom-cards-bs01-bs77.json</code>): name, type, colour, cost, reduction, symbols, families, levels, effect text. Owner decision: this export is the main source."
+    },
+    {
+     "s": "done",
+     "t": "Image index",
+     "d": "Your folders <code>Card Asset\\&lt;Saga&gt;\\images</code> mapped name → file (<code>data/index/saga_card_index.json</code>)."
+    },
+    {
+     "s": "done",
+     "t": "Merge and clean (v0.36)",
+     "d": "<code>tools/import_fandom.py</code> writes <code>data/import/saga-NN.json</code> + <code>report.json</code>: 7,978 cards, 110 duplicate numbers merged, 453 without an image, 6 number conflicts reported. Staging only, so unchecked cards never enter <code>index.html</code>."
+    },
+    {
+     "s": "next",
+     "t": "Check against the image",
+     "d": "Images are read only where the export lacks data or looks wrong, one colour deck at a time (60–80 cards, cropped corners, about 20 per contact sheet). Stats of the four new decks are not image-checked yet (issue #5). God reduction icons settled without images in v0.44.6–v0.44.7 (25 deck cards)."
+    },
+    {
+     "s": "done",
+     "t": "Into the game",
+     "d": "<code>tools/promote_import.py</code> moves a colour deck's verified cards into <code>data/cards</code> (never overwrites). Stats are playable at once; text not yet wired shows as residual."
+    },
+    {
+     "s": "doing",
+     "t": "Wire the effects",
+     "d": "Per colour release: blue, green, purple and yellow are done. Magic cards of all colours, Ultra Advent / Ultimate cards and a list of per-card gaps remain."
+    },
+    {
+     "s": "done",
+     "t": "Test and ship",
+     "d": "Each release: data and card tests, CPU-vs-CPU sims with the new deck, Regression on GitHub, size and time guard rails (v0.36.1)."
+    },
+    {
+     "s": "next",
+     "t": "Batch promotion per Saga: new compiler patterns from the review list (v0.54.0: +62 cards, 561 / 8,041; about 2 cards per new pattern, so it continues as filler)"
+    },
+    {
+     "s": "done",
+     "t": "Engine levers for the long tail (v0.55.0: BP minus, (When Destroyed by the Opponent), (When Battles) battle win, Rush; +12 cards, 573 / 8,041; no BP-0 destruction rule, FAQ p. 68)"
+    },
+    {
+     "s": "done",
+     "t": "Rules audit R1-R2 (v0.55.1, owner request): sources and versions table (JP Eternal 17.1 of 2026-05-29, JP 17.0 revision notice, Standard 1.1 / CR 1.0), tools/rules_audit.py -> docs/rules-audit.md: 242 items, 77 confirmed, 48 house reading, 5 conflict, 112 open; 30-day check in session_start"
+    },
+    {
+     "s": "next",
+     "t": "Rules audit R3 fixes (Opus): Burst resolves after all non-Burst triggered effects (JP 17.0 item 6) done in v0.55.2; Standby state for leaving the Field (item 4) done in v0.57.0; next: effect priority cannot > must > do = can with session E"
+    },
+    {
+     "s": "done",
+     "t": "Ultimate cards in the compiler (v0.56.0): Sumcon summon conditions (summonIf ctrl/lifeGe), LV3+ level check, Ultimate Trigger action ULT_TRIGGER; 0 cards promoted (the Fandom export drops the [LVn] (timing) line of 110 Ultimate Trigger cards)"
+    },
+    {
+     "s": "later",
+     "t": "Ultimate Trigger [LVn] (timing) for 110 cards from live Fandom pages (session with the owner present: Fandom pages need an approval prompt), then compile and promote"
+    }
+   ]
+  },
+  {
+   "phase": {
+    "name": "Effect engine",
+    "sub": "Cards do what their text says.",
+    "ver": "v0.6–v0.41",
+    "open": true,
+    "kind": "leaves"
+   },
+   "items": [
+    {
+     "s": "done",
+     "t": "Triggers: summoned, attacks, blocks, destroyed, revealed, ally events"
+    },
+    {
+     "s": "done",
+     "t": "Targeting and choice dialogs"
+    },
+    {
+     "s": "done",
+     "t": "Flash timing window in battle"
+    },
+    {
+     "s": "done",
+     "t": "Magic cards (Main and Flash), Burst through the engine"
+    },
+    {
+     "s": "done",
+     "t": "&quot;By doing X, do Y&quot;, Once per Turn, same-name keys"
+    },
+    {
+     "s": "done",
+     "t": "Simultaneous triggers: the turn player orders them, derived effects first (v0.28, rule TRIGGER-ORDER)"
+    },
+    {
+     "s": "next",
+     "t": "Effect priority: &quot;cannot&quot; beats &quot;must&quot; beats &quot;may&quot;"
+    },
+    {
+     "s": "done",
+     "t": "Effects for the four colour decks, gaps listed per card (v0.37–v0.40)"
+    },
+    {
+     "s": "done",
+     "t": "Magic effect types and the remaining Magic clauses (v0.41, v0.47.0: use from the Trash, sent-to-Trash triggers, Plutonic Wall, Thunder Counter, Dana Draw)"
+    },
+    {
+     "s": "done",
+     "t": "Opponent-discard choice (OPP_DISCARD_MAGIC_OR): human modal, CPU rule, Vaha wired; CPU Manifest in Flash Timing verified (v0.42.0)"
+    },
+    {
+     "s": "done",
+     "t": "End the Attack Step via effects + \"opponent can't end the Attack Step\" lock (Crimson Meteor Defense, Sunya, Crimson Crater; v0.43.0)"
+    },
+    {
+     "s": "done",
+     "t": "Burst then pay to use the Flash effect; Magma Call extra Red symbol and Ometeotl repeat (v0.44.0)"
+    },
+    {
+     "s": "later",
+     "t": "Effects for the rest of Saga 1–17"
+    }
+   ]
+  },
+  {
+   "phase": {
+    "name": "Advanced mechanics",
+    "sub": "The keywords that make Eternal feel like Eternal.",
+    "ver": "v0.9–v0.41+",
+    "open": true,
+    "kind": "leaves"
+   },
+   "items": [
+    {
+     "s": "done",
+     "t": "Contract, Soul State, Contract Advent, Manifest, Revive"
+    },
+    {
+     "s": "done",
+     "t": "Grandwalker Nexus (core effects, Lv by Count)"
+    },
+    {
+     "s": "done",
+     "t": "Mirage, Banish, Count"
+    },
+    {
+     "s": "done",
+     "t": "Brave onto Spirits, Over Count (v0.34)"
+    },
+    {
+     "s": "done",
+     "t": "Token cards, Brahma deck effects, Saga Brave onto a Nexus (v0.35)"
+    },
+    {
+     "s": "done",
+     "t": "Heavy Exhaust, Removed Zone, Burst lock, Nexus exhaust cost (v0.38)"
+    },
+    {
+     "s": "done",
+     "t": "Deck-to-Trash and discard effects, core-to-Reserve, cost-based destroy (v0.37, v0.39)"
+    },
+    {
+     "s": "done",
+     "t": "Can't attack / block, extra reduction symbol, draw from the bottom (v0.40)"
+    },
+    {
+     "s": "done",
+     "t": "Ultra Manifest (BS76-CP01 Generator-Dragon-Brahman: Soul Core onto the card, +1 core to the Nexus, once per turn) (v0.46.0)"
+    },
+    {
+     "s": "done",
+     "t": "Contract card optional in the starting Hand (issue #2, manual p. 12; Add to Hand / Keep in Deck prompt, v0.40.2)"
+    },
+    {
+     "s": "done",
+     "t": "Ultimate card type: summon condition, LV3+ levels, Ultimate symbol, attack/block; 4 BS74 Ultimates in the pack (v0.46.0)"
+    },
+    {
+     "s": "next",
+     "t": "Ultimate Trigger, Spirit-only effects skipping Ultimates, Ultra Advent (Grand-Sagitto-Nova is not in the card data), \"can't be prevented\""
+    },
+    {
+     "s": "next",
+     "t": "The Nexus taking a Saga Brave's cost and family (issue #3)"
+    },
+    {
+     "s": "done",
+     "t": "Seal (v0.48.0): Soul Core in Life, Seal Manifest, [During Seal]"
+    },
+    {
+     "s": "done",
+     "t": "Keyword effects part 1 (v0.49.0): High Speed (Flash summon paid from the Reserve), Crush, Holy Life; 5 BS68/BS69 cards promoted"
+    },
+    {
+     "s": "done",
+     "t": "Keyword effects part 2 (v0.50.0): Accel (Hand use, Removed Zone, summon from the Removed Zone), Silver Wheel; 10 cards promoted"
+    },
+    {
+     "s": "later",
+     "t": "Keyword effects part 3: Nether Immortality, Ultra Holy Life, Soul Magic (Heavy/Ultra Armor with effect priority)"
+    },
+    {
+     "s": "later",
+     "t": "Unstackable; Flag Contract Advent (rule text found in v0.55.1: JP 17.0 revision notice item 2; Nexus levels still missing from the Fandom export)"
+    },
+    {
+     "s": "later",
+     "t": "Rebirth rules, draw game, Standard extras"
+    }
+   ]
+  },
+  {
+   "phase": {
+    "name": "CPU opponent",
+    "sub": "A rival that makes sensible moves.",
+    "ver": "parallel",
+    "open": true,
+    "kind": "leaves"
+   },
+   "items": [
+    {
+     "s": "done",
+     "t": "Basic CPU: summons, attacks, blocks, Burst"
+    },
+    {
+     "s": "done",
+     "t": "Uses card effects, Flash, Advent"
+    },
+    {
+     "s": "done",
+     "t": "Evaluation policy with weight profiles + lethal check"
+    },
+    {
+     "s": "done",
+     "t": "CPU style selector in Settings: Balanced / Aggressive / Defensive (v0.40.2)"
+    },
+    {
+     "s": "done",
+     "t": "Prebuilt CPU decks: red, white, blue, green, purple, yellow (v0.37–v0.40)"
+    },
+    {
+     "s": "next",
+     "t": "CPU uses Manifest and Flash skills outside the Main Step"
+    }
+   ]
+  },
+  {
+   "phase": {
+    "name": "Aegis-style experience",
+    "sub": "The part that makes it feel like a real simulator.",
+    "ver": "parallel",
+    "open": true,
+    "kind": "leaves"
+   },
+   "items": [
+    {
+     "s": "done",
+     "t": "Deck builder redesign: filter rail, fast windowed card grid, deck panel with cost curve and legality; phone filter sheet and deck bottom sheet (v0.52.1-v0.53.0)"
+    },
+    {
+     "s": "done",
+     "t": "Playmat, hand, phase bar, popups"
+    },
+    {
+     "s": "done",
+     "t": "Main menu, card library, deck builder with search"
+    },
+    {
+     "s": "done",
+     "t": "Card zoom with your own art, images in every zone"
+    },
+    {
+     "s": "done",
+     "t": "Game log, rules coverage page, settings, speed, sound"
+    },
+    {
+     "s": "done",
+     "t": "Separate PC and phone layouts"
+    },
+    {
+     "s": "done",
+     "t": "Deck builder filters: colour, cost, type (v0.40.2)"
+    },
+    {
+     "s": "done",
+     "t": "Heavy Exhaust picture: card rotated 180° (v0.40.2)"
+    },
+    {
+     "s": "done",
+     "t": "UI polish: card names wrap by word, PC turn-step bar, bigger touch targets (v0.40.3)"
+    },
+    {
+     "s": "later",
+     "t": "Hover zoom on PC, quick actions"
+    },
+    {
+     "s": "later",
+     "t": "In-game tutorial"
+    }
+   ]
+  },
+  {
+   "phase": {
+    "name": "Quality and rules audit",
+    "sub": "Nothing ships untested.",
+    "ver": "every version",
+    "open": true,
+    "kind": "leaves"
+   },
+   "items": [
+    {
+     "s": "done",
+     "t": "CPU-vs-CPU sims with core and card count checks"
+    },
+    {
+     "s": "done",
+     "t": "Regression on GitHub: 5 parts in parallel"
+    },
+    {
+     "s": "done",
+     "t": "Release check on PC and phone screens"
+    },
+    {
+     "s": "done",
+     "t": "Rule obligations traced to manual pages (56 rules: 43 enforced, 1 equivalent, 11 partial, 1 open)"
+    },
+    {
+     "s": "done",
+     "t": "Size and time guard rails; legacy suites read counts from card data (v0.36.1, v0.39.1)"
+    },
+    {
+     "s": "next",
+     "t": "One regression test per card"
+    },
+    {
+     "s": "later",
+     "t": "Bug report and log export"
+    },
+    {
+     "s": "done",
+     "t": "Token economy: slim CLAUDE.md, open items in <code>docs/ai/roadmap-open.md</code>, progress page and this mind map generated by the build"
+    }
+   ]
+  },
+  {
+   "phase": {
+    "name": "Windows and Android delivery",
+    "sub": "Open it and play, on either device.",
+    "ver": "v1.0",
+    "open": true,
+    "kind": "leaves"
+   },
+   "items": [
+    {
+     "s": "done",
+     "t": "Single HTML file works offline"
+    },
+    {
+     "s": "next",
+     "t": "Free hosting for a link you can open anywhere"
+    },
+    {
+     "s": "later",
+     "t": "Installable app (PWA) with offline cache"
+    },
+    {
+     "s": "later",
+     "t": "Backup and restore of decks, cards, settings"
+    }
+   ]
+  },
+  {
+   "phase": {
+    "name": "Expansion",
+    "sub": "Grow once the base is solid.",
+    "ver": "v0.37–v0.41+",
+    "open": true,
+    "kind": "leaves"
+   },
+   "items": [
+    {
+     "s": "done",
+     "t": "Eternal and Standard (block A) formats, ban list"
+    },
+    {
+     "s": "done",
+     "t": "Match history and replays"
+    },
+    {
+     "s": "done",
+     "t": "One colour per version: blue, green, purple, yellow (issue #7 closed, v0.37–v0.40)"
+    },
+    {
+     "s": "done",
+     "t": "Magic effect types: Magic cards run engine actions; all seven left-out Magic cards wired (v0.41, Plutonic Wall in v0.47.0)"
+    },
+    {
+     "s": "next",
+     "t": "Close the open card gaps of v0.37–v0.41 (Mirage sets, Trash summons, Nexus locks; list in CLAUDE.md)"
+    },
+    {
+     "s": "later",
+     "t": "Decks from Saga 1–14 (Eternal only)"
+    },
+    {
+     "s": "later",
+     "t": "Online matches (large, optional)"
+    }
+   ]
+  }
+ ],
+ "sessions": [
+  {
+   "ver": "v0.31",
+   "date": "14 Oct 2026",
+   "tokens": 300000,
+   "calls": null,
+   "basis": "measured",
+   "note": "33 min. Not stated whether cache re-reads are included."
+  },
+  {
+   "ver": "v0.34",
+   "date": "14 Oct 2026",
+   "tokens": 6200000,
+   "calls": 167,
+   "basis": "measured",
+   "note": "Effective tokens incl. cache re-reads. Release work ~2.1M; Q&A and research after the release ~4M."
+  },
+  {
+   "ver": "v0.35–v0.39",
+   "date": "before 14 Oct 2026",
+   "tokens": 2000000,
+   "calls": "60–70",
+   "basis": "estimate",
+   "each": true,
+   "note": "Per minor release, from docs/ai/token-economy.md §12. Built before the token plan; never measured."
+  },
+  {
+   "ver": "v0.40–v0.44.0",
+   "date": "14–15 Oct 2026",
+   "tokens": null,
+   "calls": null,
+   "basis": "not recorded",
+   "note": "No token figure was written down for these sessions."
+  },
+  {
+   "ver": "v0.44.0 (mind map session)",
+   "date": "15 Oct 2026",
+   "tokens": 190000,
+   "calls": null,
+   "basis": "measured so far",
+   "note": "Read from the session budget counter (15,000,000 at start). Mind map only, no release."
+  },
+  {
+   "ver": "v0.44.1 (efficiency session)",
+   "date": "15 Oct 2026",
+   "tokens": 190000,
+   "calls": null,
+   "basis": "measured so far",
+   "note": "Read from the session budget counter (15,000,000 at start). Tooling and CLAUDE.md only, no game change."
+  },
+  {
+   "ver": "v0.44.6–v0.45.0",
+   "date": "16 Oct 2026",
+   "tokens": 300000,
+   "calls": 80,
+   "basis": "estimate",
+   "note": "Session context counter, approximate. God icons (25 cards), Agateram Unleash + block lock, player-view sweep tool."
+  },
+  {
+   "ver": "v0.46.0",
+   "date": "16 Oct 2026",
+   "tokens": null,
+   "calls": "~75",
+   "basis": "estimate",
+   "note": "Heavy task alone (Ultimate type + Ultra Manifest). Token figure not measured."
+  },
+  {
+   "ver": "v0.50.0",
+   "date": "16 Oct 2026",
+   "tokens": null,
+   "calls": "~60",
+   "basis": "estimate",
+   "note": "Heavy task alone (Accel + Silver Wheel). Token figure: see the session summary."
+  },
+  {
+   "ver": "v0.51.0",
+   "date": "16 Oct 2026",
+   "tokens": 260000,
+   "calls": 45,
+   "basis": "measured",
+   "note": "Budget-counter difference (effective tokens incl. cache re-reads), read just before the last commit; the final release steps add a little."
+  },
+  {
+   "ver": "v0.54.0",
+   "date": "16 Oct 2026",
+   "tokens": 140000,
+   "calls": "~65",
+   "basis": "measured",
+   "note": "Budget-counter difference (effective tokens incl. cache re-reads) read before the docs commit; the final release steps add a little. Ran on Opus; the hint said Sonnet."
+  },
+  {
+   "ver": "v0.55.0",
+   "date": "16 Oct 2026",
+   "tokens": 320000,
+   "calls": "~70",
+   "basis": "measured",
+   "note": "Budget-counter difference (effective tokens incl. cache re-reads) read before the docs commit; the final release steps add a little. Ran on Opus as hinted."
+  },
+  {
+   "ver": "v0.55.1",
+   "date": "16 Oct 2026",
+   "tokens": 95000,
+   "calls": "~45",
+   "basis": "measured",
+   "note": "Scheduled auto run on Opus. Budget-counter difference read before the commit; the release steps add a little."
+  },
+  {
+   "ver": "v0.55.2",
+   "date": "16 Oct 2026",
+   "tokens": 70000,
+   "calls": "~40",
+   "basis": "measured",
+   "note": "Scheduled auto run on Opus. Budget-counter difference read before the commit; the release steps add a little."
+  },
+  {
+   "ver": "v0.56.0",
+   "date": "16 Oct 2026",
+   "tokens": 150000,
+   "calls": "~50",
+   "basis": "measured",
+   "note": "Scheduled auto run on Opus. Budget-counter difference read before the commit; the release steps add a little. Two Fandom page reads were refused (approval prompt in an unattended run)."
+  },
+  {
+   "ver": "v0.57.0",
+   "date": "17 Oct 2026",
+   "tokens": 90000,
+   "calls": "~45",
+   "basis": "measured",
+   "note": "Scheduled auto run on Opus. Budget-counter difference read before the commit; the release steps add a little."
+  }
+ ]
+}

@@ -1,0 +1,7939 @@
+{
+ "stats": {
+  "cards": 7468,
+  "per_saga": {
+   "1": 826,
+   "2": 348,
+   "3": 431,
+   "4": 449,
+   "5": 683,
+   "6": 375,
+   "7": 545,
+   "8": 504,
+   "9": 499,
+   "10": 503,
+   "11": 333,
+   "12": 331,
+   "13": 398,
+   "14": 435,
+   "15": 358,
+   "16": 340,
+   "17": 110
+  },
+  "tokens": 2,
+  "missing_page": 3,
+  "skipped_curated": 570,
+  "number_conflicts": 5,
+  "level_problems": 3,
+  "image_problems": 449,
+  "merged": 107,
+  "odd_reduction": 812,
+  "without_image": 447
+ },
+ "tokens": [
+  "BS73-T001",
+  "BS76-T001"
+ ],
+ "missing_page": [
+  "BS77-AX01",
+  "BS77-AX02",
+  "BS77-AX03"
+ ],
+ "skipped_curated": [
+  "BS01-001",
+  "BS01-002",
+  "BS01-004",
+  "BS01-005",
+  "BS01-008",
+  "BS01-010",
+  "BS01-013",
+  "BS01-019",
+  "BS01-020",
+  "BS01-026",
+  "BS01-028",
+  "BS01-030",
+  "BS01-031",
+  "BS01-034",
+  "BS01-038",
+  "BS01-039",
+  "BS01-042",
+  "BS01-043",
+  "BS01-047",
+  "BS01-050",
+  "BS01-051",
+  "BS01-054",
+  "BS01-055",
+  "BS01-058",
+  "BS01-060",
+  "BS01-061",
+  "BS01-063",
+  "BS01-064",
+  "BS01-068",
+  "BS01-069",
+  "BS01-070",
+  "BS01-073",
+  "BS01-074",
+  "BS01-075",
+  "BS01-077",
+  "BS01-080",
+  "BS01-081",
+  "BS01-084",
+  "BS01-085",
+  "BS01-089",
+  "BS01-092",
+  "BS01-097",
+  "BS01-117",
+  "BS01-134",
+  "BS01-146",
+  "BS01-X01",
+  "BS02-001",
+  "BS02-003",
+  "BS02-007",
+  "BS02-008",
+  "BS02-014",
+  "BS02-023",
+  "BS02-025",
+  "BS02-032",
+  "BS02-037",
+  "BS02-039",
+  "BS02-046",
+  "BS02-049",
+  "BS02-051",
+  "BS02-053",
+  "BS02-059",
+  "BS02-066",
+  "BS02-074",
+  "BS02-102",
+  "BS03-001",
+  "BS03-002",
+  "BS03-005",
+  "BS03-009",
+  "BS03-013",
+  "BS03-018",
+  "BS03-020",
+  "BS03-025",
+  "BS03-026",
+  "BS03-029",
+  "BS03-038",
+  "BS03-041",
+  "BS03-042",
+  "BS03-045",
+  "BS03-051",
+  "BS03-052",
+  "BS03-060",
+  "BS03-063",
+  "BS03-068",
+  "BS03-071",
+  "BS03-072",
+  "BS03-074",
+  "BS03-076",
+  "BS03-078",
+  "BS03-080",
+  "BS03-081",
+  "BS03-083",
+  "BS03-089",
+  "BS03-091",
+  "BS03-099",
+  "BS04-003",
+  "BS04-005",
+  "BS04-009",
+  "BS04-012",
+  "BS04-015",
+  "BS04-019",
+  "BS04-023",
+  "BS04-026",
+  "BS04-030",
+  "BS04-032",
+  "BS04-035",
+  "BS04-038",
+  "BS04-040",
+  "BS04-046",
+  "BS04-048",
+  "BS04-056",
+  "BS04-060",
+  "BS04-062",
+  "BS04-064",
+  "BS04-066",
+  "BS04-070",
+  "BS04-072",
+  "BS05-001",
+  "BS05-002",
+  "BS05-003",
+  "BS05-005",
+  "BS05-006",
+  "BS05-010",
+  "BS05-012",
+  "BS05-015",
+  "BS05-019",
+  "BS05-021",
+  "BS05-023",
+  "BS05-024",
+  "BS05-029",
+  "BS05-031",
+  "BS05-033",
+  "BS05-039",
+  "BS05-041",
+  "BS05-045",
+  "BS05-046",
+  "BS05-049",
+  "BS05-052",
+  "BS06-002",
+  "BS06-004",
+  "BS06-008",
+  "BS06-009",
+  "BS06-012",
+  "BS06-013",
+  "BS06-016",
+  "BS06-017",
+  "BS06-020",
+  "BS06-025",
+  "BS06-027",
+  "BS06-030",
+  "BS06-031",
+  "BS06-032",
+  "BS06-039",
+  "BS06-040",
+  "BS06-041",
+  "BS06-045",
+  "BS06-047",
+  "BS06-049",
+  "BS06-053",
+  "BS06-055",
+  "BS06-061",
+  "BS06-066",
+  "BS06-067",
+  "BS06-069",
+  "BS07-001",
+  "BS07-002",
+  "BS07-004",
+  "BS07-010",
+  "BS07-019",
+  "BS07-029",
+  "BS07-032",
+  "BS07-037",
+  "BS07-040",
+  "BS07-046",
+  "BS07-076",
+  "BS08-001",
+  "BS08-011",
+  "BS08-019",
+  "BS08-020",
+  "BS08-028",
+  "BS08-037",
+  "BS08-046",
+  "BS09-004",
+  "BS09-041",
+  "BS09-069",
+  "BS09-078",
+  "BS10-004",
+  "BS10-005",
+  "BS10-007",
+  "BS10-009",
+  "BS10-011",
+  "BS10-013",
+  "BS10-015",
+  "BS10-017",
+  "BS10-022",
+  "BS10-024",
+  "BS10-025",
+  "BS10-028",
+  "BS10-031",
+  "BS10-033",
+  "BS10-036",
+  "BS10-039",
+  "BS10-044",
+  "BS10-045",
+  "BS10-048",
+  "BS10-052",
+  "BS10-055",
+  "BS10-057",
+  "BS11-001",
+  "BS11-002",
+  "BS11-003",
+  "BS11-005",
+  "BS11-009",
+  "BS11-012",
+  "BS11-021",
+  "BS11-022",
+  "BS11-029",
+  "BS11-035",
+  "BS11-044",
+  "BS12-002",
+  "BS12-009",
+  "BS12-010",
+  "BS12-018",
+  "BS12-026",
+  "BS12-033",
+  "BS12-041",
+  "BS12-044",
+  "BS13-001",
+  "BS13-009",
+  "BS13-018",
+  "BS13-021",
+  "BS13-025",
+  "BS13-033",
+  "BS13-041",
+  "BS14-002",
+  "BS14-006",
+  "BS14-012",
+  "BS14-013",
+  "BS14-014",
+  "BS14-016",
+  "BS14-017",
+  "BS14-018",
+  "BS14-023",
+  "BS14-025",
+  "BS14-027",
+  "BS14-029",
+  "BS14-036",
+  "BS14-038",
+  "BS14-046",
+  "BS14-048",
+  "BS14-050",
+  "BS14-056",
+  "BS14-058",
+  "BS14-063",
+  "BS15-002",
+  "BS15-010",
+  "BS15-019",
+  "BS15-025",
+  "BS15-029",
+  "BS15-037",
+  "BS15-046",
+  "BS16-004",
+  "BS16-010",
+  "BS16-020",
+  "BS16-025",
+  "BS16-028",
+  "BS16-030",
+  "BS16-035",
+  "BS16-037",
+  "BS16-043",
+  "BS16-046",
+  "BS16-048",
+  "BS16-053",
+  "BS17-007",
+  "BS17-008",
+  "BS17-010",
+  "BS17-019",
+  "BS17-027",
+  "BS17-028",
+  "BS17-030",
+  "BS17-040",
+  "BS17-046",
+  "BS17-053",
+  "BS18-007",
+  "BS18-010",
+  "BS18-019",
+  "BS18-024",
+  "BS18-028",
+  "BS18-037",
+  "BS18-049",
+  "BS19-001",
+  "BS19-002",
+  "BS19-004",
+  "BS19-012",
+  "BS19-016",
+  "BS19-019",
+  "BS19-023",
+  "BS19-026",
+  "BS19-028",
+  "BS19-034",
+  "BS19-037",
+  "BS19-041",
+  "BS19-045",
+  "BS19-047",
+  "BS19-049",
+  "BS19-050",
+  "BS19-056",
+  "BS19-058",
+  "BS19-063",
+  "BS19-109",
+  "BS20-001",
+  "BS20-005",
+  "BS20-010",
+  "BS20-011",
+  "BS20-012",
+  "BS20-019",
+  "BS20-024",
+  "BS20-028",
+  "BS20-031",
+  "BS20-040",
+  "BS20-046",
+  "BS20-050",
+  "BS20-053",
+  "BS20-074",
+  "BS21-005",
+  "BS21-008",
+  "BS21-010",
+  "BS21-019",
+  "BS21-020",
+  "BS21-035",
+  "BS21-037",
+  "BS21-038",
+  "BS21-040",
+  "BS21-049",
+  "BS22-001",
+  "BS22-013",
+  "BS22-022",
+  "BS22-032",
+  "BS22-037",
+  "BS22-046",
+  "BS23-001",
+  "BS23-029",
+  "BS23-040",
+  "BS24-021",
+  "BS24-049",
+  "BS27-004",
+  "BS28-019",
+  "BS31-001",
+  "BS31-009",
+  "BS31-015",
+  "BS31-018",
+  "BS31-026",
+  "BS31-035",
+  "BS31-037",
+  "BS31-046",
+  "BS31-049",
+  "BS31-050",
+  "BS31-057",
+  "BS31-064",
+  "BS31-066",
+  "BS31-069",
+  "BS32-001",
+  "BS32-015",
+  "BS32-021",
+  "BS32-025",
+  "BS32-030",
+  "BS32-037",
+  "BS32-050",
+  "BS33-005",
+  "BS33-012",
+  "BS33-022",
+  "BS33-027",
+  "BS33-032",
+  "BS33-042",
+  "BS33-059",
+  "BS34-001",
+  "BS34-008",
+  "BS34-013",
+  "BS34-018",
+  "BS34-027",
+  "BS34-030",
+  "BS34-048",
+  "BS34-049",
+  "BS34-050",
+  "BS34-053",
+  "BS35-003",
+  "BS35-006",
+  "BS35-017",
+  "BS35-032",
+  "BS35-034",
+  "BS35-048",
+  "BS35-061",
+  "BS36-006",
+  "BS36-019",
+  "BS36-025",
+  "BS36-035",
+  "BS36-042",
+  "BS36-048",
+  "BS37-001",
+  "BS37-008",
+  "BS37-019",
+  "BS37-024",
+  "BS37-031",
+  "BS37-048",
+  "BS37-067",
+  "BS40-001",
+  "BS40-012",
+  "BS40-014",
+  "BS41-037",
+  "BS44-049",
+  "BS45-043",
+  "BS46-015",
+  "BS46-016",
+  "BS46-054",
+  "BS46-RV008",
+  "BS50-050",
+  "BS50-RV006",
+  "BS51-062",
+  "BS52-001",
+  "BS53-001",
+  "BS54-021",
+  "BS58-044",
+  "BS68-012",
+  "BS68-014",
+  "BS68-015",
+  "BS68-016",
+  "BS68-017",
+  "BS68-018",
+  "BS68-019",
+  "BS68-020",
+  "BS68-021",
+  "BS68-022",
+  "BS68-023",
+  "BS68-024",
+  "BS68-035",
+  "BS68-045",
+  "BS68-048",
+  "BS68-059",
+  "BS68-061",
+  "BS68-070",
+  "BS68-076",
+  "BS68-077",
+  "BS68-CX01",
+  "BS68-NX01",
+  "BS69-023",
+  "BS69-024",
+  "BS69-025",
+  "BS69-026",
+  "BS69-028",
+  "BS69-029",
+  "BS69-030",
+  "BS69-031",
+  "BS69-033",
+  "BS69-043",
+  "BS69-052",
+  "BS69-071",
+  "BS69-CX02",
+  "BS70-028",
+  "BS70-031",
+  "BS70-034",
+  "BS70-035",
+  "BS70-036",
+  "BS70-037",
+  "BS70-039",
+  "BS70-045",
+  "BS70-072",
+  "BS70-X03",
+  "BS71-053",
+  "BS71-054",
+  "BS71-056",
+  "BS71-057",
+  "BS71-058",
+  "BS71-060",
+  "BS71-061",
+  "BS71-063",
+  "BS71-064",
+  "BS71-072",
+  "BS71-083",
+  "BS71-084",
+  "BS71-X06",
+  "BS71-X09",
+  "BS71-CX01",
+  "BS71-CX03",
+  "BS71-RV004",
+  "BS72-049",
+  "BS72-050",
+  "BS72-051",
+  "BS72-054",
+  "BS72-068",
+  "BS72-083",
+  "BS72-CX01",
+  "BS74-038",
+  "BS74-040",
+  "BS74-041",
+  "BS74-042",
+  "BS74-043",
+  "BS74-045",
+  "BS74-047",
+  "BS74-048",
+  "BS74-049",
+  "BS74-050",
+  "BS74-067",
+  "BS74-072",
+  "BS74-X12",
+  "BS74-X13",
+  "BS74-X14",
+  "BS74-X15",
+  "BS74-CX01",
+  "BS74-CX03",
+  "BS75-001",
+  "BS75-002",
+  "BS75-003",
+  "BS75-004",
+  "BS75-005",
+  "BS75-006",
+  "BS75-007",
+  "BS75-008",
+  "BS75-009",
+  "BS75-010",
+  "BS75-011",
+  "BS75-012",
+  "BS75-013",
+  "BS75-028",
+  "BS75-030",
+  "BS75-035",
+  "BS75-037",
+  "BS75-041",
+  "BS75-042",
+  "BS75-043",
+  "BS75-044",
+  "BS75-045",
+  "BS75-046",
+  "BS75-047",
+  "BS75-048",
+  "BS75-049",
+  "BS75-050",
+  "BS75-061",
+  "BS75-062",
+  "BS75-063",
+  "BS75-068",
+  "BS75-073",
+  "BS75-074",
+  "BS75-075",
+  "BS75-076",
+  "BS75-082",
+  "BS75-083",
+  "BS75-X01",
+  "BS75-X02",
+  "BS75-X03",
+  "BS75-X08",
+  "BS75-X10",
+  "BS75-CX01",
+  "BS75-CX03",
+  "BS76-001",
+  "BS76-002",
+  "BS76-003",
+  "BS76-004",
+  "BS76-005",
+  "BS76-006",
+  "BS76-007",
+  "BS76-008",
+  "BS76-009",
+  "BS76-047",
+  "BS76-048",
+  "BS76-060",
+  "BS76-069",
+  "BS76-079",
+  "BS76-080",
+  "BS76-X01",
+  "BS76-X02",
+  "BS77-040"
+ ],
+ "number_conflicts": [
+  {
+   "id": "BS01-091",
+   "names": [
+    "The Artifact Laguna",
+    "The ShieldSpirit Dis"
+   ],
+   "kept": "The Artifact Laguna"
+  },
+  {
+   "id": "BS04-091",
+   "names": [
+    "Euthanasia",
+    "Lightning Ballista"
+   ],
+   "kept": "Lightning Ballista"
+  },
+  {
+   "id": "BS73-AX01",
+   "names": [
+    "The FungalTreeForgeDeity BigBang-Golem",
+    "The WarParamountRoaringGeneral Mudou"
+   ],
+   "kept": "The FungalTreeForgeDeity BigBang-Golem"
+  },
+  {
+   "id": "BS73-AX02",
+   "names": [
+    "The PrismKnightEmperor Dragonic-Arthur",
+    "The UltimateNetherDragon Ultimate-Mugendragon"
+   ],
+   "kept": "The PrismKnightEmperor Dragonic-Arthur"
+  },
+  {
+   "id": "BS73-AX03",
+   "names": [
+    "The HeavenlyDemonKing God-Sechs -Type Force-",
+    "The RevelationGreatDeity Ultimate-Amaterasu-Dragon"
+   ],
+   "kept": "The HeavenlyDemonKing God-Sechs -Type Force-"
+  }
+ ],
+ "level_problems": [
+  {
+   "id": "BS02-017",
+   "levels": [
+    {
+     "cores": 1,
+     "bp": 1000
+    },
+    {
+     "cores": 3,
+     "bp": 3000
+    },
+    {
+     "cores": 3,
+     "bp": 5000
+    }
+   ]
+  },
+  {
+   "id": "BS02-043",
+   "levels": [
+    {
+     "cores": 1,
+     "bp": 1000
+    },
+    {
+     "cores": 3,
+     "bp": 3000
+    },
+    {
+     "cores": 3,
+     "bp": 5000
+    }
+   ]
+  },
+  {
+   "id": "BS19-031",
+   "levels": [
+    {
+     "cores": 1,
+     "bp": 5000
+    },
+    {
+     "cores": 4,
+     "bp": 7000
+    },
+    {
+     "cores": 4,
+     "bp": 9000
+    }
+   ]
+  }
+ ],
+ "image_problems": [
+  {
+   "id": "BS03-049",
+   "name": "Mikene",
+   "problem": "no image"
+  },
+  {
+   "id": "BS05-063",
+   "name": "The Topaz Empty Sky",
+   "problem": "no image (near: The Topz Empty Sky.jpg)"
+  },
+  {
+   "id": "BS05-078",
+   "name": "Icicle Assault",
+   "problem": "no image (near: Icicle Assaul.jpg)"
+  },
+  {
+   "id": "BS07-007",
+   "name": "The Astrologist Dragron",
+   "problem": "no image (near: The Astrologist Dragon.jpg)"
+  },
+  {
+   "id": "BS08-027",
+   "name": "The ShiningWings JewelgΣ",
+   "problem": "no image (near: The ShiningWings JewelgE.jpg)"
+  },
+  {
+   "id": "BS08-036",
+   "name": "The MachineDeity Inphenit-Wols",
+   "problem": "no image (near: The MachineDiety Inphenit-Wols.jpg)"
+  },
+  {
+   "id": "BS08-X003D",
+   "name": "The UltimateDragonRider Sieg-Crimson",
+   "problem": "no image"
+  },
+  {
+   "id": "BS09-021",
+   "name": "The Mononofu Impaler",
+   "problem": "no image (near: The Mononofu Impalar.jpg)"
+  },
+  {
+   "id": "BS09-032",
+   "name": "The FlyingIronBeast Gale-Fokker",
+   "problem": "no image (near: The FlyinglronBeast Gale-Fokker.jpg)"
+  },
+  {
+   "id": "BS10-064",
+   "name": "The SkullTank Geparberd",
+   "problem": "no image (near: The SkullTank Geparbeard.jpg)"
+  },
+  {
+   "id": "BS10-070",
+   "name": "The ArmoredHorse Alfothr",
+   "problem": "no image (near: The ArmoredHorse Alforth.jpg)"
+  },
+  {
+   "id": "BS10-089",
+   "name": "The Freezing Lake with the Moonlight",
+   "problem": "no image"
+  },
+  {
+   "id": "BS10-096",
+   "name": "The Final Championship Flag",
+   "problem": "no image (near: The Final Chamionship Flag.jpg)"
+  },
+  {
+   "id": "BS11-010",
+   "name": "The DarkKnight Gaheris",
+   "problem": "no image (near: The DrakKnight Gaheris.jpg)"
+  },
+  {
+   "id": "BS11-033",
+   "name": "Nijinoko",
+   "problem": "no image (near: Ninjinoko.jpg)"
+  },
+  {
+   "id": "BS11-047",
+   "name": "The NeptuneSacredBeast Tri-Poseidos",
+   "problem": "no image"
+  },
+  {
+   "id": "BS11-048",
+   "name": "Centaurus-Golem",
+   "problem": "no image (near: Centauras-Golem.jpg)"
+  },
+  {
+   "id": "BS11-054",
+   "name": "The SpearBird Spineed-Hayato",
+   "problem": "no image (near: The SpearBird Speened-Hayato.jpg)"
+  },
+  {
+   "id": "BS11-058",
+   "name": "The DivineBowBird Perytorn",
+   "problem": "no image (near: The DivneBowBird Perytorn.jpg)"
+  },
+  {
+   "id": "BS11-060",
+   "name": "The ThunderSacredArtillery Cannon-Arms",
+   "problem": "no image (near: TheThunderAscredArtillery Cannon-Arms.jpg)"
+  },
+  {
+   "id": "BS11-062",
+   "name": "The Oort Dragon's Nest",
+   "problem": "no image (near: The Oort Dragoon's Nest.jpg)"
+  },
+  {
+   "id": "BS11-064",
+   "name": "The Dark Sacred Sword",
+   "problem": "no image (near: The Fark Sacred Sword.jpg)"
+  },
+  {
+   "id": "BS11-071",
+   "name": "The PillarRocks' Aquapolis",
+   "problem": "no image (near: The Pillars'Roks Aquapolis.jpg)"
+  },
+  {
+   "id": "BS11-X03",
+   "name": "The StarKnight Hercules Ω",
+   "problem": "no image (near: The StarKnight Ercules.jpg)"
+  },
+  {
+   "id": "BS12-004",
+   "name": "Dragon-Pheasant",
+   "problem": "no image (near: Dragon-Phaesant.jpg)"
+  },
+  {
+   "id": "BS12-008",
+   "name": "Grand-Dragcastle",
+   "problem": "no image (near: Grand-Dragoncastle.jpg)"
+  },
+  {
+   "id": "BS12-012",
+   "name": "The ChariotEmperor Dirgan",
+   "problem": "no image (near: Thee CharlotEmperor Dirgan.jpg)"
+  },
+  {
+   "id": "BS12-013",
+   "name": "The DarkKnight Kay",
+   "problem": "no image (near: The DrakKnight Kay.jpg)"
+  },
+  {
+   "id": "BS12-014",
+   "name": "The CorpseKnight Verium",
+   "problem": "no image (near: The CorpseKnight Verlum.jpg)"
+  },
+  {
+   "id": "BS12-017",
+   "name": "Kanshakukorogashi",
+   "problem": "no image (near: Kashakukorogashi.png)"
+  },
+  {
+   "id": "BS12-021",
+   "name": "Kojuu-Kamakirou",
+   "problem": "no image (near: Kojiuu-Kamakirou.gif)"
+  },
+  {
+   "id": "BS12-022",
+   "name": "The SunlightMusha Genji-Bolta",
+   "problem": "no image (near: The SunlishtMusha Genji-Bolta.jpg)"
+  },
+  {
+   "id": "BS12-032",
+   "name": "The HeavyBootsEmperor Vidar",
+   "problem": "no image (near: the HevyBootsEmpeor Vidar.jpg)"
+  },
+  {
+   "id": "BS12-035",
+   "name": "The Angelia of Olimpics Phul",
+   "problem": "no image (near: The Angelia of Olimpic Phul.jpg)"
+  },
+  {
+   "id": "BS12-038",
+   "name": "The Angelia of Olimpics Phaleg",
+   "problem": "no image (near: the Angelia of Olimpic Phaleg.jpg)"
+  },
+  {
+   "id": "BS12-048",
+   "name": "Captain-Orcard",
+   "problem": "no image (near: Captain-Orcad.jpg)"
+  },
+  {
+   "id": "BS12-061",
+   "name": "The Birthplace of the Sword",
+   "problem": "no image (near: The Birsthplace of the Sword.jpg)"
+  },
+  {
+   "id": "BS12-065",
+   "name": "The Wooded Castle Tower",
+   "problem": "no image (near: The Wooded Caste Tower.jpg)"
+  },
+  {
+   "id": "BS12-X02",
+   "name": "The EvilCapricornusDeity Stein-Bolg",
+   "problem": "no image"
+  },
+  {
+   "id": "BS12-X03",
+   "name": "The MonoeyeBushin Mantics-Masamune",
+   "problem": "no image (near: The MonoeyeBushin Mantics-Musasame.jpg)"
+  },
+  {
+   "id": "BS12-X05",
+   "name": "The ValkyrieVirgoDeity Vielje",
+   "problem": "no image (near: The ValkyrieVirgoDeity Viejie.jpg)"
+  },
+  {
+   "id": "BS13-052",
+   "name": "Evilglider",
+   "problem": "no image (near: Evilglinder.png)"
+  },
+  {
+   "id": "BS13-067",
+   "name": "The Light Guiding Tower",
+   "problem": "no image (near: The Light Guilding Tower.png)"
+  },
+  {
+   "id": "BS13-072",
+   "name": "The Unfinished Ancient Battleship:Compass",
+   "problem": "no image (near: The Unfinishied Ancient Battleship\\)"
+  },
+  {
+   "id": "BS13-X005R",
+   "name": "The BigDipperDragon Sieg-Apollodragon",
+   "problem": "no image"
+  },
+  {
+   "id": "BS13-X005A",
+   "name": "The BigDipperDragon Sieg-Apollodragon",
+   "problem": "no image"
+  },
+  {
+   "id": "BS13-X005E",
+   "name": "The BigDipperDragon Sieg-Apollodragon",
+   "problem": "no image"
+  },
+  {
+   "id": "BS13-X005T",
+   "name": "The BigDipperDragon Sieg-Apollodragon",
+   "problem": "no image"
+  },
+  {
+   "id": "BS13-X005S",
+   "name": "The BigDipperDragon Sieg-Apollodragon",
+   "problem": "no image"
+  },
+  {
+   "id": "BS14-007",
+   "name": "Kagutsuchidragoon",
+   "problem": "no image (near: Kagatsuchidragon.png)"
+  },
+  {
+   "id": "BS14-041",
+   "name": "Buster-Fenrircannon",
+   "problem": "no image (near: Burst-Fenrircannon.png)"
+  },
+  {
+   "id": "BS14-085",
+   "name": "The Admiring Pipe Organ",
+   "problem": "no image (near: Tha Admiring Pipe Organ.png)"
+  },
+  {
+   "id": "BS14-087",
+   "name": "The Empire of Pentan:the Capital Empereur",
+   "problem": "no image (bad file name in the index: 'The Empire of Pentan\\\\')"
+  },
+  {
+   "id": "BS14-102",
+   "name": "Tornade Burst",
+   "problem": "no image (near: Tornado Burst.png)"
+  },
+  {
+   "id": "BS15-012",
+   "name": "Werewolf-Command",
+   "problem": "no image (near: Werewolf-Comand.png)"
+  },
+  {
+   "id": "BS15-027",
+   "name": "The HollowProvidence Hououga",
+   "problem": "no image (near: The HollowProvidence Houoga.png)"
+  },
+  {
+   "id": "BS15-062",
+   "name": "The Ganryujima Island",
+   "problem": "no image (near: Tha Ganryujima Island.png)"
+  },
+  {
+   "id": "BS15-063",
+   "name": "The Hanged Old Castle",
+   "problem": "no image (near: The Huged Old Castle.png)"
+  },
+  {
+   "id": "BS15-064",
+   "name": "The Evil Gate to the Thanatos",
+   "problem": "no image (near: The Evil Gato to the Thanatos.png)"
+  },
+  {
+   "id": "BS16-015",
+   "name": "Kotsugaizi",
+   "problem": "no image (near: Kitsugaizi.jpg)"
+  },
+  {
+   "id": "BS16-034",
+   "name": "Brontarl",
+   "problem": "no image (near: Brontal.jpg)"
+  },
+  {
+   "id": "BS16-073",
+   "name": "Aggressive Rage",
+   "problem": "no image (near: Aggresive Rage.jpg)"
+  },
+  {
+   "id": "BS16-X01",
+   "name": "The ExplosionHero Lord-Dragon-Bazzel",
+   "problem": "no image (near: The ExplosiveHero Lord-Dragon-Bazzel.png)"
+  },
+  {
+   "id": "BS16-X03",
+   "name": "The RetsuHero Seiryubi",
+   "problem": "no image (near: The RestuHero Seiryubi.jpg)"
+  },
+  {
+   "id": "BS17-051",
+   "name": "The PantherMan Alibaba",
+   "problem": "no image (near: The PhanterMan Alibaba.jpg)"
+  },
+  {
+   "id": "BS18-023",
+   "name": "The SteedGeneral Boorchu",
+   "problem": "no image (near: The SteedGeneral Borchu.jpg)"
+  },
+  {
+   "id": "BS18-043",
+   "name": "The Creator Grimm-Wilhelm",
+   "problem": "no image (near: The Creator Grim-Wilhelm.jpg)"
+  },
+  {
+   "id": "BS18-084",
+   "name": "Dictator Legion",
+   "problem": "no image (near: Dictaor Legion.jpg)"
+  },
+  {
+   "id": "BS18-X01",
+   "name": "The SuperHero Lord-Dragon-Saviour",
+   "problem": "no image (near: The SuperHero Lord-Dragon-Savior.jpg)"
+  },
+  {
+   "id": "BS18-X05",
+   "name": "The HolyEvilEmperor Mephisto-Pheles",
+   "problem": "no image (near: The HolyEvilEmperor Mephist-Pheles.jpg)"
+  },
+  {
+   "id": "BS18-X012R",
+   "name": "The HeroEmperor Lord-Dragon-Dominion",
+   "problem": "no image"
+  },
+  {
+   "id": "BS18-X012A",
+   "name": "The HeroEmperor Lord-Dragon-Dominion",
+   "problem": "no image"
+  },
+  {
+   "id": "BS18-X012E",
+   "name": "The HeroEmperor Lord-Dragon-Dominion",
+   "problem": "no image"
+  },
+  {
+   "id": "BS18-X012D",
+   "name": "The HeroEmperor Lord-Dragon-Dominion",
+   "problem": "no image"
+  },
+  {
+   "id": "BS18-X012T",
+   "name": "The HeroEmperor Lord-Dragon-Dominion",
+   "problem": "no image"
+  },
+  {
+   "id": "BS18-X012S",
+   "name": "The HeroEmperor Lord-Dragon-Dominion",
+   "problem": "no image"
+  },
+  {
+   "id": "BS19-065",
+   "name": "The AbyssalEmpress Resscylla",
+   "problem": "no image (near: BS19-065.jpg)"
+  },
+  {
+   "id": "BS21-X03",
+   "name": "The BlackTreeDeity Kuwaga-Labuna",
+   "problem": "no image"
+  },
+  {
+   "id": "BS23-043",
+   "name": "The MoonShadowSwordMaster Amalthea",
+   "problem": "no image (near: BS23-043.jpg)"
+  },
+  {
+   "id": "BS23-X04",
+   "name": "The TwinGunMachineDeity Diarmu-Dyna",
+   "problem": "no image (near: BS23-X04.jpg)"
+  },
+  {
+   "id": "BS24-001",
+   "name": "Ryuuman-Claw",
+   "problem": "no image (near: Ryuuman-Crow.jpg)"
+  },
+  {
+   "id": "BS24-018",
+   "name": "The HellBeastKing Oselo",
+   "problem": "no image (near: The HellBeastKing Ocelo.jpg)"
+  },
+  {
+   "id": "BS24-085",
+   "name": "The Prelude to Destruction",
+   "problem": "no image (near: The Prelude of Destruction.jpg)"
+  },
+  {
+   "id": "BS24-108",
+   "name": "Suppression",
+   "problem": "no image (near: Suppresion.jpg)"
+  },
+  {
+   "id": "CP14-X01R",
+   "name": "The ImmortalDragon Eternal-Dragonis",
+   "problem": "no image (near: The ImmortalDragon Eternal-Dragonis (Red).png)"
+  },
+  {
+   "id": "CP14-X02R",
+   "name": "The DarkDragonEmperor Ultimate-Siegfried",
+   "problem": "no image (near: The DarkDragonEmperor Ultimate-Siegfried (Red).png)"
+  },
+  {
+   "id": "BS25-003",
+   "name": "The Survivor Neo-Arc",
+   "problem": "no image (near: The Survivor Neo-Ark.png)"
+  },
+  {
+   "id": "BS25-014",
+   "name": "The ChevalLancer Eligale",
+   "problem": "no image (near: The ChevalLancer Erigale.png)"
+  },
+  {
+   "id": "BS25-041",
+   "name": "The AngeliaDaughter Asahel",
+   "problem": "no image"
+  },
+  {
+   "id": "BS25-044",
+   "name": "Gecko-Golem",
+   "problem": "no image (near: Gekko-Golem.jpg)"
+  },
+  {
+   "id": "BS25-X02",
+   "name": "The OceanEmperorGiantDeity Duran-Kidd",
+   "problem": "no image (near: BS25-X02.png)"
+  },
+  {
+   "id": "BS25-X04",
+   "name": "Ultimate-Beelzebeat",
+   "problem": "no image (near: Ultimate-Belzebeat.png)"
+  },
+  {
+   "id": "BS26-035",
+   "name": "［Diva Lady］Griffiar d'Arc",
+   "problem": "no image"
+  },
+  {
+   "id": "BS26-042",
+   "name": "The BladeWerewolf Jigen",
+   "problem": "no image (near: The BladeWolf Jigen.jpg)"
+  },
+  {
+   "id": "BS26-066",
+   "name": "The Ptolomea Streets of Grief",
+   "problem": "no image (near: The Tolomaea Streets of Grief.jpg)"
+  },
+  {
+   "id": "BS27-007",
+   "name": "The LionGuardian Shieldragon",
+   "problem": "no image"
+  },
+  {
+   "id": "BS27-014",
+   "name": "The EvilGuardian Viene",
+   "problem": "no image"
+  },
+  {
+   "id": "BS27-022",
+   "name": "The AzureGuardian LapisJaguar",
+   "problem": "no image"
+  },
+  {
+   "id": "BS27-026",
+   "name": "Tank-Mobil-Sherman",
+   "problem": "no image (near: Tank-Mobile-Sherman.png)"
+  },
+  {
+   "id": "BS27-029",
+   "name": "The CarrierEmperor Ridefencer",
+   "problem": "no image"
+  },
+  {
+   "id": "BS27-030",
+   "name": "The SteelGuardian FortElk",
+   "problem": "no image"
+  },
+  {
+   "id": "BS27-039",
+   "name": "The BraveGuardian Ou-Ryute",
+   "problem": "no image"
+  },
+  {
+   "id": "BS27-041",
+   "name": "The GiantShipDoctor Gordon",
+   "problem": "no image (near: The GiantShip'sDoctor Gordon.jpg)"
+  },
+  {
+   "id": "BS27-046",
+   "name": "The SeaGuardian Elephandar",
+   "problem": "no image"
+  },
+  {
+   "id": "BS27-057",
+   "name": "The UltraAngelia Puffel",
+   "problem": "no image (near: The SuperAngelia Puffel.png)"
+  },
+  {
+   "id": "BS27-073",
+   "name": "The Streets of Everlasting Winter Finbole",
+   "problem": "no image (near: The Finbole Streets of Everlasting Winter.jpg)"
+  },
+  {
+   "id": "BS27-X01",
+   "name": "The DarkRideDeity Nemesis",
+   "problem": "no image"
+  },
+  {
+   "id": "BS28-044",
+   "name": "The CannonAngelia Kanon",
+   "problem": "no image"
+  },
+  {
+   "id": "BS28-066",
+   "name": "The Flaming Divine Sword",
+   "problem": "no image"
+  },
+  {
+   "id": "BS29-004",
+   "name": "The HotbloodSwordMaster Ryuuman-Burncolor",
+   "problem": "no image (near: The HotBloodedSwordsSaint Ryuuman-Burncolor.jpg)"
+  },
+  {
+   "id": "BS29-006",
+   "name": "Megiddo-Dragon",
+   "problem": "no image (near: Megido-Dragon.jpg)"
+  },
+  {
+   "id": "BS29-012",
+   "name": "The SwordMasterDemonKing Gaap",
+   "problem": "no image"
+  },
+  {
+   "id": "BS29-019",
+   "name": "The SwordMasterBeetle Tenagakogane",
+   "problem": "no image (near: The SwordsSaintBeetle Tenagakogane.jpg)"
+  },
+  {
+   "id": "BS29-025",
+   "name": "The HeroSwordMaster Sigurd",
+   "problem": "no image (near: The HeroSwordsSaint Sigurd.jpg)"
+  },
+  {
+   "id": "BS29-032",
+   "name": "The SwordMasterMusician Oliviel",
+   "problem": "no image (near: The SwordsSaintMusician Olivier.jpg)"
+  },
+  {
+   "id": "BS29-039",
+   "name": "The SwordMasterSeaBeast SwordHydra",
+   "problem": "no image"
+  },
+  {
+   "id": "BS29-041",
+   "name": "The DragonSwordMaster Ryuuman-Masteredge",
+   "problem": "no image (near: The DragonSwordsSaint Ryuuman-Masteredge.png)"
+  },
+  {
+   "id": "BS29-043",
+   "name": "The FallenSwordMaster Moloch",
+   "problem": "no image (near: The FallenSwordsSaint Moloch.jpg)"
+  },
+  {
+   "id": "BS29-045",
+   "name": "The ShellSwordMaster Bullmeister",
+   "problem": "no image (near: The ShellSwordsSaint Bullmeister.jpg)"
+  },
+  {
+   "id": "BS29-047",
+   "name": "The SwordMasterWarMachine Frey",
+   "problem": "no image"
+  },
+  {
+   "id": "BS29-049",
+   "name": "The SwordMasterAngelia Momoel",
+   "problem": "no image (near: The SwordsSaintAngelia Momoel.jpg)"
+  },
+  {
+   "id": "BS29-052",
+   "name": "The RaptorSwordMaster Peregrine",
+   "problem": "no image"
+  },
+  {
+   "id": "BS29-062",
+   "name": "The StarDivineStaff Spica",
+   "problem": "no image"
+  },
+  {
+   "id": "BS29-X02",
+   "name": "The GreatSwordMaster Eaglen",
+   "problem": "no image"
+  },
+  {
+   "id": "BS29-X04",
+   "name": "The FallenRideDeity Saturn",
+   "problem": "no image (near: The FallenKnightDeity Saturn.jpg)"
+  },
+  {
+   "id": "CP14-X14R",
+   "name": "The ShiningSwordDragonEmperor Shining-Ryuuman",
+   "problem": "no image"
+  },
+  {
+   "id": "BS30-023",
+   "name": "The ArmoredEvilDragon Fafner",
+   "problem": "no image (near: The ArmoredEvilDragon Fafne.png)"
+  },
+  {
+   "id": "BS30-041",
+   "name": "The FlameSwordMaster Ryuuman-Swordwing",
+   "problem": "no image (near: The FlameSwordsSaint Ryuuman-Swordwing.png)"
+  },
+  {
+   "id": "BS30-043",
+   "name": "The SkeletonSwordMaster Exoskull",
+   "problem": "no image (near: The SkeletonSwordsSaint Exoskull.png)"
+  },
+  {
+   "id": "BS30-050",
+   "name": "The CannonGreatAngelia Fiel",
+   "problem": "no image (near: The GunGreatAngelia Fiel.png)"
+  },
+  {
+   "id": "BS30-053",
+   "name": "The HeavySwordMaster Moonbear",
+   "problem": "no image (near: The HeavySwordsSaint Moonbear.png)"
+  },
+  {
+   "id": "BS30-058",
+   "name": "The SaturnDeitySword SaturnSleif",
+   "problem": "no image (near: The SaturnDeitySword SaturnSlave.png)"
+  },
+  {
+   "id": "BS30-075",
+   "name": "Necro Blight",
+   "problem": "no image"
+  },
+  {
+   "id": "BS30-X01",
+   "name": "The LegendarySwordDeity Ryuuman-Godsword",
+   "problem": "no image"
+  },
+  {
+   "id": "BS31-007",
+   "name": "The Commander Liu Man",
+   "problem": "no image (near: The Commander Ryuuman.png)"
+  },
+  {
+   "id": "BS31-022",
+   "name": "Purple Smoke Dragon",
+   "problem": "no image"
+  },
+  {
+   "id": "BS31-096",
+   "name": "The Thousand Bay Kannon Temple",
+   "problem": "no image (near: The Thousand Space Kannon Temple.png)"
+  },
+  {
+   "id": "BS31-CP06",
+   "name": "The VassalWisdomKing Rudra",
+   "problem": "no image (near: BS31 CP06.png)"
+  },
+  {
+   "id": "BS32-063",
+   "name": "No. 32 Island Root",
+   "problem": "no image (near: No. 32 Island Route.png)"
+  },
+  {
+   "id": "BS33-021",
+   "name": "The Messenger Genet",
+   "problem": "no image (near: The Messenger Jenet.png)"
+  },
+  {
+   "id": "BS33-071",
+   "name": "The Amida Nyorai Statue",
+   "problem": "no image"
+  },
+  {
+   "id": "BS33-074",
+   "name": "Conjuration",
+   "problem": "no image"
+  },
+  {
+   "id": "BS33-XX02",
+   "name": "The SixAbsoluteDeities Sealing-Strom-Hyde",
+   "problem": "no image (near: BS33-XX02.jpg)"
+  },
+  {
+   "id": "BS33-CP02",
+   "name": "The CannonAngelia Kanon",
+   "problem": "no image"
+  },
+  {
+   "id": "BS34-029",
+   "name": "The EarthShinobi Daibeet",
+   "problem": "no image (near: The EarthNinja Daibeet.png)"
+  },
+  {
+   "id": "BS34-057",
+   "name": "The DharmaSwords WisdomKing",
+   "problem": "no image"
+  },
+  {
+   "id": "BS35-X04",
+   "name": "The SheepTwelveGodKing Glorious-Sheep",
+   "problem": "no image (near: BS35-X04 (Fixed).jpg)"
+  },
+  {
+   "id": "BS35-X005R",
+   "name": "The BigDipperDragon Sieg-Apollodragon",
+   "problem": "no image (near: The BigDipperDragon Sieg-Apollodragon (Red) Alternative Art.jpg)"
+  },
+  {
+   "id": "BS35-X005A",
+   "name": "The BigDipperDragon Sieg-Apollodragon",
+   "problem": "no image (near: The BigDipperDragon Sieg-Apollodragon (Red) Alternative Art.jpg)"
+  },
+  {
+   "id": "BS35-X005E",
+   "name": "The BigDipperDragon Sieg-Apollodragon",
+   "problem": "no image (near: The BigDipperDragon Sieg-Apollodragon (Red) Alternative Art.jpg)"
+  },
+  {
+   "id": "BS35-X005D",
+   "name": "The BigDipperDragon Sieg-Apollodragon",
+   "problem": "no image (near: The BigDipperDragon Sieg-Apollodragon (Red) Alternative Art.jpg)"
+  },
+  {
+   "id": "BS35-X005T",
+   "name": "The BigDipperDragon Sieg-Apollodragon",
+   "problem": "no image (near: The BigDipperDragon Sieg-Apollodragon (Red) Alternative Art.jpg)"
+  },
+  {
+   "id": "BS35-X005S",
+   "name": "The BigDipperDragon Sieg-Apollodragon",
+   "problem": "no image (near: The BigDipperDragon Sieg-Apollodragon (Red) Alternative Art.jpg)"
+  },
+  {
+   "id": "BS37-061",
+   "name": "The GiantPrince Shatrugna",
+   "problem": "no image (near: BS37-061.jpg)"
+  },
+  {
+   "id": "BS38-044",
+   "name": "The HellseaLionheart Squidman",
+   "problem": "no image"
+  },
+  {
+   "id": "BS38-X02",
+   "name": "The Hellsoil FourDemonLord Magnamiser",
+   "problem": "no image (near: BS38-X02.jpg)"
+  },
+  {
+   "id": "BS38-RV006",
+   "name": "The ChariotEmperor Dirgan",
+   "problem": "no image (near: BS38-RV006.jpg)"
+  },
+  {
+   "id": "BS38-RV010",
+   "name": "The StarKnight Hercules Ω",
+   "problem": "no image (near: BS38-RV010.jpg)"
+  },
+  {
+   "id": "BS38-RVX02",
+   "name": "The EvilCapricornusDeity Stein-Bolg",
+   "problem": "no image (near: BS38-RV X02.png)"
+  },
+  {
+   "id": "BS39-RV013",
+   "name": "The SatelliteRobo Telescord",
+   "problem": "no image (near: BS39-RV013.jpg)"
+  },
+  {
+   "id": "BS39-RV020",
+   "name": "Centaurus-Golem",
+   "problem": "no image (near: BS39-RV020.jpg)"
+  },
+  {
+   "id": "BS39-RV021",
+   "name": "The GiantCentaurus Troydes",
+   "problem": "no image (near: BS39-RV021.jpg)"
+  },
+  {
+   "id": "BS39-RV029",
+   "name": "The Birthplace of the Sword",
+   "problem": "no image (near: BS39-RV029.jpg)"
+  },
+  {
+   "id": "BS39-RV037",
+   "name": "The Unfinished Ancient Battleship:Compass",
+   "problem": "no image (near: BS39-RV037.jpg)"
+  },
+  {
+   "id": "BS39-RVX05",
+   "name": "The ValkyrieVirgoDeity Vielje",
+   "problem": "no image (near: BS39-RVX05.png)"
+  },
+  {
+   "id": "BS40-019",
+   "name": "The MakaiKnight Shazworth",
+   "problem": "no image"
+  },
+  {
+   "id": "BS41-003",
+   "name": "The CometDragon Sungrazer",
+   "problem": "no image (near: The CometDragon SunGlazer.jpg)"
+  },
+  {
+   "id": "BS41-004",
+   "name": "Serval Runner",
+   "problem": "no image"
+  },
+  {
+   "id": "BS41-006",
+   "name": "The EngineBeast Vulcan-Tiger",
+   "problem": "no image (near: The MachineBeast Vulcan-Tiger.jpg)"
+  },
+  {
+   "id": "BS41-016",
+   "name": "The FourSwordDemon Quatres",
+   "problem": "no image (near: The FourSwordDemon Katorusu.jpg)"
+  },
+  {
+   "id": "BS41-018",
+   "name": "The MakaiSwordsman Salzerk",
+   "problem": "no image"
+  },
+  {
+   "id": "BS41-020",
+   "name": "The VioknightDragon Viorose",
+   "problem": "no image"
+  },
+  {
+   "id": "BS41-023",
+   "name": "The MakaiMarshal Valvrosso",
+   "problem": "no image"
+  },
+  {
+   "id": "BS41-034",
+   "name": "The KingBeastTribe Blade Youth",
+   "problem": "no image (near: The KingBeastTribe Youth Blade.jpg)"
+  },
+  {
+   "id": "BS41-044",
+   "name": "The Valkyrie Rossweisse",
+   "problem": "no image (near: The Valkyrie RoseWeiss.jpg)"
+  },
+  {
+   "id": "BS41-049",
+   "name": "Degu of Card Magics",
+   "problem": "no image"
+  },
+  {
+   "id": "BS41-052",
+   "name": "The Balancing Shrewmouse",
+   "problem": "no image"
+  },
+  {
+   "id": "BS41-056",
+   "name": "The ThroneAngelia Safiel",
+   "problem": "no image"
+  },
+  {
+   "id": "BS41-059",
+   "name": "Mobile Pentan Empereu Wing",
+   "problem": "no image (near: Mobile Pentan Emperor Wing.jpg)"
+  },
+  {
+   "id": "BS41-067",
+   "name": "The GreatPirate Jinvader",
+   "problem": "no image (near: The Great Pirate GinVader.jpg)"
+  },
+  {
+   "id": "BS41-087",
+   "name": "Death Breath",
+   "problem": "no image"
+  },
+  {
+   "id": "BS41-X02",
+   "name": "The BlackDragonDeity Geo-Duram",
+   "problem": "no image (near: The BlackDragonDeity Zeo-Duram.png)"
+  },
+  {
+   "id": "BS41-CP04",
+   "name": "The ThunderEmperorDragon Siegwurm",
+   "problem": "ambiguous name (2 files, none in set BS41)"
+  },
+  {
+   "id": "BS41-RV008",
+   "name": "The MachineDeity Inphenit-Wols",
+   "problem": "no image (near: The MachineDeity Inphenit-Wols (Revival).jpg)"
+  },
+  {
+   "id": "BS42-001",
+   "name": "The TwinkleStarDragon Star-Bladra",
+   "problem": "no image (near: The TwinkleAstralDragon Star-Bladra.jpg)"
+  },
+  {
+   "id": "BS42-002",
+   "name": "The DinosaurAlliance Dromaeo",
+   "problem": "no image (near: The DinosaursAlliance Dromaeo.jpg)"
+  },
+  {
+   "id": "BS42-004",
+   "name": "The TwinkleStarDragon RedSprite",
+   "problem": "no image (near: The TwinkleAstralDragon Red Sprite.jpg)"
+  },
+  {
+   "id": "BS42-007",
+   "name": "The TwinkleStarDragon SpiculeDragon",
+   "problem": "no image (near: The TwinkleAstralDragon Spicule.jpg)"
+  },
+  {
+   "id": "BS42-008",
+   "name": "The ElectricBoulderDragon Dynamo Dragon",
+   "problem": "no image (near: The ElectrifyBoulderDragon Dynamo.jpg)"
+  },
+  {
+   "id": "BS42-011",
+   "name": "The DinosaurAlliance ThunderBladeElectrosaurus",
+   "problem": "no image (near: The DinosaursAlliance Thunder Blade Electrosarus.jpg)"
+  },
+  {
+   "id": "BS42-012",
+   "name": "The TwinkleStarEighthApostle Proteus",
+   "problem": "no image (near: The TwinkleStarEightApostle Proteus.jpg)"
+  },
+  {
+   "id": "BS42-015",
+   "name": "The VioletCorpseBrigade Bonehead-Drago",
+   "problem": "no image"
+  },
+  {
+   "id": "BS42-016",
+   "name": "The VioletCorpseBrigade Zombie Dragon",
+   "problem": "no image"
+  },
+  {
+   "id": "BS42-018",
+   "name": "The Lorekeeper Wise Snake",
+   "problem": "no image (near: The KnowledgeLorekeeper Wise Snake.jpg)"
+  },
+  {
+   "id": "BS42-019",
+   "name": "The VioletCorpseBrigade Deathrib Dragon",
+   "problem": "no image"
+  },
+  {
+   "id": "BS42-020",
+   "name": "The MysticLorekeeper Alaneia",
+   "problem": "no image (near: The MysteriousLorekeeper Alaneia.jpg)"
+  },
+  {
+   "id": "BS42-023",
+   "name": "The VioletCorpseBrigade Tanzanite-Bone-Dragon",
+   "problem": "no image (near: The DeathVioletBrigade Tanzanite Bone Dragon.jpg)"
+  },
+  {
+   "id": "BS42-025",
+   "name": "The VanityDeityGeneral Telos Dragon",
+   "problem": "no image (near: The VanityDeityGeneral Terozu-Dragon.jpg)"
+  },
+  {
+   "id": "BS42-026",
+   "name": "The VioletCorpseBrigade White Enigma Dragon",
+   "problem": "no image (near: The DeathVioletBridage WhiteEnigmaDragon.jpg)"
+  },
+  {
+   "id": "BS42-027",
+   "name": "The KingBeastTribe Bamboo Kodkod",
+   "problem": "no image (near: The KingBeastTribe Bamboo Dokodo.jpg)"
+  },
+  {
+   "id": "BS42-028",
+   "name": "The HundredSwordsClan Vagabond Purpuricenus",
+   "problem": "no image"
+  },
+  {
+   "id": "BS42-031",
+   "name": "The Wonderland MarchRabbit",
+   "problem": "no image (near: Wonderland MarchRabbit.jpg)"
+  },
+  {
+   "id": "BS42-033",
+   "name": "The HundredSwordsClan ArmoredMoth Curmax",
+   "problem": "no image"
+  },
+  {
+   "id": "BS42-035",
+   "name": "The HundredSwordsClan Bodyguard Sabigasa",
+   "problem": "no image"
+  },
+  {
+   "id": "BS42-036",
+   "name": "The HundredSwordsClan TwinkleBlade Miyama",
+   "problem": "no image"
+  },
+  {
+   "id": "BS42-039",
+   "name": "Hammer-Kop",
+   "problem": "no image (near: Hammakop.jpg)"
+  },
+  {
+   "id": "BS42-040",
+   "name": "The NobleGunEmperorQueen Sieglinde",
+   "problem": "no image"
+  },
+  {
+   "id": "BS42-043",
+   "name": "The NobleOrderOfficer Etat-Major",
+   "problem": "no image (near: The NobleOfficer Eta-Major.png)"
+  },
+  {
+   "id": "BS42-045",
+   "name": "Blizzastar-Eagle",
+   "problem": "no image (near: Blizstar-Eagle.jpg)"
+  },
+  {
+   "id": "BS42-046",
+   "name": "The NobleValkyrie Grimgerde",
+   "problem": "no image (near: The NobleValkyrie Grimmgerde.jpg)"
+  },
+  {
+   "id": "BS42-047",
+   "name": "The Wonderland Whyte​? Rabbit",
+   "problem": "no image (near: Wonderland White Rabbit.jpg)"
+  },
+  {
+   "id": "BS42-048",
+   "name": "The Wonderland Dum&Dee",
+   "problem": "no image (near: Wonderland Dum & Dee.jpg)"
+  },
+  {
+   "id": "BS42-049",
+   "name": "The Wonderland Trump Pentans",
+   "problem": "no image (near: The Wonderland Trump Troops.jpg)"
+  },
+  {
+   "id": "BS42-051",
+   "name": "The Wonderland Alice",
+   "problem": "no image (near: Wonderland Alice.jpg)"
+  },
+  {
+   "id": "BS42-052",
+   "name": "The Wonderland Yamane",
+   "problem": "no image (near: Wonderland Yamane.jpg)"
+  },
+  {
+   "id": "BS42-053",
+   "name": "The BraveShineAngelia Creshiel",
+   "problem": "no image (near: The BraveShineAngelia Jiniel.jpg)"
+  },
+  {
+   "id": "BS42-054",
+   "name": "The Wonderland HeartKnightJack",
+   "problem": "no image (near: Wonderland HeartKnightJack.jpg)"
+  },
+  {
+   "id": "BS42-055",
+   "name": "The Wonderland WhiteQueen",
+   "problem": "no image (near: Wonderland White Queen.jpg)"
+  },
+  {
+   "id": "BS42-056",
+   "name": "The Wonderland CheshireCat",
+   "problem": "no image (near: Wonderland Cheshire Cat.jpg)"
+  },
+  {
+   "id": "BS42-057",
+   "name": "The Wonderland Trump-Griffon",
+   "problem": "no image (near: Wonderland Trump Griffon.jpg)"
+  },
+  {
+   "id": "BS42-058",
+   "name": "The Wonderland Bandersnatch",
+   "problem": "no image (near: Wonderland Bandersnatch.jpg)"
+  },
+  {
+   "id": "BS42-059",
+   "name": "The Wonderland RedPenpress",
+   "problem": "no image"
+  },
+  {
+   "id": "BS42-067",
+   "name": "The BraveShineHero Lightning",
+   "problem": "no image"
+  },
+  {
+   "id": "BS42-069",
+   "name": "The DragonEmperor'sPirateCrew Vice-Captain Aozack",
+   "problem": "no image (near: The DragonEmperor'sPirateGang Vice-CaptainAozack.jpg)"
+  },
+  {
+   "id": "BS42-073",
+   "name": "The WindGodGun Behexhaust",
+   "problem": "no image (near: The WindGodGun Behexostrike.jpg)"
+  },
+  {
+   "id": "BS42-075",
+   "name": "The TwinkleDragonGunblade Guns-Balmung -Gun Mode-",
+   "problem": "no image"
+  },
+  {
+   "id": "BS42-076",
+   "name": "The ThreeHeadedGun Greed-Lock-Gun",
+   "problem": "no image (near: The ThreeHeadedGun Greed-Lock.png)"
+  },
+  {
+   "id": "BS42-077",
+   "name": "The Pirate'sSpeargun Zeroy-Shooter",
+   "problem": "no image (near: The Pirate'sHarpoon Zeroy Shooter.jpg)"
+  },
+  {
+   "id": "BS42-078",
+   "name": "The TwinkleStar Laniakea",
+   "problem": "no image (near: The TwinkleStar Lanieker.jpg)"
+  },
+  {
+   "id": "BS42-081",
+   "name": "The Reopened Hole in the Empty Sky",
+   "problem": "no image (near: The Reopened hole of the Empty Sky.jpg)"
+  },
+  {
+   "id": "BS42-X01",
+   "name": "The TwinkleStarDragonKing Moebius Dragon",
+   "problem": "no image (near: The TwinkleStarDragonEmperor MoebiusDragon.jpg)"
+  },
+  {
+   "id": "BS42-X02",
+   "name": "The DarkStones VioletCorpseDragonGod Daimezak",
+   "problem": "no image"
+  },
+  {
+   "id": "BS42-X03",
+   "name": "The DarkStones HundredSwordsBushin Gogmazan",
+   "problem": "no image (near: The DarkStone HundredSwordBushin Gogmazan.png)"
+  },
+  {
+   "id": "BS42-X04",
+   "name": "The NobleFinalArms La-Illusion",
+   "problem": "no image (near: The NobleFinalArm Ra=Illuzeon.jpg)"
+  },
+  {
+   "id": "BS42-CP06",
+   "name": "The SixTwinkleGuard KingBeast of Ear Pookses",
+   "problem": "no image (near: The SixTwinkleGuard BeastKingEar Pookses.jpg)"
+  },
+  {
+   "id": "BS43-001",
+   "name": "The DragonEmperorWaterShield Clio-Wasser",
+   "problem": "no image (near: The DragonEmperor'sShield WaterClio-Vassar.jpg)"
+  },
+  {
+   "id": "BS43-003",
+   "name": "The TwinkleStarFifthApostle Tethys",
+   "problem": "no image (near: The TwinkleStarFifthApostle Thetis.jpg)"
+  },
+  {
+   "id": "BS43-004",
+   "name": "The DragonEmperorLightShield Phegaro-Phos",
+   "problem": "no image"
+  },
+  {
+   "id": "BS43-005",
+   "name": "The DragonEmperorFlameShield Melt-Zestos",
+   "problem": "no image (near: The DragonEmperor'sShield FlameMelt-Zestos.png)"
+  },
+  {
+   "id": "BS43-006",
+   "name": "The DragonEmperorSkySpear Abend-Rot",
+   "problem": "no image"
+  },
+  {
+   "id": "BS43-008",
+   "name": "The DinosaurAlliance Acrocanthorex",
+   "problem": "no image (near: The DinosaurAlliance Acrokentorex.jpg)"
+  },
+  {
+   "id": "BS43-010",
+   "name": "The PegasusGodKing Execeed-Wing",
+   "problem": "no image (near: BS43-010.png)"
+  },
+  {
+   "id": "BS43-012",
+   "name": "Scything Neckchopper",
+   "problem": "no image (near: The Scythe NeckChopper.jpg)"
+  },
+  {
+   "id": "BS43-013",
+   "name": "The Lorekeeper ThreeSnakeSages Melchior",
+   "problem": "no image"
+  },
+  {
+   "id": "BS43-015",
+   "name": "The MakaiHeirloom Geno-Legacy",
+   "problem": "no image"
+  },
+  {
+   "id": "BS43-017",
+   "name": "The EvilSpearKnight Cavaliere",
+   "problem": "no image (near: The EvilSpearKnight Cavallie-Ele.jpg)"
+  },
+  {
+   "id": "BS43-019",
+   "name": "The VioletCorpseGodKing Exo-Ourovorius",
+   "problem": "no image (near: The DeathVioletGodKing Exo-Ourovorius.png)"
+  },
+  {
+   "id": "BS43-020",
+   "name": "The Lorekeeper Schlange",
+   "problem": "no image"
+  },
+  {
+   "id": "BS43-022",
+   "name": "The WindDemon Kamahashi",
+   "problem": "no image (near: The WindDemon Kamabashi.png)"
+  },
+  {
+   "id": "BS43-025",
+   "name": "The HundredSwordsClan Umeno",
+   "problem": "no image (near: The HundredSwordClan Umeno.jpg)"
+  },
+  {
+   "id": "BS43-026",
+   "name": "The StrangeFangShinobi Jaguara",
+   "problem": "no image (near: The StrangeFangShinobi Jagara.png)"
+  },
+  {
+   "id": "BS43-027",
+   "name": "The HundredSwordsClan Kirigiri",
+   "problem": "no image (near: The HundredSwordClan Kirigiri.jpg)"
+  },
+  {
+   "id": "BS43-031",
+   "name": "The GrassGreatShinobi Otogiri",
+   "problem": "no image"
+  },
+  {
+   "id": "BS43-032",
+   "name": "The HundredSwordsClanHead Stagun-Beetle",
+   "problem": "no image (near: The HundredSwordClanHead Stag-Beetle.jpg)"
+  },
+  {
+   "id": "BS43-033",
+   "name": "The SwiftnessGodKing Gale-Phoenix-Voltech",
+   "problem": "no image (near: The LightningSpeedGodKing Gale-Phoenix-Voltech.jpg)"
+  },
+  {
+   "id": "BS43-035",
+   "name": "Spotted Skunk",
+   "problem": "no image"
+  },
+  {
+   "id": "BS43-036",
+   "name": "The NobleValkyrie Waltraute",
+   "problem": "no image (near: The NobleValkyrie Valtraute.png)"
+  },
+  {
+   "id": "BS43-037",
+   "name": "The FakeGunPrincess Gutrune",
+   "problem": "no image (near: The FakeGunPrincess Gutrene.jpg)"
+  },
+  {
+   "id": "BS43-041",
+   "name": "The NobleBattleship Batiment-de-Gale",
+   "problem": "no image (near: The NobleBattleship Batiman-de-Gale.jpg)"
+  },
+  {
+   "id": "BS43-042",
+   "name": "The NobleAce Soleil-Levain",
+   "problem": "no image (near: The NobleOrderAce Soleil-Lowen.jpg)"
+  },
+  {
+   "id": "BS43-044",
+   "name": "The FakeCommander Gunther",
+   "problem": "no image"
+  },
+  {
+   "id": "BS43-045",
+   "name": "The MachineTaskForce Mammogeyser",
+   "problem": "no image (near: The MachineTaskforce Mammogaizer.jpg)"
+  },
+  {
+   "id": "BS43-046",
+   "name": "The FakeJavelinEmperor Versal-Hagen",
+   "problem": "no image (near: The FakeJavelinMachineEmperor Vasal-Hagen.jpg)"
+  },
+  {
+   "id": "BS43-048",
+   "name": "The Wonderland King Lion",
+   "problem": "no image (near: Wonderland KingLion.jpg)"
+  },
+  {
+   "id": "BS43-049",
+   "name": "The Wonderland King Unicorn",
+   "problem": "no image (near: Wonderland KingUnicorn.jpg)"
+  },
+  {
+   "id": "BS43-055",
+   "name": "The Wonderland Pumpty Dandy",
+   "problem": "no image (near: Wonderland PumptyDandy.jpg)"
+  },
+  {
+   "id": "BS43-056",
+   "name": "The Wonderland Mock Turtle",
+   "problem": "no image (near: Wonderland MockTurtle.jpg)"
+  },
+  {
+   "id": "BS43-058",
+   "name": "The RoaringAzurePirateGang Chacope",
+   "problem": "no image (near: The AzureBeastPirateGang Chacope.jpg)"
+  },
+  {
+   "id": "BS43-061",
+   "name": "The RoaringAzurePirateGang Kabaku",
+   "problem": "no image (near: The AzureBeastPirateGang Kabaku.jpg)"
+  },
+  {
+   "id": "BS43-064",
+   "name": "The RoaringAzurePirateGang SecondSquadCaptain Nubias",
+   "problem": "no image (near: The AzureBeastPirateGang SecondSquadCaptain Nubias.jpg)"
+  },
+  {
+   "id": "BS43-069",
+   "name": "The RoaringAzurePirateGang FirstSquadCommander Bobonoa",
+   "problem": "no image (near: The RoaringAzurePirateGang FirstCommander Bobonoar.jpg)"
+  },
+  {
+   "id": "BS43-072",
+   "name": "The DinosaurGun Dinolock Gun",
+   "problem": "no image (near: The DinosaurGun DinolocGun.jpg)"
+  },
+  {
+   "id": "BS43-074",
+   "name": "The CorpseGun Draghead",
+   "problem": "no image"
+  },
+  {
+   "id": "BS43-076",
+   "name": "The DivinePunishmentGun Heaven's Vengeance",
+   "problem": "no image (near: The DivinePunishmentGun HeavenVengeance.jpg)"
+  },
+  {
+   "id": "BS43-077",
+   "name": "The WonderRifle Parasolaika",
+   "problem": "no image (near: The WonderGun Parasolaika.jpg)"
+  },
+  {
+   "id": "BS43-079",
+   "name": "The Falling Twinkle Star",
+   "problem": "no image"
+  },
+  {
+   "id": "BS43-080",
+   "name": "The Makai Star and the Imperial Palace",
+   "problem": "no image"
+  },
+  {
+   "id": "BS43-085",
+   "name": "The NobleBattleship Batiment-de-Gale -Battleship Form-",
+   "problem": "no image (near: The NobleBattleship Batiman-de-Gale -Battleship Form-.jpg)"
+  },
+  {
+   "id": "BS43-089",
+   "name": "Attack! Roaring Azure Pirate Fleet",
+   "problem": "no image"
+  },
+  {
+   "id": "BS43-X03",
+   "name": "The NinjaTwinkleDragon Siegfried-Jiraiya",
+   "problem": "no image (near: BS43-X03.png)"
+  },
+  {
+   "id": "BS43-X04",
+   "name": "The DarkStones MachineBeastDeity Fenrig",
+   "problem": "no image"
+  },
+  {
+   "id": "BS43-CP01",
+   "name": "The PyroxeneTwelveGem FebruaryMarquis Regifu-Gium",
+   "problem": "no image (near: The PyroxeneTwelveGem FebruaryMarquis Legif-Gium.jpg)"
+  },
+  {
+   "id": "BS43-CP03",
+   "name": "The PyroxeneTwelveGem MarchWarGod Marchrs",
+   "problem": "no image (near: The PyroxeneTwelveGem MarcchArmyGod Marchius.jpg)"
+  },
+  {
+   "id": "BS44-032",
+   "name": "The HeroBeast ArcheryGeneral Pandaro-Cross",
+   "problem": "no image (near: The HeroBeast ArcheryGeneral Pandaro-Clus.png)"
+  },
+  {
+   "id": "BS44-056",
+   "name": "The DivineWorldNavigator Trickster",
+   "problem": "no image (near: The DivineWorldGuide Trickster.png)"
+  },
+  {
+   "id": "BS44-058",
+   "name": "The SandseaBeast Dorcas Gazelle",
+   "problem": "no image (near: The SandseaBeast Dorcus Gazelle.png)"
+  },
+  {
+   "id": "BS44-061",
+   "name": "The SandseaWarrior Buffarosa",
+   "problem": "no image (near: The SandseaWarrior Mousa.png)"
+  },
+  {
+   "id": "BS44-064",
+   "name": "The SandseaPirateKing Crocohetep",
+   "problem": "no image (near: The SandseaPirateKing Crochetep.png)"
+  },
+  {
+   "id": "BS44-065",
+   "name": "The SandseaPirateKing Zebefre",
+   "problem": "no image (near: The SandseaPirateKing Zebefler.png)"
+  },
+  {
+   "id": "BS44-078",
+   "name": "The Grassland Ruins",
+   "problem": "no image"
+  },
+  {
+   "id": "BS44-X07",
+   "name": "Grandwalker Apollon",
+   "problem": "no image (near: Grandwalker Apollon.png)"
+  },
+  {
+   "id": "BS44-X08",
+   "name": "Grandwalker Osiris",
+   "problem": "no image (near: The Grandwalker Osiris.jpg)"
+  },
+  {
+   "id": "BS44-X09",
+   "name": "Grandwalker Artemis",
+   "problem": "no image (near: The Grandwalker Artemis.jpg)"
+  },
+  {
+   "id": "BS44-XX02",
+   "name": "Grandwalker Lolo",
+   "problem": "no image (near: The Grandwalker Lolo.png)"
+  },
+  {
+   "id": "BS45-021",
+   "name": "The TrojonLionheart LesserAjax",
+   "problem": "no image"
+  },
+  {
+   "id": "BS45-026",
+   "name": "The TrojonLionheart Philoctetes",
+   "problem": "no image"
+  },
+  {
+   "id": "BS45-027",
+   "name": "The TrojonLionheart Menelaus",
+   "problem": "no image"
+  },
+  {
+   "id": "BS45-028",
+   "name": "The TrojonLionheart Diomedes",
+   "problem": "no image"
+  },
+  {
+   "id": "BS45-030",
+   "name": "The TrojonLionheart Neoptolemon",
+   "problem": "no image"
+  },
+  {
+   "id": "BS45-056",
+   "name": "The SandseaSoldier Sandked",
+   "problem": "no image (near: The SandseaSoldier Sunakedd.jpg)"
+  },
+  {
+   "id": "BS45-086",
+   "name": "The Makai Holy Grail",
+   "problem": "no image (near: The Makai Holy Gral.jpg)"
+  },
+  {
+   "id": "BS45-092",
+   "name": "Return Seven Shogun",
+   "problem": "no image"
+  },
+  {
+   "id": "BS45-095",
+   "name": "Isis' Power",
+   "problem": "no image (near: Isis's Power.jpg)"
+  },
+  {
+   "id": "BS45-X02",
+   "name": "The MakaiDeity Desfermion",
+   "problem": "no image (near: The MakaiDeity Desfelmion.png)"
+  },
+  {
+   "id": "BS45-X07",
+   "name": "Grandwalker Hermes",
+   "problem": "no image (near: The Grandwalker Hermes.png)"
+  },
+  {
+   "id": "BS45-X08",
+   "name": "Grandwalker Isis",
+   "problem": "no image (near: The Grandwalker Isis.png)"
+  },
+  {
+   "id": "BS45-X09",
+   "name": "Grandwalker Set",
+   "problem": "no image (near: The Grandwalker Set.png)"
+  },
+  {
+   "id": "BS45-XX01",
+   "name": "The CreatorSacredBeast Unite-Horn",
+   "problem": "no image"
+  },
+  {
+   "id": "BS45-XX02",
+   "name": "Grandwalker Alex",
+   "problem": "no image (near: The Grandwalker Alex.png)"
+  },
+  {
+   "id": "BS45-CP01",
+   "name": "Bashin Toppa",
+   "problem": "no image"
+  },
+  {
+   "id": "BS46-010",
+   "name": "The ShootingStardragonHunter Loxias",
+   "problem": "no image (near: The ShootingStarDragonHunter Roxias.jpg)"
+  },
+  {
+   "id": "BS46-075",
+   "name": "The SkyLionheart Ivyja",
+   "problem": "no image"
+  },
+  {
+   "id": "BS46-076",
+   "name": "The SkyUnrivaled Glyph-Vulture",
+   "problem": "no image (near: The SkyUnrivaled Grif-Vulture.jpg)"
+  },
+  {
+   "id": "BS46-096",
+   "name": "Wild Strom",
+   "problem": "no image (near: Wild Strome.jpg)"
+  },
+  {
+   "id": "BS46-X03",
+   "name": "The SevenGreatHeroBeasts ToughLionheart Herak-Leios",
+   "problem": "no image (near: The SevenGreatHeroBeasts ToughBrave Herak-Leios.png)"
+  },
+  {
+   "id": "BS46-X09",
+   "name": "Grandwalker Zeus",
+   "problem": "no image (near: The Grandwalker Zeus.png)"
+  },
+  {
+   "id": "BS46-X10",
+   "name": "Grandwalker Hera",
+   "problem": "no image (near: The Grandwalker Hera.png)"
+  },
+  {
+   "id": "BS46-X11",
+   "name": "Grandwalker Athena",
+   "problem": "no image (near: The Grandwalker Athena.png)"
+  },
+  {
+   "id": "BS46-X12",
+   "name": "Grandwalker Ra",
+   "problem": "no image (near: The Grandwalker Ra.png)"
+  },
+  {
+   "id": "BS46-XX02",
+   "name": "Grandwalker Antarc",
+   "problem": "no image (near: The Grandwalker Antarc.png)"
+  },
+  {
+   "id": "BS47-030",
+   "name": "The SkyLionheart V-Turn",
+   "problem": "no image"
+  },
+  {
+   "id": "BS47-034",
+   "name": "The SkyLionheart Jet-Falcon",
+   "problem": "no image"
+  },
+  {
+   "id": "BS47-036",
+   "name": "The SkyLionheart Kem-Kite",
+   "problem": "no image"
+  },
+  {
+   "id": "BS47-076",
+   "name": "The SkyLionheart Smn-Bird",
+   "problem": "no image"
+  },
+  {
+   "id": "BS47-077",
+   "name": "The SkyLionheart Jet-Eagle",
+   "problem": "no image"
+  },
+  {
+   "id": "BS47-082",
+   "name": "The EgytianAngelia Maibel",
+   "problem": "no image (near: The EgytianAngel Maibel.png)"
+  },
+  {
+   "id": "BS47-X07",
+   "name": "Grandwalker Horus",
+   "problem": "no image (near: The Grandwalker Horus.png)"
+  },
+  {
+   "id": "BS47-X08",
+   "name": "Grandwalker Thoth",
+   "problem": "no image (near: The Grandwalker Thoth.png)"
+  },
+  {
+   "id": "BS47-X09",
+   "name": "Grandwalker Poseidon",
+   "problem": "no image (near: The Grandwalker Poseidon.png)"
+  },
+  {
+   "id": "BS47-XX02",
+   "name": "Grandwalker Manaka",
+   "problem": "no image (near: The Grandwalker Manaka.png)"
+  },
+  {
+   "id": "BS47-XX03",
+   "name": "Grandwalker Kei",
+   "problem": "no image (near: The Grandwalker Kei.png)"
+  },
+  {
+   "id": "BS47-10THX01",
+   "name": "The SuperShineDragonDeity Sagittowurm-Nova",
+   "problem": "no image (near: The OverdeityShineDragon Sagittowurm-Nova.png)"
+  },
+  {
+   "id": "BS47-10THX02",
+   "name": "Grandwalker Dan",
+   "problem": "no image (near: The Grandwalker Dan.png)"
+  },
+  {
+   "id": "BS47-CP07",
+   "name": "Clash King Dan",
+   "problem": "no image (near: Clash King Bashin Dan.png)"
+  },
+  {
+   "id": "BS48-023",
+   "name": "The MakaiKnight Beldegaun",
+   "problem": "no image (near: The MakaiNight Perdgawn.png)"
+  },
+  {
+   "id": "BS48-037",
+   "name": "The SkyLionheart Blue Heron",
+   "problem": "no image"
+  },
+  {
+   "id": "BS48-042",
+   "name": "The SevenSisters Taygete",
+   "problem": "no image (near: The SevenSister Taygete.png)"
+  },
+  {
+   "id": "BS48-065",
+   "name": "The SkyLionheart Harshiens",
+   "problem": "no image"
+  },
+  {
+   "id": "BS48-066",
+   "name": "The SkyLionheart Senecio-Hawk",
+   "problem": "no image"
+  },
+  {
+   "id": "BS48-086",
+   "name": "Shiva's Destruction Temple",
+   "problem": "no image (near: Shiva's Destroyal Temple.png)"
+  },
+  {
+   "id": "BS48-089",
+   "name": "Shiva Catastrophe",
+   "problem": "no image (near: Shiva Castastrophe.png)"
+  },
+  {
+   "id": "BS48-X08",
+   "name": "Grandwalker of Creation Brahma",
+   "problem": "no image"
+  },
+  {
+   "id": "BS48-X09",
+   "name": "Grandwalker of Destruction Shiva",
+   "problem": "no image"
+  },
+  {
+   "id": "BS48-X10",
+   "name": "Grandwalker Aphrodite",
+   "problem": "no image (near: The Grandwalker Aphrodite.png)"
+  },
+  {
+   "id": "BS48-XX02",
+   "name": "Grandwalker Lilia",
+   "problem": "no image (near: The Grandwalker Lilia.png)"
+  },
+  {
+   "id": "BS48-SP01",
+   "name": "Bashin Dan",
+   "problem": "no image"
+  },
+  {
+   "id": "BS49-004",
+   "name": "The BarrierHermitDragon Tillana",
+   "problem": "no image (near: The BarrierSageDragon Tillana.png)"
+  },
+  {
+   "id": "BS49-006",
+   "name": "The TerraclawDragon Erlikoshou",
+   "problem": "no image (near: The TerraclawDragon Elricoshou.png)"
+  },
+  {
+   "id": "BS49-009",
+   "name": "The RishiDragon Ma-Richi -Humanoid Form-",
+   "problem": "no image (near: The RishiDragon Ma-Liichi -Humanoid Form-.png)"
+  },
+  {
+   "id": "BS49-019",
+   "name": "Kathak Dragon",
+   "problem": "no image (near: Katak Dragon.png)"
+  },
+  {
+   "id": "BS49-022",
+   "name": "The WhitePrincessDoll †Aldila†",
+   "problem": "no image (near: The WhitePrincessDoll †Aldira†.png)"
+  },
+  {
+   "id": "BS49-023",
+   "name": "The DestroyerEvilDragon Bhairava",
+   "problem": "no image (near: The DestroyerEvilDragon Bairavaa.png)"
+  },
+  {
+   "id": "BS49-072",
+   "name": "The SkyLionheart Blade-Pheasant",
+   "problem": "no image"
+  },
+  {
+   "id": "BS49-073",
+   "name": "The VeteranSkyLionheart Aku-Vulture",
+   "problem": "no image"
+  },
+  {
+   "id": "BS49-090",
+   "name": "Ishvara Shoot",
+   "problem": "no image (near: Isbara Shoot.png)"
+  },
+  {
+   "id": "BS49-X02",
+   "name": "The SpacetimeDestroyerEvilDragon Rakta-Bija",
+   "problem": "no image (near: BS49-X02.png)"
+  },
+  {
+   "id": "BS49-X05",
+   "name": "The GrandflowerSpiritPrincess Dahlia-Moonwaltz",
+   "problem": "no image (near: BS49-X05.png)"
+  },
+  {
+   "id": "BS49-X08",
+   "name": "Grandwalker Ares",
+   "problem": "no image (near: The Grandwalker Ares.png)"
+  },
+  {
+   "id": "BS49-X09",
+   "name": "Grandwalker Krishna",
+   "problem": "no image (near: The Grandwalker Krishna.png)"
+  },
+  {
+   "id": "BS49-X10",
+   "name": "Grandwalker Susanoo",
+   "problem": "no image (near: The Grandwalker Susanoo.png)"
+  },
+  {
+   "id": "BS49-XX02",
+   "name": "Grandwalker Guren",
+   "problem": "no image (near: The Grandwalker Guren.png)"
+  },
+  {
+   "id": "BS50-005",
+   "name": "The UnderworldHornDinoman Chasmo",
+   "problem": "no image (near: The UnderworldHornDragon Chasmo.png)"
+  },
+  {
+   "id": "BS50-009",
+   "name": "The UnderworldMushaDinoman Cryolo",
+   "problem": "no image (near: The UnderworldMushaDragon Cryolo.png)"
+  },
+  {
+   "id": "BS50-013",
+   "name": "The UnderworldGiantDinoman Diplo",
+   "problem": "no image (near: The UnderworldGiantDragon Diplo.png)"
+  },
+  {
+   "id": "BS50-029",
+   "name": "The SkyLionheart Phara-Fisher",
+   "problem": "no image"
+  },
+  {
+   "id": "BS50-033",
+   "name": "The SkyLionheart Shnea-Eagle",
+   "problem": "no image"
+  },
+  {
+   "id": "BS50-041",
+   "name": "Vishnaga-Chandas",
+   "problem": "no image (near: Vishanaga-Chandas.png)"
+  },
+  {
+   "id": "BS50-084",
+   "name": "Hephaestus's Forge Temple",
+   "problem": "no image (near: Hephaestus' Forge Temple.png)"
+  },
+  {
+   "id": "BS50-089",
+   "name": "Raging Ride",
+   "problem": "no image (near: Raging Glide.png)"
+  },
+  {
+   "id": "BS50-X04",
+   "name": "The PreserverDeityDragon Trivi-Krama",
+   "problem": "no image (near: The PreserverDragonDeity Trivi-Krama.jpg)"
+  },
+  {
+   "id": "BS50-X10",
+   "name": "Grandwalker Anubis",
+   "problem": "no image (near: The Grandwalker Anubis.jpg)"
+  },
+  {
+   "id": "BS50-X11",
+   "name": "Grandwalker Tsukuyomi",
+   "problem": "no image (near: The Grandwalker Tsukuyomi.png)"
+  },
+  {
+   "id": "BS50-X12",
+   "name": "Grandwalker of Preservation Vishnu",
+   "problem": "no image"
+  },
+  {
+   "id": "BS50-X13",
+   "name": "Grandwalker Hephaestus",
+   "problem": "no image (near: The Grandwalker Hephaestus.jpg)"
+  },
+  {
+   "id": "BS50-XX02",
+   "name": "Grandwalker Zeus-Lolo",
+   "problem": "no image (near: The Grandwalker Zeus-Lolo.png)"
+  },
+  {
+   "id": "BS50-CP01",
+   "name": "Soaring Grandwalker Alex",
+   "problem": "no image (near: The SoaringGrandwalker Alex.png)"
+  },
+  {
+   "id": "BS51-008",
+   "name": "The RishiDragon Ma-Bhrigu -Humanoid Form-",
+   "problem": "no image (near: The RishiDragon Ma-Brig -Humanoid Form-.png)"
+  },
+  {
+   "id": "BS51-045",
+   "name": "The HeadKnight Darwin",
+   "problem": "no image"
+  },
+  {
+   "id": "BS51-075",
+   "name": "The HeavenlyHazeDragon Mikagura-Hydra",
+   "problem": "no image (near: The HeavenlyHazeDragon Kagura-Hydra.png)"
+  },
+  {
+   "id": "BS51-088",
+   "name": "The Secret Nether Art Nemesis Reap",
+   "problem": "no image (near: The Secret Nether Art Nemesis Leap.png)"
+  },
+  {
+   "id": "BS51-X09",
+   "name": "Grandwalker Dionysus",
+   "problem": "no image (near: The Grandwalker Dionysus.png)"
+  },
+  {
+   "id": "BS51-X10",
+   "name": "Grandwalker Saraswati",
+   "problem": "no image (near: The Grandwalker Sarasvati.png)"
+  },
+  {
+   "id": "BS51-XX03",
+   "name": "Grandwalker Alex-Lolo",
+   "problem": "no image (near: The Grandwalker Alex-Lolo.png)"
+  },
+  {
+   "id": "BS51-RV003",
+   "name": "The NetherThreeGiants Baroque-Bordeaux",
+   "problem": "ambiguous name (2 files, none in set BS51)"
+  },
+  {
+   "id": "BS52-005",
+   "name": "The ClownDragon Archeorni Dragon",
+   "problem": "no image (near: The ClownDragon Aecheorni Dragon.png)"
+  },
+  {
+   "id": "BS52-026",
+   "name": "The ShellBrawler Sawtooth Armed",
+   "problem": "no image (near: Fixed.png)"
+  },
+  {
+   "id": "BS52-032",
+   "name": "The YoungIcePrincess Klara",
+   "problem": "no image (near: The YoungIcePrincess Clara.png)"
+  },
+  {
+   "id": "BS52-038",
+   "name": "The FloatingFortress Sulphur-Bottom",
+   "problem": "no image (near: The FloatingFortress Surfer-Bottom.png)"
+  },
+  {
+   "id": "BS52-X07",
+   "name": "Grandwalker Demeter",
+   "problem": "no image (near: The Grandwalker Demeter.png)"
+  },
+  {
+   "id": "BS53-011",
+   "name": "Night Bladra",
+   "problem": "no image (near: Knight Bladra.png)"
+  },
+  {
+   "id": "BS53-043",
+   "name": "The IceSorceress Alistesia",
+   "problem": "no image (near: The IceSorcerer Alistesia.png)"
+  },
+  {
+   "id": "BS53-047",
+   "name": "Pioneer AngeliaOfVirtues Fanael",
+   "problem": "no image (near: Pioneer Virtues Fanael.png)"
+  },
+  {
+   "id": "BS53-057",
+   "name": "The WBS RookieWrestler Aarush",
+   "problem": "no image (near: The WBS RookieWrestler Arash.png)"
+  },
+  {
+   "id": "BS53-X09",
+   "name": "Grandwalker Lakshmi",
+   "problem": "no image (near: The Grandwalker Lakshmi.png)"
+  },
+  {
+   "id": "BS53-RV005",
+   "name": "The Angelia of Olimpics Phaleg",
+   "problem": "no image (near: The Angelia of Olimpics Phaleg (Revival).png)"
+  },
+  {
+   "id": "BS54-027",
+   "name": "The GuardingTree Botanikaiser",
+   "problem": "no image (near: The GuardingTree BotanyKaiser.png)"
+  },
+  {
+   "id": "BS54-036",
+   "name": "Valkyrie Prima",
+   "problem": "no image (near: Valkyrie Sliema.png)"
+  },
+  {
+   "id": "BS54-039",
+   "name": "The IceKnight Glafira",
+   "problem": "no image (near: The IceKnight Grafilla.png)"
+  },
+  {
+   "id": "BS55-070",
+   "name": "The Yomi Path to Reincarnation",
+   "problem": "no image"
+  },
+  {
+   "id": "BS55-X04",
+   "name": "The HeroQuintet GreatGuardingTree Great-Botanikaiser",
+   "problem": "no image (near: The HeroQuintet GreatGuardingTree Great-BotanyKaiser.png)"
+  },
+  {
+   "id": "BS55-X09",
+   "name": "Grandwalkers Izanagi & Izanami",
+   "problem": "no image (near: The Grandwalkers Izanagi & Izanami.png)"
+  },
+  {
+   "id": "BS56-060",
+   "name": "The SpacetimeSeaBeast ChronoOrca",
+   "problem": "no image (near: The TimeSpaceSeaBeast ChronoOrca.png)"
+  },
+  {
+   "id": "BS57-056",
+   "name": "The SkyLionheart Sector-Leaf",
+   "problem": "no image"
+  },
+  {
+   "id": "BS58-013",
+   "name": "The Hermit-Ritter Cuadrado",
+   "problem": "no image (near: BS58 013.png)"
+  },
+  {
+   "id": "BS58-014",
+   "name": "The Hermit-Ritter Vanderas",
+   "problem": "no image (near: BS58 014.png)"
+  },
+  {
+   "id": "BS58-039",
+   "name": "The NobleOrder Jet-Hammer",
+   "problem": "no image (near: BS58 039.png)"
+  },
+  {
+   "id": "BS58-X03",
+   "name": "The Phanto-Magia Hermit-Ritter Badgerdulles",
+   "problem": "no image (near: BS58 X03.png)"
+  },
+  {
+   "id": "BS58-X09",
+   "name": "Grandwalker Parvati",
+   "problem": "no image (near: BS58 X09.png)"
+  },
+  {
+   "id": "BS59-011",
+   "name": "The Hermit-Ritter Olegat",
+   "problem": "no image (near: BS59 011 fix.png)"
+  },
+  {
+   "id": "BS59-013",
+   "name": "The Hermit-Ritter Jilvest",
+   "problem": "no image (near: BS59 013 fix.png)"
+  },
+  {
+   "id": "BS59-017",
+   "name": "The Hermit-Ritter Sage-Mallorga",
+   "problem": "no image (near: BS59 017 fixfix.png)"
+  },
+  {
+   "id": "BS59-044",
+   "name": "The ThroneAngelia Faniel",
+   "problem": "no image"
+  },
+  {
+   "id": "BS59-X09",
+   "name": "Grandwalker Chronos",
+   "problem": "no image (near: BS59 X09.png)"
+  },
+  {
+   "id": "BS60-031",
+   "name": "The Dynastes Duke",
+   "problem": "no image (near: BS60 Fix (6).png)"
+  },
+  {
+   "id": "BS61-X09",
+   "name": "Grandwalker Tezcatlipoca",
+   "problem": "no image (near: BS61 X09.png)"
+  },
+  {
+   "id": "BS62-X09",
+   "name": "Grandwalker Kukulkan",
+   "problem": "no image (near: BS62 X09.png)"
+  },
+  {
+   "id": "BS62-XX01",
+   "name": "The SixAbsoluteDeities Verndict-of-Valiance",
+   "problem": "no image (near: BS62 XX01.png)"
+  },
+  {
+   "id": "BS62-XX02",
+   "name": "The SixAbsoluteDeities Greytia-of-Benevolence",
+   "problem": "no image (near: BS62 XX02.png)"
+  },
+  {
+   "id": "BS63-011",
+   "name": "The JudgmentDragon Exodusk",
+   "problem": "no image (near: BS63 011.png)"
+  },
+  {
+   "id": "BS63-081",
+   "name": "The Judgment Day",
+   "problem": "no image (near: BS63-081.png)"
+  },
+  {
+   "id": "BS63-090",
+   "name": "Oracle XX Over Judgment",
+   "problem": "no image (near: BS63-090.png)"
+  },
+  {
+   "id": "BS63-X01",
+   "name": "The FlameSkyBondDeity Frag-Judgment",
+   "problem": "no image (near: BS63 X01.png)"
+  },
+  {
+   "id": "BS63-X09",
+   "name": "The OracleTwentyOnePillars XX The Judgment",
+   "problem": "no image (near: BS63 X09.png)"
+  },
+  {
+   "id": "BS65-025",
+   "name": "Kung Fu Girl, Frau",
+   "problem": "ambiguous in set (2 files)"
+  },
+  {
+   "id": "BS65-032",
+   "name": "Assault Gunner, Wiz",
+   "problem": "ambiguous in set (2 files)"
+  },
+  {
+   "id": "BS65-038",
+   "name": "The SteamEngineer Dalnia",
+   "problem": "no image (near: BS65-038.png)"
+  },
+  {
+   "id": "BS65-085",
+   "name": "Cannon Angelia Summon: Kanon Field",
+   "problem": "no image (near: 65-085.png)"
+  },
+  {
+   "id": "BS72-084",
+   "name": "Kizuna Field",
+   "problem": "no image"
+  },
+  {
+   "id": "BS72-X05",
+   "name": "The MoonlightHunterDog Moonlite-GunDog",
+   "problem": "no image (near: BS72-X05.png)"
+  },
+  {
+   "id": "BS73-083",
+   "name": "Kizuna Burst",
+   "problem": "no image"
+  },
+  {
+   "id": "BS74-086",
+   "name": "Kizuna Return",
+   "problem": "no image (near: BS74-086-05.png)"
+  },
+  {
+   "id": "BS75-086",
+   "name": "Kizuna Mist",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-005",
+   "name": "Hitokaku",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-010",
+   "name": "Murasaki Oomuchi",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-048",
+   "name": "The RescueLeader Galandy",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-053",
+   "name": "Adventure Demon-God",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-055",
+   "name": "Glow Insect Demon-God",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-066",
+   "name": "The Imperial Palace in the Sea of Clouds",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-068",
+   "name": "The Red Coral Great Obelisk",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-072",
+   "name": "Destroy Beam",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-076",
+   "name": "Lasso Bind",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-X03",
+   "name": "The EvilDeityApostle Marianne",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-CX01",
+   "name": "The FlameBladeFlagbearer Seiba",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-CX02",
+   "name": "The PrimeSovereignFlagbearer Enki",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-CX03",
+   "name": "The SeaShellFlagbearer Lije",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-AX01",
+   "name": "The QuadrupleBladeHornetKing Fong-Need",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-AX02",
+   "name": "The ImperialDeity Galoud",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-AX03",
+   "name": "The ArmoredSeaGod Girafa-Rando",
+   "problem": "no image"
+  },
+  {
+   "id": "BS77-RV004",
+   "name": "The FortyFourthMachine Glorious-Racoon",
+   "problem": "no image"
+  }
+ ],
+ "merged": [
+  "BS04-X16",
+  "BS10-X01",
+  "BS11-X01",
+  "BS12-X04",
+  "BS13-X005T",
+  "BS16-X01",
+  "BS18-X01",
+  "BS19-X01",
+  "X13-01",
+  "BS20-X01",
+  "BS21-X08",
+  "BS22-X04",
+  "BS23-X01",
+  "BS24-X01",
+  "BS25-X06",
+  "BS26-X03",
+  "BS27-X03",
+  "BS28-X03",
+  "BS29-X03",
+  "BS30-X04",
+  "BS31-X01",
+  "BS32-X01",
+  "BS33-X02",
+  "BS34-X01",
+  "BS35-X01",
+  "BS36-X02",
+  "BS37-X01",
+  "BS38-X02",
+  "BS38-RVX01",
+  "BS39-X01",
+  "BS39-XX02",
+  "BS40-X01",
+  "BS40-RV008",
+  "BS40-RV012",
+  "BS41-X02",
+  "BS41-CP05",
+  "BS42-X04",
+  "BS42-RV002",
+  "BS43-071",
+  "BS43-X04",
+  "BS43-RVX06",
+  "BS43-RVXX01",
+  "BS44-086",
+  "BS44-088",
+  "BS44-092",
+  "BS44-X06",
+  "BS44-X08",
+  "BS45-042",
+  "BS45-093",
+  "BS45-X01",
+  "BS45-X08",
+  "BS45-X09",
+  "BS46-X09",
+  "BS46-X12",
+  "BS47-X07",
+  "BS47-X08",
+  "BS47-X09",
+  "BS47-10THX01",
+  "BS47-10THX02",
+  "BS47-CP01",
+  "BS47-CP02",
+  "BS47-CP06",
+  "BS48-094",
+  "BS48-X07",
+  "BS48-10THX01",
+  "BS48-10THX02",
+  "BS48-10THX03",
+  "BS49-X07",
+  "BS49-10THX01",
+  "BS49-10THX02",
+  "BS49-10THX03",
+  "BS49-RV012",
+  "BS49-RV013",
+  "BS50-X10",
+  "BS50-10THX01",
+  "BS50-10THX02",
+  "BS50-10THX03",
+  "BS51-10THX01",
+  "BS51-10THX02",
+  "BS51-10THX03",
+  "BS52-069",
+  "BS52-XX02",
+  "BS52-RV008",
+  "BS53-XX01",
+  "BS53-XX02",
+  "BS53-XX03",
+  "BS54-070",
+  "BS54-074",
+  "BS60-085",
+  "SD56-RV009",
+  "BS67-XV04",
+  "BS69-077",
+  "BS69-079",
+  "BS69-084",
+  "BS69-089",
+  "BS70-073",
+  "BS70-085",
+  "BS70-086",
+  "BS72-069",
+  "BS72-071",
+  "BS72-072",
+  "BS72-077",
+  "BS73-070",
+  "BS73-076",
+  "BS74-076",
+  "BS74-083",
+  "BS75-085"
+ ],
+ "odd_reduction": [
+  {
+   "id": "BS44-005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-006",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-007",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-009",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-010",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-012",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-013",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-018",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-023",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-024",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-025",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-032",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-033",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-035",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-040",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-042",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-043",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-045",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-046",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-047",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-053",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-056",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-061",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-062",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-063",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-065",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-066",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-067",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-068",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-069",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-070",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-082",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-086",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-087",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-088",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-089",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-090",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-091",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-092",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-094",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-096",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-X01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-X02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-X03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-X04",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-XX02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-10THX01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-CP02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-CP03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-RV001",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS44-RV004",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-002",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-003",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-004",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-009",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-013",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-014",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-017",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-022",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-023",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-024",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-028",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-032",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-034",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-038",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-042",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-050",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-057",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-065",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-069",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-070",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-071",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-072",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-081",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-083",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-084",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-091",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-093",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-094",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-095",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-096",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-X01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-X03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-X05",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-X06",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-XX02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-10THX01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-10THX03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-CP01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS45-CP02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-002",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-003",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-004",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-006",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-009",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-010",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-011",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-014",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-020",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-021",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-024",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-025",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-026",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-028",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-029",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-030",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-034",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-035",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-037",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-042",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-046",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-047",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-048",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-049",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-050",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-051",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-052",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-053",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-057",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-062",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-063",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-064",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-066",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-068",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-071",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-072",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-073",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-074",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-076",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-078",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-081",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-082",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-083",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-084",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-086",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-091",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-092",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-095",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-096",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-X01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-X02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-X03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-X04",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-X05",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-X06",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-X07",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-10THX01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-10THX03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-CP01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS46-CP02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-006",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-007",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-008",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-009",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-010",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-011",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-012",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-014",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-016",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-018",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-019",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-020",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-021",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-022",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-023",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-024",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-027",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-031",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-033",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-035",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-037",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-041",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-042",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-045",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-046",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-048",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-054",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-056",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-057",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-060",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-062",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-063",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-067",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-069",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-070",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-071",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-072",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-073",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-074",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-079",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-086",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-087",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-088",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-089",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-090",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-091",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-092",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-093",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-094",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-097",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-098",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-101",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-102",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-X01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-X02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-X03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-X04",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-X05",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-X06",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-XX02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-XX03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-CP07",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-RV001",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS47-RV002",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-002",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-003",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-004",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-006",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-007",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-008",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-009",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-010",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-011",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-012",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-013",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-015",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-017",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-018",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-019",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-020",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-022",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-023",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-024",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-025",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-026",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-027",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-029",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-030",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-031",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-034",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-035",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-036",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-037",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-038",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-039",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-041",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-042",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-044",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-045",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-046",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-048",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-049",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-050",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-051",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-052",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-053",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-055",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-056",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-057",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-059",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-061",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-063",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-064",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-073",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-074",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-075",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-076",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-078",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-080",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-081",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-083",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-088",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-089",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-090",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-091",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-092",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-093",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-094",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-095",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-096",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-X01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-X02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-X05",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-X06",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-XX01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-10THX01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-10THX02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-10THX03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-SP01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-SP02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-RV001",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-RV002",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-RV005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-RV006",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS48-RV008",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-004",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-007",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-008",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-009",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-012",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-013",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-017",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-018",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-019",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-020",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-021",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-022",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-023",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-024",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-029",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-030",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-031",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-032",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-033",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-034",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-035",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-036",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-037",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-038",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-040",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-041",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-042",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-043",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-044",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-045",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-046",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-047",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-048",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-049",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-051",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-052",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-053",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-054",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-055",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-056",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-057",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-058",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-063",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-064",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-066",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-068",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-070",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-071",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-078",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-079",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-080",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-081",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-082",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-083",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-086",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-087",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-088",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-090",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-091",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-092",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-093",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-094",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-095",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-X03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-X04",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-X05",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-X07",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-XX01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-10THX01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-10THX02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-10THX03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-RV001",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-RV003",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-RV005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-RV007",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS49-RV013",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-002",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-003",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-004",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-007",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-008",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-009",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-010",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-011",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-012",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-024",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-026",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-027",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-032",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-033",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-034",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-035",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-039",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-040",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-041",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-044",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-045",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-046",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-047",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-048",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-049",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-053",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-055",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-056",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-057",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-060",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-063",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-064",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-065",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-066",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-067",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-069",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-070",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-071",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-074",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-076",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-077",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-080",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-081",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-082",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-083",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-085",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-086",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-087",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-088",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-089",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-090",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-091",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-092",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-093",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-X01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-X04",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-X06",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-X07",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-X08",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-X09",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-XX01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-10THX01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-10THX02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-10THX03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-RV004",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS50-RV010",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-001",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-004",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-008",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-009",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-010",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-018",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-019",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-020",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-023",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-024",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-025",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-026",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-027",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-033",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-034",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-035",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-037",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-038",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-039",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-040",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-041",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-042",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-043",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-044",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-045",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-046",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-049",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-053",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-056",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-057",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-059",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-060",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-066",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-067",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-068",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-072",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-073",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-074",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-076",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-078",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-079",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-080",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-081",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-082",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-083",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-084",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-088",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-089",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-092",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-X02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-X03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-X06",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-X07",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-10THX01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-10THX02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-10THX03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-10THX04",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-CP01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-CP02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-CP03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-CP04",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-CP05",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-CP06",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-RV001",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-RV002",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-RV003",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-RV005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-RV006",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-RV007",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-RV008",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-RV009",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-RV010",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-RV012",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS51-RV015",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS52-017",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS52-018",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS52-058",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS53-020",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS53-029",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS58-062",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS61-036",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS61-041",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS61-042",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS61-044",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS61-046",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS61-047",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS62-018",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS62-020",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS62-021",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS62-023",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS62-025",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS62-026",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS62-027",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS62-039",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS62-041",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS62-044",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS62-X06",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS63-024",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS63-030",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS63-044",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS63-054",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS64-045",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS64-089",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS66-014",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS66-015",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS66-019",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS66-033",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS66-035",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS66-037",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS66-038",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS66-063",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS66-065",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-008",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-010",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-039",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-042",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-043",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-044",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-050",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-051",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-053",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-054",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-057",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-058",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-079",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-081",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-082",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-X01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-X03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-X05",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-X06",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS68-NX03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-006",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-007",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-009",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-010",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-011",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-017",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-020",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-021",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-037",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-039",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-050",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-054",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-059",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-064",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-065",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-080",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-082",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-084",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-085",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-087",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-X01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-X03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS69-X09",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-017",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-020",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-021",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-022",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-023",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-029",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-033",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-041",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-042",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-043",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-044",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-046",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-047",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-051",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-052",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-053",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-055",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-056",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-057",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-058",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-059",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-062",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-068",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-078",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-082",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-083",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-085",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-086",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-088",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-090",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-X02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-X04",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-X05",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-X06",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-NX01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS70-NX02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-006",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-007",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-009",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-010",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-011",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-015",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-020",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-026",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-028",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-030",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-031",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-032",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-033",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-035",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-036",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-039",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-041",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-048",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-052",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-055",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-059",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-065",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-074",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-077",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-078",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-079",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-X03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-X04",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-X08",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-NX01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-NX03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-RV001",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-RV002",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-RV003",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-RV005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-RV006",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-CP07",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS71-CP08",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-004",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-007",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-008",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-009",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-010",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-011",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-012",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-021",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-023",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-026",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-027",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-028",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-030",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-033",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-034",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-035",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-036",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-037",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-038",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-039",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-040",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-041",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-042",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-056",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-057",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-061",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-062",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-063",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-066",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-076",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-077",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-078",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-080",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-X02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-X04",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-X05",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-X07",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-X08",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-AX01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS72-AX03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-002",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-003",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-006",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-008",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-011",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-012",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-013",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-014",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-029",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-030",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-031",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-034",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-037",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-038",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-040",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-041",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-044",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-046",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-047",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-049",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-052",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-056",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-058",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-059",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-062",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-072",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-073",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-074",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-076",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-078",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-081",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-X04",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-X06",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS73-AX02",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-001",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-002",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-003",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-004",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-005",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-006",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-007",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-008",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-009",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-010",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-011",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-012",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-016",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-017",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-019",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-021",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-022",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-023",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-024",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-031",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-034",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-036",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-053",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-054",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-055",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-057",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-063",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-064",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-066",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-068",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-077",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-078",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-079",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-X01",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-X03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-X04",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-X05",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-X07",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS74-RV003",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-019",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-023",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-024",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-026",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-053",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-054",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-055",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-057",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-059",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-060",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-071",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-078",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-085",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-X05",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-X06",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-X11",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS75-AX03",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS76-036",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS76-049",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS76-059",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS76-063",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS76-064",
+   "dropped": [
+    "god"
+   ]
+  },
+  {
+   "id": "BS76-067",
+   "dropped": [
+    "god"
+   ]
+  }
+ ]
+}

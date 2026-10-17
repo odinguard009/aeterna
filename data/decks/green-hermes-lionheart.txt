@@ -1,0 +1,17 @@
+3 BS69-CX02   # The SwiftContractor Hermes
+2 BS69-071   # The Whirlwind Spiral Way
+2 BS70-072   # The Messenger Post on the Cape
+3 BS69-023   # The Lionheart Medon
+2 BS69-024   # The QuickSwordLionheart Stichiox
+3 BS69-025   # The Lionheart Eurytius
+3 BS69-026   # The RuffianLionheart Priapus
+3 BS70-028   # The StrongArmLionheart Sisyphus
+2 BS69-028   # The KnowledgeableLionheart Eudoros
+3 BS69-029   # The ProphetBeast Calchas
+2 BS70-031   # The LionheartCenturion Iphicles
+2 BS70-034   # The LionheartGeneral Pelops
+2 BS69-030   # The TrueShadowLionheart Autolycus
+2 BS70-035   # The GreenWindLionheart Hermaphros
+3 BS69-031   # The HeavyCrossbowLionheart Leonteus
+1 BS70-X03   # The GreatHeroBeast King Perseus
+2 BS69-033   # The SturdyLionheart Guneus

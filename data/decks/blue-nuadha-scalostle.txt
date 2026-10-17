@@ -1,0 +1,18 @@
+3 BS71-CX03   # The SilverArmContractor Nuadha
+1 BS71-072   # Nuadha's Bulwark Temple
+3 BS71-053   # The Dana Scout
+2 BS71-054   # The Dana Shielder
+3 BS71-056   # The Dana Soldier
+3 BS71-057   # The Dana Musketeer
+2 BS72-049   # The Dana Magic Aidman
+3 BS72-050   # The AceDanaSoldier Madea
+2 BS72-051   # The DivineBlacksmith Goibniu
+3 BS71-058   # The ArmyMedic Dian
+2 BS72-054   # The RedWitch Vaha
+2 BS71-060   # The TwinHeaded Brodeur
+2 BS71-061   # The DanaCommando Gaulesser
+1 BS71-X09   # The SilverArmDivineEmperor Agateram
+2 BS71-063   # Dana Standard Beam Spear
+2 BS71-064   # Dana Type-93 Blaster Rifle
+2 BS72-068   # The Dana Standard Electromagnetic Long Sword
+2 BS74-067   # Dana Standard Railgun

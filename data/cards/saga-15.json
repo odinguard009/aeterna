@@ -1,0 +1,4716 @@
+[
+ {
+  "id": "BS68-012",
+  "name": "The Sorcerer Infernal Soldier",
+  "name_jp": "魔導冥兵",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Infernal Lord"
+  ],
+  "text": "This card in Trash is unaffected by opposing effects.\n\nFlash - (Either Attack Step)\nBy banishing this card from the Trash, deploy one of your \"Contractor Hades\" from Soul State, without paying the cost.\n\n[LV1][LV2] (When Summoned/Attacks)\nOnce per turn, you can send a core from any opposing Spirit/Ultimate to the Reserve. Then, by discarding a card from your Hand, send a core from any opposing Spirit/Ultimate to the Reserve.",
+  "image": "BS68-012.png",
+  "block": "68",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "once": true,
+    "onceKey": "sold",
+    "optional": true,
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 1
+     },
+     {
+      "do": "BY",
+      "ask": true,
+      "cost": {
+       "do": "DISCARD_HAND",
+       "n": 1
+      },
+      "then": [
+       {
+        "do": "OPP_CORES_TO_RESERVE",
+        "targets": 1,
+        "each": 1
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "once": true,
+    "onceKey": "sold",
+    "optional": true,
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 1
+     },
+     {
+      "do": "BY",
+      "ask": true,
+      "cost": {
+       "do": "DISCARD_HAND",
+       "n": 1
+      },
+      "then": [
+       {
+        "do": "OPP_CORES_TO_RESERVE",
+        "targets": 1,
+        "each": 1
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Flash from the Trash (banish this card, deploy Contractor Hades from Soul State) and the Trash protection are not built",
+   "\"Once per turn\" covers the whole effect here (the card limits only the first core)"
+  ]
+ },
+ {
+  "id": "BS68-014",
+  "name": "The SorcererWatchdog Hound-Beros",
+  "name_jp": "魔導番犬ハウンド・ベロス",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 1,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Infernal Lord"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nIncluding being in Soul State, if you control any \"Contractor Hades\", you can send two cards from your decktop to the Trash. If there is any \"Infernal Lord\" family card among them, your counter +1, and draw a card.\n\n[LV2] (When Attacks)\nIncluding being in Soul State, if you control any \"Contractor Hades\", you can discard an opposing Cost 4 or less Magic card on the opposing Field.",
+  "image": "BS68-014.png",
+  "block": "68",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. God reduction icon from official card list (battlespirits.com) and Fandom, v0.44.6.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "if": {
+     "controlName": "Contractor Hades"
+    },
+    "actions": [
+     {
+      "do": "MILL",
+      "n": 2,
+      "family": "Infernal Lord",
+      "counter": 1,
+      "draw": 1
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "LV2 (When Attacks): discarding an opposing Cost 4 or less Magic card on the Field is not built",
+   "The Soul State clause (this card in Soul State) is not built"
+  ]
+ },
+ {
+  "id": "BS68-015",
+  "name": "The SorcererDragonWarrior Galatiark",
+  "name_jp": "魔導竜士ガラディアーク",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   },
+   {
+    "cores": 4,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Infernal Lord"
+  ],
+  "text": "This card in Trash is unaffected by opposing effects.\n\nFlash - (Either Attack Step)\nBy banishing this card from the Trash, deploy one of your \"Contractor Hades\" from Soul State, without paying the cost.\n\n[LV1][LV2][LV3] (When Summoned/Destroyed)\nDraw a card. Then, if you have six counters or more, destroy an opposing Spirit/Ultimate with three cores or less on it.",
+  "image": "BS68-015.png",
+  "block": "68",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     },
+     {
+      "do": "DESTROY",
+      "coresLe": 3,
+      "if": {
+       "counterGe": 6
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     },
+     {
+      "do": "DESTROY",
+      "coresLe": 3,
+      "if": {
+       "counterGe": 6
+      }
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Flash from the Trash (banish this card, deploy Contractor Hades from Soul State) and the Trash protection are not built"
+  ]
+ },
+ {
+  "id": "BS68-016",
+  "name": "The SorcererMystic Heineza",
+  "name_jp": "魔導術士ハイネイザ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 2,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Infernal Lord"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nYou can send two cards from your decktop to the Trash. Then, you can return a \"Contractor Hades\" from your Trash to the Hand.\n\n[LV2] (When Attacks)\nDestroy an opposing Spirit/Ultimate with two cores or less on it. Also, if you control any \"Contractor Hades\", draw a card.",
+  "image": "BS68-016.png",
+  "block": "68",
+  "saga": 15,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. God reduction icon from official card list (battlespirits.com) and Fandom, v0.44.6.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "MILL",
+      "n": 2
+     },
+     {
+      "do": "RETURN_TRASH",
+      "match": {
+       "name": [
+        "Contractor Hades"
+       ]
+      },
+      "anyType": true
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "coresLe": 2
+     },
+     {
+      "do": "DRAW",
+      "n": 1,
+      "if": {
+       "controlName": "Contractor Hades"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "BS68-017",
+  "name": "The SorcererBirdGeneral Naberidus",
+  "name_jp": "魔導鳥将ナベリダス",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 2,
+    "bp": 7000
+   },
+   {
+    "cores": 4,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Infernal Lord"
+  ],
+  "text": "Including being in Soul State, while you control any \"Contractor Hades\", you can set this card from the Trash.\n\n{{Mirage|Cost 3 }}\nDuring Set (Either Attack Step)\nOnce per turn, when your Hand is discarded, you can destroy an opposing Spirit/Ultimate with two cores or less on it.\n\n[LV1][LV2][LV3] (When Summoned/Attacks)\nOnce per turn, by discarding a card from your Hand, draw two cards.",
+  "image": "BS68-017.png",
+  "block": "68",
+  "saga": 15,
+  "mechanics": [
+   "Mirage"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "once": true,
+    "onceKey": "nab",
+    "actions": [
+     {
+      "do": "BY",
+      "ask": true,
+      "cost": {
+       "do": "DISCARD_HAND",
+       "n": 1
+      },
+      "then": [
+       {
+        "do": "DRAW",
+        "n": 2
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "once": true,
+    "onceKey": "nab",
+    "actions": [
+     {
+      "do": "BY",
+      "ask": true,
+      "cost": {
+       "do": "DISCARD_HAND",
+       "n": 1
+      },
+      "then": [
+       {
+        "do": "DRAW",
+        "n": 2
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Setting this card from the Trash as a Mirage (cost 3) and its Mirage effect (destroy when your Hand is discarded) are not built"
+  ]
+ },
+ {
+  "id": "BS68-018",
+  "name": "The SorcererDuchess Phenlese",
+  "name_jp": "魔導皇女フェンレーゼ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {
+   "purple": 2,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   },
+   {
+    "cores": 5,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Infernal Lord"
+  ],
+  "text": "Flash -  {{Mani|\"Contractor Hades\" & C5 or more|(Either Attack Step)}}\nBy sending your  to the Trash, pay one cost from the target to summon this card from the Hand.\n\n[LV1][LV2][LV3] (When Summoned)\n(Once per Turn: Same Name) You can draw two cards. Then, by paying one cost to summon from your Trash a Purple \"Devotee\" family Spirit card, besides any \"The SorcererDuchess Phenlese\", with a cost equal or inferior to your number of counters, discard a card from your Hand.",
+  "image": "BS68-018.png",
+  "block": "68",
+  "saga": 15,
+  "mechanics": [
+   "Manifest"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. God reduction icon from official card list (battlespirits.com) and Fandom, v0.44.6.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "once": true,
+    "sameName": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 2
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "The follow-up (summon a Purple Devotee Spirit from the Trash by paying its cost, discarding a card) is not built"
+  ],
+  "manifest": {
+   "name": "Contractor Hades",
+   "counterGe": 5,
+   "turn": "EITHER_ATTACK"
+  }
+ },
+ {
+  "id": "BS68-019",
+  "name": "The SorcererSwordsman Javir",
+  "name_jp": "魔導剣士ジャヴィル",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 6,
+  "reduction": {
+   "purple": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 3,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Infernal Lord"
+  ],
+  "text": "(Once per Turn: Same Name) During your Main Step, if there are three or more Purple \"Sorcerer\" in your Trash, you can summon this card from the Trash by paying two costs.\n\n[LV1][LV2] (When Summoned)\nBy destroying an opposing Spirit/Ultimate with three cores or less on it, draw two cards.\n\n[LV2] (When Attacks)\nIf the opponent doesn't control any Spirit, during this battle, this Spirit gains an extra Purple symbol.",
+  "image": "BS68-019 (Fixed).png",
+  "block": "68",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "DESTROY",
+      "coresLe": 3,
+      "thenDraw": 2
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "if": {
+     "oppSpiritsLe": 0
+    },
+    "actions": [
+     {
+      "do": "SYMBOL_PLUS",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Summoning this card from the Trash in the Main Step (three Purple Sorcerer cards in the Trash, pay two costs) is not built"
+  ]
+ },
+ {
+  "id": "BS68-020",
+  "name": "The SorcererWolf Volgoat",
+  "name_jp": "魔導狼ヴォルゴート",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 6,
+  "reduction": {
+   "purple": 3,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 2,
+    "bp": 10000
+   },
+   {
+    "cores": 5,
+    "bp": 12000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Infernal Lord"
+  ],
+  "text": "[LV1][LV2][LV3] (When Summoned/Attacks)\nOnce per turn, during this turn, you can increase the LV cost of an opposing Spirit/Ultimate by +2. Also, by discarding a Purple \"Sorcerer\" card from your Hand, during this turn, increase the LV cost of an opposing Nexus by +2.\n\n[LV2][LV3] (Your Attack Step)\nWhen your Purple \"Sorcerer\" would leave the Field due to opposing effects, if the opponent doesn't control any Spirit, all those Spirits can remain on the Field, exhausted.",
+  "image": "BS68-020.png",
+  "block": "68",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. God reduction icon from official card list (battlespirits.com) and Fandom, v0.44.6.",
+  "residual": [
+   "LV effects (raise the LV cost of opposing Spirits/Nexuses, keep Sorcerers on the Field) are not built: LV cost increases have no engine yet"
+  ]
+ },
+ {
+  "id": "BS68-021",
+  "name": "The BloodAllianceThirteenMarquess Alvanshell",
+  "name_jp": "血盟十三候アルヴァンシェル",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 7,
+  "reduction": {
+   "purple": 5
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 3,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Blood Crystal",
+   "Nightling"
+  ],
+  "text": "Flash - (Your Attack Step)\n(Once per Turn : Same Name) Including being in Soul State, if you control any Spirit with True-Curse, by discarding this card from your Hand, discard up to three cards from your decktop.\n\n[LV1][LV2] (When Summoned)\nSend three cores from an opposing Spirit to the Reserve.",
+  "image": "BS68-021.png",
+  "block": "68",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 3
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "The Flash from the Hand (discard up to three cards from your decktop while you control a True-Curse Spirit) is not built"
+  ]
+ },
+ {
+  "id": "BS68-022",
+  "name": "The SorcererWarrior Gadirac",
+  "name_jp": "魔導戦士ガディラック",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 7,
+  "reduction": {
+   "purple": 4,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 2,
+    "bp": 10000
+   },
+   {
+    "cores": 4,
+    "bp": 12000
+   }
+  ],
+  "families": [
+   "Infernal Lord"
+  ],
+  "text": "{{Burst|After your Life is reduced}}\nDestroy two opposing Spirits/Ultimates with three cores or less. Then, you can send two cards from your decktop to the Trash. After this effect resolves, summon this card without paying the cost.\n\n[LV2][LV3] (When Attacks)\nOnce per turn, if the opponent doesn't control any Spirit, this Spirit refreshes.",
+  "image": "BS68-022.png",
+  "block": "68",
+  "saga": 15,
+  "mechanics": [
+   "Burst"
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. God reduction icon from official card list (battlespirits.com) and Fandom, v0.44.6.",
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2,
+     3
+    ],
+    "once": true,
+    "if": {
+     "oppSpiritsLe": 0
+    },
+    "actions": [
+     {
+      "do": "REFRESH"
+     }
+    ]
+   }
+  ],
+  "burst": {
+   "when": "LIFE_DECREASE",
+   "actions": [
+    {
+     "do": "DESTROY",
+     "coresLe": 3
+    },
+    {
+     "do": "DESTROY",
+     "coresLe": 3
+    },
+    {
+     "do": "MILL",
+     "n": 2
+    },
+    {
+     "do": "SUMMON_SELF"
+    }
+   ]
+  }
+ },
+ {
+  "id": "BS68-023",
+  "name": "The SorcererBeastMarquis Vaplus",
+  "name_jp": "魔導獣侯ヴァプラス",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 8,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 8000
+   },
+   {
+    "cores": 3,
+    "bp": 12000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Infernal Lord"
+  ],
+  "text": "When summoning this card from the Trash, this card can become Cost 5.\n\n[LV1][LV2] (When Attacks)\nSend two cores each from two opposing Spirits/Ultimates to the Reserve, and for each depleted target, draw a card.\n\n[LV2] (Your Attack Step)\nTreat all your Purple Cost 5 or more \"Sorcerer\" effects as colorless.",
+  "image": "BS68-023.png",
+  "block": "68",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 2,
+      "each": 2,
+      "drawPerDepleted": true
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Summoning as Cost 5 from the Trash and the LV2 colourless clause are not built"
+  ]
+ },
+ {
+  "id": "BS68-024",
+  "name": "Gaudy Trooper G",
+  "name_jp": "華兵・ジー",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   },
+   {
+    "cores": 7,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Gaudy Trooper",
+   "Shellman"
+  ],
+  "text": "You can put any number of copies of this card in deck.\n\nFlash - High Speed\nThis card in Hand can be summoned by paying the cost with cores in the Reserve. In this case, cores to be put on this Spirit must also be from the Reserve.\n\n[LV3] (When Attacks)\nThis Spirit becomes Cost 7.",
+  "image": "BS68-024.png",
+  "block": "68",
+  "saga": 15,
+  "mechanics": [
+   "High Speed"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.49.0: keyword effect wired (session D).",
+  "highSpeed": true,
+  "residual": [
+   "You can put any number of copies of this card in deck (deck limit still 3)",
+   "LV3 (When Attacks): this Spirit becomes Cost 7"
+  ]
+ },
+ {
+  "id": "BS68-035",
+  "name": "The SteelKnight Cleomenes",
+  "name_jp": "鋼鉄機士クレオメネス",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Android"
+  ],
+  "text": "Flash -\nBy discarding this card from the Removed Zone, deploy an \"Athena\" from your Removed Zone/Soul State.\n\nFlash - {{Accel|Cost 4 ()}}\nDiscard an opposing Burst, and when you couldn't discard, return an opposing Spirits/Ultimates to the Hand. After this effect resolves, put this card onto your Removed Zone.",
+  "image": "BS68-035.png",
+  "block": "68",
+  "saga": 15,
+  "mechanics": [
+   "Accel"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.50.0: keyword effect wired (session D part 2).",
+  "effects": [
+   {
+    "trigger": "ACCEL",
+    "cost": 4,
+    "timing": [
+     "FLASH"
+    ],
+    "actions": [
+     {
+      "do": "DISCARD_OPP_BURST"
+     },
+     {
+      "do": "BOUNCE_OPP",
+      "to": "hand",
+      "kind": "spirit",
+      "if": {
+       "prev": false
+      }
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Flash: discard this card from the Removed Zone to deploy an \"Athena\" from your Removed Zone/Soul State",
+   "Accel cost reduction icons (not in the Fandom export; the full cost is paid)"
+  ]
+ },
+ {
+  "id": "BS68-045",
+  "name": "The ChalkSteelKnight Gennadios",
+  "name_jp": "白亜の鋼鉄機士ゲンナディオス",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 9,
+  "reduction": {
+   "white": 4
+  },
+  "symbols": 2,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 9000
+   },
+   {
+    "cores": 2,
+    "bp": 15000
+   },
+   {
+    "cores": 6,
+    "bp": 19000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Android"
+  ],
+  "text": "When summoning this card from the Removed Zone, if your counter is six or more, this card can become Cost 6.\n\nFlash - {{Accel|Cost 4 ()}}\nReturn an opposing Spirits/Ultimates to the Hand. After this effect resolves, put this card onto your Removed Zone.\n\n[LV2][LV3]\nAll your White \"Devotee\"/\"Concluser\" family Spirits are unaffected by opposing Nexus effects and Mirage effects.",
+  "image": "BS68-045.png",
+  "block": "68",
+  "saga": 15,
+  "mechanics": [
+   "Accel"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.50.0: keyword effect wired (session D part 2).",
+  "effects": [
+   {
+    "trigger": "ACCEL",
+    "cost": 4,
+    "timing": [
+     "FLASH"
+    ],
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "hand",
+      "kind": "spirit"
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "When summoned from the Removed Zone with six or more counters, this card can become Cost 6",
+   "LV2-3: your White Devotee/Concluser Spirits are unaffected by opposing Nexus and Mirage effects",
+   "Accel cost reduction icons (not in the Fandom export; the full cost is paid)"
+  ]
+ },
+ {
+  "id": "BS68-048",
+  "name": "Kamikiri File",
+  "name_jp": "カミキリヤスリ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {
+   "yellow": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Puppet Beast"
+  ],
+  "text": "[LV1][LV2] Holy Life (When Attacks)\nWhen this Spirit's attack reduces the opposing Life, put a core from the Void to your Life.\n\n[LV2] (When Attacks)\nYou can draw a card from the deckbottom. Then, including being in Soul State, if you control any \"Contractor Kinich-Ahau\", your counter +1.",
+  "image": "BS68-048.png",
+  "block": "68",
+  "saga": 15,
+  "mechanics": [
+   "Holy Life"
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.49.0: keyword effect wired (session D).",
+  "effects": [
+   {
+    "trigger": "ALLY_LIFE_HIT",
+    "self": true,
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_LIFE",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "DRAW_BOTTOM",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "if": {
+     "hasName": "Contractor Kinich-Ahau"
+    },
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "BS68-059",
+  "name": "Specimen No.6 Fropper",
+  "name_jp": "被検体No.6フロッパー",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Azure Wave",
+   "Fusion Beast"
+  ],
+  "text": "(Can't Stack) When Magic cards are discarded/banished from the opposing deck via your \"Azure Wave\" family effects, you can return this card from your Trash to the Hand.\n\n[LV1][LV2] Crush (When Attacks)\nDiscard a number of cards equal to this Spirit's level from opposing decktop.",
+  "image": "BS68-059.png",
+  "block": "68",
+  "saga": 15,
+  "mechanics": [
+   "Crush"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.49.0: keyword effect wired (session D).",
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "CRUSH",
+      "n": "lv"
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "(Can't Stack) return this card from the Trash to the Hand when Magic cards are discarded/banished from the opposing deck via your \"Azure Wave\" effects"
+  ]
+ },
+ {
+  "id": "BS68-061",
+  "name": "Folly-Golem",
+  "name_jp": "フォリー・ゴレム",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Azure Wave",
+   "Artificial Soldier"
+  ],
+  "text": "[LV1][LV2] Crush (When Attacks)\nDiscard a number of cards equal to this Spirit's level from opposing decktop.\n\n[LV2] (Your Turn)\nWhen Spirit cards/Ultimate cards are discarded from the opposing deck by your Crush, once per turn, your counter +1. When Nexus cards are discarded, once per turn, put a core from the Void to any of your Spirits.",
+  "image": "BS68-061.png",
+  "block": "68",
+  "saga": 15,
+  "mechanics": [
+   "Crush"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.49.0: keyword effect wired (session D).",
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "CRUSH",
+      "n": "lv"
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "LV2 (Your Turn): counter +1 / Void core to a Spirit when Spirit/Ultimate or Nexus cards are discarded by your Crush"
+  ]
+ },
+ {
+  "id": "BS68-070",
+  "name": "Hades' Nether Temple",
+  "name_jp": "ハデスの冥府神殿",
+  "type": "Nexus",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 0
+   },
+   {
+    "cores": 1
+   }
+  ],
+  "families": [
+   "Infernal Lord"
+  ],
+  "text": "[LV1][LV2] (When Deployed)\nYour counter +1. Then, (Once per Turn: Same Name) you can reveal three cards from your decktop. Add a Purple \"Sorcerer\" among them to your Hand. Discard any remaining cards.\n\n[LV2] (Opposing Attack Step)\n(Can't Stack) When an opposing Cost 4 or less Spirit/Ultimate attacks, including being in Soul State, if you control any \"Contractor Hades\", you can send a core from the attacking target to the Trash.",
+  "image": "BS68-070.png",
+  "block": "68",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); Lv2 at 1 core read from yuyu-tei.jp (BS68-070). Not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "once": true,
+    "sameName": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 3,
+      "match": {
+       "name": [
+        "Sorcerer"
+       ],
+       "color": "purple"
+      },
+      "rest": "trash"
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "LV2 (Opposing Attack Step): trashing a core from an attacking Cost 4 or less Spirit while you control Contractor Hades is not built"
+  ],
+  "mechanics": [
+   "Nexus"
+  ]
+ },
+ {
+  "id": "BS68-076",
+  "name": "Plutonic Wall",
+  "name_jp": "プルトニックウォール",
+  "type": "Magic",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Infernal Lord"
+  ],
+  "text": "While you control any \"Contractor Hades\", you can use this card from the Trash.\n\nFlash\nDuring this turn, when opposing Spirit/Ultimate would attack/block, unless the opponent sends a core from the attacking/blocking target to the Trash, it can't attack/block. Then, when used from the Trash, banish this card.",
+  "image": "BS68-076.png",
+  "block": "68",
+  "saga": 15,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "AB_CORE_TAX_TURN"
+    }
+   ],
+   "trashUse": {
+    "if": {
+     "hasName": "Contractor Hades"
+    }
+   }
+  },
+  "fxComplete": true,
+  "note": "v0.41: not wired (needs an attack/block declaration hook that lets the opponent pay a core); also use from the Trash."
+ },
+ {
+  "id": "BS68-077",
+  "name": "Hades Disaster",
+  "name_jp": "ハデスディザスター",
+  "type": "Magic",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Infernal Lord"
+  ],
+  "text": "When this card was sent to the Trash from Hand/Deck by the effect of your \"Contractor Hades\", or your \"Infernal Lord\" family effect, +1 core to a Grandwalker Nexus you control.\n\nWhile you control any \"Contractor Hades\", you can use this card from the Trash.\n\nFlash\nDestroy an opposing Spirit/Ultimate with two cores or less on it. When used from the Trash, instead, destroy an opposing Spirit/Ultimate with four cores or less on it, and banish this card. This effect can't be prevented by opposing effects.",
+  "image": "BS68-077.png",
+  "block": "68",
+  "saga": 15,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY",
+     "coresLe": 2,
+     "ignoreImmune": true
+    }
+   ],
+   "trashUse": {
+    "if": {
+     "hasName": "Contractor Hades"
+    },
+    "actions": [
+     {
+      "do": "DESTROY",
+      "coresLe": 4,
+      "ignoreImmune": true
+     }
+    ]
+   }
+  },
+  "fxComplete": true,
+  "note": "v0.41: Flash from the Hand wired (cannot be prevented). Not yet: use from the Trash (4 cores or less, then banish) and the +1 core when sent to the Trash by an Indra/Hades effect.",
+  "trashTrigger": {
+   "from": [
+    "deck",
+    "hand"
+   ],
+   "by": {
+    "name": [
+     "Contractor Hades"
+    ],
+    "family": [
+     "Infernal Lord"
+    ]
+   },
+   "gwCore": 1
+  }
+ },
+ {
+  "id": "BS68-CX01",
+  "name": "The SorcererContractor Hades",
+  "name_jp": "魔導の契約神ハデス",
+  "type": "Nexus",
+  "color": "purple",
+  "cost": 2,
+  "reduction": {
+   "purple": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 0
+   },
+   {
+    "cores": 5
+   }
+  ],
+  "families": [
+   "Grandwalker",
+   "Olym"
+  ],
+  "text": "Neo-Core Charge:\n◆When your target Spirit is summoned, you can +1 core to this Nexus.\n◆(Once per Turn: Same Name) When this Nexus is deployed, you can send three cards from your decktop to the Trash. For each target card among them, +1 core to this Nexus.\n\nRevive Main - (Once per Turn: Same Name) You can deploy this card from Soul State.\n\n{{cs|2}} [LV1][LV2] Flash - (Either Attack Step)\n(Send two cores from this Nexus to the Void) By discarding a Purple card from your Hand, send up to two cores from an opposing Spirit/Ultimate to the Reserve. Then, once per turn, your counter +2.\n\nContract Field [LV2]\nYou can summon/Mani/deploy \"Hades\" and Purple Cost 5 or more \"Sorcerer\" from your Trash. When you do, once per turn, you can pay the cost by sending cores from this Nexus to the Void. When you pay from this Nexus, Core Charge doesn't activate.",
+  "image": "BS68-CX01.png",
+  "block": "68",
+  "saga": 15,
+  "mechanics": [
+   "Contract Nexus",
+   "Neo-Core Charge",
+   "Revive",
+   "Contract Skill",
+   "Contract Field"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14). Read from yuyu-tei.jp (BS68-CX01 page, 2026-10-14): Neo-Core Charge target (Infernal Lord/Devotee/Concluser & Cost 3 or more), Lv2 at 5 cores, Contract Field. One Contract symbol follows BS74-CX03/SD69-CX01. Not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "ALLY_SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "match": {
+     "family": [
+      "Infernal Lord",
+      "Devotee",
+      "Concluser"
+     ],
+     "costGe": 3,
+     "type": "Spirit"
+    },
+    "actions": [
+     {
+      "do": "CORE_TO_SELF",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "once": true,
+    "sameName": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "DECK_TO_TRASH_CORES",
+      "n": 3,
+      "match": {
+       "family": [
+        "Infernal Lord",
+        "Devotee",
+        "Concluser"
+       ],
+       "costGe": 3
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "ACTIVATE",
+    "lv": [
+     1,
+     2
+    ],
+    "timing": [
+     "FLASH"
+    ],
+    "cost": {
+     "nexusToVoid": 2
+    },
+    "once": false,
+    "actions": [
+     {
+      "do": "BY",
+      "cost": {
+       "do": "DISCARD_HAND",
+       "n": 1,
+       "match": {
+        "color": "purple"
+       }
+      },
+      "then": [
+       {
+        "do": "OPP_CORES_TO_RESERVE",
+        "targets": 1,
+        "each": 2
+       },
+       {
+        "do": "COUNTER_ONCE",
+        "n": 2
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Contract Field (Lv2): summoning / Manifesting / deploying \"Hades\" and Purple Cost 5+ \"Sorcerer\" cards from the Trash, paying from this Nexus, is not built",
+   "Neo-Core Charge from other Nexuses is not counted (only Spirits summoned)"
+  ],
+  "contract": true,
+  "revive": true
+ },
+ {
+  "id": "BS68-NX01",
+  "name": "The SixHellSorcerer Dells-Vajram",
+  "name_jp": "六冥魔導デルズ・ヴァジュラム",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 8,
+  "reduction": {
+   "purple": 5,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 9000
+   },
+   {
+    "cores": 2,
+    "bp": 12000
+   },
+   {
+    "cores": 4,
+    "bp": 16000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Infernal Lord"
+  ],
+  "text": "(Once per Turn: Same Name) When your Purple-only Spirit would leave the Field due to opposing effects, you can summon this card from your Trash by paying one cost.\n\n[LV1][LV2][LV3] (When Summoned)\nSend three cores from any opposing Spirits/Ultimates to the Reserve. When summoned from the Trash, instead, treat this Spirit's color as colorless, and send five cores from the opposing Field to the Reserve.\n\n[LV2][LV3]\nWhen the opponent would increase cores from the Void via an effect, change the destination of those cores to this Spirit.",
+  "image": "BS68-NX01.png",
+  "block": "68",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. God reduction icon from official card list (battlespirits.com) and Fandom, v0.44.6.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "total": 3
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Summoning this card from the Trash when a Purple-only Spirit leaves the Field, its colourless five-core mode and the LV2/LV3 Void redirect are not built"
+  ]
+ },
+ {
+  "id": "BS69-023",
+  "name": "The Lionheart Medon",
+  "name_jp": "勇士メドーン",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Soldier",
+   "Blade Beast"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nPut a core from the Void each to two Green \"Devotee\"/\"Concluser\" family Spirits you control. When this effect puts any core to another \"Blade Beast\" family Spirit you control, your counter +1.\n\n[LV2] (When Attacks)\nHeavy exhaust an opposing Spirit/Ultimate.",
+  "image": "BS69-023+ (Fixed).png",
+  "block": "69",
+  "saga": 15,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_MATCHING",
+      "targets": 2,
+      "match": {
+       "family": [
+        "Devotee",
+        "Concluser"
+       ]
+      },
+      "counterIfFamily": "Blade Beast"
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "HEAVY_EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "BS69-024",
+  "name": "The QuickSwordLionheart Stichiox",
+  "name_jp": "迅剣の勇士スティキオス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 6,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Soldier",
+   "Blade Beast"
+  ],
+  "text": "Flash - High Speed\nThis card in Hand can be summoned by paying the cost with cores in the Reserve. In this case, cores to be put on this Spirit must also be from the Reserve.\n\n[LV1][LV2][LV3] (When Summoned)\nYou can deploy a \"Hermes\" from your Hand/Soul State, without paying the cost. Then, if you control any \"Contractor Hermes\", you can discard a Cost 4 or less Magic card from the opposing Field.",
+  "image": "BS69-024+ (Fixed).png",
+  "block": "69",
+  "saga": 15,
+  "mechanics": [
+   "High Speed"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "SUMMON_HAND",
+      "from": "handOrSoul",
+      "match": {
+       "name": [
+        "Contractor Hermes"
+       ]
+      }
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "LV1-3 second clause: discard a Cost 4 or less Magic card from the opposing Field"
+  ],
+  "highSpeed": true
+ },
+ {
+  "id": "BS69-025",
+  "name": "The Lionheart Eurytius",
+  "name_jp": "勇士エウリュティオス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 1,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   },
+   {
+    "cores": 5,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Soldier",
+   "Blade Beast"
+  ],
+  "text": "[LV1][LV2][LV3] (When Summoned/Attacks)\nOnce per turn, your counter +1. Then, if you control any \"Hermes\", you can reveal a card from your decktop. If that's a Green \"Devotee\"/\"Concluser\" family card, add it to the Hand. If it's a \"Blade Beast\"/\"Olym\" family Nexus card, you can deploy it without paying the cost. Return any remaining cards to the deckbottom.\n\n[LV2][LV3]\nThe number of cores on all your Green \"Devotee\"/\"Concluser\" family Spirits can't be brought to less than three by opposing effects.",
+  "image": "BS69-025+ (Fixed).png",
+  "block": "69",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. God reduction icon from Fandom (official list did not load BS69/BS70), v0.44.6.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "once": true,
+    "onceKey": "eury",
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     },
+     {
+      "do": "REVEAL_DEPLOY",
+      "n": 1,
+      "match": {
+       "family": [
+        "Blade Beast",
+        "Olym"
+       ],
+       "type": "Nexus"
+      },
+      "add": {
+       "match": {
+        "family": [
+         "Devotee",
+         "Concluser"
+        ]
+       },
+       "lv": 1
+      },
+      "if": {
+       "controlName": "Contractor Hermes"
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "once": true,
+    "onceKey": "eury",
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     },
+     {
+      "do": "REVEAL_DEPLOY",
+      "n": 1,
+      "match": {
+       "family": [
+        "Blade Beast",
+        "Olym"
+       ],
+       "type": "Nexus"
+      },
+      "add": {
+       "match": {
+        "family": [
+         "Devotee",
+         "Concluser"
+        ]
+       },
+       "lv": 1
+      },
+      "if": {
+       "controlName": "Contractor Hermes"
+      }
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "LV2-3: the cores on your Devotee/Concluser Spirits can't be brought below three by opposing effects",
+   "The Green colour of the added card is not checked"
+  ]
+ },
+ {
+  "id": "BS69-026",
+  "name": "The RuffianLionheart Priapus",
+  "name_jp": "乱波の勇士プリアポス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Soldier",
+   "Blade Beast"
+  ],
+  "text": "When your \"Blade Beast\" family Spirit is summoned during either Attack Step, you can pay one cost to summon this card from the Hand. When you've done so, your counter +1.\n\n[LV1][LV2] (When Summoned/Attacks)\nOnce per turn, exhaust an opposing Spirit/Ultimate, and put a core from the Void to any of your Spirits.",
+  "image": "BS69-026+ (Fixed).png",
+  "block": "69",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "once": true,
+    "onceKey": "pria",
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     },
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit"
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "once": true,
+    "onceKey": "pria",
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     },
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit"
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Summon from the Hand (paying one cost) when your Blade Beast Spirit is summoned in either Attack Step, then counter +1"
+  ]
+ },
+ {
+  "id": "BS69-028",
+  "name": "The KnowledgeableLionheart Eudoros",
+  "name_jp": "知見の勇士エウドロス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 5,
+  "reduction": {
+   "green": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Soldier",
+   "Blade Beast"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nIf you control any \"Contractor Hermes\", you can put two cores from the Void to any of your Spirits. Then, you can banish every card in the opposing Trash. When this effect banishes four or more cards, the opponent puts a card from their Hand to their Removed Zone.\n\n[LV2]\nOnce per turn, when cards are put onto the opposing Removed Zone, you can heavy exhaust an opposing Spirit/Ultimate.",
+  "image": "BS69-028+ (Fixed).png",
+  "block": "69",
+  "saga": 15,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 2,
+      "to": "anySpirit",
+      "if": {
+       "controlName": "Contractor Hermes"
+      }
+     },
+     {
+      "do": "REMOVE_OPP_TRASH",
+      "all": true
+     },
+     {
+      "do": "OPP_CHOOSES_REMOVE_HAND",
+      "n": 1,
+      "if": {
+       "removedGe": 4
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "OPP_REMOVED",
+    "lv": [
+     2
+    ],
+    "once": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "HEAVY_EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "BS69-029",
+  "name": "The ProphetBeast Calchas",
+  "name_jp": "予言獣カルカース",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 5,
+  "reduction": {
+   "green": 2,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   },
+   {
+    "cores": 5,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Soldier",
+   "Blade Beast"
+  ],
+  "text": "[LV1][LV2][LV3] (When Attacks)\nYou can put two cores from the Void to this Spirit. Then, if you control any \"Contractor Hermes\", the opponent puts a card from their Hand to their Removed Zone. If that's a Cost 3 or less card, your counter +2.\n\n[LV2][LV3] (When Attacks)\nOnce per turn, if there is any Spirit card/Ultimate card on the opposing Removed Zone, this Spirit can refresh.",
+  "image": "BS69-029+.png",
+  "block": "69",
+  "saga": 15,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. God reduction icon from Fandom (official list did not load BS69/BS70), v0.44.6.",
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 2,
+      "to": "self"
+     },
+     {
+      "do": "OPP_CHOOSES_REMOVE_HAND",
+      "n": 1,
+      "counterIfCostLe": {
+       "cost": 3,
+       "n": 2
+      },
+      "if": {
+       "controlName": "Contractor Hermes"
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2,
+     3
+    ],
+    "once": true,
+    "onceKey": "calc",
+    "if": {
+     "oppRemovedSpirit": true
+    },
+    "actions": [
+     {
+      "do": "REFRESH"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "BS69-030",
+  "name": "The TrueShadowLionheart Autolycus",
+  "name_jp": "真影の勇士アウトリュコス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 6,
+  "reduction": {
+   "green": 2,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Soldier",
+   "Blade Beast"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\n(Once per Turn: Same Name) Put a core from the Void each to five \"Blade Beast\" family Spirits/Nexuses you control.\n\n[LV2] (Your Attack Step)\nWhen your Green \"Devotee\"/\"Concluser\" family Spirit attacks, you can return an opposing exhausted Spirit/Ultimate to the deckbottom.",
+  "image": "BS69-030+ (Fixed).png",
+  "block": "69",
+  "saga": 15,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. God reduction icon from Fandom (official list did not load BS69/BS70), v0.44.6.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "once": true,
+    "sameName": true,
+    "actions": [
+     {
+      "do": "VOID_TO_MATCHING",
+      "targets": 5,
+      "match": {
+       "family": [
+        "Blade Beast"
+       ]
+      },
+      "incNexus": true
+     }
+    ]
+   },
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     2
+    ],
+    "optional": true,
+    "match": {
+     "family": [
+      "Devotee",
+      "Concluser"
+     ]
+    },
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "deckBottom",
+      "kind": "spirit",
+      "exhaustedOnly": true
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "BS69-031",
+  "name": "The HeavyCrossbowLionheart Leonteus",
+  "name_jp": "重弩の勇士レオンテウス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 7,
+  "reduction": {
+   "green": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 8000
+   },
+   {
+    "cores": 3,
+    "bp": 12000
+   },
+   {
+    "cores": 8,
+    "bp": 21000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Soldier",
+   "Blade Beast"
+  ],
+  "text": "Flash - {{Mani|\"Contractor Hermes\" & C4 or more|(Either Attack Step)}}\nBy sending your  to the Trash, pay one cost from the target to summon this card from the Hand.\n\n[LV1][LV2][LV3] (When Summoned/Attacks)\nYou can send one opposing Spirit/Ultimate to the Removed Zone. By paying seven costs, change the \"one\" written in this effect to \"ten\".\n\n[LV2][LV3] (When Attacks)\nYou can return a card from the opposing Removed Zone to the deckbottom. When this effect returns a Cost 7 or more card, put two cores from the Void to your Spirits.",
+  "image": "BS69-031+ (Fixed).png",
+  "block": "69",
+  "saga": 15,
+  "mechanics": [
+   "Manifest"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "SEND_REMOVED",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "SEND_REMOVED",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "By paying seven costs the number sent becomes ten",
+   "LV2-3 (When Attacks): return a card from the opposing Removed Zone to the deck bottom; Cost 7+ puts two cores from the Void to your Spirits"
+  ],
+  "manifest": {
+   "name": "Contractor Hermes",
+   "counterGe": 4,
+   "turn": "EITHER_ATTACK"
+  }
+ },
+ {
+  "id": "BS69-033",
+  "name": "The SturdyLionheart Guneus",
+  "name_jp": "剛撃の勇士グネウス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 8,
+  "reduction": {
+   "green": 3,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 3,
+    "bp": 13000
+   },
+   {
+    "cores": 5,
+    "bp": 16000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Soldier",
+   "Blade Beast"
+  ],
+  "text": "When cards are put onto the opposing Removed Zone, you can immediately activate this set card.\n\n{{Burst|After an opposing Spirit/Ultimate's (When Summoned) effect resolves}}\nSummon this card without paying the cost. Then, heavy exhaust two opposing Spirits/Ultimates.\n\n[LV1][LV2][LV3] (When Summoned/Attacks)\nYou can return an opposing exhausted Spirit/Ultimate to the deckbottom.",
+  "image": "BS69-033+ (Fixed).png",
+  "block": "69",
+  "saga": 15,
+  "mechanics": [
+   "Burst"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. God reduction icon from Fandom (official list did not load BS69/BS70), v0.44.6.",
+  "residual": [
+   "When cards are put onto the opposing Removed Zone you can immediately activate this set Burst"
+  ],
+  "burst": {
+   "when": "OPP_SUMMON_FX",
+   "actions": [
+    {
+     "do": "SUMMON_SELF"
+    },
+    {
+     "do": "HEAVY_EXHAUST_OPP",
+     "n": 2
+    }
+   ]
+  },
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "deckBottom",
+      "kind": "spirit",
+      "exhaustedOnly": true
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "deckBottom",
+      "kind": "spirit",
+      "exhaustedOnly": true
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "BS69-043",
+  "name": "The SteelKnight Charicles",
+  "name_jp": "鋼鉄機士カリクレス",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 7,
+  "reduction": {
+   "white": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 3,
+    "bp": 10000
+   },
+   {
+    "cores": 6,
+    "bp": 13000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Android"
+  ],
+  "text": "While this card is in the Removed Zone, all your White-only \"Devotee\"/\"Concluser\" family cards in your Removed Zone are unaffected by opposing effects.\n\nFlash - {{Accel|Cost 4 ()}}\nWhen this battle ends, end the Attack Step. After this effect resolves, put this card onto your Removed Zone.\n\n[LV1][LV2][LV3] (When Summoned)\nYou can return two opposing Spirits/Ultimates to the deckbottom.",
+  "image": "BS69-043+.png",
+  "block": "69",
+  "saga": 15,
+  "mechanics": [
+   "Accel"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.50.0: keyword effect wired (session D part 2).",
+  "effects": [
+   {
+    "trigger": "ACCEL",
+    "cost": 4,
+    "timing": [
+     "FLASH"
+    ],
+    "actions": [
+     {
+      "do": "END_ATTACK_AFTER_BATTLE"
+     }
+    ]
+   },
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "deckBottom",
+      "kind": "spirit"
+     },
+     {
+      "do": "BOUNCE_OPP",
+      "to": "deckBottom",
+      "kind": "spirit"
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "While in the Removed Zone: your White-only Devotee/Concluser cards in the Removed Zone are unaffected by opposing effects",
+   "Accel cost reduction icons (not in the Fandom export; the full cost is paid)"
+  ]
+ },
+ {
+  "id": "BS69-052",
+  "name": "Coati Chisel",
+  "name_jp": "ハナグマ・ノミ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 5,
+  "reduction": {
+   "yellow": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Puppet Beast"
+  ],
+  "text": "[LV1][LV2][LV3] Holy Life (When Attacks)\nWhen this Spirit's attack reduces the opposing Life, put a core from the Void to your Life.\n\n[LV2][LV3] Ultra Holy Life (When Attacks)\nWhen blocked, draw a card from the deckbottom; when not blocked, put a core from the Void to your Life.",
+  "image": "BS69-052+.png",
+  "block": "69",
+  "saga": 15,
+  "mechanics": [
+   "Holy Life"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.49.0: keyword effect wired (session D).",
+  "effects": [
+   {
+    "trigger": "ALLY_LIFE_HIT",
+    "self": true,
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_LIFE",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "LV2-3 Ultra Holy Life (When Attacks): when blocked draw from the deckbottom; when not blocked put a Void core on your Life"
+  ]
+ },
+ {
+  "id": "BS69-071",
+  "name": "The Whirlwind Spiral Way",
+  "name_jp": "つむじ風の螺旋道",
+  "type": "Nexus",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 0
+   },
+   {
+    "cores": 1
+   }
+  ],
+  "families": [
+   "Blade Beast"
+  ],
+  "text": "When this card is sent from the deck to the Trash via the effect of your \"Hermes\" Grandwalker Nexus, you can add it to the Hand.\n\n[LV1][LV2] Flash - (Either Attack Step)\nBy exhausting this Nexus, send an opposing exhausted Cost 3 or less Spirit/Ultimate to the Removed Zone.\n\n[LV2]\nOnce per turn, when cards are put onto the opposing Removed Zone, you can reveal a card from your decktop. If the revealed card is a Green \"Devotee\"/\"Concluser\"/\"Grandwalker family card, add it to the Hand. Return any remaining cards to the deckbottom.",
+  "image": "BS69-071+.png",
+  "block": "69",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); the Nexus levels (Lv2 at 1 core) are NOT in the export and follow the other Saga Nexuses (not verified). Not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "lv": [
+     1,
+     2
+    ],
+    "timing": [
+     "FLASH"
+    ],
+    "if": {
+     "attackStep": true
+    },
+    "cost": {
+     "exhaustSelf": true
+    },
+    "actions": [
+     {
+      "do": "SEND_REMOVED",
+      "n": 1,
+      "costLe": 3,
+      "exhaustedOnly": true
+     }
+    ]
+   },
+   {
+    "trigger": "OPP_REMOVED",
+    "lv": [
+     2
+    ],
+    "once": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 1,
+      "match": {
+       "family": [
+        "Devotee",
+        "Concluser",
+        "Grandwalker"
+       ]
+      },
+      "rest": "bottom"
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "When sent from the Deck to the Trash by Hermes: add to Hand (not wired)",
+   "The reveal only adds Devotee/Concluser/Grandwalker cards; the Green colour is not checked"
+  ]
+ },
+ {
+  "id": "BS69-CX02",
+  "name": "The SwiftContractor Hermes",
+  "name_jp": "俊足の契約神ヘルメス",
+  "type": "Nexus",
+  "color": "green",
+  "cost": 2,
+  "reduction": {
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 0
+   },
+   {
+    "cores": 2
+   }
+  ],
+  "families": [
+   "Grandwalker",
+   "Olym"
+  ],
+  "text": "Neo-Core Charge:\n◆When your target Spirit is summoned, you can +1 core to this Nexus.\n◆(Once per Turn: Same Name) When this Nexus is deployed, you can send three cards from your decktop to the Trash. For each target card among them, +1 core to this Nexus.\n\nRevive Main - (Once per Turn: Same Name) You can deploy this card from Soul State.\n\n{{cs|2}} [LV1][LV2] Flash\n(Once per turn, send two cores from this Nexus to the Void) Your counters +2. Then, exhaust an opposing Cost 7 or less Spirit/Ultimate.\n\nContract Field [LV2] (Your Attack Step)\n(Can't Stack) When your Spirit attacks, during this battle, the opponent can't activate Burst effects. Also, if that Spirit has \"Devotee\"/\"Concluser\" family, put a random card from the opposing Hand onto their Removed Zone.",
+  "image": "BS69-CX02+.png",
+  "block": "69",
+  "saga": 15,
+  "mechanics": [
+   "Contract Nexus",
+   "Neo-Core Charge",
+   "Revive",
+   "Contract Skill",
+   "Contract Field"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); Neo-Core Charge target (Blade Beast/Devotee/Concluser & Cost 3 or more) and the one Contract symbol read from cardrush-bs.jp / fullahead-tcg.com. The Lv2 core threshold (2) is NOT verified: no web source lists it; most Contractor Nexuses use 2. Not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "ALLY_SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "match": {
+     "family": [
+      "Blade Beast",
+      "Devotee",
+      "Concluser"
+     ],
+     "costGe": 3,
+     "type": "Spirit"
+    },
+    "actions": [
+     {
+      "do": "CORE_TO_SELF",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "once": true,
+    "sameName": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "DECK_TO_TRASH_CORES",
+      "n": 3,
+      "match": {
+       "family": [
+        "Blade Beast",
+        "Devotee",
+        "Concluser"
+       ],
+       "costGe": 3
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "ACTIVATE",
+    "lv": [
+     1,
+     2
+    ],
+    "timing": [
+     "FLASH"
+    ],
+    "cost": {
+     "nexusToVoid": 2
+    },
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 2
+     },
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1,
+      "costLe": 7
+     }
+    ]
+   },
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "NO_BURST_BATTLE"
+     }
+    ]
+   },
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     2
+    ],
+    "match": {
+     "family": [
+      "Devotee",
+      "Concluser"
+     ]
+    },
+    "actions": [
+     {
+      "do": "REMOVE_OPP_HAND",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Neo-Core Charge from a Blade Beast/Devotee/Concluser Nexus (e.g. Spiral Way) is not counted (the deploy trigger only reads Spirits and the Deck-to-Trash reveal)"
+  ],
+  "contract": true,
+  "revive": true
+ },
+ {
+  "id": "BS70-028",
+  "name": "The StrongArmLionheart Sisyphus",
+  "name_jp": "腕力の勇士シーシュポス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Soldier",
+   "Blade Beast"
+  ],
+  "text": "Flash - {{Mani|\"Contractor Hermes\" & C2 or more|(Your Attack Step)}}\nBy sending your  to the Trash, pay one cost from the target to summon this card from the Hand.\n\n[LV1][LV2] (When Summoned)\nYou can put a core from the Void to your Trash. Then, when it manis, +1 core to one of your \"Contractor Hermes\" Grandwalker Nexuses.\n\n[LV2] (When Attacks)\nYou can put a card from the opposing Trash to their Removed Zone. When you've done so, heavy exhaust an opposing Spirit/Ultimate.",
+  "image": "BS70-028.png",
+  "block": "70",
+  "saga": 15,
+  "mechanics": [
+   "Manifest"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "REMOVE_OPP_TRASH",
+      "n": 1
+     },
+     {
+      "do": "HEAVY_EXHAUST_OPP",
+      "n": 1,
+      "if": {
+       "prev": true
+      }
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "LV1-2 When Summoned: put a core from the Void to your Trash, and +1 core to Hermes when it manis"
+  ],
+  "manifest": {
+   "name": "Contractor Hermes",
+   "counterGe": 2,
+   "turn": "YOUR_ATTACK"
+  }
+ },
+ {
+  "id": "BS70-031",
+  "name": "The LionheartCenturion Iphicles",
+  "name_jp": "勇士長イピクレス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Soldier"
+  ],
+  "text": "(Cant' Stack) When your Spirit manis, if you control any \"Contractor Hermes\", you can summon this card from your Hand without paying the cost.\n\n[LV1][LV2] (When Summoned/Attacks)\nOnce per turn, you can put a card from the opposing Trash onto the Removed Zone. When you've done so, your counter +1, and draw a card.\n\n[LV2] (Your Attack Step)\nWhen your \"Blade Beast\" family Spirit attacks, put a random card from the opposing Hand to their Removed Zone. After this effect resolves, return a card in the opposing Removed Zone to the Hand.",
+  "image": "BS70-031.png",
+  "block": "70",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "once": true,
+    "onceKey": "iph",
+    "optional": true,
+    "actions": [
+     {
+      "do": "REMOVE_OPP_TRASH",
+      "n": 1
+     },
+     {
+      "do": "COUNTER",
+      "n": 1,
+      "if": {
+       "prev": true
+      }
+     },
+     {
+      "do": "DRAW",
+      "n": 1,
+      "if": {
+       "prev": true
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "once": true,
+    "onceKey": "iph",
+    "optional": true,
+    "actions": [
+     {
+      "do": "REMOVE_OPP_TRASH",
+      "n": 1
+     },
+     {
+      "do": "COUNTER",
+      "n": 1,
+      "if": {
+       "prev": true
+      }
+     },
+     {
+      "do": "DRAW",
+      "n": 1,
+      "if": {
+       "prev": true
+      }
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Summon from the Hand without paying when your Spirit manis (Hermes)",
+   "LV2 (Your Attack Step): put a random card of the opposing Hand onto their Removed Zone when your Blade Beast attacks, then return a card of their Removed Zone to their Hand"
+  ]
+ },
+ {
+  "id": "BS70-034",
+  "name": "The LionheartGeneral Pelops",
+  "name_jp": "勇士将軍ペロプス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 6,
+  "reduction": {
+   "green": 3,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Soldier",
+   "Blade Beast"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nYou can put two cores from the Void to this Spirit. Then, if you control any \"Contractor Hermes\", and the opposing Hand is six or more, you can put random cards from the opposing Hand to their Removed Zone so that their Hand becomes three.\n\n[LV2] (Your Attack Step)\nWhile there are three or more cards in the opposing Removed Zone, all your Spirits gain an extra Green symbol.",
+  "image": "BS70-034.png",
+  "block": "70",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. God reduction icon from Fandom (official list did not load BS69/BS70), v0.44.6.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 2,
+      "to": "self"
+     },
+     {
+      "do": "REMOVE_OPP_HAND",
+      "n": 1,
+      "toSize": 3,
+      "if": {
+       "controlName": "Contractor Hermes",
+       "oppHandGe": 6
+      }
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "LV2 (Your Attack Step): while the opposing Removed Zone holds three or more cards, all your Spirits gain an extra Green symbol"
+  ]
+ },
+ {
+  "id": "BS70-035",
+  "name": "The GreenWindLionheart Hermaphros",
+  "name_jp": "緑風の勇士ヘルマプロース",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 8,
+  "reduction": {
+   "green": 3,
+   "god": 1
+  },
+  "symbols": 2,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 3,
+    "bp": 13000
+   }
+  ],
+  "families": [
+   "Soldier",
+   "Blade Beast"
+  ],
+  "text": "When summoning this card, if there are three or more cards in the opposing Removed Zone, this card can become Cost 5.\n\n[LV2] (When Attacks)\nYou can heavy exhaust two opposing Spirits/Ultimates.",
+  "image": "BS70-035.png",
+  "block": "70",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. God reduction icon from Fandom (official list did not load BS69/BS70), v0.44.6.",
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "HEAVY_EXHAUST_OPP",
+      "n": 2
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Summon cost becomes 5 while the opposing Removed Zone holds three or more cards"
+  ]
+ },
+ {
+  "id": "BS70-036",
+  "name": "The FrostyLittleFairy Tink",
+  "name_jp": "霜の小妖精ティンク",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Frostling"
+  ],
+  "text": "[LV1][LV2] Flash - Silver Wheel\nYou can exhaust this Spirit. When you've done so, if you control any \"Contractor Brigit\", put a core from the Void to this Spirit.\n\n[LV2] {{ua|Red/Purple}}\nThis Spirit is unaffected by opposing Red/Purple Spirit/Ultimate/Nexus/Magic effects.",
+  "image": "BS70-036.png",
+  "block": "70",
+  "saga": 15,
+  "mechanics": [
+   "Silver Wheel"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.50.0: keyword effect wired (session D part 2).",
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "silverWheel": true,
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "cost": {
+     "exhaustSelf": true
+    },
+    "once": false,
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self",
+      "if": {
+       "controlName": "Contractor Brigit"
+      }
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "LV2: unaffected by opposing Red/Purple Spirit/Ultimate/Nexus/Magic effects"
+  ]
+ },
+ {
+  "id": "BS70-037",
+  "name": "The FrostyHeavenFairy Disel",
+  "name_jp": "霜の空妖精ディッセル",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Frostling"
+  ],
+  "text": "[LV1][LV2]\nThe number of cores on your \"Frostling\" family Spirits can't be brought to less than three due to opposing effects.\n\n[LV1][LV2] Flash - Silver Wheel\nYou can exhaust this Spirit. When you've done so, if you control any \"Contractor Brigit\", return an opposing Cost 3 or less Spirit/Ultimate to the deckbottom.",
+  "image": "BS70-037.png",
+  "block": "70",
+  "saga": 15,
+  "mechanics": [
+   "Silver Wheel"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.50.0: keyword effect wired (session D part 2).",
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "silverWheel": true,
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "cost": {
+     "exhaustSelf": true
+    },
+    "once": false,
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "deckBottom",
+      "kind": "spirit",
+      "costLe": 3,
+      "if": {
+       "controlName": "Contractor Brigit"
+      }
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "LV1-2: the cores on your Frostling Spirits can't be brought below three by opposing effects"
+  ]
+ },
+ {
+  "id": "BS70-039",
+  "name": "The FrostyGreatFairy Breg",
+  "name_jp": "霜の大妖精ブレグ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 4,
+  "reduction": {
+   "white": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Frostling"
+  ],
+  "text": "[LV1][LV2][LV3] Flash - Silver Wheel\nYou can exhaust this Spirit. When you've done so, you can put a core from the Void each to this Spirit and another \"Frostling\" family Spirit you control.\n\n[LV2][LV3]\nWhen your \"Frostling\" family Spirits would leave the Field due to opposing effects, by sending a core, besides , from your Spirits to the Void, one of those Spirits remains on the Field, in the same condition.",
+  "image": "BS70-039.png",
+  "block": "70",
+  "saga": 15,
+  "mechanics": [
+   "Silver Wheel"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.50.0: keyword effect wired (session D part 2).",
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "silverWheel": true,
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "cost": {
+     "exhaustSelf": true
+    },
+    "once": false,
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self"
+     },
+     {
+      "do": "VOID_TO_MATCHING",
+      "targets": 1,
+      "match": {
+       "family": [
+        "Frostling"
+       ]
+      }
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Silver Wheel: the second core should go to another Frostling Spirit (the engine may also pick this Spirit)",
+   "LV2-3: when your Frostling Spirits would leave the Field via opposing effects, send a core to the Void so one stays"
+  ]
+ },
+ {
+  "id": "BS70-045",
+  "name": "The FrostyHeavenFairy Lemusir",
+  "name_jp": "霜の空妖精レムシール",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 7,
+  "reduction": {
+   "white": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 2,
+    "bp": 10000
+   },
+   {
+    "cores": 4,
+    "bp": 13000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Frostling"
+  ],
+  "text": "{{Burst|After an opposing Spirit/Ultimate attacks}}\nRefresh all your Spirits/Nexuses with Silver Wheel, and during this turn, all the targets that refreshed are unaffected by opposing effects. After this effect resolves, summon this card without paying the cost.\n\n[LV2][LV3] Flash - Silver Wheel\nYou can exhaust this Spirit. When you've done so, put a core from the Void to this Spirit.",
+  "image": "BS70-045.png",
+  "block": "70",
+  "saga": 15,
+  "mechanics": [
+   "Burst"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.50.0: keyword effect wired (session D part 2).",
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "silverWheel": true,
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "cost": {
+     "exhaustSelf": true
+    },
+    "once": false,
+    "lv": [
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self"
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Burst (after an opposing attack): refresh your Silver Wheel Spirits/Nexuses, they are unaffected this turn, then summon this card for free"
+  ]
+ },
+ {
+  "id": "BS70-072",
+  "name": "The Messenger Post on the Cape",
+  "name_jp": "岬の伝令所",
+  "type": "Nexus",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 1,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 0
+   },
+   {
+    "cores": 1
+   }
+  ],
+  "families": [
+   "Blade Beast"
+  ],
+  "text": "[LV1][LV2] (Opposing Turn)\nOnce per turn, when the opposing Hand increases via an opposing effect, if you control any \"Contractor Hermes\", the opponent puts a card from their Hand to the Removed Zone.\n\n[LV2]\nOnce per turn, when cards are put onto the opposing Removed Zone, you can exhaust an opposing Spirit/Ultimate.",
+  "image": "BS70-072.png",
+  "block": "70",
+  "saga": 15,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); the Nexus levels (Lv2 at 1 core) are NOT in the export and follow the other Saga Nexuses (not verified). Not yet checked against the card image. God reduction icon from Fandom (official list did not load BS69/BS70), v0.44.6.",
+  "effects": [
+   {
+    "trigger": "OPP_HAND_UP",
+    "lv": [
+     1,
+     2
+    ],
+    "once": true,
+    "if": {
+     "oppTurn": true,
+     "controlName": "Contractor Hermes"
+    },
+    "actions": [
+     {
+      "do": "OPP_CHOOSES_REMOVE_HAND",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "OPP_REMOVED",
+    "lv": [
+     2
+    ],
+    "once": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "BS70-X03",
+  "name": "The GreatHeroBeast King Perseus",
+  "name_jp": "大英雄獣キングパーシアス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 7,
+  "reduction": {
+   "green": 4,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 3,
+    "bp": 13000
+   },
+   {
+    "cores": 5,
+    "bp": 16000
+   }
+  ],
+  "families": [
+   "Concluser",
+   "Soldier",
+   "Blade Beast"
+  ],
+  "text": "Flash - {{Mani|\"Contractor Hermes\" & C5 or more|(Either Attack Step)}}\nBy sending your  to the Trash, pay one cost from the target to summon this card from the Hand.\n\n[LV1][LV2][LV3] (When Summoned/Attacks)\nYou can send an opposing Spirit/Ultimate to the Removed Zone. After this effect resolves, you can target a card in the opposing Removed Zone. Until the end of the next opposing Main Step, the opponent can't use that card.\n\n[LV2][LV3] (When Attacks)\nIf there is any Cost 4 or more card in the opposing Removed Zone, you can send an opposing Life to the Reserve.",
+  "image": "BS70-X03.png",
+  "block": "70",
+  "saga": 15,
+  "mechanics": [
+   "Manifest"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. God reduction icon from Fandom (official list did not load BS69/BS70), v0.44.6.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "SEND_REMOVED",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "SEND_REMOVED",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "After sending: the opponent can't use a chosen card of their Removed Zone until the end of their next Main Step",
+   "LV2-3 (When Attacks): with a Cost 4+ card in the opposing Removed Zone, send an opposing Life to the Reserve"
+  ],
+  "manifest": {
+   "name": "Contractor Hermes",
+   "counterGe": 5,
+   "turn": "EITHER_ATTACK"
+  }
+ },
+ {
+  "id": "BS71-053",
+  "name": "The Dana Scout",
+  "name_jp": "ダーナ偵察兵",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "blue": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Scalostle"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\n+1 core to one of your \"Contractor Nuadha\" Grandwalker Nexuses. Then, put one core from the Void each to this Spirit and a \"Scalostle\" family Brave Spirit you control.\n\n[LV2]\nThe number of cores on your \"Scalostle\" family Spirits can't be brought to less than three by  opposing effects.",
+  "image": "BS71-053.png",
+  "block": "71",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); gaps the export lacks (Neo-Core Charge target, Brave BP+ and combine condition, Nexus levels) filled from cardrush-bs.jp; not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "CORE_TO_NEXUS",
+      "n": 1,
+      "match": {
+       "name": [
+        "Contractor Nuadha"
+       ]
+      }
+     },
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self"
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "(When Summoned): the core from the Void to a Scalostle Brave Spirit you control",
+   "LV2: the number of cores on your Scalostle Spirits cannot be brought below three by opposing effects"
+  ]
+ },
+ {
+  "id": "BS71-054",
+  "name": "The Dana Shielder",
+  "name_jp": "ダーナ楯兵",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "blue": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Scalostle"
+  ],
+  "text": "(Once per Turn: Same Name) When your Saga Brave is summoned, you can return this card from your Trash to the Hand.\n\n[LV2]\nAll your \"Contractor Nuadha\" Grandwalker Nexuses are unaffected by opposing Cost 3 or less effects.",
+  "image": "BS71-054.png",
+  "block": "71",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); gaps the export lacks (Neo-Core Charge target, Brave BP+ and combine condition, Nexus levels) filled from cardrush-bs.jp; not yet checked against the card image.",
+  "residual": [
+   "Once per turn, when your Saga Brave is summoned, return this card from your Trash to the Hand",
+   "LV2: your Contractor Nuadha Grandwalker Nexuses are unaffected by opposing Cost 3 or less effects"
+  ]
+ },
+ {
+  "id": "BS71-056",
+  "name": "The Dana Soldier",
+  "name_jp": "ダーナ兵",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {
+   "blue": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Scalostle"
+  ],
+  "text": "[LV1][LV2] (When Summoned/Attacks)\nOnce per turn, +1 core to one of your \"Contractor Nuadha\" Grandwalker Nexuses. Then, draw two cards, and discard two cards from your Hand. If you control any braved \"Contractor Nuadha\", this effect draws +1 cards.\n\n[LV2] (When Attacks)\nDestroy an opposing Cost 3 or less Spirit/Ultimate.",
+  "image": "BS71-056.png",
+  "block": "71",
+  "saga": 15,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); gaps the export lacks (Neo-Core Charge target, Brave BP+ and combine condition, Nexus levels) filled from cardrush-bs.jp; not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "CORE_TO_NEXUS",
+      "n": 1,
+      "match": {
+       "name": [
+        "Contractor Nuadha"
+       ]
+      }
+     },
+     {
+      "do": "LOOT",
+      "draw": 2,
+      "discard": 2,
+      "drawPlus": {
+       "n": 1,
+       "if": {
+        "nexusBraved": "Nuadha"
+       }
+      }
+     }
+    ],
+    "once": true,
+    "onceKey": "dsold"
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "CORE_TO_NEXUS",
+      "n": 1,
+      "match": {
+       "name": [
+        "Contractor Nuadha"
+       ]
+      }
+     },
+     {
+      "do": "LOOT",
+      "draw": 2,
+      "discard": 2,
+      "drawPlus": {
+       "n": 1,
+       "if": {
+        "nexusBraved": "Nuadha"
+       }
+      }
+     }
+    ],
+    "once": true,
+    "onceKey": "dsold"
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "costLe": 3
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "BS71-057",
+  "name": "The Dana Musketeer",
+  "name_jp": "ダーナ銃兵",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {
+   "blue": 2,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Scalostle"
+  ],
+  "text": "[LV1][LV2] (When Summoned/Attacks)\nYou can destroy an opposing Cost 3 or less Spirit/Ultimate. If you have five counters or more, the limit of this \"Cost Destruction effect\" increases by +5.\n\nDuring Brave [LV2]\nWhen this Spirit destroys any opposing Spirit/Ultimate, +1 core to one of your \"Contractor Nuadha\" Grandwalker Nexuses. Then, once per turn, this Spirit can refresh.",
+  "image": "BS71-057.png",
+  "block": "71",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); gaps the export lacks (Neo-Core Charge target, Brave BP+ and combine condition, Nexus levels) filled from cardrush-bs.jp; not yet checked against the card image. God reduction icon from Fandom (official list did not load BS71/BS72), v0.44.7.",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "costLe": 3,
+      "costBoost": {
+       "counterGe": 5,
+       "n": 5
+      }
+     }
+    ],
+    "optional": true
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "costLe": 3,
+      "costBoost": {
+       "counterGe": 5,
+       "n": 5
+      }
+     }
+    ],
+    "optional": true
+   }
+  ],
+  "residual": [
+   "During Brave LV2: when this Spirit destroys an opposing Spirit/Ultimate, +1 core to a Contractor Nuadha, then once per turn this Spirit refreshes"
+  ]
+ },
+ {
+  "id": "BS71-058",
+  "name": "The ArmyMedic Dian",
+  "name_jp": "従軍医師ディアン",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 5,
+  "reduction": {
+   "blue": 3,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 2,
+    "bp": 7000
+   },
+   {
+    "cores": 4,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Scalostle"
+  ],
+  "text": "Flash - {{Mani|\"Contractor Nuadha\" & C2 or more|(Your Turn)}}\nBy sending your  to the Trash, pay one cost from the target to summon this card from the Hand.\n\n[LV1][LV2][LV3] (When Summoned/Attacks)\nOnce per turn, you can reveal four cards from your decktop. You can summon a Saga Brave card among them, without paying the cost. Return any remaining cards to only the decktop or deckbottom.\n\n[LV2][LV3] (Your Attack Step)\nWhen your \"Scalostle\" family Brave Spirit attacks, you can discard a Magic card on the opposing Field.",
+  "image": "BS71-058.png",
+  "block": "71",
+  "saga": 15,
+  "mechanics": [
+   "Manifest"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); gaps the export lacks (Neo-Core Charge target, Brave BP+ and combine condition, Nexus levels) filled from cardrush-bs.jp; not yet checked against the card image. God reduction icon from Fandom (official list did not load BS71/BS72), v0.44.7.",
+  "manifest": {
+   "name": "Contractor Nuadha",
+   "counterGe": 2,
+   "turn": "YOURS"
+  },
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "once": true,
+    "onceKey": "dian",
+    "optional": true,
+    "actions": [
+     {
+      "do": "REVEAL_DEPLOY",
+      "n": 4,
+      "match": {
+       "family": [
+        "Saga"
+       ]
+      },
+      "pay": false,
+      "allowBrave": true
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "once": true,
+    "onceKey": "dian",
+    "optional": true,
+    "actions": [
+     {
+      "do": "REVEAL_DEPLOY",
+      "n": 4,
+      "match": {
+       "family": [
+        "Saga"
+       ]
+      },
+      "pay": false,
+      "allowBrave": true
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "LV2/LV3 (Your Attack Step): when your Scalostle Brave Spirit attacks, you can discard a Magic card on the opposing Field",
+   "Revealed cards that are not summoned return to the bottom of the Deck only; the Brave is summoned as a Spirit (not directly combined)"
+  ]
+ },
+ {
+  "id": "BS71-060",
+  "name": "The TwinHeaded Brodeur",
+  "name_jp": "二つ首のブロデータ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 7,
+  "reduction": {
+   "blue": 3,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 3,
+    "bp": 11000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Scalostle"
+  ],
+  "text": "Flash - {{Mani|\"Contractor Nuadha\" & C4 or more|(Either Attack Step)}}\nBy sending your  to the Trash, pay one cost from the target to summon this card from the Hand.\n\n[LV1][LV2] (When Manifests/Attacks)\nYou can destroy an opposing Spirit/Ultimate with a cost equal or inferior to this Spirit's, and when destroys, you can summon a \"Scalostle\" family Brave card from your Hand, without paying the cost.",
+  "image": "BS71-060.png",
+  "block": "71",
+  "saga": 15,
+  "mechanics": [
+   "Manifest"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); gaps the export lacks (Neo-Core Charge target, Brave BP+ and combine condition, Nexus levels) filled from cardrush-bs.jp; not yet checked against the card image. God reduction icon from Fandom (official list did not load BS71/BS72), v0.44.7.",
+  "manifest": {
+   "name": "Contractor Nuadha",
+   "counterGe": 4,
+   "turn": "EITHER_ATTACK"
+  },
+  "effects": [
+   {
+    "trigger": "MANIFEST",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "DESTROY",
+      "costLeSelf": true
+     },
+     {
+      "do": "SUMMON_HAND",
+      "from": "hand",
+      "allowBrave": true,
+      "match": {
+       "family": [
+        "Scalostle"
+       ],
+       "type": "Brave"
+      },
+      "if": {
+       "prev": true
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "DESTROY",
+      "costLeSelf": true
+     },
+     {
+      "do": "SUMMON_HAND",
+      "from": "hand",
+      "allowBrave": true,
+      "match": {
+       "family": [
+        "Scalostle"
+       ],
+       "type": "Brave"
+      },
+      "if": {
+       "prev": true
+      }
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "The Brave summoned by this effect is a Spirit (not directly combined)"
+  ]
+ },
+ {
+  "id": "BS71-061",
+  "name": "The DanaCommando Gaulesser",
+  "name_jp": "ダーナ特務兵ガウレッサ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 8,
+  "reduction": {
+   "blue": 4,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 4,
+    "bp": 14000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Scalostle"
+  ],
+  "text": "{{burst|After your Life is reduced}}\nIgnoring the cost of Braves, destroy two opposing Cost 9 or less Spirits/Ultimates. After this effect resolves, summon this card without paying the cost.\n\n[LV2] (When Attacks)\nDestroy an opposing Spirit/Ultimate with a cost equal or inferior to this Spirit's.",
+  "image": "BS71-061.png",
+  "block": "71",
+  "saga": 15,
+  "mechanics": [
+   "Burst"
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); gaps the export lacks (Neo-Core Charge target, Brave BP+ and combine condition, Nexus levels) filled from cardrush-bs.jp; not yet checked against the card image. God reduction icon from Fandom (official list did not load BS71/BS72), v0.44.7.",
+  "burst": {
+   "when": "LIFE_DECREASE",
+   "actions": [
+    {
+     "do": "DESTROY",
+     "costLe": 9
+    },
+    {
+     "do": "DESTROY",
+     "costLe": 9
+    },
+    {
+     "do": "SUMMON_SELF"
+    }
+   ]
+  },
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "costLeSelf": true
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "BS71-063",
+  "name": "Dana Standard Beam Spear",
+  "name_jp": "ダーナ制式ビームスピア",
+  "type": "Brave",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "blue": 1,
+   "god": 1
+  },
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Saga",
+   "Spirit Arms",
+   "Scalostle"
+  ],
+  "text": "During Spirit Brave (When Attacks)\nOnce per turn, if you have six or more counters, by exhausting one of your Nexuses/Grandwalker Nexuses, refresh this Spirit.\n\nDuring Nexus Brave {{cs|5}} Flash - (Either Attack Step)\n(Send five cores from this Nexus to the Void) Destroy an opposing Spirit/Ultimate with the highest cost.",
+  "image": "BS71-063.png",
+  "block": "71",
+  "saga": 15,
+  "mechanics": [
+   "BRAVE",
+   "Contract Skill",
+   "Grandwalker Nexus"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); gaps the export lacks (Neo-Core Charge target, Brave BP+ and combine condition, Nexus levels) filled from cardrush-bs.jp; not yet checked against the card image. God reduction icon from Fandom (official list did not load BS71/BS72), v0.44.7.",
+  "brave": {
+   "bp": 3000,
+   "family": [
+    "Scalostle"
+   ],
+   "nexus": {
+    "name": [
+     "Contractor Nuadha"
+    ]
+   }
+  },
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "nexusBrave": true,
+    "once": false,
+    "timing": [
+     "FLASH"
+    ],
+    "if": {
+     "attackStep": true
+    },
+    "cost": {
+     "nexusToVoid": 5
+    },
+    "actions": [
+     {
+      "do": "DESTROY",
+      "costRank": "highest"
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "During Spirit Brave (When Attacks): once per turn, with six or more counters, exhaust one of your Nexuses/Grandwalker Nexuses to refresh this Spirit"
+  ]
+ },
+ {
+  "id": "BS71-064",
+  "name": "Dana Type-93 Blaster Rifle",
+  "name_jp": "ダーナ93式ブラスターライフル",
+  "type": "Brave",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {
+   "blue": 2,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Saga",
+   "Spirit Arms",
+   "Scalostle"
+  ],
+  "text": "[LV1] (When Summoned)\nDraw a card, then discard a card from your Hand. When this effect discards any \"Scalostle\" family card, destroy an opposing Spirit/Ultimate with a cost equal or inferior to the discarded card.\n\nDuring Nexus Brave {{cs|2}} Flash - (Either Attack Step)\n(Send two cores from this Nexus to the Void) Ignoring the cost of Braves, destroy an opposing Cost 5 or less Spirit/Ultimate.",
+  "image": "BS71-064.png",
+  "block": "71",
+  "saga": 15,
+  "mechanics": [
+   "BRAVE",
+   "Contract Skill",
+   "Grandwalker Nexus"
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); gaps the export lacks (Neo-Core Charge target, Brave BP+ and combine condition, Nexus levels) filled from cardrush-bs.jp; not yet checked against the card image. God reduction icon from Fandom (official list did not load BS71/BS72), v0.44.7.",
+  "brave": {
+   "bp": 3000,
+   "costGe": 4,
+   "nexus": {
+    "name": [
+     "Contractor Nuadha"
+    ]
+   }
+  },
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1
+    ],
+    "actions": [
+     {
+      "do": "LOOT",
+      "draw": 1,
+      "discard": 1,
+      "famCostDestroy": "Scalostle"
+     },
+     {
+      "do": "DESTROY",
+      "costLeDiscarded": true,
+      "if": {
+       "prev": true
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "ACTIVATE",
+    "nexusBrave": true,
+    "once": false,
+    "timing": [
+     "FLASH"
+    ],
+    "if": {
+     "attackStep": true
+    },
+    "cost": {
+     "nexusToVoid": 2
+    },
+    "actions": [
+     {
+      "do": "DESTROY",
+      "costLe": 5
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "BS71-072",
+  "name": "Nuadha's Bulwark Temple",
+  "name_jp": "ヌアザの防塁神殿",
+  "type": "Nexus",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "blue": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 0
+   },
+   {
+    "cores": 1
+   }
+  ],
+  "families": [
+   "Scalostle"
+  ],
+  "text": "[LV1][LV2]\nCards without \"Celtica\"/\"Scalostle\" family in either player's Trash are unaffected by effects other than this one, and their effects can't be used.\n\n[LV2]\nFor each Saga Brave you control, increase the limit of your \"Celtica\"/\"Scalostle\" family \"Cost Destruction effect\" by +1.",
+  "image": "BS71-072.png",
+  "block": "71",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); gaps the export lacks (Neo-Core Charge target, Brave BP+ and combine condition, Nexus levels) filled from cardrush-bs.jp; not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "COST_DESTROY_PLUS",
+    "lv": [
+     2
+    ],
+    "n": 1,
+    "perSagaBrave": true,
+    "srcFamily": [
+     "Celtica",
+     "Scalostle"
+    ]
+   }
+  ],
+  "residual": [
+   "LV1/LV2: cards without the Celtica/Scalostle family in either Trash are unaffected by effects other than this one, and their effects cannot be used"
+  ]
+ },
+ {
+  "id": "BS71-083",
+  "name": "Dana Draw",
+  "name_jp": "ダーナドロー",
+  "type": "Magic",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {
+   "blue": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Scalostle"
+  ],
+  "text": "When your \"Scalostle\" family Brave is summoned, if your counter is five or more, you can immediately activate this set card.\n\n{{Burst|After your Spirit is depleted/destroyed by the Opponent}}\nDestroy any number of opposing Spirits/Ultimates up to a total of Cost 6. If you have five counters or more, increase the limit of this \"Cost Destruction effect\" by +4. Then, by paying the cost, activate the Main effect of this card.\n\nMain\nDraw three cards, then discard three cards from your Hand. For each \"Contractor Nuadha\" you control, this effect discards -1 cards.",
+  "image": "BS71-083.png",
+  "block": "71",
+  "saga": 15,
+  "magic": {
+   "timing": [
+    "MAIN"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "LOOT",
+     "draw": 3,
+     "discard": 3,
+     "discardLessPerName": "Contractor Nuadha"
+    }
+   ]
+  },
+  "burst": {
+   "when": "ALLY_DESTROYED",
+   "actions": [
+    {
+     "do": "DESTROY_TOTAL",
+     "byCost": true,
+     "total": 6,
+     "boost": {
+      "counterGe": 5,
+      "n": 4
+     }
+    }
+   ],
+   "thenMain": true,
+   "also": {
+    "when": "BRAVE_SUMMONED",
+    "match": {
+     "family": [
+      "Scalostle"
+     ],
+     "type": "Brave"
+    },
+    "if": {
+     "counterGe": 5
+    }
+   }
+  },
+  "fxComplete": true,
+  "note": "v0.41: Main and the cost destruction of the Burst are wired (Burst timing uses \"your Spirit is destroyed\"; depleted is not covered). Not yet: paying the cost to use the Main effect after the Burst, and activating this set card when a Scalostle Brave is summoned.",
+  "residual": [
+   "Burst timing \"depleted\": only a destruction by the opponent activates it (the engine does not track who caused a depletion)"
+  ]
+ },
+ {
+  "id": "BS71-084",
+  "name": "Whirling Tide",
+  "name_jp": "ワーリングタイド",
+  "type": "Magic",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {
+   "blue": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Scalostle"
+  ],
+  "text": "When this card is sent to Trash from deck by the effect of your \"Contractor Nuadha\", you can add it to the Hand. When you've done so, +1 core to one Grandwalker Nexus you control.\n\nFlash\nSummon/deploy a \"Scalostle\"/\"Celtica\" family Brave card/Nexus card from your Trash, without paying the cost.",
+  "image": "BS71-084.png",
+  "block": "71",
+  "saga": 15,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "SUMMON_HAND",
+     "from": "trash",
+     "match": {
+      "family": [
+       "Scalostle",
+       "Celtica"
+      ]
+     },
+     "allowBrave": true,
+     "types": [
+      "Brave",
+      "Nexus"
+     ]
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "v0.41: Flash summon from the Trash wired. Not yet: adding this card to the Hand when a Nuadha effect sends it from the Deck to the Trash (+1 core to a Nexus).",
+  "trashTrigger": {
+   "from": [
+    "deck"
+   ],
+   "by": {
+    "name": [
+     "Contractor Nuadha"
+    ]
+   },
+   "add": true,
+   "gwCore": 1
+  }
+ },
+ {
+  "id": "BS71-CX01",
+  "name": "The ThunderboltContractor Zeus",
+  "type": "Nexus",
+  "color": "red",
+  "cost": 3,
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 0
+   },
+   {
+    "cores": 6
+   }
+  ],
+  "families": [
+   "Grandwalker",
+   "Olym"
+  ],
+  "text": "[Neo-Core Charge: Emperor Beast/Devotee/Concluser & Cost 3 or more, \"Zeus\" & Nexus] When your target Spirit/Nexus is summoned/deployed, you can +1 core to this Nexus. (Once per Turn: Same Name) When this Nexus is deployed, you can send three cards from your deck to the Trash. For each target card among them, +1 core to this Nexus. Revive [Main](Once per Turn: Same Name) You can deploy this card from Soul State. [LV1][LV2] Contract Skill: 2/3/5 [Flash][Either Attack Step] (Once per Turn) Send two/three/five cores from this Nexus to the Void; your counters +2. Then, if you sent three, draw a card. If you sent five, destroy an opposing Spirit with one symbol. [LV2] Contract Field (Either Attack Step) (Once per Turn: Same Name) When you would send any \"Z\" if all your Nexuses are \"Zeus\", you can treat it as being sent to the Trash.",
+  "mechanics": [
+   "Contract Nexus",
+   "Neo-Core Charge",
+   "Revive",
+   "Contract Skill",
+   "Manifest",
+   "Flash"
+  ],
+  "image": "BS71-CX01 (Fixed).png",
+  "block": "71",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Japanese text confirmed on cardrush-bs.jp (product 30005): Contract Skill 2/3/5 matches. The LV2 Contract Field ('Z' effect) icon placeholders were dropped on the page, so that part stays partly unverified. Cost/reduction/symbol from the card image.",
+  "reduction": {
+   "red": 1
+  },
+  "icons_verified": "cost disk red, 1 red reduction hex, 1 red gem",
+  "name_jp": "雷霆の契約神ゼウス",
+  "text_verified_web": true
+ },
+ {
+  "id": "BS71-CX03",
+  "name": "The SilverArmContractor Nuadha",
+  "name_jp": "銀腕の契約神ヌアザ",
+  "type": "Nexus",
+  "color": "blue",
+  "cost": 2,
+  "reduction": {
+   "blue": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 0
+   },
+   {
+    "cores": 2
+   }
+  ],
+  "families": [
+   "Grandwalker",
+   "Celtica"
+  ],
+  "text": "Neo-Core Charge:\n◆When your target Spirit/Brave is summoned, you can +1 core to this Nexus.\n◆(Once per Turn: Same Name) When this Nexus is deployed, you can send three cards from your decktop to the Trash. For each target card among them, +1 core to this Nexus.\n\nRevive Main - (Once per Turn: Same Name) You can deploy this card from Soul State.\n\nContract Field [LV1][LV2]\nWhen doing Neo-Core Charge to this Nexus, instead of +1 core to it, you can +1 counter. Also, (Once per Turn: Same Name) if that's a Neo-Core Charge from the summon of a Brave, you can put a core from the Void to any \"Scalostle\" family Brave Spirit you control.\n\nContract Field [LV2] (Your Attack Step)\nWhen your \"Scalostle\" family Brave Spirit attacks, you can target a card type. During this battle, the opponent can't activate Burst effects of that card type.",
+  "image": "BS71-CX03.png",
+  "block": "71",
+  "saga": 15,
+  "mechanics": [
+   "Contract Nexus",
+   "Neo-Core Charge",
+   "Revive",
+   "Contract Field"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); gaps the export lacks (Neo-Core Charge target, Brave BP+ and combine condition, Nexus levels) filled from cardrush-bs.jp; not yet checked against the card image.",
+  "contract": true,
+  "revive": true,
+  "effects": [
+   {
+    "trigger": "ALLY_SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "match": {
+     "family": [
+      "Scalostle",
+      "Devotee",
+      "Concluser"
+     ],
+     "costGe": 3
+    },
+    "actions": [
+     {
+      "do": "CORE_OR_COUNTER",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "ALLY_SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "match": {
+     "family": [
+      "Scalostle"
+     ],
+     "type": "Brave"
+    },
+    "actions": [
+     {
+      "do": "CORE_OR_COUNTER",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "once": true,
+    "sameName": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "DECK_TO_TRASH_CORES",
+      "n": 3,
+      "match": {
+       "family": [
+        "Scalostle",
+        "Devotee",
+        "Concluser"
+       ],
+       "costGe": 3
+      }
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Contract Field: after the Neo-Core Charge of a Brave summon, put a core from the Void to a Scalostle Brave Spirit you control",
+   "Contract Field LV2 (Your Attack Step): when your Scalostle Brave Spirit attacks, choose a card type; the opponent cannot activate Burst effects of that type this battle",
+   "Neo-Core Charge from a Brave works only for a Brave summoned as a Spirit (a Brave summoned directly combined fires no summon trigger, as for Brahma)"
+  ],
+  "icons_verified": "symbols: the Contract Grandwalker has one symbol like BS74-CX03/SD69-CX01 (the Fandom export lists none)"
+ },
+ {
+  "id": "BS71-RV004",
+  "name": "The Sixth's ExplosiveBeast Armor Rhider",
+  "name_jp": "己の爆獣ヨロイサイダー",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {
+   "blue": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   },
+   {
+    "cores": 4,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Roaring Azure"
+  ],
+  "text": "Main- {{Accel|Cost 4 ()}}\nDraw three cards, then discard two cards from your Hand. After this effect resolves, put this card onto the Removed Zone.\n\n[LV1][LV2][LV3]\nWhen you draw via your \"Roaring Azure\" family effect, the opponent can't activate \"when draw/when increase Hand\" effects.",
+  "image": "BS37-063.jpg",
+  "block": "71",
+  "saga": 15,
+  "mechanics": [
+   "Accel"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.50.0: keyword effect wired (session D part 2).",
+  "effects": [
+   {
+    "trigger": "ACCEL",
+    "cost": 4,
+    "timing": [
+     "MAIN"
+    ],
+    "actions": [
+     {
+      "do": "LOOT",
+      "draw": 3,
+      "discard": 2
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "LV1-3: when you draw via your \"Roaring Azure\" family effect, the opponent can't activate \"when draw/when increase Hand\" effects",
+   "Accel cost reduction icons (not in the Fandom export; the full cost is paid)"
+  ]
+ },
+ {
+  "id": "BS71-X06",
+  "name": "The FrostyFairyQueen Brigantia",
+  "name_jp": "霜の妖精女王ブリガンティア",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 8,
+  "reduction": {
+   "white": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 2,
+    "bp": 10000
+   },
+   {
+    "cores": 4,
+    "bp": 13000
+   }
+  ],
+  "families": [
+   "Concluser",
+   "Frostling"
+  ],
+  "text": "(Once per Turn: Same Name) After your Silver Wheel/Contract Skill resolves, if you have six counters or more, you can pay one cost to summon this card from the Hand.\n\n[LV1][LV2][LV3] (When Summoned/Attacks)\nYou can return an opposing Spirit/Ultimate to the deckbottom. By sending two cores from your \"Contractor Brigit\" Grandwalker Nexuses to the Void, this effect can't be prevented by opposing effects.\n\n[LV2][LV3] Flash - Silver Wheel\nYou can exhaust this Spirit. When you've done so, once per turn, you can refresh a \"Frostling\" family Spirit you control.",
+  "image": "BS71-X06.png",
+  "block": "71",
+  "saga": 15,
+  "mechanics": [
+   "Silver Wheel"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.50.0: keyword effect wired (session D part 2).",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "onceKey": "sa",
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "deckBottom",
+      "kind": "spirit"
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "deckBottom",
+      "kind": "spirit"
+     }
+    ]
+   },
+   {
+    "trigger": "ACTIVATE",
+    "silverWheel": true,
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "cost": {
+     "exhaustSelf": true
+    },
+    "once": true,
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "REFRESH_SPIRIT",
+      "match": {
+       "family": [
+        "Frostling"
+       ]
+      }
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "(Once per Turn: Same Name) after your Silver Wheel/Contract Skill resolves with six or more counters, pay one cost to summon this card from the Hand",
+   "When Summoned/Attacks: send two cores from your Contractor Brigit Grandwalker Nexuses to the Void so the return can't be prevented",
+   "Silver Wheel: the whole effect is once per turn in the engine (printed: only the refresh)"
+  ]
+ },
+ {
+  "id": "BS71-X09",
+  "name": "The SilverArmDivineEmperor Agateram",
+  "name_jp": "銀腕神帝アガートラム",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 8,
+  "reduction": {
+   "blue": 3,
+   "god": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 8000
+   },
+   {
+    "cores": 3,
+    "bp": 14000
+   },
+   {
+    "cores": 5,
+    "bp": 17000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Concluser",
+   "Scalostle"
+  ],
+  "text": "Flash - {{Mani|\"Contractor Nuadha\" & C6 or more|(Your Turn)}}\nBy sending your  to the Trash, pay one cost from the target to summon this card from the Hand.\n\n{{SA Unleash|3}} [LV1][LV2][LV3] (Your Attack Step)\nWhen your \"Scalostle\" family Brave Spirit attacks, you can send three cores from any of your \"Nuadha\" Grandwalker Nexuses to this Spirit. When you've done so, unless the opponent discards a Magic card from their Hand, for each differently named \"Scalostle\" family Brave you control, send an opposing Life to the Trash.\n\n[LV2][LV3] (Your Attack Step)\nUnless the opponent discards a Magic card from their Hand, they can't block.",
+  "image": "BS71-X09.png",
+  "block": "71",
+  "saga": 15,
+  "mechanics": [
+   "Manifest"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); gaps the export lacks (Neo-Core Charge target, Brave BP+ and combine condition, Nexus levels) filled from cardrush-bs.jp; not yet checked against the card image. God reduction icon from Fandom (official list did not load BS71/BS72), v0.44.7.",
+  "manifest": {
+   "name": "Contractor Nuadha",
+   "counterGe": 6,
+   "turn": "YOURS"
+  },
+  "residual": [
+   "House reading (v0.45): the Lv2-3 lock is decided once at the start of your Attack Step (the opponent discards then or not); reaching Lv2 later in that step does not start it"
+  ],
+  "effects": [
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "subjBraved": "Scalostle",
+    "optional": true,
+    "actions": [
+     {
+      "do": "BY",
+      "cost": {
+       "do": "NEXUS_CORES_TO_SELF",
+       "n": 3,
+       "name": "Nuadha"
+      },
+      "then": [
+       {
+        "do": "OPP_DISCARD_MAGIC_OR"
+       },
+       {
+        "do": "OPP_LIFE_TO_TRASH",
+        "perBraveNames": "Scalostle",
+        "if": {
+         "prev": true
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "trigger": "START_ATTACK",
+    "lv": [
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "OPP_DISCARD_MAGIC_OR"
+     },
+     {
+      "do": "OPP_NO_BLOCK",
+      "minLv": 2,
+      "if": {
+       "prev": true
+      }
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "SD69-CX01",
+  "name": "The GenesisContractor Brahma",
+  "type": "Nexus",
+  "color": "red",
+  "cost": 2,
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 0
+   },
+   {
+    "cores": 4
+   }
+  ],
+  "families": [
+   "Grandwalker",
+   "Hindida"
+  ],
+  "text": "[Neo-Core Charge: Ancient Dragon/Devotee/Concluser & Cost 3 or more (Saga Brave)] When your target Spirit/Brave is summoned, you can +1 core to this Nexus. (Once per Turn: Same Name) When this Nexus is deployed, you can send three cards from your deck to the Trash. For each target card among them, +1 core to this Nexus. Revive [Main](Once per Turn: Same Name) You can deploy this card from Soul State. [LV1][LV2] Contract Skill: 2 [Flash] (Once per Turn) Send two cores from this Nexus to the Void; your counters +2. Then you can send out one of your \"Rig Avatar Dragon\" Tokens. [LV2] Contract Field (Your Attack Step) When your \"Ancient Dragon\" family Spirit attacks, during this battle, you can give it +5000 BP. Also, [Can't Stack] you can draw a card.",
+  "mechanics": [
+   "Contract Nexus",
+   "Neo-Core Charge",
+   "Revive",
+   "Contract Skill",
+   "Flash",
+   "Token"
+  ],
+  "image": "SD69-CX01+.png",
+  "block": "69",
+  "saga": 15,
+  "fxComplete": false,
+  "note": "Japanese text confirmed on cardrush-bs.jp (product 29747): Contract Skill (counters +2, then send out a 'Rig Avatar Dragon' token), Contract Field (Ancient Dragon attacks: +5000 BP, [Can't Stack] draw 1). Needs Token support. Cost/reduction/symbol from the card image. v0.35: effects wired (Neo-Core Charge for Spirits, deploy mill, Contract Skill 2 + Rig Avatar Dragon Token, Contract Field).",
+  "reduction": {
+   "red": 1
+  },
+  "icons_verified": "cost disk red, 1 red reduction hex, 1 red gem",
+  "name_jp": "創聖の契約神ブラフマー",
+  "text_verified_web": true,
+  "contract": true,
+  "revive": true,
+  "effects": [
+   {
+    "trigger": "ALLY_SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "match": {
+     "family": [
+      "Ancient Dragon",
+      "Devotee",
+      "Concluser"
+     ],
+     "costGe": 3
+    },
+    "actions": [
+     {
+      "do": "CORE_TO_SELF",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "once": true,
+    "sameName": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "DECK_TO_TRASH_CORES",
+      "n": 3,
+      "match": {
+       "family": [
+        "Ancient Dragon",
+        "Devotee",
+        "Concluser",
+        "Saga"
+       ],
+       "costGe": 3
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "ACTIVATE",
+    "lv": [
+     1,
+     2
+    ],
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "cost": {
+     "nexusToVoid": 2
+    },
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 2
+     },
+     {
+      "do": "SEND_TOKEN",
+      "token": "SD69-TOKEN-RAD",
+      "n": 1,
+      "ask": true
+     }
+    ]
+   },
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     2
+    ],
+    "optional": true,
+    "match": {
+     "family": [
+      "Ancient Dragon"
+     ]
+    },
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 5000,
+      "to": "attacker"
+     },
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Neo-Core Charge: a Saga Brave summoned straight onto a Nexus/Spirit does not charge (a Brave summon is not a Spirit summon in the engine)",
+   "Contract Field: the +5000 BP lasts until the end of the turn instead of only this battle; [Can't Stack] on the draw is not enforced"
+  ]
+ }
+]

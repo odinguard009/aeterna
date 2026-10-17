@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+// End-of-session gate (owner, 2026-10-16). Fails (exit 1) unless the session's deliverables are in place:
+//   1. /mnt/user-data/outputs/aeterna-v<package version>.html exists and embeds that VERSION,
+//   2. `npm run -s test:release` passes on that file,
+//   3. docs/roadmap.html is not older than docs/roadmap-data.json,
+//   4. branch backup/v<version> exists on origin (skip with --no-backup when no backup is due).
+// Usage: node tools/session_end_check.mjs [--no-backup] [--out DIR]
+// Then SendUserFile BOTH the game file and docs/roadmap.html before the session closes.
+import { readFileSync, existsSync, statSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+
+const args = process.argv.slice(2);
+const outDir = args.includes('--out') ? args[args.indexOf('--out') + 1] : '/mnt/user-data/outputs';
+const ver = JSON.parse(readFileSync('package.json', 'utf8')).version;
+const file = `${outDir}/aeterna-v${ver}.html`;
+const bad = [];
+const ok = m => console.log('ok   ' + m), fail = m => { bad.push(m); console.log('FAIL ' + m); };
+
+if (!existsSync(file)) fail(`game file missing: ${file} (cp index.html there)`);
+else {
+  const html = readFileSync(file, 'utf8');
+  if (!html.includes(`const VERSION = '${ver}'`)) fail(`${file} does not embed VERSION ${ver} (stale copy?)`);
+  else ok(`game file ${file} embeds ${ver}`);
+  const r = spawnSync('npm', ['run', '-s', 'test:release'], { env: { ...process.env, RELEASE_FILE: file }, encoding: 'utf8' });
+  if (r.status !== 0) fail('npm run -s test:release failed:\n' + ((r.stdout || '') + (r.stderr || '')).split('\n').filter(l => /not ok|Error/.test(l)).slice(0, 8).join('\n'));
+  else ok('test:release passed on the game file');
+}
+const mt = f => statSync(f).mtimeMs;
+if (mt('docs/roadmap.html') + 1000 < mt('docs/roadmap-data.json')) fail('docs/roadmap.html is older than docs/roadmap-data.json (run node tools/build.mjs)');
+else ok('mind map is up to date');
+if (!args.includes('--no-backup')) {
+  const r = spawnSync('git', ['ls-remote', '--heads', 'origin', `backup/v${ver}`], { encoding: 'utf8' });
+  if (r.status !== 0 || !r.stdout.trim()) fail(`branch backup/v${ver} not on origin (git push origin HEAD:refs/heads/backup/v${ver})`);
+  else ok(`backup/v${ver} on origin`);
+}
+console.log(bad.length ? `[session_end_check] ${bad.length} problem(s): fix, then send BOTH files with SendUserFile` : `[session_end_check] ready: SendUserFile ${file} and docs/roadmap.html`);
+process.exit(bad.length ? 1 : 0);

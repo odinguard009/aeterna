@@ -1,0 +1,9 @@
+{
+  "name": "battle-win-only-opposing-destroyed",
+  "about": "v0.55: (When Battles) 'When only the opposing Spirit is destroyed by comparing BP' = trigger BATTLE_WIN (Standard Comprehensive Rules 8-1-6-2). The player's The Witch Naja (BS01-047, 1 core, 3000 BP) attacks Goradons (1000 BP); when only the blocker is destroyed it exhausts the other opposing Spirit. On a tie (both destroyed) it does not activate.",
+  "turn": 3, "active": "player", "step": 5,
+  "players": {
+    "player": { "reserve": 4, "spirits": [ { "id": "BS01-047", "cores": 1, "as": "winner" } ] },
+    "opponent": { "reserve": 3, "spirits": [ { "id": "BS01-001", "cores": 1, "as": "blocker" }, { "id": "BS01-001", "cores": 1, "as": "other" } ] }
+  }
+}

@@ -1,0 +1,14 @@
+3 BS75-CX03   # The HeavenlyThunderContractor Indra
+3 BS75-068   # Indra's Heavenly Thunder Temple
+3 BS75-042   # The BabyElectricDragon Bilijvern
+3 BS75-043   # The BabyElectricDragon Vajdraco
+3 BS75-044   # The ThunderManeDragon Manevajra
+3 BS75-045   # The ThunderDragon Raivajdra
+2 BS75-046   # The ThunderDragon Shimavajdra
+3 BS75-047   # The ElectromagneticDragon Magjvern
+3 BS75-048   # The ThunderGunDragon Vajdra-of-Magan
+3 BS75-049   # The ThunderElephantDragon Airavajdra
+2 BS75-050   # The ElectricDragonPrincess Naraka
+3 BS75-X10   # The ThunderGodDragonEmperor Vajrawurm
+3 BS76-047   # The ThunderDragon Togevajdra
+3 BS76-048   # The ThunderDragonLady Vajreine

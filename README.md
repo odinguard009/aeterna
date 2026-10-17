@@ -1,0 +1,663 @@
+# Aeterna
+
+A fan-made, single-file web simulator for a trading card game. You play against a CPU. It runs on PC and phone with no install.
+
+Current build: **v0.57.0** (573 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
+
+This repository starts at v0.57.0 with one snapshot commit (2026-10-17); the earlier history, issue threads and backup branches stay in the owner's private archive. Issue numbers in the older release notes refer to that archive.
+
+## What works
+- Core rules: setup, the 7 turn steps, summon, level, attack, block, Life damage, deck-out; Eternal and Standard formats with the ban list
+- Data-driven effect engine: Burst, Mirage, Advent, Contract, Soul State, Count, Manifest, Revive, Brave, Ultimate, Seal, Magic (Main/Flash, from the Trash), High Speed, Crush, Holy Life, Accel, Silver Wheel
+- Card pack: all 8,041 cards of Saga 1-17 are staged (Fandom export); the ones whose effects are wired and checked are playable in the game (count in the line above)
+- CPU opponent with an evaluation policy and lethal check; seeded replays
+- Separate PC (playmat) and phone layouts
+
+## Not done yet
+Most staged cards still need their effects compiled or a missing mechanic; the plan is `docs/ai/roadmap-open.md` and the mind map `docs/roadmap.html`. Next: deck builder redesign for PC and phone, then batch promotion per Saga.
+
+## Data
+Card data is kept per Saga (BS75 cards sit in Saga 16, BS76 cards in Saga 17, as in the asset folders):
+- `data/cards/all-cards.json`: every playable card (built into the game; also importable via Library > Import card data).
+- `data/cards/saga-NN.json`: the source files, one per Saga, sorted by ID. Edit these.
+- `tools/build_cards.py`: rebuilds `all-cards.json` from the Saga files; `--update FILE.json` merges new or changed cards into the right Saga file (by `saga`) first.
+- `data/decks/white-mitra-awakened-dragon.txt`: 40-card deck list for the white deck (Library > Deck list).
+- `data/index/saga_card_index.json`: card index (names and files) grouped into the 17 Sagas.
+- `data/import/`: staging output of `tools/import_fandom.py` (all other cards; not in the game until `tools/compile_effects.py` + `tools/promote_compiled.mjs` promote them).
+- `docs/saga-map.md`: the 17 Sagas and their sets
+
+Card images are not included; import your own images in the game.
+
+## Development (v0.30+)
+`index.html` is generated: edit `src/`, then build. Only Node 20+, Playwright and TypeScript are needed (no npm packages to install).
+- `src/index.template.html`, `src/styles.css`, `src/js/NN-name.js` (17 parts joined in order into ONE classic script, so top-level names stay global).
+- `node tools/build.mjs` builds `index.html` and fills the card pack from `data/cards/all-cards.json` (`--check`: fails when `index.html` is stale).
+- `node tools/lint.mjs` static check (TypeScript checker on the joined script; reports undefined names, wrong argument counts, duplicate keys, unreachable code as `src/js/<part>:<line>`).
+- `npm test` unit + property tests (`node --test`, headless Chromium): build and source layout, card data, engine helpers on a quiet board, and seeded CPU-vs-CPU properties (always ends, invariants, determinism, replay). A failing property prints its seed; rerun it with `PROP_ONLY=<seed> npm run test:props`.
+- `node tools/pack_ai.mjs` packs the project into one Markdown file for another AI chat (`--docs`: docs only, `--full`: with card JSON).
+- GitHub Actions (`.github/workflows/ci.yml`) runs check, lint and tests on every push. Bugs and planned work are GitHub Issues (templates in `.github/ISSUE_TEMPLATE`).
+- The Python Playwright regression (`tests/run_all.py`) is the release gate; it runs on GitHub (workflow "Regression"), started by hand / through the dispatch API or by a `vX.Y.Z` tag (see `tests/README.md`).
+- Notes for AI sessions: `docs/ai/` (token rules, generated code map, release and rules guides). `.githooks/pre-push` runs the quick gate (`git config core.hooksPath .githooks`).
+
+## Disclaimer
+Unofficial non-commercial fan project; card names, text and trademarks belong to their owners.
+
+
+## v0.57.0
+- **Standby state** (rules audit R3, JP 17.0 revision notice item 4; heavy, Opus; engine rule fix, no new cards): a Spirit or Ultimate that is destroyed or depleted now waits in Standby (`p.standby`) while its leave triggers resolve, then goes to the Trash.
+  - While it waits: its (When Destroyed) effect resolves (with the level it had just before), its cores and Soul Core are already in the Reserve, it is not in the Trash and not on the Field, and its symbols still reduce costs (normal and Accel costs; "while you have a red symbol" does not see it).
+  - It leaves Standby right after the last queued effect that names it ((When Destroyed), "when an ally is lost"); declared Bursts resolve after that, so they see it in the Trash. A card with no leave trigger goes to its destination at once (same result under the rule); a combined Brave goes to the Trash at once; a Contract card destroyed by the opponent still enters Soul State. A new turn or the end of the game empties Standby.
+  - Effects may still move a waiting card ("banish one destroyed by this effect", summon it, put it in Soul State). Open: When Banished / leaves-the-Field triggers (none in the engine yet).
+  - Rules audit: the Standby and T_DESTROYED conflicts are now confirmed (81 confirmed, 2 conflicts left: effect priority).
+  - Tests S557-01 to S557-20 (`tests/unit/standby557.test.mjs`, two on the real-card scenario `burst-after-when-destroyed`). Player-view check: CPU-vs-CPU property matches (`npm run test:props`) 48/48.
+  - Release checks: GitHub Actions did not start any job on 21b80b4 ("recent account payments have failed or your spending limit needs to be increased", GitHub Billing), so the gate ran locally on the same commit: `npm test` 1062/1062, Python regression parts 1-3 and legacy 1309/1309 checks, 10 CPU-vs-CPU sims 10/10 (no invariant or page errors). No backup due (2 releases since backup/v0.55.2).
+  - Revert: `git revert` of the v0.57.0 commit (`releaseStandby` / `leaveStandby` in `src/js/06-rules.js`, calls in `src/js/07-turn.js` and `src/js/08-battle.js`).
+
+## v0.56.0
+- **Ultimate cards in the effect compiler** (heavy, Opus; plan step 4): engine and compiler pieces; **no card promoted** (measured: every staged Ultimate still has another blocker, see below).
+  - Summon conditions: `{{Sumcon|...}}` and the old `[Summon Condition: ...]` map to `summonIf`; new keys `lifeGe` and `ctrl` ("you control N or more <colour>/<Cost N or higher>/<family> Spirits/Ultimates", several entries = all must hold). 206 of the 253 staged Ultimates now parse (27 stay staged, 20 have no summon condition block: Contract Advent and similar); Nexus, Burst, Mirage, named-card and "no Spirits in your Trash" conditions stay staged.
+  - Ultimate levels: `[LV3]+` is checked against the level offset (lvBase 3); "this Ultimate" acts on the card itself; the summon condition shows as readable text.
+  - **Ultimate Trigger**: action `ULT_TRIGGER` (sends the opposing decktop card to the Trash; a hit when its cost is lower than this card's: Eternal Rule Manual sec.15 note in the glossary, Fandom card reminder on Ultimate-Sea-Serpendar) and condition `utHit` for the "When Ultimate Trigger hits" actions. The compiler takes the inline form `Ultimate Trigger [LVn] (When Attacks) When Ultimate Trigger hits, ...`.
+  - Data gap found: the Fandom export drops the `[LVn] (timing)` line of 110 Ultimate Trigger cards (Fandom page of Ultimate-Cu-Sith: "Ultimate Trigger [LV4] (When Attacks)", export: "Ultimate Trigger"). Live Fandom pages need an approval prompt, so this auto run could not read them: next step for a session with the owner present (recorded in `docs/ai/roadmap-open.md`).
+  - Tests C56-01 to C56-22 (`tests/unit/compile56.test.mjs`).
+  - Release checks: CI and GitHub Regression (Python parts 1-3, legacy, 30 sims) green on 1c81452. No backup due (1 release since backup/v0.55.2).
+  - Revert: `git revert` of the v0.56.0 commit (`ctrlCount` in `src/js/02a-effects-base.js`, `ULT_TRIGGER` in `src/js/02i-effects-keywords.js`, `sumcon`/`ultimate_text` in `tools/compile_effects.py`).
+
+## v0.55.2
+- **Burst resolution order** (rules audit R3 item 1, JP 17.0 revision notice item 6; patch, engine fix): a declared Burst now resolves after every non-Burst triggered effect of the same event.
+  - "After your Spirit is destroyed" Bursts wait for the (When Destroyed) and "ally lost" effects; "after the opposing Hand increases" Bursts wait for the (When the opposing Hand increases) effects.
+  - Several Bursts: the non-turn player's resolve first, each player's in declaration order. House reading: the Burst condition is checked when it resolves.
+  - Scenarios can now set a Burst card (`"burst": "<id>"`); new scenario `burst-after-when-destroyed` (BS11-009 blocks The Witch Naja, Burst BS71-083); tests B552-01 to B552-04.
+  - Release checks: CI and GitHub Regression (Python parts 1-3, legacy, 30 sims) green on 3f8df05 (the first run caught the scenario naming test-only cards; fixed). Backup `backup/v0.55.2` (5 releases since backup/v0.52.1).
+  - Revert: `git revert` of the v0.55.2 commits (`flushBursts()` in `src/js/08-battle.js`).
+
+## v0.55.1
+- **Rules audit R1-R2** (owner request; patch, no engine change): every rule the engine applies is listed with its source and a verdict.
+  - **Sources and versions** (table at the top of `docs/manual-notes.md`): Japanese Eternal Rule Manual Ver.17.1 (2026-05-29, change list not readable in this run), English PDF VER.17.0, Japanese 17.0 revision notice (2026-04-03, effective 2026-04-11; its 9 changes are listed with the engine area each touches), Ruling Changes pages (no 2025-2026 entries), Standard Rule Manual 1.1 (2026-10-02) and Comprehensive Rules 1.0 (2026-04-01).
+  - **New `tools/rules_audit.py` -> `docs/rules-audit.md`:** 242 items (coverage rows, glossary rule notes, house-reading lines): **77 confirmed, 48 house reading, 5 conflict, 112 open** (no source cited yet). Hand-set verdicts in `docs/rules-audit-verdicts.json`; test D14.
+  - **Conflicts found (R3, own releases):** a declared Burst must resolve after all non-Burst triggered effects (the engine runs the "ally destroyed" and "opposing Hand increased" Bursts first); Standby state when a card leaves the Field (the engine puts it in the Trash before its (When Destroyed) effects); effect priority "cannot" > "must" > "do" = "can".
+  - **Settled:** "mandatory Soul Core use" (17.0) means every game includes the Soul Core (already built), not that it must be spent; the Flag Nexus / F Contract Advent rule text is in the 17.0 notice (unblocks that item; Nexus levels still missing).
+  - `tools/session_start.sh` prints the audit line and warns when the check is older than 30 days (R4).
+  - Release checks: CI and GitHub Regression (Python parts 1-3, legacy, 30 sims) green on 98aa809. No backup due (4 releases since backup/v0.52.1).
+  - Revert: `git revert` of the v0.55.1 commit (docs and tools only).
+
+## v0.55.0
+- **Engine levers + compiler patterns** (audit plan step 3b): **12 more cards playable, 573 / 8,041**. Measured first with a scratch recompile (handle one lever, recompile every staged card): Rush 5, (When Destroyed by the Opponent) 4, (When Battles) 3, BP minus 2, all four 15 (12 after the stricter checks below). The tail stays long: no single text unit blocks many cards on its own.
+  - **BP minus:** new action `BP_MINUS {n}` ("during this turn, give an opposing Spirit/Ultimate -N BP", 1000-30000). It lasts until the end of the turn; BP shows 0, never negative (Standard CR 1-4-6). **No BP-0 destruction rule:** the Eternal manual FAQ (p. 68, "BP+ and BP- effects") shows a 0 BP Spirit stays unless its card says "Then, if its BP is 0, destroy it", so the roadmap item "BP-0 destruction" is dropped. Open: "every / two opposing Spirits" (also hits Spirits summoned later that turn, FAQ Q3) and the "then destroy at 0" clause.
+  - **(When Destroyed by the Opponent):** `DESTROYED` with `if: {byOpp: true}` = destroyed by an opposing effect or by BP comparison with an opposing Spirit (Standard CR 12-2-1-12-1). "(When Depleted/Destroyed by the Opponent)" stays staged (depletion is not destruction, Eternal manual p. 28).
+  - **(When Battles) "when only the opposing Spirit is destroyed by comparing BP":** new trigger `BATTLE_WIN` for the attacker or blocker that alone wins the BP comparison (not on a tie, not when unblocked; Standard CR 8-1-6-2). Other (When Battles) texts stay staged.
+  - **Rush** `{{Rush|Colour}}`: the Rush effect runs after the main body only while you have a Field symbol of that colour (per-action condition `hasSymbol`; Soul State does not count). House reading: neither manual has a Rush section. A Rush block after a blank line, optional Rush effects and Rush on Magic cards stay staged.
+  - Promoted (each card read once, text vs JSON; promotion smoke check 12 / 12): BS01-047, BS04-032, BS05-023 (When Battles); BS19-049, BS19-109 (BP minus); BS20-012, BS20-031, BS20-053, BS23-001, BS27-004 (Rush); BS40-012, BS46-016 (When Destroyed by the Opponent).
+  - Glossary: new partial tags `A_BP_MINUS`, `T_BATTLE_WIN`, `K_RUSH`, `T_DESTROYED_OPP` with rule notes; unlock report refreshed (their tag-based "only blocker" counts, e.g. Rush 103, are upper bounds; real compiles are far fewer).
+  - Tests: new `compile55.test.mjs` C55-01..21 and scenario `tests/scenarios/battle-win-only-opposing-destroyed.json`; C54-01 now checks the Depleted/Destroyed form. Player-view pass (`tools/player_view.mjs`): 95 cards in 6 decks, 0 problems, PC and phone layouts render.
+  - Release checks: CI + Regression (30 sims) green on 9f69994 (runs 38924058456, 38924057024).
+  - Revert: `git revert` this commit (engine, compiler, cards, glossary and tests together).
+
+## v0.54.0
+- **Compiler patterns + batch promotion** (audit plan step 3): **62 more cards playable, 561 / 8,041**. New patterns in `tools/compile_effects.py`, all on existing engine actions (no engine change):
+  - `(When Destroyed)` and `(When Summoned/Destroyed)` -> trigger `DESTROYED` (17 cards); effects about "this Spirit" (refresh, cores, BP, return to Hand) stay staged because the Spirit has left the Field.
+  - "Spirit/Ultimate" in opposing targets reads as the engine's opposing targets (they already include Ultimates).
+  - `(Your Attack Step)` static BP for this Spirit or all your (family) Spirits (`if: {attackStep, oppTurn: false}`); "This Spirit's color and symbol are also treated as X" -> `colors` (only when it applies on every level).
+  - Sentences: refresh a (family) Spirit you control, send a core from an opposing Spirit to the Reserve, draw then discard (LOOT), draw from the deckbottom, Void core to Life or to any Spirit, destroy an opposing Spirit with N cores or less, discard N (max 5) from the opposing decktop.
+  - **Burst block** `{{Burst|condition}}` for the four engine conditions (Life reduced, Spirit destroyed by the opponent, opposing When Summoned, opposing Hand increase) with "summon this card" / "then, by paying the cost, activate this card's Flash/Main effect"; no card passes yet (the Burst cards fail on other text), it is groundwork for the next batches. Magic family line also accepts "has the "X" family".
+  - Finding: the cards left are a long tail. A greedy cover over all missing patterns gives about 2 cards per new pattern; "ready 1,912" in the unlock report is an upper bound far above what plain patterns unlock. Bigger levers need engine work: BP minus with BP-0 destruction (17 sentences), `(When Battles)` (49), `(When Destroyed by the Opponent)` (69), Rush/Chain `{{Rush|Colour}}` (203 cards, needs a "you have a X symbol" condition), more Burst conditions (depleted/destroyed, opposing attacks).
+  - Staging re-imported (`tools/import_fandom.py`: 7,480 staged, 558 skipped as curated), tags refreshed. Two compiled cards (BS10-060, BS34-057: decktop discard of 12 / 15) were refused by the game check and now stay staged with a clear reason.
+  - Tests: new `compile54.test.mjs` C54-01..05 (patterns, review cases, Burst block, in-game DESTROYED draw, Attack Step static, second colour). Every promoted card passed the promotion smoke check (parseCard, played on a quiet board, triggers fired, no console error); the UI player-view pass (skill `bs-playwright-tester`) was not run this session.
+  - Release checks: CI + Regression green on 7f70aa9 (runs 38914744389, 38914741744).
+  - Revert: `git revert` this commit (data/cards, data/import, glossary tags and the compiler change together).
+
+## v0.53.0
+- **Deck builder redesign for PC and phone** (owner request 2026-10-16; plan `docs/ai/deckbuilder-plan.md`, step 2). Same colours and card faces; every old function kept (format, slots, name, ready-made, default, clear, "in deck only", colour/cost/type filters, card detail with add/remove).
+  - **PC (900 px and wider), three columns:** filter rail (colour, cost 0-9/10+ and type chips, all multi-select; set, family search, "legal in format", "in deck only", sort: default / set number / cost / name / colour; reset), the windowed card grid, and a deck panel: `40 / 40+` counter with the legality line, rows grouped by type with `−` count `+`, cost curve, colour and type split, Undo, Import text, Export text.
+  - **Phone (narrower than 900 px):** title + deck counter + Menu (format, slot, name, ready-made, default, clear, back); search always visible; filters in a bottom sheet behind "Filters (n)"; three-column grid; deck bar `Deck 40/40 · legal ▲` opens the deck panel as a full-height sheet. Touch targets 44 px; no horizontal scroll at 360 px.
+  - **Changed behaviour:** tap/click a card = add one copy (badge pulse); the (i) button on the card or a right-click opens the detail; a card that cannot be added (4th copy, not legal) opens the detail, which says why. Search also matches effect text. Keyboard: `/` focuses search, Esc clears it or closes a sheet.
+  - Compared with aegis's deck editor (notes in `docs/aegis-study.md`); the official Connected Battler app was not compared (native app, not reachable from the session).
+  - Code: new `src/js/13a-deckbuilder.js` (deck builder moved out of `13-render.js`). Tests: new `deckbuilder53.test.mjs` D01-D11 (both layouts: tap add, row remove, undo, 4th copy refused, (i) / right-click detail, multi-select chips + filter count + reset, set / family / legal / type filters, sorts, deck panel groups + curve, import / export, sheets, 44 px targets, no horizontal scroll, Library header untouched, keyboard); U04-U08, N08, N09 and B19 updated for chips, menu and sheets.
+  - Release checks: Regression green (run 38907535192, 10 sims; UI only, no engine change) after the Python UI suites were updated (`v17`, legacy `deep`, `fmt`, `hid`, `imp`: (i) opens the detail, phone menu and deck sheet); player-view pass 95 cards in 6 decks, 0 problems; screenshots `build/shots/v053-deckbuilder-pc.png` / `-phone.png`. Backup of the previous state: `backup/v0.52.1`.
+  - Revert: `git revert` this commit, or restore `backup/v0.52.1`.
+
+## v0.52.1
+- **Deck builder list performance** (no visual change; plan `docs/ai/deckbuilder-plan.md`, step 1). With all 8,042 cards loaded the builder opened in 1.96 s on PC and 20.6 s on a phone-like CPU (x4), measured this session; now **0.08 s / 0.16 s**.
+  - Search index built once per card-data change (`CARDS_VER`); the filtered list is recomputed only when a filter or the deck changes; search input is debounced (120 ms).
+  - Windowed grid: only the rows near the visible area are in the DOM (about 100-170 card faces instead of 8,042); spacer rows keep the scroll height, so the scroll bar and scroll position behave as before.
+  - Tests: new `deckbuilder52.test.mjs` B14-B19 (all staged cards imported: open <= 300 ms PC / 1.2 s x4, <= 220 card faces in the DOM, keystroke <= 100 ms, debounce, scroll to the last card, search + filters). S16 and U08 now read the windowed grid (deck-only view, card count line).
+  - Revert: `git revert` this commit (only `src/js/03`, `13`, `14`, `16` and two tests changed).
+
+## v0.52.0
+- **Effect compiler + pilot promotion** (audit plan step 2). `tools/compile_effects.py` turns staged card text into engine data (`effects`, `magic`, `highSpeed`) for patterns of wired glossary tags only, old (Saga 1-2) and current wording; a card is promoted only when **every** paragraph maps (no partial promotion), otherwise it stays staged and goes to the review list `docs/compile-review.md` (Saga 1; regenerate with `--saga N --review`). `tools/promote_compiled.mjs` then checks every compiled card in the real game page (parseCard + smoke check: played by the CPU or summoned/cast, SUMMONED/START_ATTACK/ATTACKS/BLOCKS fired, one attack, no console error, no invariant break) and merges the passing cards into `data/cards`. Tests C52-01..05.
+  - Promoted **347 cards**: 301 vanilla cards (all Sagas; 4 without level data and 2 Braves without combine data stay staged) + 46 Saga 1 cards with effects (BP+ on attack/block, draw, destroy by BP, exhaust, Void cores, Clash, Crush, Holy Life, High Speed, Awaken, simple Magic). Smoke: 347 / 347 ok. **Playable 152 -> 499 / 8,041.**
+  - Saga 1 coverage is low (171 of 1,011 compile; review reasons: paragraphs without a mapped trigger 361, sentences 329, Tribute 39, other keywords 32). Each new pattern is cheap and unlocks cards across all Sagas: that is the work of the Sonnet batch sessions.
+  - Guards: Nexus `[LV2]`+ text stays staged (the export has no Nexus thresholds; `[LV1][LV2]` effects load as LV1); level thresholds that are not strictly ascending (BS19-031) stay staged; wiki templates, Burst and cards with two text versions (errata tabs) stay staged.
+  - House readings (Fandom wording): old "(When Attacks) This Spirit gains +N BP" lasts for the turn (`BP_PLUS`); Magic "give a Spirit +N BP" targets your Spirit (`MAGIC_FX.BP_PLUS`); BS01-068 "[LV2] High Speed" is read as High Speed (a Hand ability).
+  - Measured for the batch sessions: deck builder with all 8,042 cards loaded takes 1.8 s to open on PC and 8.8 s on a phone-like CPU (x4), search 0.25 s / 1.2 s. It must render the list in pages before the batches push past ~2,000 cards (next session).
+  - Tests updated: I25 looks for promoted cards in `data/cards` too; I31 now checks that the pack carries no staging-only fields (the pack grows with promotions).
+  - Release checks: Regression green (run 38893364846, 30 sims); player-view pass 95 cards in 6 decks, 0 problems, PC + phone screenshots. Backup `backup/v0.52.0`.
+  - Revert: `git revert` this commit, then `python3 tools/import_fandom.py` (puts the 347 cards back into staging).
+
+## v0.51.2
+- Data loading (v0.52.0 pre-step, found in v0.51.0): 1,236 of 7,889 staged cards failed the game's `parseCard`. Now **7,875 / 7,889 load** (`node tools/check_staged.mjs`, new; test S52-01/02).
+  - 760 Nexuses: the Fandom export has no Nexus level data (`levels: []`); they load at LV1 (`[{cores:0}]`), like a Nexus without `levels`. LV2+ thresholds are still unknown: the effect compiler must keep cards with `[LV2]`+ text staged until the thresholds are found (official list or images).
+  - 458 Braves: the export has no combine data (Brave BP+ and condition); they load as Spirits that never combine (`braveFits` needs `brave`). Combining waits for that data.
+  - 4 Magic cards typed "Spirit" in the export (BS09-079, BS10-109, BS10-110, BS11-081; no levels, Main/Flash text) are now Magic (`tools/import_fandom.py`).
+  - Left as source-data gaps (14, listed in `tools/check_staged.mjs`): 11 Spirits with no level data, 2 Braves with neither levels nor combine data, BS60-XX01 (one symbol per colour, 6; the engine allows 5).
+  - Revert: `git revert` this commit (staged data only changes for the 4 Magic cards; no promoted card changes).
+
+## v0.51.1
+- Test fix (Regression of v0.51.0, part 2, 232/233): v20 check 23 "magicText shows both effects" only passed because the uncompressed card text of the old pack sat in the page source (`document.body.innerHTML`); the rendered text has "(Main) ... reveal ... (Flash) ... +5000". It now checks `BS.effectTextHTML` only, case-insensitive. The game is unchanged. Other suites that read the page source (v21, v24, v26) pass locally.
+
+## v0.51.0
+- Build: **compact, compressed card pack** so every card can ship in the one file. Measured first with `node tools/pack_size.mjs` (all 8,041 cards projected: promoted ones + staged ones reduced to the fields `promote_import.py` keeps, each with an average-size `effects` stand-in): today's plain JSON would be 7.45 MB and a phone-like load (390x844, CPU x4) took 3.6 s, over the 3 s budget, mostly just parsing the page size.
+  - New part `src/js/01a-card-pack.js` (shared by the build and the game): `packCards` / `unpackCards` (field table instead of keys per card, booleans 1/0, small string sets as indexes, levels as `[cores, bp]`, image `"<id>.png"` and block from the ID left out, `null` fields dropped), and `loadPack`: base64 of raw DEFLATE (level 9, node zlib at build time) decoded by a small **synchronous** `inflateRaw` (table-driven Huffman), then `TextDecoder` + `JSON.parse`.
+  - Why this option: the start-up order stays synchronous (no `DecompressionStream` / Promise), works offline from `file://` on PC and Android, one file, no external request. Full pack: 1.16 MB in the page (index.html ~1.6 MB), phone-like load 2.3 s, PC 0.7 s. Today's 152-card pack: 179 KB -> 39 KB.
+  - `node tools/build.mjs --check` compares the decoded pack, not the compressed bytes, so another zlib build on CI cannot fail it.
+  - Budgets: B01/B02 now measure index.html without the pack (700 KB / 200 KB gzip, unchanged); B03 pack < 1.6 MB; new B13 loads a page with all 8,041 cards on the phone layout with CPU x4 (< 4 s, no errors). `pack.test.mjs` (9): exact round trip of every card, inflate vs node zlib on 300 random inputs (stored, fixed, dynamic blocks), damaged packs throw.
+  - Finding for v0.52.0: 1,237 of the 8,041 projected cards do not pass `parseCard` yet (760 Nexus and 15 Spirits with `levels: []` in the export, 460 Braves without Spirit-form data, BS60-XX01 with 6 symbols); the deck builder with ~8,000 cards is not measured yet.
+  - Revert: `git revert` this commit (the old plain pack is `packBlob(cards)` in `tools/build.mjs`; `unpackCards` still accepts a plain array).
+- Player-view pass before this minor release: 95 cards in 6 decks, 0 problems, both layouts render; property tests 48/48.
+
+## v0.50.1
+- Fix (Regression of v0.50.0): the Removed Zone view keeps its "Banished cards" text (legacy check 390); the white test fixture is now the white deck list (`data/decks/white-mitra-awakened-dragon.txt`, 18 cards) instead of every white card in the pack, which grew by 8 in v0.50.0 (mitra/v15/v15b checks and the sims). No game rule changed. Revert: `git revert` this commit.
+
+## v0.50.0
+- Engine: **keyword effects, part 2** (session D): Accel and Silver Wheel now run (new file `src/js/02j-effects-accel.js`).
+  - **Accel** (effect `{"trigger":"ACCEL","cost":4,"timing":["FLASH"],"actions":[...]}`): used from the Hand at its timing (a Flash Accel also in your Main Step) by paying the Accel cost; the card is in no zone while its effect resolves, then goes to the Removed Zone. An Accel Spirit in the Removed Zone can be summoned in your Main Step by paying its cost; Accel can't be used from the Removed Zone. Source: Fandom "Accel" Q1-Q8 (the Eternal manual text read has no Accel section; see `docs/manual-notes.md`). Human: "⚡ Accel (Pay N)" in the Hand card modal and in the Flash Timing; "Summon" buttons in your Removed Zone view during the Main Step. CPU: Main Accel draw/return effects when the Reserve pays; Flash Accel to return the attacker / a stronger blocker or to end the Attack Step; Removed Zone Spirits join its summon choices.
+  - **Silver Wheel**: `ACTIVATE` with `silverWheel`, Main + Flash timing, exhaust-self cost, not once per turn; new trigger `SILVER_WHEEL` ("when you activate Silver Wheel") on field cards and `zone:"hand"` cards. CPU uses it only as the defender after the block, on a Spirit that is not blocking.
+  - `BOUNCE_OPP` gains `costLe` ("Cost 3 or less").
+  - **Partial (stable choice):** the Fandom export loses the Accel-cost reduction icons ("Cost 4 ()"), so the full Accel cost is paid; an optional `reduction` field is ready for when the icons are checked.
+- Build: the maintainer `note` of each card is no longer embedded in `index.html` (the game never reads it); the embedded pack drops from ~204 KB to ~179 KB, under the 200 KB budget. Revert: the `packBlob(cards.map(...))` line in `tools/build.mjs`.
+- Cards promoted from staging and wired (all `fxComplete:false`, residual lines list the rest): Accel BS71-RV004 Armor Rhider (Main, draw 3 discard 2), BS68-045 Gennadios, BS77-040 Jialin (LV1/LV2 only), BS69-043 Charicles (ends the Attack Step; When Summoned returns two), BS68-035 Cleomenes (discard the Burst, else return); Silver Wheel BS70-036 Tink, BS70-037 Disel, BS70-039 Breg, BS70-045 Lemusir, BS71-X06 Brigantia (also When Summoned/Attacks return). Contractor Brigit (Contract Field "when you activate Silver Wheel") is not promoted yet.
+- Glossary `K_ACCEL`, `K_SILVER_WHEEL`: partial with rule notes; obligations ACCEL-50, SILVER-WHEEL-50.
+- Player-view pass before this minor release: 95 cards in 6 decks, 0 problems, both layouts render. Tests: `accel50.test.mjs` (32).
+- Revert: `git revert` this commit (new file `src/js/02j-effects-accel.js`; small hooks in `02a`, `02b`, `02c`, `02d`, `06-rules.js`, `08-battle.js`, `09-cpu.js`, `11-human.js`, `12-zones.js`, `16-events.js`; card data in `data/cards/saga-15.json`, `saga-17.json`).
+
+## v0.49.0
+- Engine: **keyword effects, part 1** (session D). Three keywords now run instead of being stored only:
+  - **High Speed** (card flag `highSpeed`): in a Flash Timing the card is summoned from the Hand paying its cost **and** its Lv1 cores from the Reserve only (the Soul Core in the Reserve may pay; cores on Spirits never do). Human: a "⚡ High Speed" button in the Flash Timing dialog. CPU: as the defender before the block it summons a High Speed Spirit that wins the block (or any, at Life 2 or less with no ready blocker). In the Main Step a normal summon already does the same, so High Speed is offered only in battle (house reading of "Flash -").
+  - **Crush**: new action `CRUSH {n:"lv"}` discards cards equal to the Spirit's level from the opposing decktop (`ctx.crushed` for follow-ups). An empty opposing Deck is not a loss (only a draw is).
+  - **Holy Life**: no new code, `ALLY_LIFE_HIT` with `self` + `VOID_TO_LIFE`.
+- Cards: BS69-024 Stichiox (pack, green deck) High Speed wired (residual line removed). Promoted from staging and wired: BS68-024 Gaudy Trooper G (High Speed; copies rule and LV3 Cost 7 residual), BS68-059 Fropper and BS68-061 Folly-Golem (Crush; their Crush follow-ups residual), BS68-048 Kamikiri File (Holy Life, LV2 draw from the bottom, counter with "Contractor Kinich-Ahau" incl. Soul State; complete), BS69-052 Coati Chisel (Holy Life; Ultra Holy Life residual). Staging regenerated (7,899 cards).
+- Glossary: `K_HIGH_SPEED`, `K_CRUSH`, `K_HOLY_LIFE` (wired); `K_ULTRA_HOLY_LIFE`, `K_ACCEL`, `K_SILVER_WHEEL`, `K_ARMOR`, `K_NETHER_IMMORTALITY` added as missing so the coverage report counts them.
+- Player-view pass before this minor release: 95 cards in 6 decks, 0 problems, both layouts render. Tests: `keywords49.test.mjs` (10), property tests 48/48.
+- Revert: `git revert` this commit (new file `src/js/02i-effects-keywords.js`; small hooks in `08-battle.js`, `09-cpu.js`, `11-human.js`, `03-imported-cards.js`).
+
+## v0.48.2
+- Data only (issue #5). The conflicts with the Fandom export are settled **in favour of Fandom** (owner priority, 2026-10-16; source: `data/sources/fandom-cards-bs01-bs77.json`, collected 2026-10-14, no website needed): BS75-001 Lv1 BP 1000 -> 2000; BS75-063 reduction red 3 -> 2; BS75-075 + white 1; BS75-076 + Ultimate 1 (Fandom "gold" icon = our `ultimate` key, as on BS74-X14); BS75-082 + god 1; BS76-079 reduction red 1 -> none; BS74-CX01 family Vultica -> Vulrica (name, text and residual).
+- Revert: `git revert` this commit (data/cards/saga-16.json, saga-17.json); the old values are in the v0.48.1 data. Tests: `fandom4176.test.mjs` (BS75-001 test now expects 2000, 6 new checks).
+- Still open: 59 of 77 cards without `name_jp`; Magic/Nexus symbol counts (1 vs 0) are a counting difference, not a data conflict. Not checked against the official list (blocked on the owner's network this session).
+
+## v0.48.1
+- Tests only, no engine change. BS76-047 (The ThunderDragon Togevajdra) "the CPU does not play it when it is the only card in its Hand" (player-view note of v0.45.0) could **not be reproduced**: the CPU plays it from `cpuMain` and a full `cpuTurn` at Reserve 4+ for all three profiles, alone in Hand or with another card, and correctly keeps it at Reserve 3. 12 regression tests (`cpu_bs76047.test.mjs`) now guard this. If it shows up again, record the replay seed.
+- Dropped this session (named per the session rule): the issue #5 data conflicts (BS75-001 Lv1 BP, Magic reduction differences, Vultica/Vulrica). The official card list and Fandom were not reachable (WebFetch needs a URL approval, no browser linked to this chat), so no curated data changed. Run them in a session with the desktop app linked.
+
+## v0.48.0
+- Engine: **Seal** (session C, Eternal manual p.49). A Seal effect moves your Soul Core to your Life; while it is there you are Sealed (`p.lifeSoul`) and [During Seal] effects work (fxIf `sealed`). The Soul Core in Life counts as a Life core; a Life reduction takes normal cores first and the Soul Core leaves only with the last Life core (the manual lets the player choose; fixed choice for both players, revert = drop `lifeTake` in `02d`). All Life-leaving paths (battle, Life to Trash/Reserve, Life to a Spirit) go through `lifeTake`.
+- New: action `SEAL`, action `REVEAL_LIFE_RESERVE` (Thunder God Bombardment), `"seal":true` on `manifest` (Seal Manifest: Soul Core from the Field/Reserve to the Life) and on `contractAdvent` (Seal Contract Advent). The Life pill/badge shows the Soul Core as `+S` (like the Reserve), the Life zone text says Sealed.
+- Card: BS76-X02 Revol-Tiger X — Seal Manifest on "Contractor Zeus" (C6, your turn) and [During Seal] Thunder God Bombardment wired; "treated as Z" and the refresh clause stay residual.
+- Not built: **Flag Contract Advent / Flag Nexus**. The engine has nothing for it yet; the Flag Nexus rule box is a stub ("FArule") and Nexus levels are empty in the Fandom export, the manual text read does not cover it, and Fandom was not reachable from this session. All 32 Flag cards are staging only, so nothing playable is lost. Next step: get the Flag Nexus rule text first.
+- 9 new tests (`seal48.test.mjs`).
+
+## v0.47.6
+- Docs (process fix 6, owner 2026-10-16): the BS76-047 CPU issue (not played from a one-card Hand) is listed in `docs/ai/roadmap-open.md` under a small CPU-tweak bundle. All six process fixes are done: `docs/ai/process-fixes.md` and its CLAUDE.md bullet are removed. No game change.
+
+## v0.47.5
+- Tests (process fix 5, owner 2026-10-16): the browser-free Python glossary checks (v21 glossary consistency, v28 [26]) now also run in the quick Node suite (`tests/unit/pychecks.test.mjs`, P01-P04; D10c already mirrors the v21 source-citation check), so `npm run -s loop` catches them before Regression. The Python originals stay until both agree over a few releases. No game change.
+
+## v0.47.4
+- Session tooling (process fix 4, owner 2026-10-16): `tools/session_start.sh` ends with a short summary (version, last 5 commits, the Next line, open issues); CLAUDE.md says it is loaded automatically (never `cat` it) and that `add_repo` is called once. No game change.
+
+## v0.47.3
+- Session tooling (process fix 3, owner 2026-10-16): the scheduled "Lanjutkan roadmap" prompt in `docs/ai/next-session-prompt.md` is now a short pointer to CLAUDE.md and skill `bs-session-runner` (no copied rules); the watchdog task prompt already only points to that file. No game change.
+
+## v0.47.2
+- Session tooling (process fix 2, owner 2026-10-16): `tools/session_start.sh` prints the age of the newest commit on `main` and stops with OVERLAP (exit 3) when it is under 30 minutes old (`--force` skips it); skill `bs-session-runner` also stops when another "Lanjutkan roadmap" task is running or pending. No game change.
+
+## v0.47.1
+- Session tooling (process fix 1, owner 2026-10-16): new `tools/session_end_check.mjs` fails unless the game file `aeterna-v<version>.html` is in the outputs folder with the right embedded version, `test:release` passes on it, the mind map is fresh and `backup/v<version>` is on origin; skill `bs-session-runner` requires it before sending both files. No game change.
+
+## v0.47.0
+- **Remaining Magic clauses** (session F, roadmap step 6): Whirling Tide, Thunder Counter, Hades Disaster, Plutonic Wall and Lightning Tempest are now complete; Dana Draw keeps one residual.
+  - Sent-to-Trash triggers (card field `trashTrigger`): Whirling Tide / Thunder Counter sent from the Deck by Contractor Nuadha / Indra can be added to the Hand, then +1 core to a Grandwalker Nexus; Hades Disaster sent from the Hand/Deck by Contractor Hades or an Infernal Lord effect gives +1 core to a Grandwalker Nexus. Hooked into `DECK_TO_TRASH_CORES`, `MILL` and `DISCARD_HAND`.
+  - Use from the Trash (`magic.trashUse`): Hades Disaster (destroys a Spirit/Ultimate with four cores or less instead of two) and Plutonic Wall while you control Contractor Hades; the card is banished afterwards. Human: offered in the Flash Timing list, marked "[from the Trash]".
+  - Plutonic Wall effect (`AB_CORE_TAX_TURN`): this turn opposing Spirits attack/block only by sending a core from themselves to the Trash.
+  - Lightning Tempest: Trash symbols reduce its cost (`trashSymbols`); in the Hand it is skipped by opposing remove/discard effects (`handUnaffected`); its zero symbols now also cover Spirits that come to the Field later that turn.
+  - Thunder Counter Hand trigger (`magic.oppAttackHand`): at the start of the opposing Attack Step, send 2 cores from Contractor Indra to the Void and pay the cost to use it.
+  - Dana Draw: after the Burst, pay to use its Main effect (`burst.thenMain`; the CPU pays only when Contractor Nuadha makes it a card gain); the set card also activates when a Scalostle Brave is summoned with five counters or more (`burst.also`, direct Brave summons included).
+- House readings (lowest risk): "+1 core" to a Grandwalker Nexus comes from the Void (older `CORE_TO_SELF` / `DECK_TO_TRASH_CORES` still take Reserve cores, unchanged); only a spare core pays the Plutonic Wall tax (a payment that would deplete the Spirit is not offered); "unaffected in the Hand" also blocks "the opponent discards a Magic or ..." choices; the human uses Trash Magic only in Flash Timings (no Main Step button, no UI change).
+- Not built: Dana Draw's Burst on depletion (the engine does not track who caused a depletion); a direct Brave summon still fires no (When Summoned) / ally-summoned effects other than the Dana Draw Burst.
+- 18 new tests (`magic47.test.mjs`), magic41 M01/M20 updated. Regression run 45 (30 sims) green on v0.47.0; the session also did the six process fixes the owner queued (v0.47.1-v0.47.6) after it, at the owner's request.
+- Player-view pass (before this minor release): `node tools/player_view.mjs`: 95 cards in 6 decks, 0 problems; PC and phone layouts start without errors.
+
+## v0.46.0
+- **Ultimate card type** (issue #4): Ultimates parse (`"type": "Ultimate"`), stand on the Field like Spirits (summon by paying, attack, block, BP, depletion, Ultimate symbol for Life damage and for Ultimate reduction symbols) and are not Spirits for Braves or Contract Advent targets. Levels start at LV3 (`lvBase` 3): effects use the printed LV numbers through the new `lvNo()`; the card detail, field status and logs show LV3-LV5. New card field `summonIf` (summon condition, an `fxIf` condition: controlName, counterGe, lifeLe, soulGe), checked for every summon and Advent of the card, for the human and the CPU.
+- **Ultra Manifest** (`manifest.ultra`): built from the printed BS76-CP01 text: the Soul Core goes onto the card, +1 core from the Void to the target Nexus, the card is summoned treating all costs as paid, once per turn (same name). BS76-CP01 Generator-Dragon-Brahman now fires its (When Manifests) effect.
+- Four BS74 Ultimates promoted from the Fandom export into the pack (deck builder only, no shipped deck changed): BS74-X15 Ven-Danta (Contract Advent onto an Awakened Dragon Spirit, Mitra summon condition, LV3-5 return an opposing Spirit/Ultimate to the deck bottom, LV4-5 reveal-to-Soul-State; partial), BS74-X12 LeonLancer X (LV3-5 destroy 30000 BP or less; its Contractor Homura Toshiie is not in the data yet), BS74-X13 Aztlan and BS74-X14 Gi-Gasha (summon condition / Manifest data only; effects listed as residual). Fandom's god icon added to X12 and X14 reductions; card texts cleaned of wiki templates. The three BS73-AX Ultimates share their numbers with BS73 Spirits in the export and stay out until the conflict is settled.
+- House readings (lowest risk; the Eternal manual PDF could not be fetched this session, the permission request was not answered): the summon condition also applies to effect summons and Advent; effects printed for "Spirits" only still reach Ultimates (open); Ultimate Trigger is not built (only BS73-AX02 uses it). Not built: Ultra Advent (Grand-Sagitto-Nova is not in the card data).
+- 15 new tests (`ultimate46.test.mjs`); D05 and the gold-icon test accept the promoted cards; quick suite 806 passed locally.
+- Regression run 1 found 4 failing checks (mitra_tests, v15, v15b, mitra_sims): the white test fixture took every white pack card and now held 19 (Ven-Danta). `tests/make_fixtures.py` leaves Ultimates out, so the fixture is the deck's 18 cards again; the four suites pass locally.
+- Player-view pass (before this minor release): `node tools/player_view.mjs`: 95 cards in 6 decks, 0 problems; PC and phone layouts start without errors.
+
+## v0.45.1
+- Fix (Regression part 2, v21 [20]): the four new glossary rule notes (K_UNLEASH, G_SUBJ_BRAVED, A_LIFE_TO_TRASH, S_OPP_NO_BLOCK) are marked "Engine (house reading ...)" because no manual section covers them; they no longer read like official rules. New quick Node test D10c mirrors that Python check so it fails locally, not only on GitHub.
+- Session tooling: the god-icon and Agateram work of v0.44.6-v0.45.0 recorded in CLAUDE.md, roadmap and mind map; scheduling bootstrap done (both scheduled tasks exist).
+
+## v0.45.0
+- BS71-X09 Agateram (blue Nuadha deck) is playable beyond its Manifest: **SA Unleash 3** (when your Scalostle Brave Spirit attacks you can send 3 cores from a Nuadha Grandwalker Nexus to it; then, unless the opponent discards a Magic card, one opposing Life per differently named Scalostle Brave you control goes to the Trash) and **Lv2-3 block lock** (unless the opponent discards a Magic card, they can't block during your Attack Step).
+- New engine vocabulary: ALLY_ATTACKS gate `subjBraved`, actions `OPP_LIFE_TO_TRASH {n | perBraveNames}` and `OPP_NO_BLOCK {minLv}` (`noBlockActive()`, used by the battle's blocker list), and `{"prev":true}` now works inside `BY.then`. Glossary: K_UNLEASH, A_LIFE_TO_TRASH, S_OPP_NO_BLOCK, G_SUBJ_BRAVED.
+- House reading (lowest risk, noted in the card residual): the block lock is decided once at the start of your Attack Step; reaching Lv2 later in that step does not start it. The lock ends when Agateram leaves the Field or drops below Lv2.
+- 24 new tests (`agateram44.test.mjs`), full Node suite 838 passed locally.
+- Player-view pass (before this minor release): new `tools/player_view.mjs` plays every distinct card of the 6 shipped decks (95 cards) on a quiet board (CPU Main Step, else free summon/cast), fires its triggers and a battle, checks invariants and console errors: 0 problems; BS76-047 is not chosen by the CPU from a one-card Hand (noted, not an error). PC and phone layouts start a match without errors (screenshots taken). Human-click UI flows and the 30 CPU-vs-CPU sims run in the GitHub Regression.
+
+## v0.44.7
+- Card data (issue #5): the blue Nuadha deck had the same missing God reduction symbol on 11 cards (BS71-057/058/060/061/063/064/X09, BS72-050/051/054/068, incl. the Spear/Rifle/Sword Braves); added from Fandom (the official list fetch served only BS68). All six deck lists now match Fandom's reduction exactly (new test GB07). 20 new tests (`god_reduction.test.mjs` GB01-GB20).
+
+## v0.44.6
+- Card data (issue #5): the 14 green/purple Devotee cards (BS68-014/016/018/020/022/NX01, BS69-025/029/030/033, BS70-034/035/072/X03) now have their God reduction symbol (+1 `god`). BS68: confirmed on the official card list (battlespirits.com shows 神 in the reduction) and Fandom; BS69/BS70: Fandom only, because the official list served only BS68 to the fetch. Only God symbols (Contractor Hades, Hermes and other Grandwalker Nexuses) fill that slot, so these cards get cheaper with a Contractor on the Field. No image check needed. 21 new tests (`god_reduction.test.mjs`), ratchet in `fandom_decks.test.mjs` replaced.
+
+## v0.44.5
+- Docs only, no game change: quota pause. When a session or the watchdog meets a usage / quota / rate-limit error, or two sessions in a row fail, the chain pauses: the watchdog is disabled and one session is scheduled for the next Tuesday 17:00 WIB (owner's quota reset), which re-enables the watchdog.
+
+## v0.44.4
+- Docs only, no game change: chain watchdog. A cheap scheduled task (every 3 hours, no clone, only `gh api` and the task list) restarts the session chain if it broke: no next session pending, the last session finished, and no `docs/ai/chain-stop.md` marker. Sessions that stop for an owner decision, or find the roadmap empty, commit that marker.
+
+## v0.44.3
+- Docs only, no game change: the hourly scheduled task is replaced by a session chain. Each session ends by scheduling the next one 60 minutes after its final push (`docs/ai/next-session-prompt.md` holds the single prompt text), so runs cannot overlap. No next session is scheduled when a session stopped for an owner decision or nothing is left on the roadmap.
+
+## v0.44.2
+- Docs only, no game change: CLAUDE.md records the owner's goal (every card playable), the player-view check every 3rd session (scripted UI games, CPU-vs-CPU runs, per-card sweep) and the hourly scheduled task with its collision guard.
+
+## v0.44.1
+- Tooling only, no game change: `tools/session_start.sh` sets up a session in one call (light sparse clone if needed, hooks path, baseline `npm run -s loop`; `--with-sources` for the Fandom import).
+- Test I30 (importer repeatable) now skips itself when `data/sources` is not checked out (light clone); the full CI checkout still runs it.
+- CLAUDE.md: shorter Done list, one-call session start, rules for parallel read-only data-check subagents, a model hint for heavy tasks and "scenario test first" for new mechanics.
+
+## v0.44.0
+- New mechanic K_FLASH_BURST_FOLLOWUP (`burst.thenFlash`): after the Burst of BS75-073 Crimson Meteor Defense or BS75-076 Magma Call, the owner may pay the card's cost (reductions apply) to activate its (Flash) effect straight from the Burst. Human: a "Pay N / Do not pay" prompt; CPU: pays only when the Flash effect helps now (ending the opposing Attack Step with another attacker ready; Magma Call in its own turn).
+- BS75-076 Magma Call (Flash, can't use in Main, `magic.noMain`): during this turn a Lava Fish gets an extra Red symbol (new action `SYMBOL_PLUS_TURN`, counts for attacks and reductions, "fixed as zero" still wins); then the Soul Core may go to Contractor Ometeotl to give it once more (new action `SOUL_TO_NEXUS_THEN`). CPU casts it in the Flash Timing when its Lava Fish attack is not blocked.
+- Fix: a Magic card whose effect is still resolving is counted in limbo (it had left the Hand but was in no zone; a CPU-vs-CPU property test caught the card-count invariant during Magma Call).
+- Tests: `tests/unit/burst_flash44.test.mjs` (23).
+
+## v0.43.0
+- New mechanic A_END_ATTACK: BS75-073 Crimson Meteor Defense (Flash) is usable during a battle by discarding another Crimson/Wurm/Kushina card from the Hand; when that battle ends, the Attack Step ends (action `END_ATTACK_AFTER_BATTLE`, `G.attackEnded`; the human and CPU attack loops stop; Standard format goes on to the Second Main Step).
+- Magic actions can be marked `cost`: the Magic is usable only when every cost action can be paid, a cost card is never the Magic itself, and an unpaid cost stops the rest of the effect.
+- Guard STATIC `NO_END_ATTACK`: BS74-050 Sunya Lv3 (Awakened Dragon attacking) and BS75-063 Crimson Crater Lv2 (Wurm attacking) stop the opponent ending the Attack Step via effects. Checked when the Magic is used and again when the battle ends (most stable reading: the lock wins if it is active at either point; an attacker that left the Field is no longer "attacking").
+- CPU: as the defender it uses the Magic when another opposing Spirit is ready to attack; never as the attacker.
+- Still open: paying the cost to use the Flash effect right after the Burst (next task); Crimson Crater's deploy-from-Hand and "effects can't activate" clauses.
+- Tests: `tests/unit/end_attack43.test.mjs` (21).
+
+## v0.42.2
+- UI (small, follows the v0.42.1 rule fix): the field-card dialog of a Grandwalker Nexus no longer offers "Add Core", "Remove Core" or "Move 1 core"; it shows one disabled info line ("Grandwalker cores cannot be moved or used to pay costs"). Other cards cannot pick a Grandwalker Nexus as the receiver of a moved core or a Soul Core swap. Both layouts checked with one screenshot each (the label wraps to two lines on the phone).
+- Revert: `git revert` the commit titled "v0.42.2 UI", or go back to the branch `backup/v0.42.1` (state before this UI change).
+
+## v0.42.1
+- Rule fix (Eternal manual pp. 22, 26, 42, read from the official PDF on 2026-10-15): cores on a Grandwalker (and Grandstone) Nexus cannot pay costs, cannot be moved by the player, cannot be moved onto a Grandwalker Nexus, and are not counted as cores on the Field. Before, the engine treated them like any Field core: they counted for "enough cores", were taken when paying (human payment list, CPU, free summons) and could be moved or swapped by hand. Now only effects put cores on or take cores off them (Oracle, Neo-Core Charge, "send N cores from this Nexus", Unleash, Manifest cost, Void on leaving the Field are unchanged).
+- Not changed (not covered by those pages): the Soul Core on a Grandwalker Nexus (Contract Field Nexuses such as Ometeotl) behaves as before.
+- Code: `isGW` / `freeCores` / `freeTotal` in `06-rules.js`; used by `coresAvailable`, `takeCores`, `moveCore`, `swapSoul`, `cpuCanPlay` and the payment list. 15 new tests (`tests/unit/gw_cores42.test.mjs`).
+- Revert: `git revert` the commit titled "v0.42.1 Grandwalker".
+
+## v0.42.0
+- New action `OPP_DISCARD_MAGIC_OR` ("unless the opponent discards a Magic card from their Hand, <next action>"): a human opponent gets a modal (one button per Magic card plus "Do not discard"); the CPU pays with its cheapest Magic card when it holds two or more or its Life is 2 or less, otherwise keeps them (`cpuKeepMagicOrPay`). No Magic card in the Hand = the effect goes ahead. Follow-up actions use `{"if":{"prev":true}}`.
+- BS72-054 Vaha: the third effect (During Brave Lv2-3, when it attacks, once per turn: refresh unless the opponent discards a Magic card) is now in the card data.
+- Checked and closed: the old note "CPU never manifests outside Main" was stale; the CPU already Manifests in the Flash Timing (tests C01-C02).
+- Rule 17.0 "mandatory Soul Core use": audited against the Eternal manual PDF (fetched 2026-10-15): no general mandatory-use rule found; paying with and placing the Soul Core is optional, the Advent/Manifest moves are fixed. The 17.0 revision notice itself was not reachable, so the row stays open and no engine change was made.
+- Still open (not wired): BS71-X09 Agateram (needs Unleash and "can't block"), End Attack Step and Flash after Burst (A2 session), the god-icon image check (the asset folder is not visible on the laptop).
+- 20 new tests (`tests/unit/opp_discard42.test.mjs`, `tests/unit/cpu_flash42.test.mjs`).
+- Revert: `git revert` the commits titled "v0.42".
+
+## v0.41.5
+- Icon check (issue #5): Fandom's `gold` reduction icon is our `ultimate` reduction symbol (241 Fandom Ultimates carry a gold symbol; manual p. 40: the Ultimate symbol pays Ultimate reduction symbols). `tools/import_fandom.py` now maps it, so 313 staged cards carry `reduction.ultimate` (staging only; the game pack is unchanged).
+- Not changed: the `god` reduction icon is still dropped on import (open, 14 deck cards, see `roadmap-open.md`); BS75-076 (Magma Call, curated) keeps red 3 until its image is checked.
+- 4 new tests (`tests/unit/gold_icon.test.mjs`); two old import tests updated for the new mapping.
+- Not done this session, re-scoped (see `roadmap-open.md`): the god-icon image check (asset folder not reachable), End Attack Step, Flash after Burst, opponent-discard choices and the rule 17.0 gaps are not small.
+- Revert: `git revert` the commit titled "v0.41.5 gold icon".
+
+## v0.41.4
+- Docs only: plan for the next sessions (missing icons, symbols and mechanics) in `docs/ai/roadmap-open.md`; CLAUDE.md Next points to it.
+- Revert: `git revert` the commit titled "v0.41.4 session plan".
+
+## v0.41.3
+- Data check of the green, purple and yellow deck cards (45 cards) against the Fandom export (issue #5). Cost, level cores/BP, families and coloured reduction all agree.
+- One open conflict, data not changed: Fandom shows one extra `god` icon on 14 green/purple cards (BS68-014/016/018/020/022/NX01, BS69-025/029/030/033, BS70-034/035/072/X03); ours has none. Applying it would raise those costs by 1 for decks without a Grandwalker Nexus, so it waits for a card-image check (laptop was not connected). Yellow has no difference.
+- 21 new tests (`tests/unit/fandom_decks.test.mjs`) including a ratchet on the 14 open cards.
+- Revert: `git revert` the commit titled "v0.41.3 green/purple/yellow data check vs Fandom".
+
+## v0.41.2
+- Data check of BS74-BS76 against the Fandom export (issue #5, owner decision 2026-10-15: Fandom is the reference). 77 cards compared on cost, reduction, symbols, levels, families.
+- 12 cards had a blue reduction symbol that is the God symbol on the wiki (BS74-043/045/047, BS75-004/009/010/012/013/X02, BS76-006/009/060): now `god`, so only Grandwalker Nexus symbols reduce it and Field blue symbols no longer do. Test D05 accepts `god`.
+- BS76-005 Lv3 needs 5 cores (was 3), BS76-006 Lv3 needs 4 (was 3), BS75-041 gains the Devotee family.
+- Confirmed as real: cost 0 on BS75-001, BS75-002, BS76-001.
+- Not changed (conflict or unclear), kept in `docs/ai/roadmap-open.md`: BS75-001 Lv1 BP (Fandom 2000, cardrush 1000), Magic reductions BS75-063/075/076/082 and BS76-079.
+- 20 new tests (`tests/unit/fandom4176.test.mjs`); the mitra suite check for Paanch/Chai/Sat now expects `god` (an earlier image reading had called the icon blue; Fandom is the reference).
+- Revert: `git revert` the commit titled "v0.41.2 BS74-BS76 data check vs Fandom".
+
+## v0.41.1
+- Fix: v0.41.0 blocked casting a Magic card whose effect is not built; the legacy suite (mag) guarantees it stays castable with a log warning, so the block is removed. Plutonic Wall behaves like every unbuilt Magic card.
+- Revert: `git revert` the commit titled "v0.41.1 keep unbuilt Magic castable".
+
+## v0.41.0
+- **Magic effect types:** a Magic card can now run any list of engine actions (`magic.effect = "ACTIONS"`, with a condition per action), the same vocabulary as Spirit effects.
+- **7 Magic cards added to the pack** (Fandom export data): Dana Draw (Main: draw 3, discard 3, -1 per Contractor Nuadha; Burst: cost destruction up to 6, +4 with five counters), Whirling Tide (Flash: summon a Scalostle/Celtica Brave or Nexus from the Trash for free), Magic Bullet (Flash: destroy one Spirit each of cost 3/4/5/6, plus one of cost 7+ with seven counters), Hades Disaster (Flash: destroy a Spirit with two cores or less, not preventable), Thunder Counter (Flash: with a Contractor Indra, an opposing Spirit can't attack/block for the game), Lightning Tempest (Flash: with a Contractor Indra, opposing symbols are zero this turn), Plutonic Wall (data only, effect not built).
+- New actions: `DESTROY_EACH_COST`, `SYMBOLS_ZERO_OPP`; extended: `SUMMON_HAND` from the Trash (`from: "trash"`, `types`), `DESTROY` `ignoreImmune`, `DESTROY_TOTAL` `boost`.
+- Plutonic Wall is in the pack without an effect: like every unbuilt Magic card it can still be cast (a log line warns, the card is wasted), so keep it out of decks until it is built.
+- CPU: casts ACTIONS Magic in the Main Step when it has cards to spare, and as Flash when its attack is blocked by a stronger Spirit or when attacked at 3 Life or less.
+- Decision (stable option): the prebuilt decks are unchanged; the new cards are in the deck builder. Adding them to prebuilt decks needs Regression sims first.
+- Not built yet (see `docs/ai/roadmap-open.md`): use from the Trash, Deck-to-Trash add-to-Hand clauses, Thunder Counter's Hand trigger, Dana Draw's pay-to-use-Main after the Burst, Plutonic Wall.
+- Tests: `tests/unit/magic41.test.mjs` (20 checks); B06 updated.
+- Revert: `git revert` the commit titled "v0.41.0 Magic effect types".
+
+## v0.40.3
+- UI polish by Claude under the owner's standing delegation (2026-10-15); the PC and phone layouts are otherwise unchanged:
+  - **Card names wrap at word and CamelCase boundaries** ("Crimson / Dragon / Star") instead of in the middle of a word ("CrimsonDrago / nStar"): hand, field and deck builder.
+  - **PC turn-step bar** shows every step without the edge fade (the first step was half hidden); the phone keeps its scrolling bar.
+  - **Touch targets:** deck builder controls are at least 34 px high on phones and touch screens, the "only" checkbox is larger; the header and navigation buttons got a bigger touch area with the same look.
+- Tests: `tests/unit/ui403.test.mjs` (22 checks, PC + phone, screenshots in `build/shots`).
+- Revert: `git revert` the commit titled "ui: v0.40.3 polish", or restore the state before it from branch `backup/v0.40.2`.
+
+## v0.40.2
+- UI patch, all four items the owner approved (2026-10-15), PC and phone layouts otherwise unchanged:
+  - **CPU style** selector in Settings (Balanced / Aggressive / Defensive; saved, reset by "Reset settings"). Uses the existing weight profiles.
+  - **Contract card in the starting Hand is optional** (issue #2, manual p. 12): a prompt "Add to Hand / Keep in Deck" appears once, after the coin toss, only when the human's Hand has a Contract card. "Keep in Deck" shuffles it back and draws a replacement that is never another Contract card. Default and the CPU keep the old behaviour (Contract in Hand), so seeds, replays and CPU-vs-CPU sims are unchanged.
+  - **Deck builder filters**: colour (multicolour cards match either colour), cost (10 = 10 or more) and type (Spirit / Brave / Nexus / Magic / Contract), combined with search and "In deck only".
+  - **Heavy Exhaust** is drawn upside down (rotated 180 degrees, portrait slot); plain Exhaust stays sideways. The live status line says "heavy exhausted".
+- Tests: E21 renamed (default behaviour), E21b-c and `tests/unit/ui402.test.mjs` (20 checks, PC + phone, screenshots in `build/shots`). Python suite v29 handles the new Contract prompt (+1 check for "Keep in Deck"; Regression part 3 caught the missing prompt in the first run).
+- Choices noted per the autonomy rule: Contract choice defaults to "Add to Hand" (current behaviour); three CPU styles only (no new profile).
+- Backup of the v0.40.1 state: branch `backup/v0.40.1`.
+
+## v0.40.1
+- Test-only fix: the legacy suite v17 counted the CPU deck list as a fixed 8 options; it now counts `BS.PREBUILT.length + 2` (the v0.40.0 Regression run failed in part 2 for exactly this). Backup of the v0.40.0 state: branch `backup/v0.40.0`.
+
+## v0.40.0
+- Colour expansion 4/4, **yellow**: prebuilt deck "Yellow: Indra / Thunderive (Contract, v0.40)" (40 cards, 14 different; `data/decks/yellow-indra-thunderive.txt`) from Saga 16-17 (BS75, BS76). New Contract Grandwalker Nexus The HeavenlyThunderContractor Indra (BS75-CX03) and Indra's Heavenly Thunder Temple (BS75-068). Closes the yellow item of issue #7 (all four colours done).
+- Deck choice (lowest risk, noted per the autonomy rule): the official BS75 Indra deck (battlespirits.com), minus Thunder Counter (Magic needs Magic effects) and Grand-Sagitto-Nova (Ultra Thunder Advent, cost 12, needs Ultra Advent); Togevajdra and Vajreine (BS76) take their six slots. Standard Block A cards only.
+- Data source: the owner-supplied Fandom export. Read from battlespirits.com and yuyu-tei.jp (2026-10-14): Indra's Neo-Core Charge target (Thunderive / Devotee / Concluser & Cost 3 or more), **Lv2 at Count 2**, Contract Field, Contract Skill 3. The Indra Temple Lv2 threshold (1 core) is copied from the other Temples and **not verified**. Stats are still not checked against the card images. The Eternal manual PDF could not be fetched this session, so no manual page was re-read (`docs/manual-notes.md`).
+- Engine (`src/js/02g-effects-yellow.js` and small changes): **can't attack/block** (`CANT_ATTACK_BLOCK`, flag `noAB` on the Spirit; enforced for human and CPU attackers and blockers, cleared when the Spirit leaves the Field), `DRAW_BOTTOM`, `DISCARD_ALL_HAND`, `REVEAL_ADD`, `VOID_TO_LIFE`, `LIFE_TO_SELF`, `NEXUS_CORES_TO_SELF`, `SELF_TO_HAND`, STATIC flag `EXTRA_REDUCTION` (extra reduction symbol, used by `effCost`), `BOUNCE_OPP` with `lv` / `notColor` / `kind: nexus`, conditions `oppNoAB` / `oppNexusGe`, effect flags `other`, `noStack` ("Can't Stack") and `self` for `ALLY_LIFE_HIT`. Vajdra-of-Magan uses the existing `costAlt` (Cost 3 with Indra and an opposing Nexus).
+- Wired: Indra (Neo-Core Charge, deck-to-Trash cores, Contract Field counter +2 and extra yellow reduction symbol, Contract Skill 3 usable in Main or Flash so the CPU can use it), Temple (draw from the bottom), Bilijvern, Vajdraco, Manevajra, Raivajdra (Manifest data, draws, Grandwalker core removal), Shimavajdra (LV2-3 extra symbol), Magjvern (Burst, trash return), Vajdra-of-Magan, Airavajdra, Naraka, Vajrawurm (Unleash cost and effect), Togevajdra (LV2-3 return), Vajreine (Burst, returns). Each card lists what is still missing in its residual text.
+- Left out on purpose: Magic (Thunder Counter, Lightning Tempest), Grand-Sagitto-Nova (Ultra Advent), Mirage of Bilijvern, the Nexus lock of Vajdraco, the Life-for-leaving replacement effects, Raishin Vajdra, Nazuma.
+- UI: one new disabled button label, "Cannot attack or block", on a Spirit under that effect (no layout change; tell me if you want it removed).
+- 49 new tests (`tests/unit/yellow40.test.mjs`); legacy Python suites v17, v21, v22, v24 updated for 126 cards, 7 decks, nine Contractor Nexuses (186/186 pass after the glossary wording fix). Sims: 16 CPU games (yellow vs red 6, mirror 4, vs white 2, vs green 2, vs purple 2), all finished, no invariant or page error; the new effects fired in the sampled logs (bottom draws, Neo-Core Charge, bounces to the Deck bottom, can't attack/block). Honest note: yellow won 8 of the 16 games and 2 of 6 against the red draft deck, so it is untuned; the CPU never manifests (known), so Raivajdra, Naraka and Vajrawurm only enter by a normal summon in the sims.
+- Open: Magic effect types (blue, green, red and yellow Magic), Ultra Advent / Ultimate / Seal for the cards that need them, Mirage sets, the Trash-based summons and Flashes from earlier colours, Temple Lv2 core count check against the image, a manual re-read for can't attack/block.
+
+## v0.39.1
+- Tooling only, no gameplay change (token saving): legacy suites v17, v21, v22, v24 read the card count and the Contractor Nexus list from `data/cards/all-cards.json`, so a new colour deck needs no test edit and no extra Regression run (186/186 pass).
+- `docs/ai/colour-version.md`: checklist for colour versions (from v0.37-v0.39); `docs/ai/token-economy.md` section 12: budget and rules for the next work.
+- Backup of the v0.39.0 state: branch `backup/v0.39.0`.
+
+## v0.39.0
+- Colour expansion 3/4, **purple**: prebuilt deck "Purple: Hades / Sorcerer Infernal Lord (Contract)" (40 cards, 14 different; `data/decks/purple-hades-sorcerer.txt`) from Saga 15 (BS68). New Contract Grandwalker Nexus The SorcererContractor Hades (BS68-CX01) and Hades' Nether Temple (BS68-070). Closes the purple item of issue #7; yellow is next.
+- Deck choice (lowest risk, noted per the autonomy rule): Hades / Sorcerer is built on deck-to-Trash, Count, discard and core-to-Reserve effects that the engine mostly had. Hera (Ogre Wizard / Doll) needs "summon instead of banishing" replacement effects, Nyx / Dionysus need Ultimate, Amon needs the Flag Contract. They stay in `data/import`.
+- Data source: the owner-supplied Fandom export. Read from yuyu-tei.jp (2026-10-14): Hades' Neo-Core Charge target (Infernal Lord / Devotee / Concluser & Cost 3 or more), **Lv2 of Hades at 5 cores** (not 2 like the other Contractors), its Contract Field text, and Lv2 of the Nether Temple at 1 core. The one Contract symbol follows BS74-CX03 / SD69-CX01. Stats are still not checked against the card images (`note` on each card).
+- Engine (`src/js/02f-effects-purple.js`): `MILL`, `DISCARD_HAND` (cost of `BY`), `OPP_CORES_TO_RESERVE` ({targets, each} / {total}, `drawPerDepleted`), `COUNTER_ONCE`, `DESTROY coresLe`, `match.color`, condition `oppSpiritsLe`. A Spirit left below its Lv1 cores is depleted (manual p. 28).
+- Wired: Hades (Neo-Core Charge, deck-to-Trash cores, Contract Skill 2 with the once-per-turn Count part), Nether Temple (counter, reveal three and add a Purple Sorcerer), Infernal Soldier, Hound-Beros, Galatiark (summon and destroyed), Heineza, Naberidus (discard and draw), Phenlese (draw, Manifest data), Javir (summon, LV2 symbol), Gadirac (Burst, LV2 refresh), Vaplus, Dells-Vajram, Alvanshell. Residual text is listed on each card.
+- Left out on purpose: the Magic cards (Plutonic Wall, Hades Disaster need Magic effects and use-from-Trash), Dark-Clymenus (Unleash), Leo-Smog (Petit Bat / True-Curse), Sagramore (Spectral Contract). Not built yet: the Flash-from-Trash of Soldier and Galatiark, setting Naberidus as a Mirage, summoning Javir / Phenlese's target from the Trash, Hades' Contract Field, Nether Temple LV2, Volgoat (LV cost increase), the Soul State clauses.
+- 35 new tests (`tests/unit/purple39.test.mjs`); legacy Python suites v17, v21, v22, v24 updated for 112 cards, 6 decks, eight Contractor Nexuses. Sims: 14 CPU games (purple vs red 6, mirror 4, vs white 2, vs green 2), all finished, no invariant or page error; Hades deploy, Nether Temple, Vaplus depletion and Naberidus discards appeared in the sampled logs. Honest note: purple won 1 of 6 against the red draft deck, 2 of 2 against white and 0 of 2 against green; the deck is untuned and the CPU discards its cheapest card.
+- Open: Magic effect types, the Trash-based summons and Flashes above, then yellow (v0.40).
+
+## v0.38.0
+- Colour expansion 2/4, **green**: prebuilt deck "Green: Hermes / Lionheart Blade Beast (Contract)" (40 cards, 17 different; `data/decks/green-hermes-lionheart.txt`) from Saga 15 (BS69, BS70). New Contract Grandwalker Nexus The SwiftContractor Hermes (BS69-CX02).
+- Deck choice (lowest risk, noted per the autonomy rule): Hermes / Blade Beast needs Heavy Exhaust, the Removed Zone and a Burst lock, but no Mirage engine work and no Magic; Ra-Harakhti (Weapon Insect) is Mirage-, Mani- and counter-heavy, Yum-Kaax and Liber need Fungal / Flag Contract mechanics. They stay in `data/import` for later.
+- Data source: the owner-supplied Fandom export. Gaps filled from the web: Neo-Core Charge target (Blade Beast/Devotee/Concluser & Cost 3 or more, cardrush-bs.jp) and the Contract symbol (fullahead-tcg.com). **Not verifiable online and not image-checked** (the laptop was not connected, so no card image was read): the Lv2 threshold of Hermes (kept at 2 by Count, like most Contractors) and the Nexus levels of Spiral Way and Messenger Post (Lv2 at 1 core, like the other Saga Nexuses). Each card carries a `note`; stats are still not checked against images.
+- Engine: **Heavy Exhaust** (`heavy` flag next to `exhausted`; `HEAVY_EXHAUST_OPP`; one Refresh, Refresh Step or effect, turns it into a normal Exhaust; manual pp. 60-61, FAQ p. 67), `EXHAUST_OPP`, the **Removed Zone** (`REMOVE_OPP_HAND`, `OPP_CHOOSES_REMOVE_HAND`, `REMOVE_OPP_TRASH`, `SEND_REMOVED`, trigger `OPP_REMOVED`, conditions `oppRemovedGe` / `oppRemovedSpirit` / `removedGe`), `VOID_TO_MATCHING`, `NO_BURST_BATTLE` (the Contract Field lock, cleared with the battle), `BOUNCE_OPP exhaustedOnly`, ACTIVATE cost `exhaustSelf` ("by exhausting this Nexus"), Manifest timing `YOUR_ATTACK`.
+- Wired: Hermes (Neo-Core Charge, deck-to-Trash cores, Contract Skill 2, Contract Field: Burst lock and random Hand card), Spiral Way (Flash and Removed-Zone reveal), Messenger Post, Medon, Stichiox (Hermes deploy), Eurytius, Priapus (LV effects), Sisyphus (Mani, LV2), Eudoros, Calchas, Iphicles (LV1-2 Trash clause), Pelops (Hand cut, cores), Autolycus, Hermaphros (LV2), Leonteus and King Perseus (Mani, send to the Removed Zone), Guneus (Burst and LV1-3). Residual text is listed on each card.
+- Left out on purpose: the Magic cards (Wind Boom, Folk Reverse, Cactus Shot), Trismegistus (Unleash), Prometech-Lycus.
+- Rules honesty: the Eternal manual text read online has no Removed Zone rule (it lists a Set Aside zone); the zone is built as printed on the cards and marked partial in the glossary, obligations and coverage. The Burst lock is a card-text rule (manual p. 48 names only Heavy Armor / Ultra Armor).
+- UI: Heavy Exhaust is drawn upside down (v0.40.2).
+- 45 new tests (`tests/unit/green38.test.mjs`); legacy Python suites v17, v21, v22, v24 updated for 98 cards, 5 decks, seven Contractor Nexuses (185/185 pass). Sims: 16 CPU games (green vs red 6, mirror 4, vs blue 4, vs white 2), no invariant or page error; the new effects fired in the sampled logs (Heavy Exhaust, Removed Zone, Burst lock, Neo-Core Charge, Guneus Burst). Honest note: green won 5 of 6 against the red draft deck and all games against blue and white, the deck is untuned; the CPU never manifested in the sampled games.
+- Open: Magic effect types (blue and green Magic), Removed-Zone returns and "can't use" locks, Stichiox/Priapus hand clauses, Eurytius and Pelops static clauses, Hermaphros cost reduction, then purple (v0.39).
+
+## v0.37.1
+- Test-only fix: the legacy Python suites (v17, v21, v22, v24) had fixed counts (63 cards, 3 ready-made decks, five Contractor Nexuses) that the blue release changed; updated to 81 cards, 4 decks, six Contractor Nexuses. Glossary rule notes of the new entries now name the Eternal Rule Manual and say it defines no rule for the term. The v0.37.0 Regression run failed in parts 2 and 3 for exactly this; part 2 (230 checks) and part 3 (258 checks) pass again locally.
+
+## v0.37.0
+- Colour expansion 1/4, **blue**: prebuilt deck "Blue: Nuadha / Scalostle Dana (Contract)" (40 cards, 18 different; `data/decks/blue-nuadha-scalostle.txt`) from Saga 15-16 (BS71, BS72, BS74). New Contract Grandwalker Nexus The SilverArmContractor Nuadha (BS71-CX03).
+- Data source (owner decision 2026-10-14): the owner-supplied Fandom export, not the card images. `tools/promote_import.py` moves staged cards into `data/cards` (never overwrites). The export lacks: the Neo-Core Charge target, Brave BP+ and combine conditions, Nexus levels, the Contract Nexus symbol, and drops the "god" reduction key; these were read from cardrush-bs.jp (see `docs/manual-notes.md`) and the Contract Nexus symbol follows BS74-CX03/SD69-CX01. Stats are still not checked against the card images (`note` on each card).
+- Engine: cost-based `DESTROY` (`costLe`, `costLeSelf`, `costLeDiscarded`, `costRank` lowest/highest, `costBoost`), `STATIC` flag `COST_DESTROY_PLUS` (Bulwark Temple, Railgun), `DESTROY_TOTAL byCost`, `CORE_TO_NEXUS perDestroyedCost`, `LOOT` (draw then discard), `CORE_OR_COUNTER` (Neo-Core Charge Contract Field), effect gate `braved` and condition `nexusBraved`, a Brave card summoned as a Spirit by `SUMMON_HAND` / `REVEAL_DEPLOY` (`allowBrave`).
+- Bug fix found by the new tests: `summonFree` returned nothing, so `REVEAL_DEPLOY` without paying put the summoned card back into the Deck as well (a duplicate). It now returns true.
+- Wired: Nuadha (Neo-Core Charge with counter option, deck-to-Trash cores, Revive), Bulwark Temple (limit bonus only), Scout, Soldier, Musketeer, Aidman, Madea, Goibniu (draw trigger), Dian, Vaha, Brodeur, Gaulesser (Burst + LV2), Agateram (Manifest only), the four Saga Braves (Spear, Rifle, Long Sword, Railgun) with their Nexus Brave skills. Each card lists what is still missing in its residual text.
+- Left out on purpose: the Magic cards (Dana Draw, Whirling Tide, Magic Bullet need new Magic effects), Dagda and Magic Soldier (Burst/Mirage clauses not built). They stay in `data/import`.
+- 44 new tests (`tests/unit/blue37.test.mjs`); sims: 4 blue-vs-red and 4 blue mirror games, no invariant or page errors. Honest note: blue lost all 4 games against the red draft deck and the second player won all 4 mirror games, so the deck is untuned.
+- Open: Contract Field clauses of Nuadha (Burst lock, Brave-summon core), Shielder/Scout LV2 protections, Aidman/Musketeer/Vaha extras, Magic effects, then green (v0.38).
+
+## v0.36.1
+- Measured first (Chromium headless, v0.36.0): `index.html` 370 KB (96 KB gzip; card pack 75 KB, CSS 35 KB), page ready in 224 ms, `render()` 6.6 ms, JS heap 10 MB, one CPU-vs-CPU match 3.8 s. Nothing needed optimising.
+- Guard rails instead (`tests/unit/budget.test.mjs`, 12 tests): size limits for the page, gzip, card pack, CSS and each `src/js` file; one script and no external requests or data URIs; the build never reads `data/import`; time and memory limits for load, `render()`, new match and heap (about 10x headroom for time, 2x for size, so only real regressions fail).
+- Rule for v0.37+: when a colour release adds cards, embed only the cards its decks use; keep the rest out of `index.html` (lazy-load as a separate file if the deck builder needs them).
+- No change to `src/` except the version.
+
+## v0.36.0
+- Card data intake (no engine change): `tools/import_fandom.py` merges `data/sources/fandom-cards-bs01-bs77.json` (reference only) with `data/index/saga_card_index.json` into one staging file per Saga, `data/import/saga-01.json` ... `saga-17.json` (one card per line), plus `data/import/report.json`.
+- Result: 7978 cards, 453 without an image, 110 duplicate numbers merged (rarities collected), 6 number conflicts, 60 cards skipped because `data/cards` already holds them (hand-verified, never overwritten), 2 Token rows left out.
+- Image match: by (set, name), then by unique name; ambiguous names and missing files are reported, with a near-name suggestion where one exists (the index has typos such as "The Topz Empty Sky"). Nothing is guessed.
+- Also reported: Type typos ("Spirt" fixed), Contract/Burst variants (kept as a flag on the base type), non-colour reduction keys (wiki "gold", dropped), non-ascending level cores (wiki errors), a bad index file name.
+- Decision (lowest risk): output goes to `data/import/`, not `data/cards/` as the roadmap sketched. `build_cards.py` globs `data/cards/saga-NN.json` into the game pack, so ~8,000 unchecked cards there would be embedded into `index.html` and break the Saga 15-17 pack invariant (D08). A colour release promotes verified cards into `data/cards`.
+- Stats are NOT yet checked against the card images (`stats_verified: false` on every card; image wins when it differs). That check is done per colour deck in the v0.37+ releases.
+- 32 new data tests (`tests/unit/import36.test.mjs`). No change to `src/` except the version.
+
+## v0.35.0
+- Token cards (issue #4; Eternal manual p. 56-57 and the official "How to Use Token Cards" page): Rig Avatar Dragon (`data/cards/tokens.json`) is built in as a Token Spirit; never in a Deck or the deck builder. New action `SEND_TOKEN`: no cost, Lv1 cores from the Reserve / spare Field cores, not a summon. A Token that leaves the Field (destroyed, depleted, returned, Soul State) goes back to the Token supply, so "after destroyed" Bursts do not trigger; a Brave on it goes to the Trash. Field badge "TOK", card type "Token Spirit".
+- Decision (lowest risk, the rules set no limit): each player prepares 10 of each Token kind their deck can send out.
+- Saga Brave onto a Grandwalker Nexus (manual p. 38-39): Yaj-Veda combines with a "Brahma" Grandwalker Nexus (Brave cores back to the Reserve; Lv1 cores to separate); the Nexus gets the Brave's symbol and its [While Combined with a Nexus] Contract Skill 3 (Flash, either Attack Step, Rig Avatar Dragon). Not yet: the Nexus taking the Brave's cost/family.
+- Wired: The GenesisContractor Brahma (SD69-CX01: Neo-Core Charge for Spirits, deploy mill, Contract Skill 2, Contract Field; Contract + Revive flags), Generator Yajdragon (BS76-006: Manifest onto Contractor Brahma in either Attack Step, counter, destroy whose effects can't activate, Token at LV2-3), Generator-Dragon-Brahman (BS76-CP01: (When Attacks) return two Generator/HermitDragon, two Tokens; Ultra Manifest and the Life effect stay residual), Yaj-Veda (complete: Trash-to-Hand from Brahma's mill, Nexus Brave), Rig Avatar Dragon ((When Attacks) +1 core to Contractor Brahma, +1 symbol for the battle).
+- New: `DESTROY` option `noFx` ("the effects of the destroyed target can't activate"), action `SYMBOL_PLUS`, card field `trashHand`.
+- Rule fix: an attacking Spirit's combined Brave symbol now counts for Life damage (manual p. 34); the CPU uses the same symbol count.
+- Card-count invariant counts combined Braves and ignores Tokens.
+- 35 new tests (`tests/unit/mech35.test.mjs`); 6 CPU-vs-CPU games with a Brahma Token deck: no invariant or page errors.
+
+## v0.34.2
+- Tooling only, no gameplay change (token saving): `npm run loop` runs build, lint and quick tests in one call with a one-line result; `test:quick` now picks up every `tests/unit/*.test.mjs` except the slow `props` suite (`tools/quick-tests.mjs`), so new test files need no `package.json` edit.
+- Light sparse clone documented in `CLAUDE.md` (skips `data/sources` and the 1.1 MB check table).
+- `docs/ai/token-economy.md` section 11: settings the owner can turn off.
+- Backup of the previous state: branch `backup/pre-v0.34.2`.
+
+## v0.34.1
+- Yaj-Veda (BS76-060) data read from the owner's card image: Lv1 1 core, 2000 BP. It can now be summoned on its own (Spirit form); [LV1](When Summoned) counter +1, then you can destroy an opposing Nexus. Summoned directly combined it has no Lv, so that effect does not fire.
+- Rule: a Brave summon is not a Spirit summon, so "when your Spirit is summoned" effects no longer fire for it (manual p. 35).
+- Token still open: the owner's asset folder has no Rig Avatar Dragon token card (only a VASSAL prototype name).
+- 3 new tests (V29-V31).
+
+## v0.34.0
+- Brave (issue #4, manual pp. 34-36): new card type; summon in Spirit form (treated as a Spirit, not a Spirit summon) or directly combined; combine / separate in the Main Step at no cost; Brave cores move onto the Spirit; BP+ and symbol added; one Brave per Spirit; it leaves the Field with its Spirit (Soul State: Trash); a Spirit that no longer fits separates at once. Hand button "Summon combined with a Spirit", Field buttons "Combine" / "Separate" (new buttons in the existing menus only). CPU combines with its strongest fitting Spirit.
+- BS76-060 Yaj-Veda is now playable as a Saga Brave (+5000 onto Ancient Dragon / Creation). Its Spirit-form levels are not in the card data yet, so it can only be summoned combined; its (When Summoned), Trash-to-Hand and Nexus Brave texts stay residual.
+- Over Count (manual p. 61): `overCount` {count, bp} adds BP while the Count meets the condition, whatever the Lv; effect modifier `oc:true` for [During OC] effects. Siegwurm, Meteorwurm, Siegwurm-Nova and Sieg-Meteorwurm get their OC BP.
+- Token: not done; the token card data (Rig Avatar Dragon) and the official token document are missing.
+- Decisions (lowest risk): the engine adds no Family from a Brave (manual p. 34 and p. 35 disagree); LV-gated Brave effects need the Brave's own Lv, so they do not fire while combined.
+- 28 new tests (`tests/unit/mech34.test.mjs`, part of `test:quick`).
+- Backup: `aeterna-v0.33.0.html` and a git bundle of v0.33.0 in the outputs backup folder.
+
+## v0.33.0
+Roadmap issue #4 (missing mechanics): block, destruction and reveal triggers.
+- Rules: (When Blocks) activates after the block is declared, in one pool with the attacker's "when blocked" effects (manual p. 30); "(When Attacks/Blocks)" effects share their Once per Turn. (When Destroyed) on the card itself, by battle or effect, never on depletion, with the level the card had (p. 31; partial: resolved right after the card reaches the Trash). New "when your X destroys an opposing Spirit in battle" trigger. Effects can work from the Hand when your Spirit is blocked.
+- Ruling (the manual is silent): "When this card is revealed from the deck" resolves at once inside the revealing effect, so the card can act before the rest is discarded or returned. Magic reveals do not fire it yet.
+- Engine: triggers BLOCKS, DESTROYED, REVEALED, ALLY_DESTROYS; `alsoBlocks`, `zone:"hand"`, `onceKey` (several effects share one Once per Turn); actions MIRAGE_SET, DEPLOY_SELF, REVEAL_PICK.
+- Cards wired: Teen, Aath, Sunya, Hazaar (When Blocks); Rainydle (reveal three); Ankillersaurus, Katanakasago (set as Mirage when revealed); The Sunstone Air Fortress (deploy when revealed); The Crimson Lavafalls (deploy from the Hand when blocked, LV2 draw). Teen and Katanakasago are now complete.
+- Tools: `check_obligations.py` accepts Node tests (`file.mjs:label`).
+- Tests: `tests/unit/mech33.test.mjs` (30 checks, part of `test:quick`).
+- Backup: `aeterna-v0.32.7.html` and a git bundle of v0.32.7 in the outputs backup folder.
+
+## v0.32.7
+Owner note: not only Spirits carry symbols, and cost reduction depends on them. Reduction now follows the Eternal rule manual VER.17.0.
+- Rules: Field symbols of Spirits, Ultimates and Nexuses reduce costs (p. 18, 24); Soul State (p. 55) and the Burst Area / Mirage (p. 49) do not; each Field symbol pays for one reduction symbol, matched in the best way; reduction stays mandatory and never takes a cost below 0.
+- Special symbols: Ultimates carry Ultimate symbols that reduce only Ultimate reduction symbols (p. 39); a plain Grandwalker Nexus has a God symbol that never reduces the six colours (p. 42); a Contract Grandwalker Nexus has a coloured God symbol that also reduces its colour (p. 44), so every Contract Grandwalker in the pack works as before; six-colour reduction symbols (`reduction: {"all": n}`) take any coloured symbol (p. 25).
+- House reading (the manual is silent): a two-colour card's symbol counts as either of its colours, still paying for one reduction symbol only.
+- Card data: `reduction` also takes `all`, `ultimate`, `god`; `symbolColors` also takes `god` and `god-<colour>`.
+- Display: the symbol indicator shows on every card that has symbols (Spirits, Ultimates, Nexuses incl. Grandwalker, Braves); Magic never. Ultimate symbols are gold; God symbols get a silver ring.
+- Tests: `tests/unit/rules32.test.mjs` (20 checks, part of `test:quick`), `tests/unit/ui32.test.mjs` +3 checks.
+- Backup: tag `backup/pre-v0.32.7` locally.
+
+## v0.32.6
+Fix (owner report on v0.32.4): on a narrow PC window the Hand could not be scrolled sideways with a mouse (the scrollbar is hidden and the wheel is vertical).
+- Horizontal rows (Hand, Field rows, step chips) now scroll with the mouse wheel and with a mouse drag; a drag never counts as a click, a plain click still opens the card. Touch keeps the native swipe; rows that fit are left alone.
+- Tests: `tests/unit/ui32.test.mjs` +6 checks (wheel at three widths, drag, click, no overflow).
+
+## v0.32.5
+UI changes requested by the owner (review comments on v0.32.4).
+- Phone field headers read `CPU FIELD ↔` / `YOUR FIELD ↔` (the word "swipe" is gone, the arrow stays).
+- PC: the CPU's right flank now mirrors the player's: VOID at the top, then CPU RES, then CPU LIFE.
+- PC: the CPU's hand count (`CPU HAND: n`) sits at the top centre of the CPU field; tapping it opens the count-only Hand view. Phones keep the `HD` stat.
+- Tests: `tests/unit/ui32.test.mjs` +6 checks.
+- Backup: tag `backup/pre-v0.32.5` locally.
+
+## v0.32.4
+UI change requested by the owner (review comments on v0.32.3).
+- Enlarged card view, Aegis-style: on PC and landscape screens the card sits left and the details right; on portrait phones the card is on top and the details below. The detail panel scrolls by itself, so the view never runs off the screen (before, the top was cut off when the text was long).
+- Effect text is justified (both edges straight, the last line left) in the enlarged view, the card detail dialog and the placeholder card face; long "A/B/C" names get break points after each slash so justified lines do not stretch.
+- Larger effect text in the detail panel on PC.
+- Tests: `tests/unit/ui32.test.mjs` +8 checks (enlarged view on PC, phone portrait, phone landscape and a small phone; justified text; slash break points).
+- Backup: tag `backup/pre-v0.32.4` locally.
+
+## v0.32.3
+Two-colour Spirits (owner request), display only: the rules still use the main colour until multicolour rules arrive (issue #4).
+- Card data: optional `colors` (2-3 colours, the first is the main one and must match `color` when both are given).
+- The frame is split (top/left first colour, right/bottom second) and the cost circle is half and half; a two-colour Ultimate splits it in both colours and gold.
+- Symbol indicator: a two-colour card's symbol is one pie in both colours with the symbol count; printed `symbolColors` still win.
+- Tests: `tests/unit/ui32.test.mjs` now 43 checks.
+
+## v0.32.2
+Owner feedback on v0.32.1: yellow and gold looked the same.
+- Yellow is now a lemon yellow (`#f5e50a`, was `#f2c94c`) so it is clearly different from the gold of the Ultimate symbol (`#d4af37`).
+
+## v0.32.1
+UI change requested by the owner (review comment on v0.32.0).
+- Cost circle: the number gets a dark outline, so it stays readable on white (and yellow) cards.
+- Symbol indicator in the bottom-right corner of every Spirit (Hand, Field, deck builder; Nexuses too since v0.32.7): the number of symbols on a circle in the symbol colour; mixed colours as a pie with one slice per symbol; the Ultimate symbol in gold (`--color-ultimate`). It turns with an exhausted Spirit like the magnifier. Nexus, Magic and Brave cards have none.
+- Card data: optional `symbolColors` (1-5 of the colours or `ultimate`, one per symbol; sets `symbols`). Cards without it keep their colour and count; the built-in pack is unchanged.
+- Deck builder: the copy count moved to the bottom-left so it does not cover the symbol indicator.
+- Ready for later sets (display only until the rules arrive with issue #4): all six colours have badge colours; Ultimate cards (`type: "Ultimate"`) get a gold ring around the frame, a gold tint, a cost circle split between their colour and gold, and a gold ring on the symbol badge; Rebirth cards (`rebirthTo: "<id of the rebirth side>"`) show a gold ↻ on the type badge, and the rebirth side (`rebirthSide: true`) also gets a double frame.
+- Tests: `tests/unit/ui32.test.mjs` (35 checks, PC + phone, part of `test:quick`).
+- Backup: tag `backup/pre-v0.32.1` locally on the v0.32.0 commit.
+
+## v0.32.0
+CPU as an evaluation policy with weight profiles and a lethal check (issue #1, Aegis study point 7). No UI change.
+- New part `src/js/09a-cpu-eval.js`: every CPU decision scores its options in one unit and takes the best; passing scores 0. Life is valued non-linearly (`lifeValue`: the last cores are worth the most); a Spirit's value is BP + symbols + printed cost (`unitValue`); `cpuEval` scores a whole board (zero-sum).
+- Profiles `balanced` (default), `aggressive`, `defensive` are weight sets only (`CPU_PROFILES`), same code. Stored as `SETTINGS.cpuProfile`; no selector in the UI yet (UI changes need approval). "Reset settings" restores `balanced`.
+- Attack: lethal check first (`cpuLethal`: worst case, every ready blocker stops one of the attackers with the most symbols) -> all-in; otherwise attack only with a positive score, and keep enough guards home when the opponent's next attack could take the CPU's Life (`guard` weight; `aggressive` keeps none).
+- Block: compares taking the hit with each blocker (win, even trade, chump); always blocks a hit on the last Life, with a winner if any, else the cheapest body. Replaces the old fixed rules.
+- Main Step: card choice by score (a new cheap Nexus first, then the strongest Spirit, as before). Magic, Flash, Advents, Revive and level-up keep their existing logic (lowest-risk scope).
+- Test hooks: `BS.CPU_PROFILES`, `cpuEval`, `cpuLethal`, `cpuAttackChoice`, `cpuAttackScore`, `cpuChooseBlock`, `cpuBlockScore`, `cpuPlayChoice`, `cpuPlayScore`, `setCpuProfile(name, side?)`, `setSimProfiles({player, opponent})`; `simMatch(seed, {profiles})`.
+- Tests: `tests/unit/cpu32.test.mjs` (29 checks, part of `test:quick`); property tests add aggressive-vs-defensive CPU matches (P01-P06 for that mode + P12), 25 property checks in all.
+- Backup: tag `backup/pre-v0.32` locally on `93e82bd`; the commit history keeps v0.31.0.
+
+## v0.31.0
+UI changes approved by the owner (issue #6); PC and phone layouts otherwise unchanged.
+- Coin toss buttons read `HEADS` / `TAILS`, turn order buttons `FIRST` / `SECOND`.
+- Every dialog, peek-bar and pick-bar button label is shown in Title Case (`titleCase`, applied when the button is drawn, so new prompts follow it automatically).
+- Card-style effect text (`effectLines` / `effectTextHTML`): header line (name, type, colour, cost), one line per effect block, level tags, timing tags and keywords marked. Used in the card detail, the enlarged card view and the Hand prompt.
+- The automatic hover preview (PC) and long-press preview (phone) are gone. Every Hand and Field card has a magnifier button in its bottom-left corner that opens the card detail directly; for a Field card it also shows the live Lv / cores / BP. It does not cancel a waiting dialog.
+- Tests: `tests/unit/ui31.test.mjs` (35 checks, PC + phone, part of `test:quick`); Python suites updated for the new labels and the magnifier.
+- Tooling (after the release, no game change): `tools/check_renames.py` in the pre-push hook finds tests that still use removed names or old labels; Project docs trimmed to `CLAUDE.md` + `card-list.md` (token saving).
+- Backup: tag `backup/pre-v0.31` locally on the previous commit (`9b422f7`); the commit history keeps v0.30.2.
+
+## v0.30.2
+- Release smoke test (`tests/unit/release.test.mjs`, 10 checks): opens the delivered single file on a PC screen (1366x768) and a phone screen (390x844), checks the menu loads without errors and the layout matches the screen, starts a match with the real buttons, reaches a playable board, survives a rotation/resize, and confirms the file is fully self-contained. It runs in the quick gate (pre-push), on every push (CI) and on the delivered copy before each release. A planted load-time error was caught by it.
+
+## v0.30.1
+- Token economy patch (no gameplay change; the build of the game script is byte-identical to v0.30.0 apart from the version).
+- The full Python regression (parts 1-3, legacy, 30 CPU-vs-CPU sims) now runs on GitHub Actions in parallel (`.github/workflows/regression.yml`, started for each release), instead of inside the working session.
+- The effect engine file is split into four parts (`src/js/02a`-`02d`), so a change reads only the part it needs.
+- CLAUDE.md shortened (history moved to Issues and these notes); new `docs/ai/token-economy.md` with the token rules for every session.
+- Project docs: the duplicate card JSON copies were replaced by a short card list (the repo stays the only source of card data).
+
+## v0.30.0
+- Tooling release (no rule or gameplay change). The game source is now split into `src/` (template, CSS and 17 script parts) and `index.html` is built from it by `tools/build.mjs`; the first build was byte-identical to v0.29.0.
+- New headless test layer: 67 Node tests (`npm test`): build/layout 12, card data 14, engine helpers 24, seeded CPU-vs-CPU properties 17 (two decks x 10 seeds, determinism, replay). A full run takes about 90 seconds.
+- New static check `tools/lint.mjs`; it found and removed duplicate keys (`evQ` in the game state, two `window.BS` hooks listed twice).
+- New: GitHub Actions CI, issue templates and labels; open work moved to GitHub Issues #1-#5. `tools/pack_ai.mjs` makes a one-file project pack for the brainstorming chat.
+- Choice (lowest risk): npm/pip downloads are blocked in the cloud workspace, so built-in equivalents are used instead of Vitest, fast-check, ESLint and Repomix (`node --test`, a seeded property runner, the TypeScript checker, `pack_ai.mjs`). ES modules + Vite were not used: they would hide the global functions the inline handlers and tests use.
+- Known gaps tracked as tests: 37 glossary entries without a manual `rule` note (ratchet list `tests/unit/known-gaps.json`, issue #3).
+- Tests: 67/67 Node tests; full Python regression parts 1-3 and legacy 1307/1307, 10 CPU-vs-CPU sims all passing.
+
+## v0.29.0
+- Official rule (Comprehensive Rules 4-8-1/4-8-2, Eternal Rule Manual p. 11): the Void is the core supply and has no limit. The Core Step (CR 7-3-2), the Count Area (manual p. 60) and "cores from the Void" effects take cores from the Void first and add new cores from outside the game when it is empty, so these effects are never cut short by an empty Void (Nao: cores = opposing Hand / 2).
+- New `data/kb/rule-obligations.json`: every official rule the engine claims to obey, its manual page, status and proving test; `tools/check_obligations.py` checks it (27 rules: 23 enforced, 2 partial, 1 equivalent, 1 open).
+- Direct tests for setup (Life, Reserve, Hand, Contract card, redraw, coin toss), the turn steps, battle results and deck-out.
+- Known gap (manual p. 12): adding the Contract card to the starting Hand is optional; the engine always adds it (a choice prompt would be a UI change, suggested to the user first).
+- Test tooling: the runner now also reads a suite's error output, so a crashed or empty suite can no longer count as passed; the image that legacy/hid needs is generated by make_fixtures (66 more checks run).
+- Tests: v29 suite 42/42, full regression (parts 1-3, legacy, 30 CPU-vs-CPU sims) all passing.
+
+## v0.28.0
+- Official rule (Eternal Rule Manual FAQ Q5): "By doing X, do Y" is done only when Y is possible, and the player chooses whether to do it. New engine action `BY`; Paanch, Pachhattar, Sphinott-Hauser and Hazaar use it (they no longer pay X for nothing).
+- Official rules (About Activating Effects): effects that activate at the same time form one pool and the turn player decides the order, also for the opponent's effects (Life reduced: attacker and defender effects together; When Attacks with "when an ally attacks"; When Manifests with the summon effects). An effect caused by a resolving effect resolves right after that effect has finished, before older pending effects (also for Activate effects and Bursts).
+- Tests: v28 suite 27/27, full regression, 40 CPU-vs-CPU sims.
+
+## v0.27.0
+- Card images everywhere cards are listed: Trash (newest first), your Hand, Soul State, Banished, your Burst/Mirage area, the cards under a stacked Spirit, the Hand card dialog, Burst and Flash prompts, and every "choose a card" effect prompt show the cards like the starting-hand screen. Tap a card to enlarge it.
+- When the cards do not fit, the row scrolls sideways (PC and phone); with few cards the row is centered. Hidden cards stay hidden (the CPU Hand, face-down Bursts, decks).
+- Replay: board actions are recorded on every route; a record that ends while the match waits for a prompt counts as a clean end.
+- Tests: v27 suite 31/31, full regression, 30 CPU-vs-CPU sims.
+
+## v0.26.0
+- Every match has a seed: shuffles, the coin toss and the random CPU deck use a seeded generator, so the same seed + decks + inputs give the same match.
+- Match record: every prompt answer, field pick and board action of the human is recorded with the seed and both decks; the last 3 finished matches keep their record in the match history. `BS.runReplay(record)` replays it and reports whether the result and the hash of the whole log are identical (a changed seed or a missing input is detected).
+- Named test scenarios: `tests/scenarios/*.json` boards loaded with `BS.loadScenario` (aliases, one Soul Core, consistent cores/cards).
+- Tests: v26 suite 33/33, full regression, 30 CPU-vs-CPU sims. No rules changes.
+
+## v0.25.0
+- Grandwalker core effects: Erimakilizard (cores of opposing Grandwalker Nexuses to the Void), Magmatodon (reveal 5, deploy Ometeotl, Soul Core, destroy), Cladoselache LV2, Sphinott-Hauser (Manifest in either Attack Step, destroy up to 20000 BP, banish), Pachyrhachis and Magmazosia (Soul Core to Ometeotl), Ometeotl (unaffected with a Soul Core, counters +2).
+- Official rules: the Soul Core never goes to the Void; When-Manifests effects do not activate in the Main Step; "all cores from an opposing Grandwalker Nexus" is one Nexus (Aath fixed).
+- Cards list the printed clauses that are not implemented yet (`residual`, shown in the card detail).
+- The Red prebuilt deck now plays 3 Ometeotl (instead of 3 Rokceratops, which needs Siegwurm).
+- Tests: v25 suite 48/48, full regression, 30 CPU-vs-CPU sims. `tests/make_fixtures.py` recreates the files the older suites need. Design notes from the Aegis simulator: `docs/aegis-study.md`.
+
+## v0.24.0
+- Code review and cleanup: fabricated prototype cards and first-generation mechanics removed from the game (test fixtures live in `tests/`), real-card default deck, one version constant, no external network access (audited), see `docs/code-review.md`.
+- Tests: v24 suite 52/52, plus the full regression.
+
+## v0.23.0
+- Official rule: cores of a Grandwalker Nexus go to the Void when it leaves the Field or enters Soul State.
+- Official rule: Revive/Revival and "summon/deploy" effects without "without paying the cost" now pay the cost (Mitra Contract Skill, Pachhattar, Lizardedge, Altair). Humans get the payment dialog.
+- Tests: v23 suite 25/25.
+
+## v0.22.0
+- Official rule: the Lv of a Contract Grandwalker Nexus (Mitra, Ometeotl, Zeus, Brahma, Lugh) follows your Count. Card text and hover show "Count N".
+- Tests: v22 suite 21/21.
+
+## v0.21.0
+- Rules audit against the official manuals: Burst and Mirage can both be set; a replaced Mirage returns to the Hand; Flash includes the Main Step; the CPU sets Mirages.
+- The effect glossary now carries the official rule for each entry (`rule` field) and a test checks it against the engine.
+- Tests: v21 suite 20/20.
+
+## v0.20.0
+- Magic cards can have separate Main and Flash effects and an alternative cost (Wurm Draw).
+- New Magic effects: REVEAL_ADD, BP_PLUS_MATCH. The CPU casts them (Main) and uses the Flash +BP to win a lost fight.
+- Tests: v20 suite 28/28.
+
+## v0.19.0
+- New engine pieces: START_ATTACK trigger, Mirage "During Set" triggers (own/opposing Life reduced), STATIC flags (MUST_BLOCK, NO_RETURN, CORES_DRAW), AWAKEN action, Soul State summon, Trash-core moves to the attacker, lifeGe condition.
+- Wired red cards: Goradon, Lizardedge, Sabecaulus, Balmung, Tartargar, Altair, Ankillersaurus, Katanakasago.
+- Tests: v19 suite 36/36; older suites pass (two load-related flakes passed when rerun alone).
+
+## v0.18.0
+- Game log drawer: header button "Log" or key L (Esc closes). Side panel on PC, bottom sheet on phone; follows new lines.
+- Card hover preview on PC (mouse only): image, type/cost/levels, live Lv/cores/BP for Spirits on the field, effect text and an "implemented?" warning.
+- Keyboard: Space / Enter = Next, L = log, Esc = close.
+- Match history (last 100, saved in the browser): shown in Settings with win rate and a Clear button.
+- HOW TO PLAY page in the lobby.
+- Tests: v18 suite 37/37; all older suites pass; 30 CPU sims clean.
+
+## v0.17.0
+- Built-in card pack: 62 cards (Saga 15-17: red BS75/BS76 and white Mitra / Awakened Dragon) are inside the game, no import needed. Imports can still override them; "Remove imported cards" keeps the pack. Rebuild with `python3 tools/build_cards.py && python3 tools/embed_pack.py`.
+- 8 deck slots (rename, switch, ready-made decks: Training Red, White Mitra, Red BS75 draft). The old single saved deck becomes slot 1.
+- PLAY page: choose your deck, the CPU deck (ready-made / random legal / mirror), and the format.
+- Settings page: game speed (Normal / Fast / Instant) and optional synthesized sounds.
+- Fixed: deck builder tiles overlapped on phones when many cards were shown.
+
+## v0.16.0
+- Advent during a battle now keeps the battle going: the Spirit on top of the stack continues as the attacker/blocker (before, the attack ended).
+- CPU uses Flash: Contract Advent on its fighting Spirit when it turns a lost fight into a win, Mitra's Contract Field and Contract Skill.
+- Mitra Contract Field second half: until the end of the turn, Contract Advent from Soul State (put Reserve cores onto the advent card; Field cores are not offered yet).
+
+## v0.15.0
+- Card data reorganised per Saga plus one all-cards file (see Data).
+- Lobby: the main button is now PLAY; the PLAY page holds the format choice and VS CPU MATCH. The library button is now "CARD LIBRARY" (import buttons are inside).
+- Engine: event queue ("opposing Hand increases by an opposing effect", "ally depleted/destroyed"), trigger "ally attack reduces the Life", Revive from Soul State, new conditions (oppTurn, soulLe, putGe, hasName), actions LIFE_TO_RESERVE and TRASH_CORES_TO.
+- Cards wired: Mitra's Revelation Temple, Nao (Burst + When Summoned), Banve (Life to Reserve), Do (cores from Trash, Soul State entry), Mitra Revive.
+
+## v0.14.0
+- Soul State Area on both fields (top-right for you, bottom-left for the CPU), no card limit; the Void zone for cores.
+- New white deck data: the white cards in `data/cards/saga-16.json` and the deck list `data/decks/white-mitra-awakened-dragon.txt`.
+- Effects that trigger together: you choose the order.
+
+## v0.14.0
+- Contract Advent and Manifest (Hand, Main Step and Flash windows), "When Advents" trigger.
+- White Mitra deck: Teen, Iktis, Aath, Pachhattar, Iktalis (Contract Advent) and Banve, Hazaar (Manifest) are now playable.
+
+## Effect glossary (v0.20+)
+`data/glossary/effects.json` lists the recurring effect patterns (triggers, actions, conditions, static flags, keywords) with the engine vocabulary that implements each and its status (wired/partial/missing). `python3 tools/tag_effects.py` tags every card text with those patterns and writes `data/glossary/card-tags.json` and `docs/effect-coverage.md` (which pieces are still missing, by number of cards). When adding a new card: run the tagger, wire the missing pieces once in the engine, then express the card as data.

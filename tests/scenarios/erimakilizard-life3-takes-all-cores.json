@@ -1,0 +1,9 @@
+{
+  "name": "erimakilizard-life3-takes-all-cores",
+  "about": "Your Crimson attacks at Life 3 with Erimakilizard on the field: the CPU sends all 4 cores of the opposing Mitra to the Void (one Nexus), not 2 spread.",
+  "turn": 3, "active": "player", "step": 5,
+  "players": {
+    "player": { "life": 3, "reserve": 6, "spirits": [ { "id": "BS75-003", "cores": 1, "as": "erimaki" }, { "id": "BS75-001", "cores": 1, "as": "attacker" } ] },
+    "opponent": { "reserve": 4, "nexus": [ { "id": "BS74-CX03", "cores": 4, "as": "mitra" }, { "id": "BS71-CX01", "cores": 1, "as": "zeus" } ] }
+  }
+}

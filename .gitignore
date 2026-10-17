@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+/*.png
+tests/last-run.json
+node_modules/
+build/
+repomix-output*
+brand/

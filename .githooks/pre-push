@@ -1,0 +1,16 @@
+#!/bin/sh
+# Cheap gate before every push (seconds), so CI and the Regression workflow are not spent on a broken build.
+# Enable once per clone:  git config core.hooksPath .githooks
+set -e
+node tools/build.mjs --check
+node tools/lint.mjs
+node tools/brand_guard.mjs
+z=0000000000000000000000000000000000000000
+while read -r _lref lsha _rref rsha; do
+  [ "$lsha" = "$z" ] && continue
+  if [ "$rsha" = "$z" ]; then node tools/brand_guard.mjs --range "$lsha" --not --remotes || exit 1
+  else node tools/brand_guard.mjs --range "$rsha..$lsha" || exit 1; fi
+done
+python3 tools/check_renames.py || { echo "[pre-push] tests still use removed names / old labels (fix them before the Regression run)"; exit 1; }
+out=$(npm run -s test:quick 2>&1) || { echo "$out" | grep -E "^not ok|^# (pass|fail)"; echo "[pre-push] quick tests failing"; exit 1; }
+echo "[pre-push] build, lint, stale-reference check and quick tests ok"

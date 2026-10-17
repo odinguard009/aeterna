@@ -1,0 +1,24 @@
+# Owner switch for the idle chain (docs/ai/next-session-prompt.md): Actions tab -> "Auto mode" -> Run workflow -> on/off.
+# It only writes the comment ON or OFF on issue #1; tools/session_gate.sh reads the newest one.
+name: Auto mode
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Auto mode (otomatis)"
+        required: true
+        type: choice
+        options: ["on", "off"]
+permissions:
+  issues: write
+jobs:
+  switch:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Write the switch comment on issue 1
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MODE: ${{ inputs.mode }}
+        run: |
+          body="$(echo "$MODE" | tr a-z A-Z) (Actions)"
+          gh api -X POST "repos/${{ github.repository }}/issues/1/comments" -f body="$body" --jq .html_url

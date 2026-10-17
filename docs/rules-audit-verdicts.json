@@ -1,0 +1,162 @@
+{
+ "_doc": "Hand-set verdicts for tools/rules_audit.py (v0.55.1). Each entry: match = case-insensitive substring of the item text (coverage row, glossary id or rule-note line); verdict = confirmed | house | conflict | open; source = section/page/URL; note = what to do. Entries win over the automatic classification. Sources: docs/manual-notes.md 'Sources and versions'.",
+ "checked": "2026-10-16",
+ "items": [
+  {
+   "match": "Mandatory Soul Core use (17.0)",
+   "verdict": "confirmed",
+   "source": "JP 17.0 revision notice 2026-04-03, item 5 (rule-manual-eternal17-revised.php)",
+   "note": "The rule makes the Soul Core part of every game (setup: 3 cores + 1 Soul Core in the Reserve); it does not force spending it. Engine setup already does this. Soul-Core-moving costs (e.g. [Kidou]) may use up the source Spirit; a later 'when you've done so' / 'after Burst' part then fails. Coverage row status was stale."
+  },
+  {
+   "match": "Standby state unification (17.0)",
+   "verdict": "confirmed",
+   "source": "JP 17.0 revision notice item 4 (Standby state)",
+   "note": "R3: a leaving Spirit/Ultimate/Nexus waits in Standby, resolves its leave triggers (When Destroyed, When Banished, when it leaves the Field), then goes to the Trash or its destination; its symbols still reduce costs and applied effects persist meanwhile. v0.57.0: built as p.standby (06-rules.js removeSpirit / releaseStandby): a destroyed or depleted card waits there while its queued (When Destroyed) / ally-lost effects resolve, its symbols still reduce costs, cores already in the Reserve; then Trash or its destination. Leaves with no leave trigger (banish, bounce, Nexus) go to the destination at once, which the rule makes equivalent; When Banished / when it leaves the Field triggers do not exist in the engine yet. Test S557."
+  },
+  {
+   "match": "T_DESTROYED",
+   "verdict": "confirmed",
+   "source": "JP 17.0 revision notice item 4; Eternal manual p. 31",
+   "note": "Same as Standby: (When Destroyed) resolves while the card waits in Standby, not after it is in the Trash. Built in v0.57.0 (fxValid accepts a DESTROYED source in p.standby; test S557-01)."
+  },
+  {
+   "match": "Rule priority cannot > must > may (17.0)",
+   "verdict": "conflict",
+   "source": "JP 17.0 revision notice item 9 (effect priority)",
+   "note": "Official: 'cannot' > 'must' > 'do' = 'can' (do and can no longer outrank each other). Engine has no general priority resolver; planned as session E (Unaffected / Heavy / Ultra Armor)."
+  },
+  {
+   "match": "P_PRIORITY",
+   "verdict": "conflict",
+   "source": "JP 17.0 revision notice item 9",
+   "note": "Glossary note cites FAQ A3/A4 only; add the 17.0 order cannot > must > do = can (session E)."
+  },
+  {
+   "match": "Constant effects not negatable by \"cannot be prevented\" (17.0)",
+   "verdict": "open",
+   "source": "JP 17.0 revision notice item 9 (constant effects)",
+   "note": "Official: constant effects with no place or condition (granting a family or symbol) are not stopped by 'effects can't activate'. Engine has no 'effects can't activate' action yet, so nothing conflicts today; build it with session E."
+  },
+  {
+   "match": "K_BURST",
+   "verdict": "confirmed",
+   "source": "JP 17.0 revision notice item 6 (Burst declaration)",
+   "note": "Declaring at the event is right (one at a time; not declared = lost for that event). But a declared Burst resolves AFTER all non-Burst triggered effects of the event, several Bursts in declaration order (non-turn player first). Fixed in v0.55.2: flushBursts() runs every queued non-Burst event first, then the Bursts (non-turn player first); tests B552-01..04."
+  },
+  {
+   "match": "Triggered effects order (turn player chooses)",
+   "verdict": "open",
+   "source": "JP 17.0 revision notice item 6 (Bursts resolve last, declaration order)",
+   "note": "Cross-player ordering of triggered effects still partial; Burst ordering fixed in v0.55.2 (K_BURST)."
+  },
+  {
+   "match": "Keyword effects (renamed in 17.0",
+   "verdict": "confirmed",
+   "source": "JP 17.0 revision notice item 9 (keyword effects, several per card)",
+   "note": "Engine keeps keywords as a list per card."
+  },
+  {
+   "match": "Setup: 5 Life, 3 Reserve + Soul Core, 4 cards, one redraw",
+   "verdict": "confirmed",
+   "source": "JP 17.0 revision notice items 3 and 5; Eternal manual pp. 11-12",
+   "note": ""
+  },
+  {
+   "match": "Flag Nexus",
+   "verdict": "open",
+   "source": "JP 17.0 revision notice item 2 (Flag Nexus, F Contract Advent)",
+   "note": "Rule text now found: a Flag Nexus is an ordinary Nexus (moves cores, hit by Nexus effects); a Contract Flag Nexus also has the Contract card traits (one copy, opening Hand, Soul State when an opposing effect removes it); F Contract Advent can Advent onto Spirits or Nexuses, also in Soul State. Unblocks the Flag Contract Advent item (still to build)."
+  },
+  {
+   "match": "T_REVEALED",
+   "verdict": "house",
+   "source": "no official text (Eternal manual VER.17.0, JP 17.0 notice)",
+   "note": "Kept: resolves at once while the revealing effect resolves."
+  },
+  {
+   "match": "When this card is revealed from the deck",
+   "verdict": "house",
+   "source": "no official text",
+   "note": "Kept (v0.33 ruling)."
+  },
+  {
+   "match": "K_RUSH",
+   "verdict": "house",
+   "source": "no Eternal/Standard manual section; card text BS19-BS27",
+   "note": "Kept."
+  },
+  {
+   "match": "Rush symbol condition",
+   "verdict": "house",
+   "source": "card text only",
+   "note": "Kept."
+  },
+  {
+   "match": "Turn order by coin toss",
+   "verdict": "house",
+   "source": "Eternal manual p. 11 (rock-paper-scissors)",
+   "note": "Equivalent random choice; kept."
+  },
+  {
+   "match": "Grandwalker Nexus cores",
+   "verdict": "open",
+   "source": "Eternal manual pp. 22, 26, 42, 44",
+   "note": "Cores cannot pay costs / be moved (cited). Open: Soul Core on a Grandwalker Nexus, whether its cores count toward Lv (no text found)."
+  },
+  {
+   "match": "depleted",
+   "verdict": "open",
+   "source": "Eternal manual p. 28; Standard CR 12-2-1-12-1",
+   "note": "Depletion is not destruction (cited). 'Depleted or destroyed by the opponent' has no separate rule text; card text decides."
+  },
+  {
+   "match": "Deck 40+, max 3 same name, one Contract type",
+   "verdict": "confirmed",
+   "source": "Eternal manual pp. 9-12, 55 (deck, Contract card)",
+   "note": ""
+  },
+  {
+   "match": "Steps Start/Core/Draw/Refresh/Main/Attack/End",
+   "verdict": "confirmed",
+   "source": "Eternal manual pp. 20-21; Standard CR 7-3",
+   "note": ""
+  },
+  {
+   "match": "Cost payment, mandatory reduction, depletion",
+   "verdict": "confirmed",
+   "source": "Eternal manual pp. 25-28",
+   "note": ""
+  },
+  {
+   "match": "Attack, block (one blocker), BP compare, symbols damage",
+   "verdict": "confirmed",
+   "source": "Eternal manual pp. 30-31",
+   "note": ""
+  },
+  {
+   "match": "Deck-out loss at own Start step",
+   "verdict": "confirmed",
+   "source": "Eternal manual p. 9",
+   "note": ""
+  },
+  {
+   "match": "Life cores go to Reserve",
+   "verdict": "confirmed",
+   "source": "Eternal manual pp. 30-31",
+   "note": ""
+  },
+  {
+   "match": "Heavy Exhaust",
+   "verdict": "confirmed",
+   "source": "Eternal manual pp. 60-61, FAQ p. 67",
+   "note": ""
+  },
+  {
+   "match": "Standard-card text treated in Eternal",
+   "verdict": "confirmed",
+   "source": "JP 17.0 revision notice item 8 (Standard trigger wording)",
+   "note": "Abbreviated Standard timings count as the full 'this Spirit's' wording; 'while attacking' is not 'When Attacks'."
+  }
+ ]
+}

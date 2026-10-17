@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aeterna</title>
+<style>
+/*@@CSS@@*/
+</style>
+</head>
+<body>
+
+<div id="view-lobby" class="app-view active">
+  <div class="lobby-title">
+    <h1>AETERNA</h1>
+    <p>Mobile Card Battle Simulator</p>
+  </div>
+  <div class="lobby-menu">
+    <button class="menu-btn primary" data-a="go-play">⚔ PLAY</button>
+    <button class="menu-btn" data-a="go-deck">🎴 DECK BUILDER</button>
+    <button class="menu-btn" data-a="go-lib">🖼 CARD LIBRARY</button>
+    <button class="menu-btn" data-a="go-settings">⚙ SETTINGS &amp; HISTORY</button>
+    <button class="menu-btn" data-a="go-howto">❓ HOW TO PLAY</button>
+    <button class="menu-btn small" data-a="rules">ⓘ RULES COVERAGE</button>
+  </div>
+</div>
+
+<div id="view-settings" class="app-view">
+  <div class="db-header"><h2>Settings</h2><div class="db-tools"><button class="btn-nav-small" data-a="go-lobby">◄ Back to Lobby</button></div></div>
+  <div class="lib-sec"><h3>Game speed</h3>Animation and CPU pause length.
+    <div class="lib-row"><select id="set-speed" class="sel"><option value="normal">Normal</option><option value="fast">Fast</option><option value="instant">Instant</option></select></div></div>
+  <div class="lib-sec"><h3>Sound</h3>Short synthesized sounds for attacks, hits, summons and draws (no audio files).
+    <div class="lib-row"><select id="set-sound" class="sel"><option value="off">Off</option><option value="on">On</option></select></div></div>
+  <div class="lib-sec"><h3>CPU style</h3>How the CPU weighs attacks, blocks and plays (balanced is the default).
+    <div class="lib-row"><select id="set-cpu" class="sel"></select></div></div>
+  <div class="lib-sec"><h3>Saved data</h3>Decks, imported cards, images and settings stay in this browser only.
+    <div class="lib-row"><button class="btn-nav-small" data-a="set-reset">Reset settings</button></div></div>
+  <div class="lib-sec"><h3>Match history</h3><div id="set-hist"></div>
+    <div class="lib-row"><button class="btn-nav-small" data-a="hist-clear">Clear history</button></div></div>
+  <div id="set-msg" class="lib-msg"></div>
+</div>
+
+<div id="view-howto" class="app-view">
+  <div class="db-header"><h2>How to play</h2><div class="db-tools"><button class="btn-nav-small" data-a="go-lobby">◄ Back to Lobby</button></div></div>
+  <div class="lib-sec"><h3>Goal</h3>Reduce the opposing Life from 5 to 0 by attacking with your Spirits, or make the opponent run out of cards at the start of their turn.</div>
+  <div class="lib-sec"><h3>A turn</h3><ul>
+    <li><b>Start / Core:</b> you gain a core (the first player skips it on turn 1).</li>
+    <li><b>Draw:</b> draw one card. <b>Refresh:</b> exhausted cards stand up and Trash cores return to the Reserve.</li>
+    <li><b>Main:</b> summon Spirits, deploy Nexuses, cast Magic, set a Burst, move cores, use effects. Press <b>NEXT</b> to move on.</li>
+    <li><b>Attack:</b> choose a Spirit to attack. The defender may block with one ready Spirit; the higher BP wins (ties destroy both). An unblocked attack removes Life equal to its symbols.</li>
+    <li><b>End:</b> the turn passes. In Standard there is also a second Main step.</li></ul></div>
+  <div class="lib-sec"><h3>Cores and costs</h3><ul>
+    <li>Pay a card's cost with Reserve cores (or cores from your Spirits). Matching-color cards on your field reduce the cost.</li>
+    <li>A Spirit's <b>level</b> depends on the cores on it; more cores means more BP. A Spirit with too few cores is depleted and goes to the Trash.</li>
+    <li>The <b>Soul Core</b> is a special core; some effects send it to the Trash, a Nexus or the Void.</li></ul></div>
+  <div class="lib-sec"><h3>Special cards</h3><ul>
+    <li><b>Burst:</b> set a card face down in the Burst area; it flips by itself when its condition happens.</li>
+    <li><b>Flash:</b> Magic and effects usable during the two Flash windows of a battle (defender first).</li>
+    <li><b>Advent / Contract Advent / Manifest:</b> stack or summon a stronger card using the Soul Core. Buttons appear on the card in your Hand.</li>
+    <li><b>Soul State / Void:</b> extra zones shown in the top-right corner (Soul State) and the side panel (Void).</li></ul></div>
+  <div class="lib-sec"><h3>Controls</h3><ul>
+    <li>Tap a card to open its actions; tap a zone (Trash, Soul State, Burst...) to look inside it. Long-press a card to zoom it.</li>
+    <li>On a PC, hover a card to read it. Keyboard: <b>Space</b> or <b>Enter</b> = Next step, <b>L</b> = game log, <b>Esc</b> = close.</li>
+    <li>The game log (📜) lists everything that happened. Settings let you change the game speed and sounds.</li></ul></div>
+  <div class="lib-sec"><h3>Your cards</h3>Open <b>Card Library</b> to import card data and your own card images (they stay on your device). The Deck Builder has 8 deck slots and ready-made decks.</div>
+</div>
+
+<div id="view-play" class="app-view">
+  <div class="lobby-title">
+    <h1>PLAY</h1>
+    <p>Choose the format, then start a match</p>
+  </div>
+  <div class="lobby-menu">
+    <button class="menu-btn" data-a="format" id="format-btn">FORMAT: ETERNAL</button>
+    <label class="sel-row">Your deck<select id="play-deck" class="sel"></select></label>
+    <label class="sel-row">CPU deck<select id="play-cpu" class="sel"></select></label>
+    <div id="lobby-deck" class="lobby-deck"></div>
+    <button class="menu-btn primary" data-a="start">⚔ VS CPU MATCH</button>
+    <button class="menu-btn small" data-a="go-lobby">◄ Back to Lobby</button>
+  </div>
+</div>
+
+<div id="view-deckbuilder" class="app-view">
+  <div class="db-header">
+    <h2>Deck Builder</h2><span id="db-topcount" class="db-topcount"></span>
+    <button class="db-menu-btn btn-nav-small" data-a="db-sheet" data-v="menu" aria-label="Deck menu">⋯ Menu</button>
+    <div class="db-tools">
+      <button class="btn-nav-small" data-a="format" id="db-format" title="Switch format">ETERNAL</button>
+      <select id="db-slot" class="sel" title="Deck slot"></select>
+      <input id="db-name" class="sel" maxlength="24" size="10" title="Deck name" autocomplete="off">
+      <select id="db-preset" class="sel" title="Load a ready-made deck into this slot"></select>
+      <button class="btn-nav-small" data-a="db-reset">Default deck</button>
+      <button class="btn-nav-small" data-a="db-clear">Clear</button>
+      <button class="btn-nav-small" data-a="go-lobby">◄ Back to Lobby</button>
+    </div>
+  </div>
+  <div class="db-body">
+    <aside class="db-rail" id="db-rail" aria-label="Filters">
+      <div class="db-sheet-head"><b>Filters</b><button class="btn-nav-small" data-a="db-sheet" data-v="">Done</button></div>
+      <div class="db-fh">Colour</div><div class="db-chips" id="db-f-colors"></div>
+      <div class="db-fh">Cost</div><div class="db-chips" id="db-f-costs"></div>
+      <div class="db-fh">Type</div><div class="db-chips" id="db-f-types"></div>
+      <div class="db-fh">Set</div><select id="db-set" class="sel" title="Set"></select>
+      <div class="db-fh">Family</div><input id="db-family" class="sel" type="search" placeholder="e.g. Dragon" autocomplete="off" title="Family">
+      <label class="db-tog"><input type="checkbox" id="db-legal"> Legal in format</label>
+      <label class="db-tog"><input type="checkbox" id="db-only"> In deck only</label>
+      <div class="db-fh">Sort</div><select id="db-sort" class="sel" title="Sort"><option value="default">Default order</option><option value="set">Set number</option><option value="cost">Cost</option><option value="name">Name</option><option value="colour">Colour</option></select>
+      <button class="btn-nav-small db-freset" data-a="db-freset">Reset filters</button>
+    </aside>
+    <section class="db-pool">
+      <div class="db-filters"><input id="db-search" class="db-search" type="search" placeholder="Search name, ID or text  ( / )" autocomplete="off">
+        <button id="db-filter-btn" class="btn-nav-small db-filter-btn" data-a="db-sheet" data-v="filters">Filters</button><span id="db-count"></span></div>
+      <div class="db-grid" id="db-card-list"></div>
+    </section>
+    <aside class="db-deck" id="db-deck" aria-label="Deck">
+      <div class="db-sheet-head"><b>Deck</b><button class="btn-nav-small" data-a="db-sheet" data-v="">Close</button></div>
+      <div class="db-dk-head"><div class="db-counter" id="db-counter"></div><div class="db-status" id="db-status"></div></div>
+      <div class="db-dk-list" id="db-dk-list"></div>
+      <div class="db-dk-stats" id="db-dk-stats"></div>
+      <div class="db-dk-actions"><button class="btn-nav-small" id="db-undo" data-a="db-undo">↶ Undo</button><button class="btn-nav-small" data-a="db-import">Import text</button><button class="btn-nav-small" data-a="db-export">Export text</button></div>
+    </aside>
+  </div>
+  <button class="db-deckbar" id="db-deckbar" data-a="db-sheet" data-v="deck"></button>
+  <div class="db-backdrop" data-a="db-sheet" data-v=""></div>
+</div>
+
+<div id="view-library" class="app-view">
+  <div class="db-header"><h2>Card Library</h2><div class="db-tools"><button class="btn-nav-small" data-a="go-lobby">◄ Back to Lobby</button></div></div>
+  <div class="lib-sec"><h3>1. Card data (JSON)</h3>
+    Load your own card list. Only Spirit and Nexus cards work in this build. Imported cards have no coded effect, so their text is shown for reference only.
+    <div class="lib-row"><label class="file-btn">Import card data<input id="in-cards" type="file" accept=".json,application/json"></label>
+    <button class="btn-nav-small" data-a="lib-template">Download template</button><button class="btn-nav-small" data-a="lib-cards-clear">Remove imported cards</button></div></div>
+  <div class="lib-sec"><h3>2. Card images</h3>
+    Pick image files from your own device. A file is matched to a card by (1) the <b>image</b> field in your card data, so any file name works, (2) the card ID (for example <b>BS76-001.png</b>), or (3) the exact card name. Images stay in this browser only and are never uploaded.
+    <div class="lib-row"><label class="file-btn">Import images<input id="in-imgs" type="file" accept="image/*" multiple></label>
+    <button class="btn-nav-small" data-a="lib-imgs-clear">Remove all images</button><span id="lib-imgcount"></span></div></div>
+  <div class="lib-sec"><h3>3. Deck list (text)</h3>
+    One card per line: <b>3 BS44-001</b> or <b>3x Card Name</b>. Lines starting with # are ignored.
+    <textarea id="lib-deck" class="lib-area" spellcheck="false"></textarea>
+    <div class="lib-row"><button class="btn-nav-small" data-a="lib-deck-import">Import as my deck</button><button class="btn-nav-small" data-a="lib-deck-export">Export my deck</button></div></div>
+  <div id="lib-msg" class="lib-msg"></div>
+</div>
+
+<div id="view-playmat" class="app-view">
+  <div id="app" class="viewport"></div>
+</div>
+
+<div id="log-drawer"><div class="ld-head"><span>📜 Game Log</span><button class="btn-nav-small" data-a="log-close">Close ✕</button></div><div class="ld-body" id="ld-body"></div></div>
+<div id="peek-bar"><div id="peek-text"></div><div id="peek-btns"></div></div>
+<div id="pick-bar"><div id="pick-text"></div><div id="pick-btns"></div></div>
+<div id="zoom-overlay" data-a="zoomclose"></div>
+<div id="action-modal" class="modal-overlay">
+  <div class="modal-box">
+    <div id="modal-card-title" class="modal-title">Zone Details</div>
+    <div id="modal-card-desc" class="modal-desc">Zone Information</div>
+    <div id="modal-actions" class="modal-btns"></div>
+  </div>
+</div>
+
+<script>
+/*@@JS@@*/
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "aeterna",
+  "private": true,
+  "version": "0.57.0",
+  "type": "module",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "check": "node tools/build.mjs --check",
+    "lint": "node tools/lint.mjs",
+    "test": "node tools/build.mjs && node --test \"tests/unit/*.test.mjs\"",
+    "test:quick": "node tools/build.mjs && node tools/quick-tests.mjs",
+    "loop": "node tools/loop.mjs",
+    "test:props": "node --test tests/unit/props.test.mjs",
+    "pack:ai": "node tools/pack_ai.mjs",
+    "ci": "npm run check && npm run lint && npm test",
+    "test:release": "node --test tests/unit/release.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "description": "Fan-made trading card game play simulator (single-file web game). Dev tools need only Node 20+, Playwright and TypeScript."
+}

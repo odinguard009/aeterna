@@ -1,0 +1,1293 @@
+[
+ {
+  "id": "BS76-001",
+  "name": "Thunder-Z-Mole",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 0,
+  "symbols": 1,
+  "reduction": {},
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Emperor Beast"
+  ],
+  "text": "[Can't Stack] By adding this card to the Hand, sent to the Trash by your Soul Core, +1 core to one of your \"Zeus\" Grandwalker Nexuses. [LV2] All your \"Contractor Zeus\" Grandwalker Nexuses can't be destroyed, nor have their cores brought to less than two by opposing effects.",
+  "mechanics": [
+   "MIRAGE(2)",
+   "Grandwalker Nexus",
+   "Soul Core"
+  ],
+  "image": "BS76-001.png",
+  "block": "76",
+  "note": "Mirage COST 2, \"During Set\" effect",
+  "mirage": {
+   "cost": 2
+  },
+  "saga": 17
+ },
+ {
+  "id": "BS76-002",
+  "name": "The CrimsonDragonStar Katanakasago",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 2,
+  "symbols": 1,
+  "reduction": {
+   "red": 1
+  },
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Lava Fish"
+  ],
+  "text": "When this card is revealed from the deck, if you don't have a Mirage set, you can set it without paying the cost. [During Set] When the opposing Life is reduced, if you control any \"Siegwurm\" (incl. Soul State/pre-advent), your counter +1.",
+  "mechanics": [
+   "MIRAGE(2)",
+   "Reveal trigger",
+   "Contract/Siegwurm",
+   "Counter"
+  ],
+  "image": "BS76-002.png",
+  "block": "76",
+  "mirage": {
+   "cost": 2
+  },
+  "saga": 17,
+  "effects": [
+   {
+    "trigger": "REVEALED",
+    "optional": true,
+    "actions": [
+     {
+      "do": "MIRAGE_SET"
+     }
+    ]
+   },
+   {
+    "trigger": "MIRAGE_OPP_LIFE",
+    "if": {
+     "hasName": "Siegwurm"
+    },
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "note": "Mirage During Set wired (counter +1 when the opposing Life is reduced). Set when revealed from the deck: wired in v0.33.",
+  "fxComplete": true
+ },
+ {
+  "id": "BS76-003",
+  "name": "The CrimsonDragonStar Tartargar",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "symbols": 1,
+  "reduction": {
+   "red": 2
+  },
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Reptile Beast"
+  ],
+  "text": "[LV1-2] All your \"Crimson\"/\"Wurm\"/\"Kushina\" can't be returned from Field to Hand/Deck by opposing Spirit/Nexus/Magic effects. [LV2](Your Attack Step) (Can't Stack) When your \"Crimson\"/\"Wurm\"/\"Kushina\" attacks, you can send two cores, besides Soul Core, from your Trash to that target.",
+  "mechanics": [
+   "Protection",
+   "Core move"
+  ],
+  "image": "BS76-003.png",
+  "block": "76",
+  "saga": 17,
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "lv": [
+     1,
+     2
+    ],
+    "flag": "NO_RETURN",
+    "to": "own",
+    "match": {
+     "name": [
+      "Crimson",
+      "Wurm",
+      "Kushina"
+     ]
+    }
+   },
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     2
+    ],
+    "match": {
+     "name": [
+      "Crimson",
+      "Wurm",
+      "Kushina"
+     ]
+    },
+    "optional": true,
+    "actions": [
+     {
+      "do": "TRASH_CORES_TO",
+      "n": 2,
+      "toAttacker": true
+     }
+    ]
+   }
+  ],
+  "note": "Wired: protection from opposing return effects (Spirit/Nexus effects that use the engine's return action); LV2 two Trash cores to the attacker. The Can't Stack limit is not tracked.",
+  "fxComplete": false
+ },
+ {
+  "id": "BS76-004",
+  "name": "Thunder-Z-Borzoi",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "symbols": 1,
+  "reduction": {
+   "red": 2
+  },
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Emperor Beast"
+  ],
+  "text": "[LV1-2](When Attacks) You can draw a card. Also, when this Spirit's attack would reduce the opposing Life, if you control any \"Contractor Zeus\", you can draw a card instead of reducing the opposing Life. [LV2](Your Attack Step) When your \"Z\"/\"GodKing\" attacks, you can +1 core to one of your \"Contractor Zeus\" Grandwalker Nexuses.",
+  "mechanics": [
+   "Grandwalker Nexus",
+   "Replacement effect"
+  ],
+  "image": "BS76-004.png",
+  "block": "76",
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": false,
+  "saga": 17
+ },
+ {
+  "id": "BS76-005",
+  "name": "Thunder-Z-Vulture",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "symbols": 1,
+  "reduction": {
+   "red": 2
+  },
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   },
+   {
+    "cores": 5,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Emperor Beast"
+  ],
+  "text": "(Flash) MANIFEST \"Contractor Zeus\" & C2 or more (Either Attack Step): by sending your Soul Core to the Trash, pay one cost from the target to summon this card from the Hand. [LV1-2-3](When Manifests/Attacks) You can send three cores from an opposing Grandwalker Nexus to the Void. Then, your counter can +1. [LV2-3] During Seal: the number of cards revealed by the \"Bombardment\"-named effects of your \"Z\" becomes three.",
+  "mechanics": [
+   "MANIFEST",
+   "Flash on Spirit",
+   "Seal",
+   "Grandwalker Nexus",
+   "Counter"
+  ],
+  "image": "BS76-005.png",
+  "block": "76",
+  "text_partial": true,
+  "saga": 17
+ },
+ {
+  "id": "BS76-006",
+  "name": "Generator Yajdragon",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "symbols": 1,
+  "reduction": {
+   "red": 2,
+   "god": 1
+  },
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Ancient Dragon"
+  ],
+  "text": "(Flash) MANIFEST \"Contractor Brahma\" (Either Attack Step). [LV1-2-3](When Manifests/Attacks) Your counter +1. Then, you can destroy an opposing 5000 BP or less Spirit, and the effects of the destroyed target can't activate. [LV2-3](When Attacks) Including being in Soul State, if you control any \"Contractor Brahma\", you can send out one of your \"Rig Avatar Dragon\" Tokens.",
+  "mechanics": [
+   "MANIFEST",
+   "Flash on Spirit",
+   "Token",
+   "Counter"
+  ],
+  "image": "BS76-006.png",
+  "block": "76",
+  "text_partial": true,
+  "saga": 17,
+  "manifest": {
+   "name": "Contractor Brahma",
+   "turn": "EITHER_ATTACK"
+  },
+  "effects": [
+   {
+    "trigger": "MANIFEST",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "MANIFEST",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "DESTROY",
+      "bpLe": 5000,
+      "noFx": true
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "DESTROY",
+      "bpLe": 5000,
+      "noFx": true
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2,
+     3
+    ],
+    "if": {
+     "hasName": "Contractor Brahma"
+    },
+    "actions": [
+     {
+      "do": "SEND_TOKEN",
+      "token": "SD69-TOKEN-RAD",
+      "n": 1,
+      "ask": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true
+ },
+ {
+  "id": "BS76-007",
+  "name": "The CrimsonTwinkleDragon Siegwurm-Altair",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 6,
+  "symbols": 1,
+  "reduction": {
+   "red": 3
+  },
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 7000
+   },
+   {
+    "cores": 4,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Astral Dragon",
+   "Ancient Dragon"
+  ],
+  "text": "Burst: After an opposing Spirit/Ultimate's (When Summoned) effect activates, your counter +1. Then, destroy an opposing Spirit/Ultimate with the same family as a card in the opposing Trash. After this effect resolves, summon this card without paying the cost. [LV1-2-3](When Attacks) You can destroy an opposing Nexus. Then, (Once per Turn: Same Name) you can summon one of your \"Siegwurm\" in Soul State/pre-advent condition. [LV2-3](When Attacks) You can send four cores from any opposing Grandwalker Nexuses to the Void.",
+  "mechanics": [
+   "Burst",
+   "Contract/Siegwurm",
+   "Soul State",
+   "Counter"
+  ],
+  "image": "BS76-007.png",
+  "block": "76",
+  "text_partial": true,
+  "saga": 17,
+  "burst": {
+   "when": "OPP_SUMMON_FX",
+   "actions": [
+    {
+     "do": "COUNTER",
+     "n": 1
+    },
+    {
+     "do": "DESTROY",
+     "familyInOppTrash": true
+    },
+    {
+     "do": "SUMMON_SELF"
+    }
+   ]
+  },
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "DESTROY",
+      "nexus": true
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "once": true,
+    "sameName": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "SUMMON_HAND",
+      "pay": true,
+      "match": {
+       "name": [
+        "Siegwurm"
+       ]
+      },
+      "from": "soul"
+     }
+    ]
+   }
+  ],
+  "note": "Wired: Burst, Nexus destroy, summon a Siegwurm from Soul State. Not yet: LV2-3 cores from opposing Grandwalker Nexuses to the Void.",
+  "fxComplete": false
+ },
+ {
+  "id": "BS76-008",
+  "name": "Thunder-Z-Walrus",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 7,
+  "symbols": 1,
+  "reduction": {
+   "red": 4
+  },
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 3,
+    "bp": 12000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Emperor Beast"
+  ],
+  "text": "(Flash) MANIFEST \"Contractor Zeus\" & C4 or more (Either Attack Step): by sending your Soul Core to the Trash, pay one cost from the target to summon this card from the Hand. [LV1-2](When Manifests/Attacks) You can destroy up to two opposing 10000 BP or less Spirits/Ultimates. [LV2] The effects of opposing Spirits/Nexuses destroyed by your \"Zeus\"/\"Z\" can't activate.",
+  "mechanics": [
+   "MANIFEST",
+   "Flash on Spirit",
+   "Counter condition"
+  ],
+  "image": "BS76-008.png",
+  "block": "76",
+  "saga": 17
+ },
+ {
+  "id": "BS76-009",
+  "name": "The HermitDragon Ma-Kranti",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 7,
+  "symbols": 1,
+  "reduction": {
+   "red": 4,
+   "god": 1
+  },
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 2,
+    "bp": 10000
+   },
+   {
+    "cores": 4,
+    "bp": 13000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Ancient Dragon"
+  ],
+  "text": "When your \"Creation\" family Spirits would leave the Field due to the opponent, you can summon this card from the Hand, treating all reduction symbols as fulfilled (Once per turn). [LV1-2-3](When Summoned/Attacks) You can destroy an opposing Spirit/Ultimate with two symbols or less. [LV2-3](When Attacks) You can send all cores from an opposing Grandwalker Nexus to the Void.",
+  "mechanics": [
+   "Replacement summon",
+   "Grandwalker Nexus"
+  ],
+  "image": "BS76-009.png",
+  "block": "76",
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "DESTROY",
+      "symbolsLe": 2
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "DESTROY",
+      "symbolsLe": 2
+     }
+    ]
+   }
+  ],
+  "fxComplete": false,
+  "saga": 17
+ },
+ {
+  "id": "BS76-047",
+  "name": "The ThunderDragon Togevajdra",
+  "name_jp": "雷竜トゲヴァジュドラ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 4,
+  "reduction": {
+   "yellow": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Thunderive"
+  ],
+  "text": "When summoning this card, if this card has four or more reduction symbols, you can summon it, treating all reduction symbols as fulfilled. When you've done so, you can return an opposing non-Yellow Spirit/Ultimate to the deckbottom.\n\n[LV2-3] (When Attacks)\nWhen this Spirit's attack reduces the opposing Life, you can return this Spirit to the Hand.",
+  "image": "BS76-047.png",
+  "block": "76",
+  "saga": 17,
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "effects": [
+   {
+    "trigger": "ALLY_LIFE_HIT",
+    "lv": [
+     2,
+     3
+    ],
+    "optional": true,
+    "self": true,
+    "actions": [
+     {
+      "do": "SELF_TO_HAND"
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "The summon clause (four or more reduction symbols: treat all as fulfilled, then return an opposing non-Yellow Spirit) is not built"
+  ]
+ },
+ {
+  "id": "BS76-048",
+  "name": "The ThunderDragonLady Vajreine",
+  "name_jp": "雷竜嬢ヴァジュレーヌ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 5,
+  "reduction": {
+   "yellow": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   },
+   {
+    "cores": 5,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Thunderive"
+  ],
+  "text": "{{Burst|After your Spirit is destroyed by the opponent}}\nSummon this card without paying the cost.\n\n[LV1-2-3] (When Summoned)\nYou can return an opposing LV1 Spirit to the deckbottom. Then, if there is any opposing Spirit under \"can't attack/block\" effects, you can return an opposing LV2 Spirit to the deckbottom.",
+  "image": "BS76-048.png",
+  "block": "76",
+  "saga": 17,
+  "mechanics": [
+   "Burst"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image.",
+  "burst": {
+   "when": "ALLY_DESTROYED",
+   "actions": [
+    {
+     "do": "SUMMON_SELF"
+    }
+   ]
+  },
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "kind": "spirit",
+      "to": "deckBottom",
+      "lv": [
+       1
+      ]
+     },
+     {
+      "do": "BOUNCE_OPP",
+      "kind": "spirit",
+      "to": "deckBottom",
+      "lv": [
+       2
+      ],
+      "if": {
+       "oppNoAB": true
+      }
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "BS76-060",
+  "name": "The LotusTreasureSword Yaj-Veda",
+  "type": "Brave",
+  "color": "red",
+  "cost": 3,
+  "symbols": 1,
+  "reduction": {
+   "red": 1,
+   "god": 1
+  },
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Saga",
+   "God Arms"
+  ],
+  "text": "(Once per Turn: Same Name) When sent to the Trash from deck by the effect of your \"Brahma\" Grandwalker Nexus, you can add it to the Hand. [LV1](When Summoned) Your counter +1. Then, you can destroy an opposing Nexus, and the effects of the destroyed target can't activate. BRAVE +5000. Brave Condition: Ancient Dragon / Creation, or \"Brahma\" & Grandwalker Nexus. During Nexus Brave: Contract Skill 3 (Flash)(Either Attack Step): send three cores from this Nexus to the Void; if you control any \"Contractor Brahma\", send out one of your \"Rig Avatar Dragon\" Tokens.",
+  "mechanics": [
+   "BRAVE",
+   "Contract Skill",
+   "Token",
+   "Grandwalker Nexus"
+  ],
+  "image": "BS76-060.png",
+  "block": "76",
+  "text_partial": true,
+  "saga": 17,
+  "brave": {
+   "bp": 5000,
+   "family": [
+    "Ancient Dragon",
+    "Creation"
+   ],
+   "nexus": {
+    "name": [
+     "Brahma"
+    ]
+   }
+  },
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1
+    ],
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "DESTROY",
+      "nexus": true
+     }
+    ]
+   },
+   {
+    "trigger": "ACTIVATE",
+    "nexusBrave": true,
+    "once": false,
+    "timing": [
+     "FLASH"
+    ],
+    "if": {
+     "attackStep": true
+    },
+    "cost": {
+     "nexusToVoid": 3
+    },
+    "actions": [
+     {
+      "do": "SEND_TOKEN",
+      "token": "SD69-TOKEN-RAD",
+      "n": 1,
+      "if": {
+       "controlName": "Contractor Brahma"
+      }
+     }
+    ]
+   }
+  ],
+  "trashHand": "Brahma",
+  "fxComplete": true
+ },
+ {
+  "id": "BS76-069",
+  "name": "The Crimson Lavafalls",
+  "type": "Nexus",
+  "color": "red",
+  "cost": 3,
+  "symbols": 1,
+  "reduction": {
+   "red": 2
+  },
+  "levels": [
+   {
+    "cores": 0
+   },
+   {
+    "cores": 1
+   }
+  ],
+  "families": [
+   "Astral Dragon"
+  ],
+  "text": "[Can't Stack] When your \"Crimson\"/\"Wurm\"/\"Kushina\" is blocked, you can deploy this card from the Hand, without paying the cost. [LV1-2](Your Attack Step) All your attacking \"Crimson\"/\"Wurm\"/\"Kushina\" gain +3000 BP. [LV2](Your Attack Step) (Once per Turn: Same Name) When any opposing Spirit/Ultimate is destroyed by your \"Crimson\"/\"Wurm\"/\"Kushina\", you can draw a card.",
+  "mechanics": [
+   "Nexus",
+   "Block trigger"
+  ],
+  "image": "BS76-069.png",
+  "block": "76",
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "lv": [
+     1,
+     2
+    ],
+    "to": "own",
+    "match": {
+     "name": [
+      "Crimson",
+      "Wurm",
+      "Kushina"
+     ]
+    },
+    "bp": 3000,
+    "attackingOnly": true
+   },
+   {
+    "trigger": "ALLY_BLOCKED",
+    "zone": "hand",
+    "match": {
+     "name": [
+      "Crimson",
+      "Wurm",
+      "Kushina"
+     ]
+    },
+    "optional": true,
+    "actions": [
+     {
+      "do": "DEPLOY_SELF"
+     }
+    ]
+   },
+   {
+    "trigger": "ALLY_DESTROYS",
+    "lv": [
+     2
+    ],
+    "once": true,
+    "sameName": true,
+    "match": {
+     "name": [
+      "Crimson",
+      "Wurm",
+      "Kushina"
+     ]
+    },
+    "optional": true,
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": false,
+  "saga": 17,
+  "note": "Wired in v0.33: deploy from the Hand when your Crimson/Wurm/Kushina is blocked, LV1-2 BP, LV2 draw when your attacker destroys the blocker in battle. Not wired: Can't Stack, the draw for destructions by effects."
+ },
+ {
+  "id": "BS76-079",
+  "name": "Crimson Howling Effect",
+  "type": "Magic",
+  "color": "red",
+  "cost": 2,
+  "symbols": 1,
+  "reduction": {},
+  "levels": [],
+  "families": [
+   "Astral Dragon"
+  ],
+  "text": "When this card is revealed from the deck by your effect, you can add it to the Hand. (Once per Turn: Same Name) When cores are sent to the Void from opposing Grandwalker Nexuses, if you control any Contractor Spirit (incl. Soul State/pre-advent), you can return this card from your Trash to the Hand. (Main) Let one of your Contract Spirits enter Soul State. Or, either let one of your Contract Spirit cards in pre-advent condition enter Soul State, or return it to the Hand. (Flash) During this turn, give one of your Spirits with a Red symbol +5000 BP.",
+  "mechanics": [
+   "Magic",
+   "Soul State",
+   "Flash"
+  ],
+  "image": "BS76-079.png",
+  "block": "76",
+  "note": "second reduction icon is a multi-colour diamond Issue #5 (2026-10-16): set to Fandom export (owner priority).",
+  "magic": {
+   "timing": [
+    "MAIN",
+    "FLASH"
+   ],
+   "effect": null,
+   "value": 0
+  },
+  "saga": 17
+ },
+ {
+  "id": "BS76-080",
+  "name": "Z Thunder",
+  "type": "Magic",
+  "color": "red",
+  "cost": 7,
+  "symbols": 1,
+  "reduction": {
+   "red": 3
+  },
+  "levels": [],
+  "families": [
+   "Devotee",
+   "Emperor Beast"
+  ],
+  "text": "While you control only \"Zeus\" as Nexuses, this card in Hand is unaffected by opposing effects, and becomes Cost 3 if it's the Attack Step. (Flash) Destroy two opposing Spirits/Ultimates with one symbol. Or, if you have six counters or more, destroy an opposing Spirit/Ultimate with two symbols or more.",
+  "mechanics": [
+   "Magic",
+   "Flash",
+   "Counter condition",
+   "Cost change"
+  ],
+  "image": "BS76-080.png",
+  "block": "76",
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": null,
+   "value": 0
+  },
+  "saga": 17
+ },
+ {
+  "id": "BS76-CP01",
+  "name": "The CreationPrinciple Generator-Dragon-Brahman",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 9,
+  "symbols": 1,
+  "reduction": {
+   "red": 6
+  },
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 10000
+   },
+   {
+    "cores": 2,
+    "bp": 16000
+   },
+   {
+    "cores": 5,
+    "bp": 22000
+   }
+  ],
+  "families": [
+   "Devotee",
+   "Concluser",
+   "Ancient Dragon"
+  ],
+  "text": "(Flash) ULTRA MANIFEST \"Contractor Brahma\" & C7 or more (Your Turn). (Once per Turn: Same Name) By putting your Soul Core on top, +1 core to one of the targets, and summon this card from the Hand, treating all summon costs as paid. [LV1-2-3](When Manifests/Attacks) Once per turn, you can return up to two \"Generator\"/\"HermitDragon\" from your Trash to the Hand. Then, you can send out up to two of your \"Rig Avatar Dragon\" Tokens. [LV2-3](Flash)(Your Attack Step) By destroying one of your \"Creation\" family Spirits, send an opposing Life to the Trash.",
+  "mechanics": [
+   "ULTRA MANIFEST",
+   "Flash on Spirit",
+   "Token",
+   "Life manipulation"
+  ],
+  "image": "BS76-CP01.png",
+  "block": "76",
+  "text_partial": true,
+  "saga": 17,
+  "effects": [
+   {
+    "trigger": "MANIFEST",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "once": true,
+    "onceKey": "genret",
+    "optional": true,
+    "actions": [
+     {
+      "do": "RETURN_TRASH",
+      "match": {
+       "name": [
+        "Generator",
+        "HermitDragon"
+       ]
+      }
+     },
+     {
+      "do": "RETURN_TRASH",
+      "match": {
+       "name": [
+        "Generator",
+        "HermitDragon"
+       ]
+      }
+     },
+     {
+      "do": "SEND_TOKEN",
+      "token": "SD69-TOKEN-RAD",
+      "n": 2,
+      "ask": true
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "once": true,
+    "onceKey": "genret",
+    "optional": true,
+    "actions": [
+     {
+      "do": "RETURN_TRASH",
+      "match": {
+       "name": [
+        "Generator",
+        "HermitDragon"
+       ]
+      }
+     },
+     {
+      "do": "RETURN_TRASH",
+      "match": {
+       "name": [
+        "Generator",
+        "HermitDragon"
+       ]
+      }
+     },
+     {
+      "do": "SEND_TOKEN",
+      "token": "SD69-TOKEN-RAD",
+      "n": 2,
+      "ask": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": false,
+  "residual": [
+   "[LV2-3](Flash)(Your Attack Step) By destroying one of your \"Creation\" family Spirits, send an opposing Life to the Trash"
+  ],
+  "manifest": {
+   "name": "Contractor Brahma",
+   "counterGe": 7,
+   "turn": "YOURS",
+   "ultra": true
+  }
+ },
+ {
+  "id": "BS76-X01",
+  "name": "The CrimsonStarDragonDeity Sieg-Meteorwurm",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 6,
+  "symbols": 1,
+  "reduction": {
+   "red": 3
+  },
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Crimson Contract",
+   "Concluser",
+   "Astral Dragon"
+  ],
+  "text": "(Flash) CONTRACT ADVENT Crimson Contract & C2 or more (Either Attack Step): by sending your Soul Core to the Trash, stack this from your Hand onto your target Spirit. [During Advent][LV1-2](Flash) Crimson Awaken (Either Attack Step): once per turn, you can send a core from your Spirit/Life to this Spirit. When done, send up to three cores, besides Soul Core, from your Trash to your \"Crimson\". Over Count Condition: 4 Counters or more (OC4+): +5000 BP. [During OC & Advent][LV2](When Attacks) You can destroy an opposing Nexus, or an opposing Spirit/Ultimate with the highest BP.",
+  "mechanics": [
+   "CONTRACT ADVENT",
+   "Flash on Spirit",
+   "Over Count",
+   "Counter"
+  ],
+  "image": "BS76-X01.png",
+  "block": "76",
+  "text_partial": true,
+  "saga": 17,
+  "overCount": {
+   "count": 4,
+   "bp": 5000
+  },
+  "residual": [
+   "Other effects: only the Over Count BP is implemented."
+  ]
+ },
+ {
+  "id": "BS76-X02",
+  "name": "The TigerTwelveGodKing Revol-Tiger X",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 8,
+  "symbols": 1,
+  "reduction": {
+   "red": 4
+  },
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 11000
+   },
+   {
+    "cores": 3,
+    "bp": 18000
+   },
+   {
+    "cores": 5,
+    "bp": 28000
+   }
+  ],
+  "families": [
+   "Concluser",
+   "God King",
+   "Emperor Beast"
+  ],
+  "text": "(Flash) SEAL MANIFEST \"Contractor Zeus\" & C6 or more (Your Turn): by sending your Soul Core from the Field/Reserve to the Life, pay one cost from the target to summon this card from the Hand. This card/Spirit is also treated as \"Z\". [During Seal][LV1-2-3] Thunder God Bombardment (When Attacks): you can reveal two cards from your decktop; among them, for each \"Zeus\"/\"Z\"/\"GodKing\", send an opposing Life to the Reserve. Add the revealed cards to the Hand. [LV2-3] Once per turn, when your Thunder God Bombardment doesn't reduce the opposing Life, you can refresh this Spirit.",
+  "mechanics": [
+   "SEAL",
+   "MANIFEST",
+   "Flash on Spirit",
+   "Life manipulation",
+   "Reveal"
+  ],
+  "image": "BS76-X02.png",
+  "block": "76",
+  "text_partial": true,
+  "saga": 17,
+  "manifest": {
+   "name": "Contractor Zeus",
+   "counterGe": 6,
+   "turn": "YOURS",
+   "seal": true
+  },
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "if": {
+     "sealed": true
+    },
+    "optional": true,
+    "actions": [
+     {
+      "do": "REVEAL_LIFE_RESERVE",
+      "n": 2,
+      "names": [
+       "Zeus",
+       "Z",
+       "GodKing"
+      ]
+     }
+    ]
+   }
+  ],
+  "fxComplete": false,
+  "residual": [
+   "This card/Spirit is also treated as \"Z\".",
+   "[LV2-3] Once per turn, when your Thunder God Bombardment doesn't reduce the opposing Life, you can refresh this Spirit."
+  ]
+ },
+ {
+  "id": "BS77-040",
+  "name": "The FallenCourtLady Jialin",
+  "name_jp": "堕天宮女ジャーリン",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 7,
+  "reduction": {
+   "yellow": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 2,
+    "bp": 7000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Bannerace",
+   "Dark Artes"
+  ],
+  "text": "When your Life would be reduced by an opposing effect, by discarding this card from the Removed Zone, your Life won't be reduced.\n\nFlash - {{Accel|Cost 4 ()}}\nReturn an opposing LV1/LV2 Spirit to the Hand. Then, (Once per Turn: Same Name) you can return a \"Bannerace\" family Spirit card from your Removed Zone to the Hand. After this effect resolves, put this card onto the Removed Zone.",
+  "image": null,
+  "block": "77",
+  "saga": 17,
+  "mechanics": [
+   "Accel"
+  ],
+  "fxComplete": false,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); not yet checked against the card image. v0.50.0: keyword effect wired (session D part 2).",
+  "effects": [
+   {
+    "trigger": "ACCEL",
+    "cost": 4,
+    "timing": [
+     "FLASH"
+    ],
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "hand",
+      "kind": "spirit",
+      "lv": [
+       1,
+       2
+      ]
+     }
+    ]
+   }
+  ],
+  "residual": [
+   "Accel second clause: (Once per Turn: Same Name) return a \"Bannerace\" family Spirit card from your Removed Zone to the Hand",
+   "When your Life would be reduced by an opposing effect, discard this card from the Removed Zone so the Life is not reduced",
+   "Accel cost reduction icons (not in the Fandom export; the full cost is paid)"
+  ]
+ }
+]

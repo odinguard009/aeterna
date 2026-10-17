@@ -1,0 +1,495 @@
+#!/usr/bin/env python3
+"""Effect compiler (v0.52.0; v0.54.0: (When Destroyed), Spirit/Ultimate targets, Your Attack Step BP, colour + symbol, Burst block, more sentences;
+v0.55.0: BP minus, (When Destroyed by the Opponent), (When Battles) battle win, Rush {{Rush|Colour}}): staged card text (data/import/saga-NN.json) -> engine data ("effects", "magic", flags).
+  python3 tools/compile_effects.py --saga 1                -> compile one Saga; prints a summary
+  python3 tools/compile_effects.py --vanilla               -> every staged card without text
+  python3 tools/compile_effects.py --saga 1 --out F.json   -> also write the compiled cards (promotion input)
+  python3 tools/compile_effects.py ... --review R.md       -> also write the review list (every paragraph it could not map)
+  python3 tools/compile_effects.py --ids BS01-001,BS01-002 ...
+A card compiles only when EVERY paragraph of its text maps to engine data; anything else goes to the review list and the
+card stays staged (no partial promotion). The patterns cover the wired glossary tags only (data/glossary/effects.json,
+status "wired"); each pattern is written for the wording the Fandom export uses, old (Saga 1-2) and current.
+Not handled on purpose (review): wiki templates ({{...}}), cards with more than one text version (errata tabs), Nexus
+cards with [LV2]+ text (the export has no Nexus level thresholds), Braves without combine data, Burst conditions the engine
+has no slot for (and Burst text that is not a leading {{Burst|...}} block), any keyword or
+sentence not in the tables below. The output still has to pass the game's parseCard (tools/promote_compiled.mjs)."""
+import json, glob, os, re, sys, collections
+
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+KEEP = ('id', 'name', 'name_jp', 'type', 'color', 'cost', 'reduction', 'symbols', 'levels', 'families', 'text', 'image', 'block', 'saga')
+NUM = {'a': 1, 'an': 1, 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8}
+num = lambda s: int(s) if s.isdigit() else NUM[s.lower()]
+W = r'(\d+|a|an|one|two|three|four|five)'
+COLOURS = ('red', 'purple', 'green', 'white', 'yellow', 'blue')
+
+
+class Review(Exception):
+    pass
+
+
+# ---------- text clean-up ----------
+VERSION_LABEL = re.compile(r'(?m)^\s*(Original \(Jap Version\)|Original|Jap Version|Japanese Ver\.|After Errata|Before Errata|Standard|Eng Version|Eternal)\s*=\s*')
+
+def clean(text):
+    t = (text or '').replace('\r', '').strip()
+    labels = VERSION_LABEL.findall(t)
+    if len(labels) > 1: raise Review('more than one text version (' + ', '.join(labels) + ')')
+    t = VERSION_LABEL.sub('', t).strip()
+    m = re.search(r'\{\{\s*([#\w]+)', t)
+    if m: raise Review('wiki template {{' + m.group(1) + '}}')
+    if '☼' in t or re.search(r'\bBurst\b', t): raise Review('Burst')
+    return t
+
+
+def paragraphs(t):
+    out = []
+    for block in re.split(r'\n\s*\n', t):
+        cur = []
+        for line in block.split('\n'):
+            line = line.strip()
+            if not line: continue
+            if cur and re.match(r'^\[LV\d', line): out.append(' '.join(cur)); cur = []     # a new [LVn] block on its own line
+            cur.append(line)
+        if cur: out.append(' '.join(cur))
+    return [re.sub(r'\s+', ' ', p).strip() for p in out]
+
+
+def sentences(body):
+    s = re.split(r'(?<=\.)\s+(?=[A-Z])', body.strip())
+    return [x.strip() for x in s if x.strip()]
+
+
+# ---------- sentence -> action(s) ----------
+def bp(s): return int(s.replace(',', ''))
+
+def bpm(s):
+    n = bp(s)
+    if n % 1000 or not 1000 <= n <= 30000: raise Review(f'BP minus {n} (engine: 1000-30000 in steps of 1000)')
+    return n
+
+def crush_n(k):
+    if k > 5: raise Review(f'decktop discard of {k} cards (engine limit 5)')
+    return k
+
+def action_of(s, ctx):
+    """One sentence -> (actions, optional, static) or raise Review. ctx: {'trigger': ..., 'kind': 'spirit'|'magic'}"""
+    x = s.strip().rstrip('.').strip()
+    opt = False
+    m = re.match(r'^(?:You can|You may) (.*)$', x, re.I)
+    if m: opt = True; x = m.group(1); x = x[0].upper() + x[1:]
+    L = x.lower()
+    if 'opposing' in L: L = L.replace('spirit/ultimate', 'spirit')      # v0.54: the engine's opposing targets already include Ultimates
+    fam = [   # v0.54: family names keep their case
+        (r'^refresh an? "([^"]+)" family spirit (?:you control|of yours)$', lambda m: [{'do': 'REFRESH_SPIRIT', 'match': {'family': [m.group(1)]}}]),
+    ]
+    for p, f in fam:
+        m = re.match(p, x, re.I)
+        if m: return f(m), opt
+    pats = [
+        (r'^(?:during this turn, )?this spirit (?:gains|gets) \+(\d[\d,]*) ?bp(?: (?:until (?:the )?end of (?:the )?turn|during this turn))?$',
+         lambda m: [{'do': 'BP_PLUS', 'n': bp(m.group(1))}]),
+        (r'^(?:during this turn, )?give (?:all your spirits|all spirits you control|all of your spirits) \+(\d[\d,]*) ?bp$',
+         lambda m: [{'do': 'BP_PLUS', 'n': bp(m.group(1)), 'to': 'own'}]),
+        (r'^(?:during this turn, )?all (?:your spirits|spirits you control) (?:gain|get) \+(\d[\d,]*) ?bp(?: until (?:the )?end of (?:the )?turn)?$',
+         lambda m: [{'do': 'BP_PLUS', 'n': bp(m.group(1)), 'to': 'own'}]),
+        (r'^draw ' + W + r' cards?$', lambda m: [{'do': 'DRAW', 'n': num(m.group(1))}]),
+        (r'^destroy an opposing (\d[\d,]*) ?bp or less spirit$', lambda m: [{'do': 'DESTROY', 'bpLe': bp(m.group(1))}]),
+        (r'^destroy an opposing spirit with (\d[\d,]*) ?bp or less$', lambda m: [{'do': 'DESTROY', 'bpLe': bp(m.group(1))}]),
+        (r'^destroy (?:an opposing|one opposing|target) nexus(?: (?:your opponent controls|the opponent controls))?$', lambda m: [{'do': 'DESTROY', 'nexus': True}]),
+        (r'^exhaust an opposing spirit$', lambda m: [{'do': 'EXHAUST_OPP', 'n': 1}]),
+        (r'^refresh this spirit$', lambda m: [{'do': 'REFRESH'}]),
+        (r'^put ' + W + r' cores? from the void (?:on|to|onto) this spirit$', lambda m: [{'do': 'VOID_TO_CARD', 'n': num(m.group(1)), 'to': 'self'}]),
+        (r'^put ' + W + r' cores? from the void (?:in|to|into) your reserve$', lambda m: [{'do': 'VOID_TO_RESERVE', 'n': num(m.group(1))}]),
+        (r'^your counter \+(\d)$', lambda m: [{'do': 'COUNTER', 'n': int(m.group(1))}]),
+        (r'^return an opposing spirit to (?:the|its owner\'s|their) hand$', lambda m: [{'do': 'BOUNCE_OPP', 'to': 'hand', 'kind': 'spirit'}]),
+        (r'^destroy an opposing cost (\d+) or less spirit$', lambda m: [{'do': 'DESTROY', 'costLe': int(m.group(1))}]),
+        (r'^put ' + W + r' cores? from the void (?:on|to|onto) (?:any|one) of your spirits$', lambda m: [{'do': 'VOID_TO_CARD', 'n': num(m.group(1)), 'to': 'anySpirit'}]),
+        # v0.54 patterns (existing engine actions only)
+        (r'^refresh (?:a spirit you control|one of your spirits|a spirit of yours)$', lambda m: [{'do': 'REFRESH_SPIRIT'}]),
+        (r'^send (?:a|one) core from (?:any |an |one )?opposing spirits? to (?:their|the|its owner\'s|the opposing) reserve$', lambda m: [{'do': 'OPP_CORES_TO_RESERVE', 'targets': 1, 'each': 1}]),
+        (r'^draw ' + W + r' cards?, then discard ' + W + r' cards? from your hand$', lambda m: [{'do': 'LOOT', 'draw': num(m.group(1)), 'discard': num(m.group(2))}]),
+        (r'^draw ' + W + r' cards? from (?:the|your) deck ?bottom$|^draw ' + W + r' cards? from the bottom of your deck$', lambda m: [{'do': 'DRAW_BOTTOM', 'n': num(m.group(1) or m.group(2))}]),
+        (r'^draw ' + W + r' cards? from your deck$', lambda m: [{'do': 'DRAW', 'n': num(m.group(1))}]),
+        (r'^put ' + W + r' cores? from the void (?:on|to|onto) (?:any|a|one) spirit (?:you control|of yours)$', lambda m: [{'do': 'VOID_TO_CARD', 'n': num(m.group(1)), 'to': 'anySpirit'}]),
+        (r'^destroy an opposing spirit with (?:one|1) core on it$', lambda m: [{'do': 'DESTROY', 'coresLe': 1}]),
+        (r'^destroy an opposing spirit with ' + W + r' cores? or less on it$', lambda m: [{'do': 'DESTROY', 'coresLe': num(m.group(1))}]),
+        (r'^discard ' + W + r' cards? from the opposing deck ?top$|^discard ' + W + r' cards? from the top of the opposing deck$', lambda m: [{'do': 'CRUSH', 'n': crush_n(num(m.group(1) or m.group(2)))}]),
+        (r'^put ' + W + r' cores? from the void (?:on|to|onto|in|into) your life$', lambda m: [{'do': 'VOID_TO_LIFE', 'n': num(m.group(1))}]),
+        # v0.55: BP minus on one opposing Spirit (no BP-0 destruction rule: Eternal manual FAQ p. 68)
+        (r'^(?:during this turn, )?give (?:an|one) opposing spirit -(\d[\d,]*) ?bp(?: (?:during|until the end of) this turn)?$', lambda m: [{'do': 'BP_MINUS', 'n': bpm(m.group(1))}]),
+    ]
+    for p, f in pats:
+        m = re.match(p, L)
+        if m: return f(m), opt
+    raise Review('sentence: ' + s[:140])
+
+
+# ---------- Spirit / Nexus paragraphs ----------
+TRIGGERS = [
+    (r'\(When Summoned/Attacks\)', ['SUMMONED', 'ATTACKS']),
+    (r'\(When Summoned/Destroyed\)', ['SUMMONED', 'DESTROYED']),      # v0.54: (When Destroyed) = engine trigger DESTROYED (manual p. 31)
+    (r'\(When Destroyed\)', ['DESTROYED']),
+    (r'\(When Destroyed by the Opponent\)', ['DESTROYED_OPP']),      # v0.55: CR 12-2-1-12-1 (opposing effect or BP comparison)
+    (r'\(When Battles\)\s*When only the opposing Spirit(?:/Ultimate)? is destroyed (?:by comparing BP|via BP comparison|by BP comparison),', ['BATTLE_WIN']),   # v0.55: CR 8-1-6-2
+    (r'\(When Attacks/Blocks\)|\(When Attacks or Blocks\)', ['ATTACKS+BLOCKS']),
+    (r'\(When Summoned\)', ['SUMMONED']),
+    (r'\(When Attacks\)', ['ATTACKS']),
+    (r'\(When Blocks\)|\(When Blocking\)', ['BLOCKS']),
+]
+SELF_ACTS = ('REFRESH', 'VOID_TO_CARD', 'BP_PLUS', 'SELF_TO_HAND', 'CRUSH', 'AWAKEN')   # these need the Spirit on the Field
+ATTACK_STEP = {'(Your Attack Step)': {'attackStep': True, 'oppTurn': False}}
+KEYWORD_LINES = {   # keyword -> handler(levels, body) returning effect list and card flags
+    'Crush': 'crush', 'Holy Life': 'holy', 'High Speed': 'speed', 'Clash': 'clash',
+}
+
+RUSH = re.compile(r'(?<!\n)[ \t]*\n?[ \t]*\{\{Rush\|(Red|Purple|Green|White|Yellow|Blue)(?: Symbol)?\}\}\s*\(While you have an? \1 symbol, the following effect activates next\)\s*:?\s*', re.I)
+RUSH_MARK = ' \u27e6RUSH:%s\u27e7 '
+
+def rush_mark(t):
+    """v0.55: {{Rush|Colour}} + its reminder line -> an in-paragraph marker (the Rush effect activates after the main body while you have that symbol)"""
+    return RUSH.sub(lambda m: RUSH_MARK % m.group(1).lower(), t or '')
+
+def spirit_paragraph(p, card):
+    rush = None
+    mr = re.search(r'\u27e6RUSH:(\w+)\u27e7', p)
+    if mr:
+        rush = (mr.group(1), p[mr.end():].strip()); p = p[:mr.start()].strip()
+        if '\u27e6' in rush[1]: raise Review('Rush: two Rush effects in one paragraph')
+    effects, flags = spirit_paragraph_main(p, card, rush)
+    if rush and not any((a.get('if') or {}).get('hasSymbol') == rush[0] for e in effects for a in e.get('actions', [])):
+        raise Review('Rush on a paragraph without a triggered effect: ' + p[:60])
+    return effects, flags
+
+def spirit_paragraph_main(p, card, rush):
+    mu = UT_PARA.match(p)
+    if mu and card['type'] == 'Ultimate':      # v0.56: Ultimate Trigger [LVn] (When Attacks) When Ultimate Trigger hits, <actions>
+        if rush: raise Review('Rush with Ultimate Trigger')
+        body = mu.group(2).strip(); body = body[0].upper() + body[1:]
+        e, f = spirit_paragraph_main(mu.group(1) + ' (When Attacks) ' + body, card, None)
+        if len(e) != 1 or e[0]['trigger'] != 'ATTACKS' or e[0].get('optional'): raise Review('Ultimate Trigger body: ' + body[:60])
+        if any(a.get('if') for a in e[0]['actions']): raise Review('Ultimate Trigger body with its own condition: ' + body[:60])
+        e[0]['actions'] = [{'do': 'ULT_TRIGGER'}] + [dict(a, **{'if': {'utHit': True}}) for a in e[0]['actions']]
+        return e, f
+    m = re.match(r'^((?:\[LV\d\])+)\s*', p)
+    lv = None
+    if m:
+        lv = [int(x) for x in re.findall(r'\d', m.group(1))]
+        p = p[m.end():]
+    nlv = len(card['levels'])
+    if lv is not None:
+        if card['type'] == 'Nexus' and any(x > 1 for x in lv) and nlv <= 1:
+            if lv == [1, 2] or lv == [1, 2, 3]: lv = [1]                     # LV1 is the only known level; same effect there
+            else: raise Review('Nexus [LV2]+ effect, but the export has no Nexus level thresholds')
+        base = 3 if card['type'] == 'Ultimate' else 1      # v0.56: Ultimate levels are printed LV3+ (engine lvBase 3)
+        if any(x < base or x > base - 1 + max(nlv, 1) for x in lv): raise Review(f'[LV{max(lv) if max(lv) >= base else min(lv)}] but the card has {nlv} level(s) from LV{base}')
+    flags = {}
+    if re.match(r'^Flash\s*-\s*High Speed\b', p):
+        if not re.search(r'(?:This|this) (?:Spirit )?card in Hand can be summoned', p) or not re.search(r'Reserve', p): raise Review('High Speed text: ' + p[:80])
+        if lv: raise Review('High Speed with a level prefix')
+        return [], {'highSpeed': True}
+    mm = re.match(r'^Flash\s*-?\s*Awaken\s*-?\s*You can (?:send|put) any number of cores from (?:your Spirits|Spirits you control) to this Spirit\.?$', p)
+    if mm:
+        e = {'trigger': 'ACTIVATE', 'timing': ['MAIN', 'FLASH'], 'once': False, 'cpuSkip': True, 'optional': True, 'actions': [{'do': 'AWAKEN'}]}
+        if lv: e['lv'] = lv
+        return [e], flags
+    kw = None
+    for k in KEYWORD_LINES:
+        if p.startswith(k + ' ') or p.startswith(k + ':'):
+            kw = k; p = p[len(k):].lstrip(' :-'); break
+    if kw is None and re.match(r'^[A-Z][a-z]+(?: [A-Z][a-z]+)?\s*(?:\(|:)', p) and not re.match(r'^\((?:When|Your|Opposing|Either|Flash|Permanent)', p) and not p.startswith('('):
+        raise Review('keyword: ' + p.split('(')[0].strip()[:40])
+    if kw == 'High Speed':
+        if not re.search(r'summon', p, re.I) or not re.search(r'flash', p, re.I): raise Review('High Speed text: ' + p[:80])
+        return [], {'highSpeed': True}
+    if kw == 'Crush':
+        if not re.search(r'\(When Attacks\)', p) or not re.search(r"(?:equal to|equal to the|equal) (?:this spirit'?s? |its )?(?:lv|level)|equal to this spirits lv|this spirit's (?:lv|level)", p, re.I):
+            raise Review('Crush text: ' + p[:80])
+        e = {'trigger': 'ATTACKS', 'actions': [{'do': 'CRUSH', 'n': 'lv'}]}
+        if lv: e['lv'] = lv
+        return [e], flags
+    if kw == 'Holy Life':
+        if not re.search(r"reduces the opposing life, put a core from the void (?:to|on) your life", p, re.I): raise Review('Holy Life text: ' + p[:80])
+        e = {'trigger': 'ALLY_LIFE_HIT', 'self': True, 'actions': [{'do': 'VOID_TO_LIFE', 'n': 1}]}
+        if lv: e['lv'] = lv
+        return [e], flags
+    if kw == 'Clash':
+        if not re.match(r'^\(When Attacks\)\s*(?:The|Your) opponent must block (?:if possible|with a spirit if possible)\.?$', p, re.I): raise Review('Clash text: ' + p[:80])
+        e = {'trigger': 'STATIC', 'flag': 'MUST_BLOCK', 'to': 'self'}
+        if lv: e['lv'] = lv
+        return [e], flags
+    # trigger
+    trig = None
+    for rx, ts in TRIGGERS:
+        mm = re.match(r'^' + rx + r'\s*', p)
+        if mm: trig = ts; p = p[mm.end():]; break
+    if trig is None:
+        mm = re.match(r'^\(Your Attack Step\)\s*All (?:your|of your) (?:"([^"]+)" family )?Spirits (?:gain|get) \+(\d[\d,]*) ?BP\.?$', p, re.I)
+        if mm:      # v0.54: static BP for your Spirits during your Attack Step
+            e = {'trigger': 'STATIC', 'bp': bp(mm.group(2)), 'to': 'own', 'if': dict(ATTACK_STEP['(Your Attack Step)'])}
+            if mm.group(1): e['match'] = {'family': [mm.group(1)]}
+            if lv: e['lv'] = lv
+            return [e], flags
+        mm = re.match(r'^\(Your Attack Step\)\s*This Spirit (?:gains|gets) \+(\d[\d,]*) ?BP\.?$', p, re.I)
+        if mm:
+            e = {'trigger': 'STATIC', 'bp': bp(mm.group(1)), 'to': 'self', 'if': dict(ATTACK_STEP['(Your Attack Step)'])}
+            if lv: e['lv'] = lv
+            return [e], flags
+        mm = re.match(r"^This Spirit's colou?r and symbols? are also treated as (Red|Purple|Green|White|Yellow|Blue)\.?$", p)
+        if mm:      # v0.54: a second colour for colour and symbol (multicolour card, 06-rules symbol colours)
+            if lv and sorted(lv) != list(range(1, nlv + 1)): raise Review('colour change only on some levels')
+            own, extra = card['color'].lower(), mm.group(1).lower()
+            if own == extra or own not in COLOURS: raise Review('colour change: ' + p[:60])
+            return [], {'colors': [own, extra]}
+        mm = re.match(r'^\(Your Attack Step\)\s*All attacking Spirits you control (?:gain|get) \+(\d[\d,]*) ?BP\.?$', p, re.I)
+        if mm:
+            e = {'trigger': 'STATIC', 'bp': bp(mm.group(1)), 'to': 'own', 'attackingOnly': True}
+            if lv: e['lv'] = lv
+            return [e], flags
+        raise Review('no trigger: ' + p[:100])
+    acts, opt = [], False
+    if rush and not p: raise Review('Rush without a main effect')
+    for s in sentences(p):
+        a, o = action_of(s, {'trigger': trig})
+        if acts and o: raise Review('optional second sentence: ' + s[:80])
+        acts += a; opt = opt or o
+    if not acts: raise Review('empty body')
+    if rush:
+        for s in sentences(rush[1]):
+            a, o = action_of(s, {'trigger': trig})
+            if o: raise Review('Rush: optional Rush effect: ' + s[:60])
+            acts += [dict(x, **{'if': {'hasSymbol': rush[0]}}) for x in a]
+        rush = None
+    if ('DESTROYED' in trig or 'DESTROYED_OPP' in trig) and any(a['do'] in SELF_ACTS and a.get('to', 'self') == 'self' for a in acts):
+        raise Review('(When Destroyed) effect about this Spirit: ' + p[:80])
+    out = []
+    for t in trig:
+        e = {'trigger': 'ATTACKS', 'alsoBlocks': True} if t == 'ATTACKS+BLOCKS' else {'trigger': 'DESTROYED'} if t == 'DESTROYED_OPP' else {'trigger': t}
+        if lv: e['lv'] = lv
+        if t == 'DESTROYED_OPP': e['if'] = {'byOpp': True}
+        if opt: e['optional'] = True
+        e['actions'] = acts
+        out.append(e)
+    return out, flags
+
+
+# ---------- Magic paragraphs ----------
+MAGIC_HEAD = [
+    (r'^\(Flash Step\)\s*\(Your Main Ph(?:a|r)ase\)\s*', ['MAIN', 'FLASH']),
+    (r'^\(Main Step\)\s*\(Flash Step\)\s*', ['MAIN', 'FLASH']),
+    (r'^Flash\s*-?\s*', ['FLASH']),
+    (r'^Main\s*-?\s*', ['MAIN']),
+    (r'^\(Flash Step\)\s*', ['FLASH']),
+    (r'^\(Main Step\)\s*|^\(Your Main Ph(?:a|r)ase\)\s*', ['MAIN']),
+]
+
+def magic_spec(body):
+    """Body -> {"effect":..., "value":...} using the simple MAGIC_FX types where they fit, ACTIONS otherwise."""
+    ss = sentences(body)
+    if len(ss) == 1:
+        L = ss[0].rstrip('.').lower()
+        for p, f in [
+            (r'^(?:during this turn, )?give (?:a|one|target) spirit \+(\d[\d,]*) ?bp$', lambda m: {'effect': 'BP_PLUS', 'value': bp(m.group(1))}),
+            (r'^target spirit (?:gets|gains) \+(\d[\d,]*) ?bp(?: until (?:the )?end of (?:the )?turn)?$', lambda m: {'effect': 'BP_PLUS', 'value': bp(m.group(1))}),
+            (r'^destroy an opposing (\d[\d,]*) ?bp or less spirit$|^destroy an opposing spirit with (\d[\d,]*) ?bp or less$', lambda m: {'effect': 'DESTROY_BP_LE', 'value': bp(m.group(1) or m.group(2))}),
+            (r'^exhaust an opposing spirit$', lambda m: {'effect': 'EXHAUST_OPP', 'value': 0}),
+            (r'^draw ' + W + r' cards?$', lambda m: {'effect': 'DRAW', 'value': num(m.group(1))}),
+        ]:
+            m = re.match(p, L)
+            if m: return f(m)
+    acts = []
+    for s in ss:
+        a, o = action_of(s, {'kind': 'magic'})
+        if o: raise Review('optional clause in Magic: ' + s[:80])
+        acts += a
+    if any(a['do'] in ('REFRESH', 'VOID_TO_CARD', 'BP_PLUS') and a.get('to', 'self') == 'self' for a in acts):
+        raise Review('Magic sentence about "this Spirit": ' + body[:80])
+    return {'effect': 'ACTIONS', 'value': 0, 'actions': acts}
+
+
+def magic_card(paras, n=None):
+    by = {}
+    for p in paras:
+        fm = re.match(r'^This card has (?:the )?"([^"]+)" family\.?$', p)
+        if fm and n is not None:
+            n['families'] = sorted(set(n.get('families') or []) | {fm.group(1)}); continue
+        tim = None
+        for rx, ts in MAGIC_HEAD:
+            m = re.match(rx, p)
+            if m: tim = ts; p = p[m.end():]; break
+        if tim is None: raise Review('Magic paragraph without Main/Flash: ' + p[:80])
+        spec = magic_spec(p)
+        for t in tim:
+            if t in by: raise Review('two effects for the same timing')
+            by[t] = spec
+    timing = [t for t in ('MAIN', 'FLASH') if t in by]
+    specs = {json.dumps(by[t], sort_keys=True) for t in timing}
+    if len(specs) == 1:
+        s = by[timing[0]]; m = {'timing': timing, 'effect': s['effect'], 'value': s['value']}
+        if 'actions' in s: m['actions'] = s['actions']
+        return m
+    return {'timing': timing, 'effect': None, 'value': 0, 'by': {t: by[t] for t in timing}}
+
+
+# ---------- Burst (v0.54) ----------
+BURST_WHEN = [   # Fandom {{Burst|...}} condition -> engine BURST_WHEN key (02c-effects-parse.js)
+    (r'after your life is reduced', 'LIFE_DECREASE'),
+    (r'after your spirit is destroyed by the opponent', 'ALLY_DESTROYED'),
+    (r"after an opposing spirit(?:/brave|/ultimate)?'s \(when summoned\) effect (?:resolves|activates)", 'OPP_SUMMON_FX'),
+    (r'after the opposing hand increases (?:via|with|by) an opposing effect', 'OPP_HAND_UP'),
+]
+BURST_BLOCK = re.compile(r'^\s*\{\{[Bb]urst\|([^}|]*)\}\}\s*(.*)$', re.S)
+
+def burst_block(text):
+    """Split off a leading {{Burst|condition}} block -> (burst dict or None, rest of the text)."""
+    blocks = re.split(r'\n\s*\n', (text or '').replace('\r', '').strip())
+    m = BURST_BLOCK.match(blocks[0]) if blocks else None
+    if not m: return None, text
+    cond = m.group(1).strip().lower()
+    when = next((k for rx, k in BURST_WHEN if re.fullmatch(rx, cond)), None)
+    if when is None: raise Review('Burst condition: ' + cond[:70])
+    b = {'when': when, 'actions': []}
+    for s in sentences(re.sub(r'\s+', ' ', m.group(2))):
+        x = s.rstrip('.').strip()
+        if re.fullmatch(r'(?:After this effect resolves, )?summon this (?:Spirit )?card(?: without paying the cost)?', x, re.I):
+            b['actions'].append({'do': 'SUMMON_SELF'}); continue
+        mm = re.fullmatch(r"Then,? by paying the cost, activate this card's (Flash|Main) effect", x, re.I)
+        if mm: b['then' + mm.group(1).capitalize()] = True; continue
+        if any(a['do'] == 'SUMMON_SELF' for a in b['actions']): raise Review('Burst sentence after the summon: ' + s[:80])
+        a, o = action_of(s, {'kind': 'burst'})
+        if o: raise Review('optional clause in Burst: ' + s[:80])
+        if any(y['do'] in SELF_ACTS and y.get('to', 'self') == 'self' for y in a): raise Review('Burst sentence about this Spirit: ' + s[:80])
+        b['actions'] += a
+    if not b['actions']: raise Review('Burst without actions')
+    if len(b['actions']) > 5: raise Review('Burst with more than 5 actions')
+    return b, '\n\n'.join(blocks[1:])
+
+
+# ---------- Ultimate summon condition (v0.56) ----------
+UT_PARA = re.compile(r'^Ultimate Trigger\s*((?:\[LV\d\])+)\s*\(When Attacks\)\s*When Ultimate Trigger hits, (.+)$', re.S)   # v0.56 inline form only
+SUMCON = re.compile(r'^\s*(?:\{\{\s*[Ss]umcon\|([^}]*)\}\}|\[Summon Condition:\s*([^\]]*)\])\s*(?:\n\s*\n|$)')
+CTRL_ONE = re.compile(r'^(one|two|three|\d) or more (?:cost (\d+) or (?:higher|more|above|greater) )?(.*?)\s*(spirits?/ultimates?|spirits?|ultimates?)$', re.I)
+
+def ctrl_one(s):
+    m = CTRL_ONE.match(s)
+    if not m: raise Review('summon condition: ' + s[:70])
+    n, cost, mid, kind = num(m.group(1)), m.group(2), m.group(3).strip(), m.group(4).lower()
+    q = {'n': n, 'type': 'Both' if '/' in kind else 'Ultimate' if kind.startswith('ultimate') else 'Spirit'}
+    if cost: q['costGe'] = int(cost)
+    if mid:
+        cols = mid.lower().split('/')
+        if all(c in COLOURS for c in cols): q['colors'] = cols
+        elif re.fullmatch(r'[A-Z][A-Za-z]*(?: [A-Z][A-Za-z]*)*', mid): q['family'] = mid
+        else: raise Review('summon condition: ' + s[:70])
+    return q
+
+def sumcon(s):
+    """{{Sumcon|...}} / [Summon Condition: ...] text -> engine summonIf (fxIf keys), None for "None"; Review otherwise."""
+    x = re.sub(r'\s+', ' ', s).strip().rstrip('.').strip()
+    if x.lower() == 'none': return None
+    m = re.fullmatch(r'(?:Your Life is at|At Least) (\w+) (or more|or less|Lives)', x, re.I)
+    if m: return {'lifeLe': num(m.group(1))} if m.group(2).lower() == 'or less' else {'lifeGe': num(m.group(1))}
+    m = re.fullmatch(r'You have (\w+) counters? or more', x, re.I)
+    if m: return {'counterGe': num(m.group(1))}
+    m = re.fullmatch(r'You must have (\d) or more (.+?)(?: on your field)?', x, re.I)
+    if m: x = 'You control ' + m.group(1) + ' or more ' + m.group(2)
+    m = re.fullmatch(r'Controlling at least (\w+) (.+)', x, re.I)
+    if m: x = 'You control ' + m.group(1) + ' or more ' + m.group(2)
+    m = re.fullmatch(r'You control (.+)', x)
+    if not m: raise Review('summon condition: ' + x[:70])
+    parts = [ctrl_one(re.sub(r'(?i)^(one|two|three|\d) or more cost', lambda mm: mm.group(0).lower(), p.strip())) for p in re.split(r' and (?=(?:one|two|three|\d) or more)', m.group(1))]
+    return {'ctrl': parts[0] if len(parts) == 1 else parts}
+
+def ultimate_text(c, t):
+    """Split the summon condition off an Ultimate's text -> (summonIf or None, rest, display text)."""
+    m = SUMCON.match(t or '')
+    if not m: raise Review('Ultimate with no summon condition block (Contract Advent / Manifest or other text)')
+    cond = (m.group(1) if m.group(1) is not None else m.group(2)).strip()
+    rest = (t or '')[m.end():]
+    rest = re.sub(r'(?m)^\s*utb\s*$', '', rest)
+    rest = re.sub(r'\s*\(Ultimate Trigger: [^)]*\)', '', rest)       # the reminder text (rule: action ULT_TRIGGER)
+    for p in re.split(r'\n\s*\n', rest):
+        if not re.search(r'Ultimate[- ]Trigger', p): continue
+        if not UT_PARA.match(p.strip()):
+            if re.match(r'^\s*Ultimate Trigger\s*\n', p): raise Review('Ultimate Trigger (export drops its [LVn] (timing) line)')
+            raise Review('Ultimate Trigger form: ' + re.sub(r'\s+', ' ', p.strip())[:70])
+    if re.search(r'(?m)^\s*uhand\s*$', rest): raise Review('Ultimate: "uhand" template (Ultimate in Hand rule)')
+    return sumcon(cond), rest, '[Summon Condition: ' + cond + ']\n\n' + rest.strip()
+
+
+# ---------- card ----------
+def compile_card(c):
+    n = {k: c[k] for k in KEEP if k in c}
+    if c.get('keyword'): n['mechanics'] = [c['keyword']]
+    txt = c.get('text')
+    if c['type'] == 'Ultimate':      # v0.56
+        si, txt, n['text'] = ultimate_text(c, txt)
+        if si: n['summonIf'] = si
+        txt = re.sub(r'\b([Tt])his Ultimate\b', lambda m: m.group(1) + 'his Spirit', txt)
+    b, rest = burst_block(txt)
+    if b:
+        if c['type'] not in ('Spirit', 'Magic'): raise Review('Burst on a ' + c['type'])
+        if c['type'] == 'Spirit' and not any(a['do'] == 'SUMMON_SELF' for a in b['actions']): raise Review('Spirit Burst without the summon')
+        if c['type'] == 'Magic' and any(a['do'] == 'SUMMON_SELF' for a in b['actions']): raise Review('Magic Burst with a summon')
+        if (b.get('thenFlash') or b.get('thenMain')) and c['type'] != 'Magic': raise Review('then-Flash/Main Burst on a Spirit')
+        n['burst'] = b
+    t = clean(rush_mark(rest))
+    if c['type'] != 'Spirit' and '\u27e6RUSH' in t: raise Review('Rush on a ' + c['type'])
+    if c['type'] == 'Brave' and not c.get('brave'): raise Review('Brave without combine data (export)')
+    if c['type'] in ('Spirit', 'Brave', 'Ultimate') and not c.get('levels'): raise Review('no level data')
+    L = c.get('levels') or []
+    if any(L[i]['cores'] <= L[i - 1]['cores'] for i in range(1, len(L))): raise Review('level thresholds not ascending (export)')
+    if not t:
+        if c['type'] == 'Magic': raise Review('Magic without text')
+        if b: raise Review('Burst only, no other text')
+        n['fxComplete'] = True
+        return n
+    paras = paragraphs(t)
+    if c['type'] == 'Magic':
+        n['magic'] = magic_card(paras, n)
+        tim = n['magic']['timing']
+        if b and ((b.get('thenFlash') and 'FLASH' not in tim) or (b.get('thenMain') and 'MAIN' not in tim)): raise Review('Burst then-effect without that timing')
+    else:
+        effects = []
+        for p in paras:
+            e, f = spirit_paragraph(p, c)
+            effects += e; n.update(f)
+        if len(effects) > 8: raise Review('more than 8 effects')
+        if effects: n['effects'] = effects
+    n['fxComplete'] = True
+    return n
+
+
+def staged():
+    have = {c['id'] for f in glob.glob(os.path.join(ROOT, 'data/cards/saga-[0-9][0-9].json')) for c in json.load(open(f, encoding='utf8'))}
+    for f in sorted(glob.glob(os.path.join(ROOT, 'data/import/saga-[0-9][0-9].json'))):
+        for c in json.load(open(f, encoding='utf8')):
+            if c['id'] not in have: yield c
+
+
+def main(argv):
+    sel = lambda c: True
+    if '--saga' in argv: s = int(argv[argv.index('--saga') + 1]); sel = lambda c, s=s: c.get('saga') == s
+    if '--ids' in argv: ids = set(argv[argv.index('--ids') + 1].split(',')); sel = lambda c, ids=ids: c['id'] in ids
+    vanilla_only = '--vanilla' in argv
+    ok, rev = [], []
+    for c in staged():
+        if vanilla_only and (c.get('text') or '').strip(): continue
+        if not vanilla_only and not sel(c): continue
+        try: ok.append(compile_card(c))
+        except Review as e: rev.append((c['id'], c['name'], str(e)))
+    reasons = collections.Counter(re.sub(r':.*', '', r[2]) for r in rev)
+    print(f'compiled {len(ok)}, review {len(rev)}  ' + ', '.join(f'{k} {v}' for k, v in reasons.most_common(8)))
+    if '--out' in argv:
+        json.dump(ok, open(argv[argv.index('--out') + 1], 'w'), indent=1, ensure_ascii=False)
+    if '--review' in argv:
+        with open(argv[argv.index('--review') + 1], 'w') as f:
+            f.write('# Effect compiler review list (generated by tools/compile_effects.py; do not edit)\n\n')
+            f.write(f'{len(rev)} cards stay staged. Reasons:\n\n')
+            for k, v in reasons.most_common(): f.write(f'- {k}: {v}\n')
+            f.write('\n| Card | Name | First reason |\n|---|---|---|\n')
+            for i, nm, r in rev: f.write(f'| {i} | {nm} | {r.replace("|", "/")} |\n')
+    return ok, rev
+
+
+if __name__ == '__main__':
+    main(sys.argv[1:])
