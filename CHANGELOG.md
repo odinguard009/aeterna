@@ -2,6 +2,14 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.59.8
+- **Match fuzzer in Regression** (F1, owner approved; workflow only, no change to the game):
+  - New job `fuzz` in the Regression workflow, next to the 5 Python parts: `node tools/fuzz.mjs --runs N --seed <run id mod 1e9>` (dispatch input `fuzz`, default 20; `0` skips it). Every run plays new seeds, so rare crashes, invariant breaks and endless matches turn up without spending session tokens.
+  - A failure names mode + seed as annotations (sessions cannot read raw logs); the case JSON is uploaded as run artifact `fuzz-cases`, since workflows do not commit. The next session downloads it, commits it to `tests/fuzz-cases/` (test F596 replays it) and fixes it first.
+  - Budget: about 7 s per match locally (3 matches in 20 s), so 20 matches stay well under the slowest Python part (the whole Regression took about 6 minutes on v0.59.6).
+  - Tests F598-01..03 (`tests/unit/fuzzci598.test.mjs`): job, input, run-id seed, failing exit, annotations, artifact.
+  - Revert: `git revert` of the v0.59.8 commit.
+
 ## v0.59.7
 - **Front page and releases** (C5, owner request; docs and tooling only, no change to the game):
   - `README.md` is now a short front page (about 60 lines, modelled on the Aegis repo page): pitch, download link, four screenshots (match on PC and phone, deck builder, lobby; `docs/images/`, made by `node tools/screens.mjs` from a seeded CPU-vs-CPU match), what it does, status, a small architecture diagram and the three dev commands. The lobby replaces the planned "card library" shot: the Library view only holds the import tools. The old Data / Development / glossary text moved to `docs/ARCHITECTURE.md`.

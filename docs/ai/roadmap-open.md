@@ -4,7 +4,6 @@ Read the lines for the colour or mechanic you touch before starting. Newest firs
 
 ## Session order (owner, 2026-10-17; replaces the plan order below where they differ)
 Opus for every session. Migration and quality sessions alternate with card sessions (card session = the next mechanic by measured unlocks from "Plan from the audit" below: Brave completion, When Destroyed, Grandwalker Nexus effects, ...). Delete each line when done.
-2c. **F1 fuzzer in Regression** (owner approved 2026-10-17, patch, bundle with C5): new matrix part `fuzz` in `.github/workflows/regression.yml` (input `fuzz`, default 20 matches; `node tools/fuzz.mjs --runs N --seed <run id>`; exit 1 on any failure); failing cases (`tests/fuzz-cases/*.json`) uploaded as a run artifact, since workflows do not commit: the next session downloads the artifact, commits the case and fixes it first. Also `tests/run_all.py`/`release.md`/skill text name the new part; budget: the part must stay under the slowest existing part (measure on the first run, lower the default if not).
 3. Card session.
 4. **M1 workspace skeleton** + **Q2 test waits**: replace the fixed `wait_for_timeout` calls in `tests/suites` (318 on 2026-10-17) with waits on a visible state (modal open, step label, log line); the count is a shrink-only ratchet.
 5. Card session.

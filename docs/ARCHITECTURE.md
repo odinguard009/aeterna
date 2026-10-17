@@ -87,7 +87,7 @@ Staging keeps every card; playable is the promoted subset, so the stages are not
 
 Ratchet lists (`tests/unit/known-gaps.json`) only shrink. Hooks (`.githooks/`): pre-push runs build check, lint, quick tests, `tools/check_renames.py` and the brand guard; commit-msg runs the brand guard.
 
-Match fuzzer (v0.59.6): `node tools/fuzz.mjs [--runs N] [--seed S]` plays CPU-vs-CPU matches with random legal CPU choices (`BS.setFuzz`, `fuzzPick` in `09a-cpu-eval.js`, seeded game rng); a crash, invariant break or match that does not end is saved to `tests/fuzz-cases/`, replayed by `tests/unit/fuzz596.test.mjs` (CI only, not in the quick loop).
+Match fuzzer (v0.59.6): `node tools/fuzz.mjs [--runs N] [--seed S]` plays CPU-vs-CPU matches with random legal CPU choices (`BS.setFuzz`, `fuzzPick` in `09a-cpu-eval.js`, seeded game rng); a crash, invariant break or match that does not end is saved to `tests/fuzz-cases/`, replayed by `tests/unit/fuzz596.test.mjs` (CI only, not in the quick loop). Regression job `fuzz` (v0.59.8) plays 20 fuzzed matches per run, seeded by the run id; new failing cases come back as the run artifact `fuzz-cases`.
 
 ## 7. Session tooling
 - `tools/session_start.sh`: overlap guard, hooks, baseline loop, version, Next line, playable count, open issues.

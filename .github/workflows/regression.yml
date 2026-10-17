@@ -1,5 +1,5 @@
 # Full Python Playwright regression (the release gate), run on GitHub instead of in Claude's session.
-# Triggers: "Run workflow" (Claude starts it through the REST dispatch API) or a release tag pushed by the user. The 5 parts run in parallel.
+# Triggers: "Run workflow" (Claude starts it through the REST dispatch API) or a release tag pushed by the user. The 5 Python parts and the fuzz job run in parallel.
 # Claude checks the result with: gh api repos/odinguard009/aeterna/actions/runs?per_page=3
 name: Regression
 on:
@@ -10,6 +10,9 @@ on:
       sims:
         description: CPU-vs-CPU games in the sims part
         default: '30'
+      fuzz:
+        description: Fuzzed CPU-vs-CPU matches in the fuzz part (random legal choices, tools/fuzz.mjs); 0 skips it
+        default: '20'
 jobs:
   part:
     runs-on: ubuntu-24.04
@@ -41,4 +44,32 @@ jobs:
         with:
           name: last-run-${{ matrix.part }}
           path: tests/last-run.json
+          if-no-files-found: ignore
+  # v0.59.8 (F1): match fuzzer, Node + Playwright, alongside the 5 Python parts. Seed = run id, so every run plays new matches
+  # and the log names mode + seed of a failure (fuzzOne(seed, mode) replays it exactly). Workflows do not commit: a failing
+  # case JSON is uploaded as artifact fuzz-cases; the next session commits it to tests/fuzz-cases/ and fixes it first.
+  fuzz:
+    if: github.event_name != 'workflow_dispatch' || github.event.inputs.fuzz != '0'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dev tools (Playwright only)
+        run: npm install --no-save playwright && npx playwright install --with-deps chromium
+      - name: Fuzzed matches
+        run: |
+          n="${{ github.event.inputs.fuzz || '20' }}"
+          node tools/fuzz.mjs --runs "$n" --seed "$(( ${{ github.run_id }} % 1000000000 ))" > fuzz.log 2>&1 && { tail -1 fuzz.log; exit 0; }
+          grep -E "^\[fuzz\] (v|[0-9]+/[0-9]+ .*: [^o]|saved)|healthy|^[a-z]+ [0-9]+: " fuzz.log | head -25 | while IFS= read -r l; do echo "::error::$(echo "$l" | cut -c1-400)"; done
+          tail -5 fuzz.log
+          exit 1
+      - name: Keep new fuzz cases
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzz-cases
+          path: tests/fuzz-cases/*.json
           if-no-files-found: ignore
