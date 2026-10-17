@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "17 Oct 2026",
-  "next": "next: M1 workspace skeleton + Q2 test waits (Opus), then a card session (Brave part 2: summon a Brave card from the Hand, two-sided Braves; or When Destroyed / Grandwalker, sized with tools/lever_report.py first); 608 of 8,041 cards playable"
+  "next": "next: M1 workspace skeleton + Q2 test waits (Opus), then the card session Brave part 2 (owner: summon a Brave card from the Hand first, ~24 cards); 608 of 8,041 cards playable"
  },
  "phases": [
   {
@@ -798,5 +798,5 @@
    "note": "Manual session on Opus: Brave completion part 1 (combine data from 441 Fandom pages, braved effects on the combined Spirit, +15 cards); README links and screenshots removed until v1.0; auto mode ON with a 20-minute delay. Budget-counter difference read before the last commit."
   }
  ],
- "next": "next: M1 workspace skeleton + Q2 test waits (Opus), then a card session (Brave part 2: summon a Brave card from the Hand, two-sided Braves; or When Destroyed / Grandwalker, sized with tools/lever_report.py first); 608 of 8,041 cards playable"
+ "next": "next: M1 workspace skeleton + Q2 test waits (Opus), then the card session Brave part 2 (owner: summon a Brave card from the Hand first, ~24 cards); 608 of 8,041 cards playable"
 }

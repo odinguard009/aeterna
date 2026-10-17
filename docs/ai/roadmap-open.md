@@ -5,7 +5,7 @@ Read the lines for the colour or mechanic you touch before starting. Newest firs
 ## Session order (owner, 2026-10-17; replaces the plan order below where they differ)
 Opus for every session. Migration and quality sessions alternate with card sessions (card session = the next mechanic by measured unlocks from "Plan from the audit" below: Brave completion, When Destroyed, Grandwalker Nexus effects, ...). Delete each line when done.
 4. **M1 workspace skeleton** + **Q2 test waits**: replace the fixed `wait_for_timeout` calls in `tests/suites` (318 on 2026-10-17) with waits on a visible state (modal open, step label, log line); the count is a shrink-only ratchet.
-5. Card session.
+5. Card session: **Brave part 2** (owner, 2026-10-17): first "summon a Brave card from your Hand" (~24 cards blocked; SUMMON_HAND needs a type match for Braves), then the other Brave levers below if the session has room.
 6. **Q3 rules knowledge base + citations**: rule sections as chunks with ids, page and SHA-256 fingerprint, a query tool, tests cite chunk ids, a checker flags citations whose fingerprint changed. Full official manual text stays out of the public repo (copyright, neutral name): the public repo keeps ids, pages, short paraphrases and fingerprints. Also **Q4 skill `bs-card-verify`** (one card: evidence -> trace -> test -> verdict) for "card X is wrong" reports.
 7. Card session.
 8. **M2** host port part 1, card session, **M3** host port part 2, card session, **M4** replays (input record + viewer replay), card session.
