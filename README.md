@@ -49,6 +49,7 @@ Unofficial non-commercial fan project; card names, text and trademarks belong to
   - Redraw dialog: when the starting Hand holds a Contract card, a note says the redraw sends it back to the Deck and it cannot be added again. Rules summary in the lobby updated the same way.
   - CPU: never redraws a starting Hand that holds its Contract card (before, an all-cost-4+ hand was redrawn and the Contract card was lost for the game).
   - Code: `redrawHand` and `cpuWantsRedraw` moved to `src/js/05-state.js` (exposed on `window.BS`). Tests E21d (hand size 4 with and without a Contract card, redraw keeps 4 and the Deck total) and E21e (CPU redraw rule). Dialog checked on PC and phone (4 cards, note shown, no console errors).
+  - Release checks: CI green (run 39014923537) and Regression green (run 39014936454, Python parts 1-3 + legacy, 30 CPU-vs-CPU sims). No backup due (3 releases since backup/v0.57.0).
   - Revert: `git revert` of the v0.59.1 commit.
 
 ## v0.59.0
