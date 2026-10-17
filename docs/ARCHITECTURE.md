@@ -33,7 +33,7 @@ Top-level functions stay global (inline handlers, `window.BS` and the tests rely
 | `15-match.js`, `16-events.js` | match start/end, event delegation, replays, scenarios, test hooks `window.BS` |
 
 ## 2. Runtime
-- **State:** one object `G` (players `G.p.player` / `G.p.opponent`, step, turn number, queues). Browser storage only for decks, imported cards, settings, history, images; the game makes no network calls.
+- **State:** one object `G` (players `G.p.player` / `G.p.opponent`, step, turn number, queues). Browser storage only for decks, imported cards, settings, history, images; the game makes no network calls and no `eval`. Imported card names and text are escaped in every `innerHTML` template; corrupt or blocked storage does not break start-up. Test-only stand-in cards (TST-*) live in `tests/fixtures/prototype_cards.js`, never in the shipped game (suite v24 asserts it).
 - **Turn flow:** `matchLoop` -> `beginTurn` (Start, Core, Draw, Refresh steps; Standby released) -> human input or `cpuTurn` -> `endStep`. `win()` ends the match. Formats: Eternal and Standard step lists (`00-config.js`).
 - **Randomness:** seeded RNG (`seedRng`, `rng`); every match keeps an input record, so `BS.runReplay(record)` reproduces it.
 - **Rules source:** the official manuals; decisions and page references in `docs/manual-notes.md`, coverage in `docs/rules-coverage.md`, audit in `docs/reports/rules-audit.md`, per-mechanic records in `docs/mechanics/`.

@@ -2,7 +2,7 @@
 
 A fan-made, single-file web simulator for a trading card game. You play against a CPU. It runs on PC and phone with no install.
 
-Current build: **v0.59.2** (593 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
+Current build: **v0.59.3** (593 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
 
 This repository starts at v0.57.0 with one snapshot commit (2026-10-17); the earlier history, issue threads and backup branches stay in the owner's private archive. Issue numbers in the older release notes refer to that archive.
 
@@ -14,7 +14,7 @@ This repository starts at v0.57.0 with one snapshot commit (2026-10-17); the ear
 - Separate PC (playmat) and phone layouts
 
 ## Not done yet
-Most staged cards still need their effects compiled or a missing mechanic; the plan is `docs/ai/roadmap-open.md` and the mind map `docs/roadmap.html`. Next: the starting-Hand redraw with a Contract card (owner report, v0.59.1), then mechanics by measured unlocks (`tools/lever_report.py`); the Ultimate Trigger level/timing data for 110 Ultimates needs the owner present.
+Most staged cards still need their effects compiled or a missing mechanic; the plan is `docs/ai/roadmap-open.md` and the mind map `docs/roadmap.html`. Next: the Q1 quality bundle (strict effects mode, in-game error report, match fuzzer), then mechanics by measured unlocks (`tools/lever_report.py`); the Ultimate Trigger level/timing data for 110 Ultimates needs the owner present.
 
 ## Data
 Card data is kept per Saga (BS75 cards sit in Saga 16, BS76 cards in Saga 17, as in the asset folders):
@@ -43,6 +43,15 @@ Card images are not included; import your own images in the game.
 Unofficial non-commercial fan project; card names, text and trademarks belong to their owners.
 
 
+## v0.59.3
+- **Docs tidy** (repo cleanup C2, docs and generator paths only, no game change):
+  - Generated reports moved to `docs/reports/` (`compile-review.md`, `unlock-report.md`, `rules-audit.md`, `effect-coverage.md`, `red-cards-check-table.html`); `tools/unlock_report.py`, `tools/lever_report.py`, `tools/rules_audit.py`, `tools/tag_effects.py`, the light-clone sparse pattern (`CLAUDE.md`, `tools/session_start.sh`), skills and guides point there. Old-path grep is empty outside the cleanup plan's findings and the history of the moved files.
+  - New `docs/mechanics/` with one record per mechanic (source, rule, decision, engine names, tests, open points): Standby, Burst order, effect priority / unaffected, Contract Advent, Seal; the matching `docs/rules-coverage.md` rows link them. Further mechanics get a record when a session touches them (skill `bs-doc-convention`).
+  - `docs/code-review.md` (v0.24.0 record) and `docs/card-sources.md` (2026-10-13 site check) folded into `docs/ARCHITECTURE.md` and `docs/ai/cards-and-rules.md`, then deleted (git history keeps them). `docs/saga-map.md` stays: the card-image skill uses it.
+  - Generators rerun with unchanged results: rules audit 242 items (84 confirmed, 47 house, 0 conflict, 111 open); playable 593 / 8,041.
+  - Brand note: the brand mapping's exclude `docs/compile-review.md` becomes `docs/reports/*` (Project copy updated; the archived vault copy is read-only, so the v1.0 restore must use the Project copy).
+  - Revert: `git revert` of the v0.59.3 commit.
+
 ## v0.59.2
 - **Architecture and doc layout** (repo cleanup C1, docs only, no game change): `docs/ARCHITECTURE.md` explains build, runtime, effect engine and resolution order, card data pipeline, compiler, tests, session tooling and the brand layer; `docs/README.md` lists every doc as hand-written or generated (with its tool); new skill `bs-doc-convention` says where each kind of file goes. The CLAUDE.md "Architecture" paragraph is now one line linking `docs/ARCHITECTURE.md`.
   - Revert: `git revert` of the v0.59.2 commit.
@@ -58,7 +67,7 @@ Unofficial non-commercial fan project; card names, text and trademarks belong to
 
 ## v0.59.0
 - **Ultimates as targets: measured, then step-prefixed attack triggers** (heavy item, Opus): +4 cards (593 / 8,041 playable).
-  - Sizing (scratch recompile, `tools/lever_report.py`): reading every "Spirit/Ultimate" as "Spirit" in the 2,015 staged non-Ultimate cards that mention Ultimates unlocks **0** cards on its own (opposing "Spirit/Ultimate" targets already compile since v0.54.0; each of these cards has another blocker). The ~738-824 in `docs/unlock-report.md` are tag upper bounds. Of the 253 staged Ultimates, adding the missing `[LVn] (When Attacks)` line to the 110 Ultimate Trigger cards makes only 1 compile (their bodies need other sentences), so that data work is low yield. Recorded in `docs/ai/roadmap-open.md`.
+  - Sizing (scratch recompile, `tools/lever_report.py`): reading every "Spirit/Ultimate" as "Spirit" in the 2,015 staged non-Ultimate cards that mention Ultimates unlocks **0** cards on its own (opposing "Spirit/Ultimate" targets already compile since v0.54.0; each of these cards has another blocker). The ~738-824 in `docs/reports/unlock-report.md` are tag upper bounds. Of the 253 staged Ultimates, adding the missing `[LVn] (When Attacks)` line to the 110 Ultimate Trigger cards makes only 1 compile (their bodies need other sentences), so that data work is low yield. Recorded in `docs/ai/roadmap-open.md`.
   - New engine trigger `OPP_ATTACKS` ("when an opposing Spirit attacks"): fired for the defending player in the same pool as the attacker's `ATTACKS` / `ALLY_ATTACKS` (`src/js/08-battle.js`). New match key `noUlt` (`fxMatch`): the text says "Spirit", so an attacking Ultimate does not trigger these.
   - Compiler: "(Your Attack Step) When your "X" family Spirit attacks, ..." -> `ALLY_ATTACKS` + `match { family, noUlt }`; "(Opposing Attack Step) When an opposing Spirit attacks, ..." -> `OPP_ATTACKS`; "that Spirit gains +N BP" after an ally attack trigger -> `BP_PLUS` to the attacker.
   - Promoted (every text/JSON pair read): BS11-031 The Valkyrie-Mist, BS18-021 The SteedGeneral Muqali, BS21-016 Death-Hydra, BS21-032 The HoundMachine Asterio-Venera 9.
@@ -109,7 +118,7 @@ Unofficial non-commercial fan project; card names, text and trademarks belong to
 ## v0.55.1
 - **Rules audit R1-R2** (owner request; patch, no engine change): every rule the engine applies is listed with its source and a verdict.
   - **Sources and versions** (table at the top of `docs/manual-notes.md`): Japanese Eternal Rule Manual Ver.17.1 (2026-05-29, change list not readable in this run), English PDF VER.17.0, Japanese 17.0 revision notice (2026-04-03, effective 2026-04-11; its 9 changes are listed with the engine area each touches), Ruling Changes pages (no 2025-2026 entries), Standard Rule Manual 1.1 (2026-10-02) and Comprehensive Rules 1.0 (2026-04-01).
-  - **New `tools/rules_audit.py` -> `docs/rules-audit.md`:** 242 items (coverage rows, glossary rule notes, house-reading lines): **77 confirmed, 48 house reading, 5 conflict, 112 open** (no source cited yet). Hand-set verdicts in `docs/rules-audit-verdicts.json`; test D14.
+  - **New `tools/rules_audit.py` -> `docs/reports/rules-audit.md`:** 242 items (coverage rows, glossary rule notes, house-reading lines): **77 confirmed, 48 house reading, 5 conflict, 112 open** (no source cited yet). Hand-set verdicts in `docs/rules-audit-verdicts.json`; test D14.
   - **Conflicts found (R3, own releases):** a declared Burst must resolve after all non-Burst triggered effects (the engine runs the "ally destroyed" and "opposing Hand increased" Bursts first); Standby state when a card leaves the Field (the engine puts it in the Trash before its (When Destroyed) effects); effect priority "cannot" > "must" > "do" = "can".
   - **Settled:** "mandatory Soul Core use" (17.0) means every game includes the Soul Core (already built), not that it must be spent; the Flag Nexus / F Contract Advent rule text is in the 17.0 notice (unblocks that item; Nexus levels still missing).
   - `tools/session_start.sh` prints the audit line and warns when the check is older than 30 days (R4).
@@ -159,7 +168,7 @@ Unofficial non-commercial fan project; card names, text and trademarks belong to
   - Revert: `git revert` this commit (only `src/js/03`, `13`, `14`, `16` and two tests changed).
 
 ## v0.52.0
-- **Effect compiler + pilot promotion** (audit plan step 2). `tools/compile_effects.py` turns staged card text into engine data (`effects`, `magic`, `highSpeed`) for patterns of wired glossary tags only, old (Saga 1-2) and current wording; a card is promoted only when **every** paragraph maps (no partial promotion), otherwise it stays staged and goes to the review list `docs/compile-review.md` (Saga 1; regenerate with `--saga N --review`). `tools/promote_compiled.mjs` then checks every compiled card in the real game page (parseCard + smoke check: played by the CPU or summoned/cast, SUMMONED/START_ATTACK/ATTACKS/BLOCKS fired, one attack, no console error, no invariant break) and merges the passing cards into `data/cards`. Tests C52-01..05.
+- **Effect compiler + pilot promotion** (audit plan step 2). `tools/compile_effects.py` turns staged card text into engine data (`effects`, `magic`, `highSpeed`) for patterns of wired glossary tags only, old (Saga 1-2) and current wording; a card is promoted only when **every** paragraph maps (no partial promotion), otherwise it stays staged and goes to the review list `docs/reports/compile-review.md` (Saga 1; regenerate with `--saga N --review`). `tools/promote_compiled.mjs` then checks every compiled card in the real game page (parseCard + smoke check: played by the CPU or summoned/cast, SUMMONED/START_ATTACK/ATTACKS/BLOCKS fired, one attack, no console error, no invariant break) and merges the passing cards into `data/cards`. Tests C52-01..05.
   - Promoted **347 cards**: 301 vanilla cards (all Sagas; 4 without level data and 2 Braves without combine data stay staged) + 46 Saga 1 cards with effects (BP+ on attack/block, draw, destroy by BP, exhaust, Void cores, Clash, Crush, Holy Life, High Speed, Awaken, simple Magic). Smoke: 347 / 347 ok. **Playable 152 -> 499 / 8,041.**
   - Saga 1 coverage is low (171 of 1,011 compile; review reasons: paragraphs without a mapped trigger 361, sentences 329, Tribute 39, other keywords 32). Each new pattern is cheap and unlocks cards across all Sagas: that is the work of the Sonnet batch sessions.
   - Guards: Nexus `[LV2]`+ text stays staged (the export has no Nexus thresholds; `[LV1][LV2]` effects load as LV1); level thresholds that are not strictly ascending (BS19-031) stay staged; wiki templates, Burst and cards with two text versions (errata tabs) stay staged.
@@ -632,7 +641,7 @@ UI changes approved by the owner (issue #6); PC and phone layouts otherwise unch
 - Tests: v25 suite 48/48, full regression, 30 CPU-vs-CPU sims. `tests/make_fixtures.py` recreates the files the older suites need. Design notes from the Aegis simulator: `docs/aegis-study.md`.
 
 ## v0.24.0
-- Code review and cleanup: fabricated prototype cards and first-generation mechanics removed from the game (test fixtures live in `tests/`), real-card default deck, one version constant, no external network access (audited), see `docs/code-review.md`.
+- Code review and cleanup: fabricated prototype cards and first-generation mechanics removed from the game (test fixtures live in `tests/`), real-card default deck, one version constant, no external network access (audited; record folded into `docs/ARCHITECTURE.md` in v0.59.3).
 - Tests: v24 suite 52/52, plus the full regression.
 
 ## v0.23.0
@@ -695,4 +704,4 @@ UI changes approved by the owner (issue #6); PC and phone layouts otherwise unch
 - White Mitra deck: Teen, Iktis, Aath, Pachhattar, Iktalis (Contract Advent) and Banve, Hazaar (Manifest) are now playable.
 
 ## Effect glossary (v0.20+)
-`data/glossary/effects.json` lists the recurring effect patterns (triggers, actions, conditions, static flags, keywords) with the engine vocabulary that implements each and its status (wired/partial/missing). `python3 tools/tag_effects.py` tags every card text with those patterns and writes `data/glossary/card-tags.json` and `docs/effect-coverage.md` (which pieces are still missing, by number of cards). When adding a new card: run the tagger, wire the missing pieces once in the engine, then express the card as data.
+`data/glossary/effects.json` lists the recurring effect patterns (triggers, actions, conditions, static flags, keywords) with the engine vocabulary that implements each and its status (wired/partial/missing). `python3 tools/tag_effects.py` tags every card text with those patterns and writes `data/glossary/card-tags.json` and `docs/reports/effect-coverage.md` (which pieces are still missing, by number of cards). When adding a new card: run the tagger, wire the missing pieces once in the engine, then express the card as data.

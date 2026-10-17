@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Lever report (v0.55.0): measures what the effect compiler really unlocks, unlike the tag-based upper bounds of
-docs/unlock-report.md. For every staged card it collects ALL failing units (paragraph heads, sentences, templates,
+docs/reports/unlock-report.md. For every staged card it collects ALL failing units (paragraph heads, sentences, templates,
 card types) and lists the units that are the ONLY failure of a card, grouped.
   python3 tools/lever_report.py            -> top single-blocker units (exact) + coarse buckets
 To size a lever before building it: copy a card list, patch its text (or monkeypatch compile_effects.action_of)

@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "17 Oct 2026",
-  "next": "next: C1+C2 repo cleanup (Opus, docs), then the Q1 quality bundle (strict effects, error reports, fuzzer); monorepo, quality and Thai UI sessions alternate with card sessions; 593 of 8,041 cards playable"
+  "next": "next: Q1 quality bundle (Opus: strict effects mode, in-game error report, match fuzzer), then a card session; monorepo, quality and UI-language sessions alternate with card sessions; 593 of 8,041 cards playable"
  },
  "phases": [
   {
@@ -171,7 +171,7 @@
     },
     {
      "s": "done",
-     "t": "Rules audit R1-R2 (v0.55.1, owner request): sources and versions table (JP Eternal 17.1 of 2026-05-29, JP 17.0 revision notice, Standard 1.1 / CR 1.0), tools/rules_audit.py -> docs/rules-audit.md: 242 items, 77 confirmed, 48 house reading, 5 conflict, 112 open; 30-day check in session_start"
+     "t": "Rules audit R1-R2 (v0.55.1, owner request): sources and versions table (JP Eternal 17.1 of 2026-05-29, JP 17.0 revision notice, Standard 1.1 / CR 1.0), tools/rules_audit.py -> docs/reports/rules-audit.md: 242 items, 77 confirmed, 48 house reading, 5 conflict, 112 open; 30-day check in session_start"
     },
     {
      "s": "done",
@@ -484,11 +484,11 @@
    },
    "items": [
     {
-     "s": "next",
-     "t": "C1+C2: architecture doc, doc index, doc-convention skill, docs tidy"
+     "s": "done",
+     "t": "C1+C2 (v0.59.2-v0.59.3): <code>docs/ARCHITECTURE.md</code>, doc index, doc-convention skill, reports in <code>docs/reports/</code>, mechanic records in <code>docs/mechanics/</code>"
     },
     {
-     "s": "later",
+     "s": "next",
      "t": "Q1: strict effects mode, in-game error report with replay, match fuzzer"
     },
     {

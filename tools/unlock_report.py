@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Unlock report (audit 2026-10-16): how many staged cards each piece of work would make playable.
-  python3 tools/unlock_report.py          -> writes docs/unlock-report.md and prints one summary line
+  python3 tools/unlock_report.py          -> writes docs/reports/unlock-report.md and prints one summary line
   python3 tools/unlock_report.py --line   -> prints the summary line only (used by tools/session_start.sh)
 It runs the glossary patterns (data/glossary/effects.json) over the English text of every staged card in
 data/import and sorts the cards into classes. The patterns are hints, not a parser, so "ready" is an
@@ -59,5 +59,5 @@ L += [f'- {p}: {n}' for p, n in pair.most_common(8)]
 L += ['', '## Per Saga (staged cards)', '', '| Saga | ' + ' | '.join(CLASSES) + ' |', '|---' * (len(CLASSES) + 1) + '|']
 for s in sorted(per_saga, key=lambda x: int(x) if x.isdigit() else 99):
     L.append(f'| {s} | ' + ' | '.join(str(per_saga[s][k]) for k in CLASSES) + ' |')
-open(os.path.join(root, 'docs/unlock-report.md'), 'w', encoding='utf8').write('\n'.join(L) + '\n')
-print(line, '->', 'docs/unlock-report.md')
+open(os.path.join(root, 'docs/reports/unlock-report.md'), 'w', encoding='utf8').write('\n'.join(L) + '\n')
+print(line, '->', 'docs/reports/unlock-report.md')

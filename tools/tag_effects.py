@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Effect glossary tagger (each entry also carries the official rule it follows in "rule").
-  python3 tools/tag_effects.py              -> writes data/glossary/card-tags.json and docs/effect-coverage.md
+  python3 tools/tag_effects.py              -> writes data/glossary/card-tags.json and docs/reports/effect-coverage.md
 Scans the English card text of data/cards/all-cards.json with the patterns of data/glossary/effects.json.
 Each card gets the tags it uses; the report shows, per tag, how many cards use it and whether the engine can do it,
 and lists the cards that still need a missing/partial piece (sorted by how many tags are missing).
@@ -27,5 +27,5 @@ L += ['', '## Cards with the most unwired tags', '']
 cnt = [(sum(1 for x in tags[c['id']] if by[x]['status'] != 'wired'), c) for c in cards]
 for n, c in sorted(cnt, key=lambda x: -x[0])[:15]:
     if n: L.append(f"- {c['id']} {c['name']}: {', '.join(x for x in tags[c['id']] if by[x]['status'] != 'wired')}")
-open(os.path.join(root, 'docs/effect-coverage.md'), 'w').write('\n'.join(L) + '\n')
-print('tagged', len(tags), 'cards ->', 'data/glossary/card-tags.json, docs/effect-coverage.md')
+open(os.path.join(root, 'docs/reports/effect-coverage.md'), 'w').write('\n'.join(L) + '\n')
+print('tagged', len(tags), 'cards ->', 'data/glossary/card-tags.json, docs/reports/effect-coverage.md')

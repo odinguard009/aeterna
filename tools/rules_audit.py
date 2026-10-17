@@ -5,7 +5,7 @@ Items: every table row of docs/rules-coverage.md, every glossary `rule` note (da
 Verdicts: confirmed (official page/section cited) | house (no official text; kept, reason given) | conflict (the source
 says otherwise -> an R3 fix) | open (no source cited yet / needs a check). Hand-set verdicts in
 docs/rules-audit-verdicts.json win; the rest is classified from the citation words of the item itself.
-  python3 tools/rules_audit.py            -> writes docs/rules-audit.md, prints the summary line
+  python3 tools/rules_audit.py            -> writes docs/reports/rules-audit.md, prints the summary line
   python3 tools/rules_audit.py --line     -> summary line only (used by tools/session_start.sh)"""
 import json, re, sys, os, collections
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -58,7 +58,7 @@ def main():
         out.append('')
     unused = [v['match'] for v in V['items'] if not v.get('_used')]
     if unused: out += ['## Verdicts that matched nothing', ''] + [f'- {u}' for u in unused] + ['']
-    open(P('docs/rules-audit.md'), 'w', encoding='utf-8').write('\n'.join(out))
+    open(P('docs/reports/rules-audit.md'), 'w', encoding='utf-8').write('\n'.join(out))
     print(line + (f'; unused verdicts: {len(unused)}' if unused else ''))
 
 if __name__ == '__main__': main()

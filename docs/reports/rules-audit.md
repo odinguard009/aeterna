@@ -119,10 +119,10 @@ Auto verdicts trust the citation written next to the rule; a cited English VER.1
 | glossary | data/glossary/effects.json | A_BRAVE_AS_SPIRIT |  | no source cited yet |
 | glossary | data/glossary/effects.json | A_DISCARD_ALL_HAND |  | no source cited yet |
 | glossary | data/glossary/effects.json | T_DESTROYED_OPP | Eternal manual p. 28; Standard CR 12-2-1-12-1 | Depletion is not destruction (cited). 'Depleted or destroyed by the opponent' has no separate rule text; card text decides. |
-| note | docs/ai/roadmap-open.md:44 | - Grandwalker Nexus cores (v0.42.1): cannot pay costs or be ... | Eternal manual pp. 22, 26, 42, 44 | Cores cannot pay costs / be moved (cited). Open: Soul Core on a Grandwalker Nexus, whether its cores count toward Lv (no text found). |
-| note | docs/ai/roadmap-open.md:55 | - Open from v0.41 (Magic effect types; most clauses done in ... | Eternal manual p. 28; Standard CR 12-2-1-12-1 | Depletion is not destruction (cited). 'Depleted or destroyed by the opponent' has no separate rule text; card text decides. |
-| note | docs/ai/roadmap-open.md:56 | - Open from v0.40: Grand-Sagitto-Nova (Ultra Advent), Bilijv... |  | no source cited yet |
-| note | docs/ai/roadmap-open.md:57 | - Open from v0.39: Hades Contract Field (Trash summons payin... |  | no source cited yet |
+| note | docs/ai/roadmap-open.md:57 | - Grandwalker Nexus cores (v0.42.1): cannot pay costs or be ... | Eternal manual pp. 22, 26, 42, 44 | Cores cannot pay costs / be moved (cited). Open: Soul Core on a Grandwalker Nexus, whether its cores count toward Lv (no text found). |
+| note | docs/ai/roadmap-open.md:68 | - Open from v0.41 (Magic effect types; most clauses done in ... | Eternal manual p. 28; Standard CR 12-2-1-12-1 | Depletion is not destruction (cited). 'Depleted or destroyed by the opponent' has no separate rule text; card text decides. |
+| note | docs/ai/roadmap-open.md:69 | - Open from v0.40: Grand-Sagitto-Nova (Ultra Advent), Bilijv... |  | no source cited yet |
+| note | docs/ai/roadmap-open.md:70 | - Open from v0.39: Hades Contract Field (Trash summons payin... |  | no source cited yet |
 
 ## House (47)
 
@@ -173,8 +173,8 @@ Auto verdicts trust the citation written next to the rule; a cited English VER.1
 | glossary | data/glossary/effects.json | K_BURST_THEN_MAIN | card text / engine reading | auto: no official text cited |
 | glossary | data/glossary/effects.json | K_RUSH | no Eternal/Standard manual section; card text BS19-BS27 | Kept. |
 | note | docs/manual-notes.md:43 | - "When this card is revealed from the deck": not covered by... | no official text | Kept (v0.33 ruling). |
-| note | docs/ai/roadmap-open.md:29 | - **BS71-X09 Agateram: done** in v0.45.0 (Unleash, Life to T... | card text / engine reading | auto: no official text cited |
-| note | docs/ai/roadmap-open.md:58 | - Open from v0.38: Hermes / Spiral Way / Messenger Post Lv2 ... | card text / engine reading | auto: no official text cited |
+| note | docs/ai/roadmap-open.md:42 | - **BS71-X09 Agateram: done** in v0.45.0 (Unleash, Life to T... | card text / engine reading | auto: no official text cited |
+| note | docs/ai/roadmap-open.md:71 | - Open from v0.38: Hermes / Spiral Way / Messenger Post Lv2 ... | card text / engine reading | auto: no official text cited |
 
 ## Confirmed (84)
 

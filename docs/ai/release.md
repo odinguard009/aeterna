@@ -14,5 +14,5 @@
 ## Routine
 1. `src/` changes; bump `VERSION` (`src/js/01-cards.js`) and `package.json` `version`. Card data: `data/cards/saga-*.json` -> `python3 tools/build_cards.py` -> `python3 tools/tag_effects.py` -> `node tools/build.mjs` (also refreshes `docs/ai/code-map.md`).
 2. Tests as above.
-3. Docs: `README.md` release notes (bullets, only what changed), `docs/rules-coverage.md`, `docs/effect-coverage.md`, glossary `rule` notes, `python3 tools/check_obligations.py`.
+3. Docs: `README.md` release notes (bullets, only what changed), `docs/rules-coverage.md`, `docs/reports/effect-coverage.md`, glossary `rule` notes, `python3 tools/check_obligations.py`.
 4. Commit (`Fixes #N`), push, start Regression (dispatch above) -> CI + Regression green -> copy `index.html` to `/mnt/user-data/outputs/aeterna-vX.Y.Z.html` and `aeterna.html` -> `RELEASE_FILE=/mnt/user-data/outputs/aeterna-vX.Y.Z.html npm run -s test:release` (opens the delivered file on PC and phone screens and starts a match) -> SendUserFile the game file and `docs/roadmap.html` -> short Indonesian update (no Project docs: the Project holds none; everything lives in the repo) -> stop; the next "Lanjutkan roadmap" is a new session.

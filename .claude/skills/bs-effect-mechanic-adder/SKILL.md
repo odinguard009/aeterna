@@ -13,7 +13,7 @@ CLAUDE.md loads automatically: do not re-read it. Since v0.30 the code lives in 
 - Hook points: `bpOf` adds `staticBp(i)`; `doBattle` wraps `doBattleInner` (sets/clears `G.attacker`, fires ATTACKS, ALLY_ATTACKS, ALLY_BLOCKED); SUMMONED fires after `summon()`; parseCard/registerImported read `effects`/`fxComplete`.
 
 ## Manual first
-Read `docs/manual-notes.md`; fetch the official PDF only for a rule that is missing and add it there. Each mechanic gets: a glossary entry in `data/glossary/effects.json` with a `rule` note citing the manual, an entry in `data/kb/rule-obligations.json` (source page, status, proving test; `python3 tools/check_obligations.py` must report 0 problems), and lines in `docs/rules-coverage.md` and `docs/effect-coverage.md` (repo only: the Project holds just `claude/CLAUDE.md` and `claude/card-list.md`). Mark partial as partial.
+Read `docs/manual-notes.md`; fetch the official PDF only for a rule that is missing and add it there. Each mechanic gets: a glossary entry in `data/glossary/effects.json` with a `rule` note citing the manual, an entry in `data/kb/rule-obligations.json` (source page, status, proving test; `python3 tools/check_obligations.py` must report 0 problems), and lines in `docs/rules-coverage.md` and `docs/reports/effect-coverage.md` (repo only: the Project holds just `claude/CLAUDE.md` and `claude/card-list.md`). Mark partial as partial.
 
 ## Workflow
 1. Read the card text exactly; write the card's `effects` JSON in `data/cards/saga-NN.json` before touching engine code (data: the Fandom export in the repo first, `data/import` and `data/sources` (needs `git sparse-checkout add data/sources`), then the official card list; card images only when those cannot settle it; never AI guesses).

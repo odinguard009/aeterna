@@ -64,7 +64,7 @@ Goal: the same quality per release with far fewer tokens. Each rule says who doe
 - Ask several things in one message; every reply re-reads the whole session.
 
 ## 11. Check of 2026-10-14 (v0.34.2)
-- Repo: `npm run loop` (3 calls -> 1); `test:quick` picks up test files by pattern; light sparse clone without `data/sources` (5.9 MB) and `docs/red-cards-check-table.html` (1.1 MB): ~2 s, 5.2 MB working tree.
+- Repo: `npm run loop` (3 calls -> 1); `test:quick` picks up test files by pattern; light sparse clone without `data/sources` (5.9 MB) and `docs/reports/red-cards-check-table.html` (1.1 MB): ~2 s, 5.2 MB working tree.
 - Owner settings (the 44% fixed share): turn off in this Project what it does not use: connectors Claude in Chrome (the built-in browser is preferred), Claude Docs, Visualize; skills dataviz, cowork-plugin, plugin-authoring, deep-research, skill-creator, docx/pptx/xlsx. Memory and past-chat search add long instructions to every call; CLAUDE.md already holds the working agreement, so they can be turned off (then every rule must live in CLAUDE.md).
 - Release sessions run cheaper in Claude Code (desktop/terminal) than in the claude.ai chat, whose system prompt carries widgets, artifacts, image search and memory tools.
 
@@ -105,7 +105,7 @@ Rules to hit the target:
 - Owner setting, still open: the account-level skills `anthropic-skills:bs-*` duplicate the repo skills, and the runner copy is older (it still mentions scheduling and quota pause). Removing them leaves one copy per skill and shortens the fixed context.
 
 ## 15. Audit of 2026-10-16 (owner approved all suggestions)
-- Direction: 152 of 8,041 cards were playable after ~50 versions, because every card's effects are written by hand and recent heavy sessions unlocked ~10 cards each. The roadmap is now ordered by cards unlocked per token across all Sagas (`tools/unlock_report.py` -> `docs/unlock-report.md`, playable count in `session_start.sh`): compact pack, effect compiler, then Sonnet batch promotion per Saga.
+- Direction: 152 of 8,041 cards were playable after ~50 versions, because every card's effects are written by hand and recent heavy sessions unlocked ~10 cards each. The roadmap is now ordered by cards unlocked per token across all Sagas (`tools/unlock_report.py` -> `docs/reports/unlock-report.md`, playable count in `session_start.sh`): compact pack, effect compiler, then Sonnet batch promotion per Saga.
 - CLAUDE.md: 12.1k -> 7.0k characters (it is re-sent on every call); the stopped chain, gate, lock and quota rules moved to `docs/ai/next-session-prompt.md`.
 - Backup: counts `v*` release commits since the newest `backup/v*` branch, not all commits (chore/docs commits had triggered four backups in a row, v0.48.0-v0.49.0). 24 merged branches approved for deletion (names and SHAs in `docs/ai/deleted-branches.md`; the session proxy blocks deletion, so the owner removes them on GitHub); the newest 3 backups and 3 unmerged branches kept.
 - Tests: 20+ new tests per minor version only; a patch carries the tests that guard its fix.

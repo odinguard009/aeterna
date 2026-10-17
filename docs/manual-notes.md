@@ -2,7 +2,7 @@
 
 Paraphrased notes from the official PDFs, so a session does not have to fetch them again. Check the PDF only for a rule that is **not** here, then add it here (short paraphrase + page/section). Never quote long passages.
 
-## Sources and versions (Rules audit R1, checked 2026-10-16; `tools/rules_audit.py` -> `docs/rules-audit.md`)
+## Sources and versions (Rules audit R1, checked 2026-10-16; `tools/rules_audit.py` -> `docs/reports/rules-audit.md`)
 | Source | Version / date | URL | Read |
 |---|---|---|---|
 | Eternal Rule Manual, Japanese (newest) | Ver.17.1, published 2026-05-29 (news tag gamerule) | https://www.battlespirits.com/rule/official-rule-manual-eternal/ | game setup page read 2026-10-17 via WebFetch (`page03.html`; `page02/04/05/09.html` are intro, basic play, turn flow, Braves); 17.1 change list not found |
