@@ -63,7 +63,7 @@ function tokenBranch(sessions, i) {
 
 export function mindmapPage(version) {
   const data = JSON.parse(rd('docs/roadmap-data.json'));
-  const v = version || 'v' + (rd('src/js/01-cards.js').match(/VERSION\s*=\s*'([^']+)'/) || [, '?'])[1];
+  const v = version || 'v' + (rd('packages/engine/src/01-cards.js').match(/VERSION\s*=\s*'([^']+)'/) || [, '?'])[1];
   const phases = data.phases.map(p => ({ ...p.phase, items: p.items }));
   const all = phases.flatMap(p => p.items), c = count(all), r = data.root;
   const segs = ORDER.filter(k => c[k] > 0).map(k => `<span class="seg s-${k}" style="flex:${c[k]}" title="${LABEL[k]}: ${c[k]}"></span>`).join('');

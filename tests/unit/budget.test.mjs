@@ -8,6 +8,7 @@ import { pathToFileURL } from 'node:url';
 import { gzipSync } from 'node:zlib';
 import { join } from 'node:path';
 import { ROOT, openGame, closeBrowser, getBrowser } from './lib/game.mjs';
+import { srcParts } from '../../tools/src_parts.mjs';
 
 const html = readFileSync(join(ROOT, 'index.html'), 'utf8');
 const between = (a, b) => { const i = html.indexOf(a), j = html.indexOf(b); assert.ok(i > 0 && j > i, a); return j - i; };
@@ -15,7 +16,7 @@ let g;
 before(async () => { g = await openGame(''); });
 after(async () => { await closeBrowser(); });
 
-// v0.51.0: the pack is compressed (src/js/01a-card-pack.js) and grows with every promoted card, so the code budget
+// v0.51.0: the pack is compressed (packages/engine/src/01a-card-pack.js) and grows with every promoted card, so the code budget
 // (B01/B02) is measured without it and the pack has its own budget (B03, B13: all 8,041 cards).
 const packLen = between('/*PACK_START*/', '/*PACK_END*/'), code = html.slice(0, html.indexOf('/*PACK_START*/')) + html.slice(html.indexOf('/*PACK_END*/'));
 test('B01 index.html without the card pack stays under 700 KB', () => assert.ok(Buffer.byteLength(code) < 700e3, Buffer.byteLength(code)));
@@ -33,8 +34,8 @@ test('B06 no base64 data URIs in the page', () => assert.doesNotMatch(html, /dat
 test('B07 staging data (data/import) is never read by the build', () => {
   for (const f of ['tools/build.mjs', 'tools/build_cards.py']) assert.doesNotMatch(readFileSync(join(ROOT, f), 'utf8'), /data\/import/, f);
 });
-test('B08 no source file in src/js grows past 60 KB (split it first)', () => {
-  for (const f of readdirSync(join(ROOT, 'src/js'))) assert.ok(statSync(join(ROOT, 'src/js', f)).size < 60e3, f);
+test('B08 no script part grows past 60 KB (split it first)', () => {
+  for (const p of srcParts(ROOT)) assert.ok(statSync(join(ROOT, p.rel)).size < 60e3, p.rel);
 });
 test('B09 the page is ready in under 3 s', async () => {
   const n = await g.page.evaluate(() => performance.getEntriesByType('navigation')[0].loadEventEnd);

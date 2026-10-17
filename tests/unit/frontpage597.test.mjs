@@ -7,7 +7,7 @@ import { execFileSync } from 'node:child_process';
 import { ROOT } from './lib/game.mjs';
 
 const rd = p => readFileSync(join(ROOT, p), 'utf8');
-const VERSION = rd('src/js/01-cards.js').match(/const VERSION = '([^']+)'/)[1];
+const VERSION = rd('packages/engine/src/01-cards.js').match(/const VERSION = '([^']+)'/)[1];
 const localLinks = (md) => [...md.matchAll(/\]\(([^)\s]+)\)|src="([^"]+)"/g)].map(m => m[1] || m[2])
   .filter(u => !/^(https?:|mailto:|#)/.test(u)).map(u => u.split('#')[0]);
 

@@ -35,7 +35,7 @@ Source: https://github.com/vinicius3333/aegis-digimon-tcg (MIT, (c) Vinicius Lui
 Decision rail and effect focus (the source card glows while its effect resolves), narration stack, phase banner, play log with card links, reveal showcase, keyword reminders/glossary, hand sort, cost preview before paying, match timer, rollback controls, game-over splash, mobile prompt layout tested at several phone sizes.
 
 ## What Aeterna adopts (in order)
-Status: 1 done in v0.25 (`residual`), 3 and 4 done in v0.26, 2 and 6 done in v0.28, 7 done in v0.32 (`src/js/09a-cpu-eval.js`).
+Status: 1 done in v0.25 (`residual`), 3 and 4 done in v0.26, 2 and 6 done in v0.28, 7 done in v0.32 (`packages/engine/src/09a-cpu-eval.js`).
 1. **Coverage + residual** per card instead of `fxComplete:false`: the hover shows exactly which printed clauses are not implemented. Effects get a `text` field with the printed clause for prompts and the log.
 2. **Clause cost** for "By doing X, ..." (Soul Core moves, discards, core payments) instead of chaining with `{"prev":true}` where the card is a real cost.
 3. **Seeded RNG + input record replay**: one seed per match, every human input logged, a "Copy replay" button; tests can replay a match.

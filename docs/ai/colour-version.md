@@ -13,7 +13,7 @@ Distilled from v0.37 blue, v0.38 green, v0.39 purple. Follow it instead of redis
 - Card images only for fields the export lacks or that look wrong: contact sheet of ~20 cropped corners per image, never one image per card. Fields that stay unverified get a `note` on the card and a line in the release notes.
 
 ## 3. Engine
-- New actions / triggers / conditions in one file per colour: `src/js/02g-effects-<colour>.js` (pattern: `02e-effects-removed.js`, `02f-effects-purple.js`); follow skill bs-effect-mechanic-adder.
+- New actions / triggers / conditions in one file per colour: `packages/engine/src/02g-effects-<colour>.js` (pattern: `02e-effects-removed.js`, `02f-effects-purple.js`); follow skill bs-effect-mechanic-adder.
 - Every new keyword: glossary entry with an official `rule` note (or marked partial), `python3 tools/check_obligations.py`.
 - Residual text stays listed on the card; never invent effects.
 

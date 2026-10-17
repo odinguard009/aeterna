@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Static check of the game script (the ESLint role), using the TypeScript checker on plain JS.
-//   node tools/lint.mjs        -> prints findings as src/js/<part>.js:<line>, exits 1 when there are any
+//   node tools/lint.mjs        -> prints findings as <folder>/<part>.js:<line>, exits 1 when there are any
 // Only error kinds that are real bugs in this code base are reported (undefined names, wrong argument counts,
 // typos the checker can name, duplicate keys/declarations, unreachable code, impossible comparisons).
 // DOM typing noise (EventTarget.closest, implicit any, ...) is ignored on purpose: the code is untyped JS.
@@ -10,6 +10,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildParts } from './build.mjs';
+import { srcParts } from './src_parts.mjs';
 import { writeFileSync, mkdirSync } from 'node:fs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -22,10 +23,10 @@ mkdirSync(join(ROOT, 'build'), { recursive: true });
 writeFileSync(join(ROOT, 'build/game.js'), js);
 
 // line offsets of each src part inside build/game.js (the pack is one line, so line numbers match)
-const parts = readdirSync(join(ROOT, 'src/js')).filter(f => /^\d\d[a-z]?-[\w-]+\.js$/.test(f)).sort();
+const parts = srcParts(ROOT);
 const starts = []; let line = 1;
-for (const f of parts) { starts.push([line, f]); line += readFileSync(join(ROOT, 'src/js', f), 'utf8').split('\n').length - 1; }
-const where = n => { let cur = starts[0]; for (const s of starts) if (s[0] <= n) cur = s; return `src/js/${cur[1]}:${n - cur[0] + 1}`; };
+for (const p of parts) { starts.push([line, p.rel]); line += readFileSync(join(ROOT, p.rel), 'utf8').split('\n').length - 1; }
+const where = n => { let cur = starts[0]; for (const s of starts) if (s[0] <= n) cur = s; return `${cur[1]}:${n - cur[0] + 1}`; };
 
 function tscBin() {
   try { return execFileSync('npx', ['--no-install', 'tsc', '-v']) && ['npx', ['--no-install', 'tsc']]; } catch { return ['tsc', []]; }

@@ -20,7 +20,7 @@ const files = ['CLAUDE.md', 'README.md', 'CHANGELOG.md', ...ls('docs', /\.md$/)]
 for (const f of files) out += fence(f, 'md');
 if (!docsOnly) {
   out += fence('src/index.template.html', 'html') + fence('src/styles.css', 'css');
-  for (const f of ls('src/js', /\.js$/)) out += fence(f, 'js');
+  for (const d of ['packages/engine/src', 'apps/web/src']) for (const f of ls(d, /\.js$/)) out += fence(f, 'js');
   for (const f of ['tools/build.mjs', ...ls('tests/unit', /\.mjs$/)]) out += fence(f, 'js');
 }
 const cards = JSON.parse(rd('data/cards/all-cards.json'));

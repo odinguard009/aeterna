@@ -2,13 +2,15 @@
 
 How the pieces fit. Other docs link here instead of repeating it. Rules for agents live in `CLAUDE.md`; where each kind of file goes: skill `bs-doc-convention`; one-line index of every doc: `docs/README.md`.
 
-## 1. Build: `src/` -> `index.html`
+## 1. Build: sources -> `index.html`
 The shipped game is ONE offline HTML file. Never edit `index.html` or `build/`.
 
 ```
 src/index.template.html   page shell with /*@@CSS@@*/ and /*@@JS@@*/ marker lines
 src/styles.css            all CSS
-src/js/NN-name.js         game script parts, joined in file-name order as ONE classic script
+packages/engine/src/NN-*.js  engine parts: config, card pack codec, effects, state, rules, turn, battle, CPU, zones, match
+apps/web/src/NN-*.js         UI parts: error catcher, modals, human input, render, deck builder, images, events
+                          both folders are joined in file-name order as ONE classic script (tools/src_parts.mjs)
 data/cards/all-cards.json built-in card pack, compressed and embedded between /*PACK_START*/ and /*PACK_END*/
         |
         v  node tools/build.mjs   (--check: CI guard that index.html is the build of src/)
@@ -17,6 +19,8 @@ index.html                + build/game.js (joined script for ESLint)
 ```
 
 Top-level functions stay global (inline handlers, `window.BS` and the tests rely on it). Part order matters: `01a-card-pack.js` (pack codec, shared with `tools/build.mjs`) loads before `03-imported-cards.js`. Find code with `docs/ai/code-map.md` (names per part) and `grep -n`.
+
+Workspace layout (M1, v0.60.1; plan `docs/ai/monorepo-plan.md`): root `package.json` declares npm workspaces `packages/*` and `apps/*` (`@aeterna/engine`, `@aeterna/web`; nothing to install). The split is by role, not yet by API: engine parts still call the UI (`render*`, modals) and `00-config.js` / `01-cards.js` still touch `document` / `localStorage` for `$` and the page title; M2-M3 route those through a host port.
 
 | Parts | Role |
 |---|---|
@@ -38,7 +42,7 @@ Top-level functions stay global (inline handlers, `window.BS` and the tests rely
 - **Randomness:** seeded RNG (`seedRng`, `rng`); every match keeps an input record, so `BS.runReplay(record)` reproduces it.
 - **Rules source:** the official manuals; decisions and page references in `docs/manual-notes.md`, coverage in `docs/rules-coverage.md`, audit in `docs/reports/rules-audit.md`, per-mechanic records in `docs/mechanics/`.
 
-In-game error catcher (v0.59.5, `src/js/00b-errors.js`): window `error` / `unhandledrejection` -> notice `#err-notice` with "Copy report" (`errReport()`: message, stack, version, match turn/step and `replayOf(G)` record) and "Close"; the events are not cancelled (tests E595).
+In-game error catcher (v0.59.5, `apps/web/src/00b-errors.js`): window `error` / `unhandledrejection` -> notice `#err-notice` with "Copy report" (`errReport()`: message, stack, version, match turn/step and `replayOf(G)` record) and "Close"; the events are not cancelled (tests E595).
 
 ## 3. Effect engine (data-driven)
 A card's `effects` list holds entries of **trigger** (`FX_TRIGGERS`) + **actions** (`FX_ACTIONS`) + **conditions** (`fxIf`, the `if` field) + options (`lv`, `once`, `optional`, `zone`, `oc`, ...). `parseEffects` / `parseBurst` read card data; `fxDescribe` renders the text. Strict effects (v0.59.4): an unknown trigger, action, condition or STATIC flag name at run time goes through `fxUnknown` (`02a-effects-base.js`): it throws in automated runs (`navigator.webdriver` or `?strict=1`) and warns once + skips in the release build (tests S594).
@@ -68,7 +72,7 @@ data/cards/all-cards.json                  generated copy of the Saga files
         |  python3 tools/tag_effects.py -> data/glossary/card-tags.json, docs/reports/effect-coverage.md
         |  node tools/build.mjs
         v
-pack embedded in index.html                (codec: src/js/01a-card-pack.js; size: node tools/pack_size.mjs)
+pack embedded in index.html                (codec: packages/engine/src/01a-card-pack.js; size: node tools/pack_size.mjs)
 ```
 Staging keeps every card; playable is the promoted subset, so the stages are not duplicates. Card data order of trust: the Fandom export in the repo, then the official list, then other sites, images last (`docs/ai/cards-and-rules.md`). Prebuilt decks: `data/decks/*.txt`. Card images are never shipped: players import their own (Library; matched by the `image` field, card ID or name, kept in IndexedDB). Saga placement (e.g. BS75 in Saga 16): `docs/saga-map.md`. New card: run `python3 tools/tag_effects.py`, wire the missing glossary pieces once in the engine, then express the card as data. Rule obligations (page, status, proving test): `data/kb/rule-obligations.json`.
 

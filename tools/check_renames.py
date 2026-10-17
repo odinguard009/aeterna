@@ -3,9 +3,9 @@
 
 Runs in seconds and needs no browser, so it lives in the pre-push hook. It catches the class of failure that
 otherwise only shows up in the 20-minute GitHub Regression run:
-  1. a function / constant removed from src/js but still named in tests/ (e.g. BS.hoverHTML after v0.31);
-  2. a button label removed or reworded in src/js but still asserted in tests/;
-  4. (v0.50.1 lesson) any other UI text literal removed or reworded in src/js but still asserted in tests/
+  1. a function / constant removed from the script parts but still named in tests/ (e.g. BS.hoverHTML after v0.31);
+  2. a button label removed or reworded in the script parts but still asserted in tests/;
+  4. (v0.50.1 lesson) any other UI text literal removed or reworded in the script parts but still asserted in tests/
      (e.g. 'Banished cards' -> 'Removed Zone (banished cards)' broke legacy check 390 in the v0.50.0 Regression);
   3. a label compared case-sensitively in a Python suite that is not in Title Case (buttons are drawn with
      titleCase since v0.31, so 'Not legal' in btns(...) never matches 'Not Legal').
@@ -18,10 +18,10 @@ import glob, os, re, subprocess, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 TEST_FILES = [f for f in glob.glob('tests/**/*', recursive=True) if f.endswith(('.py', '.mjs', '.js')) and '/fixtures/' not in f]
-SRC = '\n'.join(open(f, encoding='utf8').read() for f in sorted(glob.glob('src/js/*.js')))
+SRC = '\n'.join(open(f, encoding='utf8').read() for f in sorted(glob.glob('packages/engine/src/*.js') + glob.glob('apps/web/src/*.js')))
 TESTS = {f: open(f, encoding='utf8').read() for f in TEST_FILES}
 
-# same rule as titleCase() in src/js/00-config.js
+# same rule as titleCase() in packages/engine/src/00-config.js
 MINOR = set('a an the and or nor but of to in on at by for from with as per vs via into'.split())
 def title_case(s):
     out, first = [], True
@@ -33,7 +33,7 @@ def title_case(s):
     return ' '.join(out)
 
 def removed_lines(base):
-    try: diff = subprocess.run(['git', 'diff', base, '--', 'src/js'], capture_output=True, text=True, check=True).stdout
+    try: diff = subprocess.run(['git', 'diff', base, '--', 'packages/engine/src', 'apps/web/src'], capture_output=True, text=True, check=True).stdout
     except Exception: return []
     return [l[1:] for l in diff.splitlines() if l.startswith('-') and not l.startswith('---')]
 
@@ -53,7 +53,7 @@ for l in gone:
     names.update(re.findall(r'^(?:const|let)\s+([A-Za-z_$][\w$]*)\s*=', l))
 for n in sorted(names):
     if len(n) < 4 or re.search(r'\b(function\s+%s\b|(const|let|var)\s+%s\b)' % (re.escape(n), re.escape(n)), SRC): continue
-    for loc in where(r'\b%s\b' % re.escape(n)): findings.append(f'{loc}: uses {n}, which src/js no longer defines')
+    for loc in where(r'\b%s\b' % re.escape(n)): findings.append(f'{loc}: uses {n}, which the script parts no longer defines')
 
 # 2. label literals from removed lines that no longer appear in src
 for l in gone:

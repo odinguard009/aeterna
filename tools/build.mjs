@@ -4,7 +4,8 @@
 //   node tools/build.mjs --check   -> exits 1 when index.html is not the build of src/ (CI guard)
 // src/index.template.html : page shell with the /*@@CSS@@*/ and /*@@JS@@*/ marker lines
 // src/styles.css          : all CSS
-// src/js/NN-name.js       : the game script, joined in file-name order as ONE classic script
+// packages/engine/src/NN-name.js + apps/web/src/NN-name.js : the game script, joined in file-name order
+//                           across both folders as ONE classic script (tools/src_parts.mjs)
 //                           (top-level functions stay global: inline handlers, window.BS and tests rely on that)
 // The built-in card pack comes from data/cards/all-cards.json (between /*PACK_START*/ and /*PACK_END*/).
 import { readFileSync, writeFileSync, readdirSync, mkdirSync } from 'node:fs';
@@ -12,15 +13,16 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { deflateRawSync } from 'node:zlib';
 import { codeMap } from './code_map.mjs';
+import { srcParts } from './src_parts.mjs';
 import { roadmapStale, writeRoadmap } from './gen_roadmap.mjs';
 import { mindmapStale, writeMindmap } from './gen_mindmap.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const rd = p => readFileSync(join(ROOT, p), 'utf8');
 
-// v0.51.0: the pack codec lives in src/js/01a-card-pack.js and is shared with the game (one implementation)
+// v0.51.0: the pack codec lives in packages/engine/src/01a-card-pack.js and is shared with the game (one implementation)
 export function codec() {
-  return new Function(rd('src/js/01a-card-pack.js') + '\nreturn { packCards, unpackCards, packBlockOf, inflateRaw, packBytes, loadPack };')();
+  return new Function(rd('packages/engine/src/01a-card-pack.js') + '\nreturn { packCards, unpackCards, packBlockOf, inflateRaw, packBytes, loadPack };')();
 }
 // the pack JSON before compression (compact format); --check compares this, not the compressed bytes,
 // so a different zlib build on CI cannot fail the check
@@ -35,17 +37,17 @@ export function packBlob(cards) {
 }
 
 export function buildParts(opts = {}) {   // opts.cards: build with another card list (load-time test of the full pack)
-  const files = readdirSync(join(ROOT, 'src/js')).filter(f => /^\d\d[a-z]?-[\w-]+\.js$/.test(f)).sort();
+  const parts = srcParts(ROOT), files = parts.map(p => p.name);
   const cards = opts.cards || JSON.parse(rd('data/cards/all-cards.json'));
   // v0.50: the data-source "note" of each card is for maintainers (data/cards); the game never reads it, so it is not embedded
   const pack = '/*PACK_START*/const BUILTIN_PACK = ' + packExpr(cards.map(({ note, ...c }) => c)) + ';/*PACK_END*/';
-  let js = files.map(f => rd('src/js/' + f)).join('');
+  let js = parts.map(p => rd(p.rel)).join('');
   const n = js.split('/*PACK_START*//*PACK_END*/').length - 1;
-  if (n !== 1) throw new Error(`expected exactly one empty pack marker in src/js, found ${n}`);
+  if (n !== 1) throw new Error(`expected exactly one empty pack marker in the script parts, found ${n}`);
   js = js.replace('/*PACK_START*//*PACK_END*/', () => pack);
   // Token cards (v0.35): data/cards/tokens.json, kept outside every Deck, between /*TOKENS_START*/ and /*TOKENS_END*/
   const tokens = JSON.parse(rd('data/cards/tokens.json'));
-  if (js.split('/*TOKENS_START*//*TOKENS_END*/').length !== 2) throw new Error('expected exactly one empty token marker in src/js');
+  if (js.split('/*TOKENS_START*//*TOKENS_END*/').length !== 2) throw new Error('expected exactly one empty token marker in the script parts');
   js = js.replace('/*TOKENS_START*//*TOKENS_END*/', () => '/*TOKENS_START*/const BUILTIN_TOKENS = ' + packBlob(tokens) + ';/*TOKENS_END*/');
   const tpl = rd('src/index.template.html');
   for (const m of ['/*@@CSS@@*/\n', '/*@@JS@@*/\n']) if (tpl.split(m).length !== 2) throw new Error('template marker missing: ' + m.trim());
@@ -54,16 +56,16 @@ export function buildParts(opts = {}) {   // opts.cards: build with another card
 }
 
 
-// README "Current build" line follows src/js/01-cards.js VERSION and the playable card count (it went stale at v0.41.5).
+// README "Current build" line follows packages/engine/src/01-cards.js VERSION and the playable card count (it went stale at v0.41.5).
 const README_RE = /^Current build: \*\*v[^*]+\*\*.*$/m;
 function readmeLine() {
-  const v = rd('src/js/01-cards.js').match(/const VERSION = '([^']+)'/)[1];
+  const v = rd('packages/engine/src/01-cards.js').match(/const VERSION = '([^']+)'/)[1];
   const n = JSON.parse(rd('data/cards/all-cards.json')).length;
   return `Current build: **v${v}** (${n.toLocaleString('en-US')} of 8,041 cards playable). Download \`aeterna-v${v}.html\` from the [latest release](https://github.com/odinguard009/aeterna/releases/latest) and open it in Chrome or Edge; release notes are in [CHANGELOG.md](CHANGELOG.md).`;
 }
 // v0.59.7 (C5): release notes live in CHANGELOG.md; its newest "## vX.Y.Z" heading must be the current VERSION.
 const changelogHead = () => (rd('CHANGELOG.md').match(/^## (v\d[\d.]*)\s*$/m) || [, null])[1];
-const changelogStale = () => changelogHead() !== 'v' + rd('src/js/01-cards.js').match(/const VERSION = '([^']+)'/)[1];
+const changelogStale = () => changelogHead() !== 'v' + rd('packages/engine/src/01-cards.js').match(/const VERSION = '([^']+)'/)[1];
 const readmeStale = () => { const r = rd('README.md'); return README_RE.test(r) && r.match(README_RE)[0] !== readmeLine(); };
 const writeReadme = () => { const r = rd('README.md'); if (README_RE.test(r)) writeFileSync(join(ROOT, 'README.md'), r.replace(README_RE, readmeLine())); };
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {

@@ -4,9 +4,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
+import { srcParts } from '../../tools/src_parts.mjs';
 
 const G = JSON.parse(readFileSync('data/glossary/effects.json', 'utf8'));
-const src = readdirSync('src/js').filter(f => f.endsWith('.js')).map(f => readFileSync('src/js/' + f, 'utf8')).join('\n');
+const src = srcParts().map(p => readFileSync(p.rel, 'utf8')).join('\n');
 // engine names known statically: FX_TRIGGERS entries and every "NAME: {" key inside FX_ACTIONS blocks (v21 adds three flags by hand)
 const trig = (src.match(/const FX_TRIGGERS = \[([^\]]*)\]/) || ['', ''])[1].match(/'([A-Z_]+)'/g).map(s => s.slice(1, -1));
 const acts = [...src.matchAll(/^\s{2}([A-Z][A-Z0-9_]{2,}):\s*\{/gm)].map(m => m[1]);

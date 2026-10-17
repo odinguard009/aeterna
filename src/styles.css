@@ -453,7 +453,7 @@
 
 .mull-note{margin-top:6px;padding:6px 8px;border-radius:6px;background:rgba(255,200,80,.12);border:1px solid rgba(255,200,80,.35);font-size:.9em}
 
-  /* v0.59.5 in-game error notice (src/js/00b-errors.js) */
+  /* v0.59.5 in-game error notice (apps/web/src/00b-errors.js) */
   #err-notice { position: fixed; top: 8px; left: 50%; transform: translateX(-50%); z-index: 10000; width: min(560px, calc(100vw - 32px));
     display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 8px;
     background: var(--bg-panel); color: var(--text-main); border: 1px solid var(--color-red); font-size: 13px; user-select: text; }

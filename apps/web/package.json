@@ -1,0 +1,6 @@
+{
+  "name": "@aeterna/web",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Browser UI and offline host: modals, render, deck builder, images, events; built into the single-file game by tools/build.mjs."
+}

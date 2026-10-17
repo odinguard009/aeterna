@@ -2,6 +2,14 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.60.1
+- **M1 workspace skeleton** (monorepo plan phase 1; no gameplay change): the 31 script parts moved from `src/js` into npm workspaces by role.
+  - `packages/engine/src` (`@aeterna/engine`): config, card pack codec, effects, state, rules, turn, battle, CPU, zones, match. `apps/web/src` (`@aeterna/web`): error catcher, modals, human input, render, deck builder, images, events. Root `package.json` declares the workspaces (nothing to install).
+  - `tools/src_parts.mjs` is the one list of part folders and build order (file-name order across both folders, as before); build, lint, code map, project pack, stale-reference check and unit tests B02/B03/B08 read it. Test B02 also fails on a stray `.js` file in a source folder.
+  - Gate: the built `index.html` equals the v0.60.0 build except the version line and one CSS comment that names the error catcher's path.
+  - Pre-push hook: in a shallow clone the brand guard no longer fails when the remote branch tip is not local (falls back to the commits not on any remote).
+  - Revert: `git revert` this commit (only moves, paths and the hook).
+
 ## v0.60.0
 - **Brave completion, part 1** (card session; 593 -> 608 of 8,041 playable, +15 Braves):
   - Combine data: the Fandom export drops the Brave condition and braved BP, so they were read from the 441 Fandom card pages (wiki API, owner's built-in browser) into `data/sources/fandom-brave-combine.tsv`; `tools/import_fandom.py` `brave_of()` gives 287 of 460 staged Braves their `brave` data (cost N or more, families, family & cost, no condition). Conditions the engine cannot check yet stay without data (report `brave_unparsed`: two-sided Left/Right, onto Ultimates, Grandwalker Nexus, symbol/keyword holders).

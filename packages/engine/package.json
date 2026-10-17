@@ -1,0 +1,6 @@
+{
+  "name": "@aeterna/engine",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Game engine: rules, effects, turn, battle, CPU, card pack codec (plain JS parts joined by tools/build.mjs)."
+}

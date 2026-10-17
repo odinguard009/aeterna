@@ -5,27 +5,30 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { buildParts, packBlob, codec, PACK_RE } from '../../tools/build.mjs';
 import { codeMap } from '../../tools/code_map.mjs';
+import { srcParts } from '../../tools/src_parts.mjs';
 import { ROOT } from './lib/game.mjs';
 
 const rd = p => readFileSync(join(ROOT, p), 'utf8');
-const parts = readdirSync(join(ROOT, 'src/js')).filter(f => f.endsWith('.js')).sort();
+const parts = srcParts(ROOT).map(p => p.rel);
 
 test('B01 index.html is the exact build of src/', () => {
   assert.equal(rd('index.html'), buildParts().html, 'run: node tools/build.mjs');
 });
 test('B02 every script part is named NN-name.js and the numbers are unique', () => {
-  const nums = parts.map(f => { assert.match(f, /^\d\d[a-z]?-[a-z0-9-]+\.js$/); return f.split('-')[0]; });
+  const all = ['packages/engine/src', 'apps/web/src'].flatMap(d => readdirSync(join(ROOT, d)).filter(f => f.endsWith('.js')));
+  assert.equal(all.length, parts.length, 'a .js file in a source folder is not a script part');
+  const nums = parts.map(p => { const f = p.split('/').pop(); assert.match(f, /^\d\d[a-z]?-[a-z0-9-]+\.js$/); return f.split('-')[0]; });
   assert.equal(new Set(nums).size, nums.length);
 });
 test('B03 every script part is non-empty and ends with a newline', () => {
-  for (const f of parts) { const s = rd('src/js/' + f); assert.ok(s.trim().length > 0, f); assert.ok(s.endsWith('\n'), f); }
+  for (const f of parts) { const s = rd(f); assert.ok(s.trim().length > 0, f); assert.ok(s.endsWith('\n'), f); }
 });
-test('B04 the empty pack marker appears exactly once in src/js', () => {
-  const n = parts.reduce((s, f) => s + rd('src/js/' + f).split('/*PACK_START*//*PACK_END*/').length - 1, 0);
+test('B04 the empty pack marker appears exactly once in the script parts', () => {
+  const n = parts.reduce((s, f) => s + rd(f).split('/*PACK_START*//*PACK_END*/').length - 1, 0);
   assert.equal(n, 1);
 });
 test('B05 no part keeps an embedded card pack (the build fills it from data/)', () => {
-  for (const f of parts) assert.doesNotMatch(rd('src/js/' + f), /BUILTIN_PACK = \[/, f);
+  for (const f of parts) assert.doesNotMatch(rd(f), /BUILTIN_PACK = \[/, f);
 });
 test('B06 the template has the CSS and JS markers once each and is a full page', () => {
   const t = rd('src/index.template.html');

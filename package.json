@@ -1,8 +1,12 @@
 {
   "name": "aeterna",
   "private": true,
-  "version": "0.60.0",
+  "version": "0.60.1",
   "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
     "build": "node tools/build.mjs",
     "check": "node tools/build.mjs --check",

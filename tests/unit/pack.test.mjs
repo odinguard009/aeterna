@@ -1,4 +1,4 @@
-// v0.51.0 compact + compressed card pack (src/js/01a-card-pack.js, tools/build.mjs, tools/pack_size.mjs).
+// v0.51.0 compact + compressed card pack (packages/engine/src/01a-card-pack.js, tools/build.mjs, tools/pack_size.mjs).
 // Pure Node: the codec file is evaluated as the game runs it (atob, TextDecoder and JSON exist in Node too).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

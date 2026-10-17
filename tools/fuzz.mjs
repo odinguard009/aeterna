@@ -1,5 +1,5 @@
 // v0.59.6 match fuzzer (Q1 quality bundle, Aegis idea): CPU-vs-CPU matches where both CPUs pick random legal options
-// (BS.setFuzz, src/js/09a-cpu-eval.js), many seeds, headless Playwright. Any crash (page error, console error, error notice),
+// (BS.setFuzz, packages/engine/src/09a-cpu-eval.js), many seeds, headless Playwright. Any crash (page error, console error, error notice),
 // invariant break or match that does not end in time is saved as a regression case in tests/fuzz-cases/<mode>-<seed>.json
 // (seed + mode + fuzz setting replay it exactly); tests/unit/fuzz596.test.mjs replays every saved case.
 //   node tools/fuzz.mjs [--runs 20] [--seed 1] [--timeout 90000] [--modes white,mirror,...] [--no-save]

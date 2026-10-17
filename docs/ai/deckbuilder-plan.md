@@ -8,7 +8,7 @@ UI rules from CLAUDE.md still apply: own commit, `backup/vX` of the previous sta
 revert note in the release notes.
 
 ## Today (v0.52.0, measured)
-- One flat grid of every card (`renderDeckBuilder`, `src/js/13-render.js`): rebuilt with `innerHTML` on every filter change
+- One flat grid of every card (`renderDeckBuilder`, `apps/web/src/13-render.js`): rebuilt with `innerHTML` on every filter change
   and every keystroke. With all 8,042 cards loaded: open 1.8 s PC, 8.8 s phone-like CPU (x4); search 0.25 s / 1.2 s.
 - No deck panel: the deck is only visible as `×n` badges on the grid (or the "In deck only" checkbox).
 - No sort, no Saga/set or family filter, single-choice colour/cost/type selects, no deck stats (cost curve, colours, types).

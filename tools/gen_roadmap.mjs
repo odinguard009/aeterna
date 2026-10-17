@@ -3,7 +3,7 @@
 //   node tools/gen_roadmap.mjs          -> writes docs/progress.html
 //   node tools/build.mjs [--check]      -> the build writes it too; --check fails when it is stale (pre-push hook)
 // Sources (nothing is typed twice): CLAUDE.md "Roadmap", docs/ai/roadmap-open.md, CHANGELOG.md "## vX.Y.Z" release notes,
-// src/js/01-cards.js VERSION, and `git log` (recent commits block).
+// packages/engine/src/01-cards.js VERSION, and `git log` (recent commits block).
 // The commits block sits between markers and is merged with what the file already holds, so a shallow clone never
 // loses history. It is ignored by --check (a new commit must not make the page "stale").
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -106,7 +106,7 @@ code{background:rgba(127,127,127,.16);border-radius:4px;padding:0 4px;font-size:
 .commits{list-style:none;margin:0;padding:0}.commits li{border-bottom:1px solid var(--line);padding:5px 0;font-size:13px}.commits time{color:var(--mut)}`;
 
 export function roadmapPage(commits = []) {
-  const version = (rd('src/js/01-cards.js').match(/VERSION\s*=\s*'([^']+)'/) || [, '?'])[1];
+  const version = (rd('packages/engine/src/01-cards.js').match(/VERSION\s*=\s*'([^']+)'/) || [, '?'])[1];
   const rm = topBullets(section(rd('CLAUDE.md'), /^## Roadmap/));
   const idx = topBullets(section(rd('docs/ai/roadmap-open.md'), /^## Index/));
   const items = topBullets(section(rd('docs/ai/roadmap-open.md'), /^## Items/));
