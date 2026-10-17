@@ -1,0 +1,59 @@
+# Repo cleanup plan (owner request 2026-10-17)
+
+Owner: "rencanakan untuk merapikan repo aeterna", after comparing with the Aegis repo (github.com/vinicius3333/aegis-digimon-tcg). Goal: a repo where every kind of file has one home, one architecture document explains how the pieces fit, and the agent instructions stay short and route to topic docs. No game behaviour changes. Runs before v0.60.0.
+
+## Owner direction (2026-10-17, 15:02): become like Aegis, including the parts first marked "not copied"
+"saya rasa ini perlu untuk ditiru juga karena saya juga ingin membuat aeterna menjadi seperti itu" (TypeScript monorepo, server/client split, Docker, Postgres). That is a new product direction (online, server-authoritative), not a tidy-up, and it waits on the owner's answers about scope, hosting cost and priority. Until then only C1 and C2 run: they help both directions. C3 and C4 are on hold, because a monorepo would lay out `tools/` and `data/` differently (`packages/shared`, `apps/*`). Known blockers to settle in the migration plan: npm/pip registries are blocked in Claude sessions (only GitHub Actions can install packages such as Colyseus, React or a Postgres client), a server and database need paid or free-tier hosting chosen by the owner, and the offline single-file build for Windows/Android must keep working during the move.
+
+## What Aegis does that fits us
+- `CLAUDE.md` is a thin pointer; short root rules route to topic docs (`internal-docs/ai/*`), and a skill (`agent-file-convention`) says where each kind of guidance lives.
+- One product architecture document (`docs/ARCHITECTURE.md`); every other guide links it instead of repeating it.
+- One small document per engine mechanic (`docs/engine/<mechanic>.md`, ~107 files), each recording the rule source and the decision.
+- Tools grouped by domain (`tools/kb/`, `tools/release/`, ...), each group with a README.
+- Not copied: the TypeScript monorepo, server/client split, Docker and Postgres. Aeterna stays one built HTML file.
+
+## Findings in aeterna (v0.59.1)
+- No architecture document: the picture is spread over the CLAUDE.md "Architecture" paragraph, `docs/ai/code-map.md` and `docs/ai/token-economy.md`.
+- `docs/` mixes hand-written docs with generated output (`compile-review.md` 7,554 lines, `unlock-report.md`, `rules-audit.md`, `progress.html`, `roadmap.html`, `red-cards-check-table.html`). Unreferenced by any tool or doc: `docs/saga-map.md`, `docs/code-review.md`, `docs/card-sources.md`.
+- Mechanic decisions live in three long files (`rules-audit.md`, `rules-coverage.md`, `manual-notes.md`) plus release notes.
+- `tools/` holds 29 files in one flat folder; `tools/embed_pack.py` is a legacy wrapper ("kept for old habits").
+- Card data is a staged pipeline, not plain duplication: `data/sources` (raw Fandom export) + `data/index` (image index) -> `tools/import_fandom.py` -> `data/import/saga-NN.json` (staging, all cards) -> promote -> `data/cards/saga-NN.json` (playable) -> `tools/build_cards.py` -> `data/cards/all-cards.json` (generated copy of the Saga files) -> build -> pack embedded in `src/js/01a-card-pack.js`. So the stages cannot be merged into one file without losing the staging/playable split; what can go: generated copies kept as sources, inputs stored in two places (`data/index` is only an import input), and the missing map of this flow.
+
+## Hard constraints (every step)
+- Paths read from outside a clone stay where they are: `tools/session_gate.sh` (scheduled task prompt fetches it by path), `tools/session_start.sh`, `index.html`, `docs/roadmap.html` (sent to the owner), `.githooks/`, `.github/workflows/`.
+- A moved file keeps every reader working in the same commit: grep the old path in `tools src tests .github .githooks .claude docs CLAUDE.md README.md package.json` before and after; zero hits for the old path.
+- Generated files keep their generator; nothing generated is edited by hand.
+- Brand guard stays green; no original names in moved or new files.
+- One task = one patch version (docs/tooling only); docs-only patches need no new tests; any tool or data move needs CI + Regression green like a release.
+- Backup branch `backup/v0.59.1` before C3 and C4 (they touch the build path).
+
+## Sessions (Opus, all small patches; bundle C1+C2 in one session, C3 and C4 one session each)
+
+### C1 Architecture and instruction layout (v0.59.2, docs only)
+1. Write `docs/ARCHITECTURE.md`: build (`src/` modules in load order -> `tools/build.mjs` -> `index.html`, card pack embedding), runtime (state, turn flow, rules, effect engine triggers/actions/conditions, resolution order incl. Standby and Bursts, CPU), card data pipeline (the flow above as a diagram), compiler (`compile_effects.py` -> `promote_compiled.mjs`), tests (unit, quick, Python suites, scenarios, Regression), session tooling (gate, start, end check, mind map), brand layer.
+2. CLAUDE.md: replace the "Architecture" paragraph with one line linking `docs/ARCHITECTURE.md`; keep everything else.
+3. `docs/README.md`: one-line index of every doc with "hand-written" or "generated by <tool>".
+4. Skill `.claude/skills/bs-doc-convention/SKILL.md`: where each kind of file goes (rules in CLAUDE.md, topic guides in `docs/ai/`, architecture in `docs/ARCHITECTURE.md`, mechanics in `docs/mechanics/`, generated output in `docs/reports/`, raw inputs in `data/sources/`); update code and docs together; no duplicate rules.
+
+### C2 Docs tidy (v0.59.3, docs + generator paths)
+1. Classify each `docs/*` file as hand-written or generated (check its tool first: e.g. `effect-coverage.md` is touched by `tag_effects.py`).
+2. Move generated reports to `docs/reports/` (`compile-review.md`, `unlock-report.md`, `rules-audit.md`, `red-cards-check-table.html`, generated coverage files) and update generators, CLAUDE.md, skills, `roadmap-open.md`, `token-economy.md`, sparse-checkout line. `docs/progress.html` and `docs/roadmap.html` stay (constraint above).
+3. Start `docs/mechanics/<mechanic>.md` (source, page, decision, tests, open points) for the mechanics with the most audit rows first (Standby, Burst order, effect priority / unaffected, Contract Advent, Seal); `rules-coverage.md` rows link them. The rest move when a session touches that mechanic (no separate pass).
+4. Unreferenced docs (`saga-map.md`, `code-review.md`, `card-sources.md`): fold still-true content into `docs/ARCHITECTURE.md` or `cards-and-rules.md`, then delete (history keeps them).
+
+### C3 Tools by domain (v0.59.4, backup branch first) - ON HOLD until the monorepo decision
+1. Group into `tools/build/` (build, lint, loop, quick-tests, code_map, pack_size, pack_ai, player_view), `tools/cards/` (import_fandom, build_cards, tag_effects, compile_effects, promote_*, check_staged, unlock/lever reports), `tools/rules/` (rules_audit, check_obligations, check_renames), `tools/docs/` (gen_roadmap, gen_mindmap, mindmap-template), `tools/brand/` (brand.py, brand_guard). `session_gate.sh`, `session_start.sh`, `session_end_check.mjs` stay at `tools/`.
+2. `tools/README.md`: one line per tool (what, input, output, who calls it).
+3. Delete `tools/embed_pack.py` after a grep shows no caller.
+4. Update `package.json`, `.githooks`, workflows, skills, docs in the same commit; full CI + Regression.
+
+### C4 Data layout (v0.59.5, backup branch first) - ON HOLD until the monorepo decision
+1. `data/README.md`: the pipeline above, one line per folder (source, generated, staging, playable) and the tool that writes it.
+2. Move `data/index/saga_card_index.json` to `data/sources/` only if import still works in the light clone: the sparse pattern excludes `data/sources/`, and `tools/import_fandom.py` reads the index, so a move would need `--with-sources` for every import. If so, leave it in `data/index/` and record why in `data/README.md`.
+3. `data/cards/all-cards.json`: keep it committed (tests and the build read it; generating it on every clone is less stable), but mark it generated in `data/README.md` and add a check that it equals the Saga files (the build already compares the pack).
+4. Check whether `data/import` rows of promoted cards duplicate `data/cards`; if so, record the rule (staging keeps every card, playable is the promoted subset) instead of deleting rows the importer rewrites.
+
+## Done when
+- `docs/ARCHITECTURE.md`, `docs/README.md`, `tools/README.md`, `data/README.md` exist and match the tree.
+- CLAUDE.md is shorter and routes; no rule appears in two places.
+- Old-path grep is empty; CI + Regression green; game file unchanged except the version line.

@@ -37,3 +37,13 @@ Plan: `docs/ai/deckbuilder-plan.md` (next session, before the batch promotion).
 ## Details (2026-10-16, chat)
 
 "Selalu perhatikan detail. Walau sekecil apa pun."
+
+## Model (2026-10-17, chat)
+
+"mulai sekarang, saya akan menggunakan Opus karena saya merasa saya lebih yakin menggunakan itu."
+
+Applied: Opus for every manual and auto session and for subagents; the gate treats every `next=` as Opus; the Sonnet scheduled task is disabled (not deleted). Project instruction 9 (automatic Sonnet/Opus choice) is superseded by this.
+
+## Repo cleanup (2026-10-17, chat)
+
+"oke, rencanakan untuk merapikan repo aeterna." Plan: `docs/ai/repo-cleanup-plan.md`.

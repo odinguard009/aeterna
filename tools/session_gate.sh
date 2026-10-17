@@ -10,7 +10,7 @@
 # Commands (no clone needed for check/on/off/status/switch):
 #   gh api repos/odinguard009/aeterna/contents/tools/session_gate.sh --jq .content | base64 -d | bash -s <command>
 #   check opus|sonnet  scheduled runs, BEFORE the clone: prints "GO" or "STOP <reason>" (exit 0 either way; exit 1 = gate error, treat as STOP).
-#                    The model must match "next=" of the newest DONE (no tag = opus), so only the task with the right model works.
+#                    Owner 2026-10-17: every session runs on Opus, so only "check opus" can GO (the Sonnet task is disabled).
 #   lock             scheduled run after the clone: LOCK, exit 3 when another session is active
 #   manual           manual session after session_start.sh: MANUAL, exit 3 when an auto session holds the lock
 #   done vX.Y.Z next=Opus|Sonnet   end of every session (manual and auto); next= is the model the next roadmap item needs
@@ -65,7 +65,7 @@ auto24 = sum(1 for c in cm if word(c[1]) == "LOCK" and now - c[0] < dt.timedelta
 mode = E["MODE"]
 done = [c for c in cm if word(c[1]) == "DONE"]
 m = re.search(r"next=(\w+)", done[-1][1], re.I) if done else None
-next_model = (m.group(1).lower() if m else "opus")
+next_model = "opus"  # owner 2026-10-17: Opus for every session; next= tags are kept for history only
 want = E.get("WANT", "").lower()
 if mode == "status":
     print(f"Mode otomatis: {switch} | sesi: {active or 'tidak ada'} | idle {idle} min | sesi otomatis 24 jam: {auto24}/{E['MAXA']} | tanpa rilis: {noprog}/{E['NOPROG']} | model berikutnya: {next_model}" + (" | chain-stop.md ADA" if E["STOP_FILE"] == "1" else ""))

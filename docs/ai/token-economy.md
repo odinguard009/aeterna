@@ -29,7 +29,7 @@ Goal: the same quality per release with far fewer tokens. Each rule says who doe
 
 ## 5. Scope (user + Claude)
 - Scope per session is decided by Claude (see CLAUDE.md "Session scope"): small tasks bundled, a heavy task alone; start each session with one complete instruction, e.g. "Kerjakan issue #1" (CLAUDE.md is loaded automatically; saying "Baca CLAUDE.md" only triggers a wasted read). Extra instructions mid-task and "stop" cause rework: send them before starting when possible.
-- Model choice (user): a lighter model (Sonnet) for data, docs, tests and small fixes; Opus for rules and engine design.
+- Model choice (owner, 2026-10-17): Opus for every session and subagent (replaces the earlier Sonnet/Opus split); save tokens through scope and tooling, not the model.
 - Brainstorming chat: upload `build/aeterna-docs-pack.md` (`node tools/pack_ai.mjs --docs`, ~17k tokens), not the full code pack (~86k).
 
 ## 6. Settings (user)
