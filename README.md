@@ -51,6 +51,7 @@ Unofficial non-commercial fan project; card names, text and trademarks belong to
   - Promoted (every text/JSON pair read): BS11-031 The Valkyrie-Mist, BS18-021 The SteedGeneral Muqali, BS21-016 Death-Hydra, BS21-032 The HoundMachine Asterio-Venera 9.
   - Test I17 (staged image ratio) now also takes an absolute bound: promoting cards with images lowered the staged ratio to 93.99 % although no image was lost.
   - Tests C59-01 to C59-10 (`tests/unit/compile59.test.mjs`, C59-09 on the real-card scenario `valkyrie-mist-opposing-attack-exhausts`). Player-view pass before this minor release (`node tools/player_view.mjs`): 95 cards in 6 decks, 0 problems, PC and phone layouts render; property tests 48/48.
+  - Release checks: CI green (run 39011907411) and Regression green (run 39011914324, Python parts 1-3 + legacy, 30 CPU-vs-CPU sims). No backup due (2 releases since backup/v0.57.0).
   - Revert: `git revert` of the v0.59.0 commit (engine `OPP_ATTACKS` / `noUlt` in `src/js/02a-effects-base.js`, `02c-effects-parse.js`, `02d-effects-resolve.js`, `08-battle.js`; compiler step triggers in `tools/compile_effects.py`; the 4 promoted cards).
 
 ## v0.58.0
