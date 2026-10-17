@@ -32,7 +32,7 @@ tests/         unit + scenarios per package, browser tests for apps/web, CI-only
 ```
 npm workspaces (built into npm, no registry needed for local packages) instead of pnpm.
 
-## Phases (each = one session, Opus; a card session follows each one)
+## Phases (each = one session, Opus; a card session follows each one; the full order with the quality bundles is in `roadmap-open.md` "Session order")
 - **M0 = cleanup C1 + C2** (`docs/ai/repo-cleanup-plan.md`): architecture doc, doc index, doc-convention skill, docs tidy. v0.59.2-v0.59.3.
 - **M1 Workspace skeleton (patch):** root `package.json` workspaces; move `src/js` modules into `packages/engine/src` and `apps/web/src` by the DOM/engine split above, still plain JS; `tools/build.mjs` reads the new paths. Gate: built `index.html` byte-identical to the pre-move build except the version line; all tests and Regression green. Replaces cleanup C3/C4 (tools and data move with the layout).
 - **M2 Host port, part 1 (minor):** define the port and decision/event records in `packages/protocol`; route every `render*` call in engine modules through `io.view`. Test: a headless run (no DOM) plays CPU vs CPU to the end in Node.
@@ -41,6 +41,7 @@ npm workspaces (built into npm, no registry needed for local packages) instead o
 - **M5 Types (patches, alongside):** `@ts-check` + JSDoc per package, `tsc --noEmit` in CI and `npm run loop`; `.ts` conversion module by module once checks are clean.
 - **M6 Server (minor):** `apps/server` with rooms, seat-filtered views (hidden hand/deck), decision timeouts, reconnect; uses Node built-ins where possible; dependencies installed only in CI; CI test plays two scripted clients to the end. No deployment.
 - **M7 Database + Docker (minor):** Postgres schema and migrations (accounts, decks, replays), `docs/DATA.md` tables, `docker/compose.yml` for local runs; CI service container for tests. Hosting stays the owner's decision.
+- **L1 UI languages (minor, after M4; owner 2026-10-17):** string table in `apps/web`, then Japanese, Thai, Chinese, further languages by market; details in `roadmap-open.md` "Session order" item 9.
 - **M8 Online client (minor):** lobby, room join, play through the server in `apps/web`; offline mode untouched.
 
 ## Rules for every phase

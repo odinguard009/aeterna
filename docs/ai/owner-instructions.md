@@ -51,3 +51,9 @@ Applied: Opus for every manual and auto session and for subagents; the gate trea
 ## Repo cleanup (2026-10-17, chat)
 
 "oke, rencanakan untuk merapikan repo aeterna." Plan: `docs/ai/repo-cleanup-plan.md`.
+
+## Roadmap order and Thai UI (2026-10-17, chat)
+
+"oke, atur ulang kembali rencana roadmap. lalu untuk UI berbahasa Indonesia saya rasa tidak perlu, malah saya ingin ada UI berbahasa Thailand". Applied: "Session order" in `docs/ai/roadmap-open.md`.
+
+"rencana bahasa UI: 1. Inggris, 2. Jepang, 3. Thailand, 4. China, dan seterusnya mengikuti pasar populer Battle Spirits" (2026-10-17). Applied: roadmap-open.md "Session order" item 9.

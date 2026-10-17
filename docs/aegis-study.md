@@ -45,8 +45,11 @@ Status: 1 done in v0.25 (`residual`), 3 and 4 done in v0.26, 2 and 6 done in v0.
 7. **CPU as an evaluation policy** with weight profiles and a lethal check (replaces "CPU strength" on the roadmap).
 8. **UX polish** from the list above, one piece per release.
 
-## What we do not adopt now
-Online multiplayer, accounts, lobby, tournaments, database and the TypeScript/React/Colyseus stack. Aeterna stays a single offline file played against the CPU. Moving to online play later would mean splitting rules from UI first; points 1-6 above already move the engine in that direction.
+## Second study (2026-10-17, owner request)
+Adopted next (order in `docs/ai/roadmap-open.md` "Session order"): strict effects mode, in-game error reports, match fuzzer, waits on state instead of fixed sleeps in UI tests, rules knowledge base with fingerprinted citations, a one-card verification skill, and the monorepo with server/client (`docs/ai/monorepo-plan.md`). UI languages (owner): English, Japanese, Thai, Chinese, then by market; not Indonesian. Later: event stream with seq/batch for animation pacing, bots trained from match records.
+
+## What we did not adopt before 2026-10-17
+Online multiplayer, accounts, lobby, tournaments, database and the TypeScript/React/Colyseus stack. (Superseded on 2026-10-17: the owner wants online + offline, see `docs/ai/monorepo-plan.md`.) Moving to online play later would mean splitting rules from UI first; points 1-6 above already move the engine in that direction.
 
 ## Deck builder comparison (v0.53.0, 2026-10-16)
 - aegis `apps/web/src/screens/DeckEditor.tsx` (read from the public repo, not the live site): `FilterRail` (cost, rarity, sort) | card pool with paged loading (`PAGE_SIZE`, "scroll for more") | `aside.deck-current` (name, count chips vs target, list, curve chart, format violations, import / export / play). Phone: the deck panel becomes a bottom sheet behind a "View deck · List, curves and ratios" trigger bar with the counts; pool cards have add / remove / open.

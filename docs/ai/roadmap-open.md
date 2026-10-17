@@ -2,11 +2,19 @@
 
 Read the lines for the colour or mechanic you touch before starting. Newest first. When an item is finished, delete it here.
 
-## Repo cleanup (owner request 2026-10-17; before v0.60.0)
-Plan: `docs/ai/repo-cleanup-plan.md`. C1 architecture doc + doc index + doc-convention skill (v0.59.2) and C2 docs tidy (v0.59.3) in one session; C3/C4 are replaced by the monorepo plan.
-
-## Monorepo: online + offline (owner decision 2026-10-17)
-Plan: `docs/ai/monorepo-plan.md` (phases M0-M8). Alternate: one migration session, then one card session. No hosting until the owner decides. Next migration step after C1+C2: M1 workspace skeleton (byte-identical build). Delete each line here when done.
+## Session order (owner, 2026-10-17; replaces the plan order below where they differ)
+Opus for every session. Migration and quality sessions alternate with card sessions (card session = the next mechanic by measured unlocks from "Plan from the audit" below: Brave completion, When Destroyed, Grandwalker Nexus effects, ...). Delete each line when done.
+1. **C1+C2 repo cleanup** (patches, docs only): `docs/ai/repo-cleanup-plan.md` (= monorepo phase M0).
+2. **Q1 quality bundle** (small, Aegis ideas): strict effects mode (unknown trigger/action/condition names throw in tests and the dev build, warn once in the release build); in-game error catcher (`window.onerror` + `unhandledrejection` -> notice with "Copy report" = message, stack, version, input record); match fuzzer (random legal actions, many seeds, headless in Node or Playwright; any crash or stuck turn saves its seed + record as a regression case).
+3. Card session.
+4. **M1 workspace skeleton** + **Q2 test waits**: replace the fixed `wait_for_timeout` calls in `tests/suites` (318 on 2026-10-17) with waits on a visible state (modal open, step label, log line); the count is a shrink-only ratchet.
+5. Card session.
+6. **Q3 rules knowledge base + citations**: rule sections as chunks with ids, page and SHA-256 fingerprint, a query tool, tests cite chunk ids, a checker flags citations whose fingerprint changed. Full official manual text stays out of the public repo (copyright, neutral name): the public repo keeps ids, pages, short paraphrases and fingerprints. Also **Q4 skill `bs-card-verify`** (one card: evidence -> trace -> test -> verdict) for "card X is wrong" reports.
+7. Card session.
+8. **M2** host port part 1, card session, **M3** host port part 2, card session, **M4** replays (input record + viewer replay), card session.
+9. **L1 UI languages** (owner, 2026-10-17: no Indonesian; order English, Japanese, Thai, Chinese, then further languages by the popular Battle Spirits markets): first a string table for every UI text and a language switch (default English, remembered per device); then one language per session in the owner's order: **L1a Japanese**, **L1b Thai**, **L1c Chinese** (check which script the target market uses, Simplified or Traditional, before writing), later languages after a market check. Fonts: system fonts first (Japanese, Thai and Chinese ship with Windows and Android), checked on PC and phone screenshots; no network font in the offline file. Card names, card text and keyword names stay English, except the Japanese UI may show `name_jp` from the card data where it exists (not for every card); translated card text needs a data source and is a separate item. UI text is Claude's translation: the release notes say so, and a native check is recommended.
+10. **M5** types alongside the sessions above; then **M6** server, **M7** database + Docker, **M8** online client (no hosting until the owner decides).
+Plans: `docs/ai/repo-cleanup-plan.md`, `docs/ai/monorepo-plan.md`.
 
 ## Rules audit (owner request 2026-10-16; R1-R2 done in v0.55.1)
 Sources and versions: table at the top of `docs/manual-notes.md`; audit: `python3 tools/rules_audit.py` -> `docs/rules-audit.md` (verdicts in `docs/rules-audit-verdicts.json`, test D14). v0.55.1: 242 items, 77 confirmed, 48 house reading, 5 conflict, 112 open (no source cited yet).
