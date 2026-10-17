@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "17 Oct 2026",
-  "next": "next: repo cleanup C1+C2 (architecture doc, doc index, docs tidy; Opus, patches v0.59.2-v0.59.3); C3/C4 wait on the Aegis-like monorepo decision; then mechanics by measured unlocks (Opus); 593 of 8,041 cards playable"
+  "next": "next: repo cleanup C1+C2 (architecture doc, doc index, docs tidy; Opus, v0.59.2-v0.59.3), then the monorepo plan (online + offline, no hosting yet) alternating with card sessions; 593 of 8,041 cards playable"
  },
  "phases": [
   {

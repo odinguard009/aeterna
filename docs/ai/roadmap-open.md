@@ -3,7 +3,10 @@
 Read the lines for the colour or mechanic you touch before starting. Newest first. When an item is finished, delete it here.
 
 ## Repo cleanup (owner request 2026-10-17; before v0.60.0)
-Plan: `docs/ai/repo-cleanup-plan.md`. C1 architecture doc + doc index + doc-convention skill (v0.59.2) and C2 docs tidy (v0.59.3) in one session; C3 tools by domain (v0.59.4) and C4 data layout (v0.59.5) are on hold: the owner wants an Aegis-like monorepo with server/client, Docker and Postgres (2026-10-17); a migration plan waits on his answers about scope, hosting and priority. Delete each line here when done.
+Plan: `docs/ai/repo-cleanup-plan.md`. C1 architecture doc + doc index + doc-convention skill (v0.59.2) and C2 docs tidy (v0.59.3) in one session; C3/C4 are replaced by the monorepo plan.
+
+## Monorepo: online + offline (owner decision 2026-10-17)
+Plan: `docs/ai/monorepo-plan.md` (phases M0-M8). Alternate: one migration session, then one card session. No hosting until the owner decides. Next migration step after C1+C2: M1 workspace skeleton (byte-identical build). Delete each line here when done.
 
 ## Rules audit (owner request 2026-10-16; R1-R2 done in v0.55.1)
 Sources and versions: table at the top of `docs/manual-notes.md`; audit: `python3 tools/rules_audit.py` -> `docs/rules-audit.md` (verdicts in `docs/rules-audit-verdicts.json`, test D14). v0.55.1: 242 items, 77 confirmed, 48 house reading, 5 conflict, 112 open (no source cited yet).

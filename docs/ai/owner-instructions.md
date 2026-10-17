@@ -44,6 +44,10 @@ Plan: `docs/ai/deckbuilder-plan.md` (next session, before the batch promotion).
 
 Applied: Opus for every manual and auto session and for subagents; the gate treats every `next=` as Opus; the Sonnet scheduled task is disabled (not deleted). Project instruction 9 (automatic Sonnet/Opus choice) is superseded by this.
 
+## Monorepo (2026-10-17, chat)
+
+"saya rasa ini perlu untuk ditiru juga karena saya juga ingin membuat aeterna menjadi seperti itu" / "ya, saya ingin repo kita bisa menjadi lebih rapi dan lebih baik dari aegis". Answers: online + offline; no server hosting yet; migration step by step, alternating with card sessions. Plan: `docs/ai/monorepo-plan.md`.
+
 ## Repo cleanup (2026-10-17, chat)
 
 "oke, rencanakan untuk merapikan repo aeterna." Plan: `docs/ai/repo-cleanup-plan.md`.

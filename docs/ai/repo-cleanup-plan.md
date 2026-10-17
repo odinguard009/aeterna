@@ -2,8 +2,8 @@
 
 Owner: "rencanakan untuk merapikan repo aeterna", after comparing with the Aegis repo (github.com/vinicius3333/aegis-digimon-tcg). Goal: a repo where every kind of file has one home, one architecture document explains how the pieces fit, and the agent instructions stay short and route to topic docs. No game behaviour changes. Runs before v0.60.0.
 
-## Owner direction (2026-10-17, 15:02): become like Aegis, including the parts first marked "not copied"
-"saya rasa ini perlu untuk ditiru juga karena saya juga ingin membuat aeterna menjadi seperti itu" (TypeScript monorepo, server/client split, Docker, Postgres). That is a new product direction (online, server-authoritative), not a tidy-up, and it waits on the owner's answers about scope, hosting cost and priority. Until then only C1 and C2 run: they help both directions. C3 and C4 are on hold, because a monorepo would lay out `tools/` and `data/` differently (`packages/shared`, `apps/*`). Known blockers to settle in the migration plan: npm/pip registries are blocked in Claude sessions (only GitHub Actions can install packages such as Colyseus, React or a Postgres client), a server and database need paid or free-tier hosting chosen by the owner, and the offline single-file build for Windows/Android must keep working during the move.
+## Owner direction (2026-10-17)
+The owner wants an Aegis-like monorepo with an online server plus the offline game: `docs/ai/monorepo-plan.md`. C1 and C2 below are its phase M0; C3 and C4 are replaced by its phase M1 (tools and data move with the new layout).
 
 ## What Aegis does that fits us
 - `CLAUDE.md` is a thin pointer; short root rules route to topic docs (`internal-docs/ai/*`), and a skill (`agent-file-convention`) says where each kind of guidance lives.
@@ -41,13 +41,13 @@ Owner: "rencanakan untuk merapikan repo aeterna", after comparing with the Aegis
 3. Start `docs/mechanics/<mechanic>.md` (source, page, decision, tests, open points) for the mechanics with the most audit rows first (Standby, Burst order, effect priority / unaffected, Contract Advent, Seal); `rules-coverage.md` rows link them. The rest move when a session touches that mechanic (no separate pass).
 4. Unreferenced docs (`saga-map.md`, `code-review.md`, `card-sources.md`): fold still-true content into `docs/ARCHITECTURE.md` or `cards-and-rules.md`, then delete (history keeps them).
 
-### C3 Tools by domain (v0.59.4, backup branch first) - ON HOLD until the monorepo decision
+### C3 Tools by domain (v0.59.4, backup branch first) - REPLACED by monorepo phase M1
 1. Group into `tools/build/` (build, lint, loop, quick-tests, code_map, pack_size, pack_ai, player_view), `tools/cards/` (import_fandom, build_cards, tag_effects, compile_effects, promote_*, check_staged, unlock/lever reports), `tools/rules/` (rules_audit, check_obligations, check_renames), `tools/docs/` (gen_roadmap, gen_mindmap, mindmap-template), `tools/brand/` (brand.py, brand_guard). `session_gate.sh`, `session_start.sh`, `session_end_check.mjs` stay at `tools/`.
 2. `tools/README.md`: one line per tool (what, input, output, who calls it).
 3. Delete `tools/embed_pack.py` after a grep shows no caller.
 4. Update `package.json`, `.githooks`, workflows, skills, docs in the same commit; full CI + Regression.
 
-### C4 Data layout (v0.59.5, backup branch first) - ON HOLD until the monorepo decision
+### C4 Data layout (v0.59.5, backup branch first) - REPLACED by monorepo phase M1
 1. `data/README.md`: the pipeline above, one line per folder (source, generated, staging, playable) and the tool that writes it.
 2. Move `data/index/saga_card_index.json` to `data/sources/` only if import still works in the light clone: the sparse pattern excludes `data/sources/`, and `tools/import_fandom.py` reads the index, so a move would need `--with-sources` for every import. If so, leave it in `data/index/` and record why in `data/README.md`.
 3. `data/cards/all-cards.json`: keep it committed (tests and the build read it; generating it on every clone is less stable), but mark it generated in `data/README.md` and add a check that it equals the Saga files (the build already compares the pack).
