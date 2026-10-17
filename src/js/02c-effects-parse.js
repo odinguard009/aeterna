@@ -97,6 +97,12 @@ function parseEffects(arr) {
         if (!COLORS.includes(e.color)) return { error: 'EXTRA_REDUCTION needs a "color"' };
         o.color = e.color; o.n = Number.isInteger(e.n) && e.n >= 1 && e.n <= 3 ? e.n : 1;
       }
+      if (e.flag === 'UNAFFECTED' && e.from != null) {               // v0.58 Armor / Heavy Armor / Ultra Armor / "unaffected by opposing <colour> <types> effects"
+        const f = e.from, TY = ['Spirit', 'Brave', 'Nexus', 'Magic', 'Ultimate'];
+        if (typeof f !== 'object' || (f.colors != null && (!Array.isArray(f.colors) || !f.colors.length || f.colors.some(x => !COLORS.includes(x))))
+          || (f.types != null && (!Array.isArray(f.types) || !f.types.length || f.types.some(x => !TY.includes(x))))) return { error: 'UNAFFECTED "from" must look like {"colors":["purple"],"types":["Spirit","Magic"]}' };
+        o.from = {}; if (f.colors) o.from.colors = f.colors.slice(); if (f.types) o.from.types = f.types.slice();
+      }
       if (e.flag === 'COST_DESTROY_PLUS') {                       // v0.37: the limit of your "Cost Destruction effects" +n (optionally per Saga Brave you control, optionally only for sources of a family)
         if (!Number.isInteger(e.n) || e.n < 1 || e.n > 10) return { error: 'COST_DESTROY_PLUS needs a whole-number "n" (1-10)' };
         o.n = e.n; if (e.perSagaBrave === true) o.perSagaBrave = true; if (e.nexusBrave === true) o.nexusBrave = true;

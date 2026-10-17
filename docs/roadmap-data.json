@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "17 Oct 2026",
-  "next": "next: rules audit R3 effect priority cannot > must > can with session E v0.58.0 (Opus, heavy alone); Ultimate Trigger level/timing data needs a session with the owner present (Fandom approval); 573 of 8,041 cards playable"
+  "next": "next: v0.59.0 Ultimates as targets (&quot;Spirit/Ultimate&quot; in Spirit and Magic text) + Ultimate-card leftovers (Opus, heavy alone); Ultimate Trigger level/timing data needs a session with the owner present (Fandom approval); 589 of 8,041 cards playable"
  },
  "phases": [
   {
@@ -170,8 +170,8 @@
      "t": "Rules audit R1-R2 (v0.55.1, owner request): sources and versions table (JP Eternal 17.1 of 2026-05-29, JP 17.0 revision notice, Standard 1.1 / CR 1.0), tools/rules_audit.py -> docs/rules-audit.md: 242 items, 77 confirmed, 48 house reading, 5 conflict, 112 open; 30-day check in session_start"
     },
     {
-     "s": "next",
-     "t": "Rules audit R3 fixes (Opus): Burst resolves after all non-Burst triggered effects (JP 17.0 item 6) done in v0.55.2; Standby state for leaving the Field (item 4) done in v0.57.0; next: effect priority cannot > must > do = can with session E"
+     "s": "done",
+     "t": "Rules audit R3 fixes (Opus): Burst resolves after all non-Burst triggered effects (JP 17.0 item 6) v0.55.2; Standby state (item 4) v0.57.0; effect priority cannot > must > do = can with session E (item 9) v0.58.0"
     },
     {
      "s": "done",
@@ -217,8 +217,8 @@
      "t": "Simultaneous triggers: the turn player orders them, derived effects first (v0.28, rule TRIGGER-ORDER)"
     },
     {
-     "s": "next",
-     "t": "Effect priority: &quot;cannot&quot; beats &quot;must&quot; beats &quot;may&quot;"
+     "s": "done",
+     "t": "Effect priority: &quot;cannot&quot; beats &quot;must&quot; beats &quot;may&quot; (v0.58.0, with Armor / Heavy Armor / Ultra Armor &quot;unaffected&quot;)"
     },
     {
      "s": "done",
@@ -321,7 +321,7 @@
     },
     {
      "s": "later",
-     "t": "Keyword effects part 3: Nether Immortality, Ultra Holy Life, Soul Magic (Heavy/Ultra Armor with effect priority)"
+     "t": "Keyword effects part 3: Nether Immortality, Ultra Holy Life, Soul Magic (Heavy/Ultra Armor done in v0.58.0)"
     },
     {
      "s": "later",

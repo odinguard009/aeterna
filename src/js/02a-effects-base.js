@@ -56,19 +56,28 @@ const ctrlCount = (owner, q) => owner.spirits.filter(f => { const k = CARDS[f.id
   return (q.type === 'Both' || (q.type === 'Ultimate') === u) && (!q.colors || q.colors.some(x => (k.colors || [k.symbol]).includes(x)))
     && (q.costGe == null || k.cost >= q.costGe) && (!q.family || (k.families || []).includes(q.family)); }).length;
 function ownerOf(i) { if (!G) return null; for (const k of ['player', 'opponent']) if (fieldList(G.p[k]).includes(i)) return G.p[k]; return null; }
-const STATIC_FLAGS = ['MUST_BLOCK', 'NO_RETURN', 'CORES_DRAW', 'UNAFFECTED_SOUL', 'COST_DESTROY_PLUS', 'EXTRA_REDUCTION', 'NO_END_ATTACK'];
+const STATIC_FLAGS = ['MUST_BLOCK', 'NO_RETURN', 'CORES_DRAW', 'UNAFFECTED_SOUL', 'COST_DESTROY_PLUS', 'EXTRA_REDUCTION', 'NO_END_ATTACK', 'UNAFFECTED', 'HAND_UNAFFECTED'];
 /* flag effects: MUST_BLOCK (opposing Spirits must block this attacker), NO_RETURN (cannot be returned by opposing effects), CORES_DRAW (draw once per turn when cores are sent by your effects),
    UNAFFECTED_SOUL (Ometeotl Contract Field: this card is unaffected by opposing effects while a Soul Core is on it),
    NO_END_ATTACK (v0.43: while the matching Spirit of the owner attacks, the opponent can't end the Attack Step via effects; Sunya Lv3, Crimson Crater Lv2) */
-const fxImmune = (owner, t) => !!t && !!t.soul && flagActive(owner, 'UNAFFECTED_SOUL', t);
-function flagActive(owner, flag, subject) {
+/* v0.58 "unaffected" (session E): STATIC UNAFFECTED { to: 'self'|'own', match, from: { colors, types } } = unaffected by OPPOSING effects
+   whose source card has one of those colours and card types (Armor: Spirit/Nexus/Magic, Heavy Armor: Spirit/Brave/Nexus/Magic,
+   Ultra Armor: Spirit/Ultimate/Nexus/Magic; no "from" = all opposing effects). c = the acting effect { p: its owner, src: its card }.
+   Priority (Eternal manual FAQ Q3): "cannot be prevented" (action ignoreImmune) > "unaffected" > "cannot activate". */
+const fxImmune = (owner, t, c) => !!t && ((!!t.soul && flagActive(owner, 'UNAFFECTED_SOUL', t)) || (!!c && !!c.p && !!c.src && c.p !== owner && unaffectedBy(owner, t, c.src)));
+function unaffectedBy(owner, t, src) {
+  const k = CARDS[src.id]; if (!k) return false;
+  const cols = k.colors || [k.symbol];
+  return flagActive(owner, 'UNAFFECTED', t, e => !e.from || ((!e.from.colors || e.from.colors.some(x => cols.includes(x))) && (!e.from.types || e.from.types.includes(k.type))));
+}
+function flagActive(owner, flag, subject, pred) {
   if (!G || !owner || !subject) return false;
   const opp = G.p[other(owner.key)];
   for (const src of fieldList(owner)) {
     const card = CARDS[src.id]; if (!card.effects) continue;
     const L = lvNo(src);
     for (const e of card.effects) {
-      if (e.trigger !== 'STATIC' || e.flag !== flag) continue;
+      if (e.trigger !== 'STATIC' || e.flag !== flag || (pred && !pred(e))) continue;
       if (e.lv && !e.lv.includes(L)) continue;
       if (e.oc && !ocActive(src)) continue;
       if (e.to === 'own' ? !fxMatch(CARDS[subject.id], e.match) : src !== subject) continue;

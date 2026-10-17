@@ -1,6 +1,6 @@
 {
  "_doc": "Hand-set verdicts for tools/rules_audit.py (v0.55.1). Each entry: match = case-insensitive substring of the item text (coverage row, glossary id or rule-note line); verdict = confirmed | house | conflict | open; source = section/page/URL; note = what to do. Entries win over the automatic classification. Sources: docs/manual-notes.md 'Sources and versions'.",
- "checked": "2026-10-16",
+ "checked": "2026-10-17",
  "items": [
   {
    "match": "Mandatory Soul Core use (17.0)",
@@ -22,21 +22,21 @@
   },
   {
    "match": "Rule priority cannot > must > may (17.0)",
-   "verdict": "conflict",
+   "verdict": "confirmed",
    "source": "JP 17.0 revision notice item 9 (effect priority)",
-   "note": "Official: 'cannot' > 'must' > 'do' = 'can' (do and can no longer outrank each other). Engine has no general priority resolver; planned as session E (Unaffected / Heavy / Ultra Armor)."
+   "note": "Built in v0.58.0: 'cannot' wins over 'must' (Spirits that can't block are removed before a MUST_BLOCK attacker forces a block; a Spirit unaffected by the attacker is not bound, 08-battle.js); 'cannot be prevented' (action ignoreImmune) > 'unaffected' (STATIC UNAFFECTED / HAND_UNAFFECTED, fxImmune with the acting source) per FAQ Q3. 'do' and 'can' have no ordering in the engine (none needed). Tests A58-10/11."
   },
   {
    "match": "P_PRIORITY",
-   "verdict": "conflict",
+   "verdict": "confirmed",
    "source": "JP 17.0 revision notice item 9",
-   "note": "Glossary note cites FAQ A3/A4 only; add the 17.0 order cannot > must > do = can (session E)."
+   "note": "Glossary note now cites the 17.0 order cannot > must > do = can (v0.58.0)."
   },
   {
    "match": "Constant effects not negatable by \"cannot be prevented\" (17.0)",
    "verdict": "open",
    "source": "JP 17.0 revision notice item 9 (constant effects)",
-   "note": "Official: constant effects with no place or condition (granting a family or symbol) are not stopped by 'effects can't activate'. Engine has no 'effects can't activate' action yet, so nothing conflicts today; build it with session E."
+   "note": "Official: constant effects with no place or condition (granting a family or symbol) are not stopped by 'effects can't activate'. Engine still has no 'effects can't activate' action (v0.58.0 built 'unaffected', not 'can't activate'), so nothing conflicts; build both together when the first card needs it."
   },
   {
    "match": "K_BURST",

@@ -9,7 +9,9 @@ function refreshOne(t) { if (t.heavy) t.heavy = false; else t.exhausted = false;
 function toRemoved(owner, card) { owner.removed.push(card); if (G && G.evQ && !G.over) G.evQ.push({ type: 'REMOVED', key: owner.key }); }
 function fromHandRemoved(owner, card) { removeFrom(owner.hand, card); toRemoved(owner, card); }
 const _nm = c => CARDS[c.src.id].name;
-const handSafe = h => !!CARDS[h.id].handUnaffected;      // v0.47 Lightning Tempest: "this card in Hand/Removed Zone is unaffected by opposing effects"
+const handSafe = (h, o, c) => !!CARDS[h.id].handUnaffected || (!!o && handLocked(o, c));
+/* v0.58 STATIC HAND_UNAFFECTED: "your Hand is unaffected by opposing effects" while that Field card (level, condition) is active */
+const handLocked = (o, c) => !!c && c.p !== o && fieldList(o).some(f => flagActive(o, 'HAND_UNAFFECTED', f));      // v0.47 Lightning Tempest: "this card in Hand/Removed Zone is unaffected by opposing effects"
 async function pickOppSpirits(c, L, n, text) {                       // up to n distinct targets; the CPU takes the strongest untapped ones first
   const out = [];
   for (let j = 0; j < n; j++) {
@@ -56,9 +58,9 @@ Object.assign(FX_ACTIONS, {
   /* "put a random card from the opposing Hand onto their Removed Zone" (the cards are kept in ctx.removedCards / ctx.removedN) */
   REMOVE_OPP_HAND: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 10 && (a.toSize == null || (Number.isInteger(a.toSize) && a.toSize >= 0 && a.toSize <= 10)) && (a.counterIfCostLe == null || (a.counterIfCostLe && Number.isInteger(a.counterIfCostLe.cost) && Number.isInteger(a.counterIfCostLe.n) && a.counterIfCostLe.n >= 1 && a.counterIfCostLe.n <= 5)),
     txt: a => a.toSize != null ? `put random cards from the opposing Hand onto their Removed Zone until it holds ${a.toSize}` : `put ${a.n} random card${a.n === 1 ? '' : 's'} from the opposing Hand onto their Removed Zone`,
-    can: (c, a) => c.opp.hand.filter(h => !handSafe(h)).length > (a.toSize != null ? a.toSize : 0),
+    can: (c, a) => c.opp.hand.filter(h => !handSafe(h, c.opp, c)).length > (a.toSize != null ? a.toSize : 0),
     run: async (c, a) => {
-      const H = () => c.opp.hand.filter(h => !handSafe(h)), k = a.toSize != null ? H().length - a.toSize : Math.min(a.n, H().length);   // v0.47: cards unaffected in the Hand stay
+      const H = () => c.opp.hand.filter(h => !handSafe(h, c.opp, c)), k = a.toSize != null ? H().length - a.toSize : Math.min(a.n, H().length);   // v0.47: cards unaffected in the Hand stay
       if (k <= 0) { c.ctx.did = false; return; }
       c.ctx.removedCards = [];
       for (let j = 0; j < k && H().length; j++) { const L = H(), t = L[Math.floor(rng() * L.length)]; fromHandRemoved(c.opp, t); c.ctx.removedCards.push(t); }
@@ -69,10 +71,10 @@ Object.assign(FX_ACTIONS, {
   /* "the opponent puts a card from their Hand onto their Removed Zone": the OPPONENT chooses (the CPU gives up its cheapest card) */
   OPP_CHOOSES_REMOVE_HAND: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 3 && (a.counterIfCostLe == null || (a.counterIfCostLe && Number.isInteger(a.counterIfCostLe.cost) && Number.isInteger(a.counterIfCostLe.n) && a.counterIfCostLe.n >= 1 && a.counterIfCostLe.n <= 5)),
     txt: a => `the opponent puts ${a.n} card${a.n === 1 ? '' : 's'} from their Hand onto their Removed Zone`,
-    can: c => c.opp.hand.some(h => !handSafe(h)),
+    can: c => c.opp.hand.some(h => !handSafe(h, c.opp, c)),
     run: async (c, a) => {
       c.ctx.removedCards = [];
-      const H = () => c.opp.hand.filter(h => !handSafe(h));
+      const H = () => c.opp.hand.filter(h => !handSafe(h, c.opp, c));
       for (let j = 0; j < a.n && H().length; j++) {
         let t;
         if (c.opp.cpu) t = H().sort((x, y) => CARDS[x.id].cost - CARDS[y.id].cost)[0];
@@ -91,10 +93,11 @@ Object.assign(FX_ACTIONS, {
   /* "put a card (or every card) from the opposing Trash onto their Removed Zone" */
   REMOVE_OPP_TRASH: { chk: a => (a.all === true || a.n === 1),
     txt: a => a.all ? 'banish every card in the opposing Trash' : 'put a card from the opposing Trash onto their Removed Zone',
-    can: c => c.opp.trash.length > 0,
+    can: c => c.opp.trash.some(t => !trashSafe(t)),
     run: async (c, a) => {
-      if (!c.opp.trash.length) { c.ctx.did = false; return; }
-      const list = a.all ? c.opp.trash.slice() : [await chooseCard(c, c.opp.trash.slice(), `✨ ${_nm(c)}`, 'Choose a card from the opposing Trash to put onto their Removed Zone.', false)];
+      const T = c.opp.trash.filter(t => !trashSafe(t));   // v0.58: "this card in Trash is unaffected by any effects" stays
+      if (!T.length) { c.ctx.did = false; return; }
+      const list = a.all ? T : [await chooseCard(c, T, `✨ ${_nm(c)}`, 'Choose a card from the opposing Trash to put onto their Removed Zone.', false)];
       let k = 0; for (const t of list) { if (t && removeFrom(c.opp.trash, t)) { toRemoved(c.opp, t); k++; } }
       c.ctx.removedN = k; if (!k) { c.ctx.did = false; return; }
       log(`${_nm(c)}: ${k} card${k === 1 ? '' : 's'} from ${poss(c.opp)} Trash go onto their Removed Zone.`);

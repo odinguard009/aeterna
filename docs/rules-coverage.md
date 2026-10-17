@@ -31,7 +31,7 @@ Shared: 40+ card deck, max 3 copies by name, 5 Life, 3 Reserve + 1 Soul Core, dr
 | Life cores go to Reserve | ✅ | |
 | Mandatory Soul Core use (17.0) | ✅ | JP 17.0 revision notice item 5 (read 2026-10-16): the Soul Core is part of every game (setup 3 cores + 1 Soul Core in the Reserve); spending it stays optional. Engine setup already does this |
 | Standby state unification (17.0) | 🟡 | v0.57.0: a destroyed/depleted card waits in Standby (`p.standby`) while its leave triggers resolve, its symbols still reduce costs, then goes to the Trash/destination (JP 17.0 notice item 4, test S557). Open: When Banished / leaves-the-Field triggers (none in the engine yet) |
-| Rule priority cannot > must > may (17.0) | ❌ | only simple effects exist |
+| Rule priority cannot > must > may (17.0) | ✅ | v0.58.0: can't block beats must block; unaffected Spirits are not bound by must block; ignoreImmune > unaffected (A58-10/11) |
 | Effect engine (data-driven effects: When Summoned / When Attacks / ally attacks / ally blocked / static BP) | 🟡 | v0.12: 11 actions (draw, counter, destroy by BP/symbols/Nexus/returned-card BP/family in opposing Trash, BP+, core to self, refresh, refresh a Spirit, return from Trash, summon this card free, summon from Hand free), per-action conditions, level gating, once per turn, optional prompts, human target pick; 12 red cards partly wired |
 | Triggered effects order (turn player chooses) | 🟡 | v0.13: effects that trigger together are collected and a human owner picks the order (CPU: field order); not yet across the two players |
 | Flash timing (2 windows, defender first) | ✅ | v0.9: priority alternates, responses allowed; Flash used by Magic only (Flash effects on Spirits ❌) |
@@ -131,7 +131,7 @@ UI only (log drawer, hover preview, keyboard, match history, How to play). No ru
 | A replaced Mirage returns to the Hand; a replaced Burst goes to the Trash | ✅ | Was: both went to the Trash. |
 | (Flash) without a step restriction is usable in the Main Step too; "(Either Attack Step)" is Flash Timing only | ✅ | Sabecaulus Awaken corrected. |
 | CPU sets a Mirage that has an effect | ✅ | New. |
-| Found in the manuals, not wired | ⬜ | Unstackable, Seal (Soul Core in Life), Over Count, Brave, Ultimate rules (not affected by Spirit-targeting effects), Token, effect priority (cannot > must > may), "by doing X" requiring X, simultaneous-trigger order across both players. |
+| Found in the manuals, not wired | ⬜ | Unstackable, Seal (Soul Core in Life), Over Count, Brave, Ultimate rules (not affected by Spirit-targeting effects), Token "by doing X" requiring X, simultaneous-trigger order across both players. |
 | Revive/Revival | ✅ | Resolved in v0.23: the cost is paid. |
 
 ## v0.22.0 additions (official Eternal manual)
@@ -179,7 +179,7 @@ UI only (user request): card images in every card zone and card prompt, sideways
 | An effect activated by a resolved effect is resolved first | ✅ | Triggers caused while an effect resolves are queued and resolved right after it (`asResolving`, `flushDerived`), before older pending effects; also for Activate effects and Bursts. |
 | Ongoing (category A) effects before timed (category B) effects | ✅ | Ongoing effects are always applied (static BP / flags), so they never wait in the pool. |
 | Bursts: declared at the same timing, starting with the defending player; several Bursts resolve in activation order | ✅ | v0.55.2 (JP 17.0 notice item 6): `flushBursts()` resolves all non-Burst triggered effects of the event first, then the Bursts, non-turn player first, each in declaration order; one Burst per player per event. |
-| Priority "cannot" > "must" > "may" (Q3) | ⬜ | Not modelled yet (no card in the data needs it so far). |
+| Priority "cannot" > "must" > "may" (Q3) | ✅ | v0.58.0 (see the 17.0 row above). |
 | Once per Turn vs Once per Turn: Same Name (Q9) | ✅ | Already so: `once` per card, `sameName` per name. |
 
 ## v0.29.0 additions (official rules, read 2026-10-14: CR 4-8-1/4-8-2, CR 7-3-2, Eternal manual pp. 9, 11-12, 20-21, 28, 30-31, 55, 60)

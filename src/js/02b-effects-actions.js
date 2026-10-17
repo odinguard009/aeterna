@@ -253,7 +253,7 @@ const FX_ACTIONS = {
     txt: () => 'unless the opponent discards a Magic card from their Hand, the following effect applies',
     can: (c, a) => !a.needExhausted || !!c.src.exhausted,
     run: async (c, a) => {
-      const nm = CARDS[c.src.id].name, o = c.opp, M = o.hand.filter(x => CARDS[x.id].type === 'Magic' && !CARDS[x.id].handUnaffected);
+      const nm = CARDS[c.src.id].name, o = c.opp, M = o.hand.filter(x => CARDS[x.id].type === 'Magic' && !handSafe(x, o, c));
       if (!M.length) { c.ctx.did = true; return; }
       let d = null;
       if (o.cpu) d = cpuKeepMagicOrPay(o, c, M);

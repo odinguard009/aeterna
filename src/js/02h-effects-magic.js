@@ -64,8 +64,8 @@ Object.assign(FX_ACTIONS, {
     can: c => c.opp.spirits.length > 0,
     run: async c => {
       if (!c.opp.spirits.length) { c.ctx.did = false; return; }
-      for (const t of c.opp.spirits) t.symZeroTurn = G.turnNo;
-      c.opp.symZeroAll = G.turnNo;                      // v0.47: also Spirits/Ultimates that come to the Field later this turn
+      for (const t of c.opp.spirits) if (!fxImmune(c.opp, t, c)) t.symZeroTurn = G.turnNo;     // v0.58: unaffected Spirits keep their symbols
+      c.opp.symZeroAll = G.turnNo; c.opp.symZeroBy = { p: c.p, src: c.src };                      // v0.47: also Spirits/Ultimates that come to the Field later this turn
       log(`${_pn(c)}: the symbols of ${poss(c.opp)} Spirits are zero until the end of the turn.`); render();
     } }
 });

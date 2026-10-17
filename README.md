@@ -2,19 +2,19 @@
 
 A fan-made, single-file web simulator for a trading card game. You play against a CPU. It runs on PC and phone with no install.
 
-Current build: **v0.57.0** (573 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
+Current build: **v0.58.0** (589 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
 
 This repository starts at v0.57.0 with one snapshot commit (2026-10-17); the earlier history, issue threads and backup branches stay in the owner's private archive. Issue numbers in the older release notes refer to that archive.
 
 ## What works
 - Core rules: setup, the 7 turn steps, summon, level, attack, block, Life damage, deck-out; Eternal and Standard formats with the ban list
-- Data-driven effect engine: Burst, Mirage, Advent, Contract, Soul State, Count, Manifest, Revive, Brave, Ultimate, Seal, Magic (Main/Flash, from the Trash), High Speed, Crush, Holy Life, Accel, Silver Wheel
+- Data-driven effect engine: Burst, Mirage, Advent, Contract, Soul State, Count, Manifest, Revive, Brave, Ultimate, Seal, Magic (Main/Flash, from the Trash), High Speed, Crush, Holy Life, Accel, Silver Wheel, Armor / Heavy Armor / Ultra Armor ("unaffected by opposing effects")
 - Card pack: all 8,041 cards of Saga 1-17 are staged (Fandom export); the ones whose effects are wired and checked are playable in the game (count in the line above)
 - CPU opponent with an evaluation policy and lethal check; seeded replays
 - Separate PC (playmat) and phone layouts
 
 ## Not done yet
-Most staged cards still need their effects compiled or a missing mechanic; the plan is `docs/ai/roadmap-open.md` and the mind map `docs/roadmap.html`. Next: deck builder redesign for PC and phone, then batch promotion per Saga.
+Most staged cards still need their effects compiled or a missing mechanic; the plan is `docs/ai/roadmap-open.md` and the mind map `docs/roadmap.html`. Next: the Ultimate Trigger level/timing data for 110 Ultimates, then mechanics by unlock count (Ultimates as targets, Brave completion, When Destroyed).
 
 ## Data
 Card data is kept per Saga (BS75 cards sit in Saga 16, BS76 cards in Saga 17, as in the asset folders):
@@ -42,6 +42,16 @@ Card images are not included; import your own images in the game.
 ## Disclaimer
 Unofficial non-commercial fan project; card names, text and trademarks belong to their owners.
 
+
+## v0.58.0
+- **Effect priority and "unaffected"** (rules audit R3 item 2, JP 17.0 revision notice item 9, with session E; heavy, Opus): +16 cards (589 / 8,041 playable).
+  - New STATIC flag `UNAFFECTED` (`to` self or own + `match`, `from: { colors, types }`): the card is unaffected by OPPOSING effects whose source card has one of those colours and card types. `fxImmune(owner, target, acting effect)` checks it; every effect action that lists targets skips such opposing cards (`src/js/02k-effects-immunity.js`), and so do the older Magic targets, "every opposing Spirit's symbol is zero" (also for Spirits that arrive later) and must-block.
+  - Compiler: Armor (`{{Armor|..}}`, "Armor : X - ...": Spirit/Nexus/Magic effects), Heavy Armor (`{{ha|..}}`: Spirit/Brave/Nexus/Magic), Ultra Armor (`{{ua|..}}`: Spirit/Ultimate/Nexus/Magic), `{{uha|..}}`, "This Spirit is unaffected by opposing [colour] [types] effects", "All your "X" family Spirits are unaffected by ...", "Your Hand is unaffected by opposing effects" (STATIC `HAND_UNAFFECTED`), "this card in Hand/Trash is unaffected" (card flags `handUnaffected` / `trashUnaffected`). Heavy/Ultra Armor also keep Bursts of those colours off the card (Eternal manual p. 48) through the same filter.
+  - Priority: "cannot" beats "must" (a Spirit that can't block is never forced by a must-block attacker; a Spirit unaffected by the attacker is not bound either); "cannot be prevented" (action `ignoreImmune`) beats "unaffected" (FAQ Q3). "Do" and "can" need no order in the engine. Not built: "effects can't activate" (no card needs it yet), conditional forms (while exhausted, During Seal, While ... in your Trash), granted Armor ("give ... Armor", When Braved / During OC prefixes).
+  - Promoted (every text/JSON pair read): BS02-040, BS02-044, BS02-045, BS03-037, BS03-043, BS03-044, BS04-034, BS05-028, BS06-037, BS07-028, BS10-032, BS14-035, BS17-035, BS20-035, BS22-033, BS29-023. Most Armor/unaffected cards are still blocked by other mechanics (Burst, Brave data, Advent, Contract, Mirage), so the real unlock is 16, not the ~139 the tag count suggested.
+  - Rules audit: the effect-priority conflicts are confirmed (84 confirmed, 0 conflicts).
+  - Tests A58-01 to A58-14 (`tests/unit/armor58.test.mjs`, A58-14 on the real-card scenario `heavy-armor-red-purple-unaffected`). Player-view pass before this minor release (`node tools/player_view.mjs`): 95 cards in 6 decks, 0 problems, PC and phone layouts start without errors; property tests 48/48.
+  - Revert: `git revert` of the v0.58.0 commit (engine: `fxImmune` / `unaffectedBy` in `src/js/02a-effects-base.js`, `src/js/02k-effects-immunity.js`, `handSafe` / `handLocked` in `src/js/02e-effects-removed.js`, must-block in `src/js/08-battle.js`; compiler `unaffected_para` / `flag_para`; the 16 promoted cards).
 
 ## v0.57.0
 - **Standby state** (rules audit R3, JP 17.0 revision notice item 4; heavy, Opus; engine rule fix, no new cards): a Spirit or Ultimate that is destroyed or depleted now waits in Standby (`p.standby`) while its leave triggers resolve, then goes to the Trash.

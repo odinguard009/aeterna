@@ -103,7 +103,8 @@ function sendToken(p, id) {
 function tokenHome(p, t) { t.cores = 0; t.soul = false; t.exhausted = false; t.heavy = false; t.noAB = false; t.bpMod = 0; t.symBattle = 0; p.tokens = p.tokens || {}; p.tokens[t.id] = (p.tokens[t.id] || 0) + 1; }
 /* symbols an attacker takes from the Life: its own, a combined Brave's (manual p. 34) and "+N symbol during this battle" effects */
 const symTurnCols = i => i.symTurn && G && i.symTurn.turn === G.turnNo ? i.symTurn.cols : [];   // v0.44 "during this turn, an extra Red symbol"
-const attackSymbols = i => i.symZeroTurn === G.turnNo || (G.p.player.spirits.includes(i) ? G.p.player : G.p.opponent).symZeroAll === G.turnNo ? 0 : Math.max(0, (CARDS[i.id].symbols || 0) + (i.brave ? CARDS[i.brave.id].symbols || 0 : 0) + (i.symBattle || 0) + symTurnCols(i).length);
+const symZeroAllOn = (q, i) => q.symZeroAll === G.turnNo && !fxImmune(q, i, q.symZeroBy);    // v0.58: an unaffected later arrival keeps its symbols
+const attackSymbols = i => i.symZeroTurn === G.turnNo || symZeroAllOn(G.p.player.spirits.includes(i) ? G.p.player : G.p.opponent, i) ? 0 : Math.max(0, (CARDS[i.id].symbols || 0) + (i.brave ? CARDS[i.brave.id].symbols || 0 : 0) + (i.symBattle || 0) + symTurnCols(i).length);
 /* Symbols (Eternal rule manual VER.17.0): each printed symbol has one or more attributes.
    colour; "ultimate" (Ultimates, p. 39: reduces only Ultimate reduction symbols); "god" (Grandwalker Nexuses, p. 42: never reduces the six colours);
    a Contract Grandwalker Nexus has a coloured God symbol = God + its colour (p. 44). symbolColors entries: a colour, "ultimate", "god" or "god-<colour>".
@@ -315,8 +316,8 @@ const magicSources = (p, ctx) => p.hand.concat(p.trash.filter(t => CARDS[t.id].t
 function magicTargets(p, inst, ctx) {                    // null = no target needed, [] = needed but none available
   const m = magicFx(CARDS[inst.id], ctx); if (!m || !m.effect) return null;
   const fx = MAGIC_FX[m.effect]; if (!fx.side) return null;
-  const pool = (fx.side === 'opp' ? G.p[other(p.key)] : p).spirits;
-  return pool.filter(sp => fx.ok(sp, m.value, m));
+  const q = fx.side === 'opp' ? G.p[other(p.key)] : p;
+  return q.spirits.filter(sp => fx.ok(sp, m.value, m) && !(q !== p && fxImmune(q, sp, { p, src: inst })));   // v0.58: unaffected opposing Spirits are no target
 }
 function magicUsable(p, inst, ctx) {
   const card = CARDS[inst.id]; if (!card || card.type !== 'Magic') return false;
@@ -354,7 +355,7 @@ async function castMagic(p, ch) {                         // ch = { inst, target
     if (m && m.effect) {
       const fx = MAGIC_FX[m.effect], t = ch.target;
       if (!fx.side) await fx.apply(p, opp, null, m.value, m, inst);
-      else if (t && (fx.side === 'opp' ? opp : p).spirits.includes(t) && fx.ok(t, m.value, m)) fx.apply(p, opp, t, m.value, m);
+      else if (t && (fx.side === 'opp' ? opp : p).spirits.includes(t) && fx.ok(t, m.value, m) && !(fx.side === 'opp' && fxImmune(opp, t, { p, src: inst }))) fx.apply(p, opp, t, m.value, m);
       else log(`${card.name}: no valid target remains.`);
     } else log(`${card.name}: this effect is not implemented in this build.`);
   } finally { if (!fromBurst && p.limbo === inst) p.limbo = prevLimbo; }

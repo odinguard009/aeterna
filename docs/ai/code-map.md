@@ -11,20 +11,20 @@ VERSION, CARDS, defCard, TRAIN, PRESET_DECK
 ## 01a-card-pack.js (166 lines, ~2.4k tokens) — CARD PACK CODEC (v0.51.0; this part must load before 03-imported-cards.js: its consts are used at load): compact, synchronous format of the built-in card pack
 packBlockOf, packCards, unpackCards, INF_LBASE, INF_LEXT, INF_DBASE, INF_DEXT, INF_ORDER, inflateRaw, packBytes, loadPack
 
-## 02a-effects-base.js (182 lines, ~3.7k tokens) — EFFECT ENGINE
-FX_TRIGGERS, FX_TRIGGER_TEXT, fxMatch, fxIf, ctrlCount, ownerOf, STATIC_FLAGS, fxImmune, flagActive, costDestroyBonus, coresSent, staticBp, takeFromVoid, releaseCores, removeNexus, fxPickTarget, toSoulState, chooseCard, bounceCard, SOUL_SRC, hasMatch
+## 02a-effects-base.js (191 lines, ~4k tokens) — EFFECT ENGINE
+FX_TRIGGERS, FX_TRIGGER_TEXT, fxMatch, fxIf, ctrlCount, ownerOf, STATIC_FLAGS, fxImmune, unaffectedBy, flagActive, costDestroyBonus, coresSent, staticBp, takeFromVoid, releaseCores, removeNexus, fxPickTarget, toSoulState, chooseCard, bounceCard, SOUL_SRC, hasMatch
 
 ## 02b-effects-actions.js (495 lines, ~13k tokens)
 FX_ACTIONS
 
-## 02c-effects-parse.js (138 lines, ~3.4k tokens)
+## 02c-effects-parse.js (144 lines, ~3.6k tokens)
 canPlaceFree, canPlaceBraveFree, summonFree, canPlacePaid, canPlaceBy, summonPaid, summonBy, fxDescribe, BURST_WHEN, parseCond, parseActionList, parseBurst, parseEffects
 
 ## 02d-effects-resolve.js (331 lines, ~6k tokens)
 fxCan, runActions, fireFx, collectFx, fxValid, fireFxMulti, asResolving, flushDerived, resolvePool, soulCoreHolder, soulToTrash, isSealed, soulToLife, lifeTake, soulSource, soulToNexus, advTiming, soulAdventOK, cadvSources, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, humanContractAdvent, humanManifest, cpuAdvents, onceKey, usedThisTurn, markUsed, revealedFx, NB_IDX, actList, effAt, activatable, activateFx, cpuActivate, reviveKey, reviveTargets, doRevive, cpuRevive
 
-## 02e-effects-removed.js (145 lines, ~3.2k tokens) — v0.38 GREEN (Contractor Hermes / Lionheart): Heavy Exhaust, the Removed Zone, exhaust effects, "the opponent can't activate Burst effects".
-setHeavy, refreshOne, toRemoved, fromHandRemoved, _nm, handSafe, pickOppSpirits
+## 02e-effects-removed.js (148 lines, ~3.3k tokens) — v0.38 GREEN (Contractor Hermes / Lionheart): Heavy Exhaust, the Removed Zone, exhaust effects, "the opponent can't activate Burst effects".
+setHeavy, refreshOne, toRemoved, fromHandRemoved, _nm, handSafe, handLocked, pickOppSpirits
 
 ## 02f-effects-purple.js (75 lines, ~1.8k tokens) — v0.39 PURPLE (Contractor Hades / Sorcerer): Deck-to-Trash (mill), discarding from the Hand, sending opposing cores to the Reserve, once-per-turn Count.
 _pn
@@ -41,6 +41,9 @@ highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, _nmK
 ## 02j-effects-accel.js (109 lines, ~1.8k tokens) — v0.50 KEYWORD EFFECTS part 2 (session D): Accel and Silver Wheel.
 accelList, accelCost, accelMainStep, accelOK, accelSources, accelLabel, useAccel, removedSummonable, summonFromRemoved, humanAccel, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel
 
+## 02k-effects-immunity.js (21 lines, ~0.4k tokens)
+trashSafe
+
 ## 03-imported-cards.js (209 lines, ~5.2k tokens) — IMPORTED CARD DATA
 COLORS, BUILTIN_IDS, CARDS_KEY, IMPORTED, CARDS_VER, parseCard, registerImported, saveImported, importCards, clearImported, PACK_IDS, registerPack, TOKEN_IDS, registerTokens
 
@@ -50,13 +53,13 @@ deckTotal, cleanDeck, validateDeck, fmtName, setFormat, errSummary, PREBUILT, de
 ## 05-state.js (68 lines, ~1.3k tokens) — GAME STATE
 SET_KEY, SETTINGS, SPEEDS, saveSettings, AUDIO, sfx, G, fnv, recIn, SIM_DECK_B, delay, wait, log, mkInst, newPlayer, contractToDeck, newGame
 
-## 06-rules.js (390 lines, ~6.9k tokens) — RULES HELPERS
-fieldList, isGW, freeCores, freeTotal, totalCores, reserveTotal, minCores, isSpiritForm, isUlt, lvBase, lvNo, summonOK, spare, coresAvailable, isCountLv, lvIndex, bpOf, ocActive, braveBp, isNexusBrave, braveFits, braveTargets, combineBrave, canSeparate, separateBrave, braveAfford, braveSummon, braveRecheck, shedBrave, TOKEN_SUPPLY, tokenIdsOf, prepareTokens, tokenCoreRoom, canSendToken, sendToken, tokenHome, symTurnCols, attackSymbols, symAttrs, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, noBlockActive, costAltActive, extraReduction, effCost, canPlayCard, takeCores, payCost, checkDepletion, removeSpirit, lostHeard, leaveStandby, releaseStandby, poss, who, draw, handUp, summon, setBurst, mirageUsable, magicFx, magicFromTrash, magicFxAt, magicTrashOK, magicSources, magicTargets, magicUsable, magicText, castMagic, addCore, removeCore, moveSoulTo, moveCore, swapSoul, returnSoul
+## 06-rules.js (391 lines, ~7k tokens) — RULES HELPERS
+fieldList, isGW, freeCores, freeTotal, totalCores, reserveTotal, minCores, isSpiritForm, isUlt, lvBase, lvNo, summonOK, spare, coresAvailable, isCountLv, lvIndex, bpOf, ocActive, braveBp, isNexusBrave, braveFits, braveTargets, combineBrave, canSeparate, separateBrave, braveAfford, braveSummon, braveRecheck, shedBrave, TOKEN_SUPPLY, tokenIdsOf, prepareTokens, tokenCoreRoom, canSendToken, sendToken, tokenHome, symTurnCols, symZeroAllOn, attackSymbols, symAttrs, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, noBlockActive, costAltActive, extraReduction, effCost, canPlayCard, takeCores, payCost, checkDepletion, removeSpirit, lostHeard, leaveStandby, releaseStandby, poss, who, draw, handUp, summon, setBurst, mirageUsable, magicFx, magicFromTrash, magicFxAt, magicTrashOK, magicSources, magicTargets, magicUsable, magicText, castMagic, addCore, removeCore, moveSoulTo, moveCore, swapSoul, returnSoul
 
 ## 07-turn.js (54 lines, ~0.6k tokens) — TURN FLOW
 setStep, beginTurn, endStep, win, matchLoop
 
-## 08-battle.js (158 lines, ~2.9k tokens) — BATTLE
+## 08-battle.js (161 lines, ~2.9k tokens) — BATTLE
 successor, flashTiming, battleEndAttack, attackStepOver, doBattle, doBattleInner, maybeBurst, burstFlash, flushBursts
 
 ## 09-cpu.js (160 lines, ~2.6k tokens) — CPU

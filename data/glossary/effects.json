@@ -444,18 +444,18 @@
     "kind": "static",
     "meaning": "Unaffected by opposing effects",
     "pattern": "unaffected by",
-    "engine": "STATIC flag UNAFFECTED_SOUL (Ometeotl with a Soul Core) via fxImmune",
+    "engine": "STATIC flag UNAFFECTED {to: self|own, match, from: {colors, types}} (v0.58) and UNAFFECTED_SOUL (Ometeotl) via fxImmune(owner, target, acting effect); every FX_ACTIONS cands list skips immune opposing targets (02k-effects-immunity.js); HAND_UNAFFECTED (your Hand), card flags handUnaffected / trashUnaffected",
     "status": "partial",
     "example": "Banve, Unnis, Z Thunder",
-    "rule": "Eternal Rule Manual sec.6: ignores all effects except those listed (e.g. Grandwalker Nexus only by its own / Grandwalker-targeting effects; Soul State cards only by Soul State-targeting effects). Priority: cannot be prevented > unaffected > cannot activate. Engine v0.25: Ometeotl Contract Field (unaffected by opposing effects while a Soul Core is on it) is wired for opposing Spirit/Nexus-targeting actions."
+    "rule": "Eternal Rule Manual sec.6: ignores all effects except those listed (e.g. Grandwalker Nexus only by its own / Grandwalker-targeting effects; Soul State cards only by Soul State-targeting effects). Priority (FAQ Q3): cannot be prevented > unaffected > cannot activate. Engine v0.58: unaffected by OPPOSING effects whose source card matches the colours/types; conditional forms (while exhausted, During Seal, While ... in your Trash) and 'this effect is unaffected' are not built yet."
   },
   {
     "id": "S_CANT_PREVENT",
     "kind": "static",
     "meaning": "Can't be prevented/negated",
     "pattern": "can't be prevent|cannot be prevent",
-    "engine": "(not wired)",
-    "status": "missing",
+    "engine": "action flag ignoreImmune (DESTROY coresLe since v0.39; every cands list honours it since v0.58)",
+    "status": "partial",
     "example": ""
   },
   {
@@ -667,12 +667,12 @@
   {
     "id": "K_ARMOR",
     "kind": "keyword",
-    "meaning": "Heavy Armor / Ultra Armor: unaffected by opposing effects of the listed colours",
-    "pattern": "\\{\\{(ha|ua)\\||Heavy Armor|Ultra Armor",
-    "engine": "(not wired; with session E \"unaffected\")",
-    "status": "missing",
-    "example": "",
-    "rule": "Engine: built from the printed card text (Fandom export, BS68-BS77); no manual rule note found yet."
+    "meaning": "Armor / Heavy Armor / Ultra Armor: unaffected by opposing effects of the listed colours",
+    "pattern": "\\{\\{(Armor|ha|ua|uha)\\||Heavy Armor|Ultra Armor|\\bArmor\\s*:",
+    "engine": "compiler unaffected_para -> STATIC UNAFFECTED from {colors, types} (v0.58)",
+    "status": "partial",
+    "example": "BS02-040, BS14-035, BS17-035, BS20-035",
+    "rule": "Printed keyword text (Fandom export): Armor = opposing <colour> Spirit/Nexus/Magic effects; Heavy Armor = Spirit/Brave/Nexus/Magic; Ultra Armor = Spirit/Ultimate/Nexus/Magic. Eternal manual p. 48 names Heavy/Ultra Armor as Burst preventers: a Burst of a listed colour cannot affect the card (same cands filter). Open: granted Armor ('give ... Armor', When Braved / During Brave / During OC prefixes)."
   },
   {
     "id": "K_NETHER_IMMORTALITY",
@@ -777,12 +777,12 @@
   {
     "id": "P_PRIORITY",
     "kind": "rule",
-    "meaning": "Priority: cannot > must > may; cannot be prevented > unaffected > cannot activate",
+    "meaning": "Priority: cannot > must > do = can; cannot be prevented > unaffected > cannot activate",
     "pattern": "(?!x)x",
-    "engine": "(not generic)",
+    "engine": "v0.58: can't-block removes blockers before MUST_BLOCK; unaffected Spirits are not bound by MUST_BLOCK; ignoreImmune beats unaffected",
     "status": "partial",
     "example": "",
-    "rule": "Eternal Rule Manual FAQ A3/A4. Card text beats the basic rules."
+    "rule": "JP 17.0 revision notice item 9: 'cannot' > 'must' > 'do' = 'can' (do and can no longer outrank each other). Eternal Rule Manual FAQ A3/A4 (Q3). Card text beats the basic rules."
   },
   {
     "id": "P_SIMULTANEOUS",

@@ -173,6 +173,23 @@
   "T_BLOCKS"
  ],
  "BS02-039": [],
+ "BS02-040": [
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_ARMOR"
+ ],
+ "BS02-044": [
+  "A_BP_PLUS",
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_ARMOR",
+  "T_BLOCKS"
+ ],
+ "BS02-045": [
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_ARMOR"
+ ],
  "BS02-046": [],
  "BS02-049": [],
  "BS02-051": [],
@@ -202,9 +219,24 @@
  "BS03-025": [],
  "BS03-026": [],
  "BS03-029": [],
+ "BS03-037": [
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_ARMOR"
+ ],
  "BS03-038": [],
  "BS03-041": [],
  "BS03-042": [],
+ "BS03-043": [
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_ARMOR"
+ ],
+ "BS03-044": [
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_ARMOR"
+ ],
  "BS03-045": [
   "A_BP_PLUS",
   "C_LEVEL",
@@ -252,6 +284,11 @@
   "C_LEVEL",
   "T_BATTLE_WIN"
  ],
+ "BS04-034": [
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_ARMOR"
+ ],
  "BS04-035": [],
  "BS04-038": [],
  "BS04-040": [],
@@ -288,6 +325,11 @@
   "T_BATTLE_WIN"
  ],
  "BS05-024": [],
+ "BS05-028": [
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_ARMOR"
+ ],
  "BS05-029": [],
  "BS05-031": [],
  "BS05-033": [],
@@ -330,6 +372,11 @@
   "C_LEVEL"
  ],
  "BS06-032": [],
+ "BS06-037": [
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_ARMOR"
+ ],
  "BS06-039": [],
  "BS06-040": [],
  "BS06-041": [
@@ -368,6 +415,11 @@
  ],
  "BS07-010": [],
  "BS07-019": [],
+ "BS07-028": [
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_ARMOR"
+ ],
  "BS07-029": [],
  "BS07-032": [
   "A_BP_PLUS",
@@ -438,6 +490,13 @@
  ],
  "BS10-028": [],
  "BS10-031": [],
+ "BS10-032": [
+  "A_BP_PLUS",
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_ARMOR",
+  "T_BLOCKS"
+ ],
  "BS10-033": [
   "A_VOID",
   "C_LEVEL",
@@ -531,6 +590,12 @@
  ],
  "BS14-027": [],
  "BS14-029": [],
+ "BS14-035": [
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_BRAVE",
+  "K_ARMOR"
+ ],
  "BS14-036": [],
  "BS14-038": [],
  "BS14-046": [],
@@ -585,6 +650,12 @@
   "T_BLOCKS"
  ],
  "BS17-030": [],
+ "BS17-035": [
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_BRAVE",
+  "K_ARMOR"
+ ],
  "BS17-040": [],
  "BS17-046": [],
  "BS17-053": [
@@ -662,6 +733,12 @@
   "A_BP_MINUS",
   "K_RUSH"
  ],
+ "BS20-035": [
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_BRAVE",
+  "K_ARMOR"
+ ],
  "BS20-040": [],
  "BS20-046": [],
  "BS20-050": [
@@ -710,6 +787,12 @@
  "BS22-013": [],
  "BS22-022": [],
  "BS22-032": [],
+ "BS22-033": [
+  "T_SUMMONED",
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_RUSH"
+ ],
  "BS22-037": [],
  "BS22-046": [],
  "BS23-001": [
@@ -730,6 +813,10 @@
  ],
  "BS28-019": [
   "K_HIGH_SPEED"
+ ],
+ "BS29-023": [
+  "C_LEVEL",
+  "S_UNAFFECTED"
  ],
  "BS31-001": [],
  "BS31-009": [],

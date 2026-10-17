@@ -2128,6 +2128,198 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS02-040",
+  "name": "Lobsterk",
+  "name_jp": "ロブスターク",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Flying Fish"
+  ],
+  "text": "[LV1][LV2] {{Armor|Red}}\nThis Spirit is unaffected by opposing Spirit/Nexus/Magic effects of the specified color.",
+  "image": "Lobsterk.png",
+  "block": "02",
+  "saga": 1,
+  "mechanics": [
+   "Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ],
+    "from": {
+     "colors": [
+      "red"
+     ],
+     "types": [
+      "Spirit",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-044",
+  "name": "The CannonArtifact Megarock",
+  "name_jp": "魔砲神メガロック",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Android"
+  ],
+  "text": "Jap Version = [LV1][LV2] Armor : Red - This Spirit is unaffected by opposing Spirit/Nexus/Magic effects of the stated color.\n\n [LV2] (When Blocks) This Spirit gains +2000 BP.",
+  "image": "The CannonArtifact Megarock.jpg",
+  "block": "02",
+  "saga": 1,
+  "mechanics": [
+   "Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ],
+    "from": {
+     "colors": [
+      "red"
+     ],
+     "types": [
+      "Spirit",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   },
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 2000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-045",
+  "name": "The ShieldDragon Fevnir",
+  "name_jp": "装甲機竜ファーブニル",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 6,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Armored Dragon, Machine Beast"
+  ],
+  "text": "Jap Version = [LV1] Armor : Purple - This Spirit is unaffected by opposing Spirit/Nexus/Magic effects of the stated color.\n\n [LV2]  Armor : Red/Purple/Green -  This Spirit is unaffected by opposing Spirit/Nexus/Magic effects of the stated colors.",
+  "image": "The ShieldDragon Fevnir.jpg",
+  "block": "02",
+  "saga": 1,
+  "mechanics": [
+   "Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1
+    ],
+    "from": {
+     "colors": [
+      "purple"
+     ],
+     "types": [
+      "Spirit",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   },
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     2
+    ],
+    "from": {
+     "colors": [
+      "red",
+      "purple",
+      "green"
+     ],
+     "types": [
+      "Spirit",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS02-046",
   "name": "Wingull",
   "name_jp": "ウィンガル",
@@ -2725,6 +2917,59 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS03-037",
+  "name": "Ratatoscr",
+  "name_jp": "ラタトスカ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Machine Beast"
+  ],
+  "text": "Jap Version = [LV1][LV2] Armor : Red - This Spirit is unaffected by opposing Spirit/Nexus/Magic effects of the stated color.",
+  "image": "Ratatoscr.jpg",
+  "block": "03",
+  "saga": 1,
+  "mechanics": [
+   "Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ],
+    "from": {
+     "colors": [
+      "red"
+     ],
+     "types": [
+      "Spirit",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS03-038",
   "name": "Angelafish",
   "name_jp": "アンジェラフィッシュ",
@@ -2812,6 +3057,133 @@
   "image": "The SeaCreature Dugong.jpg",
   "block": "03",
   "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-043",
+  "name": "Hotaruri",
+  "name_jp": "ホタルリ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Glow Insect"
+  ],
+  "text": "Jap Version = [LV1][LV2] Armor : Red/Purple - This Spirit is unaffected by opposing Spirit/Nexus/Magic effects of the stated colors.",
+  "image": "Hotaruri.jpg",
+  "block": "03",
+  "saga": 1,
+  "mechanics": [
+   "Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ],
+    "from": {
+     "colors": [
+      "red",
+      "purple"
+     ],
+     "types": [
+      "Spirit",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-044",
+  "name": "The MetalMan Surtr",
+  "name_jp": "鋼人スルト",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Armed Machine"
+  ],
+  "text": "Jap Version = [LV1] Armor : Red/White - This Spirit is unaffected by opposing Spirit/Nexus/Magic effects of the stated colors.\n\n [LV2] Armor : Red/Purple/White - This Spirit is unaffected by opposing Spirit/Nexus/Magic effects of the stated colors.",
+  "image": "The MetalMan Surtr.jpg",
+  "block": "03",
+  "saga": 1,
+  "mechanics": [
+   "Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1
+    ],
+    "from": {
+     "colors": [
+      "red",
+      "white"
+     ],
+     "types": [
+      "Spirit",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   },
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     2
+    ],
+    "from": {
+     "colors": [
+      "red",
+      "purple",
+      "white"
+     ],
+     "types": [
+      "Spirit",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   }
+  ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
@@ -3727,6 +4099,59 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS04-034",
+  "name": "Vidohunir",
+  "name_jp": "ヴィゾフニル",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Flying Fish"
+  ],
+  "text": "Jap Version= [LV1][LV2] Armor : Purple - This Spirit is unaffected by opposing Spirit/Nexus/Magic effects of the stated color.",
+  "image": "Vidohunir.jpg",
+  "block": "04",
+  "saga": 1,
+  "mechanics": [
+   "Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ],
+    "from": {
+     "colors": [
+      "purple"
+     ],
+     "types": [
+      "Spirit",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS04-035",
   "name": "Berserker-Magnum",
   "name_jp": "バーサーカー・マグナム",
@@ -4536,6 +4961,59 @@
   "image": "The Yojinbo Antman.jpg",
   "block": "05",
   "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-028",
+  "name": "Armetcrab",
+  "name_jp": "アーメットクラブ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Flying Fish"
+  ],
+  "text": "Jap Version = [LV1][LV2] Armor : Yellow - This Spirit is unaffected by opposing Spirit/Nexus/Magic effects of the stated color.",
+  "image": "Armetcrab.jpg",
+  "block": "05",
+  "saga": 1,
+  "mechanics": [
+   "Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ],
+    "from": {
+     "colors": [
+      "yellow"
+     ],
+     "types": [
+      "Spirit",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   }
+  ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
@@ -5354,6 +5832,59 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS06-037",
+  "name": "TwinFairies Hugin&Munin",
+  "name_jp": "双子妖精フギン＆ムニン",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Clown"
+  ],
+  "text": "Jap Version = [LV1][LV2] Armor : Green - This Spirit is unaffected by opposing Spirit/Nexus/Magic effects of the stated color.",
+  "image": "TwinFairies Hugin&Munin.jpg",
+  "block": "06",
+  "saga": 1,
+  "mechanics": [
+   "Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ],
+    "from": {
+     "colors": [
+      "green"
+     ],
+     "types": [
+      "Spirit",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS06-039",
   "name": "The FloatingFish Molamola",
   "name_jp": "浮遊魚モラモラー",
@@ -5975,6 +6506,59 @@
   "image": "Spearmink.jpg",
   "block": "07",
   "saga": 1,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS07-028",
+  "name": "The Artifact Vellnd",
+  "name_jp": "機人ヴェルンド",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Android"
+  ],
+  "text": "[LV1][LV2] Armor:Blue -This Spirit is unaffected by opposing Blue Spirit/Nexus/Magic effects.",
+  "image": "The Artifact Vellnd.jpg",
+  "block": "07",
+  "saga": 1,
+  "mechanics": [
+   "Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ],
+    "from": {
+     "colors": [
+      "blue"
+     ],
+     "types": [
+      "Spirit",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   }
+  ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },

@@ -39,9 +39,12 @@ async function doBattleInner(attKey, att) {
   if (!A.spirits.includes(att)) { log('The attack ends: the attacking Spirit left the field.'); render(); return; }
   const blockers = noBlockActive(D) ? [] : D.spirits.filter(s => !s.exhausted && !s.noAB && abTaxOK(D, s));
   let blk = null;
-  const must = blockers.length > 0 && flagActive(A, 'MUST_BLOCK', att);
+  /* v0.58 priority "cannot" > "must" > "do" = "can" (JP 17.0 item 9): Spirits that can't block were removed above; a Spirit unaffected by the
+     attacker's effects is not bound by its "must block" (FAQ Q3: unaffected > the effect) */
+  const bound = blockers.filter(b => !fxImmune(D, b, { p: A, src: att }));
+  const must = bound.length > 0 && flagActive(A, 'MUST_BLOCK', att);
   if (must) log(`${CARDS[att.id].name}: opposing Spirits must block if possible.`);
-  if (blockers.length) blk = D.cpu ? (cpuChooseBlock(D, att) || (must ? blockers.slice().sort((x, y) => bpOf(x) - bpOf(y))[0] : null)) : await askBlock(att, D, blockers, must);
+  if (blockers.length) blk = D.cpu ? (cpuChooseBlock(D, att) || (must ? bound.slice().sort((x, y) => bpOf(x) - bpOf(y))[0] : null)) : await askBlock(att, D, blockers, must);
   if (blk && !(await payAbTax(D, blk, 'block'))) blk = null;
   if (blk) {
     blk.exhausted = true;

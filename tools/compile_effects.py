@@ -149,6 +149,59 @@ def rush_mark(t):
     """v0.55: {{Rush|Colour}} + its reminder line -> an in-paragraph marker (the Rush effect activates after the main body while you have that symbol)"""
     return RUSH.sub(lambda m: RUSH_MARK % m.group(1).lower(), t or '')
 
+ARMOR_TPL = re.compile(r'\{\{\s*(Armor|ha|ua|uha)\s*\|\s*([A-Za-z/ ]+?)\s*\}\}\s*', re.I)
+ARMOR_MARK = '\u27e6ARMOR:%s:%s\u27e7 '
+ARMOR_KIND = {'armor': 'Armor', 'ha': 'Heavy Armor', 'ua': 'Ultra Armor', 'uha': 'Ultimate Heavy Armor'}
+FX_TYPES = ('Spirit', 'Brave', 'Ultimate', 'Nexus', 'Magic')
+
+def armor_mark(t):
+    """v0.58: {{Armor|Red}} / {{ha|..}} / {{ua|..}} / {{uha|..}} -> an in-text marker read by unaffected_para"""
+    return ARMOR_TPL.sub(lambda m: ARMOR_MARK % (ARMOR_KIND[m.group(1).lower()], m.group(2).replace(' ', '')), t or '')
+
+def colour_list(s):
+    cs = [x.strip().lower() for x in s.split('/')]
+    if not cs or any(x not in COLOURS for x in cs): raise Review('Armor colours: ' + s)
+    return cs
+
+UNAFF = re.compile(r'^(?:\u27e6ARMOR:([A-Za-z ]+):([A-Za-z/]+)\u27e7\s*|(Armor|Heavy Armor|Ultra Armor)\s*:\s*([A-Za-z/]+)\s*-\s*)?'
+                   r'(This Spirit is|All your "([^"]+)" family Spirits are) unaffected by opposing '
+                   r'((?:(?:Red|Purple|Green|White|Yellow|Blue)/?)+ )?((?:(?:Spirit|Brave|Ultimate|Nexus|Magic)/?)+ )?effects'
+                   r'(?: of the (?:specified|stated) colou?rs?)?\.?$')
+
+def unaffected_para(p):
+    """v0.58 session E: Armor / Heavy Armor / Ultra Armor and plain "unaffected by opposing <colour> <types> effects" -> STATIC UNAFFECTED.
+    Returns (effect, keyword) or None when p is not such a paragraph."""
+    if '\u27e6ARMOR' not in p and not re.search(r'unaffected by opposing', p): return None
+    m = UNAFF.match(p)
+    if not m:
+        if '\u27e6ARMOR' in p or re.match(r'^(?:Armor|Heavy Armor|Ultra Armor)\s*:', p): raise Review('Armor text: ' + p[:80])
+        return None
+    kw = m.group(1) or m.group(3)
+    kcols = colour_list(m.group(2) or m.group(4)) if kw else None
+    bcols = colour_list(m.group(7).strip()) if m.group(7) else None
+    if kcols and bcols and kcols != bcols: raise Review('Armor colours differ: ' + p[:80])
+    cols = bcols or kcols
+    if kw and not cols: raise Review('Armor without colours: ' + p[:60])
+    types = [x for x in m.group(8).strip().split('/') if x] if m.group(8) else None
+    if types and (len(set(types)) != len(types) or any(x not in FX_TYPES for x in types)): raise Review('unaffected types: ' + p[:60])
+    e = {'trigger': 'STATIC', 'flag': 'UNAFFECTED', 'to': 'own' if m.group(6) else 'self'}
+    if m.group(6): e['match'] = {'family': [m.group(6)]}
+    fr = {}
+    if cols: fr['colors'] = cols
+    if types: fr['types'] = types
+    if fr: e['from'] = fr
+    return e, kw
+
+FLAG_PARAS = [   # v0.58: whole paragraphs that only set a card flag
+    (re.compile(r'^This card in (?:your )?Hand is unaffected by opposing effects\.?$'), 'handUnaffected'),
+    (re.compile(r'^This (?:Magic )?card in (?:your )?Trash is unaffected by (?:any|all) effects?\.?$'), 'trashUnaffected'),
+]
+
+def flag_para(p):
+    for rx, k in FLAG_PARAS:
+        if rx.match(p): return k
+    return None
+
 def spirit_paragraph(p, card):
     rush = None
     mr = re.search(r'\u27e6RUSH:(\w+)\u27e7', p)
@@ -183,6 +236,18 @@ def spirit_paragraph_main(p, card, rush):
         base = 3 if card['type'] == 'Ultimate' else 1      # v0.56: Ultimate levels are printed LV3+ (engine lvBase 3)
         if any(x < base or x > base - 1 + max(nlv, 1) for x in lv): raise Review(f'[LV{max(lv) if max(lv) >= base else min(lv)}] but the card has {nlv} level(s) from LV{base}')
     flags = {}
+    if re.match(r'^Your Hand is unaffected by opposing effects\.?$', p):     # v0.58: STATIC HAND_UNAFFECTED (while this card is on the Field)
+        e = {'trigger': 'STATIC', 'flag': 'HAND_UNAFFECTED', 'to': 'self'}
+        if lv: e['lv'] = lv
+        if rush: raise Review('Rush with an unaffected effect')
+        return [e], flags
+    ua = unaffected_para(p)
+    if ua:
+        e, kw = ua
+        if rush: raise Review('Rush with an unaffected effect')
+        if lv: e = dict(list(e.items())[:3] + [('lv', lv)] + list(e.items())[3:])
+        if kw: flags['mechanics'] = sorted(set((card.get('mechanics') or ([card['keyword']] if card.get('keyword') else [])) + [kw]))
+        return [e], flags
     if re.match(r'^Flash\s*-\s*High Speed\b', p):
         if not re.search(r'(?:This|this) (?:Spirit )?card in Hand can be summoned', p) or not re.search(r'Reserve', p): raise Review('High Speed text: ' + p[:80])
         if lv: raise Review('High Speed with a level prefix')
@@ -309,6 +374,9 @@ def magic_spec(body):
 def magic_card(paras, n=None):
     by = {}
     for p in paras:
+        fk = flag_para(p)
+        if fk and n is not None:
+            n[fk] = True; continue
         fm = re.match(r'^This card has (?:the )?"([^"]+)" family\.?$', p)
         if fm and n is not None:
             n['families'] = sorted(set(n.get('families') or []) | {fm.group(1)}); continue
@@ -432,7 +500,7 @@ def compile_card(c):
         if c['type'] == 'Magic' and any(a['do'] == 'SUMMON_SELF' for a in b['actions']): raise Review('Magic Burst with a summon')
         if (b.get('thenFlash') or b.get('thenMain')) and c['type'] != 'Magic': raise Review('then-Flash/Main Burst on a Spirit')
         n['burst'] = b
-    t = clean(rush_mark(rest))
+    t = clean(armor_mark(rush_mark(rest)))
     if c['type'] != 'Spirit' and '\u27e6RUSH' in t: raise Review('Rush on a ' + c['type'])
     if c['type'] == 'Brave' and not c.get('brave'): raise Review('Brave without combine data (export)')
     if c['type'] in ('Spirit', 'Brave', 'Ultimate') and not c.get('levels'): raise Review('no level data')
@@ -451,6 +519,8 @@ def compile_card(c):
     else:
         effects = []
         for p in paras:
+            fk = flag_para(p)
+            if fk: n[fk] = True; continue
             e, f = spirit_paragraph(p, c)
             effects += e; n.update(f)
         if len(effects) > 8: raise Review('more than 8 effects')

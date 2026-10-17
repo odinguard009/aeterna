@@ -1,0 +1,9 @@
+{
+  "name": "heavy-armor-red-purple-unaffected",
+  "about": "v0.58: Heavy Armor Red/Purple (BS17-035, printed: unaffected by opposing Red/Purple Spirit/Brave/Nexus/Magic effects). The player's red BS20-005 (When Summoned: destroy an opposing Spirit with 4000 BP or less) can only choose the other opposing Spirit; the red Magic BS20-074 (destroy BP 10000 or less) has no target while only the armored Spirit is left.",
+  "turn": 3, "active": "player", "step": 3,
+  "players": {
+    "player": { "reserve": 8, "spirits": [ { "id": "BS20-005", "cores": 1, "as": "destroyer" } ], "hand": [ "BS20-074" ] },
+    "opponent": { "reserve": 3, "spirits": [ { "id": "BS17-035", "cores": 1, "as": "armored" }, { "id": "BS01-001", "cores": 1, "as": "plain" } ] }
+  }
+}
