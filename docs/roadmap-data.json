@@ -496,6 +496,10 @@
      "t": "C5: short front page like Aegis; release notes to CHANGELOG.md and the Releases page (workflow), game file on each release"
     },
     {
+     "s": "next",
+     "t": "F1: match fuzzer in the Regression workflow (20 fuzzed matches per run, failing seeds as artifacts)"
+    },
+    {
      "s": "later",
      "t": "Q2: UI tests wait on state instead of fixed sleeps (318 to 0)"
     },
@@ -774,5 +778,5 @@
    "note": "Manual session on Opus: Q1 quality bundle (strict effects, error catcher, match fuzzer; 40/40 fuzzed matches healthy). Budget-counter difference read before the last commit."
   }
  ],
- "next": "next: C5 front page + releases (short Aegis-style README, CHANGELOG.md, release workflow; patch), then a card session (next mechanic by measured unlocks); monorepo, quality and UI-language sessions alternate with card sessions; 593 of 8,041 cards playable"
+ "next": "next: one patch bundle (Opus): C5 front page + releases (short Aegis-style README, CHANGELOG.md, release workflow) and F1 fuzzer in Regression (20 fuzzed matches per run); then a card session (next mechanic by measured unlocks); 593 of 8,041 cards playable"
 }

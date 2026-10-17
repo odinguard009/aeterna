@@ -14,7 +14,7 @@ This repository starts at v0.57.0 with one snapshot commit (2026-10-17); the ear
 - Separate PC (playmat) and phone layouts
 
 ## Not done yet
-Most staged cards still need their effects compiled or a missing mechanic; the plan is `docs/ai/roadmap-open.md` and the mind map `docs/roadmap.html`. Next: a card session (the next mechanic by measured unlocks), then the M1 workspace skeleton + Q2 test waits, then mechanics by measured unlocks (`tools/lever_report.py`); the Ultimate Trigger level/timing data for 110 Ultimates needs the owner present.
+Most staged cards still need their effects compiled or a missing mechanic; the plan is `docs/ai/roadmap-open.md` and the mind map `docs/roadmap.html`. Next: a tidy front page with release notes in CHANGELOG.md and the Releases page, the match fuzzer in the Regression workflow, then a card session (the next mechanic by measured unlocks), then the M1 workspace skeleton + Q2 test waits, then mechanics by measured unlocks (`tools/lever_report.py`); the Ultimate Trigger level/timing data for 110 Ultimates needs the owner present.
 
 ## Data
 Card data is kept per Saga (BS75 cards sit in Saga 16, BS76 cards in Saga 17, as in the asset folders):
