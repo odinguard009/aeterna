@@ -1,0 +1,38 @@
+# GitHub Releases with the game file attached (C5, v0.59.7). Claude sessions cannot create releases or push tags,
+# so this runs on GitHub's side: after CI succeeds on main it creates every missing release from CHANGELOG.md
+# (v0.57.1 on; the first run also backfills the older ones). "Run workflow" with a version list re-checks by hand.
+# Script and rules: tools/make_releases.sh. Tags made with GITHUB_TOKEN start no other workflow (no extra Regression run).
+name: Release
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      versions:
+        description: Versions to release, space separated (empty = every missing one in CHANGELOG.md)
+        default: ''
+concurrency:
+  group: release
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  release:
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Create missing releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+          CI_OK: ${{ github.event_name == 'workflow_run' && '1' || '' }}
+          VERSIONS: ${{ github.event.inputs.versions || '' }}
+        # VERSIONS is split on spaces on purpose (one argument per version)
+        run: bash tools/make_releases.sh "$HEAD_SHA" $VERSIONS

@@ -58,7 +58,7 @@ The owner wants an Aegis-like monorepo with an online server plus the offline ga
 - CLAUDE.md is shorter and routes; no rule appears in two places.
 - Old-path grep is empty; CI + Regression green; game file unchanged except the version line.
 
-## C5 Front page and releases (owner request 2026-10-17, 16:28; next update after Q1)
+## C5 Front page and releases (owner request 2026-10-17, 16:28) - done in v0.59.7
 Owner: "halaman repo github Aeterna terlalu panjang dan semrawut. Buat halaman seperti halaman repo github Aegis ... cari tempat lain untuk menulis hasil update dari setiap versi Aeterna, misal di halaman release." Today `README.md` is 714 lines: about 45 lines of overview, then every release note since v0.1.
 
 ### Target README (about 80-100 lines, modelled on the Aegis front page)

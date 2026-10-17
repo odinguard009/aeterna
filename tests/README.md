@@ -1,6 +1,6 @@
 # Aeterna tests
 
-Two layers: fast Node tests in `unit/` (`npm test`, see the README "Development" section) and the Playwright (Python) regression below, which is the release gate.
+Two layers: fast Node tests in `unit/` (`npm test`, see `docs/ARCHITECTURE.md` section 6) and the Playwright (Python) regression below, which is the release gate.
 
 Playwright (Python) tests that drive the single-file game through `window.BS`.
 

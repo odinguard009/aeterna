@@ -70,7 +70,7 @@ data/cards/all-cards.json                  generated copy of the Saga files
         v
 pack embedded in index.html                (codec: src/js/01a-card-pack.js; size: node tools/pack_size.mjs)
 ```
-Staging keeps every card; playable is the promoted subset, so the stages are not duplicates. Card data order of trust: the Fandom export in the repo, then the official list, then other sites, images last (`docs/ai/cards-and-rules.md`). Prebuilt decks: `data/decks/*.txt`. Rule obligations (page, status, proving test): `data/kb/rule-obligations.json`.
+Staging keeps every card; playable is the promoted subset, so the stages are not duplicates. Card data order of trust: the Fandom export in the repo, then the official list, then other sites, images last (`docs/ai/cards-and-rules.md`). Prebuilt decks: `data/decks/*.txt`. Card images are never shipped: players import their own (Library; matched by the `image` field, card ID or name, kept in IndexedDB). Saga placement (e.g. BS75 in Saga 16): `docs/saga-map.md`. New card: run `python3 tools/tag_effects.py`, wire the missing glossary pieces once in the engine, then express the card as data. Rule obligations (page, status, proving test): `data/kb/rule-obligations.json`.
 
 ## 5. Effect compiler
 `python3 tools/compile_effects.py [--saga N] --review docs/reports/compile-review.md --out build/compiled.json` turns staged card text into effect entries by pattern; cards with any unmatched unit are listed in the review file with the reason. `node tools/promote_compiled.mjs build/compiled.json` checks and promotes the compiled cards into `data/cards`. Progress: `python3 tools/unlock_report.py` -> `docs/reports/unlock-report.md` (`playable X / 8,041`); real unlocks of one lever: `python3 tools/lever_report.py` + a scratch recompile (tag counts are upper bounds).
@@ -93,7 +93,8 @@ Match fuzzer (v0.59.6): `node tools/fuzz.mjs [--runs N] [--seed S]` plays CPU-vs
 - `tools/session_start.sh`: overlap guard, hooks, baseline loop, version, Next line, playable count, open issues.
 - `tools/session_gate.sh`: auto-mode switch and session lock (`check`, `lock`, `manual`, `switch`, `done`, `unlock`, `on`/`off`/`status`); rules in `docs/ai/next-session-prompt.md`.
 - `tools/session_end_check.mjs`: game file, embedded version, release test, fresh mind map, backup branch.
-- Mind map: `docs/roadmap-data.json` -> `node tools/gen_roadmap.mjs` -> `docs/roadmap.html`; `docs/progress.html` from the CLAUDE.md Roadmap, `docs/ai/roadmap-open.md` and README notes.
+- Mind map: `docs/roadmap-data.json` -> `node tools/gen_roadmap.mjs` -> `docs/roadmap.html`; `docs/progress.html` from the CLAUDE.md Roadmap, `docs/ai/roadmap-open.md` and `CHANGELOG.md`.
+- `node tools/pack_ai.mjs [--docs|--full]`: packs the project into one Markdown file for another AI chat. `node tools/screens.mjs`: the README screenshots in `docs/images/`.
 - Skills in `.claude/skills/` (session runner, effect mechanic adder, Playwright tester, card data check, card image reader, doc convention).
 
 ## 8. Brand layer

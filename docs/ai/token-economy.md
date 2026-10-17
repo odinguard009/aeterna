@@ -3,7 +3,7 @@
 Goal: the same quality per release with far fewer tokens. Each rule says who does it.
 
 ## 1. Session start (Claude)
-- CLAUDE.md is loaded automatically: do not re-read it, the README or big docs "for context".
+- CLAUDE.md is loaded automatically: do not re-read it, the README, CHANGELOG or big docs "for context".
 - Backlog in one short command, titles only:
   `gh api "repos/odinguard009/aeterna/issues?state=open" --jq '.[] | "#\(.number) \(.title)"'`
 - Open only the issue you work on (`gh api repos/odinguard009/aeterna/issues/N --jq .body`).
@@ -86,7 +86,7 @@ Rules to hit the target:
 - After the release: stop; questions go to a separate session.
 
 ## 13. Check of 2026-10-15 (docs patch)
-- CLAUDE.md: open items moved to `docs/ai/roadmap-open.md` (read rule kept in CLAUDE.md); the six "Done" lines became one (history lives in the README).
+- CLAUDE.md: open items moved to `docs/ai/roadmap-open.md` (read rule kept in CLAUDE.md); the six "Done" lines became one (history lives in `CHANGELOG.md`).
 - The Project doc `claude/CLAUDE.md` duplicated the repo CLAUDE.md, so Claude Code sessions loaded it twice; it is now a short stub. `claude/card-list.md` covered only red and white (repo has 126 cards in six colours); it is now a pointer to `data/cards`.
 - Settings changes (plugins, skills, connectors) only apply to sessions started after the change; the skill list of a running session does not shrink.
 - Session scope is now Claude's call (owner, 2026-10-15). Estimates in §12 are the basis; the 80-call handoff rule and "heavy task alone" stay.
