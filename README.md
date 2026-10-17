@@ -2,7 +2,7 @@
 
 A fan-made, single-file web simulator for a trading card game. You play against a CPU. It runs on PC and phone with no install.
 
-Current build: **v0.59.1** (593 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
+Current build: **v0.59.2** (593 of 8,041 cards playable). Open `index.html` in Chrome or Edge; release notes are below, newest first.
 
 This repository starts at v0.57.0 with one snapshot commit (2026-10-17); the earlier history, issue threads and backup branches stay in the owner's private archive. Issue numbers in the older release notes refer to that archive.
 
@@ -42,6 +42,10 @@ Card images are not included; import your own images in the game.
 ## Disclaimer
 Unofficial non-commercial fan project; card names, text and trademarks belong to their owners.
 
+
+## v0.59.2
+- **Architecture and doc layout** (repo cleanup C1, docs only, no game change): `docs/ARCHITECTURE.md` explains build, runtime, effect engine and resolution order, card data pipeline, compiler, tests, session tooling and the brand layer; `docs/README.md` lists every doc as hand-written or generated (with its tool); new skill `bs-doc-convention` says where each kind of file goes. The CLAUDE.md "Architecture" paragraph is now one line linking `docs/ARCHITECTURE.md`.
+  - Revert: `git revert` of the v0.59.2 commit.
 
 ## v0.59.1
 - **Starting-Hand redraw with a Contract card** (owner report 2026-10-17, patch): the rules were re-checked and the engine was already right, so the redraw dialog now explains it.
