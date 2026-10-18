@@ -60,7 +60,7 @@ elif [ "$AGE_MIN" -lt 30 ] && [ "$FORCE" = 0 ] && [ "$IS_V" = 1 ]; then
 fi
 echo "[session_start] HEAD: $(git log --oneline -1)"
 echo "[session_start] baseline loop (build + lint + quick tests)"
-npm run -s loop
+LOOP_RC=0; npm run -s loop || LOOP_RC=$?   # v0.60.2: print the summary even when the baseline fails, exit with its code at the end
 # short summary (owner, 2026-10-16): enough context to pick the work without reading more files
 echo "[session_start] version $(node -p "require('./package.json').version")"
 git log --oneline -5 | sed 's/^/[session_start]   /'
@@ -72,4 +72,9 @@ RC=$(python3 -c "import json;print(json.load(open('docs/rules-audit-verdicts.jso
 if command -v gh >/dev/null 2>&1; then
   gh api "repos/odinguard009/aeterna/issues?state=open" --jq '.[] | "[session_start] issue #\(.number) \(.title)"' 2>/dev/null || echo "[session_start] open issues: use list_issues (gh failed)"
 else echo "[session_start] open issues: gh not available here, use the GitHub tools (list_issues)"; fi
+# v0.60.2: Regression is not awaited at session end; the next session reads it here (failure = fix first)
+if command -v gh >/dev/null 2>&1; then
+  gh api "repos/odinguard009/aeterna/actions/workflows/regression.yml/runs?per_page=1" --jq '.workflow_runs[0] | "[session_start] last Regression: \(.status) \(.conclusion // "-") on \(.head_sha[0:7]) run \(.id)"' 2>/dev/null || echo "[session_start] last Regression: unknown (gh failed)"
+fi
+if [ "$LOOP_RC" != 0 ]; then echo "[session_start] baseline loop FAILED (see above): fix it first"; exit "$LOOP_RC"; fi
 echo "[session_start] ready"

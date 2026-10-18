@@ -3,8 +3,8 @@
   "title": "Aeterna",
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
-  "updated": "17 Oct 2026",
-  "next": "next: M1 workspace skeleton + Q2 test waits (Opus), then the card session Brave part 2 (owner: summon a Brave card from the Hand first, ~24 cards); 608 of 8,041 cards playable"
+  "updated": "18 Oct 2026",
+  "next": "next: Q2 test waits (Opus), then the card session Brave part 2 (owner: summon a Brave card from the Hand first, ~24 cards); 608 of 8,041 cards playable"
  },
  "phases": [
   {
@@ -504,7 +504,11 @@
      "t": "F1 (v0.59.8): match fuzzer in the Regression workflow (20 fuzzed matches per run, failing seeds as artifacts)"
     },
     {
-     "s": "later",
+     "s": "done",
+     "t": "S1 (v0.60.2): faster sessions: one release per session, Regression not awaited (10 sims patch / 30 minor), subagents for tests and checks"
+    },
+    {
+     "s": "next",
      "t": "Q2: UI tests wait on state instead of fixed sleeps (318 to 0)"
     },
     {
@@ -527,8 +531,8 @@
    },
    "items": [
     {
-     "s": "later",
-     "t": "M1 workspace skeleton (packages/engine, cards, protocol; apps/web, server), byte-identical build"
+     "s": "done",
+     "t": "M1 (v0.60.1): workspace skeleton (packages/engine, apps/web), byte-identical build"
     },
     {
      "s": "later",
@@ -549,6 +553,37 @@
     {
      "s": "later",
      "t": "M6 server, M7 Postgres + Docker (local and CI), M8 online client"
+    }
+   ]
+  },
+  {
+   "phase": {
+    "name": "Road to playable (estimate, 18 Oct 2026)",
+    "sub": "Sessions from v0.60.2 at the measured pace (~12 cards per card session); a rough guide, re-estimated as levers are measured.",
+    "ver": "estimate",
+    "open": true,
+    "kind": "leaves"
+   },
+   "items": [
+    {
+     "s": "done",
+     "t": "Alpha: playable vs CPU on PC and Android with ready colour decks (608 of 8,041 cards)"
+    },
+    {
+     "s": "next",
+     "t": "Planned order done (Q2-Q4, M2-M4, UI languages, card sessions between): ~17 sessions, ~700 cards"
+    },
+    {
+     "s": "later",
+     "t": "Data gaps closed (Nexus level thresholds for 760 cards, 173 Braves without combine data): ~5-10 sessions, size unmeasured"
+    },
+    {
+     "s": "later",
+     "t": "Beta: ~1,500 cards (about 19%), several decks per colour, public link: ~60-90 sessions at today's pace"
+    },
+    {
+     "s": "later",
+     "t": "v1.0: every card playable (8,041): out of reach at ~12 cards per session; needs bigger levers first"
     }
    ]
   },
@@ -798,5 +833,5 @@
    "note": "Manual session on Opus: Brave completion part 1 (combine data from 441 Fandom pages, braved effects on the combined Spirit, +15 cards); README links and screenshots removed until v1.0; auto mode ON with a 20-minute delay. Budget-counter difference read before the last commit."
   }
  ],
- "next": "next: M1 workspace skeleton + Q2 test waits (Opus), then the card session Brave part 2 (owner: summon a Brave card from the Hand first, ~24 cards); 608 of 8,041 cards playable"
+ "next": "next: Q2 test waits (Opus), then the card session Brave part 2 (owner: summon a Brave card from the Hand first, ~24 cards); 608 of 8,041 cards playable"
 }

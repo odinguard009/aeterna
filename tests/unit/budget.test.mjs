@@ -54,8 +54,9 @@ test('B12 starting a new match takes under 1.5 s', async () => {
   assert.ok(ms < 1500, ms);
 });
 // B13 (v0.51.0): the whole card list in the pack, phone layout, CPU slowed 4x (~ a mid-range phone; measured 2.3 s).
-// Limit 4 s so only real regressions fail. Skipped in the light clone without data/import.
-test('B13 with all 8,041 cards in the pack the phone layout is ready in under 4 s with no errors', { skip: !existsSync(join(ROOT, 'data/import/saga-01.json')) && 'light clone without data/import' }, async () => {
+// Limit 4 s so only real regressions fail. v0.60.2: skipped in the quick loop (BS_QUICK), where parallel test files on a
+// 2-core session machine gave 4-8 s for the same build; CI (npm test) still guards it. Skipped in the light clone without data/import.
+test('B13 with all 8,041 cards in the pack the phone layout is ready in under 4 s with no errors', { skip: (!existsSync(join(ROOT, 'data/import/saga-01.json')) && 'light clone without data/import') || (process.env.BS_QUICK && 'timing test: runs in CI (npm test), not in the parallel quick loop') }, async () => {
   const { buildParts } = await import('../../tools/build.mjs'), { projectedCards } = await import('../../tools/pack_size.mjs');
   const dir = mkdtempSync(join(tmpdir(), 'bse-pack-')), file = join(dir, 'full.html');
   writeFileSync(file, buildParts({ cards: projectedCards() }).html);

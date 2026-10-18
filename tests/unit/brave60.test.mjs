@@ -8,8 +8,12 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { ROOT, openGame, closeBrowser } from './lib/game.mjs';
 
+// v0.60.2: B60-12/13 read data/sources, which the light clone leaves out (like I30)
+const NO_SRC = !existsSync(join(ROOT, 'data/sources/fandom-brave-combine.tsv')) && 'data/sources not checked out (light clone)';
 const py = (mod, code) => JSON.parse(execFileSync('python3', ['-c', `import sys, json; sys.path.insert(0, 'tools'); import ${mod} as m\n${code}`], { cwd: ROOT, encoding: 'utf8' }));
 const brave = (cond, bp) => py('import_fandom', `print(json.dumps(m.brave_of(${JSON.stringify(cond)}, ${JSON.stringify(bp)})))`);
 const BR = { id: 'T-B', name: 'TB', type: 'Brave', color: 'red', cost: 3, levels: [{ cores: 1, bp: 2000 }], brave: { bp: 3000, costGe: 3 } };
@@ -103,11 +107,11 @@ test('B60-11 brave_of rejects an unreadable BP and an ampersand of two families'
   assert.equal(brave('[[Primal]] & [[Fighting Spirit]]', '+3000'), null);
   assert.equal(brave('Cost 4 or above/ Spirit With [[Windstorm]]', '+3000'), null);
 });
-test('B60-12 every row of the source table parses or is a known kind the engine cannot check', () => {
+test('B60-12 every row of the source table parses or is a known kind the engine cannot check', { skip: NO_SRC }, () => {
   const r = py('import_fandom', `import re\nbad=[]\nfor line in open(m.BRAVE_SRC, encoding='utf8'):\n  if line.startswith('#'): continue\n  t,c,b=line.rstrip('\\n').split('\\t')\n  if m.brave_of(c,b) is None and not re.search(r'<br|\\[(Left|Right)|Ultimate|Nexus|symbol|holder|less|\\{\\{|"|/|&|Two|Cost \\d+$|Cost \\d/', c, re.I): bad.append(c)\nprint(json.dumps(bad))`);
   assert.deepEqual(r, []);
 });
-test('B60-13 the source table has one row per Fandom page, 441 pages', () => {
+test('B60-13 the source table has one row per Fandom page, 441 pages', { skip: NO_SRC }, () => {
   const r = py('import_fandom', `print(json.dumps(len(m.brave_table())))`);
   assert.equal(r, 441);
 });

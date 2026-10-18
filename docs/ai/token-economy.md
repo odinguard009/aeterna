@@ -15,7 +15,7 @@ Goal: the same quality per release with far fewer tokens. Each rule says who doe
 ## 3. Running things (Claude)
 - Every command prints only what decides the next step: pipe through `grep -E "^not ok|^# (pass|fail)"`, `tail -3`, `--jq`. No raw logs, no full test listings.
 - Work loop: `npm run -s loop` = build -> lint -> quick tests in ONE tool call with a one-line result (failures print only the failing lines). `test:quick` runs every `tests/unit/*.test.mjs` except the slow ones in `tools/quick-tests.mjs`, so new test files need no `package.json` edit. Python suites only for UI flows the change touches.
-- No local full regression and no local 30-game sims: GitHub runs them (dispatch, see `release.md`). Wait with ONE command:
+- No local full regression and no local sims: GitHub runs them (dispatch, see `release.md`; 10 sims for a patch, 30 for a minor). Regression is not awaited (owner, 2026-10-18); the next session reads it. To wait for **CI** on your push use ONE command:
   `for i in $(seq 1 40); do s=$(gh api "repos/odinguard009/aeterna/actions/runs?per_page=6" --jq '[.workflow_runs[] | select(.head_sha=="'$(git rev-parse HEAD)'")] | map("\(.name):\(.status):\(.conclusion)") | join(" ")'); case "$s" in *in_progress*|*queued*|"") sleep 30;; *) echo "$s"; break;; esac; done`
   On failure read only the failing lines: `gh run view <id> --log-failed | grep -E "BAD|FAIL|Error" | head -20` (or the `last-run-*` artifact).
 - Screenshots only when the UI changed, one per layout.

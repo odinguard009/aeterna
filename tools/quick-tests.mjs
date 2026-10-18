@@ -9,5 +9,5 @@ const files = readdirSync('tests/unit')
   .sort()
   .map((f) => `tests/unit/${f}`);
 
-const r = spawnSync(process.execPath, ['--test', ...files], { stdio: 'inherit' });
+const r = spawnSync(process.execPath, ['--test', ...files], { stdio: 'inherit', env: { ...process.env, BS_QUICK: '1' } });   // v0.60.2: timing tests skip themselves
 process.exit(r.status ?? 1);
