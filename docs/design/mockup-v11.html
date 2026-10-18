@@ -1,0 +1,654 @@
+<title>Aeterna Theme Preview</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: a control strip on top, then one scaled game screen (battle PC, battle phone, lobby, settings).
+   The game's own theme is driven by data-mode (dark|light) and the player colour by --you; the viewer's theme only sets the starting mode. */
+:root{
+  --page:#0d1015; --page-fg:#eef1f5; --page-muted:#a9b2c1; --page-line:#ffffff24; --page-panel:#161a22;
+  --board1:#1b2029; --board2:#11141a; --lattice:#ffffff08;
+  --panel1:#232935; --panel2:#161a22; --line:#ffffff1a; --line2:#ffffff40;
+  --text:#eef1f5; --text2:#a9b2c1; --text3:#7d8696; --text4:#5d6676;
+  --chip:#1d222c; --bar:#07090c; --head:#0b0e13; --rowbg:#0f1218b3; --strip:#000000cc;
+  --card1:#3b4352; --card2:#1a1e26; --cardline:#ffffff40; --bpstroke:#000;
+  --cpu:#d8344b; --cpu-ink:#ffffff;
+  --you:#17b897; --you-ink:#04211b; --you-soft:#17b89733;
+  --gem1:#bfe9ff; --gem2:#3aa0ff; --gem3:#0b4f9a;
+  --yes:#ffd447; --yes-ink:#2a1f00;
+  color-scheme:dark;
+}
+:root[data-mode="light"]{
+  --page:#e4e8ee; --page-fg:#141922; --page-muted:#4d5666; --page-line:#0000001f; --page-panel:#f4f6f9;
+  --board1:#eef1f5; --board2:#dfe4eb; --lattice:#0b1a3010;
+  --panel1:#ffffff; --panel2:#eef1f5; --line:#0b1a301f; --line2:#0b1a3040;
+  --text:#141922; --text2:#4d5666; --text3:#6b7484; --text4:#8a93a3;
+  --chip:#e3e8ef; --bar:#1b2029; --head:#ffffff; --rowbg:#ffffffb3; --strip:#141922e6;
+  --card1:#5b6474; --card2:#2a303b; --cardline:#0b1a3055; --bpstroke:#000;
+  --cpu:#c42b40;
+  color-scheme:light;
+}
+body{background:var(--page);color:var(--page-fg);font-family:"Segoe UI",Roboto,-apple-system,"Noto Sans",sans-serif}
+.wrap{padding-block:16px 28px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:14px;max-width:1440px;margin:0 auto}
+.ctrl{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;padding:12px 14px;background:var(--page-panel);border:1px solid var(--page-line);border-radius:8px}
+.ctrl h1{margin:0;font-size:16px;font-weight:800;letter-spacing:.04em;flex:1 1 220px;min-width:0}
+.ctrl h1 small{display:block;font-size:12px;font-weight:400;color:var(--page-muted);letter-spacing:0;margin-top:2px}
+.grp{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lbl{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--page-muted)}
+.seg{display:inline-flex;border:1px solid var(--page-line);border-radius:6px;overflow:hidden}
+.seg button{border:0;background:transparent;color:var(--page-fg);font:inherit;font-size:13px;font-weight:700;padding:7px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--you);color:var(--you-ink)}
+.seg button:focus-visible,.sw:focus-visible,.gbtn:focus-visible{outline:2px solid var(--page-fg);outline-offset:2px}
+.sws{display:flex;gap:6px;flex-wrap:wrap}
+.sw{width:30px;height:30px;border:0;padding:0;cursor:pointer;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background:var(--c);position:relative}
+.sw[aria-pressed="true"]{outline:2px solid var(--page-fg);outline-offset:3px}
+.note{font-size:13px;color:var(--page-muted);line-height:1.5;max-width:90ch;margin:0}
+.stage{position:relative;width:100%;overflow:hidden;border-radius:8px;border:1px solid var(--page-line)}
+.scaler{transform-origin:0 0;position:absolute;left:0;top:0}
+
+/* ===== game screens (fixed size, scaled) ===== */
+.scr{position:relative;overflow:hidden;background:linear-gradient(180deg,var(--board1),var(--board2));color:var(--text);font-family:"Segoe UI",Roboto,-apple-system,"Noto Sans",sans-serif;font-size:14px}
+.lat{position:absolute;inset:0;background:repeating-linear-gradient(60deg,var(--lattice) 0 1px,transparent 1px 46px),repeating-linear-gradient(-60deg,var(--lattice) 0 1px,transparent 1px 46px);pointer-events:none}
+.sk{display:inline-block;transform:skewX(-18deg)}.sk>span{display:inline-block;transform:skewX(18deg)}
+.tagY,.tagC{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:2px 12px}
+.tagY{background:var(--you);color:var(--you-ink)}.tagC{background:var(--cpu);color:var(--cpu-ink)}
+.plate{position:relative;background:linear-gradient(180deg,var(--panel1),var(--panel2));clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;box-shadow:inset 0 0 0 1px var(--line)}
+.pv{font-size:12px;color:var(--text2);font-variant-numeric:tabular-nums}.pv b{color:var(--text);font-size:16px}
+.dia{width:34px;height:34px;transform:rotate(45deg);display:flex;align-items:center;justify-content:center}
+.dia b{transform:rotate(-45deg);font-size:16px;font-weight:900;color:#fff;text-shadow:0 1px 2px #0008}
+.diaY{background:var(--you);box-shadow:0 0 0 2px var(--board2),0 0 0 3px var(--you),0 0 14px var(--you-soft)}
+.diaC{background:var(--cpu);box-shadow:0 0 0 2px var(--board2),0 0 0 3px var(--cpu)}
+.gem{display:inline-block;width:10px;height:10px;transform:rotate(45deg);background:linear-gradient(135deg,var(--gem1),var(--gem2) 55%,var(--gem3))}
+.soul{background:linear-gradient(135deg,#fff,#c9d0da 50%,#7b8494)}
+.row{position:relative;background:var(--rowbg);box-shadow:inset 0 0 0 1px var(--line)}
+.slot{width:56px;height:62px;border:1px dashed var(--line2)}
+.sl{font-size:9px;font-weight:800;letter-spacing:.14em;color:var(--text3)}
+.ci{position:relative;width:76px;height:106px;border-radius:4px;flex:none;overflow:hidden;background:linear-gradient(160deg,var(--card1),var(--card2));box-shadow:0 0 0 1px var(--cardline),0 4px 10px #0006}
+.ci::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,#ffffff0a 0 4px,transparent 4px 8px)}
+.ci .cost{position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#0f1218;box-shadow:0 0 0 1px #fff;font-size:11px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center}
+.ci .bp{position:absolute;left:0;right:0;bottom:2px;text-align:center;font-size:16px;font-weight:900;color:#fff;-webkit-text-stroke:3px var(--bpstroke);paint-order:stroke;font-variant-numeric:tabular-nums}
+.ci .img{position:absolute;left:0;right:0;top:34%;text-align:center;font-size:9px;letter-spacing:.12em;color:#ffffff66}
+.you{box-shadow:0 0 0 2px var(--you),0 0 16px var(--you)}
+.foe{box-shadow:0 0 0 2px var(--cpu),0 0 16px var(--cpu)}
+.st{font-size:11px;font-weight:800;letter-spacing:.12em;padding:7px 14px;background:var(--chip);color:var(--text3);box-shadow:inset 0 0 0 1px var(--line)}
+.st.on{background:var(--you);color:var(--you-ink);box-shadow:0 0 14px var(--you-soft)}
+.st.nx{color:var(--text)}
+.ib{height:32px;padding:0 16px;border:0;background:var(--chip);box-shadow:inset 0 0 0 1px var(--line2);color:var(--text);font-size:12px;font-weight:700;letter-spacing:.08em}
+.next{border:0;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background:var(--you);color:var(--you-ink);font-weight:900;letter-spacing:.1em}
+.head{position:relative;display:flex;align-items:center;background:var(--head);box-shadow:inset 0 -2px 0 var(--you)}
+.turn{height:100%;display:flex;align-items:center;gap:10px;padding:0 26px 0 14px;background:var(--you);color:var(--you-ink);clip-path:polygon(0 0,100% 0,calc(100% - 18px) 100%,0 100%)}
+.stepname{height:100%;display:flex;align-items:center;padding:0 30px 0 26px;margin-left:-14px;background:var(--chip);clip-path:polygon(18px 0,100% 0,calc(100% - 18px) 100%,0 100%);font-weight:800;letter-spacing:.16em}
+.narr{padding:5px 26px;background:var(--strip);color:#eef1f5;clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,14px 100%,0 50%)}
+.narr b{color:#7cc8ff}
+
+/* lobby */
+.nav a{font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text2);text-decoration:none;padding:10px 22px}
+.nav a.on{background:var(--you);color:var(--you-ink)}
+.gbtn{position:relative;width:38px;height:38px;border:0;background:var(--chip);clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);color:var(--text);display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.gbtn .dot{width:16px;height:16px;transform:rotate(45deg);background:var(--you);box-shadow:0 0 0 2px var(--head)}
+.pop{position:absolute;right:28px;top:70px;z-index:5;width:300px;padding:14px;background:var(--panel1);box-shadow:inset 0 0 0 1px var(--line2),0 20px 40px #0008;display:flex;flex-direction:column;gap:12px}
+.pop .bar{height:4px;margin:-14px -14px 0;background:linear-gradient(90deg,var(--you),transparent)}
+.pop h3{margin:0;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.pgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 6px}
+.pcol{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--text2);background:none;border:0;cursor:pointer;padding:0;font-family:inherit}
+.pcol i{width:30px;height:30px;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background:var(--c)}
+.pcol[aria-pressed="true"]{color:var(--text);font-weight:800}
+.pcol[aria-pressed="true"] i{box-shadow:inset 0 0 0 3px var(--panel1)}
+.pcol[aria-pressed="true"]::after{content:"";width:18px;height:2px;background:var(--text)}
+.mswitch{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.toggle{display:inline-flex;background:var(--chip);box-shadow:inset 0 0 0 1px var(--line2);padding:3px;gap:3px}
+.toggle button{border:0;background:transparent;color:var(--text2);font:inherit;font-size:12px;font-weight:800;letter-spacing:.1em;padding:6px 14px;cursor:pointer}
+.toggle button[aria-pressed="true"]{background:var(--you);color:var(--you-ink)}
+.btnp{height:50px;padding:0 34px;border:0;background:var(--you);color:var(--you-ink);font-size:15px;font-weight:900;letter-spacing:.16em;box-shadow:0 0 22px var(--you-soft)}
+.btns{height:50px;padding:0 34px;border:0;background:var(--chip);box-shadow:inset 0 0 0 1px var(--line2);color:var(--text);font-size:15px;font-weight:900;letter-spacing:.16em}
+.tile{display:flex;align-items:center;gap:14px;padding:16px 18px;color:var(--text);background:linear-gradient(180deg,var(--panel1),var(--panel2));clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);box-shadow:inset 0 0 0 1px var(--line)}
+.tile .ic{width:44px;height:44px;flex:none;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background:var(--you);color:var(--you-ink);display:flex;align-items:center;justify-content:center}
+.tile b{display:block;font-size:15px;letter-spacing:.06em}.tile span{font-size:13px;color:var(--text2)}
+.foot{position:absolute;left:0;right:0;bottom:0;height:30px;display:flex;align-items:center;gap:22px;padding:0 28px;background:var(--bar);font-size:12px;color:#a9b2c1}
+/* settings */
+.side a{display:block;padding:10px 14px;font-size:14px;color:var(--text2);text-decoration:none}
+.side a.on{background:var(--you-soft);color:var(--text);box-shadow:inset 3px 0 0 var(--you)}
+.card{background:linear-gradient(180deg,var(--panel1),var(--panel2));box-shadow:inset 0 0 0 1px var(--line);clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 0;border-top:1px solid var(--line)}
+.srow b{display:block;font-size:15px}.srow span{font-size:13px;color:var(--text2)}
+
+/* original-layout pieces */
+.rlab{position:absolute;left:12px;top:5px;font-size:11px;font-weight:800;letter-spacing:.14em;color:var(--cpu)}
+.pill{position:absolute;top:6px;left:50%;transform:translateX(-50%);font-size:11px;padding:3px 12px;background:var(--head);box-shadow:inset 0 0 0 1px var(--line2);color:var(--text2);letter-spacing:.08em}.pill b{color:var(--you)}
+.sbox{display:flex;flex-direction:column;align-items:center;gap:3px}
+.oc{position:relative;width:76px;height:106px;border-radius:5px;flex:none;overflow:hidden;background:linear-gradient(160deg,var(--card1),var(--card2));box-shadow:0 0 0 1px var(--cardline),0 4px 10px #0006;color:#fff}
+.oc::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,#ffffff0a 0 4px,transparent 4px 8px)}
+.ocost{position:absolute;left:3px;top:3px;width:17px;height:17px;border-radius:50%;background:#0f1218;box-shadow:0 0 0 1px #fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.otyp{position:absolute;right:3px;top:4px;font-size:8px;font-weight:800;letter-spacing:.08em;padding:2px 4px;background:#000b;border-radius:2px}
+.oimg{position:absolute;left:0;right:0;top:22%;text-align:center;font-size:8px;letter-spacing:.12em;color:#ffffff55}
+.onm{position:absolute;left:3px;right:3px;top:40%;text-align:center;font-size:9px;font-weight:800;line-height:1.15;text-shadow:0 1px 2px #000}
+.cbar{position:absolute;left:8px;right:8px;bottom:26px;text-align:center;font-size:9px;font-weight:800;color:#06210f;background:var(--you);border-radius:2px;padding:1px 0}
+.omag{position:absolute;left:3px;bottom:4px;width:15px;height:15px;border-radius:50%;background:#0f1218;box-shadow:0 0 0 1px #ffffff88}
+.omag::after{content:"";position:absolute;left:4px;top:4px;width:5px;height:5px;border-radius:50%;box-shadow:0 0 0 1.5px #fff}
+.obp{position:absolute;left:0;right:0;bottom:2px;text-align:center;font-size:14px;font-weight:900;color:#fff;-webkit-text-stroke:3px var(--bpstroke);paint-order:stroke;font-variant-numeric:tabular-nums}
+.olv{position:absolute;right:3px;bottom:3px;width:16px;height:16px;transform:rotate(45deg);background:var(--you);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:var(--you-ink)}
+.foe .olv,.foe .cbar{background:var(--cpu);color:#fff}
+.band{position:relative;background:var(--head);box-shadow:inset 0 0 0 1px var(--you),0 0 18px var(--you-soft);display:grid;grid-template-columns:130px 1fr 120px;align-items:center;padding:0 12px}
+.bandlbl{font-size:22px;font-weight:900;font-style:italic;color:var(--you)}
+.steps{display:flex;gap:4px;align-items:center}
+.st{cursor:pointer;border:0;font-family:inherit}
+.st.done{opacity:.55}
+.st.on{transform:skewX(-18deg) scale(1.12);animation:glow 1.6s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 22px var(--you)}}
+.st.shake{animation:shake .35s}
+@keyframes shake{25%{translate:-5px 0}75%{translate:5px 0}}
+.phscroll{overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 22%,#000 78%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 22%,#000 78%,transparent 100%)}
+.phscroll::-webkit-scrollbar{display:none}
+.phscroll .steps{padding:4px 50%;width:max-content}
+.warn{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 34px;background:var(--cpu);color:#fff;clip-path:polygon(16px 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,16px 100%,0 50%);box-shadow:0 10px 30px #0008;white-space:nowrap}
+.warn[hidden],.pop[hidden]{display:none}
+.warn b{font-size:15px;font-style:italic;letter-spacing:.14em}.warn span{font-size:12px}
+.sgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+.sc{height:24px;background:var(--chip);box-shadow:inset 0 0 0 1px var(--line);display:flex;align-items:center;justify-content:center;gap:4px;font-size:12px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.sc em{font-style:normal;color:var(--text2);font-size:11px}
+.sc.hl{box-shadow:inset 0 0 0 1px var(--h)}.sc.hl em{color:var(--h)}
+@media (prefers-reduced-motion:reduce){.st.on,.st.shake{animation:none}}
+
+/* cores, soul core, sleeves, turn colour */
+:root{--core1:#cfe8ff;--core2:#3a8cf0;--core3:#0b3f8a;--soul1:#ffd0d0;--soul2:#e5484d;--soul3:#7a0f16;--turn:var(--you)}
+.gems{display:flex;gap:3px;align-items:center;justify-content:center;flex-wrap:wrap}
+.g-core,.g-soul{position:relative;display:inline-block;flex:none;border-radius:50%}
+.g-core{width:13px;height:13px;border-radius:0;clip-path:polygon(50% 0,100% 38%,81% 100%,19% 100%,0 38%);background:conic-gradient(from 18deg at 50% 56%,var(--core1) 0 72deg,var(--core2) 72deg 144deg,var(--core3) 144deg 216deg,var(--core2) 216deg 288deg,var(--core1) 288deg);filter:drop-shadow(0 0 3px var(--core2))}
+.g-core::before{content:"";position:absolute;inset:26% 26% 30%;clip-path:polygon(50% 0,100% 38%,81% 100%,19% 100%,0 38%);background:linear-gradient(160deg,#ffffffcc,var(--core1) 45%,var(--core2))}
+.g-soul{width:16px;height:16px;border-radius:0;clip-path:polygon(50% 0,100% 38%,81% 100%,19% 100%,0 38%);background:linear-gradient(150deg,#ffffff,#b9c0ca 35%,#eef1f5 55%,#6f7887 100%);filter:drop-shadow(0 0 4px var(--soul2))}
+.g-soul::after{content:"";position:absolute;inset:22% 22% 18%;clip-path:polygon(50% 0,100% 38%,81% 100%,19% 100%,0 38%);background:radial-gradient(circle at 40% 35%,var(--soul1) 0 12%,var(--soul2) 45%,var(--soul3) 100%)}
+.gems.sm .g-core{width:8px;height:8px}
+.cbar{display:flex;gap:2px;justify-content:center;align-items:center;left:6px;right:6px;bottom:24px;padding:2px 0;background:#000000a0!important}
+.cbar .g-core{width:9px;height:9px}.cbar .g-soul{width:11px;height:11px}
+.sleeve{position:relative;display:inline-block;width:22px;height:30px;flex:none;border-radius:2px;background:var(--sl-bg,#0b0b0b);box-shadow:2px -2px 0 -0.5px var(--board1),2px -2px 0 0 var(--line2),4px -4px 0 -0.5px var(--board1),4px -4px 0 0 var(--line2)}
+.sleeve::before{content:"";position:absolute;inset:2px;border:1px solid var(--sl-line,#cfcfcf);border-radius:1px;background:repeating-linear-gradient(60deg,transparent 0 5px,var(--sl-lat,#ffffff18) 5px 6px),repeating-linear-gradient(-60deg,transparent 0 5px,var(--sl-lat,#ffffff18) 5px 6px)}
+.sleeve::after{content:"";position:absolute;left:50%;top:50%;width:8px;height:8px;transform:translate(-50%,-50%) rotate(45deg);border:1px solid var(--sl-line,#cfcfcf);background:var(--sl-mid,#000)}
+.sleeve.mini{width:12px;height:16px;box-shadow:none;margin-right:2px}.sleeve.mini::after{width:4px;height:4px}
+.sleeve.big{width:60px;height:84px;box-shadow:none}.sleeve.big::after{width:20px;height:20px}.sleeve.big::before{inset:4px}
+.deckv{display:flex;align-items:center;gap:10px}
+.band{box-shadow:inset 0 0 0 1px var(--turn),0 0 18px color-mix(in srgb,var(--turn) 30%,transparent)!important;background:linear-gradient(90deg,color-mix(in srgb,var(--turn) 22%,var(--head)),var(--head) 40%)!important}
+.band.cpu-turn{--turn:var(--cpu)}
+.bandlbl{color:var(--turn)!important;line-height:1.05;font-size:18px}
+.band .st.on{background:var(--turn);color:#fff}
+.band .next{background:var(--turn);color:var(--you-ink);transition:background .3s}
+.band.cpu-turn .next{color:var(--cpu-ink)}
+.band:not(.cpu-turn) .st.on{color:var(--you-ink)}
+.steps{position:relative}
+/* deck builder look panel */
+.dbpool{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px}
+.lookgrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.lk{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;padding:6px 0;cursor:pointer;font:inherit;font-size:11px;color:var(--text2)}
+.lk[aria-pressed="true"]{color:var(--text);font-weight:800;box-shadow:inset 0 -2px 0 var(--you)}
+.cgrid{display:flex;gap:10px;flex-wrap:wrap}
+.cg{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:0;cursor:pointer;font:inherit;font-size:11px;color:var(--text2);padding:4px 2px}
+.cg i{width:24px;height:24px}
+.cg[aria-pressed="true"]{color:var(--text);font-weight:800;box-shadow:inset 0 -2px 0 var(--you)}
+
+.olv b{display:block;transform:rotate(-45deg);font-size:9px}
+.sbox{align-self:start;margin-top:4px}
+.sbox .sl{white-space:nowrap;font-size:8px}
+.tile .ic{width:52px;height:52px}
+.tile .ic svg{width:22px;height:22px}
+.tabbar{display:flex;background:var(--head);box-shadow:inset 0 2px 0 var(--you)}
+.tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 0 8px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--text2);text-decoration:none}
+.tabbar a.on{color:var(--you);background:linear-gradient(180deg,var(--you-soft),transparent)}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--panel1);box-shadow:0 -14px 30px #0008,inset 0 2px 0 var(--you);padding:12px 14px 16px;display:flex;flex-direction:column;gap:10px}
+
+.slot.set{position:relative;border:0;background:none;display:flex;align-items:center;justify-content:center}
+.sleeve.fill{width:100%;height:100%;box-shadow:none}.sleeve.fill::after{width:30%;height:auto;aspect-ratio:1}
+.btag{position:absolute;left:-4px;right:-4px;top:50%;transform:translateY(-50%);background:var(--cpu);color:#fff;font-size:8px;font-weight:900;letter-spacing:.1em;text-align:center;padding:2px 0}
+.oc.cover{width:100%;height:100%;box-shadow:0 0 0 1px #c39bff,0 0 10px #c39bff66}
+.oc.cover .onm{font-size:8px}
+.slot .cnt{position:absolute;right:-6px;bottom:-6px;min-width:18px;height:18px;padding:0 4px;background:var(--head);box-shadow:inset 0 0 0 1px var(--line2);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.tabbar svg{width:24px;height:24px}
+
+/* uploaded playmat and sleeve: cover = fill the area, crop the edges, keep the centre */
+.matimg{position:absolute;inset:0;background:var(--mat,none) center/cover no-repeat;pointer-events:none}
+.matimg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--board1),var(--board2));opacity:var(--mat-dim,1)}
+.sleeve.has-img{background:#050505 var(--slimg) center/cover no-repeat;border-radius:3px}
+.sleeve.has-img::before,.sleeve.has-img::after{display:none}
+:root.has-mat{--rowbg:#0f121866}
+:root.has-mat[data-mode="light"]{--rowbg:#ffffff73}
+.upbtn{position:relative;overflow:hidden}
+.upbtn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+.pcslot{width:76px;height:106px;display:flex;align-items:center;justify-content:center}
+.slot.pcslot:not(.set) .sl{font-size:9px}
+
+.ib,.okchip,.dtn,.lnk{white-space:nowrap}.tbar .search{width:190px}.tbar .achip{padding:4px 6px}
+/* v11: one-line log, deck management, filters, minimizable deck panel */
+.narr{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:100%;box-sizing:border-box}
+.pb{background:var(--you);color:var(--you-ink);box-shadow:none}
+.icb{min-width:32px;height:32px;border:0;background:var(--chip);box-shadow:inset 0 0 0 1px var(--line2);color:var(--text);font:inherit;font-size:16px;font-weight:800;cursor:pointer}
+.okchip{font-size:11px;font-weight:800;letter-spacing:.08em;padding:3px 8px;color:var(--you);box-shadow:inset 0 0 0 1px var(--you)}
+.tbar{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;min-width:0}
+.search{height:32px;display:flex;align-items:center;gap:8px;padding:0 12px;background:var(--chip);box-shadow:inset 0 0 0 1px var(--line2);color:var(--text3);font-size:12px;width:260px;box-sizing:border-box;flex:none}
+.badge{font-style:normal;display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;margin-left:6px;background:var(--you);color:var(--you-ink);font-size:10px;font-weight:900}
+.pb .badge{background:var(--you-ink);color:var(--you)}
+.achip{font-size:11px;font-weight:700;padding:4px 8px;background:var(--you-soft);box-shadow:inset 0 0 0 1px var(--you);color:var(--text);white-space:nowrap}.achip b{color:var(--you);margin-left:4px}
+.lnk{background:none;border:0;color:var(--you);font:inherit;font-size:12px;font-weight:700;cursor:pointer;text-decoration:underline}
+.fpanel{position:absolute;left:0;right:0;top:132px;z-index:5;background:var(--panel1);box-shadow:0 18px 40px #000a,inset 0 2px 0 var(--you);padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.fpanel[hidden],.pane[hidden],.dmenu[hidden],.asheet[hidden],.sheet.min .shb{display:none!important}
+.fpanel.ph{top:auto;bottom:0;max-height:80%;overflow:auto;z-index:6}
+.fgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px}.fpanel.ph .fgrid{grid-template-columns:1fr}
+.fg .sl{margin-bottom:6px}.fgrid>.fg:first-child{grid-column:1 / -1}.fchips{display:flex;flex-wrap:wrap;gap:6px}
+.fchip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border:0;background:var(--chip);box-shadow:inset 0 0 0 1px var(--line2);color:var(--text2);font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.fchip.on{background:var(--you-soft);box-shadow:inset 0 0 0 1.5px var(--you);color:var(--text)}
+.fact,.fhead{display:flex;align-items:center;gap:10px}.fact{padding-top:10px;border-top:1px solid var(--line)}
+.dot{display:inline-block;width:12px;height:12px;background:var(--c);clip-path:polygon(50% 0,100% 38%,81% 100%,19% 100%,0 38%)}
+.dtabs{display:flex;gap:2px;box-shadow:inset 0 -1px 0 var(--line)}
+.dtabs button{flex:1;height:34px;border:0;background:none;color:var(--text2);font:inherit;font-size:11px;font-weight:800;letter-spacing:.1em;cursor:pointer}
+.dtabs button.on{color:var(--you);box-shadow:inset 0 -3px 0 var(--you)}
+.dtabs.sm button{height:30px;font-size:10px;padding:0 8px;flex:none}
+.pane{overflow:auto;min-height:0;display:flex;flex-direction:column;gap:4px;scrollbar-width:thin}
+.dlh{display:flex;justify-content:space-between;font-size:10px;font-weight:800;letter-spacing:.14em;color:var(--text3);padding:6px 2px 2px}.dlh b{color:var(--you)}
+.dlr{display:flex;align-items:center;gap:8px;height:30px;padding:0 4px 0 0;background:var(--chip);box-shadow:inset 3px 0 0 var(--you)}
+.dlc{width:22px;text-align:center;font-weight:900;font-size:12px}.dln{flex:1;min-width:0;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dlq{width:16px;text-align:center;font-size:13px}
+.dlb{width:24px;height:24px;border:0;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line2);color:var(--text);font-weight:900;cursor:pointer}.dlb:disabled{opacity:.35;cursor:default}
+.curve{display:flex;align-items:flex-end;gap:8px;padding:8px 2px 0}
+.cv{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px}.cv i{width:100%;background:linear-gradient(180deg,var(--you),var(--you-soft))}.cv span{color:var(--text3);font-weight:800}
+.split{display:flex;height:10px;gap:2px}.split i{display:block}
+.chk{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:12px}.chk li::before{content:"✓ ";color:var(--you);font-weight:900}
+.shh{display:flex;align-items:center;gap:8px}.shh .mini{display:flex;align-items:center;gap:4px;margin-left:auto}.shh .mini .g-core{width:12px;height:12px}.shh .mini .g-soul{width:14px;height:14px}
+.sheet.min{padding-bottom:10px}.sheet.min .dtabs button{color:var(--text2);box-shadow:none}
+.shb{display:flex;flex-direction:column;gap:10px;max-height:300px;overflow:auto}
+.dgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.dtile{position:relative;display:flex;gap:14px;padding:14px;background:linear-gradient(180deg,var(--panel1),var(--panel2));box-shadow:inset 0 0 0 1px var(--line)}.dtile:has(.dmenu:not([hidden])){z-index:5}
+.dtile.act{box-shadow:inset 0 0 0 2px var(--you),0 0 18px var(--you-soft)}
+.dti{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}
+.dtn{font-size:17px;font-weight:900;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.actb{font-size:9px;font-weight:900;letter-spacing:.12em;padding:2px 6px;background:var(--you);color:var(--you-ink)}
+.dots{display:flex;gap:4px}
+.dst{font-size:12px;font-weight:700}.dst.ok{color:var(--you)}.dst.bad{color:#e08a00}.dst.bad::before{content:"! "}
+.dta{display:flex;gap:6px;margin-top:4px}.dta .ib:disabled{opacity:.4}
+.dmenu{position:absolute;right:14px;top:calc(100% - 12px);z-index:4;display:flex;flex-direction:column;min-width:190px;background:var(--head);box-shadow:0 12px 30px #000a,inset 0 0 0 1px var(--line2)}
+.dmenu button,.asheet button{height:34px;border:0;background:none;text-align:left;padding:0 14px;color:var(--text);font:inherit;font-size:13px;cursor:pointer}
+.dmenu button:hover,.asheet button:hover{background:var(--chip)}
+.dmenu .del,.asheet .del{color:var(--cpu)}
+.sgrid6{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stile{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--chip);box-shadow:inset 0 0 0 1px var(--line);font-size:13px}
+.drow{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 10px;background:linear-gradient(180deg,var(--panel1),var(--panel2));box-shadow:inset 0 0 0 1px var(--line)}
+.drow.act{box-shadow:inset 0 0 0 2px var(--you)}
+.asheet{position:absolute;left:0;right:0;bottom:0;z-index:6;display:flex;flex-direction:column;padding:12px 10px 18px;background:var(--panel1);box-shadow:0 -18px 40px #000a,inset 0 2px 0 var(--you)}
+.asheet .cancel{text-align:center;color:var(--text2);margin-top:6px;box-shadow:inset 0 1px 0 var(--line)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <div class="ctrl">
+    <h1>Aeterna theme preview<small>Pick a player colour (teal by default, or one of the eight card symbol colours) and a mode. Core, Soul Core and sleeve looks are set in Deck builder. The CPU keeps crimson; it switches to blue when you pick red. On the battle screens every step button works: the next step (or End from Main) is legal, any other shows Illegal move.</small></h1>
+    <div class="grp"><span class="lbl">Screen</span>
+      <div class="seg" role="group" aria-label="Screen">
+        <button id="v-lobby" data-v="lobby" aria-pressed="true">Lobby PC</button>
+        <button id="v-lobbyph" data-v="lobbyph" aria-pressed="false">Lobby phone</button>
+        <button id="v-pc" data-v="pc" aria-pressed="false">Battle PC</button>
+        <button id="v-phone" data-v="phone" aria-pressed="false">Battle phone</button>
+        <button id="v-decks" data-v="decks" aria-pressed="false">My decks PC</button>
+        <button id="v-decksph" data-v="decksph" aria-pressed="false">My decks phone</button>
+        <button id="v-deck" data-v="deck" aria-pressed="false">Deck builder PC</button>
+        <button id="v-deckph" data-v="deckph" aria-pressed="false">Deck builder phone</button>
+        <button id="v-set" data-v="set" aria-pressed="false">Settings</button>
+      </div></div>
+    <div class="grp"><span class="lbl">Mode</span>
+      <div class="seg" role="group" aria-label="Mode"><button id="m-dark" data-m="dark" aria-pressed="true">Dark</button><button id="m-light" data-m="light" aria-pressed="false">Light</button></div></div>
+    <div class="grp"><span class="lbl">Playmat</span>
+      <div class="seg" role="group" aria-label="Playmat"><label class="upbtn" style="font-size:13px;font-weight:700;padding:7px 12px;cursor:pointer">Upload<input type="file" accept="image/*" id="up-mat" aria-label="Upload playmat image"></label><button id="mat-sample" data-mat="sample">Sample</button><button id="mat-none" data-mat="none">None</button></div></div>
+    <div class="grp"><span class="lbl">Sleeve</span>
+      <div class="seg" role="group" aria-label="Sleeve image"><label class="upbtn" style="font-size:13px;font-weight:700;padding:7px 12px;cursor:pointer">Upload<input type="file" accept="image/*" id="up-sl" aria-label="Upload sleeve image"></label><button id="sl-sample" data-slimg="sample">Sample</button><button id="sl-none" data-slimg="none">Built-in</button></div></div>
+    <div class="grp"><span class="lbl">Your colour</span><div class="sws" id="sws"></div></div>
+  </div>
+  <p class="note">The same two controls live inside the game: in the lobby's top-right corner (diamond colour button and Dark/Light switch) and in Settings, Appearance. The choice is remembered on the device. Card art is a placeholder; the real game shows each card's image.</p>
+  <div class="stage" id="stage"><div class="scaler" id="scaler"></div></div>
+</div>
+
+<template id="t-lobby">
+<div class="scr" style="width:1366px;height:768px">
+  <div class="lat"></div>
+  <nav class="nav head" aria-label="Main" style="height:64px;gap:4px;padding:0 28px">
+    <span style="font-size:22px;font-weight:900;font-style:italic;letter-spacing:.1em;margin-right:26px">AETERNA</span>
+    <a href="#" class="sk on"><span>Home</span></a><a href="#" class="sk"><span>Play</span></a><a href="#" class="sk"><span>Decks</span></a><a href="#" class="sk"><span>Library</span></a><a href="#" class="sk"><span>How to play</span></a>
+    <span style="flex-grow:1"></span>
+    <span style="display:flex;gap:6px;align-items:center">
+      <button class="gbtn js-pop" aria-label="Your colour" title="Your colour"><span class="dot"></span></button>
+      <span class="toggle js-mode" role="group" aria-label="Mode" style="margin:0 6px"><button data-m="dark">DARK</button><button data-m="light">LIGHT</button></span>
+      <button class="gbtn" aria-label="Match history"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2"/></svg></button>
+      <button class="gbtn" aria-label="Sound"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></button>
+      <button class="gbtn" aria-label="Settings"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
+    </span>
+  </nav>
+  <div class="pop js-popbox"><div class="bar"></div><h3>Your colour</h3><div class="pgrid js-pgrid"></div>
+    <div class="mswitch"><b style="font-size:13px">Mode</b><span class="toggle js-mode" role="group" aria-label="Mode"><button data-m="dark">DARK</button><button data-m="light">LIGHT</button></span></div></div>
+  <main style="position:relative;padding:60px 64px 0;display:flex;flex-direction:column;gap:18px;max-width:760px">
+    <div style="display:flex"><span style="padding:5px 22px 5px 14px;background:var(--you);color:var(--you-ink);font-size:12px;font-weight:900;letter-spacing:.18em;clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,0 100%)">CARD BATTLE VS CPU</span><span style="padding:5px 22px;margin-left:-8px;background:var(--chip);font-size:12px;font-weight:800;letter-spacing:.18em;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%)">OFFLINE · ONE FILE</span></div>
+    <h2 style="margin:0;font-size:76px;line-height:.95;font-weight:900;font-style:italic;letter-spacing:.02em">GATE OPEN,<br><span style="color:var(--you)">RELEASE!</span></h2>
+    <p style="margin:0;font-size:17px;line-height:1.5;color:var(--text2)">669 playable cards in Eternal and Standard. Decks and card images stay on this device.</p>
+    <div style="display:flex;gap:18px;margin-top:6px"><button class="btnp sk"><span>▶ PLAY NOW</span></button><button class="btns sk"><span>BUILD A DECK</span></button></div>
+    <span style="font-size:13px;color:var(--text3)">Last deck: <b style="color:var(--text)">Lionheart Green</b> · Eternal · 40 cards · legal</span>
+  </main>
+  <div style="position:absolute;left:64px;right:64px;bottom:64px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px">
+    <div class="tile"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4"/></svg></span><span style="flex:1"><b>MATCH VS CPU</b><span>Deck, format, CPU deck</span></span>›</div>
+    <div class="tile"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span><span style="flex:1"><b>DECK BUILDER</b><span>8 slots, ready-made decks</span></span>›</div>
+    <div class="tile"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6a2 2 0 0 0-2 2z"/></svg></span><span style="flex:1"><b>8,709 CARDS</b><span>Library and card images</span></span>›</div>
+  </div>
+  <div class="foot"><span>v0.62.1</span><span>What's new</span><span>Rules coverage</span><span style="flex-grow:1"></span><span>Unofficial non-commercial fan project</span></div>
+</div>
+</template>
+
+<template id="t-pc">
+<div class="scr" style="width:1366px;height:768px;padding:6px;box-sizing:border-box;display:flex;flex-direction:column;gap:5px">
+  <div class="matimg"></div><div class="lat"></div>
+  <header class="head" style="height:38px;flex:none;padding:0 8px 0 0">
+    <div class="turn"><span style="font-size:15px;font-weight:900;font-style:italic;letter-spacing:.06em">AETERNA</span><span style="font-size:12px;font-weight:700">v0.62.1</span></div>
+    <span style="flex-grow:1"></span>
+    <button class="ib sk"><span>LOG</span></button>&nbsp;&nbsp;<button class="ib sk"><span>EXIT TO LOBBY</span></button>
+  </header>
+  <div style="position:relative;flex:1;display:grid;grid-template-columns:118px 1fr 118px;gap:5px;min-height:0">
+    <div style="display:grid;grid-template-rows:repeat(3,1fr) repeat(3,1fr) 1.6fr;gap:5px">
+      <div class="plate"><span class="tagC sk"><span>Trash</span></span><span class="pv"><b>0</b></span></div><div class="plate"><span class="tagC sk"><span>Deck</span></span><span class="deckv"><span class="sleeve cpu-sleeve"></span><span class="pv"><b>35</b></span></span></div><div class="plate"><span class="tagC sk"><span>Count</span></span><span class="pv"><b>0</b></span></div>
+      <div class="plate"><span class="tagY sk"><span>Life</span></span><span class="gems"><i class="g-core"></i><i class="g-core"></i><i class="g-core"></i><i class="g-core"></i><i class="g-core"></i></span><span class="pv"><b>5</b></span></div>
+      <div class="plate"><span class="tagY sk"><span>Reserve</span></span><span class="gems"><i class="g-soul"></i></span><span class="pv">Core: <b>0+S</b></span></div>
+      <div class="plate"><span class="tagY sk"><span>Void</span></span><span class="pv"><b>0</b></span></div><div class="plate"><span class="tagY sk"><span>Banished</span></span><span class="deckv"><span class="sleeve"></span><span class="pv"><b>1</b></span></span></div>
+    </div>
+    <div style="display:grid;grid-template-rows:1fr 1.25fr 128px 1.25fr 1fr 1.35fr;gap:5px;min-height:0">
+      <div class="row" style="display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text4)"><span class="rlab">NEXUS</span><span class="pill">HAND <b>3</b></span>No Nexus</div>
+      <div class="row" style="display:grid;grid-template-columns:104px 1fr 104px;align-items:center"><span class="rlab" style="left:104px">SPIRITS</span>
+        <div class="sbox"><span class="sl" style="color:#c39bff">SOUL STATE</span><div class="slot pcslot"><span class="sl">EMPTY</span></div></div>
+        <div style="display:flex;justify-content:center;gap:12px"><div class="oc foe"><span class="ocost">2</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="onm">Flame Hound</span><span class="cbar"><i class="g-soul"></i></span><span class="omag" aria-hidden="true"></span><span class="obp">2000</span><span class="olv"><b>1</b></span></div><div class="oc "><span class="ocost">1</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="onm">Ember Pup</span><span class="cbar"><i class="g-core"></i></span><span class="omag" aria-hidden="true"></span><span class="obp">2000</span><span class="olv"><b>1</b></span></div></div>
+        <div class="sbox"><span class="sl" style="color:#f0a6ff">BURST-MIR</span><div class="slot set pcslot"><span class="sleeve cpu-sleeve fill"></span><span class="btag">BURST SET</span></div></div></div>
+      <div class="band">
+        <div class="bandlbl js-turnlbl">PLAYER<br>TURN</div>
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:center;min-width:0"><div class="steps js-steps"><button class="st sk js-st" data-step="0"><span>START</span></button><button class="st sk js-st" data-step="1"><span>CORE</span></button><button class="st sk js-st" data-step="2"><span>DRAW</span></button><button class="st sk js-st" data-step="3"><span>REFRESH</span></button><button class="st sk js-st" data-step="4"><span>MAIN</span></button><button class="st sk js-st" data-step="5"><span>ATTACK</span></button><button class="st sk js-st" data-step="6"><span>END</span></button></div><div class="narr js-narr" style="font-size:14px;width:min(100%,860px);text-align:center">The SwiftContractor Hermes: <b>+2 cores</b>.</div></div>
+        <div style="display:flex;justify-content:flex-end"><button class="next js-next" aria-label="Next step" style="width:84px;height:84px;font-size:11px">▶<br>NEXT</button></div>
+        <div class="warn js-warn" hidden><b>ILLEGAL MOVE</b><span class="js-warntext"></span></div>
+      </div>
+      <div class="row" style="display:grid;grid-template-columns:104px 1fr 104px;align-items:center"><span class="rlab" style="left:104px;color:var(--you)">SPIRITS</span>
+        <div class="sbox"><span class="sl" style="color:#f0a6ff">BURST-MIR</span><div class="slot pcslot"><span class="sl">EMPTY</span></div></div>
+        <div style="text-align:center;font-size:13px;color:var(--text4)">No Spirits</div>
+        <div class="sbox"><span class="sl" style="color:#c39bff">SOUL STATE</span><div class="slot set pcslot"><div class="oc cover"><span class="ocost">4</span><span class="oimg">CARD IMAGE</span><span class="onm">Last in</span></div><span class="cnt">2</span></div></div></div>
+      <div class="row" style="display:flex;align-items:center;justify-content:center"><span class="rlab" style="color:var(--you)">NEXUS</span><div class="oc you"><span class="ocost">2</span><span class="otyp">CON</span><span class="oimg">CARD IMAGE</span><span class="onm">The SwiftContractor Hermes</span><span class="cbar"><i class="g-core"></i><i class="g-core"></i></span><span class="omag" aria-hidden="true"></span><span class="obp" style="opacity:.75">Lv1</span><span class="olv"><b>1</b></span></div></div>
+      <div class="row" style="display:flex;align-items:center;justify-content:center;gap:10px"><div class="oc you" style="width:88px;height:122px"><span class="ocost">3</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="onm">The StrongArm Lionheart Sisyphus</span><span class="omag" aria-hidden="true"></span><span class="obp">3000</span><span class="olv"><b>1</b></span></div><div class="oc you" style="width:88px;height:122px"><span class="ocost">4</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="onm">The Lionheart Centurion Iphicles</span><span class="omag" aria-hidden="true"></span><span class="obp">3000</span><span class="olv"><b>1</b></span></div><div class="oc you" style="width:88px;height:122px"><span class="ocost">3</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="onm">The Quick Sword Lionheart Stichiox</span><span class="omag" aria-hidden="true"></span><span class="obp">4000</span><span class="olv"><b>1</b></span></div><div class="oc you" style="width:88px;height:122px"><span class="ocost">6</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="onm">The True Shadow Lionheart Autolycus</span><span class="omag" aria-hidden="true"></span><span class="obp">4000</span><span class="olv"><b>1</b></span></div></div>
+    </div>
+    <div style="display:grid;grid-template-rows:repeat(3,1fr) repeat(3,1fr) 1.6fr;gap:5px">
+      <div class="plate"><span class="tagC sk"><span>Void</span></span><span class="pv"><b>0</b></span></div><div class="plate"><span class="tagC sk"><span>Reserve</span></span><span class="pv">Core: <b>0</b></span></div>
+      <div class="plate"><span class="tagC sk"><span>Life</span></span><span class="gems"><i class="g-core"></i><i class="g-core"></i><i class="g-core"></i><i class="g-core"></i><i class="g-core"></i></span><span class="pv"><b>5</b></span></div>
+      <div class="plate"><span class="tagY sk"><span>Count</span></span><span class="pv"><b>0</b></span></div><div class="plate"><span class="tagY sk"><span>Deck</span></span><span class="deckv"><span class="sleeve"></span><span class="pv"><b>32</b></span></span></div><div class="plate"><span class="tagY sk"><span>Trash</span></span><span class="deckv"><span class="sleeve"></span><span class="pv"><b>3</b></span></span></div><div class="plate"><span class="tagY sk"><span>Hand Cnt</span></span><span class="pv"><b>4</b></span></div>
+    </div>
+  </div>
+</div>
+</template>
+
+<template id="t-phone">
+<div class="scr" style="width:390px;height:844px;padding:6px;box-sizing:border-box;display:flex;flex-direction:column;gap:5px">
+  <div class="matimg"></div><div class="lat"></div>
+  <header class="head" style="height:40px;flex:none;padding:0 6px 0 0">
+    <div class="turn" style="padding:0 18px 0 10px"><span style="font-size:14px;font-weight:900;font-style:italic">AETERNA</span><span style="font-size:11px;font-weight:700">v0.62.1</span></div>
+    <span style="flex-grow:1"></span><button class="ib sk" style="padding:0 10px"><span>LOG</span></button>&nbsp;<button class="ib sk" style="padding:0 10px"><span>EXIT TO LOBBY</span></button>
+  </header>
+  <div class="row" style="flex:none;padding:6px;display:flex;flex-direction:column;gap:6px">
+    <div class="sgrid"><span class="sc"><em>BAN:</em> 0</span><span class="sc"><em>VD:</em> 0</span><span class="sc"><em>CNT:</em> 0</span><span class="sc"><em>TR:</em> 0</span><span class="sc"><em>DECK</em><span class="sleeve cpu-sleeve mini"></span>35</span><span class="sc"><em>HD:</em> 3</span><span class="sc hl" style="--h:var(--cpu)"><em>RES:</em> 0</span><span class="sc hl" style="--h:var(--cpu)"><em>LIFE</em><span class="gems sm"><i class="g-core"></i><i class="g-core"></i><i class="g-core"></i><i class="g-core"></i><i class="g-core"></i></span></span></div>
+    <div style="display:grid;grid-template-columns:52px 1fr 52px;align-items:center">
+      <div class="sbox"><span class="sl" style="color:#c39bff">SOUL STATE</span><div class="slot" style="width:42px;height:58px"></div><span class="sl">EMPTY</span></div>
+      <div style="display:flex;gap:8px;justify-content:center"><div class="oc foe" style="width:84px;height:116px"><span class="ocost">2</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="onm">Flame Hound</span><span class="cbar"><i class="g-soul"></i></span><span class="omag" aria-hidden="true"></span><span class="obp">2000</span><span class="olv"><b>1</b></span></div><div class="oc " style="width:84px;height:116px"><span class="ocost">1</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="onm">Ember Pup</span><span class="cbar"><i class="g-core"></i></span><span class="omag" aria-hidden="true"></span><span class="obp">2000</span><span class="olv"><b>1</b></span></div></div>
+      <div class="sbox"><span class="sl" style="color:#f0a6ff">BURST-MIR</span><div class="slot set" style="width:42px;height:58px"><span class="sleeve cpu-sleeve fill"></span><span class="btag">BURST SET</span></div><span class="sl">SET</span></div>
+    </div>
+  </div>
+  <div class="band" style="flex:none;grid-template-columns:62px 1fr 64px;padding:8px 8px;gap:6px;height:auto">
+    <div class="bandlbl js-turnlbl" style="font-size:13px;line-height:1.05">PLAYER<br>TURN</div>
+    <div class="phscroll js-scroll"><div class="steps js-steps"><button class="st sk js-st" data-step="0"><span>START</span></button><button class="st sk js-st" data-step="1"><span>CORE</span></button><button class="st sk js-st" data-step="2"><span>DRAW</span></button><button class="st sk js-st" data-step="3"><span>REFRESH</span></button><button class="st sk js-st" data-step="4"><span>MAIN</span></button><button class="st sk js-st" data-step="5"><span>ATTACK</span></button><button class="st sk js-st" data-step="6"><span>END</span></button></div></div>
+    <button class="next js-next" aria-label="Next step" style="width:64px;height:64px;font-size:10px">▶<br>NEXT</button>
+    <div class="narr js-narr" style="grid-column:1 / -1;font-size:13px;text-align:center">The SwiftContractor Hermes: <b>+2 cores</b>.</div>
+    <div class="warn js-warn" hidden><b>ILLEGAL MOVE</b><span class="js-warntext"></span></div>
+  </div>
+  <div class="row" style="flex:1;padding:6px;display:flex;flex-direction:column;gap:6px;min-height:0">
+    <div style="flex:1;display:grid;grid-template-columns:52px 1fr 52px;align-items:center">
+      <div class="sbox"><span class="sl" style="color:#f0a6ff">BURST-MIR</span><div class="slot" style="width:42px;height:58px"></div><span class="sl">EMPTY</span></div>
+      <div style="display:flex;justify-content:center"><div class="oc you" style="width:96px;height:132px"><span class="ocost">2</span><span class="otyp">CON</span><span class="oimg">CARD IMAGE</span><span class="onm">The Swift Contractor Hermes</span><span class="cbar"><i class="g-core"></i><i class="g-core"></i></span><span class="omag" aria-hidden="true"></span><span class="obp" style="opacity:.75">Lv1</span><span class="olv"><b>1</b></span></div></div>
+      <div class="sbox"><span class="sl" style="color:#c39bff">SOUL STATE</span><div class="slot set" style="width:42px;height:58px"><div class="oc cover"><span class="ocost">4</span><span class="oimg">CARD IMAGE</span><span class="onm">Last in</span></div><span class="cnt">2</span></div></div>
+    </div>
+    <div class="sgrid"><span class="sc hl" style="--h:var(--you)"><em>LIFE</em><span class="gems sm"><i class="g-core"></i><i class="g-core"></i><i class="g-core"></i><i class="g-core"></i><i class="g-core"></i></span></span><span class="sc hl" style="--h:var(--you)"><em>RES:</em> <i class="g-soul"></i>0</span><span class="sc"><em>HD:</em> 4</span><span class="sc"><em>DECK</em><span class="sleeve mini"></span>32</span><span class="sc"><em>TR:</em> 3</span><span class="sc"><em>CNT:</em> 0</span><span class="sc"><em>VD:</em> 0</span><span class="sc"><em>BAN:</em> 1</span></div>
+  </div>
+  <div class="row" style="flex:none;padding:8px 6px;display:flex;gap:6px;justify-content:center"><div class="oc you" style="width:84px;height:122px"><span class="ocost">3</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="onm">The StrongArm Lionheart Sisyphus</span><span class="omag" aria-hidden="true"></span><span class="obp">3000</span><span class="olv"><b>1</b></span></div><div class="oc you" style="width:84px;height:122px"><span class="ocost">4</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="onm">The Lionheart Centurion Iphicles</span><span class="omag" aria-hidden="true"></span><span class="obp">3000</span><span class="olv"><b>1</b></span></div><div class="oc you" style="width:84px;height:122px"><span class="ocost">3</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="onm">The Quick Sword Lionheart Stichiox</span><span class="omag" aria-hidden="true"></span><span class="obp">4000</span><span class="olv"><b>1</b></span></div><div class="oc you" style="width:84px;height:122px"><span class="ocost">6</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="onm">The True Shadow Lionheart Autolycus</span><span class="omag" aria-hidden="true"></span><span class="obp">4000</span><span class="olv"><b>1</b></span></div></div>
+</div>
+</template>
+
+<template id="t-deck">
+<div class="scr" style="width:1366px;height:768px">
+  <div class="lat"></div>
+  <nav class="nav head" aria-label="Main" style="height:64px;gap:4px;padding:0 28px"><span style="font-size:22px;font-weight:900;font-style:italic;letter-spacing:.1em;margin-right:26px">AETERNA</span><a href="#" class="sk"><span>Home</span></a><a href="#" class="sk"><span>Play</span></a><a href="#" class="sk on"><span>Decks</span></a><a href="#" class="sk"><span>Library</span></a><a href="#" class="sk"><span>How to play</span></a></nav>
+  <div style="position:relative;padding:18px 28px;display:grid;grid-template-columns:1fr 470px;gap:18px;height:704px;box-sizing:border-box"><div style="display:flex;flex-direction:column;gap:10px;min-width:0;position:relative"><div class="card" style="padding:12px 16px;display:flex;align-items:center;gap:12px"><button class="ib sk" aria-label="Back to My decks"><span>‹ MY DECKS</span></button><span style="font-size:22px;font-weight:900;font-style:italic;white-space:nowrap">Lionheart Green</span><button class="icb" aria-label="Rename deck">✎</button><span class="okchip">40 / 40 · READY</span><span style="flex:1"></span><span class="pv" style="white-space:nowrap">Saved 1 min ago</span><button class="ib sk pb"><span>SET ACTIVE</span></button><button class="ib sk"><span>PLAY</span></button></div><div class="tbar"><div class="search">⌕ <span>Search cards</span></div><button class="ib sk js-tog fbtn" data-tog=".js-fpanel" aria-expanded="false"><span>FILTERS <em class="badge">3</em></span></button><span class="achip">● Green <b>×</b></span><span class="achip">Spirit <b>×</b></span><span class="achip">Playable only <b>×</b></span><button class="lnk">Clear all</button><span style="flex:1"></span><span class="pv" style="white-space:nowrap">186 cards</span><button class="ib sk"><span>SORT: COST ↑</span></button></div><div class="fpanel js-fpanel" hidden><div class="fgrid"><div class="fg"><div class="sl">COLOUR</div><div class="fchips"><button class="fchip" data-fc="1" aria-pressed="false"><i class="dot" style="--c:#e5484d"></i>Red</button><button class="fchip" data-fc="1" aria-pressed="false"><i class="dot" style="--c:#9b6bff"></i>Purple</button><button class="fchip on" data-fc="1" aria-pressed="true"><i class="dot" style="--c:#2fbf71"></i>Green</button><button class="fchip" data-fc="1" aria-pressed="false"><i class="dot" style="--c:#e9edf2"></i>White</button><button class="fchip" data-fc="1" aria-pressed="false"><i class="dot" style="--c:#ffe14a"></i>Yellow</button><button class="fchip" data-fc="1" aria-pressed="false"><i class="dot" style="--c:#3b82f6"></i>Blue</button></div></div><div class="fg"><div class="sl">TYPE</div><div class="fchips"><button class="fchip on" data-fc="1" aria-pressed="true">Spirit</button><button class="fchip" data-fc="1" aria-pressed="false">Ultimate</button><button class="fchip" data-fc="1" aria-pressed="false">Nexus</button><button class="fchip" data-fc="1" aria-pressed="false">Magic</button><button class="fchip" data-fc="1" aria-pressed="false">Brave</button></div></div><div class="fg"><div class="sl">COST</div><div class="fchips"><button class="fchip" data-fc="1" aria-pressed="false">0</button><button class="fchip" data-fc="1" aria-pressed="false">1</button><button class="fchip" data-fc="1" aria-pressed="false">2</button><button class="fchip" data-fc="1" aria-pressed="false">3</button><button class="fchip" data-fc="1" aria-pressed="false">4</button><button class="fchip" data-fc="1" aria-pressed="false">5</button><button class="fchip" data-fc="1" aria-pressed="false">6</button><button class="fchip" data-fc="1" aria-pressed="false">7</button><button class="fchip" data-fc="1" aria-pressed="false">8+</button></div></div><div class="fg"><div class="sl">FORMAT AND SAGA</div><div class="fchips"><button class="fchip" data-fc="1" aria-pressed="false">Eternal</button><button class="fchip" data-fc="1" aria-pressed="false">Standard A</button><button class="fchip" data-fc="1" aria-pressed="false">Newest Saga</button></div></div><div class="fg"><div class="sl">FAMILY</div><div class="fchips"><button class="fchip" data-fc="1" aria-pressed="false">Lionheart</button><button class="fchip" data-fc="1" aria-pressed="false">Ancient Hero</button><button class="fchip" data-fc="1" aria-pressed="false">Machine Beast</button><button class="fchip" data-fc="1" aria-pressed="false">Any</button></div></div><div class="fg"><div class="sl">SHOW</div><div class="fchips"><button class="fchip on" data-fc="1" aria-pressed="true">Playable only</button><button class="fchip" data-fc="1" aria-pressed="false">Owned in this deck</button></div></div></div><div class="fact"><button class="lnk">Reset</button><span style="flex:1"></span><span class="pv">186 cards match</span><button class="ib sk pb js-tog" data-tog=".js-fpanel"><span>SHOW CARDS</span></button></div></div><div class="dbpool"><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">3</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">3000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">4</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">3000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">3</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">4000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">6</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">4000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">2</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">2000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">5</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">5000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">1</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">1000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">4</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">5000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">3</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">3000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">6</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">6000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">2</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">3000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">5</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">4000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">1</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">2000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">7</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">7000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">2</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">2000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">4</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">4000</span></div></div><div class="pv" style="text-align:center">Click a card to add it · right-click or long-press for details</div></div><div class="card js-tabs" style="padding:12px 16px;display:flex;flex-direction:column;gap:10px;min-height:0"><div class="dtabs" role="tablist"><button class="on" data-tab="list" role="tab">DECK LIST <b>40</b></button><button data-tab="curve" role="tab">CURVE AND CHECK</button><button data-tab="look" role="tab">DECK LOOK</button></div><div class="pane" data-pane="list"><div class="dlh"><span>SPIRITS</span><b>28</b></div><div class="dlr"><span class="dlc">1</span><span class="dln">Sample Lionheart Cub</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlr"><span class="dlc">2</span><span class="dln">Sample Lionheart Scout</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlr"><span class="dlc">3</span><span class="dln">The StrongArm Lionheart Sisyphus</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlr"><span class="dlc">3</span><span class="dln">The Quick Sword Lionheart Stichiox</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlr"><span class="dlc">4</span><span class="dln">The Lionheart Centurion Iphicles</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlr"><span class="dlc">4</span><span class="dln">Sample Lionheart Guard</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlr"><span class="dlc">5</span><span class="dln">Sample Lionheart Captain</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlr"><span class="dlc">5</span><span class="dln">Sample Lionheart Rider</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlr"><span class="dlc">6</span><span class="dln">The True Shadow Lionheart Autolycus</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">2</b><button class="dlb" aria-label="Add one">+</button></div><div class="dlr"><span class="dlc">7</span><span class="dln">Sample Lionheart King</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">2</b><button class="dlb" aria-label="Add one">+</button></div><div class="dlh"><span>MAGIC</span><b>8</b></div><div class="dlr"><span class="dlc">2</span><span class="dln">Sample Green Magic</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlr"><span class="dlc">3</span><span class="dln">Sample Leaf Storm</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlr"><span class="dlc">4</span><span class="dln">Sample Forest Call</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">2</b><button class="dlb" aria-label="Add one">+</button></div><div class="dlh"><span>NEXUS</span><b>4</b></div><div class="dlr"><span class="dlc">3</span><span class="dln">Sample Green Nexus</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">2</b><button class="dlb" aria-label="Add one">+</button></div><div class="dlr"><span class="dlc">4</span><span class="dln">Sample Lion Den</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">2</b><button class="dlb" aria-label="Add one">+</button></div></div><div class="pane" data-pane="curve" hidden><div class="sl">COST CURVE · AVERAGE 3.6</div><div class="curve"><div class="cv"><b>0</b><i style="height:0px"></i><span>0</span></div><div class="cv"><b>4</b><i style="height:67px"></i><span>1</span></div><div class="cv"><b>7</b><i style="height:117px"></i><span>2</span></div><div class="cv"><b>9</b><i style="height:150px"></i><span>3</span></div><div class="cv"><b>8</b><i style="height:133px"></i><span>4</span></div><div class="cv"><b>6</b><i style="height:100px"></i><span>5</span></div><div class="cv"><b>4</b><i style="height:67px"></i><span>6</span></div><div class="cv"><b>2</b><i style="height:33px"></i><span>7+</span></div></div><div class="sl" style="margin-top:6px">TYPES</div><div class="split"><i style="flex:28;background:var(--you)"></i><i style="flex:8;background:#7cc8ff"></i><i style="flex:4;background:#e9c46a"></i></div><div class="pv">Spirit 28 · Magic 8 · Nexus 4</div><div class="sl" style="margin-top:6px">DECK CHECK</div><ul class="chk"><li class="ok">40 cards (40 to 50 allowed)</li><li class="ok">No card more than 3 copies</li><li class="ok">Every card playable in this version</li><li class="ok">Format: Eternal</li></ul></div><div class="pane" data-pane="look" hidden><div class="pv">Saved with this deck</div><div><div class="sl" style="margin-bottom:6px">SLEEVE (DECK AREA)</div><div class="lookgrid js-sleeves"></div><div style="display:flex;gap:10px;align-items:center;margin-top:8px"><label class="ib sk upbtn" style="display:inline-flex;align-items:center;flex:none;white-space:nowrap"><span>UPLOAD SLEEVE</span><input type="file" accept="image/*" class="js-upsl" aria-label="Upload sleeve image"></label><span class="pv" style="font-size:12px">Any picture; fitted to the card shape (edges trimmed, centre kept) and tinted with the colour above (Silver keeps the original).</span></div></div>
+      <div><div class="sl" style="margin-bottom:6px">CORE COLOUR</div><div class="cgrid js-cores"></div></div>
+      <div><div class="sl" style="margin-bottom:6px">SOUL CORE GEM COLOUR (FRAME STAYS SILVER)</div><div class="cgrid js-souls"></div></div>
+      <div style="display:flex;align-items:center;gap:16px;padding-top:10px;border-top:1px solid var(--line)"><span class="sleeve big"></span><span class="gems" style="flex-wrap:nowrap;gap:5px"><i class="g-core" style="width:20px;height:20px"></i><i class="g-core" style="width:20px;height:20px"></i><i class="g-core" style="width:20px;height:20px"></i><i class="g-soul" style="width:24px;height:24px"></i></span><span class="pv">Preview: deck, cores and Soul Core as they appear in battle.</span></div></div></div></div>
+</div>
+</template>
+<template id="t-decks">
+<div class="scr" style="width:1366px;height:768px">
+  <div class="lat"></div>
+  <nav class="nav head" aria-label="Main" style="height:64px;gap:4px;padding:0 28px"><span style="font-size:22px;font-weight:900;font-style:italic;letter-spacing:.1em;margin-right:26px">AETERNA</span><a href="#" class="sk"><span>Home</span></a><a href="#" class="sk"><span>Play</span></a><a href="#" class="sk on"><span>Decks</span></a><a href="#" class="sk"><span>Library</span></a><a href="#" class="sk"><span>How to play</span></a></nav>
+  <div style="position:relative;padding:18px 28px;display:flex;flex-direction:column;gap:14px"><div class="card" style="padding:14px 18px;display:flex;align-items:center;gap:14px"><span class="sl" style="color:var(--you);font-size:11px">MY DECKS</span><span style="font-size:24px;font-weight:900;font-style:italic">6 decks</span><span class="pv">of 30 slots · the ACTIVE deck is used in Play</span><span style="flex:1"></span><div class="search" style="width:240px">⌕ <span>Search decks</span></div><button class="ib sk"><span>SORT: RECENT</span></button><button class="ib sk"><span>IMPORT CODE</span></button><button class="ib sk pb"><span>+ NEW DECK</span></button></div><div class="dgrid"><div class="dtile act"><span class="sleeve big has-img" data-sl="1" data-tint="#6fe0b8"></span><div class="dti"><div style="display:flex;align-items:center;gap:8px"><b class="dtn">Lionheart Green</b><span class="actb">ACTIVE</span></div><div class="dots"><i class="dot" style="--c:#2fbf71"></i></div><div class="dst ok">40 / 40 · Ready</div><div class="pv" style="font-size:11px">Eternal · edited 1 min ago</div><div class="dta"><button class="ib sk pb"><span>EDIT</span></button><button class="ib sk"><span>PLAY</span></button><button class="icb js-tog" data-tog=".js-m0" aria-label="More actions">⋯</button></div><div class="dmenu js-m0" hidden><button>Set active</button><button>Rename</button><button>Duplicate</button><button>Deck look</button><button>Copy deck code</button><button class="del">Delete… (asks first)</button></div></div></div><div class="dtile"><span class="sleeve big has-img" data-sl="1" data-tint="#ff6b7d"></span><div class="dti"><div style="display:flex;align-items:center;gap:8px"><b class="dtn">Dragon Rush</b></div><div class="dots"><i class="dot" style="--c:#e5484d"></i></div><div class="dst ok">40 / 40 · Ready</div><div class="pv" style="font-size:11px">Eternal · edited yesterday</div><div class="dta"><button class="ib sk pb"><span>EDIT</span></button><button class="ib sk"><span>PLAY</span></button><button class="icb js-tog" data-tog=".js-m1" aria-label="More actions">⋯</button></div><div class="dmenu js-m1" hidden><button>Set active</button><button>Rename</button><button>Duplicate</button><button>Deck look</button><button>Copy deck code</button><button class="del">Delete… (asks first)</button></div></div></div><div class="dtile"><span class="sleeve big has-img" data-sl="1" data-tint="#7fb4ff"></span><div class="dti"><div style="display:flex;align-items:center;gap:8px"><b class="dtn">Ice Machine</b></div><div class="dots"><i class="dot" style="--c:#3b82f6"></i><i class="dot" style="--c:#e9edf2"></i></div><div class="dst bad">37 / 40 · add 3 cards</div><div class="pv" style="font-size:11px">Eternal · edited 3 days ago</div><div class="dta"><button class="ib sk pb"><span>EDIT</span></button><button class="ib sk" disabled><span>PLAY</span></button><button class="icb js-tog" data-tog=".js-m2" aria-label="More actions">⋯</button></div><div class="dmenu js-m2" hidden><button>Set active</button><button>Rename</button><button>Duplicate</button><button>Deck look</button><button>Copy deck code</button><button class="del">Delete… (asks first)</button></div></div></div><div class="dtile"><span class="sleeve big has-img" data-sl="1" data-tint="#c39bff"></span><div class="dti"><div style="display:flex;align-items:center;gap:8px"><b class="dtn">Night Bloom</b></div><div class="dots"><i class="dot" style="--c:#9b6bff"></i></div><div class="dst ok">40 / 40 · Ready</div><div class="pv" style="font-size:11px">Standard A · edited last week</div><div class="dta"><button class="ib sk pb"><span>EDIT</span></button><button class="ib sk"><span>PLAY</span></button><button class="icb js-tog" data-tog=".js-m3" aria-label="More actions">⋯</button></div><div class="dmenu js-m3" hidden><button>Set active</button><button>Rename</button><button>Duplicate</button><button>Deck look</button><button>Copy deck code</button><button class="del">Delete… (asks first)</button></div></div></div><div class="dtile"><span class="sleeve big has-img" data-sl="1" data-tint="#e9c46a"></span><div class="dti"><div style="display:flex;align-items:center;gap:8px"><b class="dtn">Holy Wings</b></div><div class="dots"><i class="dot" style="--c:#ffe14a"></i><i class="dot" style="--c:#e9edf2"></i></div><div class="dst bad">2 cards not playable yet</div><div class="pv" style="font-size:11px">Eternal · edited last week</div><div class="dta"><button class="ib sk pb"><span>EDIT</span></button><button class="ib sk" disabled><span>PLAY</span></button><button class="icb js-tog" data-tog=".js-m4" aria-label="More actions">⋯</button></div><div class="dmenu js-m4" hidden><button>Set active</button><button>Rename</button><button>Duplicate</button><button>Deck look</button><button>Copy deck code</button><button class="del">Delete… (asks first)</button></div></div></div><div class="dtile"><span class="sleeve big has-img" data-sl="1" data-tint="#d9d9d9"></span><div class="dti"><div style="display:flex;align-items:center;gap:8px"><b class="dtn">Silver Test</b></div><div class="dots"><i class="dot" style="--c:#e9edf2"></i></div><div class="dst ok">40 / 40 · Ready</div><div class="pv" style="font-size:11px">Eternal · edited 2 weeks ago</div><div class="dta"><button class="ib sk pb"><span>EDIT</span></button><button class="ib sk"><span>PLAY</span></button><button class="icb js-tog" data-tog=".js-m5" aria-label="More actions">⋯</button></div><div class="dmenu js-m5" hidden><button>Set active</button><button>Rename</button><button>Duplicate</button><button>Deck look</button><button>Copy deck code</button><button class="del">Delete… (asks first)</button></div></div></div></div><div class="sl" style="margin-top:4px">STARTER DECKS · READ-ONLY, COPY ONE TO EDIT IT</div><div class="sgrid6"><div class="stile"><span class="sleeve has-img" data-sl="1" data-tint="#ff6b7d" style="width:34px;height:48px"></span><div><b>Red starter</b><div class="dots"><i class="dot" style="--c:#e5484d"></i></div></div><button class="ib sk" style="margin-left:auto;padding:0 10px"><span>COPY</span></button></div><div class="stile"><span class="sleeve has-img" data-sl="1" data-tint="#c39bff" style="width:34px;height:48px"></span><div><b>Purple starter</b><div class="dots"><i class="dot" style="--c:#9b6bff"></i></div></div><button class="ib sk" style="margin-left:auto;padding:0 10px"><span>COPY</span></button></div><div class="stile"><span class="sleeve has-img" data-sl="1" data-tint="#6fe0b8" style="width:34px;height:48px"></span><div><b>Green starter</b><div class="dots"><i class="dot" style="--c:#2fbf71"></i></div></div><button class="ib sk" style="margin-left:auto;padding:0 10px"><span>COPY</span></button></div><div class="stile"><span class="sleeve has-img" data-sl="1" data-tint="#d9d9d9" style="width:34px;height:48px"></span><div><b>White starter</b><div class="dots"><i class="dot" style="--c:#e9edf2"></i></div></div><button class="ib sk" style="margin-left:auto;padding:0 10px"><span>COPY</span></button></div><div class="stile"><span class="sleeve has-img" data-sl="1" data-tint="#e9c46a" style="width:34px;height:48px"></span><div><b>Yellow starter</b><div class="dots"><i class="dot" style="--c:#ffe14a"></i></div></div><button class="ib sk" style="margin-left:auto;padding:0 10px"><span>COPY</span></button></div><div class="stile"><span class="sleeve has-img" data-sl="1" data-tint="#7fb4ff" style="width:34px;height:48px"></span><div><b>Blue starter</b><div class="dots"><i class="dot" style="--c:#3b82f6"></i></div></div><button class="ib sk" style="margin-left:auto;padding:0 10px"><span>COPY</span></button></div></div></div>
+</div>
+</template>
+<template id="t-decksph">
+<div class="scr" style="width:390px;height:844px;display:flex;flex-direction:column">
+  <div class="lat"></div>
+  <header class="head" style="height:52px;flex:none;padding:0 10px 0 14px;gap:8px"><span style="font-size:16px;font-weight:900;font-style:italic">My decks</span><span class="pv">6 / 30</span><span style="flex-grow:1"></span><button class="ib sk" style="padding:0 10px"><span>IMPORT</span></button><button class="ib sk pb" style="padding:0 10px"><span>+ NEW</span></button></header><div style="position:relative;flex:1;min-height:0;overflow:hidden;padding:10px;display:flex;flex-direction:column;gap:8px"><div class="drow act"><span class="sleeve has-img" data-sl="1" data-tint="#6fe0b8" style="width:40px;height:56px"></span><div style="min-width:0;flex:1"><div style="display:flex;align-items:center;gap:6px"><b class="dtn" style="font-size:15px">Lionheart Green</b><span class="actb">ACTIVE</span></div><div class="dots"><i class="dot" style="--c:#2fbf71"></i></div><div class="dst ok">40 / 40 · Ready</div></div><button class="icb js-tog" data-tog=".js-as" aria-label="More actions">⋯</button></div><div class="drow"><span class="sleeve has-img" data-sl="1" data-tint="#ff6b7d" style="width:40px;height:56px"></span><div style="min-width:0;flex:1"><div style="display:flex;align-items:center;gap:6px"><b class="dtn" style="font-size:15px">Dragon Rush</b></div><div class="dots"><i class="dot" style="--c:#e5484d"></i></div><div class="dst ok">40 / 40 · Ready</div></div><button class="icb js-tog" data-tog=".js-as" aria-label="More actions">⋯</button></div><div class="drow"><span class="sleeve has-img" data-sl="1" data-tint="#7fb4ff" style="width:40px;height:56px"></span><div style="min-width:0;flex:1"><div style="display:flex;align-items:center;gap:6px"><b class="dtn" style="font-size:15px">Ice Machine</b></div><div class="dots"><i class="dot" style="--c:#3b82f6"></i><i class="dot" style="--c:#e9edf2"></i></div><div class="dst bad">37 / 40 · add 3 cards</div></div><button class="icb js-tog" data-tog=".js-as" aria-label="More actions">⋯</button></div><div class="drow"><span class="sleeve has-img" data-sl="1" data-tint="#c39bff" style="width:40px;height:56px"></span><div style="min-width:0;flex:1"><div style="display:flex;align-items:center;gap:6px"><b class="dtn" style="font-size:15px">Night Bloom</b></div><div class="dots"><i class="dot" style="--c:#9b6bff"></i></div><div class="dst ok">40 / 40 · Ready</div></div><button class="icb js-tog" data-tog=".js-as" aria-label="More actions">⋯</button></div><div class="drow"><span class="sleeve has-img" data-sl="1" data-tint="#e9c46a" style="width:40px;height:56px"></span><div style="min-width:0;flex:1"><div style="display:flex;align-items:center;gap:6px"><b class="dtn" style="font-size:15px">Holy Wings</b></div><div class="dots"><i class="dot" style="--c:#ffe14a"></i><i class="dot" style="--c:#e9edf2"></i></div><div class="dst bad">2 cards not playable yet</div></div><button class="icb js-tog" data-tog=".js-as" aria-label="More actions">⋯</button></div><div class="drow"><span class="sleeve has-img" data-sl="1" data-tint="#d9d9d9" style="width:40px;height:56px"></span><div style="min-width:0;flex:1"><div style="display:flex;align-items:center;gap:6px"><b class="dtn" style="font-size:15px">Silver Test</b></div><div class="dots"><i class="dot" style="--c:#e9edf2"></i></div><div class="dst ok">40 / 40 · Ready</div></div><button class="icb js-tog" data-tog=".js-as" aria-label="More actions">⋯</button></div><button class="drow" style="justify-content:space-between;font:inherit;color:var(--text2);border:0;cursor:pointer"><span class="sl">STARTER DECKS (6) · COPY TO EDIT</span><span>›</span></button></div><div class="asheet js-as" hidden><div class="sl" style="padding:4px 4px 8px">LIONHEART GREEN</div><button>Edit cards</button><button>Play with this deck</button><button>Set active</button><button>Rename</button><button>Duplicate</button><button>Deck look</button><button>Copy deck code</button><button class="del">Delete… (asks first)</button><button class="js-tog cancel" data-tog=".js-as">Cancel</button></div>
+  <nav class="tabbar" aria-label="Main" style="position:relative;flex:none"><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V10a8 8 0 0 1 16 0v11"/><path d="M8 21v-9a4 4 0 0 1 8 0v9"/><path d="M2 21h20"/><path d="M12 2.5v2"/></svg>HOME</a><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l9.5 7-3.6 11.5H6.1L2.5 9z"/><path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor"/></svg>PLAY</a><a href="#" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="10" height="15" rx="1.5" transform="rotate(12 14 10.5)"/><rect x="5" y="5" width="10" height="15" rx="1.5"/><path d="M10 10.5l2 2-2 2-2-2z"/></svg>DECKS</a><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="11" height="16" rx="1.5"/><path d="M6 7h5M6 10h5"/><circle cx="16.5" cy="15.5" r="3.5"/><path d="M19 18l2.5 2.5"/></svg>LIBRARY</a><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l9.5 7-3.6 11.5H6.1L2.5 9z"/><path d="M9.8 10a2.3 2.3 0 1 1 3.3 2.1c-.7.4-1.1 1-1.1 1.7v.4"/><path d="M12 17.2h.01"/></svg>HELP</a></nav>
+</div>
+</template>
+<template id="t-lobbyph">
+<div class="scr" style="width:390px;height:844px;display:flex;flex-direction:column">
+  <div class="lat"></div>
+  <header class="head" style="height:58px;flex:none;padding:0 10px 0 16px;gap:6px">
+    <span style="font-size:19px;font-weight:900;font-style:italic;letter-spacing:.1em">AETERNA</span><span style="flex-grow:1"></span>
+    <button class="gbtn js-pop" aria-label="Your colour"><span class="dot"></span></button>
+    <span class="toggle js-mode" role="group" aria-label="Mode"><button data-m="dark">DARK</button><button data-m="light">LIGHT</button></span>
+    <button class="gbtn" aria-label="Settings"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
+  </header>
+  <div class="pop js-popbox" style="right:10px;top:62px;width:250px" hidden><div class="bar"></div><h3>Your colour</h3><div class="pgrid js-pgrid"></div></div>
+  <main style="position:relative;flex:1;padding:24px 18px 0;display:flex;flex-direction:column;gap:12px;min-height:0">
+    <div style="display:flex"><span style="padding:4px 16px 4px 10px;background:var(--you);color:var(--you-ink);font-size:11px;font-weight:900;letter-spacing:.16em;clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%)">CARD BATTLE VS CPU</span><span style="padding:4px 16px;margin-left:-6px;background:var(--chip);font-size:11px;font-weight:800;letter-spacing:.16em;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)">OFFLINE</span></div>
+    <h2 style="margin:0;font-size:44px;line-height:.95;font-weight:900;font-style:italic">GATE OPEN,<br><span style="color:var(--you)">RELEASE!</span></h2>
+    <p style="margin:0;font-size:15px;line-height:1.5;color:var(--text2)">669 playable cards. Decks and card images stay on this device.</p>
+    <button class="btnp sk" style="width:100%"><span>▶ PLAY NOW</span></button>
+    <button class="btns sk" style="width:100%"><span>BUILD A DECK</span></button>
+    <div class="tile" style="padding:12px 14px"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4"/></svg></span><span style="flex:1"><b>MATCH VS CPU</b><span>Lionheart Green · Eternal</span></span>›</div><div class="tile" style="padding:12px 14px"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span><span style="flex:1"><b>DECK BUILDER</b><span>8 slots, ready-made decks</span></span>›</div>
+  </main>
+  <nav class="tabbar" aria-label="Main" style="position:relative;flex:none"><a href="#" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V10a8 8 0 0 1 16 0v11"/><path d="M8 21v-9a4 4 0 0 1 8 0v9"/><path d="M2 21h20"/><path d="M12 2.5v2"/></svg>HOME</a><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l9.5 7-3.6 11.5H6.1L2.5 9z"/><path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor"/></svg>PLAY</a><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="10" height="15" rx="1.5" transform="rotate(12 14 10.5)"/><rect x="5" y="5" width="10" height="15" rx="1.5"/><path d="M10 10.5l2 2-2 2-2-2z"/></svg>DECKS</a><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="11" height="16" rx="1.5"/><path d="M6 7h5M6 10h5"/><circle cx="16.5" cy="15.5" r="3.5"/><path d="M19 18l2.5 2.5"/></svg>LIBRARY</a><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l9.5 7-3.6 11.5H6.1L2.5 9z"/><path d="M9.8 10a2.3 2.3 0 1 1 3.3 2.1c-.7.4-1.1 1-1.1 1.7v.4"/><path d="M12 17.2h.01"/></svg>HELP</a></nav>
+</div>
+</template>
+<template id="t-deckph">
+<div class="scr" style="width:390px;height:844px;display:flex;flex-direction:column">
+  <div class="lat"></div>
+  <header class="head" style="height:52px;flex:none;padding:0 10px 0 6px;gap:6px"><button class="icb" aria-label="Back to My decks">‹</button><span style="font-size:16px;font-weight:900;font-style:italic">Lionheart Green</span><span class="okchip">40/40</span><span style="flex-grow:1"></span><button class="ib sk js-tog" data-tog=".js-fpanel" aria-expanded="false" style="padding:0 10px"><span>FILTERS <em class="badge">3</em></span></button></header><div style="position:relative;flex:none;padding:8px 10px 0;display:flex;gap:6px;overflow:hidden;white-space:nowrap"><span class="achip">● Green <b>×</b></span><span class="achip">Spirit <b>×</b></span><span class="achip">Playable <b>×</b></span><span class="pv" style="margin-left:auto">186</span></div><div style="position:relative;flex:1;min-height:0;padding:8px 10px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:max-content;gap:8px;align-content:start;overflow:hidden"><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">3</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">3000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">4</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">3000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">3</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">4000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">6</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">4000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">2</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">2000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">5</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">5000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">1</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">1000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">4</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">5000</span></div><div class="oc" style="width:100%;height:auto;aspect-ratio:5/7"><span class="ocost">3</span><span class="otyp">SPI</span><span class="oimg">CARD IMAGE</span><span class="obp">3000</span></div></div><div class="fpanel ph js-fpanel" hidden><div class="fhead"><b>FILTERS</b><span style="flex:1"></span><button class="lnk">Reset</button></div><div class="fgrid"><div class="fg"><div class="sl">COLOUR</div><div class="fchips"><button class="fchip" data-fc="1" aria-pressed="false"><i class="dot" style="--c:#e5484d"></i>Red</button><button class="fchip" data-fc="1" aria-pressed="false"><i class="dot" style="--c:#9b6bff"></i>Purple</button><button class="fchip on" data-fc="1" aria-pressed="true"><i class="dot" style="--c:#2fbf71"></i>Green</button><button class="fchip" data-fc="1" aria-pressed="false"><i class="dot" style="--c:#e9edf2"></i>White</button><button class="fchip" data-fc="1" aria-pressed="false"><i class="dot" style="--c:#ffe14a"></i>Yellow</button><button class="fchip" data-fc="1" aria-pressed="false"><i class="dot" style="--c:#3b82f6"></i>Blue</button></div></div><div class="fg"><div class="sl">TYPE</div><div class="fchips"><button class="fchip on" data-fc="1" aria-pressed="true">Spirit</button><button class="fchip" data-fc="1" aria-pressed="false">Ultimate</button><button class="fchip" data-fc="1" aria-pressed="false">Nexus</button><button class="fchip" data-fc="1" aria-pressed="false">Magic</button><button class="fchip" data-fc="1" aria-pressed="false">Brave</button></div></div><div class="fg"><div class="sl">COST</div><div class="fchips"><button class="fchip" data-fc="1" aria-pressed="false">0</button><button class="fchip" data-fc="1" aria-pressed="false">1</button><button class="fchip" data-fc="1" aria-pressed="false">2</button><button class="fchip" data-fc="1" aria-pressed="false">3</button><button class="fchip" data-fc="1" aria-pressed="false">4</button><button class="fchip" data-fc="1" aria-pressed="false">5</button><button class="fchip" data-fc="1" aria-pressed="false">6</button><button class="fchip" data-fc="1" aria-pressed="false">7</button><button class="fchip" data-fc="1" aria-pressed="false">8+</button></div></div><div class="fg"><div class="sl">FORMAT AND SAGA</div><div class="fchips"><button class="fchip" data-fc="1" aria-pressed="false">Eternal</button><button class="fchip" data-fc="1" aria-pressed="false">Standard A</button><button class="fchip" data-fc="1" aria-pressed="false">Newest Saga</button></div></div><div class="fg"><div class="sl">FAMILY</div><div class="fchips"><button class="fchip" data-fc="1" aria-pressed="false">Lionheart</button><button class="fchip" data-fc="1" aria-pressed="false">Ancient Hero</button><button class="fchip" data-fc="1" aria-pressed="false">Machine Beast</button><button class="fchip" data-fc="1" aria-pressed="false">Any</button></div></div><div class="fg"><div class="sl">SHOW</div><div class="fchips"><button class="fchip on" data-fc="1" aria-pressed="true">Playable only</button><button class="fchip" data-fc="1" aria-pressed="false">Owned in this deck</button></div></div></div><div class="fact"><span class="pv">186 cards match</span><span style="flex:1"></span><button class="ib sk pb js-tog" data-tog=".js-fpanel"><span>SHOW CARDS</span></button></div></div><div class="sheet js-tabs js-sheet" style="position:relative;flex:none"><div class="shh"><div class="dtabs sm" role="tablist"><button data-tab="list" role="tab">LIST 40</button><button data-tab="curve" role="tab">CURVE</button><button class="on" data-tab="look" role="tab">LOOK</button></div><span class="mini"><span class="sleeve mini"></span><i class="g-core"></i><i class="g-soul"></i></span><button class="icb js-min" aria-expanded="true" aria-label="Minimize deck panel">▾</button></div><div class="shb"><div class="pane" data-pane="list" hidden><div class="dlh"><span>SPIRITS</span><b>28</b></div><div class="dlr"><span class="dlc">1</span><span class="dln">Sample Lionheart Cub</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlr"><span class="dlc">2</span><span class="dln">Sample Lionheart Scout</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlr"><span class="dlc">3</span><span class="dln">The StrongArm Lionheart Sisyphus</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlh"><span>MAGIC</span><b>8</b></div><div class="dlr"><span class="dlc">2</span><span class="dln">Sample Green Magic</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlr"><span class="dlc">3</span><span class="dln">Sample Leaf Storm</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">3</b><button class="dlb" aria-label="Add one" disabled>+</button></div><div class="dlr"><span class="dlc">4</span><span class="dln">Sample Forest Call</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">2</b><button class="dlb" aria-label="Add one">+</button></div><div class="dlh"><span>NEXUS</span><b>4</b></div><div class="dlr"><span class="dlc">3</span><span class="dln">Sample Green Nexus</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">2</b><button class="dlb" aria-label="Add one">+</button></div><div class="dlr"><span class="dlc">4</span><span class="dln">Sample Lion Den</span><button class="dlb" aria-label="Remove one">−</button><b class="dlq">2</b><button class="dlb" aria-label="Add one">+</button></div><div class="pv" style="text-align:center">+ 9 more rows</div></div><div class="pane" data-pane="curve" hidden><div class="sl">COST CURVE · AVERAGE 3.6</div><div class="curve"><div class="cv"><b>0</b><i style="height:0px"></i><span>0</span></div><div class="cv"><b>4</b><i style="height:31px"></i><span>1</span></div><div class="cv"><b>7</b><i style="height:54px"></i><span>2</span></div><div class="cv"><b>9</b><i style="height:70px"></i><span>3</span></div><div class="cv"><b>8</b><i style="height:62px"></i><span>4</span></div><div class="cv"><b>6</b><i style="height:47px"></i><span>5</span></div><div class="cv"><b>4</b><i style="height:31px"></i><span>6</span></div><div class="cv"><b>2</b><i style="height:16px"></i><span>7+</span></div></div><div class="sl" style="margin-top:6px">TYPES</div><div class="split"><i style="flex:28;background:var(--you)"></i><i style="flex:8;background:#7cc8ff"></i><i style="flex:4;background:#e9c46a"></i></div><div class="pv">Spirit 28 · Magic 8 · Nexus 4</div><div class="sl" style="margin-top:6px">DECK CHECK</div><ul class="chk"><li class="ok">40 cards (40 to 50 allowed)</li><li class="ok">No card more than 3 copies</li><li class="ok">Every card playable in this version</li><li class="ok">Format: Eternal</li></ul></div><div class="pane" data-pane="look" style="display:flex;flex-direction:column;gap:10px"><div><div class="sl" style="margin-bottom:4px;display:flex;justify-content:space-between">SLEEVE<label class="upbtn" style="color:var(--you);font-weight:800;cursor:pointer">UPLOAD<input type="file" accept="image/*" class="js-upsl" aria-label="Upload sleeve image"></label></div><div class="lookgrid js-sleeves" style="grid-template-columns:repeat(6,minmax(0,1fr));gap:4px"></div></div><div><div class="sl" style="margin-bottom:4px">CORE</div><div class="cgrid js-cores" style="gap:2px"></div></div><div><div class="sl" style="margin-bottom:4px">SOUL CORE</div><div class="cgrid js-souls" style="gap:2px"></div></div></div></div></div>
+  <nav class="tabbar" aria-label="Main" style="position:relative;flex:none"><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V10a8 8 0 0 1 16 0v11"/><path d="M8 21v-9a4 4 0 0 1 8 0v9"/><path d="M2 21h20"/><path d="M12 2.5v2"/></svg>HOME</a><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l9.5 7-3.6 11.5H6.1L2.5 9z"/><path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor"/></svg>PLAY</a><a href="#" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="10" height="15" rx="1.5" transform="rotate(12 14 10.5)"/><rect x="5" y="5" width="10" height="15" rx="1.5"/><path d="M10 10.5l2 2-2 2-2-2z"/></svg>DECKS</a><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="11" height="16" rx="1.5"/><path d="M6 7h5M6 10h5"/><circle cx="16.5" cy="15.5" r="3.5"/><path d="M19 18l2.5 2.5"/></svg>LIBRARY</a><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l9.5 7-3.6 11.5H6.1L2.5 9z"/><path d="M9.8 10a2.3 2.3 0 1 1 3.3 2.1c-.7.4-1.1 1-1.1 1.7v.4"/><path d="M12 17.2h.01"/></svg>HELP</a></nav>
+</div>
+</template>
+<template id="t-set">
+<div class="scr" style="width:1366px;height:768px">
+  <div class="lat"></div>
+  <nav class="nav head" aria-label="Main" style="height:64px;gap:4px;padding:0 28px">
+    <span style="font-size:22px;font-weight:900;font-style:italic;letter-spacing:.1em;margin-right:26px">AETERNA</span>
+    <a href="#" class="sk"><span>Home</span></a><a href="#" class="sk"><span>Play</span></a><a href="#" class="sk"><span>Decks</span></a><a href="#" class="sk"><span>Library</span></a><a href="#" class="sk"><span>How to play</span></a>
+  </nav>
+  <div style="position:relative;padding:28px 64px;display:flex;flex-direction:column;gap:18px">
+    <div class="card" style="padding:18px 22px"><span class="sl" style="color:var(--you);font-size:11px">SETTINGS</span><div style="font-size:30px;font-weight:900;font-style:italic">Preferences</div><span style="font-size:13px;color:var(--text2)">Saved on this device.</span></div>
+    <div style="display:grid;grid-template-columns:220px 1fr;gap:22px;align-items:start">
+      <div class="side card" style="padding:8px 0"><a href="#" class="on">Appearance</a><a href="#">Game speed</a><a href="#">Sound</a><a href="#">CPU style</a><a href="#">Card images</a><a href="#">Saved data</a><a href="#">Match history</a></div>
+      <div class="card" style="padding:18px 24px 6px">
+        <div style="font-size:20px;font-weight:900;font-style:italic;margin-bottom:6px">Appearance</div>
+        <div class="srow"><div><b>Mode</b><span>Dark or light board and menus.</span></div><span class="toggle js-mode" role="group" aria-label="Mode"><button data-m="dark">DARK</button><button data-m="light">LIGHT</button></span></div>
+        <div class="srow" style="align-items:flex-start"><div><b>Your colour</b><span>Marks your side: turn banner, zone tags, Life, card glow, buttons. Teal by default, or one of the eight card symbol colours.</span></div><div class="pgrid js-pgrid" style="width:330px"></div></div>
+        <div class="srow"><div><b>Playmat image</b><span>Your own picture behind the battle board. It fills the board; edges are trimmed when the shape differs, the centre stays.</span></div><span style="display:flex;gap:8px"><label class="ib sk upbtn" style="display:inline-flex;align-items:center"><span>UPLOAD</span><input type="file" accept="image/*" class="js-upmat" aria-label="Upload playmat image"></label><button class="ib sk" data-mat="none"><span>REMOVE</span></button></span></div>
+        <div class="srow"><div><b>CPU colour</b><span>Crimson; blue when your colour is red, so the two sides never match.</span></div><span class="js-cpuname" style="font-weight:800"></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</template>
+
+<script>
+(function(){
+  // Eight symbol colours: dark-mode and light-mode values, plus the text colour on top of each.
+  var COLS=[
+    {id:'teal',name:'Teal (default)',d:'#17b897',l:'#0f8f74',ink:'#04211b'},
+    {id:'red',name:'Red',d:'#e5484d',l:'#c8303a',ink:'#fff'},
+    {id:'purple',name:'Purple',d:'#a06cf0',l:'#7b45cf',ink:'#fff'},
+    {id:'green',name:'Green',d:'#2fb36a',l:'#1f8f50',ink:'#06210f'},
+    {id:'white',name:'White',d:'#eef1f5',l:'#ffffff',ink:'#141922',lightLine:true},
+    {id:'yellow',name:'Yellow',d:'#ffe14a',l:'#f0cf00',ink:'#2a2400'},
+    {id:'blue',name:'Blue',d:'#3a8cf0',l:'#1f6fd9',ink:'#fff'},
+    {id:'silver',name:'Silver (Soul Core)',d:'#b8c2cf',l:'#8f9aa8',ink:'#141922'},
+    {id:'gold',name:'Gold (Ultimate)',d:'#c9952a',l:'#a87a14',ink:'#241700'}
+  ];
+  var st={v:'lobby',m:null,c:'teal',core:'blue',soul:'red',sleeve:'filigree'};
+  try{var s=JSON.parse(localStorage.getItem('ae-theme-preview')||'{}'); if(s.c)st.c=s.c; if(s.m)st.m=s.m; if(s.v)st.v=s.v; if(s.core)st.core=s.core; if(s.soul)st.soul=s.soul; if(s.sleeve)st.sleeve=s.sleeve;}catch(e){}
+  if(!st.m){var t=document.documentElement.getAttribute('data-theme'); st.m=t?(t==='light'?'light':'dark'):(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');}
+  var root=document.documentElement, scaler=document.getElementById('scaler'), stage=document.getElementById('stage');
+  function save(){try{localStorage.setItem('ae-theme-preview',JSON.stringify(st))}catch(e){}}
+  function col(){return COLS.find(function(x){return x.id===st.c})||COLS[0]}
+  function apply(){
+    var c=col(), light=st.m==='light', v=light?c.l:c.d;
+    root.setAttribute('data-mode',st.m);
+    root.style.setProperty('--you',v);
+    root.style.setProperty('--you-ink',c.ink);
+    root.style.setProperty('--you-soft',v+'40');
+    var cpuBlue=c.id==='red';
+    root.style.setProperty('--cpu',cpuBlue?(light?'#1f6fd9':'#3a8cf0'):(light?'#c42b40':'#d8344b'));
+    if(c.id==='white'&&light){root.style.setProperty('--you-ink','#141922');root.style.setProperty('--you',v);root.style.setProperty('--you-soft','#0b1a3022');}
+    document.querySelectorAll('[data-m]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.m===st.m))});
+    document.querySelectorAll('[data-c]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.c===st.c))});
+    document.querySelectorAll('.js-cpuname').forEach(function(e){e.textContent=cpuBlue?'Blue':'Crimson'});
+    save();
+  }
+
+  // Phase buttons: every step is a button; the current one glows in the centre.
+  // Legal: the next step, or End from Main (no attacks). Anything else shows "Illegal move".
+  var NAMES=['Start','Core','Draw','Refresh','Main','Attack','End'], cur=4, cpuTurn=false, wt=null, ct=null;
+  function phases(){
+    var bs=scaler.querySelectorAll('.js-st'); if(!bs.length)return;
+    bs.forEach(function(b){var i=+b.dataset.step; b.classList.toggle('on',i===cur); b.classList.toggle('done',i<cur); b.classList.toggle('nx',i>cur); b.setAttribute('aria-current',i===cur?'step':'false')});
+    scaler.querySelectorAll('.js-turnlbl').forEach(function(l){l.innerHTML=cpuTurn?'OPPONENT<br>TURN':'PLAYER<br>TURN'});
+    scaler.querySelectorAll('.band').forEach(function(b){b.classList.toggle('cpu-turn',cpuTurn)});
+    var sc=scaler.querySelector('.js-scroll'), on=sc&&sc.querySelector('.js-st.on');
+    if(sc&&on){requestAnimationFrame(function(){sc.scrollTo({left:on.offsetLeft+on.offsetWidth/2-sc.clientWidth/2,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})})}
+  }
+  function narr(t){scaler.querySelectorAll('.js-narr').forEach(function(n){n.textContent=t})}
+  function warn(t,btn){
+    var w=scaler.querySelector('.js-warn'); if(!w)return; w.querySelector('.js-warntext').textContent=t; w.hidden=false;
+    if(btn){btn.classList.remove('shake'); void btn.offsetWidth; btn.classList.add('shake')}
+    clearTimeout(wt); wt=setTimeout(function(){w.hidden=true},2200);
+  }
+  function runCpu(){
+    cpuTurn=true; cur=0; phases(); narr('The CPU starts its turn.');
+    var seq=[1,2,3,4,5,6], k=0;
+    (function tick(){ct=setTimeout(function(){ if(k<seq.length){cur=seq[k++]; phases(); narr('CPU: '+NAMES[cur]+' Step.'); tick()} else {cpuTurn=false; cur=4; phases(); narr('Your turn: Start, Core, Draw and Refresh ran by themselves. Main Step.')} },700)})();
+  }
+  function go(i,btn){
+    if(cpuTurn){warn('The CPU is playing its turn.',btn);return}
+    var legal=(i===cur+1)||(cur===4&&i===6);
+    if(legal){cur=i; phases(); if(i===6){narr('Your turn ends.'); setTimeout(runCpu,900)} else narr('You moved to the '+NAMES[i]+' Step.'); return}
+    if(i===cur)warn('You are already in the '+NAMES[i]+' Step.',btn);
+    else if(i<cur)warn('The '+NAMES[i]+' Step has passed this turn.',btn);
+    else warn('Next legal step: '+NAMES[cur+1]+(cur===4?' (or End to skip attacks).':'.'),btn);
+  }
+  var CORES=[{id:'blue',name:'Blue',c:['#cfe8ff','#3a8cf0','#0b3f8a']},{id:'red',name:'Red',c:['#ffd0d0','#e5484d','#7a0f16']},{id:'purple',name:'Purple',c:['#eadcff','#a06cf0','#3d1a7a']},{id:'green',name:'Green',c:['#d0ffe0','#2fb36a','#0b4a26']},{id:'white',name:'White',c:['#ffffff','#e3e8ef','#9aa3b0']},{id:'yellow',name:'Yellow',c:['#fffbd0','#ffe14a','#b89a00']},{id:'gold',name:'Gold',c:['#f6dfa0','#c9952a','#5e3f08']},{id:'silver',name:'Silver',c:['#ffffff','#c9d0da','#6f7887']},{id:'onyx',name:'Onyx',c:['#9aa3b0','#2a2f38','#050608']}];
+  var SLEEVES=[{id:'filigree',name:'Silver',t:'#d9d9d9'},{id:'crimson',name:'Crimson',t:'#ff6b7d'},{id:'azure',name:'Azure',t:'#7fb4ff'},{id:'jade',name:'Jade',t:'#6fe0b8'},{id:'royal',name:'Gold',t:'#e9c46a'},{id:'violet',name:'Violet',t:'#c39bff'}];
+  function applyLook(){
+    var c=CORES.find(function(x){return x.id===st.core})||CORES[0], q=CORES.find(function(x){return x.id===st.soul})||CORES[1], v=SLEEVES.find(function(x){return x.id===st.sleeve})||SLEEVES[0];
+    root.style.setProperty('--core1',c.c[0]);root.style.setProperty('--core2',c.c[1]);root.style.setProperty('--core3',c.c[2]);
+    root.style.setProperty('--soul1',q.c[0]);root.style.setProperty('--soul2',q.c[1]);root.style.setProperty('--soul3',q.c[2]);
+    document.querySelectorAll('[data-core]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.core===st.core))});
+    document.querySelectorAll('[data-soul]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.soul===st.soul))});
+    document.querySelectorAll('[data-sleeve]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.sleeve===st.sleeve))});
+  }
+  function lookPickers(){
+    scaler.querySelectorAll('.js-sleeves').forEach(function(g){g.innerHTML='';SLEEVES.forEach(function(v){var b=document.createElement('button');b.className='lk';b.dataset.sleeve=v.id;var i=document.createElement('span');i.className='sleeve big';i.dataset.sl='1';i.className='sleeve big has-img';i.style.cssText='width:44px;height:62px;--slimg:url("'+backArt(v.t)+'")';b.appendChild(i);var t=document.createElement('span');t.textContent=v.name;b.appendChild(t);g.appendChild(b)})});
+    [['.js-cores','core','g-core'],['.js-souls','soul','g-soul']].forEach(function(a){scaler.querySelectorAll(a[0]).forEach(function(g){g.innerHTML='';CORES.forEach(function(c){var b=document.createElement('button');b.className='cg';b.dataset[a[1]]=c.id;var i=document.createElement('i');i.className=a[2];i.style.setProperty('--'+a[1]+'1',c.c[0]);i.style.setProperty('--'+a[1]+'2',c.c[1]);i.style.setProperty('--'+a[1]+'3',c.c[2]);b.appendChild(i);var t=document.createElement('span');t.textContent=c.name;b.appendChild(t);g.appendChild(b)})})});
+  }
+
+
+  // Built-in sleeve: our own card-back drawing (black, double border, corner scrolls, rays, pentagon crest), no logo or text.
+  var BACK={};
+  function backArt(t){ if(BACK[t])return BACK[t];
+    var sc='<path d="M10 120 C10 50 40 14 118 8" /><path d="M20 110 C24 56 50 26 108 20"/><path d="M24 84 c-12-14 4-32 18-24 c10 6 3 20-6 15"/><path d="M84 24 c-14-12-32 4-24 18 c6 10 20 3 15-6"/><path d="M40 56 c10-3 15-10 17-20"/>';
+    var corner=function(tr){return '<g transform="'+tr+'" fill="none" stroke="'+t+'" stroke-width="3" stroke-linecap="round">'+sc+'</g>'};
+    var rays='';for(var i=0;i<24;i++){var a=i*15*Math.PI/180;rays+='<line x1="'+(125+Math.cos(a)*40).toFixed(1)+'" y1="'+(175+Math.sin(a)*40).toFixed(1)+'" x2="'+(125+Math.cos(a)*(i%2?110:140)).toFixed(1)+'" y2="'+(175+Math.sin(a)*(i%2?110:140)).toFixed(1)+'"/>'}
+    var pent=function(cx,cy,r){var p=[];for(var k=0;k<5;k++){var a=(-90+k*72)*Math.PI/180;p.push((cx+Math.cos(a)*r).toFixed(1)+','+(cy+Math.sin(a)*r).toFixed(1))}return p.join(' ')};
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 350"><rect width="250" height="350" rx="14" fill="#050505"/>'+
+      '<rect x="7" y="7" width="236" height="336" rx="12" fill="none" stroke="'+t+'" stroke-width="4"/><rect x="15" y="15" width="220" height="320" rx="8" fill="none" stroke="'+t+'" stroke-opacity=".45" stroke-width="1.5"/>'+
+      '<g stroke="'+t+'" stroke-opacity=".55" stroke-width="2">'+rays+'</g>'+
+      corner('translate(0,0)')+corner('translate(250,0) scale(-1,1)')+corner('translate(0,350) scale(1,-1)')+corner('translate(250,350) scale(-1,-1)')+
+      '<polygon points="'+pent(125,175,46)+'" fill="#050505" stroke="'+t+'" stroke-width="4"/><polygon points="'+pent(125,177,28)+'" fill="'+t+'" fill-opacity=".9"/><polygon points="'+pent(125,178,13)+'" fill="#050505"/>'+
+      '<g fill="none" stroke="'+t+'" stroke-width="2.5" stroke-linecap="round"><path d="M78 175 c-16-4-24 8-18 16 c5 6 13 1 10-5"/><path d="M172 175 c16-4 24 8 18 16 c-5 6-13 1-10-5"/><path d="M125 118 c-6-10 0-20 8-18"/><path d="M125 232 c-6 10 0 20 8 18"/></g></svg>';
+    BACK[t]='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg); return BACK[t]}
+  // An uploaded sleeve takes the tint of the chosen sleeve colour (multiply on its grey values); Silver keeps the original.
+  var TINTED={};
+  function tintUpload(src,t,cb){var key=t; if(TINTED[key]&&TINTED.src===src)return cb(TINTED[key]); if(TINTED.src!==src)TINTED={src:src};
+    if(t==='#d9d9d9'){TINTED[key]=src;return cb(src)}
+    var im=new Image();im.onload=function(){var c=document.createElement('canvas');var w=Math.min(im.width,600),h=Math.round(im.height*w/im.width);c.width=w;c.height=h;var g=c.getContext('2d');g.drawImage(im,0,0,w,h);var d=g.getImageData(0,0,w,h),a=d.data;
+      var r=parseInt(t.slice(1,3),16),gg=parseInt(t.slice(3,5),16),b=parseInt(t.slice(5,7),16);
+      for(var i=0;i<a.length;i+=4){var l=(a[i]*.3+a[i+1]*.59+a[i+2]*.11)/255;a[i]=Math.round(r*l*1.15);a[i+1]=Math.round(gg*l*1.15);a[i+2]=Math.round(b*l*1.15)}
+      g.putImageData(d,0,0);TINTED[key]=c.toDataURL('image/jpeg',.88);cb(TINTED[key])};im.src=src}
+  // Playmat and sleeve images: kept in memory for the preview (a real upload can be large).
+  var IMG={mat:null,sl:null};
+  function sampleMat(){var c=document.createElement('canvas');c.width=1600;c.height=1600;var g=c.getContext('2d');var gr=g.createLinearGradient(0,0,0,1600);gr.addColorStop(0,'#2b1b4a');gr.addColorStop(.55,'#c4513a');gr.addColorStop(1,'#1a0f22');g.fillStyle=gr;g.fillRect(0,0,1600,1600);
+    g.fillStyle='#ffd27a';g.beginPath();g.arc(800,760,150,0,7);g.fill();for(var i=0;i<7;i++){g.fillStyle='rgba(20,10,30,'+(0.35+i*0.08)+')';g.beginPath();g.moveTo(0,1600);for(var x=0;x<=1600;x+=80){g.lineTo(x,900+i*90+Math.sin(x/170+i)*60)}g.lineTo(1600,1600);g.fill()}
+    g.fillStyle='#fff';g.font='bold 54px sans-serif';g.textAlign='center';g.fillText('SAMPLE PLAYMAT · square 1600×1600',800,120);g.fillText('top and bottom are trimmed on a wide board',800,1520);return c.toDataURL('image/jpeg',.82)}
+  function sampleSl(){var c=document.createElement('canvas');c.width=900;c.height=900;var g=c.getContext('2d');var gr=g.createRadialGradient(450,450,40,450,450,640);gr.addColorStop(0,'#7ff0ff');gr.addColorStop(.5,'#2a5bd7');gr.addColorStop(1,'#0b0b2a');g.fillStyle=gr;g.fillRect(0,0,900,900);
+    g.strokeStyle='#ffffffaa';g.lineWidth=10;for(var r=60;r<600;r+=70){g.beginPath();g.arc(450,450,r,0,7);g.stroke()}g.fillStyle='#fff';g.font='bold 60px sans-serif';g.textAlign='center';g.fillText('MY SLEEVE',450,470);g.font='bold 34px sans-serif';g.fillText('square 900×900',450,120);return c.toDataURL('image/jpeg',.85)}
+  function applyImgs(){
+    root.style.setProperty('--mat',IMG.mat?'url("'+IMG.mat+'")':'none'); root.style.setProperty('--mat-dim',IMG.mat?(st.m==='light'?'.3':'.35'):'1'); root.classList.toggle('has-mat',!!IMG.mat);
+    var sv=SLEEVES.find(function(x){return x.id===st.sleeve})||SLEEVES[0];
+    var setAll=function(u){document.querySelectorAll('.sleeve:not(.cpu-sleeve):not([data-sl])').forEach(function(e){e.classList.add('has-img');e.style.setProperty('--slimg','url("'+u+'")')})};
+    if(IMG.sl)tintUpload(IMG.sl,sv.t,setAll); else setAll(backArt(sv.t));
+    document.querySelectorAll('.cpu-sleeve').forEach(function(e){e.classList.add('has-img');e.style.setProperty('--slimg','url("'+backArt('#ff6b7d')+'")')});
+    document.querySelectorAll('[data-mat]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.mat===(IMG.mat?(IMG.matSample?'sample':'up'):'none')))});
+    document.querySelectorAll('[data-slimg]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.slimg===(IMG.sl?(IMG.slSample?'sample':'up'):'none')))});
+  }
+  function readFile(f,cb){if(!f||!/^image\//.test(f.type))return;var r=new FileReader();r.onload=function(){cb(r.result)};r.readAsDataURL(f)}
+  document.addEventListener('change',function(e){var t=e.target;if(t.type!=='file')return;var f=t.files&&t.files[0];
+    if(t.id==='up-mat'||t.classList.contains('js-upmat'))readFile(f,function(u){IMG.mat=u;IMG.matSample=false;applyImgs()});
+    if(t.id==='up-sl'||t.classList.contains('js-upsl'))readFile(f,function(u){IMG.sl=u;IMG.slSample=false;applyImgs()});
+    t.value='';});
+  function swatches(){
+    var box=document.getElementById('sws'); box.innerHTML='';
+    COLS.forEach(function(c){var b=document.createElement('button'); b.className='sw'; b.id='sw-'+c.id; b.dataset.c=c.id; b.title=c.name; b.setAttribute('aria-label',c.name); b.style.setProperty('--c',c.d); if(c.id==='white')b.style.boxShadow='inset 0 0 0 1px #0004'; box.appendChild(b)});
+  }
+  function fillGrids(scope){
+    scope.querySelectorAll('.js-pgrid').forEach(function(g){g.innerHTML='';COLS.forEach(function(c){var b=document.createElement('button');b.className='pcol';b.dataset.c=c.id;b.setAttribute('aria-label',c.name);var i=document.createElement('i');i.style.setProperty('--c',c.d);if(c.id==='white')i.style.boxShadow='inset 0 0 0 1px #0005';b.appendChild(i);var s=document.createElement('span');s.textContent=c.name.replace(/ \((Soul Core|Ultimate)\)/,'').replace(' (default)','');b.appendChild(s);g.appendChild(b)})});
+  }
+  function render(){
+    scaler.innerHTML=''; var t=document.getElementById('t-'+st.v); scaler.appendChild(t.content.cloneNode(true));
+    fillGrids(scaler);
+    document.querySelectorAll('[data-v]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v===st.v))});
+    lookPickers(); scaler.querySelectorAll('[data-tint]').forEach(function(e){e.style.setProperty('--slimg','url("'+backArt(e.dataset.tint)+'")')}); fit(); apply(); applyLook(); applyImgs(); phases();
+  }
+  function fit(){
+    var s=scaler.firstElementChild; if(!s)return; var w=s.offsetWidth,h=s.offsetHeight; var avail=stage.clientWidth;
+    var k=Math.min(1,avail/w); if(st.v==='phone')k=Math.min(1,avail/w);
+    scaler.style.transform='scale('+k+')'; stage.style.height=Math.ceil(h*k)+'px';
+    scaler.style.left=Math.max(0,(avail-w*k)/2)+'px';
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('button,a'); if(!b)return;
+    if(b.tagName==='A'){e.preventDefault();return}
+    if(b.tagName==='LABEL')return;
+    if(b.dataset.tog){var tg=scaler.querySelector(b.dataset.tog); if(tg){tg.hidden=!tg.hidden; scaler.querySelectorAll('[data-tog="'+b.dataset.tog+'"]').forEach(function(x){x.setAttribute('aria-expanded',String(!tg.hidden))})} return}
+    if(b.dataset.tab){var sc=b.closest('.js-tabs'); sc.classList.remove('min'); var mn=sc.querySelector('.js-min'); if(mn){mn.textContent='▾';mn.setAttribute('aria-expanded','true')} sc.querySelectorAll('[data-tab]').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-selected',String(x===b))}); sc.querySelectorAll('[data-pane]').forEach(function(x){x.hidden=x.dataset.pane!==b.dataset.tab; x.style.display=x.hidden?'':'flex'}); return}
+    if(b.classList.contains('js-min')){var sh=b.closest('.js-sheet'); var m=sh.classList.toggle('min'); b.textContent=m?'▴':'▾'; b.setAttribute('aria-expanded',String(!m)); b.setAttribute('aria-label',m?'Expand deck panel':'Minimize deck panel'); return}
+    if(b.dataset.fc){var on=b.classList.toggle('on'); b.setAttribute('aria-pressed',String(on)); return}
+    if(b.dataset.v){st.v=b.dataset.v;save();render();return}
+    if(b.dataset.m){st.m=b.dataset.m;apply();applyImgs();return}
+    if(b.dataset.c){st.c=b.dataset.c;apply();return}
+    if(b.dataset.mat){if(b.dataset.mat==='sample'){IMG.mat=sampleMat();IMG.matSample=true}else IMG.mat=null;applyImgs();return}
+    if(b.dataset.slimg){if(b.dataset.slimg==='sample'){IMG.sl=sampleSl();IMG.slSample=true}else IMG.sl=null;applyImgs();return}
+    if(b.dataset.core){st.core=b.dataset.core;save();applyLook();return}
+    if(b.dataset.soul){st.soul=b.dataset.soul;save();applyLook();return}
+    if(b.dataset.sleeve){st.sleeve=b.dataset.sleeve;save();applyLook();applyImgs();return}
+    if(b.classList.contains('js-st')){go(+b.dataset.step,b);return}
+    if(b.classList.contains('js-next')){go(cur+1,b);return}
+    if(b.classList.contains('js-pop')){var p=scaler.querySelector('.js-popbox'); if(p)p.hidden=!p.hidden;}
+  });
+  swatches(); window.addEventListener('resize',fit); try{new ResizeObserver(fit).observe(stage)}catch(e){}
+  render();
+})();
+</script>
