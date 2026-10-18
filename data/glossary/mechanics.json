@@ -87,12 +87,12 @@
    "K_MIRAGE"
   ],
   "prep": {
-   "rules": "",
+   "rules": "Fandom Mirage (no Q&A rows parsed): set face up in your Main Step once per turn by paying the Mirage cost, apart from the Burst; one at a time (a new one swaps the old back to the Hand, not a Hand increase); only \"During Set\" effects work; Field-targeting effects cannot reach it",
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "partial: 06-rules.js mirage set/usable, 02d-effects-resolve.js only MIRAGE_OWN_LIFE/OPP_LIFE triggers (subagent grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kind:ultimate",
@@ -171,11 +171,11 @@
   "status": "partial",
   "glossary": [],
   "prep": {
-   "rules": "",
+   "rules": "Fandom Rush: active while you control the listed symbols; activates after the effect above it even if that one could not; two Rush effects: the turn player orders them; Magic checks symbols on use",
    "data": "",
    "lever": ""
   },
-  "note": "Rush in the compiler/engine v0.55.0; Rush forms still single blockers (~73, compile-v2 report)",
+  "note": "partial: per-action if.hasSymbol (02a-effects-base.js), single-symbol forms only; multi-symbol forms open",
   "verified": true
  },
  {
@@ -184,11 +184,11 @@
   "status": "missing",
   "glossary": [],
   "prep": {
-   "rules": "Standard CR (Succession)",
-   "data": "",
-   "lever": "137/2 (roadmap-open, v0.62.0)"
+   "rules": "Fandom Legacy + Q&A 31541-31543, 31620, 31866: before Field symbols, banish EX-symbol cards of the same colour from your Trash, one per reduction symbol; also when the Field fills them; not beyond the reduction symbols; not for \"without paying the cost\" or fixed costs; Legacy-only text counts as printed effects",
+   "data": "138 cards with keyword Legacy; 204 cards with ex_symbols > 0 (count only, colour = card colour; two-colour EX cards open); the pack does not carry ex_symbols yet",
+   "lever": "137 by text and as blocker, only blocker on 16 (14 Magic cards stop at the \"(Legacy)\" line before Flash/Main), 2026-10-19"
   },
-  "note": "= Succession, Standard CR; needs ex_symbols in the pack",
+  "note": "= Succession; glossary link K_STANDARD_SUCCESSION is shared with Soul Magic (check the link when building)",
   "verified": true
  },
  {
@@ -199,17 +199,17 @@
    "K_ULTIMATE"
   ],
   "prep": {
-   "rules": "",
+   "rules": "Fandom Ultimate Trigger: send the opposing decktop card to the Trash; hit when its cost is lower than the Ultimate's; anti-discard effects do not stop it; Trigger Counter is declared before targets",
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "partial: ULT_TRIGGER + utHit (02i-effects-keywords.js); Guard and Trigger Counter not wired",
+  "verified": true
  },
  {
   "id": "kw:soul-burst",
   "name": "Soul Burst",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_BURST"
   ],
@@ -218,8 +218,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no engine match (grep 2026-10-19); the K_BURST glossary seed is too broad (the wiki redirects Soul Burst to Burst)",
+  "verified": true
  },
  {
   "id": "kw:manifest",
@@ -263,8 +263,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "partial: STATIC UNAFFECTED with from colours/types (v0.58.0, 02a-effects-base.js, 02c-effects-parse.js, compile_effects.py); granted Armor open",
+  "verified": true
  },
  {
   "id": "kind:rebirth",
@@ -289,8 +289,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine match outside Neo-Core Charge (02b-effects-actions.js), grep 2026-10-19",
+  "verified": true
  },
  {
   "id": "kw:ultra-armor",
@@ -304,8 +304,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "partial: STATIC UNAFFECTED with from colours/types (v0.58.0, 02a-effects-base.js, 02c-effects-parse.js, compile_effects.py); granted Armor open",
+  "verified": true
  },
  {
   "id": "kw:tribute",
@@ -317,8 +317,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine match (grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kind:contract",
@@ -343,8 +343,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine match (grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:spirit-soul",
@@ -356,8 +356,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine match (grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:soul-magic",
@@ -384,8 +384,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine match (grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:grand-field",
@@ -2256,12 +2256,12 @@
   "status": "missing",
   "glossary": [],
   "prep": {
-   "rules": "Standard CR 12-2-1-1",
-   "data": "",
-   "lever": "185/19 (roadmap-open, v0.62.0)"
+   "rules": "Standard CR 12-2-1-1; Fandom True_Release/Q&A 31532-31534, 31582, 31728-31729, Std manual Q3: LV2 with the printed cores OR only the Soul Core; any card at LV2 with the keyword is in the True Release state; the Soul Core level-up is not an effect",
+   "data": "no field: text head \"[LV2] (True Release)\" on 184 staged cards (26RBS01-032 has a stray quote \"[LV2]'\"); levels hold only the number, the Soul Core alternative must come from the text",
+   "lever": "185 by text, blocker on 151, only blocker on 22 (scratch v2 recompile 2026-10-19); co-blockers (Legacy) 44, target sentences 16, (Your Attack Step) 14"
   },
   "verified": true,
-  "note": "Standard CR 12-2-1-1: LV2 with a single Soul Core; level line reads \"3 cores/Soul Core True Release\""
+  "note": "next block A head after Soul Magic (v0.64.0 prep)"
  },
  {
   "id": "kind:invoke",
@@ -2269,11 +2269,11 @@
   "status": "missing",
   "glossary": [],
   "prep": {
-   "rules": "",
-   "data": "",
-   "lever": "108 (roadmap-open, v0.62.0)"
+   "rules": "Std manual \"On Effects\" Q11: \"<cost> ▶ <effect>\" after {{Invoke|Flash}} / {{Invoke|Main}}; the cost part must resolve fully or nothing happens (not as much as possible); timing from the template plus printed (Once Per Turn)/step; no wiki page or Q&A numbers",
+   "data": "110 blocks on 108 cards (Flash 83, Main 27); 75 \"cost ▶ effect\" (exhaust 36, pay N 19, destroy 9, discard 4, return 3, send 2, show 2), 13 return-and-summon swaps, the rest no ▶; one damaged cost \"Send your to the Trash\" in saga-50.json",
+   "lever": "108 by text, blocker on 74, only blocker on 14 (2026-10-19)"
   },
   "verified": true,
-  "note": "Standard activations"
+  "note": "Standard activations; v0.64.0 prep"
  }
 ]
