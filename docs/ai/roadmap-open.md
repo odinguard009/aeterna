@@ -11,6 +11,7 @@ Read the lines for the colour or mechanic you touch before starting. Newest firs
   4. Merge + release step (the lane that finishes second, or a short merge session): rebase both lane branches on `main`, merge, apply the lane notes, one version bump (minor if any lane is minor), regenerate build/progress/roadmap, `npm run -s loop`, player-view pass when due, one release, `done vX.Y.Z`.
   5. Docs: CLAUDE.md "Session scope" and `docs/ai/next-session-prompt.md` describe lanes; `bs-session-runner` gets the lane steps.
   6. Reversible: backup branch before P1; lanes are opt-in, so removing the lane argument restores the single-lane flow; revert note in the release notes.
+- **Card-session prep (owner, 2026-10-18 21:56; works now, no P1 needed):** every card session starts two read-only subagents in parallel: sizing of the next one or two heads (`lever_report.py` + scratch recompile) and rules/card-data research for them; results land in this file in the session's last commit. Steps: skill `bs-session-runner`.
 - **Limit Claude cannot lift:** sessions never create or change schedules, so auto mode stays one session at a time until the owner adds a second scheduled task for the second lane. Manual lanes (two chats, "Lanjutkan roadmap ui" / "Lanjutkan roadmap card") work without it.
 - **First pair after P1:** U1 (ui lane) with Soul Magic (card lane). Measure wall-clock against the previous serial pair and count merge conflicts; with no time gain or more than one shared-file conflict per merge, go back to one lane and record why.
 
