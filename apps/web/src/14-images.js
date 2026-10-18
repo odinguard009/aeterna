@@ -120,9 +120,9 @@ document.addEventListener('change', async e => {
   else if (t.id === 'db-preset') { const id = t.value; t.value = ''; if (id) { if (deckTotal(PLAYER_DECK) > 0) { const ok = await ask({ title: 'Replace this deck?', html: `Load "${esc((PREBUILT.find(d => d.id === id) || {}).name || id)}" into slot ${ACTIVE_SLOT + 1}? The current cards in the slot are replaced.`, buttons: [{ label: 'Replace', cls: 'primary', value: true }, { label: 'Cancel', cls: 'cancel', value: false }] }); if (!ok) return; } dbSnap(); loadPrebuilt(id); renderDeckBuilder(); } }
   else if (t.id === 'set-speed') { SETTINGS.speed = SPEEDS[t.value] ? t.value : 'normal'; saveSettings(); }
   else if (t.id === 'set-cpu') setCpuProfile(t.value);
-  else if (t.id === 'set-color') { setTheme('color', t.value); if (G) render(); }
-  else if (t.id === 'set-mode') { setTheme('mode', t.value); if (G) render(); }
-  else if (t.id === 'set-sound') { SETTINGS.sound = t.value === 'on'; saveSettings(); if (SETTINGS.sound) sfx('summon'); }
+  else if (t.id === 'set-color') { setTheme('color', t.value); navTools(); if (G) render(); }
+  else if (t.id === 'set-mode') { setTheme('mode', t.value); navTools(); if (G) render(); }
+  else if (t.id === 'set-sound') { SETTINGS.sound = t.value === 'on'; saveSettings(); navTools(); if (SETTINGS.sound) sfx('summon'); }
 });
 document.addEventListener('input', e => { if (e.target.id === 'db-search') dbSearchInput(); });
 document.addEventListener('scroll', e => { if (e.target && e.target.id === 'db-card-list') dbScroll(); }, true);

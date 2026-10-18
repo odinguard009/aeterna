@@ -278,6 +278,7 @@ function checkInvariants() {
 function switchView(id) {
   document.querySelectorAll('.app-view').forEach(e => e.classList.remove('active'));
   $(id).classList.add('active');
+  navSync(id);
   if (id === 'view-lobby' || id === 'view-play') renderLobby();
   if (id === 'view-deckbuilder') { dbSheet(''); renderDeckBuilder(); }
   if (id === 'view-library') renderLibrary();
@@ -286,6 +287,7 @@ function switchView(id) {
 function renderSettings() { $('set-hist').innerHTML = histHTML(); $('set-cpu').innerHTML = CPU_PROFILE_NAMES.map(n => `<option value="${n}">${cap(n)}</option>`).join(''); $('set-cpu').value = cpuProfileName(null); $('set-speed').value = SETTINGS.speed; $('set-sound').value = SETTINGS.sound ? 'on' : 'off';
   $('set-color').innerHTML = THEME_COLS.map(c => `<option value="${c.id}">${c.name}</option>`).join(''); $('set-color').value = THEME.color; $('set-mode').value = THEME.mode; }
 function renderLobby() {
+  renderHome();
   const v = validateDeck(PLAYER_DECK), el = $('lobby-deck');
   el.className = 'lobby-deck' + (v.ok ? '' : ' bad');
   el.textContent = v.ok ? `Your deck: ${v.total} cards · legal in ${fmtName(FORMAT)}` : `Your deck is not legal in ${fmtName(FORMAT)}: ${errSummary(v)}`;
