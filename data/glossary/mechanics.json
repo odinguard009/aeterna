@@ -1,0 +1,2279 @@
+[
+ {
+  "id": "kind:spirit",
+  "name": "Spirit card",
+  "status": "done",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "base rules: summon, levels, BP, attack/block (rules-coverage A)",
+  "verified": true
+ },
+ {
+  "id": "kind:magic",
+  "name": "Magic card",
+  "status": "partial",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "Main/Flash, cost, targets, ACTIONS effects (v0.41/v0.47.0); Magic reveals and some types open (rules-coverage)",
+  "verified": true
+ },
+ {
+  "id": "kind:nexus",
+  "name": "Nexus card",
+  "status": "done",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "deploy, levels, Nexus effects through the effect engine",
+  "verified": true
+ },
+ {
+  "id": "kind:grandwalker",
+  "name": "Grandwalker Nexus",
+  "status": "partial",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "Saga Brave onto a Grandwalker Nexus (v0.35.0); Grandwalker Nexus effects open (roadmap card sessions)",
+  "verified": true
+ },
+ {
+  "id": "kind:brave",
+  "name": "Brave card",
+  "status": "partial",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "Brave part 1 v0.60.0 (combine data, braved effects); part 2 open: summon from Hand first, two-sided Braves, 171 Brave conditions",
+  "verified": true
+ },
+ {
+  "id": "kw:burst",
+  "name": "Burst",
+  "status": "done",
+  "glossary": [
+   "K_BURST"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "v0.55.2 resolution order",
+  "verified": true
+ },
+ {
+  "id": "kw:mirage",
+  "name": "Mirage",
+  "status": "partial",
+  "glossary": [
+   "K_MIRAGE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kind:ultimate",
+  "name": "Ultimate card",
+  "status": "partial",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "Ultimate type + Ultra Manifest v0.46.0, compiler v0.56.0; Ultimate Trigger level lines missing in the export (110 cards)",
+  "verified": true
+ },
+ {
+  "id": "kind:soul-core-text",
+  "name": "Soul Core in card text",
+  "status": "partial",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "Soul Core rules done (setup, Seal, Life, Reserve); cards that move or pay with it follow their own keywords",
+  "verified": true
+ },
+ {
+  "id": "kw:contract-advent",
+  "name": "Contract Advent",
+  "status": "done",
+  "glossary": [
+   "K_ADVENT"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "engine done (CLAUDE.md Done list)",
+  "verified": true
+ },
+ {
+  "id": "kw:accel",
+  "name": "Accel",
+  "status": "done",
+  "glossary": [
+   "K_ACCEL"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "v0.50.0",
+  "verified": true
+ },
+ {
+  "id": "kw:advent",
+  "name": "Advent",
+  "status": "done",
+  "glossary": [
+   "K_ADVENT"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "engine done (CLAUDE.md Done list)",
+  "verified": true
+ },
+ {
+  "id": "kw:rush",
+  "name": "Rush",
+  "status": "partial",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "Rush in the compiler/engine v0.55.0; Rush forms still single blockers (~73, compile-v2 report)",
+  "verified": true
+ },
+ {
+  "id": "kw:legacy",
+  "name": "Legacy",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "Standard CR (Succession)",
+   "data": "",
+   "lever": "137/2 (roadmap-open, v0.62.0)"
+  },
+  "note": "= Succession, Standard CR; needs ex_symbols in the pack",
+  "verified": true
+ },
+ {
+  "id": "kw:ultimate-trigger",
+  "name": "Ultimate Trigger",
+  "status": "partial",
+  "glossary": [
+   "K_ULTIMATE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:soul-burst",
+  "name": "Soul Burst",
+  "status": "partial",
+  "glossary": [
+   "K_BURST"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:manifest",
+  "name": "Manifest",
+  "status": "done",
+  "glossary": [
+   "K_MANIFEST"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "v0.46.0 Ultra Manifest",
+  "verified": true
+ },
+ {
+  "id": "kw:high-speed",
+  "name": "High Speed",
+  "status": "done",
+  "glossary": [
+   "K_HIGH_SPEED"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "v0.49.0",
+  "verified": true
+ },
+ {
+  "id": "kw:heavy-armor",
+  "name": "Heavy Armor",
+  "status": "partial",
+  "glossary": [
+   "K_ARMOR"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kind:rebirth",
+  "name": "Rebirth / pre-Rebirth / reborn",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "no engine rule; importer has rebirthTo/rebirthSide (display only, v0.32) but no staged card fills them; rules-coverage: not implemented; the export may lack the Rebirth side link (check, like the Brave combine data)",
+  "verified": true
+ },
+ {
+  "id": "kw:core-charge",
+  "name": "Core Charge",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:ultra-armor",
+  "name": "Ultra Armor",
+  "status": "partial",
+  "glossary": [
+   "K_ARMOR"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:tribute",
+  "name": "Tribute",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kind:contract",
+  "name": "Contract card",
+  "status": "partial",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "Contract, Contract Advent, Soul State (v0.13+); residual: LV2 Contract Field (issue #3)",
+  "verified": true
+ },
+ {
+  "id": "kw:charge",
+  "name": "Charge",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:spirit-soul",
+  "name": "Spirit Soul",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:soul-magic",
+  "name": "Soul Magic",
+  "status": "missing",
+  "glossary": [
+   "K_STANDARD_SUCCESSION"
+  ],
+  "prep": {
+   "rules": "Standard CR 12-2-1-2",
+   "data": "",
+   "lever": "33/33 (roadmap-open, v0.62.0)"
+  },
+  "note": "Standard CR 12-2-1-2; next card session (33 cards wait only for it)",
+  "verified": true
+ },
+ {
+  "id": "kw:assault",
+  "name": "Assault",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:grand-field",
+  "name": "Grand Field",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:catalyze",
+  "name": "Catalyze",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:crush",
+  "name": "Crush",
+  "status": "done",
+  "glossary": [
+   "K_CRUSH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "v0.49.0",
+  "verified": true
+ },
+ {
+  "id": "kw:clash",
+  "name": "Clash",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:immortality",
+  "name": "Immortality",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:unleash",
+  "name": "Unleash",
+  "status": "partial",
+  "glossary": [
+   "K_UNLEASH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kind:ex-symbol",
+  "name": "EX symbol (Standard)",
+  "status": "partial",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "EX symbols count as symbols (v0.62.0); Legacy (pays with EX-symbol cards) missing",
+  "verified": true
+ },
+ {
+  "id": "kw:trigger-counter",
+  "name": "Trigger Counter",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:holy-life",
+  "name": "Holy Life",
+  "status": "done",
+  "glossary": [
+   "K_HOLY_LIFE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "v0.49.0",
+  "verified": true
+ },
+ {
+  "id": "kw:afo",
+  "name": "AFO",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:curse",
+  "name": "Curse",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:flag-contract-advent",
+  "name": "Flag Contract Advent",
+  "status": "partial",
+  "glossary": [
+   "K_ADVENT"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kind:flag-nexus",
+  "name": "Flag Nexus",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "Flag Nexus (BS76+, Eternal) named in rules-coverage Formats; engine support not checked yet",
+  "verified": true
+ },
+ {
+  "id": "kw:brilliance",
+  "name": "Brilliance",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:type-field",
+  "name": "Type: Field",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:neo-core-charge",
+  "name": "Neo-Core Charge",
+  "status": "partial",
+  "glossary": [
+   "T_ALLY_SUMMONED"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:armor",
+  "name": "Armor",
+  "status": "partial",
+  "glossary": [
+   "K_ARMOR"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:windstorm",
+  "name": "Windstorm",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:double-ultimate-trigger",
+  "name": "Double Ultimate Trigger",
+  "status": "partial",
+  "glossary": [
+   "K_ULTIMATE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:zero-counter",
+  "name": "Zero Counter",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:brave-engage",
+  "name": "Brave Engage",
+  "status": "partial",
+  "glossary": [
+   "K_BRAVE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:type-vision",
+  "name": "Type: Vision",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:twinkle-seal",
+  "name": "Twinkle Seal",
+  "status": "partial",
+  "glossary": [
+   "A_SEAL"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:excite",
+  "name": "Excite",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:true-curse",
+  "name": "True-Curse",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:awaken",
+  "name": "Awaken",
+  "status": "partial",
+  "glossary": [
+   "A_AWAKEN"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:ice-wall",
+  "name": "Ice Wall",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:whirlwind",
+  "name": "Whirlwind",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:astral-unleash",
+  "name": "Astral Unleash",
+  "status": "partial",
+  "glossary": [
+   "K_UNLEASH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:astromulet",
+  "name": "Astromulet",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:form-change",
+  "name": "Form Change",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:summon-bolt",
+  "name": "Summon Bolt",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:ultimate-hand",
+  "name": "Ultimate Hand",
+  "status": "partial",
+  "glossary": [
+   "K_ULTIMATE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:mealtiply",
+  "name": "Mealtiply",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:seal",
+  "name": "Seal",
+  "status": "done",
+  "glossary": [
+   "A_SEAL"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "v0.48.0",
+  "verified": true
+ },
+ {
+  "id": "kw:type-flower",
+  "name": "Type: Flower",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:unsheathe",
+  "name": "Unsheathe",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:true-clash",
+  "name": "True-Clash",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:poison-blade",
+  "name": "Poison Blade",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:soul-drive",
+  "name": "Soul Drive",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:reload",
+  "name": "Reload",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:silver-wheel",
+  "name": "Silver Wheel",
+  "status": "done",
+  "glossary": [
+   "K_SILVER_WHEEL"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "v0.50.0",
+  "verified": true
+ },
+ {
+  "id": "kw:amplify",
+  "name": "Amplify",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:bunshin",
+  "name": "Bunshin",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:grand-skill",
+  "name": "Grand Skill",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:load",
+  "name": "Load",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:contract-field",
+  "name": "Contract Field",
+  "status": "partial",
+  "glossary": [
+   "K_CONTRACT"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:rumble",
+  "name": "Rumble",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:dispersion",
+  "name": "Dispersion",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:six-heaven-rush",
+  "name": "Six Heaven Rush",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:ultra-heavy-armor",
+  "name": "Ultra Heavy Armor",
+  "status": "partial",
+  "glossary": [
+   "K_ARMOR"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:double-drive",
+  "name": "Double Drive",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:constellation-seal",
+  "name": "Constellation Seal",
+  "status": "partial",
+  "glossary": [
+   "A_SEAL"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:twinkle-trace",
+  "name": "Twinkle Trace",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:grand-advent",
+  "name": "Grand Advent",
+  "status": "partial",
+  "glossary": [
+   "K_ADVENT"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:reverse-contract-advent",
+  "name": "Reverse Contract Advent",
+  "status": "partial",
+  "glossary": [
+   "K_ADVENT"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:current",
+  "name": "Current",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:celestial-unleash",
+  "name": "Celestial Unleash",
+  "status": "partial",
+  "glossary": [
+   "K_UNLEASH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:fast-draw",
+  "name": "Fast Draw",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:ultra-holy-life",
+  "name": "Ultra Holy Life",
+  "status": "missing",
+  "glossary": [
+   "K_ULTRA_HOLY_LIFE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:shamanism",
+  "name": "Shamanism",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:kagemusha",
+  "name": "Kagemusha",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:minor-unleash",
+  "name": "Minor Unleash",
+  "status": "partial",
+  "glossary": [
+   "K_UNLEASH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:sound-speed",
+  "name": "Sound Speed",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:count-break",
+  "name": "Count Break",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kind:token",
+  "name": "Token",
+  "status": "done",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "v0.35.0: supply outside the Deck, back to the supply when leaving the Field",
+  "verified": true
+ },
+ {
+  "id": "kw:contract-skill",
+  "name": "Contract Skill",
+  "status": "partial",
+  "glossary": [
+   "K_CONTRACT"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:level-up",
+  "name": "Level Up",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:ultra-awaken",
+  "name": "Ultra Awaken",
+  "status": "partial",
+  "glossary": [
+   "A_AWAKEN"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:spell-blight",
+  "name": "Spell Blight",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:horoscoping",
+  "name": "Horoscoping",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:pursuit",
+  "name": "Pursuit",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:nether-immortality",
+  "name": "Nether Immortality",
+  "status": "missing",
+  "glossary": [
+   "K_NETHER_IMMORTALITY"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:seal-flag-contract-advent",
+  "name": "Seal Flag Contract Advent",
+  "status": "partial",
+  "glossary": [
+   "A_SEAL",
+   "K_ADVENT"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:divine-holy-life",
+  "name": "Divine Holy Life",
+  "status": "partial",
+  "glossary": [
+   "K_HOLY_LIFE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:showdown",
+  "name": "Showdown",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:triple-ultimate-trigger",
+  "name": "Triple Ultimate Trigger",
+  "status": "partial",
+  "glossary": [
+   "K_ULTIMATE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:great-pursuit",
+  "name": "Great Pursuit",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:mirage-drain",
+  "name": "Mirage Drain",
+  "status": "partial",
+  "glossary": [
+   "K_MIRAGE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:ultra-clash",
+  "name": "Ultra Clash",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:war-catalyze",
+  "name": "War Catalyze",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:magirrate",
+  "name": "Magirrate",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:ringing-charge",
+  "name": "Ringing Charge",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:burst-tribute",
+  "name": "Burst Tribute",
+  "status": "partial",
+  "glossary": [
+   "K_BURST"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:great-crush",
+  "name": "Great Crush",
+  "status": "partial",
+  "glossary": [
+   "K_CRUSH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:violent-high-speed",
+  "name": "Violent High Speed",
+  "status": "partial",
+  "glossary": [
+   "K_HIGH_SPEED"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:ultimate-unsheathe",
+  "name": "Ultimate Unsheathe",
+  "status": "partial",
+  "glossary": [
+   "K_ULTIMATE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:consecutive-blade",
+  "name": "Consecutive Blade",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:infinite-blade",
+  "name": "Infinite Blade",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:soul-swift",
+  "name": "Soul Swift",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:burst-seal",
+  "name": "Burst Seal",
+  "status": "partial",
+  "glossary": [
+   "A_SEAL",
+   "K_BURST"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:super-seal",
+  "name": "Super Seal",
+  "status": "partial",
+  "glossary": [
+   "A_SEAL"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:thunder-swift",
+  "name": "Thunder Swift",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:twinkle-clash",
+  "name": "Twinkle Clash",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:great-assault",
+  "name": "Great Assault",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:dark-esoterica-heaven",
+  "name": "Dark Esoterica - Heaven",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:ultra-assault",
+  "name": "Ultra Assault",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:hollow-sky",
+  "name": "Hollow Sky",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:super-boost",
+  "name": "Super Boost",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:sky-seal",
+  "name": "Sky Seal",
+  "status": "partial",
+  "glossary": [
+   "A_SEAL"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:dark-esoterica-hell",
+  "name": "Dark Esoterica - Hell",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:genesis",
+  "name": "Genesis",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:clash-x",
+  "name": "Clash X",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:dark-unleash",
+  "name": "Dark Unleash",
+  "status": "partial",
+  "glossary": [
+   "K_UNLEASH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:ultra-advent",
+  "name": "Ultra Advent",
+  "status": "partial",
+  "glossary": [
+   "K_ADVENT"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:nether-unleash",
+  "name": "Nether Unleash",
+  "status": "partial",
+  "glossary": [
+   "K_UNLEASH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:creator-unleash",
+  "name": "Creator Unleash",
+  "status": "partial",
+  "glossary": [
+   "K_UNLEASH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:absolute-sound-speed",
+  "name": "Absolute Sound Speed",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:mirage-boost",
+  "name": "Mirage Boost",
+  "status": "partial",
+  "glossary": [
+   "K_MIRAGE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:mirage-trance",
+  "name": "Mirage Trance",
+  "status": "partial",
+  "glossary": [
+   "K_MIRAGE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:emperor-road",
+  "name": "Emperor Road",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:mirage-flash",
+  "name": "Mirage Flash",
+  "status": "partial",
+  "glossary": [
+   "K_MIRAGE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:quadruple-ultimate-trigger",
+  "name": "Quadruple Ultimate Trigger",
+  "status": "partial",
+  "glossary": [
+   "K_ULTIMATE"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:chrono-count-break",
+  "name": "Chrono-Count Break",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:enchain",
+  "name": "Enchain",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:final-contract-advent",
+  "name": "Final Contract Advent",
+  "status": "partial",
+  "glossary": [
+   "K_ADVENT"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:high-speed-mystery",
+  "name": "High Speed - Mystery",
+  "status": "partial",
+  "glossary": [
+   "K_HIGH_SPEED"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:wave-crush",
+  "name": "Wave Crush",
+  "status": "partial",
+  "glossary": [
+   "K_CRUSH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:xv-crush",
+  "name": "XV Crush",
+  "status": "partial",
+  "glossary": [
+   "K_CRUSH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:heavenly-light",
+  "name": "Heavenly Light",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:ultra-contract-advent",
+  "name": "Ultra Contract Advent",
+  "status": "partial",
+  "glossary": [
+   "K_ADVENT"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:curse-unleash",
+  "name": "Curse Unleash",
+  "status": "partial",
+  "glossary": [
+   "K_UNLEASH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:primordial-unleash",
+  "name": "Primordial Unleash",
+  "status": "partial",
+  "glossary": [
+   "K_UNLEASH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:rekka-showdown",
+  "name": "Rekka Showdown",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:infinite-unleash",
+  "name": "Infinite Unleash",
+  "status": "partial",
+  "glossary": [
+   "K_UNLEASH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:silver-awaken",
+  "name": "Silver Awaken",
+  "status": "partial",
+  "glossary": [
+   "A_AWAKEN"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:ultra-thunder-advent",
+  "name": "Ultra Thunder Advent",
+  "status": "partial",
+  "glossary": [
+   "K_ADVENT"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:knight-armor",
+  "name": "Knight Armor",
+  "status": "partial",
+  "glossary": [
+   "K_ARMOR"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:chaos-unleash",
+  "name": "Chaos Unleash",
+  "status": "partial",
+  "glossary": [
+   "K_UNLEASH"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:imaginate-seal",
+  "name": "Imaginate Seal",
+  "status": "partial",
+  "glossary": [
+   "A_SEAL"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:seal-manifest",
+  "name": "Seal Manifest",
+  "status": "partial",
+  "glossary": [
+   "A_SEAL",
+   "K_MANIFEST"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:camouflage",
+  "name": "Camouflage",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kw:re-awaken",
+  "name": "Re Awaken",
+  "status": "partial",
+  "glossary": [
+   "A_AWAKEN"
+  ],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
+  "verified": false
+ },
+ {
+  "id": "kw:fish-troop",
+  "name": "Fish Troop",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": ""
+  },
+  "note": "seeded 2026-10-18: no glossary entry",
+  "verified": false
+ },
+ {
+  "id": "kind:true-release",
+  "name": "True Release (= Super Unleash, Standard)",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "Standard CR 12-2-1-1",
+   "data": "",
+   "lever": "185/19 (roadmap-open, v0.62.0)"
+  },
+  "verified": true,
+  "note": "Standard CR 12-2-1-1: LV2 with a single Soul Core; level line reads \"3 cores/Soul Core True Release\""
+ },
+ {
+  "id": "kind:invoke",
+  "name": "Invoke (Standard activation)",
+  "status": "missing",
+  "glossary": [],
+  "prep": {
+   "rules": "",
+   "data": "",
+   "lever": "108 (roadmap-open, v0.62.0)"
+  },
+  "verified": true,
+  "note": "Standard activations"
+ }
+]

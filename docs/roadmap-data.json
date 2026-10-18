@@ -281,6 +281,10 @@
    "items": [
     {
      "s": "done",
+     "t": "Mechanic inventory (18 Oct 2026): every keyword and card kind in the pool listed with status and prep, guard test P10; plan item K (docs/reports/mechanic-inventory.md)"
+    },
+    {
+     "s": "done",
      "t": "Contract, Soul State, Contract Advent, Manifest, Revive"
     },
     {
@@ -353,7 +357,7 @@
     },
     {
      "s": "later",
-     "t": "Rebirth rules, draw game, Standard extras"
+     "t": "Rebirth rules (57 cards waiting; prep through item K), draw game, Standard extras"
     }
    ]
   },

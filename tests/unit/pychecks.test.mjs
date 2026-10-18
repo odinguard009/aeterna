@@ -33,3 +33,12 @@ test('P04 glossary: "by doing X" is wired and cites FAQ Q5 (v28 [26])', () => {
   const g = G.find(x => x.id === 'M_BY_DOING');
   assert.ok(g && g.status === 'wired' && /Q5/.test(g.rule));
 });
+// 2026-10-18 (owner: "plan every kind of card; nothing may be missed"): every Fandom keyword and card kind used by
+// a staged card has an entry in data/glossary/mechanics.json with a status, and a guessed status is never "done".
+test('P10 mechanic inventory: every keyword and card kind in the pool has an entry (tools/mechanic_inventory.py --check)', async () => {
+  const { execFileSync } = await import('node:child_process');
+  let out;
+  try { out = execFileSync('python3', ['tools/mechanic_inventory.py', '--check'], { encoding: 'utf8' }); }
+  catch (e) { if (e.code === 'ENOENT') return; assert.fail(String(e.stdout || e.message)); }
+  assert.match(out, /\] ok:/);
+});
