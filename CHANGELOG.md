@@ -2,6 +2,14 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.61.0
+- **Effect compiler v2 prototype** (owner plan 2026-10-18, `docs/ai/compiler-v2-plan.md`): 618 of 8,041 cards playable (+10).
+  - `tools/compile_v2.py` (v1 untouched): every sentence is tried with v1 first, so cards v1 compiles come out identical (gate test C61-01 over the 459 playable records v1 recompiles and the staged pool); sentences v1 rejects go through a clause grammar: one selector noun phrase (owner, count incl. "up to", kind, Cost/BP bounds, exhausted, family, colour, LV, cores on it, lowest/highest cost, cost <= this Spirit, BP <= the attacker) shared by destroy, exhaust, heavy exhaust, return to Hand / deck bottom, remove, BP minus and send cores. "Target X. Destroy it." pairs (block A wording), `[LV1-2-3]` level heads and Rush reminder spellings are read too. Only existing engine actions; a filter an action lacks keeps the card in review with a "v2 <verb>: ..." reason.
+  - Promoted (text read against the JSON, smoke-checked): BS22-066 Coral-Jaguar, BS23-012 The WolfKnight Loup-Gar, BS25-039 Calydon, BS26-024 Tank-Mobil-Leopard, BS27-024 The GoldenShellEmperor Rosenberg, BS34-011 Kemurineko, BS36-014 Purple Smoke Fish, BS36-030 Saber-Phoneus, BS48-090 Nix Spark, BS59-022 Swallowtail-Kiwi. Saga 17: 0 (Contract / Advent / Mirage heads first).
+  - Measurement: `docs/reports/compile-v2-report.md` (first reasons, engine levers, cards whose only blocker is each reason). Of 7,423 review cards 2,906 have one blocker; the largest single blockers are heads and templates (step timings ~220, Burst variants ~170, Mirage 78, Rush forms 73), not action clauses. Next: block A import, then heads by these counts.
+  - `tools/promote_compiled.mjs --v2` names compile_v2 in the card note. Tests C61-01..05 (`tests/unit/compile61.test.mjs`).
+  - Revert: `git revert` the v0.61.0 commits (the ten cards go back to staging; the tool is new).
+
 ## v0.60.3
 - **Card priority, data gaps and the compiler v2 plan** (owner, 2026-10-18; no gameplay change, staging data only):
   - Priority (owner: newest cards first): `tools/priority_report.py` -> `docs/reports/priority-report.md`: Standard block A (official format since April 2026; ~700 card numbers in 26R sets, only 6 in the data), then Eternal by Saga from 17 down, playable per colour against a target of 40 per colour, shared effect texts. `session_start.sh` prints its line.

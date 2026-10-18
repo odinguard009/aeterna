@@ -6,6 +6,7 @@
 // Cards that fail stay staged and are listed. Passing cards go to data/cards via tools/build_cards.py --update.
 //   node tools/promote_compiled.mjs build/compiled.json          -> check + promote
 //   node tools/promote_compiled.mjs build/compiled.json --dry    -> check only
+//   add --v2 when the file comes from tools/compile_v2.py (v0.61.0; the note names it)
 // Then: python3 tools/tag_effects.py && npm run -s loop
 import { readFileSync, writeFileSync, unlinkSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -70,7 +71,8 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   for (const r of bad.slice(0, 40)) console.log(`  BAD ${r.id} ${r.how || ''} ${r.err}`);
   if (process.argv.includes('--dry')) process.exit(bad.length ? 1 : 0);
   const keep = new Set(res.filter(r => !r.err).map(r => r.id));
-  const out = cards.filter(c => keep.has(c.id)).map(c => Object.assign({}, c, { note: NOTE }));
+  const note = process.argv.includes('--v2') ? NOTE.replace('(v0.52.0)', '(v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0)') : NOTE;      // v0.61.0
+  const out = cards.filter(c => keep.has(c.id)).map(c => Object.assign({}, c, { note }));
   const tmp = join(ROOT, 'build_promote.tmp.json'); writeFileSync(tmp, JSON.stringify(out));
   try { execFileSync('python3', [join(ROOT, 'tools/build_cards.py'), '--update', tmp], { stdio: 'inherit' }); } finally { unlinkSync(tmp); }
   console.log(`promoted ${out.length}`);

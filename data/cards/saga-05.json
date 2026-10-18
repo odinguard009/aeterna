@@ -64,6 +64,156 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS25-039",
+  "name": "Calydon",
+  "name_jp": "カリュドーン",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 4,
+  "reduction": {
+   "yellow": 2,
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Imaginary Beast"
+  ],
+  "text": "[LV1][LV2][LV3] Holy Life (When Attacks)\nWhen this Spirit's attack reduces the opposing Life, put a core from the Void to your Life.\n\n[LV2][LV3] (When Destroyed by the Opponent)\nDraw a card.\n{{Rush|Green}}\n(While you have a Green symbol, the following effect activates next)\n: Put two cores from the Void to your Reserve.",
+  "image": "Calydon.jpg",
+  "block": "25",
+  "saga": 5,
+  "mechanics": [
+   "Holy Life"
+  ],
+  "effects": [
+   {
+    "trigger": "ALLY_LIFE_HIT",
+    "self": true,
+    "actions": [
+     {
+      "do": "VOID_TO_LIFE",
+      "n": 1
+     }
+    ],
+    "lv": [
+     1,
+     2,
+     3
+    ]
+   },
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     2,
+     3
+    ],
+    "if": {
+     "byOpp": true
+    },
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     },
+     {
+      "do": "VOID_TO_RESERVE",
+      "n": 2,
+      "if": {
+       "hasSymbol": "green"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS26-024",
+  "name": "Tank-Mobil-Leopard",
+  "name_jp": "タンク・モービル・レオパルト",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Armed Machine"
+  ],
+  "text": "[LV1][LV2] {{ua|Red}}\nThis Spirit is unaffected by opposing Red Spirit/Ultimate/Nexus/Magic effects.\n\nWhen Braved [LV2] (When Brave Attacks)\nReturn an opposing Cost 4 or less Spirit to the Hand.",
+  "image": "Tank-Mobil-Leopard.jpg",
+  "block": "26",
+  "saga": 5,
+  "mechanics": [
+   "Ultra Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ],
+    "from": {
+     "colors": [
+      "red"
+     ],
+     "types": [
+      "Spirit",
+      "Ultimate",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "hand",
+      "kind": "spirit",
+      "costLe": 4
+     }
+    ],
+    "braved": true
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS27-004",
   "name": "The RowdyEmperor Tees-Dragon",
   "name_jp": "暴皇ティーズ・ドラゴン",
@@ -121,6 +271,83 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS27-024",
+  "name": "The GoldenShellEmperor Rosenberg",
+  "name_jp": "金殻皇ローゼンベルグ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 8,
+  "reduction": {
+   "green": 3,
+   "red": 2
+  },
+  "symbols": 2,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 3,
+    "bp": 9000
+   },
+   {
+    "cores": 5,
+    "bp": 11000
+   }
+  ],
+  "families": [
+   "Astral Guardian",
+   "Shellman"
+  ],
+  "text": "[LV1][LV2][LV3] (When Summoned)\nPut three cores from the Void to this Spirit.\n\n[LV2][LV3] (When Attacks)\nThis Spirit gains +10000 BP.\n{{Rush|Red}}\n(While you have a Red symbol, the following effect activates next)\n: Draw two cards.",
+  "image": "The GoldenShellEmperor Rosenberg.png",
+  "block": "27",
+  "saga": 5,
+  "mechanics": [
+   "Rush"
+  ],
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 3,
+      "to": "self"
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 10000
+     },
+     {
+      "do": "DRAW",
+      "n": 2,
+      "if": {
+       "hasSymbol": "red"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS28-019",

@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "18 Oct 2026",
-  "next": "next: compiler v2 prototype (clause-level: target + action sentences; Opus), then the Standard block A import (owner present for the browser); 608 of 8,041 cards playable"
+  "next": "next: Standard block A import (wiki API with curl; v2 reads its target + action pairs; Opus), then heads by single-blocker counts (step timings, Burst variants, Mirage, Rush forms); 618 of 8,041 cards playable"
  },
  "phases": [
   {
@@ -196,6 +196,10 @@
     {
      "s": "done",
      "t": "Priority report + Fandom data gaps (v0.60.3): newest cards first; Nexus levels and Ultimate Trigger lines"
+    },
+    {
+     "s": "done",
+     "t": "Compiler v2 prototype (v0.61.0): selector grammar, target pairs, [LV1-2-3] heads, lever report: +10 cards, 618 / 8,041"
     }
    ]
   },
@@ -578,11 +582,11 @@
      "t": "Data gaps (v0.60.3): Nexus levels for 717 cards, Ultimate Trigger lines for 119 from Fandom (0 unlocks alone)"
     },
     {
-     "s": "next",
-     "t": "Compiler v2: clause-level parser (target + action sentences), prototype and measurement first"
+     "s": "done",
+     "t": "Compiler v2 prototype (v0.61.0): clause grammar on top of v1 (identical output for v1 cards), +10 cards, 0 in Saga 17; blockers are heads, not verbs"
     },
     {
-     "s": "later",
+     "s": "next",
      "t": "Standard block A import (~700 card numbers, 26R sets), compiled with v2, promoted colour by colour"
     },
     {
@@ -839,7 +843,15 @@
    "calls": "~75",
    "basis": "measured",
    "note": "Manual session on Opus: Brave completion part 1 (combine data from 441 Fandom pages, braved effects on the combined Spirit, +15 cards); README links and screenshots removed until v1.0; auto mode ON with a 20-minute delay. Budget-counter difference read before the last commit."
+  },
+  {
+   "ver": "v0.61.0",
+   "date": "18 Oct 2026",
+   "tokens": 0,
+   "calls": "~45",
+   "basis": "measured",
+   "note": "Manual session on Opus: compiler v2 prototype (tools/compile_v2.py, gate test, lever report), +10 cards; auto mode switched ON by the owner. Budget-counter difference read before the last commit."
   }
  ],
- "next": "next: compiler v2 prototype (clause-level: target + action sentences; Opus), then the Standard block A import (owner present for the browser); 608 of 8,041 cards playable"
+ "next": "next: Standard block A import (wiki API with curl; v2 reads its target + action pairs; Opus), then heads by single-blocker counts (step timings, Burst variants, Mirage, Rush forms); 618 of 8,041 cards playable"
 }

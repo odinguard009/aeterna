@@ -1,0 +1,69 @@
+// v0.61.0 effect compiler v2 (tools/compile_v2.py, plan docs/ai/compiler-v2-plan.md):
+//   gate: every card v1 compiles comes out identical through v2 (v1 is tried first, sentence by sentence);
+//   clause grammar: one selector noun phrase shared by destroy / exhaust / return / remove / BP minus / send cores;
+//   "Target X. Destroy it." pairs, [LV1-2-3] heads, Rush reminder spellings; unsupported filters stay in review
+//   with a "v2 <verb>: ..." reason (the engine-lever table in docs/reports/compile-v2-report.md).
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { ROOT } from './lib/game.mjs';
+
+const py = code => JSON.parse(execFileSync('python3', ['-c', `import sys, json; sys.path.insert(0, 'tools'); import compile_v2 as v2, compile_effects as ce\n${code}`], { cwd: ROOT, encoding: 'utf8', maxBuffer: 1 << 26 }));
+const SP = { id: 'T-1', name: 'T', type: 'Spirit', color: 'red', cost: 3, levels: [{ cores: 1, bp: 3000 }, { cores: 3, bp: 5000 }, { cores: 5, bp: 7000 }] };
+const compile = (text, base = SP) => py(`c = json.loads(${JSON.stringify(JSON.stringify(Object.assign({}, base, { text })))})
+v2.install()
+try: print(json.dumps(v2.compile_card(c)))
+except ce.Review as e: print(json.dumps({'review': str(e)}))
+finally: v2.uninstall()`);
+const acts = text => { const r = compile(text); return r.review ? r : r.effects[0].actions; };
+
+test('C61-01 gate: v2 output equals v1 output for every card v1 compiles (playable records + staged pool)', () => {
+  const r = py(`import glob
+cards = json.load(open('data/cards/all-cards.json', encoding='utf8')) + [c for f in sorted(glob.glob('data/import/saga-[0-9][0-9].json')) for c in json.load(open(f, encoding='utf8'))]
+same = diff = 0; bad = []
+for c in cards:
+    try: a = ce.compile_card(c)
+    except ce.Review: continue
+    v2.install()
+    try: b = v2.compile_card(c)
+    except ce.Review as e: b = {'review': str(e)}
+    finally: v2.uninstall()
+    if a == b: same += 1
+    else: diff += 1; bad.append(c['id'])
+print(json.dumps({'same': same, 'diff': diff, 'bad': bad[:10]}))`);
+  assert.equal(r.diff, 0, 'v2 changed v1 output for ' + r.bad.join(', '));
+  assert.ok(r.same >= 450, 'v1 recompiles the playable records: ' + r.same);      // 459 of 618 on 2026-10-18 (the rest are hand-authored)
+});
+
+test('C61-02 selector grammar maps onto existing actions', () => {
+  assert.deepEqual(acts('[LV1] (When Summoned) Destroy an opposing Spirit/Ultimate with 5000 BP or less.'), [{ do: 'DESTROY', bpLe: 5000 }]);
+  assert.deepEqual(acts('[LV1] (When Summoned) Destroy one opposing Cost 3 or less Spirit/Ultimate.'), [{ do: 'DESTROY', costLe: 3 }]);
+  assert.deepEqual(acts('[LV1] (When Summoned) Destroy an opposing Spirit with the lowest cost.'), [{ do: 'DESTROY', costRank: 'lowest' }]);
+  assert.deepEqual(acts('[LV1] (When Attacks) Return an opposing Cost 4 or less Spirit to the Hand.'), [{ do: 'BOUNCE_OPP', to: 'hand', kind: 'spirit', costLe: 4 }]);
+  assert.deepEqual(acts('[LV1] (When Attacks) Return an opposing exhausted Spirit/Ultimate to the deckbottom.'), [{ do: 'BOUNCE_OPP', to: 'deckBottom', kind: 'spirit', exhaustedOnly: true }]);
+  assert.deepEqual(acts('[LV1] (When Attacks) Exhaust up to two opposing Spirits.'), [{ do: 'EXHAUST_OPP', n: 2 }]);
+  assert.deepEqual(acts('[LV1] (When Attacks) Heavily exhaust an opposing Spirit/Ultimate.'), [{ do: 'HEAVY_EXHAUST_OPP', n: 1 }]);
+  assert.deepEqual(acts('[LV1] (When Destroyed) Send two cores from an opposing Spirit to their Reserve.'), [{ do: 'OPP_CORES_TO_RESERVE', targets: 1, each: 2 }]);
+  assert.deepEqual(acts('[LV1] (When Attacks) During this turn, give an opposing Spirit -3000 BP.'), [{ do: 'BP_MINUS', n: 3000 }]);
+});
+
+test('C61-03 target pairs, [LV1-2-3] heads and Rush spellings', () => {
+  assert.deepEqual(acts('[LV1] (When Summoned) Target an opposing 4000 BP or less Spirit. Destroy it.'), [{ do: 'DESTROY', bpLe: 4000 }]);
+  const r = compile('[LV1-2-3] (When Summoned) Destroy an opposing Cost 2 or less Spirit.');
+  assert.deepEqual(r.effects[0].lv, [1, 2, 3]);
+  const k = compile('[LV1][LV2] (When Summoned)\nDraw a card.\n{{Rush|White}}\n(While you have White symbols, the following effects activate next.)\n: Return an opposing Cost 4 or less Spirit to the Hand.');
+  assert.deepEqual(k.effects[0].actions, [{ do: 'DRAW', n: 1 }, { do: 'BOUNCE_OPP', to: 'hand', kind: 'spirit', costLe: 4, if: { hasSymbol: 'white' } }]);
+});
+
+test('C61-04 filters the engine lacks stay in review with a lever reason', () => {
+  assert.equal(acts('[LV1] (When Summoned) Destroy an opposing exhausted Spirit.').review, 'v2 destroy: filter exhausted');
+  assert.equal(acts('[LV1] (When Summoned) Destroy two opposing Cost 3 or less Spirits.').review, 'v2 destroy: count 2');
+  assert.equal(acts('[LV1] (When Summoned) Exhaust two opposing Spirits.').review, 'v2 exhaust: exactly 2 (engine: up to)');
+  assert.equal(acts('[LV1] (When Summoned) Destroy an opposing Spirit.').review, 'v2 destroy: no bound');
+  assert.match(acts('[LV1] (When Summoned) Reveal three cards from your decktop.').review, /^sentence/);
+});
+
+test('C61-05 the v2 promotion (v0.61.0) is in the card data', () => {
+  const r = py(`print(json.dumps({c['id']: c.get('note', '') for c in json.load(open('data/cards/all-cards.json')) if 'compile_v2' in c.get('note', '')}))`);
+  for (const id of ['BS22-066', 'BS23-012', 'BS25-039', 'BS26-024', 'BS27-024', 'BS34-011', 'BS36-014', 'BS36-030', 'BS48-090', 'BS59-022']) assert.ok(id in r, id);
+});
