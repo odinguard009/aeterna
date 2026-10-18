@@ -907,6 +907,14 @@
    "calls": "~50",
    "basis": "measured",
    "note": "Manual session on Opus: Regression part 3 fix (header 1 px overflow on 844x390), P1 parallel lanes (gate, session_start --lane, ownership hook, merge step, tests G01-G08). Budget-counter difference read before the last commit."
+  },
+  {
+   "ver": "v0.64.0",
+   "date": "19 Oct 2026",
+   "tokens": 610000,
+   "calls": "~55",
+   "basis": "measured",
+   "note": "Manual session on Opus: Soul Magic (+1 card), next heads measured (True Release 22, Legacy 16, Invoke 14), glossary prep, player-view pass. Two budget windows (a usage limit paused the session at 02:00) and one session restart (context reload ~270k); sum of the counter differences."
   }
  ],
  "next": "next: U2 lobby navigation (Opus), alone or as the ui lane next to the True Release card lane (22 cards wait only for it); then card sessions alternate with U3-U8: True Release, Legacy, Invoke, then the Eternal heads; 670 of 8,709 cards playable"
