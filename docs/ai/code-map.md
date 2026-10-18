@@ -83,7 +83,7 @@ isMainStep, humanCan, legalityHTML, FX_KW_START, FX_LINE_STOP, effectLines, fxMa
 ## packages/engine/src/12-zones.js (70 lines, ~1.6k tokens) — ZONES, LOG, RULES COVERAGE
 openZoneModal, openLogModal, showRules
 
-## apps/web/src/13-render.js (303 lines, ~6.6k tokens) — RENDERING
+## apps/web/src/13-render.js (305 lines, ~6.7k tokens) — RENDERING
 nameHTML, isPC, applyLayout, _rz, colorVar, cardColors, isMulti, colorSty, symSlices, symCount, isUltimate, cardCls, rebMark, symBadgeHTML, handCardHTML, gemsHTML, fieldCardHTML, rowHTML, burstAreaHTML, soulAreaHTML, fieldAreaHTML, zoneBox, pv, pileHTML, lifePlate, resPlate, STEP_WARN, stepTargets, stepWarn, stepClick, renderBoard, render, LOG_OPEN, updateLogDrawer, toggleLog, magBtnHTML, liveStatusHTML, HIST_KEY, HISTORY, recordMatch, histHTML, lifeTxt, checkInvariants, switchView, renderSettings, renderLobby
 
 ## apps/web/src/13a-deckbuilder.js (200 lines, ~4k tokens) — DECK BUILDER (v0.53.0 redesign; list performance from v0.52.1)
@@ -92,11 +92,14 @@ DB_COLORS, DB_TYPES, DB_COSTS, DBF, DB_UNDO, DB_IO, dbArr, dbTypeOf, dbSetOf, db
 ## apps/web/src/13b-nav.js (60 lines, ~1.1k tokens) — APP NAVIGATION + HOME (v0.65.0, UI/UX overhaul U2; docs/DESIGN.md section 0, mockup docs/design/mockup-v11.html)
 NAV_HIDDEN, navSync, navTools, themePop, navTheme, navSound, navHistory, fmtTitle, renderHome
 
+## apps/web/src/13c-play.js (22 lines, ~0.4k tokens) — PLAY SETUP PAGE (v0.67.0, UI/UX overhaul U3; docs/DESIGN.md section 0 "Play = deck chip + mode cards + setup chips")
+PLAY_SPEEDS, playChips, renderPlay, playSet
+
 ## apps/web/src/14-images.js (149 lines, ~2.4k tokens) — CARD IMAGES
 IMG, IDB, normKey, idbOpen, idbTx, setImg, loadImages, shrinkImage, stripExt, findCardByFile, findCardByKey, importImages, clearImages, imgCls, imgSty, refreshViews, libMsg, renderLibrary, deckToText, textToDeck, downloadText, readFileText, libAction
 
-## packages/engine/src/15-match.js (58 lines, ~1k tokens) — MATCH START / END
+## packages/engine/src/15-match.js (61 lines, ~1.2k tokens) — MATCH START / END
 showGameOver, startNewGame
 
-## apps/web/src/16-events.js (210 lines, ~4.4k tokens) — EVENTS (delegation)
+## apps/web/src/16-events.js (213 lines, ~4.5k tokens) — EVENTS (delegation)
 instIdByUid, hScrollable, HDRAG, GAME_ACTS, gameAct, matchSummary, replayOf, lastReplay, runReplay, loadScenario, testSetup, defBuiltin

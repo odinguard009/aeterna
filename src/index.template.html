@@ -83,18 +83,28 @@
 </div>
 
 <div id="view-play" class="app-view">
-  <div class="lobby-title">
-    <h1>PLAY</h1>
-    <p>Choose the format, then start a match</p>
-  </div>
-  <div class="lobby-menu">
-    <button class="menu-btn" data-a="format" id="format-btn">FORMAT: ETERNAL</button>
-    <label class="sel-row">Your deck<select id="play-deck" class="sel"></select></label>
-    <label class="sel-row">CPU deck<select id="play-cpu" class="sel"></select></label>
-    <div id="lobby-deck" class="lobby-deck"></div>
-    <button class="menu-btn primary" data-a="start">⚔ VS CPU MATCH</button>
-    <button class="menu-btn small" data-a="go-lobby">◄ Back to Lobby</button>
-  </div>
+  <main class="ae-page play">
+    <header class="ae-phead"><div class="tx"><span class="ae-eyebrow">MATCH SETUP</span><h1>PLAY</h1><p>Pick your deck and a mode, then start the match.</p></div>
+      <button class="ae-ghost" data-a="go-lobby">◄ HOME</button></header>
+    <section class="pl-deck" aria-label="Your deck">
+      <span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="9" y="3" width="10" height="15" rx="1.5" transform="rotate(12 14 10.5)"/><rect x="5" y="5" width="10" height="15" rx="1.5"/></svg></span>
+      <label class="pl-pick"><span class="ae-eyebrow">YOUR DECK</span><select id="play-deck" class="sel"></select></label>
+      <span id="lobby-deck" class="lobby-deck" role="status"></span>
+      <button class="ae-ghost" data-a="go-deck">EDIT DECK</button>
+    </section>
+    <h2 class="ae-sec"><span>MODE</span></h2>
+    <div class="pl-modes">
+      <button class="menu-btn primary ae-mode" data-a="start"><span class="ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4"/></svg></span><span class="tx"><b>MATCH VS CPU</b><span>You play your deck, the CPU answers</span></span><span class="chev" aria-hidden="true">›</span></button>
+      <button class="ae-mode" data-a="watch"><span class="ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span><span class="tx"><b>WATCH CPU VS CPU</b><span>The CPU plays your deck against the CPU deck</span></span><span class="chev" aria-hidden="true">›</span></button>
+    </div>
+    <h2 class="ae-sec"><span>SETUP</span></h2>
+    <div class="pl-setup">
+      <div class="pl-row"><span class="lab">Format</span><button class="ae-chipbtn" data-a="format" id="format-btn">FORMAT: ETERNAL</button></div>
+      <label class="pl-row"><span class="lab">CPU deck</span><select id="play-cpu" class="sel"></select></label>
+      <div class="pl-row"><span class="lab" id="pl-style-l">CPU style</span><div class="ae-chips" id="pl-style" role="group" aria-labelledby="pl-style-l"></div></div>
+      <div class="pl-row"><span class="lab" id="pl-speed-l">Speed</span><div class="ae-chips" id="pl-speed" role="group" aria-labelledby="pl-speed-l"></div></div>
+    </div>
+  </main>
 </div>
 
 <div id="view-deckbuilder" class="app-view">

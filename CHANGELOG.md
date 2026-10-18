@@ -2,6 +2,15 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.67.0
+- **U3 Play setup page** (UI/UX overhaul, `docs/DESIGN.md` section 0 "Play = deck chip + mode cards + setup chips"; same tokens and shapes as the U2 Home, both modes, PC and phone). The page opens with a header card (eyebrow MATCH SETUP, title, one line, HOME), then a **deck chip** (deck slot select, legality line with a mark, EDIT DECK), the **mode cards** MATCH VS CPU and the new **WATCH CPU VS CPU**, and a **setup** panel: format toggle, CPU deck, **CPU style** chips (Balanced / Aggressive / Defensive) and **speed** chips (Normal / Fast / Instant). Style and speed are the same saved settings as on the Settings page. A mode card shows "deck not ready" while your deck is not legal (it still opens the explanation).
+  - **Watch CPU vs CPU:** `startNewGame({ watch: true })` (`15-match.js`) lets the CPU play your deck too (`G.watch`, `G.p.player.cpu`, name "Your deck"), at the chosen speed: random first player, CPU redraw choice, no prompts, no match-history entry; the end dialog says MATCH OVER with "Watch again". Step buttons only say "Watching: the CPU plays both sides."
+  - Code: `apps/web/src/13c-play.js` (`renderPlay`, `playSet`), markup in `src/index.template.html`, styles in the "v0.67.0 U3" block of `src/styles.css`. Every old id (`play-deck`, `play-cpu`, `format-btn`, `lobby-deck`) and `data-a` action is kept.
+  - Audit with skill `web-design-guidelines`: labelled chip groups with `aria-pressed`, focus rings, `role="status"` on the deck line, tap highlight and reduced motion handled, no slanted text in the chips.
+  - Tests: `tests/unit/ui67.test.mjs` (3 tests: page on PC 1366x768 and phone 390x844, chips save, a watched match runs to the end with no history entry); `play_ui`, `v17_tests`, `v18_tests` 148/148.
+- **Player-view pass** (`bs-playwright-tester`, on v0.66.0 before the change): 95/95 deck cards played with 0 problems, 12/12 seeded CPU-vs-CPU sims, 4/4 click-driven UI games (2 PC, 2 phone) to Game Over, 0 console errors. Cosmetic note for U5: the last attacking card can be drawn above the fading game-over dialog.
+- Revert: `git revert` of the v0.67.0 commit, or restore branch `backup/v0.66.0` (previous UI state); no data change.
+
 ## v0.66.0
 - **True Release** (= Super Unleash; block A card session; Standard rule manual "True Release", CR 12-2-1-1, Fandom True Release Q&A 31532-31534). A card with the keyword can level up to LV2 either with its printed cores or with only the Soul Core on it ("True Release state"); the Soul Core level-up is a rule, not an effect, and enough normal cores still reach LV3.
   - Card data: `trueRelease: true` (Spirit / Nexus cards with an LV2; `parseCard` rejects anything else). Compiler v1 reads the `[LV2] (True Release)` head (also the export's stray `[LV2]' (True Release)` on 26RBS01-032), sets the field and keeps the LV2 effect; "(True Release)" outside an `[LV2]` head stays in review.

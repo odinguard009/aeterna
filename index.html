@@ -739,6 +739,63 @@
   html.layout-pc .ae-tile { padding: 16px 18px; }
   html.layout-pc .home-foot { padding: 6px 28px; flex-wrap: nowrap; gap: 22px; }
   @media (prefers-reduced-motion: reduce) { #view-lobby .home-cta .menu-btn, .ae-tile { transition: none; } }
+  /* =====================================================================
+     v0.67.0 U3: Play setup page (docs/DESIGN.md section 0: header card, deck chip, mode cards, setup chips).
+     Same tokens and shapes as the U2 Home; ids and data-a actions of the old page are kept.
+     ===================================================================== */
+  #view-play { color-scheme: dark; justify-content: flex-start; align-items: stretch; padding: 0; gap: 0; text-align: left; background: linear-gradient(180deg, var(--ae-board1), var(--ae-board2)); color: var(--ae-text); overflow-y: auto; overflow-x: hidden; }
+  :root[data-mode="light"] #view-play { color-scheme: light; }
+  #view-play::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(60deg, var(--ae-lattice) 0 1px, transparent 1px 46px), repeating-linear-gradient(-60deg, var(--ae-lattice) 0 1px, transparent 1px 46px); }
+  .ae-page { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 16px 16px 20px; width: 100%; max-width: 1040px; margin: 0 auto; }
+  .ae-phead { display: flex; justify-content: flex-start; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 0; border-radius: 0; background: linear-gradient(180deg, var(--ae-panel1), var(--ae-panel2)); clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px); box-shadow: inset 0 0 0 1px var(--ae-line), inset 4px 0 0 var(--you); }
+  .ae-phead .tx { flex: 1; min-width: 0; }
+  .ae-phead h1 { margin: 2px 0 0; font-size: 30px; line-height: 1.05; font-weight: 900; font-style: italic; letter-spacing: .04em; color: var(--ae-text); text-shadow: none; }
+  .ae-phead p { margin: 4px 0 0; font-size: 14px; line-height: 1.45; color: var(--ae-text2); }
+  .ae-eyebrow { display: block; font-size: 11px; font-weight: 900; letter-spacing: .18em; color: var(--you); text-transform: uppercase; }
+  .ae-ghost { flex: none; min-height: 40px; padding: 0 16px; border: 0; background: var(--ae-chip); color: var(--ae-text); box-shadow: inset 0 0 0 1px var(--ae-line2); font: inherit; font-size: 12px; font-weight: 800; letter-spacing: .12em; cursor: pointer; clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%); touch-action: manipulation; }
+  .ae-ghost:hover { box-shadow: inset 0 0 0 1px var(--you); color: var(--you); }
+  .ae-sec { display: flex; align-items: center; gap: 10px; margin: 6px 0 0; font-size: 12px; font-weight: 900; letter-spacing: .18em; color: var(--ae-text2); }
+  .ae-sec::after { content: ""; flex: 1; height: 1px; background: var(--ae-line2); }
+  .pl-deck { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 14px; background: linear-gradient(180deg, var(--ae-panel1), var(--ae-panel2)); box-shadow: inset 0 0 0 1px var(--ae-line); clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+  .pl-deck .ic { width: 44px; height: 44px; flex: none; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); background: var(--you); color: var(--you-ink); display: flex; align-items: center; justify-content: center; }
+  .pl-pick { flex: 1 1 180px; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  #view-play .sel { width: 100%; min-height: 40px; padding: 6px 10px; font-size: 14px; font-weight: 700; color: var(--ae-text); background: var(--ae-chip); border: 0; border-radius: 0; box-shadow: inset 0 0 0 1px var(--ae-line2); }
+  #view-play .sel option { background: var(--ae-panel1); color: var(--ae-text); }
+  #view-play .sel:focus-visible, .ae-ghost:focus-visible, .ae-mode:focus-visible, .ae-chip:focus-visible, .ae-chipbtn:focus-visible { outline: 2px solid var(--you); outline-offset: 2px; }
+  #view-play .lobby-deck { order: 3; flex-basis: 100%; font-size: 13px; color: var(--ae-text2); }
+  #view-play .lobby-deck::before { content: "✓ "; color: var(--you); font-weight: 900; }
+  #view-play .lobby-deck.bad { color: var(--ae-text); }
+  #view-play .lobby-deck.bad::before { content: "! "; color: var(--cpu); }
+  .pl-modes { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  #view-play .ae-mode { display: flex; align-items: center; gap: 14px; min-height: 76px; padding: 12px 14px; border: 0; border-radius: 0; text-align: left; font: inherit; cursor: pointer; color: var(--ae-text); background: linear-gradient(180deg, var(--ae-panel1), var(--ae-panel2)); clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px); box-shadow: inset 0 0 0 1px var(--ae-line); transform: none; transition: box-shadow .15s, filter .15s; touch-action: manipulation; }
+  #view-play .ae-mode:hover { box-shadow: inset 0 0 0 1px var(--you); }
+  #view-play .ae-mode:active { filter: brightness(.94); background: linear-gradient(180deg, var(--ae-panel1), var(--ae-panel2)); color: var(--ae-text); }
+  #view-play .ae-mode.primary { background: linear-gradient(100deg, var(--you-soft), var(--ae-panel2) 70%); box-shadow: inset 0 0 0 1px var(--you), 0 0 22px var(--you-soft); font-size: inherit; }
+  #view-play .ae-mode .ic { width: 52px; height: 52px; flex: none; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); background: var(--ae-chip); color: var(--you); display: flex; align-items: center; justify-content: center; }
+  #view-play .ae-mode.primary .ic { background: var(--you); color: var(--you-ink); }
+  #view-play .ae-mode .tx { flex: 1; min-width: 0; }
+  #view-play .ae-mode b { display: block; font-size: 16px; font-weight: 900; letter-spacing: .08em; }
+  #view-play .ae-mode .tx span { display: block; margin-top: 2px; font-size: 13px; font-weight: 400; color: var(--ae-text2); }
+  #view-play .ae-mode .chev { font-size: 24px; color: var(--ae-text2); }
+  #view-play .ae-mode.blocked .tx span::after { content: " · deck not ready"; color: var(--cpu); font-weight: 700; }
+  .pl-setup { display: flex; flex-direction: column; background: linear-gradient(180deg, var(--ae-panel1), var(--ae-panel2)); box-shadow: inset 0 0 0 1px var(--ae-line); clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+  .pl-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 14px; border-top: 1px solid var(--ae-line); font-size: 14px; color: var(--ae-text); }
+  .pl-row:first-child { border-top: 0; }
+  .pl-row .lab { flex: 1 0 100%; font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ae-text2); }
+  .pl-row > .sel, .pl-row > .ae-chips { flex: 1 1 200px; min-width: 0; }
+  .ae-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ae-chip, .ae-chipbtn { min-height: 40px; padding: 0 16px; border: 0; background: var(--ae-chip); color: var(--ae-text2); box-shadow: inset 0 0 0 1px var(--ae-line2); font: inherit; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%); touch-action: manipulation; }
+  .ae-chip[aria-pressed="true"] { background: var(--you); color: var(--you-ink); box-shadow: none; }
+  .ae-chip:hover:not([aria-pressed="true"]), .ae-chipbtn:hover { color: var(--ae-text); box-shadow: inset 0 0 0 1px var(--you); }
+  .ae-chipbtn { flex: none; color: var(--ae-text); text-align: left; }
+  html.layout-pc .ae-page { padding: 32px 48px 32px; gap: 16px; }
+  html.layout-pc .ae-phead { padding: 20px 24px; align-items: center; }
+  html.layout-pc .ae-phead h1 { font-size: 40px; }
+  html.layout-pc .pl-modes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  html.layout-pc #view-play .ae-mode { min-height: 96px; padding: 16px 20px; }
+  html.layout-pc .pl-row .lab { flex: 0 0 140px; }
+  #view-play .ae-mode, .ae-chip, .ae-chipbtn, .ae-ghost { -webkit-tap-highlight-color: transparent; }
+  @media (prefers-reduced-motion: reduce) { #view-play .ae-mode { transition: none; } }
 </style>
 </head>
 <body>
@@ -816,18 +873,28 @@
 </div>
 
 <div id="view-play" class="app-view">
-  <div class="lobby-title">
-    <h1>PLAY</h1>
-    <p>Choose the format, then start a match</p>
-  </div>
-  <div class="lobby-menu">
-    <button class="menu-btn" data-a="format" id="format-btn">FORMAT: ETERNAL</button>
-    <label class="sel-row">Your deck<select id="play-deck" class="sel"></select></label>
-    <label class="sel-row">CPU deck<select id="play-cpu" class="sel"></select></label>
-    <div id="lobby-deck" class="lobby-deck"></div>
-    <button class="menu-btn primary" data-a="start">⚔ VS CPU MATCH</button>
-    <button class="menu-btn small" data-a="go-lobby">◄ Back to Lobby</button>
-  </div>
+  <main class="ae-page play">
+    <header class="ae-phead"><div class="tx"><span class="ae-eyebrow">MATCH SETUP</span><h1>PLAY</h1><p>Pick your deck and a mode, then start the match.</p></div>
+      <button class="ae-ghost" data-a="go-lobby">◄ HOME</button></header>
+    <section class="pl-deck" aria-label="Your deck">
+      <span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="9" y="3" width="10" height="15" rx="1.5" transform="rotate(12 14 10.5)"/><rect x="5" y="5" width="10" height="15" rx="1.5"/></svg></span>
+      <label class="pl-pick"><span class="ae-eyebrow">YOUR DECK</span><select id="play-deck" class="sel"></select></label>
+      <span id="lobby-deck" class="lobby-deck" role="status"></span>
+      <button class="ae-ghost" data-a="go-deck">EDIT DECK</button>
+    </section>
+    <h2 class="ae-sec"><span>MODE</span></h2>
+    <div class="pl-modes">
+      <button class="menu-btn primary ae-mode" data-a="start"><span class="ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4"/></svg></span><span class="tx"><b>MATCH VS CPU</b><span>You play your deck, the CPU answers</span></span><span class="chev" aria-hidden="true">›</span></button>
+      <button class="ae-mode" data-a="watch"><span class="ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span><span class="tx"><b>WATCH CPU VS CPU</b><span>The CPU plays your deck against the CPU deck</span></span><span class="chev" aria-hidden="true">›</span></button>
+    </div>
+    <h2 class="ae-sec"><span>SETUP</span></h2>
+    <div class="pl-setup">
+      <div class="pl-row"><span class="lab">Format</span><button class="ae-chipbtn" data-a="format" id="format-btn">FORMAT: ETERNAL</button></div>
+      <label class="pl-row"><span class="lab">CPU deck</span><select id="play-cpu" class="sel"></select></label>
+      <div class="pl-row"><span class="lab" id="pl-style-l">CPU style</span><div class="ae-chips" id="pl-style" role="group" aria-labelledby="pl-style-l"></div></div>
+      <div class="pl-row"><span class="lab" id="pl-speed-l">Speed</span><div class="ae-chips" id="pl-speed" role="group" aria-labelledby="pl-speed-l"></div></div>
+    </div>
+  </main>
 </div>
 
 <div id="view-deckbuilder" class="app-view">
@@ -1093,7 +1160,7 @@ applyTheme();
    type: 'Spirit' | 'Nexus' | 'Magic'      symbol: card color     symbols: number of symbols
    reduction: {color: n}         levels: [{cores, bp}]  (Nexus levels have no bp)
    --------------------------------------------------------------------- */
-const VERSION = '0.66.0';
+const VERSION = '0.67.0';
 document.title = 'Aeterna - Engine v' + VERSION;
 const CARDS = {};
 function defCard(o) {
@@ -5080,6 +5147,7 @@ function stepClick(i) {
   if (!G) return;
   i = Number(i); const name = s => (G.steps[s] || '').toLowerCase().replace(/(^|\s)\w/g, m => m.toUpperCase());
   if (G.over) return stepWarn('The match is over.', i);
+  if (G.watch) return stepWarn('Watching: the CPU plays both sides.', i);
   if (G.active !== 'player') return stepWarn('The CPU is playing its turn.', i);
   const t = stepTargets();
   if (i === G.step) return stepWarn(`Already in the ${name(i)} Step.`, i);
@@ -5245,6 +5313,7 @@ function renderLobby() {
     $('play-cpu').innerHTML = [...PREBUILT.map(d => `<option value="${d.id}">${esc(d.name)}${validateDeck(d.cards, FORMAT).ok ? '' : ' (not legal in ' + fmtName(FORMAT) + ': random instead)'}</option>`), '<option value="random">Random legal deck</option>', '<option value="mine">Mirror: copy of your deck</option>'].join('');
     $('play-cpu').value = SETTINGS.cpuDeck;
   }
+  renderPlay();
 }
 
 
@@ -5509,6 +5578,28 @@ if (typeof document !== 'undefined') {
   document.addEventListener('click', e => { const p = $('theme-pop'); if (p && !p.hidden && !e.target.closest('#theme-pop, #theme-btn')) themePop(false); });
 }
 /* ---------------------------------------------------------------------
+   PLAY SETUP PAGE (v0.67.0, UI/UX overhaul U3; docs/DESIGN.md section 0 "Play = deck chip + mode cards + setup chips")
+   Deck chip (slot select + legality line + Edit), mode cards (Match vs CPU, Watch CPU vs CPU),
+   setup rows (format toggle, CPU deck select, CPU style and speed chips). Display only: the match code is in 15-match.js.
+   --------------------------------------------------------------------- */
+const PLAY_SPEEDS = [['normal', 'Normal'], ['fast', 'Fast'], ['instant', 'Instant']];
+function playChips(id, list, cur, act) {
+  const el = $(id); if (!el) return;
+  el.innerHTML = list.map(([v, l]) => `<button class="ae-chip" data-a="${act}" data-v="${v}" aria-pressed="${v === cur}">${esc(l)}</button>`).join('');
+}
+function renderPlay() {
+  if (typeof document === 'undefined' || !$('pl-style')) return;
+  playChips('pl-style', CPU_PROFILE_NAMES.map(n => [n, cap(n)]), cpuProfileName(null), 'play-style');
+  playChips('pl-speed', PLAY_SPEEDS, SETTINGS.speed, 'play-speed');
+  const ok = validateDeck(PLAYER_DECK).ok;
+  document.querySelectorAll('#view-play .ae-mode').forEach(b => b.classList.toggle('blocked', !ok));   // still clickable: start explains why
+}
+function playSet(kind, v) {
+  if (kind === 'style' && CPU_PROFILES[v]) setCpuProfile(v);
+  else if (kind === 'speed' && SPEEDS[v]) { SETTINGS.speed = v; saveSettings(); }
+  renderPlay();
+}
+/* ---------------------------------------------------------------------
    CARD IMAGES  (user supplied files kept in IndexedDB, never uploaded)
    --------------------------------------------------------------------- */
 const IMG = {};           // card id -> blob: URL
@@ -5661,12 +5752,12 @@ function libAction(a) {
    MATCH START / END
    --------------------------------------------------------------------- */
 function showGameOver() {
-  const youWon = G.winner === 'player';
+  const youWon = G.winner === 'player', W = !!G.watch;
   modal({
-    title: youWon ? '🏆 VICTORY' : '💀 DEFEAT', html: esc(G.last),
-    buttons: [{ label: 'Rematch', cls: 'primary', value: 'again' }, { label: 'Back to Lobby', value: 'lobby' }, { label: 'Close', cls: 'cancel', value: null }]
+    title: W ? '🏁 MATCH OVER' : youWon ? '🏆 VICTORY' : '💀 DEFEAT', html: esc(G.last),
+    buttons: [{ label: W ? 'Watch again' : 'Rematch', cls: 'primary', value: 'again' }, { label: 'Back to Lobby', value: 'lobby' }, { label: 'Close', cls: 'cancel', value: null }]
   }).then(v => {
-    if (v === 'again') startNewGame();
+    if (v === 'again') startNewGame(W ? { watch: true } : undefined);
     else if (v === 'lobby') { SESSION++; clearPick(); G = null; switchView('view-lobby'); }
   });
 }
@@ -5681,13 +5772,15 @@ async function startNewGame(opts) {
   const my = SESSION;
   const deckB = opts.deckB || (SIM ? (SIM_DECK_B || PRESET_DECK) : cpuDeckFor(FORMAT));
   G = newGame(deckA, deckB, FORMAT);
+  const W = !SIM && !!opts.watch;   // U3 "Watch CPU vs CPU": the CPU plays your deck too, at the chosen speed, no history entry
+  if (W) { G.watch = true; G.p.player.cpu = true; G.p.player.name = 'Your deck'; }
   G.rec = { v: 1, build: VERSION, seed, format: FORMAT, sim: SIM, deckA: Object.assign({}, deckA), deckB: Object.assign({}, deckB), inputs: [] };
-  if (!SIM && !opts.noHistory) G.meta = { fmt: FORMAT, you: opts.deckA ? 'Replay' : SLOTS[ACTIVE_SLOT].name, cpu: opts.deckB ? 'Replay' : CPU_DECK_NAME, done: false };
+  if (!SIM && !W && !opts.noHistory) G.meta = { fmt: FORMAT, you: opts.deckA ? 'Replay' : SLOTS[ACTIVE_SLOT].name, cpu: opts.deckB ? 'Replay' : CPU_DECK_NAME, done: false };
   switchView('view-playmat');
   render();
   try {
     let first;
-    if (SIM) { first = rng() < 0.5 ? 'player' : 'opponent'; log(`${G.p[first].name} goes first.`); }
+    if (SIM || W) { first = rng() < 0.5 ? 'player' : 'opponent'; if (W) log('Watching: the CPU plays both sides.'); log(`${G.p[first].name} goes first.`); }
     else {
       const call = await ask({ title: '🪙 Coin Toss', html: 'Pick a side. The winner chooses who goes first.', buttons: [{ label: 'HEADS', cls: 'primary', value: 'h' }, { label: 'TAILS', cls: 'primary', value: 't' }] });
       const heads = rng() < 0.5, won = (call === 'h') === heads;
@@ -5698,12 +5791,13 @@ async function startNewGame(opts) {
       render();
     }
     // setup: a Contract card may be added to the starting Hand (default: add it; the CPU always does)
-    if (!SIM && G.p.player.hand.some(h => CARDS[h.id].contract)) {
+    if (!SIM && !W && G.p.player.hand.some(h => CARDS[h.id].contract)) {
       const add = await ask({ title: '📜 Contract card', html: 'Your Deck has a Contract card. Add it to your starting Hand?', buttons: [{ label: 'Add to Hand', cls: 'primary', value: true }, { label: 'Keep in Deck', cls: 'cancel', value: false }] });
       if (!add) { contractToDeck(G.p.player); log('You kept the Contract card in the Deck.'); }
     }
     // starting hand: each player may redraw once
-    if (!SIM) {
+    if (W) { if (cpuWantsRedraw(G.p.player.hand)) { redrawHand(G.p.player); log('Your deck (CPU) redrew its starting hand.'); } }
+    else if (!SIM) {
             const r = await ask({ title: '🎴 Starting Hand', html: `<div class="mull-list">${G.p.player.hand.map(h => mullCardHTML(CARDS[h.id])).join('')}</div><div style="margin-top:8px">Redraw your 4 cards? You can only do this once.</div>${G.p.player.hand.some(h => CARDS[h.id].contract) ? '<div class="mull-note">📜 A redraw returns your Contract card to the Deck too, and it cannot be added to your Hand again this game (official rules).</div>' : ''}`, wide: true, peek: true, buttons: [{ label: 'Redraw all cards', cls: 'primary', value: true }, { label: 'Keep hand', cls: 'cancel', value: false }] });
       if (r) { redrawHand(G.p.player); log('You redrew your starting hand.'); }
     }
@@ -5781,6 +5875,9 @@ document.addEventListener('click', e => {
   const el = e.target.closest('[data-a]'); if (!el) return;
   const a = el.dataset.a, v = el.dataset.v;
   if (a === 'start') startNewGame();
+  else if (a === 'watch') startNewGame({ watch: true });
+  else if (a === 'play-style') playSet('style', v);
+  else if (a === 'play-speed') playSet('speed', v);
   else if (a === 'go-deck') switchView('view-deckbuilder');
   else if (a === 'go-lobby') switchView('view-lobby');
   else if (a === 'go-play') switchView('view-play');

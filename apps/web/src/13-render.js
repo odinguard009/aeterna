@@ -133,6 +133,7 @@ function stepClick(i) {
   if (!G) return;
   i = Number(i); const name = s => (G.steps[s] || '').toLowerCase().replace(/(^|\s)\w/g, m => m.toUpperCase());
   if (G.over) return stepWarn('The match is over.', i);
+  if (G.watch) return stepWarn('Watching: the CPU plays both sides.', i);
   if (G.active !== 'player') return stepWarn('The CPU is playing its turn.', i);
   const t = stepTargets();
   if (i === G.step) return stepWarn(`Already in the ${name(i)} Step.`, i);
@@ -298,6 +299,7 @@ function renderLobby() {
     $('play-cpu').innerHTML = [...PREBUILT.map(d => `<option value="${d.id}">${esc(d.name)}${validateDeck(d.cards, FORMAT).ok ? '' : ' (not legal in ' + fmtName(FORMAT) + ': random instead)'}</option>`), '<option value="random">Random legal deck</option>', '<option value="mine">Mirror: copy of your deck</option>'].join('');
     $('play-cpu').value = SETTINGS.cpuDeck;
   }
+  renderPlay();
 }
 
 

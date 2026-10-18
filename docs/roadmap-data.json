@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "19 Oct 2026",
-  "next": "next: U3 Play setup page (Opus; mockup v11 + docs/DESIGN.md), then a card session sized by combined levers (real recompile: Invoke alone 1, Legacy alone 2; co-blockers 'target one of' 28, (Your Attack Step) ~40 on block A), then U4-U8 alternating with card sessions; 684 of 8,709 cards playable"
+  "next": "next: card session Invoke (Opus; + target sentences, real recompile: Invoke alone 1, co-blockers 'target one of' 28, (Your Attack Step) ~40 on block A), then U4 Settings / How to play / Library, then Legacy and U5-U8 alternating with card sessions; 684 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -454,8 +454,12 @@
      "t": "U2 lobby navigation v0.65.0: PC top bar with skewed tabs, phone header + bottom tab bar with own icons, colour picker + Dark/Light in the header, new Home (motto, Play now, Build a deck, shortcut tiles, footer)"
     },
     {
+     "s": "done",
+     "t": "U3 Play setup page v0.67.0: header card, deck chip, mode cards (Match vs CPU, Watch CPU vs CPU), format / CPU deck / CPU style / speed setup rows"
+    },
+    {
      "s": "later",
-     "t": "U3 Play setup, U4 Settings/How to play/Library (+ playmat upload), U5 overlays, U6 My decks page, U7 deck builder (filters, list/curve/look tabs, Deck look), U8 audit; card sessions alternate"
+     "t": "U4 Settings/How to play/Library (+ playmat upload), U5 overlays, U6 My decks page, U7 deck builder (filters, list/curve/look tabs, Deck look), U8 audit; card sessions alternate"
     },
     {
      "s": "later",
@@ -939,7 +943,15 @@
    "calls": "~45",
    "basis": "measured",
    "note": "Scheduled auto run on Opus: True Release + (During Attack) heads (+14 cards, tests TR66-01..06 + scenario), real-recompile re-measure of the block A heads (subagent), rules research Invoke/Legacy (subagent), player-view pass (subagent). Main-session budget-counter difference read before the last commit."
+  },
+  {
+   "ver": "v0.67.0",
+   "date": "19 Oct 2026",
+   "tokens": 135000,
+   "calls": "~50",
+   "basis": "measured",
+   "note": "Scheduled auto run on Opus: U3 Play setup page + Watch CPU vs CPU (3 tests), player-view pass (subagent), web-design-guidelines audit. Budget-counter difference read before the last commit."
   }
  ],
- "next": "next: U3 Play setup page (Opus; mockup v11 + docs/DESIGN.md), then a card session sized by combined levers (real recompile: Invoke alone 1, Legacy alone 2; co-blockers 'target one of' 28, (Your Attack Step) ~40 on block A), then U4-U8 alternating with card sessions; 684 of 8,709 cards playable"
+ "next": "next: card session Invoke (Opus; + target sentences, real recompile: Invoke alone 1, co-blockers 'target one of' 28, (Your Attack Step) ~40 on block A), then U4 Settings / How to play / Library, then Legacy and U5-U8 alternating with card sessions; 684 of 8,709 cards playable"
 }

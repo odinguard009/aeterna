@@ -2,12 +2,12 @@
    MATCH START / END
    --------------------------------------------------------------------- */
 function showGameOver() {
-  const youWon = G.winner === 'player';
+  const youWon = G.winner === 'player', W = !!G.watch;
   modal({
-    title: youWon ? '🏆 VICTORY' : '💀 DEFEAT', html: esc(G.last),
-    buttons: [{ label: 'Rematch', cls: 'primary', value: 'again' }, { label: 'Back to Lobby', value: 'lobby' }, { label: 'Close', cls: 'cancel', value: null }]
+    title: W ? '🏁 MATCH OVER' : youWon ? '🏆 VICTORY' : '💀 DEFEAT', html: esc(G.last),
+    buttons: [{ label: W ? 'Watch again' : 'Rematch', cls: 'primary', value: 'again' }, { label: 'Back to Lobby', value: 'lobby' }, { label: 'Close', cls: 'cancel', value: null }]
   }).then(v => {
-    if (v === 'again') startNewGame();
+    if (v === 'again') startNewGame(W ? { watch: true } : undefined);
     else if (v === 'lobby') { SESSION++; clearPick(); G = null; switchView('view-lobby'); }
   });
 }
@@ -22,13 +22,15 @@ async function startNewGame(opts) {
   const my = SESSION;
   const deckB = opts.deckB || (SIM ? (SIM_DECK_B || PRESET_DECK) : cpuDeckFor(FORMAT));
   G = newGame(deckA, deckB, FORMAT);
+  const W = !SIM && !!opts.watch;   // U3 "Watch CPU vs CPU": the CPU plays your deck too, at the chosen speed, no history entry
+  if (W) { G.watch = true; G.p.player.cpu = true; G.p.player.name = 'Your deck'; }
   G.rec = { v: 1, build: VERSION, seed, format: FORMAT, sim: SIM, deckA: Object.assign({}, deckA), deckB: Object.assign({}, deckB), inputs: [] };
-  if (!SIM && !opts.noHistory) G.meta = { fmt: FORMAT, you: opts.deckA ? 'Replay' : SLOTS[ACTIVE_SLOT].name, cpu: opts.deckB ? 'Replay' : CPU_DECK_NAME, done: false };
+  if (!SIM && !W && !opts.noHistory) G.meta = { fmt: FORMAT, you: opts.deckA ? 'Replay' : SLOTS[ACTIVE_SLOT].name, cpu: opts.deckB ? 'Replay' : CPU_DECK_NAME, done: false };
   switchView('view-playmat');
   render();
   try {
     let first;
-    if (SIM) { first = rng() < 0.5 ? 'player' : 'opponent'; log(`${G.p[first].name} goes first.`); }
+    if (SIM || W) { first = rng() < 0.5 ? 'player' : 'opponent'; if (W) log('Watching: the CPU plays both sides.'); log(`${G.p[first].name} goes first.`); }
     else {
       const call = await ask({ title: '🪙 Coin Toss', html: 'Pick a side. The winner chooses who goes first.', buttons: [{ label: 'HEADS', cls: 'primary', value: 'h' }, { label: 'TAILS', cls: 'primary', value: 't' }] });
       const heads = rng() < 0.5, won = (call === 'h') === heads;
@@ -39,12 +41,13 @@ async function startNewGame(opts) {
       render();
     }
     // setup: a Contract card may be added to the starting Hand (default: add it; the CPU always does)
-    if (!SIM && G.p.player.hand.some(h => CARDS[h.id].contract)) {
+    if (!SIM && !W && G.p.player.hand.some(h => CARDS[h.id].contract)) {
       const add = await ask({ title: '📜 Contract card', html: 'Your Deck has a Contract card. Add it to your starting Hand?', buttons: [{ label: 'Add to Hand', cls: 'primary', value: true }, { label: 'Keep in Deck', cls: 'cancel', value: false }] });
       if (!add) { contractToDeck(G.p.player); log('You kept the Contract card in the Deck.'); }
     }
     // starting hand: each player may redraw once
-    if (!SIM) {
+    if (W) { if (cpuWantsRedraw(G.p.player.hand)) { redrawHand(G.p.player); log('Your deck (CPU) redrew its starting hand.'); } }
+    else if (!SIM) {
             const r = await ask({ title: '🎴 Starting Hand', html: `<div class="mull-list">${G.p.player.hand.map(h => mullCardHTML(CARDS[h.id])).join('')}</div><div style="margin-top:8px">Redraw your 4 cards? You can only do this once.</div>${G.p.player.hand.some(h => CARDS[h.id].contract) ? '<div class="mull-note">📜 A redraw returns your Contract card to the Deck too, and it cannot be added to your Hand again this game (official rules).</div>' : ''}`, wide: true, peek: true, buttons: [{ label: 'Redraw all cards', cls: 'primary', value: true }, { label: 'Keep hand', cls: 'cancel', value: false }] });
       if (r) { redrawHand(G.p.player); log('You redrew your starting hand.'); }
     }

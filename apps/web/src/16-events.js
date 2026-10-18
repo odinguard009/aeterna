@@ -64,6 +64,9 @@ document.addEventListener('click', e => {
   const el = e.target.closest('[data-a]'); if (!el) return;
   const a = el.dataset.a, v = el.dataset.v;
   if (a === 'start') startNewGame();
+  else if (a === 'watch') startNewGame({ watch: true });
+  else if (a === 'play-style') playSet('style', v);
+  else if (a === 'play-speed') playSet('speed', v);
   else if (a === 'go-deck') switchView('view-deckbuilder');
   else if (a === 'go-lobby') switchView('view-lobby');
   else if (a === 'go-play') switchView('view-play');
