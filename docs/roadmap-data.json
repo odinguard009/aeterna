@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "18 Oct 2026",
-  "next": "next: U1 UI overhaul (monochrome tokens + shell, docs/DESIGN.md; Opus), then card sessions alternate with U2-U7: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
+  "next": "next: U1 UI overhaul (CrossOver-style tokens + shell, docs/DESIGN.md; Opus), then card sessions alternate with U2-U7: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -443,7 +443,7 @@
     },
     {
      "s": "next",
-     "t": "U1 monochrome tokens + shell in the current layout (owner 18 Oct: black and white, card-back style, motto Gate Open, Release!)"
+     "t": "U1 CrossOver-style tokens + shell in the current layout (owner 18 Oct: graphite, teal you / crimson CPU, skewed banners, motto Gate Open, Release!)"
     },
     {
      "s": "later",
@@ -881,5 +881,5 @@
    "note": "Manual session on Opus: Standard block A import (wiki API, 674 cards staged, +51 playable), levers measured, player-view pass by a subagent (90k tokens incl.). Budget-counter difference read before the last commit."
   }
  ],
- "next": "next: U1 UI overhaul (monochrome tokens + shell, docs/DESIGN.md; Opus), then card sessions alternate with U2-U7: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
+ "next": "next: U1 UI overhaul (CrossOver-style tokens + shell, docs/DESIGN.md; Opus), then card sessions alternate with U2-U7: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
 }
