@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "18 Oct 2026",
-  "next": "next: U1 UI overhaul (tokens + app shell, docs/DESIGN.md; Opus), then card sessions alternate with U2-U7: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
+  "next": "next: U1 UI overhaul (monochrome tokens + shell, docs/DESIGN.md; Opus), then card sessions alternate with U2-U7: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -443,11 +443,11 @@
     },
     {
      "s": "next",
-     "t": "U1 tokens + shell style in the current layout (owner 18 Oct: keep the layout, new style): --ae-* tokens, header, plates, core gems, step band glow"
+     "t": "U1 monochrome tokens + shell in the current layout (owner 18 Oct: black and white, card-back style, motto Gate Open, Release!)"
     },
     {
      "s": "later",
-     "t": "U2 Eternal-edge card frames, U3 Aegis-style lobby navigation (top nav, phone tab bar), U4 Play setup, U5 Settings/How to play/Library pages, U6 overlays, U7 deck builder restyle, U8 audit"
+     "t": "U2 Aegis-style lobby navigation (top nav, phone tab bar), U3 Play setup, U4 Settings/How to play/Library pages, U5 overlays, U6 deck builder restyle, U7 audit"
     },
     {
      "s": "later",
@@ -881,5 +881,5 @@
    "note": "Manual session on Opus: Standard block A import (wiki API, 674 cards staged, +51 playable), levers measured, player-view pass by a subagent (90k tokens incl.). Budget-counter difference read before the last commit."
   }
  ],
- "next": "next: U1 UI overhaul (tokens + app shell, docs/DESIGN.md; Opus), then card sessions alternate with U2-U7: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
+ "next": "next: U1 UI overhaul (monochrome tokens + shell, docs/DESIGN.md; Opus), then card sessions alternate with U2-U7: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
 }
