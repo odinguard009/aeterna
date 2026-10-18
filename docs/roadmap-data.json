@@ -859,6 +859,14 @@
    "calls": "~55",
    "basis": "measured",
    "note": "Manual session on Opus: compiler v2 prototype (tools/compile_v2.py, gate test, lever report), +10 cards; auto mode switched ON by the owner. Budget-counter difference read before the last commit."
+  },
+  {
+   "ver": "v0.62.0",
+   "date": "18 Oct 2026",
+   "tokens": 155000,
+   "calls": "~60",
+   "basis": "measured",
+   "note": "Manual session on Opus: Standard block A import (wiki API, 674 cards staged, +51 playable), levers measured, player-view pass by a subagent (90k tokens incl.). Budget-counter difference read before the last commit."
   }
  ],
  "next": "next: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"

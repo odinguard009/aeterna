@@ -7,3 +7,4 @@ The rows from before 2026-10-17 belonged to the owner's private vault repo (its 
 | Branch | SHA |
 |---|---|
 | backup/v0.57.0 | 762524d81550712effd1bf4331b195a5fbe19075 |
+| backup/v0.59.3 | afcfa1d2523024b1deb3209e3f0d865efcd7a4e0 |
