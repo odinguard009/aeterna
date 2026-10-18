@@ -2,7 +2,19 @@
 
 Read the lines for the colour or mechanic you touch before starting. Newest first. When an item is finished, delete it here.
 
-## Card priority and compiler v2 (owner, 2026-10-18; first in the session order)
+## P: Parallel lanes (owner, 2026-10-18 21:39: "rencanakan itu untuk sesi berikutnya"; first in the session order)
+- **Goal:** shorter wall-clock time by running a UI lane and a card lane at the same time. Total tokens do not drop (they are spent faster), so the quota rule stays: on a usage / rate-limit error every lane pushes what is committed and stops.
+- **P1 (next session, patch, tooling + docs only, no engine/CPU/effect code):**
+  1. Lanes and file ownership: `ui` = `apps/web/src/`, `src/styles.css`, `docs/DESIGN.md`, UI tests in `tests/suites`; `card` = `packages/engine/src/`, `data/`, compiler tools, `tests/scenarios`, unit tests. Shared files are written only by the merge step: `VERSION`, `package.json`, `CHANGELOG.md`, `index.html`/build output, `docs/progress.html`, `docs/roadmap.html`, `docs/roadmap-data.json`, `CLAUDE.md`, this file. A lane that needs a shared change writes it as a note in `docs/ai/lanes/<lane>.md`.
+  2. `tools/session_gate.sh`: optional lane argument (`lock ui`, `manual card`, `busy ui`); a LOCK/MANUAL with a lane blocks only that lane, one without a lane blocks everything (old behaviour, so single-lane sessions keep working unchanged). New end marker `LANEDONE <lane> <branch>` for a lane session; `done vX.Y.Z` stays for the release. Same staleness and MAX_AUTO_24H limits, counted over both lanes. Test the evaluator with fixed `COMMENTS`/`COMMITS` inputs (no network).
+  3. `tools/session_start.sh`: lane flag; with a lane it works on branch `lane/<lane>` (rebased on `main`), skips the version bump and does not commit generated files.
+  4. Merge + release step (the lane that finishes second, or a short merge session): rebase both lane branches on `main`, merge, apply the lane notes, one version bump (minor if any lane is minor), regenerate build/progress/roadmap, `npm run -s loop`, player-view pass when due, one release, `done vX.Y.Z`.
+  5. Docs: CLAUDE.md "Session scope" and `docs/ai/next-session-prompt.md` describe lanes; `bs-session-runner` gets the lane steps.
+  6. Reversible: backup branch before P1; lanes are opt-in, so removing the lane argument restores the single-lane flow; revert note in the release notes.
+- **Limit Claude cannot lift:** sessions never create or change schedules, so auto mode stays one session at a time until the owner adds a second scheduled task for the second lane. Manual lanes (two chats, "Lanjutkan roadmap ui" / "Lanjutkan roadmap card") work without it.
+- **First pair after P1:** U1 (ui lane) with Soul Magic (card lane). Measure wall-clock against the previous serial pair and count merge conflicts; with no time gain or more than one shared-file conflict per merge, go back to one lane and record why.
+
+## Card priority and compiler v2 (owner, 2026-10-18; after P)
 - **Priority:** newest cards first: Standard block A (official format since April 2026, ~700 card numbers, only 6 in the data), then Eternal by Saga from 17 down; inside a tier whole decks per colour (target 40 distinct playable cards per colour) before totals. Report: `python3 tools/priority_report.py` -> `docs/reports/priority-report.md`. Version marks (XV, LT, RV, X) are new cards with their own text, not reprints.
 - **No manual mode** for unsupported cards (owner, 2026-10-18: it would confuse the game). Aegis has none either.
 - **Data gaps: done in v0.60.3** (Nexus levels 717, Ultimate Trigger lines 119; 0 cards unlocked on their own). Left: 43 Nexus without a page match, 171 Braves whose condition the engine cannot check yet (Brave part 2).
