@@ -394,9 +394,13 @@ def magic_spec(body):
     return {'effect': 'ACTIONS', 'value': 0, 'actions': acts}
 
 
+NO_MAIN = re.compile(r"^(?:\(Can't Use in Main\)|You can(?:'|no)t use this card (?:during|in) (?:the )?Main Step\.?)$", re.I)
+
+
 def magic_card(paras, n=None):
-    by = {}
+    by, no_main = {}, False
     for p in paras:
+        if NO_MAIN.match(p): no_main = True; continue      # v0.64: "You can't use this card during Main Step." -> magic.noMain (v0.44 engine flag)
         fk = flag_para(p)
         if fk and n is not None:
             n[fk] = True; continue
@@ -413,12 +417,15 @@ def magic_card(paras, n=None):
             if t in by: raise Review('two effects for the same timing')
             by[t] = spec
     timing = [t for t in ('MAIN', 'FLASH') if t in by]
+    if no_main and 'FLASH' not in timing: raise Review("can't use in Main without a Flash effect")
     specs = {json.dumps(by[t], sort_keys=True) for t in timing}
     if len(specs) == 1:
         s = by[timing[0]]; m = {'timing': timing, 'effect': s['effect'], 'value': s['value']}
         if 'actions' in s: m['actions'] = s['actions']
-        return m
-    return {'timing': timing, 'effect': None, 'value': 0, 'by': {t: by[t] for t in timing}}
+    else:
+        m = {'timing': timing, 'effect': None, 'value': 0, 'by': {t: by[t] for t in timing}}
+    if no_main: m['noMain'] = True
+    return m
 
 
 # ---------- Burst (v0.54) ----------
@@ -508,6 +515,10 @@ def ultimate_text(c, t):
 
 
 # ---------- card ----------
+SOUL_MAGIC_COLS = {'r': 'red', 'p': 'purple', 'g': 'green', 'w': 'white', 'y': 'yellow', 'b': 'blue',
+                   'red': 'red', 'purple': 'purple', 'green': 'green', 'white': 'white', 'yellow': 'yellow', 'blue': 'blue'}
+
+
 def compile_card(c):
     n = {k: c[k] for k in KEEP if k in c}
     if c.get('keyword'): n['mechanics'] = [c['keyword']]
@@ -516,6 +527,12 @@ def compile_card(c):
         si, txt, n['text'] = ultimate_text(c, txt)
         if si: n['summonIf'] = si
         txt = re.sub(r'\b([Tt])his Ultimate\b', lambda m: m.group(1) + 'his Spirit', txt)
+    sm = re.match(r'^\s*\{\{\s*Soul Magic\s*\|\s*([^}|]*)[^}]*\}\}\s*\n?', txt or '')   # also {{Soul Magic|p||<printed text>}}
+    if sm:                            # v0.64 Soul Magic (Standard CR 12-2-1-2): "If you control any <colour> symbol, you can use it with just the Soul Core"
+        col = SOUL_MAGIC_COLS.get(sm.group(1).strip().lower())
+        if c['type'] != 'Magic': raise Review('Soul Magic on a ' + c['type'])
+        if not col: raise Review('Soul Magic colour: ' + sm.group(1)[:10])
+        n['soulMagic'] = col; txt = txt[sm.end():]
     b, rest = burst_block(txt)
     if b:
         if c['type'] not in ('Spirit', 'Magic'): raise Review('Burst on a ' + c['type'])

@@ -88,7 +88,8 @@ function handButtons(p, inst, withDetail) {
   if (humanCan() && isMainStep()) {
     if (card.type === 'Magic') {
       const ok = magicUsable(p, inst, 'main'), t = magicTargets(p, inst, 'main');
-      buttons.push({ label: ok ? `✨ Cast (Pay ${c})` : (c > coresAvailable(p) ? `Not enough cores (needs ${c})` : 'No valid target'), cls: 'primary', value: 'cast', dis: !ok });
+      const smOnly = ok && c > coresAvailable(p);           // v0.64 Soul Magic: only the Soul Core can pay
+      buttons.push({ label: ok ? (smOnly ? '✨ Cast (Soul Magic: pay the Soul Core)' : `✨ Cast (Pay ${c}${soulMagicOK(p, card) ? ' or the Soul Core' : ''})`) : (c > coresAvailable(p) ? `Not enough cores (needs ${c})` : 'No valid target'), cls: 'primary', value: 'cast', dis: !ok });
     } else {
     if (card.contractAdvent) buttons.push({ label: '✨ Contract Advent (Soul Core to Trash)', cls: 'purple', value: 'cadvent', dis: !contractAdventTargets(p, inst, 'main').length });
     if (card.manifest) buttons.push({ label: '✨ Manifest (Soul Core to Trash)', cls: 'purple', value: 'manifest', dis: !manifestTargets(p, inst).length });
@@ -141,9 +142,18 @@ async function prepareHumanMagic(p, inst, ctx) {
     target = tg.find(t => t.uid === uid) || null;
     if (!target) return null;
   }
-  let plan = null;
-  if (c > 0 && reserveTotal(p) < c) { plan = await askPayment(card, c, 0); if (!plan) return null; }
-  return { inst, target, plan, ctx };
+  let plan = null, soulMagic = false;
+  if (soulMagicOK(p, card)) {                              // v0.64 Soul Magic: pay the whole cost with the Soul Core, or pay normally
+    if (c > coresAvailable(p)) soulMagic = true;
+    else {
+      const v = await ask({ title: `✨ ${esc(card.name)}: Soul Magic`, html: `Pay the whole cost with just your Soul Core (it goes to the Trash), or pay ${c} core${c === 1 ? '' : 's'} as usual?`,
+        buttons: [{ label: '◆ Pay the Soul Core', cls: 'purple', value: 'soul' }, { label: `Pay ${c}`, cls: 'primary', value: 'normal' }, { label: 'Cancel', cls: 'cancel', value: null }] });
+      if (!v) return null;
+      soulMagic = v === 'soul';
+    }
+  }
+  if (!soulMagic && c > 0 && reserveTotal(p) < c) { plan = await askPayment(card, c, 0); if (!plan) return null; }
+  return { inst, target, plan, ctx, soulMagic };
 }
 async function humanCast(inst) {
   try {

@@ -50,7 +50,7 @@ accelList, accelCost, accelMainStep, accelOK, accelSources, accelLabel, useAccel
 ## packages/engine/src/02k-effects-immunity.js (21 lines, ~0.4k tokens)
 trashSafe
 
-## packages/engine/src/03-imported-cards.js (209 lines, ~5.2k tokens) — IMPORTED CARD DATA
+## packages/engine/src/03-imported-cards.js (210 lines, ~5.3k tokens) — IMPORTED CARD DATA
 COLORS, BUILTIN_IDS, CARDS_KEY, IMPORTED, CARDS_VER, parseCard, registerImported, saveImported, importCards, clearImported, PACK_IDS, registerPack, TOKEN_IDS, registerTokens
 
 ## packages/engine/src/04-decks.js (84 lines, ~1.6k tokens) — DECK STORAGE AND VALIDATION
@@ -59,8 +59,8 @@ deckTotal, cleanDeck, validateDeck, fmtName, setFormat, errSummary, PREBUILT, de
 ## packages/engine/src/05-state.js (75 lines, ~1.4k tokens) — GAME STATE
 SET_KEY, SETTINGS, SPEEDS, saveSettings, AUDIO, sfx, G, fnv, recIn, SIM_DECK_B, delay, wait, log, mkInst, newPlayer, contractToDeck, redrawHand, cpuWantsRedraw, newGame
 
-## packages/engine/src/06-rules.js (391 lines, ~7k tokens) — RULES HELPERS
-fieldList, isGW, freeCores, freeTotal, totalCores, reserveTotal, minCores, isSpiritForm, isUlt, lvBase, lvNo, summonOK, spare, coresAvailable, isCountLv, lvIndex, bpOf, ocActive, braveBp, isNexusBrave, braveFits, braveTargets, combineBrave, canSeparate, separateBrave, braveAfford, braveSummon, braveRecheck, shedBrave, TOKEN_SUPPLY, tokenIdsOf, prepareTokens, tokenCoreRoom, canSendToken, sendToken, tokenHome, symTurnCols, symZeroAllOn, attackSymbols, symAttrs, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, noBlockActive, costAltActive, extraReduction, effCost, canPlayCard, takeCores, payCost, checkDepletion, removeSpirit, lostHeard, leaveStandby, releaseStandby, poss, who, draw, handUp, summon, setBurst, mirageUsable, magicFx, magicFromTrash, magicFxAt, magicTrashOK, magicSources, magicTargets, magicUsable, magicText, castMagic, addCore, removeCore, moveSoulTo, moveCore, swapSoul, returnSoul
+## packages/engine/src/06-rules.js (415 lines, ~7.4k tokens) — RULES HELPERS
+fieldList, isGW, freeCores, freeTotal, totalCores, reserveTotal, minCores, isSpiritForm, isUlt, lvBase, lvNo, summonOK, spare, coresAvailable, isCountLv, lvIndex, bpOf, ocActive, braveBp, isNexusBrave, braveFits, braveTargets, combineBrave, canSeparate, separateBrave, braveAfford, braveSummon, braveRecheck, shedBrave, TOKEN_SUPPLY, tokenIdsOf, prepareTokens, tokenCoreRoom, canSendToken, sendToken, tokenHome, symTurnCols, symZeroAllOn, attackSymbols, symAttrs, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, noBlockActive, costAltActive, extraReduction, effCost, canPlayCard, takeCores, payCost, checkDepletion, removeSpirit, lostHeard, leaveStandby, releaseStandby, poss, who, draw, handUp, summon, setBurst, mirageUsable, magicFx, magicFromTrash, magicFxAt, magicTrashOK, magicSources, magicTargets, soulMagicHolder, soulMagicOK, soulMagicPick, magicUsable, magicText, castMagic, addCore, removeCore, moveSoulTo, moveCore, swapSoul, returnSoul
 
 ## packages/engine/src/07-turn.js (54 lines, ~0.6k tokens) — TURN FLOW
 setStep, beginTurn, endStep, win, matchLoop
@@ -77,7 +77,7 @@ CPU_PROFILES, CPU_PROFILE_NAMES, CPU_SIM_PROFILES, cpuProfileName, cpuW, lifeVal
 ## apps/web/src/10-modals.js (140 lines, ~2.1k tokens) — MODALS (promise based)
 paintModal, modal, PEEK, endPeek, paintPeek, startPeek, peekRefresh, closeModal, modalPress, ask, PICK, clearPick, pickFromField, info, askBlock, askPayment
 
-## apps/web/src/11-human.js (325 lines, ~6.7k tokens) — HUMAN ACTIONS
+## apps/web/src/11-human.js (335 lines, ~6.9k tokens) — HUMAN ACTIONS
 isMainStep, humanCan, legalityHTML, FX_KW_START, FX_LINE_STOP, effectLines, fxMark, slashBreak, effectTextHTML, cardDetailHTML, residualHTML, cardFaceHTML, cardStripHTML, uniqById, mullCardHTML, openZoom, handButtons, runHandAction, humanMirage, prepareHumanMagic, humanCast, humanFlashChoice, showCardDetail, openHandModal, humanPlay, humanBraveSummon, humanBraveField, openFieldModal, humanAttack, onNext, finishTurn
 
 ## packages/engine/src/12-zones.js (70 lines, ~1.6k tokens) — ZONES, LOG, RULES COVERAGE
@@ -95,5 +95,5 @@ IMG, IDB, normKey, idbOpen, idbTx, setImg, loadImages, shrinkImage, stripExt, fi
 ## packages/engine/src/15-match.js (58 lines, ~1k tokens) — MATCH START / END
 showGameOver, startNewGame
 
-## apps/web/src/16-events.js (204 lines, ~4.3k tokens) — EVENTS (delegation)
+## apps/web/src/16-events.js (204 lines, ~4.4k tokens) — EVENTS (delegation)
 instIdByUid, hScrollable, HDRAG, GAME_ACTS, gameAct, matchSummary, replayOf, lastReplay, runReplay, loadScenario, testSetup, defBuiltin

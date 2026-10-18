@@ -2,6 +2,16 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.64.0
+- **Soul Magic** (block A card session; Standard CR 12-2-1-2, Fandom "Soul Magic" page and template, official Q&A 31159-31161). A Magic card with `[Soul Magic: <colour>]` can be used by paying its whole cost with just the Soul Core while you control a symbol of that colour. The Soul Core must be in the Reserve or on a Field card (not the Life or Trash); it may come from the only Spirit that shows the symbol, and it goes to the Trash like any paid core.
+  - Card data: `soulMagic: "<colour>"` (Magic only; `parseCard` rejects other types and unknown colours). Compiler v1 turns the `{{Soul Magic|x}}` line (also the `{{Soul Magic|x||<printed text>}}` form) into that field; it also reads "You can't use this card during Main Step." as the existing `magic.noMain` flag.
+  - Engine (`06-rules.js`): `soulMagicOK`, `soulMagicHolder` (Reserve first, then a card that keeps its level, then any Field card), `soulMagicPick`; `magicUsable` accepts a Soul-Magic-only payment; `castMagic` pays the Soul Core when chosen. The CPU uses Soul Magic when the normal cost cannot be paid or is 3 or more.
+  - Player: the Cast button says "Soul Magic: pay the Soul Core" when that is the only way, or "Pay N or the Soul Core"; when both work, a dialog asks which payment to use.
+  - Tests: `tests/unit/soulmagic64.test.mjs` (S64-01..08) and scenario `tests/scenarios/soul-magic-tentacle-attack.json`.
+  - **Measured unlock: +1 card** (26RSD03-014 Tentacle Attack): 670 of 8,709 playable. The roadmap's "33 cards wait only for it" counted Magic cards by their first blocker only; the other 32 also need other sentences (23 effect sentences, 5 team / Main-Step lines, "target two" exactly 1, return three 1). Recorded in `docs/ai/roadmap-open.md`.
+- **Player-view pass** (`bs-playwright-tester`, on v0.63.1 before the change): build ok, `tools/player_view.mjs` 95 cards over 6 decks + PC 1366x768 and phone 390x844 matches with 0 problems, 8 CPU-vs-CPU matches (4 Eternal, 4 Standard block A) ended normally with 0 console errors.
+- Revert: `git revert` of the v0.64.0 commit; no data migration (one card moved from staging to `data/cards`).
+
 ## v0.63.1
 - **Regression part 3 fixed:** on a 844x390 phone (landscape) the U1 header was 1 px wider than the screen (the skewed LOG / EXIT TO LOBBY buttons count as overflow), so the page scrolled sideways and test 29 of `tests/suites/v27_tests.py` failed. The header now clips sideways overflow (`overflow-x: clip` on `#view-playmat header.ae-head`); the buttons are not cut (they end 2.6 px inside the header). Suite 31/31.
 - **P1 parallel lanes** (owner, 2026-10-18 21:39; tooling + docs only, no engine/CPU/effect code). Opt-in: "Lanjutkan roadmap ui" and "Lanjutkan roadmap card" can run at the same time, each on its own branch, then one merge + release; plain "Lanjutkan roadmap" works as before. Flow: `docs/ai/lanes/README.md`.

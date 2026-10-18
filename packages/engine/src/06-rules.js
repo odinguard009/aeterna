@@ -319,12 +319,32 @@ function magicTargets(p, inst, ctx) {                    // null = no target nee
   const q = fx.side === 'opp' ? G.p[other(p.key)] : p;
   return q.spirits.filter(sp => fx.ok(sp, m.value, m) && !(q !== p && fxImmune(q, sp, { p, src: inst })));   // v0.58: unaffected opposing Spirits are no target
 }
+/* v0.64 Soul Magic (Standard CR 12-2-1-2; Q&A 31159-31161): "If you control any <colour> symbol, you can use it with just the Soul Core".
+   The Soul Core must be where costs are paid from (Reserve or a Field card, not the Life or Trash); the Spirit that shows the
+   only matching symbol may give it. soulMagicHolder prefers the Reserve, then a card that keeps its level, then any Field card. */
+function soulMagicHolder(p) {
+  if (p.reserve.soul) return 'reserve';
+  const f = fieldList(p).filter(x => x.soul);
+  return f.find(x => !isSpiritForm(CARDS[x.id]) || spare(x) >= 1) || f[0] || null;
+}
+function soulMagicOK(p, card) {
+  if (!card || !card.soulMagic || !p) return false;
+  return soulMagicHolder(p) !== null && fieldSymbols(p).some(a => a.includes(card.soulMagic));
+}
+/* who pays how: an explicit choice (ch.soulMagic true/false) wins; otherwise Soul Magic when the normal cost cannot be paid,
+   or for the CPU when the normal cost is 3 or more (one core instead of many) */
+function soulMagicPick(p, card, ch) {
+  if (!soulMagicOK(p, card)) return false;
+  if (ch && ch.soulMagic != null) return ch.soulMagic === true;
+  const c = effCost(p, card);
+  return c > coresAvailable(p) || (!!p.cpu && c >= 3);
+}
 function magicUsable(p, inst, ctx) {
   const card = CARDS[inst.id]; if (!card || card.type !== 'Magic') return false;
   const timing = card.magic ? card.magic.timing : ['MAIN'];
   if (ctx === 'flash' && !timing.includes('FLASH')) return false;
   if (ctx !== 'flash' && card.magic && card.magic.noMain) return false;   // v0.44 (Can't Use in Main)
-  if (effCost(p, card) > coresAvailable(p)) return false;
+  if (effCost(p, card) > coresAvailable(p) && !soulMagicOK(p, card)) return false;   // v0.64: Soul Magic pays with the Soul Core only
   if (magicFromTrash(p, inst) && !magicTrashOK(p, inst)) return false;
   const fm = magicFxAt(p, inst, ctx); if (card.magic && card.magic.by && !fm) return false;
   if (fm && fm.if && !fxIf(p, G.p[other(p.key)], fm.if)) return false;
@@ -343,11 +363,15 @@ function magicText(card) {
   return `${m.timing.map(x => '[' + (x === 'MAIN' ? 'Main' : 'Flash') + ']').join('')} ${m.effect ? MAGIC_FX[m.effect].text(m.value, m) : card.desc}`;
 }
 async function castMagic(p, ch) {                         // ch = { inst, target, plan }
-  const inst = ch.inst, fromTrash = magicFromTrash(p, inst), card = CARDS[inst.id], m = magicFxAt(p, inst, ch.ctx), alt = costAltActive(p, card), c = effCost(p, card), opp = G.p[other(p.key)];
+  const inst = ch.inst, fromTrash = magicFromTrash(p, inst), card = CARDS[inst.id], m = magicFxAt(p, inst, ch.ctx), sm = soulMagicPick(p, card, ch), alt = !sm && costAltActive(p, card), c = effCost(p, card), opp = G.p[other(p.key)];
   if (alt) { p.onceUsed = p.onceUsed || {}; p.onceUsed['costalt:' + card.name] = G.turnNo; }
+  const smHolder = sm ? soulMagicHolder(p) : null;              // chosen before the card leaves the Hand (symbols stay as they are)
   removeFrom(p.hand, inst); if (fromTrash) removeFrom(p.trash, inst);
-  payCost(p, c, ch.plan);
-  log(`${who(p)} ${p.cpu ? 'casts' : 'cast'} ${card.name}${fromTrash ? ' from the Trash' : ''} (paid ${c}).`);
+  if (sm) {                                                     // v0.64 Soul Magic: the whole cost is the Soul Core, which goes to the Trash
+    if (smHolder === 'reserve') p.reserve.soul = false; else smHolder.soul = false;
+    p.trashCores.soul = true;
+  } else payCost(p, c, ch.plan);
+  log(`${who(p)} ${p.cpu ? 'casts' : 'cast'} ${card.name}${fromTrash ? ' from the Trash' : ''} (${sm ? 'Soul Magic: paid the Soul Core' : 'paid ' + c}).`);
   checkDepletion(p);
   const fromBurst = p.limbo === inst;                       // v0.44: cast from the Burst (burstFlash); maybeBurst moves it to the Trash afterwards
   const prevLimbo = p.limbo; if (!fromBurst) p.limbo = inst;   // the card being resolved is in no zone: count it while its effect runs (SIM invariants)

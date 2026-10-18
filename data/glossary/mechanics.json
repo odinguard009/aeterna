@@ -362,16 +362,16 @@
  {
   "id": "kw:soul-magic",
   "name": "Soul Magic",
-  "status": "missing",
+  "status": "done",
   "glossary": [
    "K_STANDARD_SUCCESSION"
   ],
   "prep": {
-   "rules": "Standard CR 12-2-1-2",
-   "data": "",
-   "lever": "33/33 (roadmap-open, v0.62.0)"
+   "rules": "Standard CR 12-2-1-2; Fandom Soul Magic page + Template:Soul Magic; Q&A 31159-31161",
+   "data": "{{Soul Magic|x}} line -> soulMagic colour (compiler v1)",
+   "lever": "33 cards carry it; 1 compiled alone (v0.64.0 measured), the rest wait on other sentences"
   },
-  "note": "Standard CR 12-2-1-2; next card session (33 cards wait only for it)",
+  "note": "v0.64.0: soulMagicOK/soulMagicPick/soulMagicHolder (06-rules.js), human choice in prepareHumanMagic; tests S64 + scenario soul-magic-tentacle-attack",
   "verified": true
  },
  {

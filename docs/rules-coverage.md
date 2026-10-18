@@ -62,7 +62,7 @@ Shared: 40+ card deck, max 3 copies by name, 5 Life, 3 Reserve + 1 Soul Core, dr
 | Rebirth | ❌ | |
 | Manifest | 🟡 | v0.14: Flash from the Hand, Soul Core to the Trash + one core from the named Nexus, counter requirement, summon free. CPU uses it in its Main Step; CPU does not use Flash windows yet |
 | Over Count, Counter | ✅ | v0.34: `overCount` BP+ and `oc:true` effects (manual p. 61). |
-| Keyword effects (renamed in 17.0; multiple keywords per card) | 🟡 | v0.49.0: High Speed (`highSpeed`, Flash Timing), Crush (action `CRUSH`), Holy Life (ALLY_LIFE_HIT self + VOID_TO_LIFE) executed; v0.50.0: Accel (ACCEL effects from the Hand, Removed Zone, Removed Zone summon; Accel-cost reductions not in the data) and Silver Wheel (ACTIVATE silverWheel + SILVER_WHEEL trigger) executed, partial; Ultra Holy Life, Heavy/Ultra Armor, Soul Magic, Nether Immortality still only stored (glossary `K_*`, status missing) |
+| Keyword effects (renamed in 17.0; multiple keywords per card) | 🟡 | v0.49.0: High Speed (`highSpeed`, Flash Timing), Crush (action `CRUSH`), Holy Life (ALLY_LIFE_HIT self + VOID_TO_LIFE) executed; v0.50.0: Accel (ACCEL effects from the Hand, Removed Zone, Removed Zone summon; Accel-cost reductions not in the data) and Silver Wheel (ACTIVATE silverWheel + SILVER_WHEEL trigger) executed, partial; Soul Magic executed v0.64.0; Ultra Holy Life, Heavy/Ultra Armor, Nether Immortality still only stored (glossary `K_*`, status missing) |
 | Banned/restricted enforcement (76 banned, 81 limit-1, 1 limit-20; effective 2026-09-01) | ✅ | v0.8 validateDeck; applied to both formats |
 | Standard-card text treated in Eternal (omitted "this Spirit's") | ❌ | |
 
@@ -73,7 +73,7 @@ Shared: 40+ card deck, max 3 copies by name, 5 Life, 3 Reserve + 1 Soul Core, dr
 | Second Main Step | ✅ |
 | Letter-block legality (block "A" until 2027-03-31) | ✅ |
 | Succession (継召) | ❌ |
-| Soul Magic | ❌ |
+| Soul Magic | ✅ | v0.64.0: `soulMagic` colour on Magic cards; usable with only the Soul Core (Reserve or Field, not Life/Trash) while a symbol of that colour is on your Field (Standard CR 12-2-1-2, Q&A 31159-31161); human picks Soul Core or normal payment, CPU uses it when the normal cost is unpayable or 3+ |
 | Shinkai-ho (Super Unleash) | ❌ |
 | "While attacking" timing (アタック中) | ❌ |
 | Standard Rule Card / Play Sheet layout | ❌ |

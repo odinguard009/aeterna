@@ -1,0 +1,9 @@
+{
+  "name": "soul-magic-tentacle-attack",
+  "about": "Soul Magic (Standard CR 12-2-1-2; Fandom Q&A 31159-31161): with no spare cores but a Green symbol on the Field and the Soul Core in the Reserve, Tentacle Attack (cost 6) is used by paying only the Soul Core; it heavy-exhausts an opposing Spirit and the Soul Core goes to the Trash.",
+  "turn": 3, "active": "player", "step": 4,
+  "players": {
+    "player": { "reserve": 0, "soul": "reserve", "hand": ["26RSD03-014"], "spirits": [ { "id": "BS31-026", "cores": 1, "as": "green" } ] },
+    "opponent": { "reserve": 3, "spirits": [ { "id": "BS31-001", "cores": 1, "as": "a" }, { "id": "BS32-001", "cores": 1, "as": "b" } ] }
+  }
+}
