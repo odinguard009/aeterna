@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "19 Oct 2026",
-  "next": "next: U2 lobby navigation (Opus), alone or as the ui lane next to the True Release card lane (22 cards wait only for it); then card sessions alternate with U3-U8: True Release, Legacy, Invoke, then the Eternal heads; 670 of 8,709 cards playable"
+  "next": "next: card session True Release (Opus; = Super Unleash, 22 cards wait only for it, scenarios first); then U3 Play setup, then card sessions alternate with U4-U8: Invoke, Legacy, then the Eternal heads; 670 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -450,8 +450,12 @@
      "t": "U1 battle screen restyle v0.63.0: CrossOver tokens, player colour + Dark/Light (Settings), turn-coloured step band, clickable steps with \"Illegal move\", core/Soul Core gems, sleeves, one-line log, phone mirror"
     },
     {
+     "s": "done",
+     "t": "U2 lobby navigation v0.65.0: PC top bar with skewed tabs, phone header + bottom tab bar with own icons, colour picker + Dark/Light in the header, new Home (motto, Play now, Build a deck, shortcut tiles, footer)"
+    },
+    {
      "s": "later",
-     "t": "U2 lobby navigation, U3 Play setup, U4 Settings/How to play/Library (+ playmat upload), U5 overlays, U6 My decks page, U7 deck builder (filters, list/curve/look tabs, Deck look), U8 audit; card sessions alternate"
+     "t": "U3 Play setup, U4 Settings/How to play/Library (+ playmat upload), U5 overlays, U6 My decks page, U7 deck builder (filters, list/curve/look tabs, Deck look), U8 audit; card sessions alternate"
     },
     {
      "s": "later",
@@ -915,7 +919,15 @@
    "calls": "~55",
    "basis": "measured",
    "note": "Manual session on Opus: Soul Magic (+1 card), next heads measured (True Release 22, Legacy 16, Invoke 14), glossary prep, player-view pass. Two budget windows (a usage limit paused the session at 02:00) and one session restart (context reload ~270k); sum of the counter differences."
+  },
+  {
+   "ver": "v0.65.0",
+   "date": "19 Oct 2026",
+   "tokens": 170000,
+   "calls": "~60",
+   "basis": "measured",
+   "note": "Scheduled auto run on Opus: U2 lobby navigation + Home (25 tests), player-view pass (subagent), web-design-guidelines audit. Budget-counter difference read before the last commit."
   }
  ],
- "next": "next: U2 lobby navigation (Opus), alone or as the ui lane next to the True Release card lane (22 cards wait only for it); then card sessions alternate with U3-U8: True Release, Legacy, Invoke, then the Eternal heads; 670 of 8,709 cards playable"
+ "next": "next: card session True Release (Opus; = Super Unleash, 22 cards wait only for it, scenarios first); then U3 Play setup, then card sessions alternate with U4-U8: Invoke, Legacy, then the Eternal heads; 670 of 8,709 cards playable"
 }
