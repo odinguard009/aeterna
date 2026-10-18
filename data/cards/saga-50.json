@@ -47,6 +47,52 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RBS01-002",
+  "name": "Sun Spawn",
+  "name_jp": "サンスポーン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Windflame"
+  ],
+  "text": "[LV1][LV2] Clash (During Attack)\nOpposing Spirits must block if possible.",
+  "image": "26RBS01-002.png",
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Clash"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "MUST_BLOCK",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RBS01-003",
   "name": "Scud Beast",
   "name_jp": "スカッドビースト",
@@ -77,6 +123,110 @@
   "saga": 50,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-005",
+  "name": "Pergasos",
+  "name_jp": "ペルガソス",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Windflame"
+  ],
+  "text": "[LV2] (True Release) Clash (During Attack)\nOpposing Spirits must block if possible.",
+  "image": "26RBS01-005.png",
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Clash"
+  ],
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "MUST_BLOCK",
+    "to": "self",
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-006",
+  "name": "Pawgriffo",
+  "name_jp": "ポーグリフォ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Windflame"
+  ],
+  "text": "[LV1][LV2] Clash (During Attack)\nOpposing Spirits must block if possible.\n\n[LV2] (When Attacks)\nDraw a card.",
+  "image": "26RBS01-006.png",
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Clash"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "MUST_BLOCK",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RBS01-011",
@@ -156,6 +306,93 @@
   "saga": 50,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-020",
+  "name": "Odonatta",
+  "name_jp": "オードナッター",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Dark Puce",
+   "Phantasprite"
+  ],
+  "text": "[LV1][LV2] (During Attack)\nThis Spirit gains +2000 BP.",
+  "image": "26RBS01-020.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "bp": 2000,
+    "to": "self",
+    "attackingOnly": true,
+    "lv": [
+     1,
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-032",
+  "name": "Regatracus",
+  "name_jp": "レガトラックス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 2,
+  "reduction": {
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Armored Fish"
+  ],
+  "text": "[LV2]' (True Release) (During Attack)\nThis Spirit gains +2000 BP.",
+  "image": "26RBS01-032.png",
+  "block": "A",
+  "saga": 50,
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "bp": 2000,
+    "to": "self",
+    "attackingOnly": true,
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RBS01-033",
@@ -450,6 +687,59 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RBS02-008",
+  "name": "The Experienced Elderly",
+  "name_jp": "老練なエルダリー",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {
+   "red": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Soaring Dragon"
+  ],
+  "text": "[LV1][LV2] (During Attack)\nThis Spirit gains +3000 BP.\n\n[LV2] (During Attack)\nThis Spirit gains +3000 BP.",
+  "image": "26RBS02-008.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "bp": 3000,
+    "to": "self",
+    "attackingOnly": true,
+    "lv": [
+     1,
+     2
+    ]
+   },
+   {
+    "trigger": "STATIC",
+    "bp": 3000,
+    "to": "self",
+    "attackingOnly": true,
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RBS02-020",
   "name": "The Risen Douvou",
   "name_jp": "再起するドゥーブー",
@@ -511,6 +801,64 @@
   "saga": 50,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS02-027",
+  "name": "Alufrost",
+  "name_jp": "アルフロスト",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Glaciesnow"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nTarget an opposing Cost 3 or less exhausted Spirit. Return it to the deckbottom.\n\n[LV2] (During Attack)\nThis Spirit gains +2000 BP.",
+  "image": "26RBS02-027 (Fixed).png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "deckBottom",
+      "kind": "spirit",
+      "costLe": 3,
+      "exhaustedOnly": true
+     }
+    ]
+   },
+   {
+    "trigger": "STATIC",
+    "bp": 2000,
+    "to": "self",
+    "attackingOnly": true,
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RBS02-043",
@@ -1049,6 +1397,52 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RCB01-012",
+  "name": "Kamen Rider Baron Lemon Energy Arms",
+  "name_jp": "仮面ライダーバロン レモンエナジーアームズ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 6,
+  "reduction": {
+   "red": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 4,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "GAIM",
+   "Kamen"
+  ],
+  "text": "[LV1][LV2] Clash (During Attack)\nOpposing Spirits must block if possible.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Clash"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "MUST_BLOCK",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RCB01-029",
   "name": "Kamen Rider Gai",
   "name_jp": "仮面ライダーガイ",
@@ -1177,6 +1571,50 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RSD01-002",
+  "name": "Gen-Bor",
+  "name_jp": "ゲン＝ボー",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Windfang"
+  ],
+  "text": "[LV2] (True Release) (During Attack)\nThis Spirit gains +2000 BP.",
+  "image": "26RSD01-002.png",
+  "block": "A",
+  "saga": 50,
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "bp": 2000,
+    "to": "self",
+    "attackingOnly": true,
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RSD01-005",
   "name": "Goon-Gata",
   "name_jp": "グン＝ガタ",
@@ -1253,6 +1691,50 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD02-003",
+  "name": "Medici-Cattery",
+  "name_jp": "メディチ・キャタリー",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Dark Puce",
+   "Bloodrouse"
+  ],
+  "text": "[LV2] (True Release) (During Attack)\nThis Spirit gains +3000 BP.",
+  "image": "26RSD02-003.png",
+  "block": "A",
+  "saga": 50,
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "bp": 3000,
+    "to": "self",
+    "attackingOnly": true,
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RSD02-005",
@@ -1332,6 +1814,65 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD03-003",
+  "name": "Rassehead",
+  "name_jp": "ラスヘッド",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Oceanic Green",
+   "Armored Fish"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nYou can target an opposing Cost 4 or less Spirits. Exhaust it.\n\n[LV2] (True Release) (During Attack)\nThis Spirit gains +2000 BP.",
+  "image": "26RSD03-003.png",
+  "block": "A",
+  "saga": 50,
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1,
+      "costLe": 4
+     }
+    ]
+   },
+   {
+    "trigger": "STATIC",
+    "bp": 2000,
+    "to": "self",
+    "attackingOnly": true,
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RSD03-004",
@@ -1536,6 +2077,52 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RSD06-003",
+  "name": "Melrak",
+  "name_jp": "メルラク",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "blue": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Ferobeast"
+  ],
+  "text": "[LV2] (True Release) (When Destroyed)\nTarget an opposing Cost 3 or less Spirit. Destroy it.",
+  "image": "26RSD06-003.png",
+  "block": "A",
+  "saga": 50,
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "costLe": 3
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RSD06-005",
   "name": "Slouth",
   "name_jp": "スロウス",
@@ -1723,6 +2310,50 @@
   "saga": 50,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD10-004",
+  "name": "Monocowl",
+  "name_jp": "モノカウル",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Oceanic Green",
+   "Waterfae"
+  ],
+  "text": "[LV2] (True Release) (During Attack)\nThis Spirit gains +2000 BP.",
+  "image": "26RSD10-004.png",
+  "block": "A",
+  "saga": 50,
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "bp": 2000,
+    "to": "self",
+    "attackingOnly": true,
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RSD10-005",

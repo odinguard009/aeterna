@@ -295,7 +295,7 @@ def spirit_paragraph_main(p, card, rush):
         if lv: e['lv'] = lv
         return [e], flags
     if kw == 'Clash':
-        if not re.match(r'^\(When Attacks\)\s*(?:The|Your) opponent must block (?:if possible|with a spirit if possible)\.?$', p, re.I): raise Review('Clash text: ' + p[:80])
+        if not re.match(r'^\((?:When Attacks|During Attack)\)\s*(?:(?:The|Your) opponent|Opposing Spirits) must block (?:if possible|with a spirit if possible)\.?$', p, re.I): raise Review('Clash text: ' + p[:80])   # v0.66: (During Attack) / "Opposing Spirits" (Standard)
         e = {'trigger': 'STATIC', 'flag': 'MUST_BLOCK', 'to': 'self'}
         if lv: e['lv'] = lv
         return [e], flags
@@ -319,6 +319,11 @@ def spirit_paragraph_main(p, card, rush):
         mm = re.match(r'^\(Your Attack Step\)\s*This Spirit (?:gains|gets) \+(\d[\d,]*) ?BP\.?$', p, re.I)
         if mm:
             e = {'trigger': 'STATIC', 'bp': bp(mm.group(1)), 'to': 'self', 'if': dict(ATTACK_STEP['(Your Attack Step)'])}
+            if lv: e['lv'] = lv
+            return [e], flags
+        mm = re.match(r'^\(During Attack\)\s*This Spirit (?:gains|gets) \+(\d[\d,]*) ?BP\.?$', p, re.I)
+        if mm:      # v0.66: (During Attack) = active as long as this Spirit is attacking (Standard manual, Examples on Activation Timings)
+            e = {'trigger': 'STATIC', 'bp': bp(mm.group(1)), 'to': 'self', 'attackingOnly': True}
             if lv: e['lv'] = lv
             return [e], flags
         mm = re.match(r"^This Spirit's colou?r and symbols? are also treated as (Red|Purple|Green|White|Yellow|Blue)\.?$", p)
@@ -519,6 +524,9 @@ SOUL_MAGIC_COLS = {'r': 'red', 'p': 'purple', 'g': 'green', 'w': 'white', 'y': '
                    'red': 'red', 'purple': 'purple', 'green': 'green', 'white': 'white', 'yellow': 'yellow', 'blue': 'blue'}
 
 
+TRUE_RELEASE = re.compile(r"\[LV2\]'?\s*\(True Release\)\s*")
+
+
 def compile_card(c):
     n = {k: c[k] for k in KEEP if k in c}
     if c.get('keyword'): n['mechanics'] = [c['keyword']]
@@ -533,6 +541,12 @@ def compile_card(c):
         if c['type'] != 'Magic': raise Review('Soul Magic on a ' + c['type'])
         if not col: raise Review('Soul Magic colour: ' + sm.group(1)[:10])
         n['soulMagic'] = col; txt = txt[sm.end():]
+    if txt and '(True Release)' in txt:     # v0.66 True Release (= Super Unleash, Standard CR 12-2-1-1): LV2 by its cores OR by the Soul Core alone
+        if c['type'] not in ('Spirit', 'Nexus'): raise Review('True Release on a ' + c['type'])
+        if len(c.get('levels') or []) < 2: raise Review('True Release without an LV2')
+        txt2 = TRUE_RELEASE.sub('[LV2] ', txt)       # the export also has "[LV2]' (True Release)" (26RBS01-032)
+        if '(True Release)' in txt2: raise Review('True Release outside an [LV2] head')
+        n['trueRelease'] = True; txt = txt2
     b, rest = burst_block(txt)
     if b:
         if c['type'] not in ('Spirit', 'Magic'): raise Review('Burst on a ' + c['type'])

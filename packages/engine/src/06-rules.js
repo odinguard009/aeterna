@@ -27,6 +27,7 @@ function lvIndex(i) {
   const card = CARDS[i.id], L = card.levels; let t, k = -1;
   if (card.countLv) { const o = ownerOf(i); t = o ? o.count : 0; } else t = totalCores(i);
   for (let j = 0; j < L.length; j++) if (t >= L[j].cores) k = j;
+  if (card.trueRelease && i.soul && L.length > 1 && k < 1) k = 1;   // v0.66 True Release (Standard CR 12-2-1-1): the Soul Core alone fulfils LV2 (a rule, not an effect)
   return k;
 }
 function bpOf(i) { const k = lvIndex(i); if (k < 0) return 0; const b = CARDS[i.id].levels[k].bp; return b == null ? 0 : Math.max(0, b + (i.bpMod || 0) + staticBp(i) + braveBp(i) + (ocActive(i) ? CARDS[i.id].overCount.bp : 0)); }

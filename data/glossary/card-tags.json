@@ -593,6 +593,11 @@
  "BS13-041": [],
  "BS14-002": [],
  "BS14-006": [],
+ "BS14-007": [
+  "T_ATTACKS",
+  "C_LEVEL",
+  "S_MUST_BLOCK"
+ ],
  "BS14-012": [],
  "BS14-013": [
   "A_EXHAUST",
@@ -2886,12 +2891,33 @@
   "C_LEVEL",
   "T_DESTROYED"
  ],
+ "26RBS01-002": [
+  "C_LEVEL",
+  "S_MUST_BLOCK"
+ ],
  "26RBS01-003": [],
+ "26RBS01-005": [
+  "C_LEVEL",
+  "S_MUST_BLOCK"
+ ],
+ "26RBS01-006": [
+  "T_ATTACKS",
+  "C_LEVEL",
+  "S_MUST_BLOCK"
+ ],
  "26RBS01-011": [
   "T_SUMMONED",
   "C_LEVEL"
  ],
  "26RBS01-019": [],
+ "26RBS01-020": [
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
+ "26RBS01-032": [
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
  "26RBS01-033": [
   "A_EXHAUST",
   "C_LEVEL",
@@ -2916,8 +2942,18 @@
   "M_UP_TO"
  ],
  "26RBS02-002": [],
+ "26RBS02-008": [
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
  "26RBS02-020": [],
  "26RBS02-025": [],
+ "26RBS02-027": [
+  "T_SUMMONED",
+  "A_BP_PLUS",
+  "A_EXHAUST",
+  "C_LEVEL"
+ ],
  "26RBS02-043": [],
  "26RBS02-049": [
   "T_SUMMONED",
@@ -2940,19 +2976,38 @@
  "26RBS03-074": [],
  "26RCB01-006": [],
  "26RCB01-010": [],
+ "26RCB01-012": [
+  "C_LEVEL",
+  "S_MUST_BLOCK"
+ ],
  "26RCB01-029": [],
  "26RCB01-033": [],
  "26RCB01-040": [],
  "26RCB01-044": [],
+ "26RSD01-002": [
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
  "26RSD01-005": [],
  "26RSD02-002": [
   "C_LEVEL",
   "T_DESTROYED"
  ],
+ "26RSD02-003": [
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
  "26RSD02-005": [],
  "26RSD02-006": [
   "T_SUMMONED",
   "C_LEVEL"
+ ],
+ "26RSD03-003": [
+  "T_SUMMONED",
+  "A_BP_PLUS",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "M_OPTIONAL"
  ],
  "26RSD03-004": [],
  "26RSD03-005": [],
@@ -2965,12 +3020,20 @@
  ],
  "26RSD04-005": [],
  "26RSD05-005": [],
+ "26RSD06-003": [
+  "C_LEVEL",
+  "T_DESTROYED"
+ ],
  "26RSD06-005": [],
  "26RSD07-003": [],
  "26RSD07-006": [],
  "26RSD09-002": [],
  "26RSD09-005": [],
  "26RSD10-001": [],
+ "26RSD10-004": [
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
  "26RSD10-005": [
   "T_ATTACKS",
   "A_EXHAUST",

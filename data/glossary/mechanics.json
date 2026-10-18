@@ -410,8 +410,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "verified 2026-10-19: no engine code",
+  "verified": true
  },
  {
   "id": "kw:crush",
@@ -431,15 +431,15 @@
  {
   "id": "kw:clash",
   "name": "Clash",
-  "status": "missing",
+  "status": "partial",
   "glossary": [],
   "prep": {
    "rules": "",
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "verified 2026-10-19: compiler Clash paragraph -> STATIC MUST_BLOCK self (compile_effects.py, v0.49; v0.66 adds (During Attack) / \"Opposing Spirits must block\")",
+  "verified": true
  },
  {
   "id": "kw:immortality",
@@ -451,8 +451,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "verified 2026-10-19: no engine code; only K_NETHER_IMMORTALITY in data/glossary/effects.json",
+  "verified": true
  },
  {
   "id": "kw:unleash",
@@ -466,8 +466,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "verified 2026-10-19: only card-specific code (02b-effects-actions.js Agateram, 02g-effects-yellow.js Vajrawurm cost); no generic handler",
+  "verified": true
  },
  {
   "id": "kind:ex-symbol",
@@ -617,8 +617,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "verified 2026-10-19: STATIC UNAFFECTED with from colours (02c-effects-parse.js, v0.58 Armor / Heavy / Ultra Armor)",
+  "verified": true
  },
  {
   "id": "kw:windstorm",
@@ -2253,7 +2253,7 @@
  {
   "id": "kind:true-release",
   "name": "True Release (= Super Unleash, Standard)",
-  "status": "missing",
+  "status": "done",
   "glossary": [],
   "prep": {
    "rules": "Standard CR 12-2-1-1; Fandom True_Release/Q&A 31532-31534, 31582, 31728-31729, Std manual Q3: LV2 with the printed cores OR only the Soul Core; any card at LV2 with the keyword is in the True Release state; the Soul Core level-up is not an effect",
@@ -2261,7 +2261,7 @@
    "lever": "185 by text, blocker on 151, only blocker on 22 (scratch v2 recompile 2026-10-19); co-blockers (Legacy) 44, target sentences 16, (Your Attack Step) 14"
   },
   "verified": true,
-  "note": "next block A head after Soul Magic (v0.64.0 prep)"
+  "note": "done v0.66.0: trueRelease field, lvIndex Soul Core = LV2, (During Attack) +BP/Clash; +14 cards (7 with True Release); real recompile re-measure 2026-10-19: True Release alone 1, with (During Attack) 6"
  },
  {
   "id": "kind:invoke",

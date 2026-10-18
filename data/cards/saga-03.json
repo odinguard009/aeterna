@@ -66,6 +66,63 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS14-007",
+  "name": "Kagutsuchidragoon",
+  "name_jp": "カグツチドラグーン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Ancient Dragon"
+  ],
+  "text": "[LV1][LV2] (When Attacks)\nDraw a card.\n\n[LV2] Clash (When Attacks)\nOpposing Spirits must block if possible.",
+  "image": null,
+  "block": "14",
+  "saga": 3,
+  "mechanics": [
+   "Clash"
+  ],
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "STATIC",
+    "flag": "MUST_BLOCK",
+    "to": "self",
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS14-012",
   "name": "Straw-Puppet",
   "name_jp": "ストロゥ・パペット",
