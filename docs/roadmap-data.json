@@ -847,8 +847,8 @@
   {
    "ver": "v0.61.0",
    "date": "18 Oct 2026",
-   "tokens": 0,
-   "calls": "~45",
+   "tokens": 296000,
+   "calls": "~55",
    "basis": "measured",
    "note": "Manual session on Opus: compiler v2 prototype (tools/compile_v2.py, gate test, lever report), +10 cards; auto mode switched ON by the owner. Budget-counter difference read before the last commit."
   }
