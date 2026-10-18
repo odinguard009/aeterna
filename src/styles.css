@@ -461,3 +461,179 @@
   #err-notice button { padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-line); background: rgba(255,255,255,0.08); color: var(--text-main); font-size: 13px; cursor: pointer; }
   #err-notice #err-copy { border-color: var(--accent); color: var(--accent); }
   #err-text { flex: 1 1 100%; height: 140px; font: 11px monospace; background: #000; color: var(--text-main); user-select: text; }
+
+  /* =====================================================================
+     v0.63.0 U1: battle screen restyle (docs/DESIGN.md section 0, mockup docs/design/mockup-v11.html).
+     Same layout as v0.62.1; CrossOver-style tokens. Player colour and Dark/Light come from apps/web/src/00c-theme.js.
+     Old token names stay as aliases inside the battle screen until every screen uses the --ae-* names.
+     ===================================================================== */
+  :root {
+    --you: #17b897; --you-ink: #04211b; --you-soft: #17b89740; --cpu: #d8344b; --cpu-ink: #ffffff;
+    --ae-board1: #1b2029; --ae-board2: #11141a; --ae-lattice: #ffffff08;
+    --ae-panel1: #232935; --ae-panel2: #161a22; --ae-line: #ffffff1a; --ae-line2: #ffffff40;
+    --ae-text: #eef1f5; --ae-text2: #a9b2c1; --ae-text3: #7d8696; --ae-text4: #5d6676;
+    --ae-chip: #1d222c; --ae-head: #0b0e13; --ae-rowbg: #0f1218b3; --ae-strip: #000000cc;
+    --ae-card1: #3b4352; --ae-card2: #1a1e26; --ae-cardline: #ffffff40;
+    --ae-core1: #cfe8ff; --ae-core2: #3a8cf0; --ae-core3: #0b3f8a; --ae-soul1: #ffd0d0; --ae-soul2: #e5484d; --ae-soul3: #7a0f16;
+    --ae-soulstate: #c39bff; --ae-burst: #f0a6ff;
+  }
+  :root[data-mode="light"] {
+    --ae-board1: #eef1f5; --ae-board2: #dfe4eb; --ae-lattice: #0b1a3010;
+    --ae-panel1: #ffffff; --ae-panel2: #eef1f5; --ae-line: #0b1a301f; --ae-line2: #0b1a3040;
+    --ae-text: #141922; --ae-text2: #4d5666; --ae-text3: #6b7484; --ae-text4: #8a93a3;
+    --ae-chip: #e3e8ef; --ae-head: #ffffff; --ae-rowbg: #ffffffb3; --ae-strip: #141922e6;
+    --ae-card1: #5b6474; --ae-card2: #2a303b; --ae-cardline: #0b1a3055;
+    --ae-soulstate: #7b45cf; --ae-burst: #a3329e;
+  }
+  .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+  /* battle screen ground: graphite board with a faint 60-degree lattice; old names alias the new tokens here */
+  #view-playmat, #log-drawer {
+    --bg-main: var(--ae-board2); --bg-panel: var(--ae-panel1); --accent: var(--you); --text-main: var(--ae-text); --text-muted: var(--ae-text2);
+    --border-line: var(--ae-line2); --blue-zone: var(--ae-chip); --turn: var(--you); color: var(--ae-text);
+  }
+  #view-playmat { background: linear-gradient(180deg, var(--ae-board1), var(--ae-board2)); }
+  #view-playmat::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(60deg, var(--ae-lattice) 0 1px, transparent 1px 46px), repeating-linear-gradient(-60deg, var(--ae-lattice) 0 1px, transparent 1px 46px); }
+  #view-playmat .viewport { z-index: 1; }
+
+  /* header = turn banner */
+  #view-playmat header.ae-head { padding: 0 6px 0 0; height: 34px; gap: 0; background: var(--ae-head); border: 0; border-radius: 0; box-shadow: inset 0 -2px 0 var(--you); justify-content: flex-start; }
+  .ae-turn { height: 100%; display: flex; align-items: center; gap: 8px; padding: 0 24px 0 12px; background: var(--you); color: var(--you-ink); clip-path: polygon(0 0, 100% 0, calc(100% - 16px) 100%, 0 100%); white-space: nowrap; }
+  #view-playmat .ae-turn h1 { color: inherit; font-size: 14px; font-weight: 900; font-style: italic; letter-spacing: .06em; text-transform: uppercase; }
+  .ae-ver { font-size: 11px; font-weight: 700; }
+  .ae-turnno { font-size: 11px; font-weight: 800; letter-spacing: .1em; padding-left: 8px; border-left: 1px solid currentColor; }
+  .ae-step { height: 100%; display: flex; align-items: center; padding: 0 26px 0 24px; margin-left: -12px; background: var(--ae-chip); color: var(--ae-text); clip-path: polygon(16px 0, 100% 0, calc(100% - 16px) 100%, 0 100%); font-size: 12px; font-weight: 800; letter-spacing: .16em; white-space: nowrap; }
+  .ae-fill { flex: 1; }
+  .ae-tools { display: flex; gap: 8px; }
+  #view-playmat .ae-btn { transform: skewX(-18deg); background: var(--ae-chip); color: var(--ae-text); border: 0; border-radius: 0; box-shadow: inset 0 0 0 1px var(--ae-line2); font-weight: 700; letter-spacing: .08em; padding: 5px 12px; }
+  #view-playmat .ae-btn > span { display: inline-block; transform: skewX(18deg); }
+  #view-playmat .ae-btn:hover, #view-playmat .ae-btn:focus-visible { box-shadow: inset 0 0 0 1px var(--you); outline: none; }
+  html.layout-mobile .ae-turnno { display: none; }
+  html.layout-mobile .ae-step { display: none; }
+
+  /* cores and the Soul Core as gems (pentagon crystals) */
+  .gems { display: inline-flex; gap: 2px; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .g-core, .g-soul { position: relative; display: inline-block; flex: none; font-style: normal; }
+  .g-core { width: 11px; height: 11px; clip-path: polygon(50% 0, 100% 38%, 81% 100%, 19% 100%, 0 38%); background: conic-gradient(from 18deg at 50% 56%, var(--ae-core1) 0 72deg, var(--ae-core2) 72deg 144deg, var(--ae-core3) 144deg 216deg, var(--ae-core2) 216deg 288deg, var(--ae-core1) 288deg); filter: drop-shadow(0 0 2px var(--ae-core2)); }
+  .g-core::before { content: ""; position: absolute; inset: 26% 26% 30%; clip-path: polygon(50% 0, 100% 38%, 81% 100%, 19% 100%, 0 38%); background: linear-gradient(160deg, #ffffffcc, var(--ae-core1) 45%, var(--ae-core2)); }
+  .g-soul { width: 14px; height: 14px; clip-path: polygon(50% 0, 100% 38%, 81% 100%, 19% 100%, 0 38%); background: linear-gradient(150deg, #ffffff, #b9c0ca 35%, #eef1f5 55%, #6f7887 100%); filter: drop-shadow(0 0 3px var(--ae-soul2)); }
+  .g-soul::after { content: ""; position: absolute; inset: 22% 22% 18%; clip-path: polygon(50% 0, 100% 38%, 81% 100%, 19% 100%, 0 38%); background: radial-gradient(circle at 40% 35%, var(--ae-soul1) 0 12%, var(--ae-soul2) 45%, var(--ae-soul3) 100%); }
+  .gems.sm .g-core { width: 8px; height: 8px; } .gems.sm .g-soul { width: 10px; height: 10px; }
+  .g-more { font-style: normal; font-size: 9px; font-weight: 800; color: var(--ae-text2); }
+
+  /* sleeve stacks (our own card-back drawing; no logo, no text) */
+  .sleeve { position: relative; display: inline-block; width: 18px; height: 25px; flex: none; border-radius: 2px; background: #0b0b0b; box-shadow: 2px -2px 0 -0.5px var(--ae-panel2), 2px -2px 0 0 var(--ae-line2), 4px -4px 0 -0.5px var(--ae-panel2), 4px -4px 0 0 var(--ae-line2); }
+  .sleeve::before { content: ""; position: absolute; inset: 2px; border: 1px solid #cfcfcf; border-radius: 1px; background: repeating-linear-gradient(60deg, transparent 0 5px, #ffffff18 5px 6px), repeating-linear-gradient(-60deg, transparent 0 5px, #ffffff18 5px 6px); }
+  .sleeve::after { content: ""; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; transform: translate(-50%, -50%) rotate(45deg); border: 1px solid #cfcfcf; background: #000; }
+  .sleeve.cpu-sleeve::before, .sleeve.cpu-sleeve::after { border-color: #e7a0aa; }
+  .sleeve.mini { width: 10px; height: 14px; box-shadow: none; margin-right: 2px; } .sleeve.mini::after { width: 3px; height: 3px; }
+  .sleeve.fill { position: absolute; inset: 0; width: auto; height: auto; box-shadow: none; } .sleeve.fill::after { width: 30%; height: auto; aspect-ratio: 1; }
+  .deckv { display: inline-flex; align-items: center; gap: 8px; }
+
+  /* PC zone plates: cut corners, skewed tag in the side colour, plain numbers */
+  #view-playmat .zone-box, html.layout-pc #view-playmat .pc-hand-flank { position: relative; background: linear-gradient(180deg, var(--ae-panel1), var(--ae-panel2)); border: 0; border-radius: 0; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); box-shadow: inset 0 0 0 1px var(--ae-line); gap: 4px; color: var(--ae-text2); padding: 3px; }
+  #view-playmat .zone-box:hover, #view-playmat .zone-box:active, html.layout-pc #view-playmat .pc-hand-flank:hover { background: linear-gradient(180deg, var(--ae-panel1), var(--ae-panel1)); box-shadow: inset 0 0 0 1px var(--ae-line2); }
+  #view-playmat .zone-box .zone-label, html.layout-pc #view-playmat .pc-hand-flank .zone-label { display: inline-block; transform: skewX(-18deg); padding: 1px 10px; margin: 0; font-size: 9px !important; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; background: var(--you); color: var(--you-ink); white-space: nowrap; }
+  #view-playmat .zone-label > span { display: inline-block; transform: skewX(18deg); }
+  #view-playmat .side-cpu .zone-label { background: var(--cpu); color: var(--cpu-ink); }
+  .pv { font-size: 11px; color: var(--ae-text2); font-variant-numeric: tabular-nums; }
+  .pv b { color: var(--ae-text); font-size: 15px; }
+  html.layout-pc #view-playmat .pc-hand-flank .sub-text { font-size: 11px !important; }
+
+  /* field areas and rows */
+  #view-playmat .field-container-dual { background: transparent; border: 0; border-radius: 0; padding: 0; }
+  #view-playmat .field-row-wrapper { background: var(--ae-rowbg); border-radius: 0; box-shadow: inset 0 0 0 1px var(--ae-line); }
+  #view-playmat .row-header-badge { background: transparent; border: 0; color: var(--you); font-size: 9.5px; font-weight: 800; letter-spacing: .14em; padding: 2px 8px 0; }
+  #view-playmat .side-cpu .row-header-badge { color: var(--cpu); }
+  html.layout-mobile #view-playmat .row-header-badge { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  #view-playmat .empty-note { color: var(--ae-text4); opacity: 1; font-size: 12px; }
+  #view-playmat .opp-hand-pill { background: var(--ae-head); border: 0; border-radius: 0; box-shadow: inset 0 0 0 1px var(--ae-line2); color: var(--ae-text2); letter-spacing: .08em; }
+  #view-playmat .opp-hand-pill b { color: var(--cpu); }
+
+  /* phone stat grids */
+  #view-playmat .mobile-stats-bar { background: var(--ae-rowbg); border: 0; border-radius: 0; box-shadow: inset 0 0 0 1px var(--ae-line); gap: 3px; padding: 4px; color: var(--ae-text2); }
+  #view-playmat .stat-pill { background: var(--ae-chip); border-radius: 0; box-shadow: inset 0 0 0 1px var(--ae-line); font-weight: 700; font-size: 10px; min-height: 22px; }
+  #view-playmat .stat-pill b { color: var(--ae-text); }
+  #view-playmat .mobile-stats-bar .stat-pill:nth-child(-n+2), #view-playmat .mobile-stats-bar .stat-pill:nth-child(n+5) { background: var(--ae-chip); opacity: 1; font-size: 10px; }
+  #view-playmat .stat-pill.hl { box-shadow: inset 0 0 0 1px var(--you); color: var(--you); }
+  #view-playmat .side-cpu .stat-pill.hl { box-shadow: inset 0 0 0 1px var(--cpu); color: var(--cpu); }
+
+  /* Burst-Mirage and Soul State slots: label on top, state inside the card shape; PC slots are one full card */
+  html.layout-pc { --ba-w: clamp(46px, min(5.2vw, 9dvh), 76px); }
+  #view-playmat .burst-area, #view-playmat .soul-area { position: relative; font-size: 6px; }
+  #view-playmat .ba-title { color: var(--ae-burst); font-weight: 800; letter-spacing: .12em; font-size: 1.35em; }
+  #view-playmat .soul-area .ba-title { color: var(--ae-soulstate); }
+  #view-playmat .ba-card { border: 1px dashed var(--ae-line2); border-radius: 3px; background: transparent; }
+  #view-playmat .ba-lab { position: absolute; left: 0; right: 0; top: calc(1.35em + 2px); aspect-ratio: 63 / 88; display: flex; align-items: center; justify-content: center; font-size: 1.35em; letter-spacing: .1em; pointer-events: none; }
+  #view-playmat .ba-lab.set { opacity: 0; }
+  #view-playmat .ba-lab.empty { color: var(--ae-text3); }
+  #view-playmat .ba-card.set-burst { border: 0; background: none; box-shadow: none; overflow: visible; }
+  #view-playmat .ba-card.set-burst .btag { position: absolute; left: -3px; right: -3px; top: 50%; transform: translateY(-50%); z-index: 1; background: var(--you); color: var(--you-ink); font-size: 1.25em; font-weight: 900; letter-spacing: .08em; text-align: center; padding: 2px 0; white-space: nowrap; }
+  #view-playmat .side-cpu .ba-card.set-burst .btag { background: var(--cpu); color: var(--cpu-ink); }
+  #view-playmat .soul-area .ba-card.has-soul { border: 0; background-color: var(--ae-card2); background-image: linear-gradient(160deg, var(--ae-card1), var(--ae-card2)); background-size: cover; background-position: center; box-shadow: 0 0 0 1px var(--ae-soulstate), 0 0 8px color-mix(in srgb, var(--ae-soulstate) 45%, transparent); overflow: visible; }
+  #view-playmat .soul-area .ss-name { position: absolute; inset: 4px 3px auto; font-size: 1.3em; font-weight: 800; line-height: 1.15; color: #fff; text-align: center; text-shadow: 0 1px 2px #000; overflow: hidden; max-height: 70%; }
+  #view-playmat .soul-area .ss-count { position: absolute; right: 2px; bottom: 2px; min-width: 16px; height: 16px; padding: 0 3px; font-size: 10px; line-height: 16px; text-align: center; color: var(--ae-text); background: var(--ae-head); box-shadow: inset 0 0 0 1px var(--ae-line2); }
+  #view-playmat .soul-area .ss-sub { display: none; }
+
+  /* step band: the side whose turn it is colours the band, label, current step and NEXT */
+  #view-playmat .full-center-divider { position: relative; background: linear-gradient(90deg, color-mix(in srgb, var(--turn) 22%, var(--ae-head)), var(--ae-head) 40%); border: 0; border-radius: 0; box-shadow: inset 0 0 0 1px var(--turn), 0 0 18px color-mix(in srgb, var(--turn) 30%, transparent); }
+  #view-playmat .full-center-divider.cpu-turn { --turn: var(--cpu); }
+  #view-playmat .turn-title { color: var(--turn); font-size: 12px; font-weight: 900; font-style: italic; line-height: 1.05; letter-spacing: .02em; }
+  #view-playmat .turn-title span { display: block; }
+  html.layout-pc #view-playmat .turn-title { font-size: 17px; }
+  #view-playmat .step-chip { appearance: none; -webkit-appearance: none; border: 0; border-radius: 0; font-family: inherit; cursor: pointer; transform: skewX(-18deg); padding: 5px 11px; font-size: 10.5px; font-weight: 800; letter-spacing: .12em; background: var(--ae-chip); color: var(--ae-text3); box-shadow: inset 0 0 0 1px var(--ae-line); }
+  #view-playmat .step-chip.done { opacity: .55; }
+  #view-playmat .step-chip:not(.done):not(.active) { color: var(--ae-text); }
+  #view-playmat .step-chip.active { background: var(--turn); color: var(--you-ink); transform: skewX(-18deg) scale(1.12); box-shadow: 0 0 12px color-mix(in srgb, var(--turn) 60%, transparent); animation: aeGlow 1.6s ease-in-out infinite; }
+  #view-playmat .cpu-turn .step-chip.active { color: var(--cpu-ink); }
+  #view-playmat .step-chip:focus-visible { outline: 2px solid var(--ae-text); outline-offset: 2px; }
+  #view-playmat .step-chip.shake { animation: aeShake .35s; }
+  @keyframes aeGlow { 50% { box-shadow: 0 0 20px var(--turn); } }
+  @keyframes aeShake { 25% { translate: -5px 0; } 75% { translate: 5px 0; } }
+  #view-playmat .inline-next-btn { border: 0; border-radius: 0; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); background: var(--turn); color: var(--you-ink); box-shadow: none; width: 52px; height: 52px; transition: background .3s, transform .15s; }
+  #view-playmat .cpu-turn .inline-next-btn { color: var(--cpu-ink); }
+  html.layout-pc #view-playmat .inline-next-btn { width: 62px; height: 62px; }
+  #view-playmat .inline-next-btn .tx { font-size: 8px; letter-spacing: .1em; }
+  #view-playmat .inline-next-btn:disabled { background: var(--ae-chip); color: var(--ae-text4); }
+  #view-playmat .inline-next-btn:focus-visible { outline: none; filter: drop-shadow(0 0 4px var(--ae-text)); }
+  #view-playmat .control-log-row { align-self: center; max-width: min(100%, 860px); width: 100%; box-sizing: border-box; padding: 3px 24px; border-radius: 0; background: var(--ae-strip); color: #eef1f5; font-size: 11.5px; clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0 50%); }
+  .step-warn { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 12; display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 6px 30px; background: var(--cpu); color: #fff; clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 14px 100%, 0 50%); box-shadow: 0 10px 30px #0008; white-space: nowrap; pointer-events: none; max-width: 96%; }
+  .step-warn[hidden] { display: none; }
+  .step-warn b { font-size: 13px; font-style: italic; letter-spacing: .14em; }
+  .step-warn .sw-t { font-size: 11px; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+
+  /* hand */
+  #view-playmat .hand-area { background: var(--ae-rowbg); border: 0; border-radius: 0; box-shadow: inset 0 0 0 1px var(--ae-line); }
+
+  /* cards: no frame design; card image when there is one, else a dark placeholder with cost, type, name, core gems, BP and level */
+  #view-playmat .tcg-card { background-color: var(--ae-card2); background-image: linear-gradient(160deg, var(--ae-card1), var(--ae-card2)); color: #fff; border-width: 1.5px; border-radius: 4px; }
+  #view-playmat .tcg-card:not(.ult):not(.multi) { box-shadow: 0 3px 8px #0006; }
+  #view-playmat .tcg-card.ult { background-image: linear-gradient(160deg, color-mix(in srgb, var(--color-ultimate) 40%, var(--ae-card1)), var(--ae-card2) 55%); }
+  #view-playmat .tcg-card.has-img { background-image: none; background-size: cover; }
+  #view-playmat .tcg-card .cost { box-shadow: 0 0 0 1px #fff; }
+  #view-playmat .tcg-card .name { text-shadow: 0 1px 2px #000; }
+  #view-playmat .tcg-card .bp { background: none; color: #fff; font-weight: 900; -webkit-text-stroke: 2.5px #000; paint-order: stroke; font-variant-numeric: tabular-nums; }
+  #view-playmat .tcg-card.has-img .bp { background: none; }
+  #view-playmat .tcg-card .core-tag { background: #000000a0; border: 0; padding: 2px 1px; min-height: 13px; }
+  #view-playmat .tcg-card .core-tag.soul-active { background: #000000a0; border: 0; }
+  #view-playmat .tcg-card .core-tag .g-core { width: 9px; height: 9px; } #view-playmat .tcg-card .core-tag .g-soul { width: 11px; height: 11px; }
+  #view-playmat .lv-dia { position: absolute; right: 5px; bottom: 25px; z-index: 4; width: 12px; height: 12px; transform: rotate(45deg); background: var(--you); display: flex; align-items: center; justify-content: center; pointer-events: none; }
+  #view-playmat .lv-dia b { transform: rotate(-45deg); font-size: 8px; font-weight: 900; color: var(--you-ink); }
+  #view-playmat .side-cpu .lv-dia { background: var(--cpu); } #view-playmat .side-cpu .lv-dia b { color: var(--cpu-ink); }
+  #view-playmat .side-you .field-row .tcg-card:not(.ult):not(.multi) { box-shadow: 0 0 0 1px var(--you), 0 0 8px var(--you-soft); }
+  #view-playmat .side-cpu .field-row .tcg-card:not(.ult):not(.multi) { box-shadow: 0 0 0 1px var(--cpu), 0 0 8px color-mix(in srgb, var(--cpu) 30%, transparent); }
+  #view-playmat .hand-area .tcg-card:not(.dim):not(.ult):not(.multi) { box-shadow: 0 0 0 1px var(--you), 0 0 10px var(--you-soft); }
+  @media (prefers-reduced-motion: reduce) { #view-playmat .step-chip.active, #view-playmat .step-chip.shake, #view-playmat .tcg-card.has-soul-core { animation: none; } }
+  :root[data-mode="light"] #view-playmat .tcg-card .bp { -webkit-text-stroke: 2.5px #000; }
+  #log-drawer { background: var(--ae-panel1); border-left-color: var(--you); color: var(--ae-text); }
+  html.layout-pc #view-playmat .phase-steps { padding: 4px 12px; gap: 5px; }
+  #view-playmat .tcg-card .core-tag.none { background: none; }
+  html.layout-mobile #view-playmat .ba-title, html.layout-mobile #view-playmat .ba-lab { font-size: 1.05em; letter-spacing: 0; }
+  html.layout-mobile #view-playmat .ba-lab { top: calc(1.05em + 2px); }
+  html.layout-mobile #view-playmat .ba-card.set-burst .btag { left: 0; right: 0; font-size: .95em; letter-spacing: 0; }
+  #view-playmat .tcg-card.exhausted .lv-dia b { transform: rotate(-135deg); }
+  #pick-bar:not(.active), #peek-bar:not(.active) { box-shadow: none; }
+  #view-playmat .tcg-card.exhausted.heavy .lv-dia b { transform: rotate(-225deg); }
+  #view-playmat .step-chip { touch-action: manipulation; }
+  #view-playmat .step-chip:not(.active):hover { box-shadow: inset 0 0 0 1px var(--turn); color: var(--ae-text); }
+  #view-playmat .inline-next-btn:not(:disabled):hover { filter: brightness(1.12); }

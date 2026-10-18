@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "18 Oct 2026",
-  "next": "next: P1 parallel lanes (UI lane + card lane, lane-aware session gate, one merge + release; Opus), then U1 UI overhaul (CrossOver-style tokens + shell, docs/DESIGN.md; Opus), then card sessions alternate with U2-U7: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
+  "next": "next: P1 parallel lanes (UI lane + card lane, lane-aware session gate, one merge + release; Opus), then card session Soul Magic (block A, 33 cards wait only for it) paired with U2 lobby navigation; card sessions alternate with U3-U8: True Release, Invoke, Legacy, then the Eternal heads; 669 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -442,8 +442,8 @@
      "t": "UI overhaul prep (owner, 18 Oct 2026): Aegis screens + tokens studied, docs/DESIGN.md (night arena, core gems, step rail), design skills redesign-existing-projects + web-design-guidelines, design system and three battle-screen mockups as artifacts"
     },
     {
-     "s": "next",
-     "t": "U1 battle screen restyle in the current layout (approved mockup v11: CrossOver tokens, player colour + Dark/Light, turn-coloured step band, clickable steps, core/Soul Core gems, sleeves, one-line log, phone mirror)"
+     "s": "done",
+     "t": "U1 battle screen restyle v0.63.0: CrossOver tokens, player colour + Dark/Light (Settings), turn-coloured step band, clickable steps with \"Illegal move\", core/Soul Core gems, sleeves, one-line log, phone mirror"
     },
     {
      "s": "later",
@@ -879,6 +879,14 @@
    "calls": "~60",
    "basis": "measured",
    "note": "Manual session on Opus: Standard block A import (wiki API, 674 cards staged, +51 playable), levers measured, player-view pass by a subagent (90k tokens incl.). Budget-counter difference read before the last commit."
+  },
+  {
+   "ver": "v0.63.0",
+   "date": "18 Oct 2026",
+   "tokens": 365000,
+   "calls": "~60",
+   "basis": "measured",
+   "note": "Manual session on Opus: U1 battle screen restyle (theme module, clickable steps, gems, sleeves), Regression part 3 test fix for 26R ids, guidelines pass. Budget-counter difference read before the last commit."
   }
  ],
  "next": "next: U1 battle screen restyle (design approved 18 Oct 2026: mockup v11 + docs/DESIGN.md; Opus), then card sessions alternate with U2-U8: Soul Magic (33 cards wait only for it), True Release, Invoke, Legacy, then the Eternal heads; 669 of 8,709 cards playable"

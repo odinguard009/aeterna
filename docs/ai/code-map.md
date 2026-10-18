@@ -8,6 +8,9 @@ SIM, STEPS, STEPS_STANDARD, FORMAT_KEY, FORMAT, STANDARD_BLOCKS, BAN_LIST_INFO, 
 ## apps/web/src/00b-errors.js (48 lines, ~0.8k tokens) — IN-GAME ERROR CATCHER (v0.59.5, Q1 quality bundle, Aegis idea)
 ERR_LOG, errReport, errNotice, onGameError
 
+## apps/web/src/00c-theme.js (41 lines, ~0.7k tokens) — THEME (v0.63.0, UI/UX overhaul U1; docs/DESIGN.md section 0)
+THEME_KEY, THEME_COLS, THEME, applyTheme, setTheme
+
 ## packages/engine/src/01-cards.js (33 lines, ~0.6k tokens) — CARD DATABASE (Training cards + the built-in pack is registered further below)
 VERSION, CARDS, defCard, TRAIN, PRESET_DECK
 
@@ -80,17 +83,17 @@ isMainStep, humanCan, legalityHTML, FX_KW_START, FX_LINE_STOP, effectLines, fxMa
 ## packages/engine/src/12-zones.js (70 lines, ~1.6k tokens) — ZONES, LOG, RULES COVERAGE
 openZoneModal, openLogModal, showRules
 
-## apps/web/src/13-render.js (247 lines, ~5.3k tokens) — RENDERING
-nameHTML, isPC, applyLayout, _rz, colorVar, cardColors, isMulti, colorSty, symSlices, symCount, isUltimate, cardCls, rebMark, symBadgeHTML, handCardHTML, fieldCardHTML, rowHTML, burstAreaHTML, soulAreaHTML, fieldAreaHTML, zoneBox, renderBoard, render, LOG_OPEN, updateLogDrawer, toggleLog, magBtnHTML, liveStatusHTML, HIST_KEY, HISTORY, recordMatch, histHTML, lifeTxt, checkInvariants, switchView, renderSettings, renderLobby
+## apps/web/src/13-render.js (301 lines, ~6.6k tokens) — RENDERING
+nameHTML, isPC, applyLayout, _rz, colorVar, cardColors, isMulti, colorSty, symSlices, symCount, isUltimate, cardCls, rebMark, symBadgeHTML, handCardHTML, gemsHTML, fieldCardHTML, rowHTML, burstAreaHTML, soulAreaHTML, fieldAreaHTML, zoneBox, pv, pileHTML, lifePlate, resPlate, STEP_WARN, stepTargets, stepWarn, stepClick, renderBoard, render, LOG_OPEN, updateLogDrawer, toggleLog, magBtnHTML, liveStatusHTML, HIST_KEY, HISTORY, recordMatch, histHTML, lifeTxt, checkInvariants, switchView, renderSettings, renderLobby
 
 ## apps/web/src/13a-deckbuilder.js (200 lines, ~4k tokens) — DECK BUILDER (v0.53.0 redesign; list performance from v0.52.1)
 DB_COLORS, DB_TYPES, DB_COSTS, DBF, DB_UNDO, DB_IO, dbArr, dbTypeOf, dbSetOf, dbFilterOK, DBV, DB_GAP, DB_COLL, dbIndex, dbSets, dbActiveCount, DB_SORTS, dbFilter, dbCardHTML, dbWindow, dbScroll, dbSearchInput, dbChip, renderDbRail, dbToggle, dbResetFilters, dbSnap, dbCanAdd, dbChange, dbReplace, dbUndo, dbTap, dbImport, dbExport, dbStatsHTML, dbRowsHTML, renderDbDeck, dbSheet, renderDeckBuilder
 
-## apps/web/src/14-images.js (147 lines, ~2.4k tokens) — CARD IMAGES
+## apps/web/src/14-images.js (149 lines, ~2.4k tokens) — CARD IMAGES
 IMG, IDB, normKey, idbOpen, idbTx, setImg, loadImages, shrinkImage, stripExt, findCardByFile, findCardByKey, importImages, clearImages, imgCls, imgSty, refreshViews, libMsg, renderLibrary, deckToText, textToDeck, downloadText, readFileText, libAction
 
 ## packages/engine/src/15-match.js (58 lines, ~1k tokens) — MATCH START / END
 showGameOver, startNewGame
 
-## apps/web/src/16-events.js (203 lines, ~4.3k tokens) — EVENTS (delegation)
+## apps/web/src/16-events.js (204 lines, ~4.3k tokens) — EVENTS (delegation)
 instIdByUid, hScrollable, HDRAG, GAME_ACTS, gameAct, matchSummary, replayOf, lastReplay, runReplay, loadScenario, testSetup, defBuiltin

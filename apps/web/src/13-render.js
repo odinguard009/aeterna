@@ -45,9 +45,14 @@ function handCardHTML(inst) {
     <div class="cost">${card.cost}</div><div class="type-badge">${card.contract ? 'CON' : card.token ? 'TOK' : card.type.substring(0, 3).toUpperCase()}${rebMark(card)}</div>
     <div class="name">${nameHTML(card.name)}</div><div class="bp">${bp}</div>${magBtnHTML(inst.id, inst.uid)}${symBadgeHTML(inst.id)}</div>`;
 }
+/* v0.63.0 (U1): cores are drawn as gems (pentagon crystals), the Soul Core as a silver frame with a coloured gem; the count stays as text for screen readers */
+function gemsHTML(n, soul, max) {
+  max = max || 8; const k = Math.max(0, Math.min(n, max));
+  return '<i class="g-core" aria-hidden="true"></i>'.repeat(k) + (soul ? '<i class="g-soul" aria-hidden="true"></i>' : '') + (n > max ? `<em class="g-more">+${n - max}</em>` : '');
+}
 function fieldCardHTML(key, kind, f) {
   const card = CARDS[f.id];
-  const soul = f.soul ? '<span style="color:#d9383a;font-weight:bold;">★S</span>' : '';
+  const plain = Math.max(0, f.cores - (f.soul ? 1 : 0));
   const stack = f.under.length ? `<div class="stack-badge">STK:${f.under.length}</div>` : '';
   const bp = isSpiritForm(card) ? bpOf(f) : 'Lv' + lvNo(f);
   const sel = PEEK && PEEK.cfg.selected ? PEEK.cfg.selected(f.uid) : 0;
@@ -55,7 +60,7 @@ function fieldCardHTML(key, kind, f) {
   const selB = sel ? `<span class="sel-badge">−${sel}</span>` : '';
   return `<div class="slot ${f.exhausted && !f.heavy ? 'ex' : ''}"><div class="tcg-card ${f.exhausted ? 'exhausted' : ''}${f.heavy ? ' heavy' : ''} ${f.soul ? 'has-soul-core' : ''}${pk}${cardCls(card)}${imgCls(f.id)}" style="${colorSty(card)}${imgSty(f.id)}" data-a="field" data-v="${key}:${kind}:${f.uid}">
     ${selB}<div class="cost">${card.cost}</div><div class="type-badge">${f.under.length ? 'ADV' : card.contract ? 'CON' : card.token ? 'TOK' : card.type.substring(0, 3).toUpperCase()}${rebMark(card)}</div>
-    <div class="name">${nameHTML(card.name)}</div><div class="core-tag ${f.soul ? 'soul-active' : ''}">${soul} C:${f.cores}</div>${stack}<div class="bp">${bp}</div>${magBtnHTML(f.id, f.uid)}${symBadgeHTML(f.id)}</div></div>`;
+    <div class="name">${nameHTML(card.name)}</div><div class="core-tag${f.soul ? ' soul-active' : ''}${f.cores ? '' : ' none'}" title="${f.cores} core${f.cores === 1 ? '' : 's'}${f.soul ? ' (Soul Core included)' : ''}"><span class="gems">${gemsHTML(plain, f.soul, 6)}</span><span class="sr-only">C:${f.cores}${f.soul ? ' S' : ''}</span></div>${stack}<div class="bp">${bp}</div>${isSpiritForm(card) ? `<span class="lv-dia" aria-hidden="true" title="Level ${lvNo(f)}"><b>${lvNo(f)}</b></span>` : ''}${magBtnHTML(f.id, f.uid)}${symBadgeHTML(f.id)}</div></div>`;
 }
 function rowHTML(title, scroll, key, items, emptyText, cls) {       // items: [{kind, f}]
   return `<div class="field-row-wrapper ${cls || ''}"><div class="row-header-badge"><span>${title}</span></div>
@@ -65,89 +70,137 @@ function rowHTML(title, scroll, key, items, emptyText, cls) {       // items: [{
 function burstAreaHTML(p) {
   const b = p.burst, m = p.mirage; let title = 'BURST·MIR', card = '<div class="ba-card"></div>', lab = '<div class="ba-lab empty">EMPTY</div>';
   if (m) { const c = CARDS[m.id]; title = b ? 'MIRAGE+BURST' : 'MIRAGE'; card = `<div class="ba-card set-mirage" style="--card-col:${colorVar(c.symbol)}">${cardFaceHTML(c, false)}</div>`; lab = `<div class="ba-lab set">${b ? 'SET +B' : 'SET'}</div>`; }
-  else if (b) { title = 'BURST'; card = '<div class="ba-card set-burst"><span class="sleeve-mark">BS</span></div>'; lab = '<div class="ba-lab set">SET</div>'; }
+  else if (b) { title = 'BURST'; card = '<div class="ba-card set-burst"><span class="sleeve fill" aria-hidden="true"></span><span class="btag">BURST SET</span></div>'; lab = '<div class="ba-lab set">SET</div>'; }
   return `<div class="burst-area" data-a="zone" data-v="${p.key}:burst" title="Burst / Mirage Area"><div class="ba-title">${title}</div>${card}${lab}</div>`;
 }
 /* Soul State Area (top-right corner of your field, mirrored at the bottom-left of the CPU field): no card limit, the badge shows how many cards are in it */
 function soulAreaHTML(p) {
-  const n = p.soulState.length;
-  const card = n ? `<div class="ba-card has-soul"><span class="ss-count">${n}</span><span class="ss-sub">CARD${n === 1 ? '' : 'S'}</span></div>` : '<div class="ba-card"></div>';
+  const n = p.soulState.length, last = n ? p.soulState[n - 1] : null, lc = last && CARDS[last.id];
+  /* v0.63.0 (U1): the last card that entered is the cover (its image, or its name), the count sits in the corner */
+  const card = n ? `<div class="ba-card has-soul${imgCls(last.id)}" style="${imgSty(last.id).replace(/^;/, '')}">${lc && !imgCls(last.id) ? `<span class="ss-name">${nameHTML(lc.name)}</span>` : ''}<span class="ss-count">${n}</span><span class="ss-sub">CARD${n === 1 ? '' : 'S'}</span></div>` : '<div class="ba-card"></div>';
   const lab = n ? `<div class="ba-lab set">${n} IN</div>` : '<div class="ba-lab empty">EMPTY</div>';
   return `<div class="soul-area" data-a="zone" data-v="${p.key}:soulstate" title="Soul State Area (no card limit)"><div class="ba-title">SOUL STATE</div>${card}${lab}</div>`;
 }
 function fieldAreaHTML(p, isPlayer) {
-  const k = p.key, pill = (label, val, z) => `<div class="stat-pill" data-a="zone" data-v="${k}:${z}">${label}: <b>${val}</b></div>`;
+  const k = p.key, pill = (label, val, z, pre) => `<div class="stat-pill${z === 'life' || z === 'reserve' ? ' hl' : ''}" data-a="zone" data-v="${k}:${z}">${label}: ${pre || ''}<b>${val}</b></div>`;
   const sp = p.spirits.map(f => ({ kind: 'spirit', f })), nx = p.nexus.map(f => ({ kind: 'nexus', f }));
   let rows;
   if (isPC()) {                                  // PC: two rows, Spirits and Nexus
-    const nexusRow = rowHTML(isPlayer ? 'YOUR NEXUS' : 'CPU NEXUS', k + '-nexus', k, nx, 'No Nexus', 'nexus-row');
-    const spiritRow = rowHTML(isPlayer ? 'YOUR SPIRITS' : 'CPU SPIRITS', k + '-spirits', k, sp, 'No Spirits');
+    const nexusRow = rowHTML('NEXUS', k + '-nexus', k, nx, 'No Nexus', 'nexus-row');      // v0.63.0: the side colour of the label says whose row it is
+    const spiritRow = rowHTML('SPIRITS', k + '-spirits', k, sp, 'No Spirits');
     rows = isPlayer ? spiritRow + nexusRow : nexusRow + spiritRow;
   } else {                                       // phone: one swipeable row (Spirits, then Nexus)
     rows = rowHTML(isPlayer ? 'YOUR FIELD ↔' : 'CPU FIELD ↔', k + '-field', k, sp.concat(nx), 'Empty field');
   }
-  const stats = `<div class="mobile-stats-bar">
-      ${pill('LIFE', lifeTxt(p), 'life')}${pill('RES', p.reserve.n + (p.reserve.soul ? '+S' : ''), 'reserve')}${pill('HD', p.hand.length, 'hand')}${pill('DECK', p.deck.length, 'deck')}
-      ${pill('TR', p.trash.length, 'trash')}${pill('CNT', p.count, 'count')}${pill('VD', p.void, 'void')}${pill('BAN', p.removed.length, 'removed')}
-      </div>`;
+  /* v0.63.0 (U1): the CPU grid is the point mirror of yours (your Life top-left, the CPU's Life bottom-right) */
+  const lifeGems = `<span class="gems sm">${gemsHTML(p.life - (p.lifeSoul ? 1 : 0), !!p.lifeSoul, 10)}</span>`;
+  const pills = [pill('LIFE', lifeTxt(p), 'life', lifeGems), pill('RES', p.reserve.n + (p.reserve.soul ? '+S' : ''), 'reserve', p.reserve.soul ? '<i class="g-soul" aria-hidden="true"></i>' : ''), pill('HD', p.hand.length, 'hand'), pill('DECK', p.deck.length, 'deck', '<span class="sleeve mini" aria-hidden="true"></span>'),
+    pill('TR', p.trash.length, 'trash'), pill('CNT', p.count, 'count'), pill('VD', p.void, 'void'), pill('BAN', p.removed.length, 'removed')];
+  const stats = `<div class="mobile-stats-bar ${isPlayer ? 'side-you' : 'side-cpu'}">${(isPlayer ? pills : pills.slice().reverse()).join('')}</div>`;
   /* phone: the CPU panel sits above its field, yours sits below your field (mirrored, next to your hand) */
   /* the two mats face each other: your Burst Area is at the top-left of your field, the CPU's at the bottom-right of its field; the panels span the full width and stay centered */
   /* PC: the CPU's hand count sits at the top centre of its field (the player's is in the hand flank) */
-  const oppHand = !isPlayer && isPC() ? `<div class="opp-hand-pill" data-a="zone" data-v="${k}:hand" title="Cards in the CPU's Hand">CPU HAND: <b>${p.hand.length}</b></div>` : '';
+  const oppHand = !isPlayer && isPC() ? `<div class="opp-hand-pill" data-a="zone" data-v="${k}:hand" title="Cards in the CPU's Hand">HAND <b>${p.hand.length}</b></div>` : '';
   const body = `<div class="fc-body ${isPlayer ? '' : 'mir'}">${burstAreaHTML(p)}<div class="fc-main">${oppHand}${rows}</div>${soulAreaHTML(p)}</div>`;
-  return `<div class="field-container-dual">${isPlayer ? body + stats : stats + body}</div>`;
+  return `<div class="field-container-dual ${isPlayer ? 'side-you' : 'side-cpu'}">${isPlayer ? body + stats : stats + body}</div>`;
 }
-function zoneBox(key, zone, label, valueHTML, extraStyle) {
-  return `<div class="zone-box" ${extraStyle || ''} data-a="zone" data-v="${key}:${zone}"><div class="zone-label">${label}</div>${valueHTML}</div>`;
+/* v0.63.0 (U1): PC zone plates: a skewed tag in the side colour, the value without prefixes, gems and sleeve stacks */
+function zoneBox(key, zone, label, valueHTML) {
+  return `<div class="zone-box ${key === 'player' ? 'side-you' : 'side-cpu'}" data-a="zone" data-v="${key}:${zone}"><div class="zone-label"><span>${label}</span></div>${valueHTML}</div>`;
+}
+const pv = n => `<span class="pv"><b>${n}</b></span>`;
+const pileHTML = (n, mark) => `<span class="deckv">${n ? `<span class="sleeve${mark ? ' ' + mark : ''}" aria-hidden="true"></span>` : ''}${pv(n)}</span>`;
+const lifePlate = p => `<span class="gems">${gemsHTML(p.life - (p.lifeSoul ? 1 : 0), !!p.lifeSoul, 10)}</span>${pv(lifeTxt(p))}`;
+const resPlate = p => `<span class="gems">${gemsHTML(p.reserve.n, !!p.reserve.soul, 10)}</span>${pv(p.reserve.n + (p.reserve.soul ? '+S' : ''))}`;
+/* clickable step buttons (v0.63.0, owner 2026-10-18): a legal click is the step NEXT goes to, or End (no attacks: the Attack Step still runs, empty);
+   anything else shows an "Illegal move" strip with the reason. Same path as NEXT, no rules change. */
+let STEP_WARN = null;
+function stepTargets() {                      // [index NEXT goes to, End index] while the human may press NEXT, else null
+  if (!G || G.over || G.active !== 'player' || !humanCan()) return null;
+  const end = G.steps.length - 1;
+  if (G.step === 4) return [G.turnNo === 1 ? end : 5, end];
+  if (G.step === 5) return [G.format === 'standard' ? 6 : end, end];
+  if (G.step === 6 && G.format === 'standard') return [end, end];
+  return null;
+}
+function stepWarn(text, i) {
+  STEP_WARN = { text, i, at: Date.now() };
+  const w = document.querySelector('.step-warn'); if (w) { w.querySelector('.sw-t').textContent = text; w.hidden = false; }
+  const b = document.querySelector(`.step-chip[data-v="${i}"]`); if (b) { b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); }
+  clearTimeout(stepWarn.t); stepWarn.t = setTimeout(() => { STEP_WARN = null; const x = document.querySelector('.step-warn'); if (x) x.hidden = true; }, 2200);
+}
+function stepClick(i) {
+  if (!G) return;
+  i = Number(i); const name = s => (G.steps[s] || '').toLowerCase().replace(/(^|\s)\w/g, m => m.toUpperCase());
+  if (G.over) return stepWarn('The match is over.', i);
+  if (G.active !== 'player') return stepWarn('The CPU is playing its turn.', i);
+  const t = stepTargets();
+  if (i === G.step) return stepWarn(`Already in the ${name(i)} Step.`, i);
+  if (i < G.step) return stepWarn(`The ${name(i)} Step has passed.`, i);
+  if (!t) return stepWarn('Finish the current action first.', i);
+  if (i !== t[0] && i !== t[1]) return stepWarn(`Next legal step: ${name(t[0])}.`, i);
+  const turn = G.turnNo, game = G, until = Date.now() + 60000;
+  gameAct('next', null);
+  if (i === t[0]) return;
+  const go = () => {                          // End from Main / Attack: press NEXT again whenever it is the human's turn to press it
+    if (G !== game || G.over || G.turnNo !== turn || G.active !== 'player' || Date.now() > until) return;
+    const u = stepTargets();
+    if (u) { if (G.step < G.steps.length - 1) gameAct('next', null); if (G.step >= G.steps.length - 1 || G.active !== 'player') return; }
+    setTimeout(go, 120);
+  };
+  setTimeout(go, 120);
 }
 function renderBoard() {
   const app = $('app'); if (!app || !G) return;
   const keep = {};
   document.querySelectorAll('[data-scroll]').forEach(e => { keep[e.dataset.scroll] = e.scrollLeft; });
   const P = G.p.player, O = G.p.opponent, stepName = G.steps[G.step];
-  const small = t => `<span style="font-size:8px;">${t}</span>`;
+  const cpuTurn = G.active !== 'player', nextOff = !humanCan() || !(G.step === 4 || G.step === 5 || (G.format === 'standard' && G.step === 6));
+  const turnLbl = G.over ? '<span>GAME</span> <span>OVER</span>' : cpuTurn ? '<span>OPPONENT</span> <span>TURN</span>' : '<span>PLAYER</span> <span>TURN</span>';
   app.innerHTML = `
-    <header><h1>Aeterna v${VERSION}</h1><span><button class="btn-nav-small" data-a="log-toggle" title="Game log (L)">📜 Log</button> <button class="btn-nav-small" data-a="leave">Exit to Lobby</button></span></header>
+    <header class="ae-head"><div class="ae-turn"><h1 translate="no">Aeterna</h1><span class="ae-ver">v${VERSION}</span>${G.over ? '' : `<span class="ae-turnno">${cpuTurn ? 'OPPONENT' : 'PLAYER'} TURN ${G.turnNo}</span>`}</div><span class="ae-step"><span>${G.over ? 'GAME OVER' : esc(stepName)}</span></span><span class="ae-fill"></span>
+      <span class="ae-tools"><button class="btn-nav-small ae-btn" data-a="log-toggle" title="Game log (L)"><span>LOG</span></button><button class="btn-nav-small ae-btn" data-a="leave"><span>EXIT TO LOBBY</span></button></span></header>
     <div class="playmat-layout">
       <div class="half-field">
         <div class="side-flank-pc">
-          ${zoneBox('opponent', 'trash', 'TRASH', small('Tr: ' + O.trash.length))}
-          ${zoneBox('opponent', 'deck', 'CPU DECK', small(O.deck.length + ' Cards'))}
-          ${zoneBox('opponent', 'count', 'COUNT', small('Cnt: <b>' + O.count + '</b>'))}
+          ${zoneBox('opponent', 'trash', 'Trash', pileHTML(O.trash.length, 'cpu-sleeve'))}
+          ${zoneBox('opponent', 'deck', 'Deck', pileHTML(O.deck.length, 'cpu-sleeve'))}
+          ${zoneBox('opponent', 'count', 'Count', pv(O.count))}
         </div>
         ${fieldAreaHTML(O, false)}
         <div class="side-flank-pc">
-          ${zoneBox('opponent', 'void', 'VOID', small('Vd: <b>' + O.void + '</b>'))}
-          ${zoneBox('opponent', 'reserve', 'CPU RES', small('Core: <b>' + O.reserve.n + (O.reserve.soul ? '+S' : '') + '</b>'))}
-          ${zoneBox('opponent', 'life', '<span style="color:var(--color-red)">CPU LIFE</span>', `<div class="core-badge" style="background:var(--color-red);color:#fff">${lifeTxt(O)}</div>`, 'style="border-color:rgba(217,56,58,.5)"')}
+          ${zoneBox('opponent', 'void', 'Void', pv(O.void))}
+          ${zoneBox('opponent', 'reserve', 'Reserve', resPlate(O))}
+          ${zoneBox('opponent', 'life', 'Life', lifePlate(O))}
         </div>
       </div>
-      <div class="full-center-divider">
+      <div class="full-center-divider${cpuTurn && !G.over ? ' cpu-turn' : ''}">
         <div class="control-top-row">
-          <div class="turn-title">${G.over ? 'GAME OVER' : (G.active === 'player' ? stepName : 'CPU TURN')}</div>
+          <div class="turn-title">${turnLbl}</div>
           <div class="phase-steps-container" data-scroll="phase"><div class="phase-steps">
-            ${G.steps.map(s => `<span class="step-chip ${s === stepName ? 'active' : ''}">${s}</span>`).join('')}</div></div>
-          <div class="next-btn-wrapper"><button class="inline-next-btn" data-a="next" aria-label="Next step" ${(!humanCan() || !(G.step === 4 || G.step === 5 || (G.format === 'standard' && G.step === 6))) ? 'disabled' : ''}><span class="ic">▶</span><span class="tx">NEXT</span></button></div>
+            ${G.steps.map((s, i) => `<button class="step-chip${s === stepName ? ' active' : i < G.step ? ' done' : ''}" data-a="step" data-v="${i}"${s === stepName ? ' aria-current="step"' : ''}>${s}</button>`).join('')}</div></div>
+          <div class="next-btn-wrapper"><button class="inline-next-btn" data-a="next" aria-label="Next step" ${nextOff ? 'disabled' : ''}><span class="ic">▶</span><span class="tx">NEXT</span></button></div>
         </div>
         <div class="control-log-row" data-a="log" title="Tap to see the game log">${esc(G.last)}</div>
+        <div class="step-warn" role="status" aria-live="polite"${STEP_WARN && Date.now() - STEP_WARN.at < 2200 ? '' : ' hidden'}><b>ILLEGAL MOVE</b><span class="sw-t">${STEP_WARN ? esc(STEP_WARN.text) : ''}</span></div>
       </div>
       <div class="half-field">
         <div class="side-flank-pc">
-          ${zoneBox('player', 'life', 'YOUR LIFE', `<div class="core-badge">${lifeTxt(P)}</div>`, 'style="border-color:rgba(229,169,60,.5)"')}
-          ${zoneBox('player', 'reserve', 'YOUR RES', small('Core: <b>' + P.reserve.n + (P.reserve.soul ? '+S' : '') + '</b>'))}
-          ${zoneBox('player', 'void', 'VOID', small('Vd: <b>' + P.void + '</b>'))}
+          ${zoneBox('player', 'life', 'Life', lifePlate(P))}
+          ${zoneBox('player', 'reserve', 'Reserve', resPlate(P))}
+          ${zoneBox('player', 'void', 'Void', pv(P.void))}
         </div>
         ${fieldAreaHTML(P, true)}
         <div class="side-flank-pc">
-          ${zoneBox('player', 'count', 'COUNT', small('Cnt: <b>' + P.count + '</b>'))}
-          ${zoneBox('player', 'deck', 'YOUR DECK', small(P.deck.length + ' Cards'))}
-          ${zoneBox('player', 'trash', 'TRASH', small('Tr: ' + P.trash.length))}
+          ${zoneBox('player', 'count', 'Count', pv(P.count))}
+          ${zoneBox('player', 'deck', 'Deck', pileHTML(P.deck.length))}
+          ${zoneBox('player', 'trash', 'Trash', pileHTML(P.trash.length))}
         </div>
       </div>
       <div class="hand-container-wrapper">
-        <div class="pc-hand-flank" data-a="zone" data-v="player:removed"><div class="zone-label">BANISHED</div><span class="sub-text">${P.removed.length}</span></div>
+        <div class="pc-hand-flank side-you" data-a="zone" data-v="player:removed"><div class="zone-label"><span>Banished</span></div><span class="sub-text">${pileHTML(P.removed.length)}</span></div>
         <div class="hand-area" data-scroll="hand">${P.hand.map(handCardHTML).join('')}</div>
-        <div class="pc-hand-flank" data-a="zone" data-v="player:hand"><div class="zone-label">HAND CNT</div><span class="sub-text">${P.hand.length}</span></div>
+        <div class="pc-hand-flank side-you" data-a="zone" data-v="player:hand"><div class="zone-label"><span>Hand Cnt</span></div><span class="sub-text">${pv(P.hand.length)}</span></div>
       </div>
     </div>`;
   document.querySelectorAll('[data-scroll]').forEach(e => { if (keep[e.dataset.scroll]) e.scrollLeft = keep[e.dataset.scroll]; });
@@ -230,7 +283,8 @@ function switchView(id) {
   if (id === 'view-library') renderLibrary();
   if (id === 'view-settings') renderSettings();
 }
-function renderSettings() { $('set-hist').innerHTML = histHTML(); $('set-cpu').innerHTML = CPU_PROFILE_NAMES.map(n => `<option value="${n}">${cap(n)}</option>`).join(''); $('set-cpu').value = cpuProfileName(null); $('set-speed').value = SETTINGS.speed; $('set-sound').value = SETTINGS.sound ? 'on' : 'off'; }
+function renderSettings() { $('set-hist').innerHTML = histHTML(); $('set-cpu').innerHTML = CPU_PROFILE_NAMES.map(n => `<option value="${n}">${cap(n)}</option>`).join(''); $('set-cpu').value = cpuProfileName(null); $('set-speed').value = SETTINGS.speed; $('set-sound').value = SETTINGS.sound ? 'on' : 'off';
+  $('set-color').innerHTML = THEME_COLS.map(c => `<option value="${c.id}">${c.name}</option>`).join(''); $('set-color').value = THEME.color; $('set-mode').value = THEME.mode; }
 function renderLobby() {
   const v = validateDeck(PLAYER_DECK), el = $('lobby-deck');
   el.className = 'lobby-deck' + (v.ok ? '' : ' bad');

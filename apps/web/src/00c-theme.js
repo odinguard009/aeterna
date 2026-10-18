@@ -1,0 +1,41 @@
+/* ---------------------------------------------------------------------
+   THEME (v0.63.0, UI/UX overhaul U1; docs/DESIGN.md section 0)
+   Player side colour (teal default or one of the eight symbol colours) and Dark/Light mode.
+   Saved per device; applied as CSS custom properties on <html>: --you, --you-ink, --you-soft, --cpu, data-mode.
+   The CPU is crimson, and blue when the player picks red. Display only: nothing here touches the rules.
+   --------------------------------------------------------------------- */
+const THEME_KEY = 'aeterna.theme.v1';
+const THEME_COLS = [
+  { id: 'teal', name: 'Teal (default)', d: '#17b897', l: '#0f8f74', ink: '#04211b' },
+  { id: 'red', name: 'Red', d: '#e5484d', l: '#c8303a', ink: '#ffffff' },
+  { id: 'purple', name: 'Purple', d: '#a06cf0', l: '#7b45cf', ink: '#ffffff' },
+  { id: 'green', name: 'Green', d: '#2fb36a', l: '#1f8f50', ink: '#06210f' },
+  { id: 'white', name: 'White', d: '#eef1f5', l: '#ffffff', ink: '#141922' },
+  { id: 'yellow', name: 'Yellow', d: '#ffe14a', l: '#f0cf00', ink: '#2a2400' },
+  { id: 'blue', name: 'Blue', d: '#3a8cf0', l: '#1f6fd9', ink: '#ffffff' },
+  { id: 'silver', name: 'Silver (Soul Core)', d: '#b8c2cf', l: '#8f9aa8', ink: '#141922' },
+  { id: 'gold', name: 'Gold (Ultimate)', d: '#c9952a', l: '#a87a14', ink: '#241700' }
+];
+const THEME = (() => {
+  const t = { color: 'teal', mode: 'dark' };
+  try { const o = JSON.parse(localStorage.getItem(THEME_KEY)); if (o && typeof o === 'object') { if (THEME_COLS.some(c => c.id === o.color)) t.color = o.color; if (o.mode === 'light') t.mode = 'light'; } } catch (e) { /* storage blocked: defaults */ }
+  return t;
+})();
+function applyTheme() {
+  if (typeof document === 'undefined') return;
+  const c = THEME_COLS.find(x => x.id === THEME.color) || THEME_COLS[0], light = THEME.mode === 'light', v = light ? c.l : c.d, r = document.documentElement;
+  r.setAttribute('data-mode', THEME.mode);
+  r.style.setProperty('--you', v);
+  r.style.setProperty('--you-ink', c.ink);
+  r.style.setProperty('--you-soft', c.id === 'white' && light ? '#0b1a3022' : v + '40');
+  r.style.setProperty('--cpu', c.id === 'red' ? (light ? '#1f6fd9' : '#3a8cf0') : (light ? '#c42b40' : '#d8344b'));
+  r.style.setProperty('--cpu-ink', '#ffffff');
+}
+function setTheme(key, val) {
+  if (key === 'color' && THEME_COLS.some(c => c.id === val)) THEME.color = val;
+  else if (key === 'mode' && (val === 'dark' || val === 'light')) THEME.mode = val;
+  else return;
+  try { localStorage.setItem(THEME_KEY, JSON.stringify(THEME)); } catch (e) { /* blocked: this visit only */ }
+  applyTheme();
+}
+applyTheme();
