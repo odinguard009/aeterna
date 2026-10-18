@@ -1,0 +1,6 @@
+# GitHub language stats and diffs: built and report files are not source code.
+# index.html is built from packages/engine/src + apps/web/src (npm run loop).
+index.html linguist-generated
+docs/progress.html linguist-generated
+docs/roadmap.html linguist-generated
+docs/reports/** linguist-generated
