@@ -34,8 +34,8 @@ test('S04 a Soul Core leaving the Life to the Trash lands in the Trash', async (
   assert.deepEqual(r, [0, 0, true]);
 });
 test('S05 core and Soul Core counts stay consistent while Sealed', async () => {
-  assert.equal(await ev(`P.reserve.soul = true; O.reserve.soul = true; BS.soulToLife(P, 'reserve'); P.made = P.life - 1 + P.reserve.n + P.trashCores.n + P.count + P.void;
-    O.made = O.life + O.reserve.n + O.trashCores.n + O.count + O.void; P.deckSize = 0; O.deckSize = 0; try { BS.checkInvariants(); return 'ok'; } catch (e) { return e.message; }`), 'ok');
+  assert.equal(await ev(`P.reserve.soul = true; O.reserve.soul = true; BS.soulToLife(P, 'reserve'); P.made = [P.life - 1, P.reserve.n, P.trashCores.n, P.count, P.void].reduce((a, b) => a + b);
+    O.made = [O.life, O.reserve.n, O.trashCores.n, O.count, O.void].reduce((a, b) => a + b); P.deckSize = 0; O.deckSize = 0; try { BS.checkInvariants(); return 'ok'; } catch (e) { return e.message; }`), 'ok');
 });
 const rev = (count = 6, nc = 1) => `const z = nx('${ZEUS}', P, ${nc}); P.count = ${count}; P.reserve.soul = true; const r = hd('${REVOL}');`;
 test('S06 Seal Manifest: the Soul Core goes to the Life, one core is paid from "Contractor Zeus", Revol-Tiger X is summoned', async () => {
