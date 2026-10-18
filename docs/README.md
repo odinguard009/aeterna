@@ -42,5 +42,6 @@ Generated reports live in `reports/` (first line names the tool).
 - `ai/repo-cleanup-plan.md`, `ai/monorepo-plan.md`, `ai/deckbuilder-plan.md` (hand): plans.
 - `ai/compiler-v2-plan.md` (hand): clause-level effect compiler (target + action sentences), block A import, evidence and sessions.
 - `ai/next-session-prompt.md` (hand): auto-mode rules and the scheduled prompt.
+- `ai/lanes/README.md` (hand): parallel lanes (ui / card branches, file ownership, merge step); `ai/lanes/ui.md`, `ai/lanes/card.md` (hand, per lane): notes for shared files.
 - `ai/owner-instructions.md` (hand): the owner's instructions in their words.
 - `ai/deleted-branches.md` (hand): backup branches listed for deletion, restorable by SHA.

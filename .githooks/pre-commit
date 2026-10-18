@@ -1,0 +1,4 @@
+#!/bin/sh
+# P1 parallel lanes (v0.63.1): on a lane/<lane> branch, shared files and the other lane's files are not committed
+# (tools/lanes.mjs, docs/ai/lanes/README.md). No-op on main.
+exec node tools/lanes.mjs --check-staged

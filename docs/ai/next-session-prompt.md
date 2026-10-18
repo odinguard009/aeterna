@@ -26,6 +26,11 @@
 - Permission: both tasks should run with automatic approval ("Automatically approve" in the task settings, owner-only switch).
 - Session name: "Ver. X.Y.Z" of the final version.
 
+## Parallel lanes (P1, v0.63.1; opt-in)
+- Session marks may carry a lane as second word: `LOCK ui`, `MANUAL card`, `UNLOCK ui`, and the lane end mark `LANEDONE <lane> <branch>`. A mark with a lane blocks only that lane; a mark without a lane blocks every lane (the single-lane flow is unchanged). `DONE vX.Y.Z` (the merge + release) and a lane-less `UNLOCK` end all marks. Staleness (5 h / 3 h), the 24-hour cap and the no-progress count work over both lanes.
+- Commands: `session_gate.sh manual|lock|unlock|busy <lane>`, `lanedone <lane> lane/<lane>`, `check opus <lane>`; `bash tools/session_start.sh --lane <lane>`. Flow, file ownership and the merge step: `docs/ai/lanes/README.md`.
+- The scheduled prompt below has no lane, so auto runs stay single-lane (one at a time) until the owner adds a second scheduled task for a lane; sessions never install one. Manual lanes: two chats, "Lanjutkan roadmap ui" and "Lanjutkan roadmap card".
+
 ## Installed tasks
 - Changed 2026-10-17 by the owner's request (20-minute idle delay, Opus only); update this list when they change. All three use the PROMPT block with MODEL = `opus`, permission mode auto, no local device.
 - `trig_01SNoK2NRwVpqyKWbGiC5yEY` "Lanjutkan roadmap otomatis - Opus :18" (hourly at minute 18 UTC), `trig_01MXrnRqD4MPpe3LFxpjHRk7` "Lanjutkan roadmap otomatis - Opus :38" (minute 38), `trig_01QwHtnej2to7n6GZp1M9aUd` "Lanjutkan roadmap otomatis - Opus :58" (minute 58; formerly the Sonnet task, switched to Opus). A `*/20` schedule was rejected (minimum 1 hour). Only one of them can start a session: the gate needs 20 idle minutes and no active LOCK/MANUAL.

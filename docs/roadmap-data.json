@@ -3,8 +3,8 @@
   "title": "Aeterna",
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
-  "updated": "18 Oct 2026",
-  "next": "next: P1 parallel lanes (UI lane + card lane, lane-aware session gate, one merge + release; Opus), then card session Soul Magic (block A, 33 cards wait only for it) paired with U2 lobby navigation; card sessions alternate with U3-U8: True Release, Invoke, Legacy, then the Eternal heads; 669 of 8,709 cards playable"
+  "updated": "19 Oct 2026",
+  "next": "next: card session Soul Magic (block A, 33 cards wait only for it; Opus), alone or as the card lane next to U2 lobby navigation in the ui lane; then card sessions alternate with U3-U8: True Release, Invoke, Legacy, then the Eternal heads; 669 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -536,6 +536,10 @@
      "t": "S1 (v0.60.2): faster sessions: one release per session, Regression not awaited (10 sims patch / 30 minor), subagents for tests and checks"
     },
     {
+     "s": "done",
+     "t": "P1 (v0.63.1): parallel lanes, opt-in: ui and card lanes on lane/<lane> branches, lane-aware session gate (LOCK ui, MANUAL card, LANEDONE), file-ownership pre-commit hook, merge step tools/lane_merge.sh"
+    },
+    {
      "s": "next",
      "t": "Q2: UI tests wait on state instead of fixed sleeps (318 to 0)"
     },
@@ -893,5 +897,5 @@
    "note": "Manual session on Opus: U1 battle screen restyle (theme module, clickable steps, gems, sleeves), Regression part 3 test fix for 26R ids, guidelines pass. Budget-counter difference read before the last commit."
   }
  ],
- "next": "next: U1 battle screen restyle (design approved 18 Oct 2026: mockup v11 + docs/DESIGN.md; Opus), then card sessions alternate with U2-U8: Soul Magic (33 cards wait only for it), True Release, Invoke, Legacy, then the Eternal heads; 669 of 8,709 cards playable"
+ "next": "next: card session Soul Magic (block A, 33 cards wait only for it; Opus), alone or as the card lane next to U2 lobby navigation in the ui lane; then card sessions alternate with U3-U8: True Release, Invoke, Legacy, then the Eternal heads; 669 of 8,709 cards playable"
 }

@@ -2,7 +2,8 @@
 # Cheap gate before every push (seconds), so CI and the Regression workflow are not spent on a broken build.
 # Enable once per clone:  git config core.hooksPath .githooks
 set -e
-node tools/build.mjs --check
+# lane branches (P1, v0.63.1) do not commit index.html and the other generated files: the merge step rebuilds them
+case "$(git symbolic-ref --short HEAD 2>/dev/null)" in lane/*) echo "[pre-push] lane branch: build check skipped (generated files are made by the merge step)" ;; *) node tools/build.mjs --check ;; esac
 node tools/lint.mjs
 node tools/brand_guard.mjs
 z=0000000000000000000000000000000000000000
