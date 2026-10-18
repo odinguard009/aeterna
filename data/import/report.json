@@ -1,6 +1,6 @@
 {
  "stats": {
-  "cards": 7423,
+  "cards": 8040,
   "per_saga": {
    "1": 816,
    "2": 342,
@@ -17,28 +17,30 @@
    "13": 398,
    "14": 435,
    "15": 358,
-   "16": 340,
-   "17": 110
+   "16": 334,
+   "17": 110,
+   "50": 623
   },
-  "tokens": 2,
+  "tokens": 3,
   "missing_page": 3,
-  "skipped_curated": 615,
+  "skipped_curated": 666,
   "number_conflicts": 5,
   "nexus_levels_added": 717,
   "nexus_levels_missing": 43,
   "level_problems": 3,
-  "image_problems": 449,
-  "merged": 107,
+  "image_problems": 597,
+  "merged": 113,
   "brave_unparsed": 171,
   "ut_lines_added": 119,
   "odd_reduction": 811,
   "brave_no_data": 2,
   "ut_lines_missing": 1,
-  "without_image": 447
+  "without_image": 595
  },
  "tokens": [
   "BS73-T001",
-  "BS76-T001"
+  "BS76-T001",
+  "26RSD10-T001"
  ],
  "missing_page": [
   "BS77-AX01",
@@ -660,7 +662,58 @@
   "BS76-080",
   "BS76-X01",
   "BS76-X02",
-  "BS77-040"
+  "BS77-040",
+  "26RSD01-005",
+  "26RSD02-002",
+  "26RSD02-005",
+  "26RSD02-006",
+  "26RSD03-004",
+  "26RSD03-005",
+  "26RSD03-013",
+  "26RSD04-005",
+  "26RSD05-005",
+  "26RSD06-005",
+  "26RBS01-001",
+  "26RBS01-003",
+  "26RBS01-011",
+  "26RBS01-019",
+  "26RBS01-033",
+  "26RBS01-052",
+  "26RBS01-064",
+  "26RBS01-078",
+  "26RBS01-110",
+  "26RBS01-X07",
+  "26RSD07-003",
+  "26RSD07-006",
+  "26RCB01-006",
+  "26RCB01-010",
+  "26RCB01-029",
+  "26RCB01-033",
+  "26RCB01-040",
+  "26RCB01-044",
+  "26RBS02-002",
+  "26RBS02-020",
+  "26RBS02-025",
+  "26RBS02-043",
+  "26RBS02-049",
+  "26RBS02-051",
+  "26RSD09-002",
+  "26RSD09-005",
+  "26RSD10-001",
+  "26RSD10-005",
+  "26RSD10-006",
+  "26RSD10-007",
+  "26RBS03-010",
+  "26RBS03-021",
+  "26RBS03-025",
+  "26RBS03-052",
+  "26RBS03-061",
+  "26RBS03-065",
+  "26RBS03-066",
+  "26RBS03-068",
+  "26RBS03-071",
+  "26RBS03-072",
+  "26RBS03-074"
  ],
  "number_conflicts": [
   {
@@ -3766,6 +3819,746 @@
    "id": "BS77-RV004",
    "name": "The FortyFourthMachine Glorious-Racoon",
    "problem": "no image"
+  },
+  {
+   "id": "26RSD04-010",
+   "name": "Utmost Depth: The White Heaven Plain",
+   "problem": "no image"
+  },
+  {
+   "id": "26RCB01-003",
+   "name": "Kamen Rider Knuckle Kurumi Arms",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-004",
+   "name": "Kamen Rider Ryugen Budou Arms",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-005",
+   "name": "Kamen Rider Baron Banana Arms",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-007",
+   "name": "Kamen Rider Marika Peach Energy Arms",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-008",
+   "name": "Kamen Rider Gaim Jimber Lemon Arms",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-009",
+   "name": "Kamen Rider Zangetsu Melon Arms",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-011",
+   "name": "Kamen Rider Gaim Kachidoki Arms",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-012",
+   "name": "Kamen Rider Baron Lemon Energy Arms",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-013",
+   "name": "Kamen Rider Bravo Durian Arms",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-014",
+   "name": "Kamen Rider Duke Lemon Energy Arms",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-015",
+   "name": "Kamen Rider Ryugen-Yomi Yomotsuheguri Arms",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-017",
+   "name": "Kamen Rider Duke Dragon Energy Arms",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-025",
+   "name": "Kamen Rider Scissors",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-026",
+   "name": "Kamen Rider Ryuki",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-027",
+   "name": "Kamen Rider Knight",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-030",
+   "name": "Kamen Rider Raia",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-031",
+   "name": "Dragreder",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-032",
+   "name": "Darkwing",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-034",
+   "name": "Kamen Rider Tiger",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-035",
+   "name": "Kamen Rider Zolda",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-037",
+   "name": "Kamen Rider Knight Survive",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-038",
+   "name": "Kamen Rider Odin",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-039",
+   "name": "Kamen Rider Snipe Shooting Gamer Level 2",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-041",
+   "name": "Kamen Rider Ex-Aid Action Gamer Level 2",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-042",
+   "name": "Kamen Rider Genm Action Gamer Level 0",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-045",
+   "name": "Kamen Rider Genm Zombie Gamer Level X",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-046",
+   "name": "Kamen Rider Poppy Tokimeki Crisis Gamer Level X",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-047",
+   "name": "Kamen Rider Brave Fantasy Gamer Level 50",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-048",
+   "name": "Kamen Rider Para-DX Puzzle Gamer Level 50",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-049",
+   "name": "Kamen Rider Para-DX Fighter Gamer Level 50",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-050",
+   "name": "Kamen Rider Lazer Turbo Bike Gamer Level 0",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-051",
+   "name": "Kamen Rider Snipe Simulation Gamer Level 50",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-052",
+   "name": "Kamen Rider Ex-Aid Maximum Gamer Level 99",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-053",
+   "name": "Kamen Rider Brave Legacy Gamer Level 100",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-054",
+   "name": "Kamen Rider Genm Zombie Action Gamer Level X-0",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-059",
+   "name": "Game Area",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-062",
+   "name": "Burai Kick",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-065",
+   "name": "Guard Vent",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-066",
+   "name": "Strike Vent",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-067",
+   "name": "Shoot Vent",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-068",
+   "name": "Sword Vent",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-069",
+   "name": "Final Vent",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-X01",
+   "name": "Kamen Rider Zangetsu-Shin Melon Energy Arms",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-X02",
+   "name": "Kamen Rider Gaim Kiwami Arms",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-X04",
+   "name": "Kamen Rider Ouja",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-X05",
+   "name": "Kamen Rider Ryuki Survive",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-X06",
+   "name": "Kamen Rider Para-DX Perfect Knockout Gamer Level 99",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RCB01-X07",
+   "name": "Kamen Rider Ex-Aid Muteki Gamer",
+   "problem": "ambiguous name (2 files, none in set 26RCB01)"
+  },
+  {
+   "id": "26RBS03-001",
+   "name": "Lackie",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-002",
+   "name": "Cloudrock",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-003",
+   "name": "Hargris",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-004",
+   "name": "Lumius",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-005",
+   "name": "Suscrofa",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-006",
+   "name": "The Gold-Clad Urumsipha",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-007",
+   "name": "Diru-Nocyon",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-008",
+   "name": "The CragArmoredGiantCloud Famlon",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-009",
+   "name": "The Assassin Nidree",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-011",
+   "name": "Boggarl",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-012",
+   "name": "Guardy",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-013",
+   "name": "The FoxPossessed Renki",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-014",
+   "name": "Ilulion",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-015",
+   "name": "The FoxPossessed Lupes",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-016",
+   "name": "The CurseLady Pienetta",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-017",
+   "name": "Maskthorn",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-018",
+   "name": "The SnakePossessed Sthenon",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-019",
+   "name": "The Hatredfiend Jackalpio",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-020",
+   "name": "The WaspArmor Menotera",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-022",
+   "name": "The BoneSprite Pisketona",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-023",
+   "name": "The Unyielding Salisrola",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-024",
+   "name": "Lumenil",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-026",
+   "name": "Icelonia",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-027",
+   "name": "The Saboteur Stofir",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-028",
+   "name": "The HighTide Galesion",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-029",
+   "name": "The OceanicFan Greaseticola",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-030",
+   "name": "The Spellcaster Naudalie",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-031",
+   "name": "The Hydromancer Valmoss",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-032",
+   "name": "Collet",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-033",
+   "name": "Algodon",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-034",
+   "name": "The Cannoneer Golek",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-035",
+   "name": "Pepper's Chairo",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-036",
+   "name": "The ShieldBearer Lasslake",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-037",
+   "name": "Jaon-Guara",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-038",
+   "name": "The ExoticLithoid Dia-Mold",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-039",
+   "name": "The SilverWings Graburn",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-040",
+   "name": "Heliodon",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-041",
+   "name": "Palace Keeper, Relier",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-042",
+   "name": "The ExoticLithoid Emeral",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-043",
+   "name": "Piranensis",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-044",
+   "name": "Synthetic Dragon",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-045",
+   "name": "The ExoticLithoidGiant Paraibatour",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-046",
+   "name": "Abot",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-047",
+   "name": "The NumberOneDisciple Lira-Rali",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-048",
+   "name": "Pacugna",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-049",
+   "name": "Calunis",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-050",
+   "name": "The GrandMaster Marmonta",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-051",
+   "name": "The SlashOgre Etaina",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-053",
+   "name": "Plasmaru",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-054",
+   "name": "The BlindOgre Madoc",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-055",
+   "name": "Lamykin",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-056",
+   "name": "The NewlyFledged Kolulu",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-057",
+   "name": "The WarningWhistle Flustle",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-058",
+   "name": "The CursedPlush Belder",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-059",
+   "name": "Railsaurer",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-060",
+   "name": "The ThunderBeast Ermineia",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-062",
+   "name": "Euus-Callus",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-063",
+   "name": "The Attuned Narloth",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-064",
+   "name": "The PowerWings Megaropsis",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-067",
+   "name": "The FeralStrike Cryptorop",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-069",
+   "name": "Laciphalus",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-070",
+   "name": "The SpikedClub Tidae",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-073",
+   "name": "The GreatFang Druksar",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-075",
+   "name": "War Feat: Crushing of the Purple Moon",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-076",
+   "name": "The Venomous Bottomless Swamp",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-077",
+   "name": "War Toll: Sundering of the Moon",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-078",
+   "name": "War Toll: Choking of the Abyss",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-079",
+   "name": "War Toll: Fall of the Sun",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-080",
+   "name": "The Scrap Bulwark",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-081",
+   "name": "The Hexcraft Research Institute",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-082",
+   "name": "War Feat: Occupation of the White Heaven Plain",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-083",
+   "name": "War Feat: Blockade of the Abyss",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-084",
+   "name": "Bestowal of Sap",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-085",
+   "name": "Flowerwork",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-086",
+   "name": "Burn Out",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-087",
+   "name": "Flame Storm",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-088",
+   "name": "Evil Hazard",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-089",
+   "name": "Grand Theft",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-090",
+   "name": "Binding Kelp",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-091",
+   "name": "Bubble Shield",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-092",
+   "name": "Dream Powder",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-093",
+   "name": "Luminous Recovery",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-094",
+   "name": "Hallucination",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-095",
+   "name": "Furious Anger",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-096",
+   "name": "Flash Run",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-097",
+   "name": "Sharp Thorn",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-098",
+   "name": "Massive Grow",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-X01",
+   "name": "The DeepRedBladessom Rittenia",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-X03",
+   "name": "The PurgatoryPhoenix Zekuga",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-X04",
+   "name": "The PurpleAsterBladessom Rindorin",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-X05",
+   "name": "The TwilightEmpress Kuramagrama",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-X07",
+   "name": "The AberrantWhale DeepCaesar",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-X08",
+   "name": "The DestructiveTsunami Gorog-Narg",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-X10",
+   "name": "The WhiteCopperBladessom Lumerian",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-X11",
+   "name": "The MirrorPlaneKnight Cavaliare",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-X12",
+   "name": "The HexIron Ir-Maides",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-X13",
+   "name": "The GreatMighty Biligrus",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-X14",
+   "name": "The SpikyGod Salvador",
+   "problem": "no image"
+  },
+  {
+   "id": "26RBS03-X15",
+   "name": "The KingEater Alterhibius",
+   "problem": "no image"
   }
  ],
  "merged": [
@@ -3875,7 +4668,13 @@
   "BS73-076",
   "BS74-076",
   "BS74-083",
-  "BS75-085"
+  "BS75-085",
+  "26RSD01-014",
+  "26RSD03-014",
+  "26RSD09-001",
+  "26RSD09-004",
+  "26RSD09-012",
+  "26RSD10-013"
  ],
  "brave_unparsed": [
   "BS15-057",

@@ -37,6 +37,9 @@ Card-author agent pilot (owner idea, 2026-10-18; after v2 exists, for the cards 
 
 **Done (owner, 2026-10-18): the cloud workspace reaches `battle-spirits.fandom.com` (wiki API), `www.battlespirits.com` and `asia-en.battlespirits.com` directly** (checked with `curl`, HTTP 200). Sessions read the wiki API with `curl` + `python3` straight into `data/sources/` (read-only GET requests, polite: batches of 50 titles per `action=query&prop=revisions` call, one call at a time) instead of relaying data through the browser and the chat. The block A import (~700 cards) no longer needs the owner present.
 
+## Block A import (v0.62.0, 2026-10-18)
+- Done: 681 set-list rows read with `curl` through the wiki API (`tools/fetch_fandom_std.py`, cache `build/fandom-std-cache.json`, `--offline` re-parses), 674 staged cards; v2 compiles 51 (38 vanilla, 13 with effects), all promoted after reading. Levers and counts: `docs/ai/roadmap-open.md` "Block A import".
+
 ## Sessions (Opus, heavy, one each)
 1. **Prototype + measure:** v2 for target/action pairs and the "[LV1-2]" head on the existing staged pool behind a flag; scratch recompile; report real unlocks per clause (`tools/lever_report.py` style). Keep v1 output identical for the 608 playable cards (test).
 2. **Block A import** (wiki API with `curl`; no browser needed since 2026-10-18): read the 26R set pages and card pages (~700 numbers, `docs/reports/priority-report.md`) into `data/sources/fandom-cards-26r.json`, import as block "A", compile with v2, promote by colour toward the deck target.

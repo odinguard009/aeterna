@@ -2,7 +2,7 @@
 // Pure Node: the codec file is evaluated as the game runs it (atob, TextDecoder and JSON exist in Node too).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { deflateRawSync, inflateRawSync } from 'node:zlib';
 import { randomBytes, randomInt } from 'node:crypto';
@@ -57,9 +57,12 @@ test('P08 the built page embeds the compressed pack on one line and it decodes t
   assert.ok(m && !m[0].includes('\n'));
   assert.equal(new TextDecoder().decode(inflateRawSync(Buffer.from(m[1], 'base64'))), packJson(live));
 });
-test('P09 full projected pack (all 8,041 cards): round trip exact, compressed under 1.6 MB', { skip: !staged && 'light clone without data/import' }, () => {
+test('P09 full projected pack (all cards: 8,041 Eternal + Standard block A since v0.62.0): round trip exact, compressed under 1.6 MB', { skip: !staged && 'light clone without data/import' }, () => {
   const cards = projectedCards();
-  assert.equal(cards.length, 8041);
+  const total = JSON.parse(readFileSync(join(ROOT, 'data/cards/all-cards.json'), 'utf8')).length + readdirSync(join(ROOT, 'data/import'))
+    .filter(f => /^saga-\d\d\.json$/.test(f)).reduce((n, f) => n + JSON.parse(readFileSync(join(ROOT, 'data/import', f), 'utf8')).length, 0);
+  assert.equal(cards.length, total);
+  assert.ok(total >= 8041 + 600, String(total));
   const m = measure(cards);
   assert.ok(m.roundTrip);
   assert.ok(m.compact < 1.6e6, String(m.compact));

@@ -2,6 +2,16 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.62.0
+- **Standard block A import** (owner priority 2026-10-18: newest cards first): 669 of 8,709 cards playable (+51; the card pool grows from 8,041 to 8,709).
+  - `tools/fetch_fandom_std.py` reads the 15 block A set pages (26RSD01-10, 26RBS01-03, 26RCB01, 26RDB01) and their card pages through the wiki API with `curl`-style GET requests (50 titles per call, one at a time) into `data/sources/fandom-cards-26r.json`: 681 rows, same format as the BS01-BS77 export. EX symbols count as symbols (Standard Comprehensive Rules 2-10-3 and the Standard manual glossary) and are also kept as `ex_symbols` for the Legacy / Succession rule later.
+  - `tools/import_fandom.py` stages them as `data/import/saga-50.json` (block "A"; 674 cards after merging repeated numbers and one Token row); the six 26RSD Soul Magic cards move there from the BS75 rows of Saga 16.
+  - Compiled with v2 (`python3 tools/compile_v2.py --saga 50`) and promoted after reading every card against its JSON and the smoke check: 38 vanilla Spirits and 13 with effects (26RBS01-001, -011, -033, -052, -110, -X07, 26RBS02-049, 26RBS03-010, 26RSD02-002, -006, 26RSD03-013, 26RSD10-005, -007). Playable per colour in block A: red 10, purple 9, green 11, white 6, yellow 4, blue 11.
+  - Measured levers for the 623 block A cards still in review: Soul Magic (33 cards wait only for it), True Release (= Super Unleash, in 185 texts), Invoke activations (108), Legacy (= Succession, 137). Next card sessions take them in that order (`docs/ai/roadmap-open.md`).
+  - Player-view pass (minor release, subagent): deck builder PC and phone 51/51 block A cards found and added, smoke 51/51 played, 6 CPU-vs-CPU matches with only block A cards finished (seeds 101-606), 0 console errors.
+  - Card total now comes from the unlock report (README build line, release notes); tests I01/I04/I13/I17, D09, B19, P09 and the gold-icon check know block A; new tests S62-01..04 (`tests/unit/std62.test.mjs`).
+  - Revert: `git revert` the v0.62.0 commit (the 51 cards and the staging file go away; the Eternal data is unchanged).
+
 ## v0.61.0
 - **Effect compiler v2 prototype** (owner plan 2026-10-18, `docs/ai/compiler-v2-plan.md`): 618 of 8,041 cards playable (+10).
   - `tools/compile_v2.py` (v1 untouched): every sentence is tried with v1 first, so cards v1 compiles come out identical (gate test C61-01 over the 459 playable records v1 recompiles and the staged pool); sentences v1 rejects go through a clause grammar: one selector noun phrase (owner, count incl. "up to", kind, Cost/BP bounds, exhausted, family, colour, LV, cores on it, lowest/highest cost, cost <= this Spirit, BP <= the attacker) shared by destroy, exhaust, heavy exhaust, return to Hand / deck bottom, remove, BP minus and send cores. "Target X. Destroy it." pairs (block A wording), `[LV1-2-3]` level heads and Rush reminder spellings are read too. Only existing engine actions; a filter an action lacks keeps the card in review with a "v2 <verb>: ..." reason.

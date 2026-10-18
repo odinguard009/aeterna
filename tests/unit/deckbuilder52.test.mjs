@@ -81,7 +81,7 @@ test('B18 scrolling to the end shows the last cards; scroll height matches all r
   assert.ok(r.top > 10000, JSON.stringify(r));
 });
 test('B19 search matches name and ID; filters still combine', async () => {
-  assert.equal(await search('bs01-001'), 1);
+  assert.equal(await search('bs05-001'), 1);       // v0.62.0: 'bs01-001' also matches 26RBS01-001
   const n = await page.evaluate(() => { document.querySelector('[data-a="db-chip"][data-v="colors:red"]').click(); return parseInt(document.getElementById('db-count').textContent, 10); });
   assert.ok(n <= 1);
   await page.evaluate(() => document.querySelector('[data-a="db-chip"][data-v="colors:red"]').click());

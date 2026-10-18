@@ -42,7 +42,8 @@ for v in "${versions[@]}"; do
   {
     cat "$out/body.md"
     echo
-    echo "Playable: $n of 8,041 cards. Game file: \`aeterna-v$v.html\` (open it in Chrome or Edge; no install)."
+    t=$(git show "$c:README.md" | sed -nE 's/^Current build: .* of ([0-9,]+) cards playable.*/\1/p'); t=${t:-8,041}   # v0.62.0: total from the README build line
+    echo "Playable: $n of $t cards. Game file: \`aeterna-v$v.html\` (open it in Chrome or Edge; no install)."
     if [ "$c" = "$HEAD_SHA" ] && [ -n "${CI_OK:-}" ]; then echo "Built from ${c:0:7}; CI green on this commit."
     else echo "Built from ${c:0:7}, the last main commit of this version."; fi
   } > "$notes"

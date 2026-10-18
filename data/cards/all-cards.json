@@ -28953,5 +28953,1820 @@
    "When your Life would be reduced by an opposing effect, discard this card from the Removed Zone so the Life is not reduced",
    "Accel cost reduction icons (not in the Fandom export; the full cost is paid)"
   ]
+ },
+ {
+  "id": "26RBS01-001",
+  "name": "Petristar",
+  "name_jp": "ペトリスター",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {
+   "red": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Windflame"
+  ],
+  "text": "[LV1][LV2] (When Destroyed)\nTarget an opposing 4000 BP or less Spirit. Destroy it.",
+  "image": "26RBS01-001.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "bpLe": 4000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-003",
+  "name": "Scud Beast",
+  "name_jp": "スカッドビースト",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Dayspring"
+  ],
+  "text": "",
+  "image": "26RBS01-003.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-011",
+  "name": "Gino-Ankh",
+  "name_jp": "ジーノ・アンク",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 6,
+  "reduction": {
+   "red": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Heavensoar"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nTarget an opposing Nexus. Destroy it",
+  "image": "26RBS01-011.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "nexus": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-019",
+  "name": "Bullkleiten",
+  "name_jp": "ブルクレイテン",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Dark Puce",
+   "Corpse"
+  ],
+  "text": "",
+  "image": "26RBS01-019.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-033",
+  "name": "Kurapora",
+  "name_jp": "クラポーラ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Oceanic Green",
+   "Waterfae"
+  ],
+  "text": "[LV1][LV2] (When Destroyed)\nYou can target an opposing Cost 5 or less Spirit. Exhaust it.",
+  "image": "26RBS01-033.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1,
+      "costLe": 5
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-052",
+  "name": "Gargouiller",
+  "name_jp": "ガルグイアー",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 4,
+  "reduction": {
+   "white": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Mineroid"
+  ],
+  "text": "[LV2] (When Blocks)\nYou can target an opposing Cost 3 or less Spirit. Exhaust it.",
+  "image": "26RBS01-052.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1,
+      "costLe": 3
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-064",
+  "name": "Sorcereed",
+  "name_jp": "ソーサリード",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {
+   "yellow": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Topaz",
+   "Artifisnake"
+  ],
+  "text": "",
+  "image": "26RBS01-064.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-078",
+  "name": "Eripides",
+  "name_jp": "エリピデス",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "blue": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Cyantree",
+   "Benevoclaw"
+  ],
+  "text": "",
+  "image": "26RBS01-078.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-110",
+  "name": "Meteor Surfing",
+  "name_jp": "メテオサーフィン",
+  "type": "Magic",
+  "color": "red",
+  "cost": 5,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Red Cloud"
+  ],
+  "text": "Flash\nTarget an opposing 5000 BP or less Spirit. Destroy it.",
+  "image": "26RBS01-110.png",
+  "block": "A",
+  "saga": 50,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY",
+     "bpLe": 5000
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-X07",
+  "name": "The WaterBlade Wheelca",
+  "name_jp": "水刃ウィールカ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Armored Fish"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nYou can target up to three opposing Cost 3 or less Spirits. Exhaust them.\n\n[LV2] (Your Attack Step)\nAll your \"Armored Fish\" family Spirits gain +1000 BP.",
+  "image": "26RBS01-X07.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 3,
+      "costLe": 3
+     }
+    ]
+   },
+   {
+    "trigger": "STATIC",
+    "bp": 1000,
+    "to": "own",
+    "if": {
+     "attackStep": true,
+     "oppTurn": false
+    },
+    "match": {
+     "family": [
+      "Armored Fish"
+     ]
+    },
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS02-002",
+  "name": "Lop-Yara",
+  "name_jp": "ロップ＝ヤーラ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 2,
+  "reduction": {
+   "red": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Windflame"
+  ],
+  "text": "",
+  "image": "26RBS02-002.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS02-020",
+  "name": "The Risen Douvou",
+  "name_jp": "再起するドゥーブー",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 3,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Dark Puce",
+   "Corpse"
+  ],
+  "text": "",
+  "image": "26RBS02-020.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS02-025",
+  "name": "Sejellin",
+  "name_jp": "シゼリン",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 2,
+  "reduction": {
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Amorphite"
+  ],
+  "text": "",
+  "image": "26RBS02-025.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS02-043",
+  "name": "Pharacattle",
+  "name_jp": "ファラキャトル",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 5,
+  "reduction": {
+   "white": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 3,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Leucomyst",
+   "Bizarrock"
+  ],
+  "text": "",
+  "image": "26RBS02-043.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS02-049",
+  "name": "The Protruding Raidalus",
+  "name_jp": "突出レイダラス",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 9,
+  "reduction": {
+   "white": 6
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 8000
+   },
+   {
+    "cores": 3,
+    "bp": 11000
+   }
+  ],
+  "families": [
+   "Mineroid"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nTarget an opposing Nexus. Return it to the Hand.",
+  "image": "26RBS02-049.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "hand",
+      "kind": "nexus"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS02-051",
+  "name": "Swordonette",
+  "name_jp": "ソードオネット",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {
+   "yellow": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Topaz",
+   "Hexcraft"
+  ],
+  "text": "",
+  "image": "26RBS02-051.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-010",
+  "name": "Gashahound",
+  "name_jp": "ガシャハウンド",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Dark Puce",
+   "Corpse"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nDraw a card.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-021",
+  "name": "Veilfall",
+  "name_jp": "ベイルフォール",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 7,
+  "reduction": {
+   "purple": 5
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 8000
+   },
+   {
+    "cores": 3,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Dark Puce",
+   "Phantasprite"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-025",
+  "name": "Phorinon",
+  "name_jp": "フォーリノン",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Primeval Floodragon"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-052",
+  "name": "Inctus",
+  "name_jp": "インクトゥース",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 4,
+  "reduction": {
+   "yellow": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Topaz",
+   "Artifisnake"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-061",
+  "name": "Bochack",
+  "name_jp": "ボチャック",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 2,
+  "reduction": {
+   "blue": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Cyantree",
+   "Sylvacrop"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-065",
+  "name": "Racacal",
+  "name_jp": "ラカカル",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "blue": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 2,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Cyantree",
+   "Venabeast"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-066",
+  "name": "Supialis",
+  "name_jp": "スピアリス",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "blue": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Cyantree",
+   "Ferobeast"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-068",
+  "name": "The Sentry Alwari",
+  "name_jp": "歩哨アルワリー",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {
+   "blue": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Cyantree",
+   "Benevoclaw"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-071",
+  "name": "The Menacing Myrmecotyla",
+  "name_jp": "威嚇するミルメコティラ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 6,
+  "reduction": {
+   "blue": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 4,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Ferobeast"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-072",
+  "name": "Gryllol",
+  "name_jp": "グリロール",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 7,
+  "reduction": {
+   "blue": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 8000
+   },
+   {
+    "cores": 3,
+    "bp": 11000
+   }
+  ],
+  "families": [
+   "Rampaleg"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-074",
+  "name": "Glazboil",
+  "name_jp": "グラズボイル",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 9,
+  "reduction": {
+   "blue": 5
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 11000
+   },
+   {
+    "cores": 3,
+    "bp": 14000
+   }
+  ],
+  "families": [
+   "Annelidic"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RCB01-006",
+  "name": "Kamen Rider Sigurd Cherry Energy Arms",
+  "name_jp": "仮面ライダーシグルド チェリーエナジーアームズ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {
+   "red": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 2,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "GAIM",
+   "Kamen"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RCB01-010",
+  "name": "Kamen Rider Kurokage-Shin Matsubokkuri Energy Arms",
+  "name_jp": "仮面ライダー黒影・真 マツボックリエナジーアームズ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 5,
+  "reduction": {
+   "red": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "GAIM",
+   "Kamen"
+  ],
+  "text": "",
+  "image": "26RCB01-010.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RCB01-029",
+  "name": "Kamen Rider Gai",
+  "name_jp": "仮面ライダーガイ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 4,
+  "reduction": {
+   "white": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "RYUKI",
+   "Kamen"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RCB01-033",
+  "name": "Kamen Rider Imperer",
+  "name_jp": "仮面ライダーインペラー",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 5,
+  "reduction": {
+   "white": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 3,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "RYUKI",
+   "Kamen"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RCB01-040",
+  "name": "Kamen Rider Lazer Bike Gamer Level 2",
+  "name_jp": "仮面ライダーレーザー バイクゲーマー レベル2",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 2,
+  "reduction": {
+   "blue": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "EX-AID",
+   "Kamen"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RCB01-044",
+  "name": "Kamen Rider Brave Quest Gamer Level 2",
+  "name_jp": "仮面ライダーブレイブ クエストゲーマー レベル2",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "blue": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "EX-AID",
+   "Kamen"
+  ],
+  "text": "",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD01-005",
+  "name": "Goon-Gata",
+  "name_jp": "グン＝ガタ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {
+   "red": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Windfang"
+  ],
+  "text": "",
+  "image": "26RSD01-005.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD02-002",
+  "name": "Firalba",
+  "name_jp": "フィラルバ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Bloodrouse"
+  ],
+  "text": "[LV1][LV2] (When Destroyed)\nDraw a card.",
+  "image": "26RSD02-002.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD02-005",
+  "name": "Boogilugar",
+  "name_jp": "ブギールガー",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Dark Puce",
+   "Bloodrouse"
+  ],
+  "text": "",
+  "image": "26RSD02-005.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD02-006",
+  "name": "Ram Toker",
+  "name_jp": "ラム・トーカー",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Dark Puce",
+   "Bloodrouse"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nDraw a card.",
+  "image": "26RSD02-006 (Fixed).png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD03-004",
+  "name": "Straray",
+  "name_jp": "ストラレイ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Oceanic Green",
+   "Armored Fish"
+  ],
+  "text": "",
+  "image": "26RSD03-004.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD03-005",
+  "name": "Mola Moula",
+  "name_jp": "モラモーラ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Oceanic Green",
+   "Armored Fish"
+  ],
+  "text": "",
+  "image": "26RSD03-005.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD03-013",
+  "name": "Vortex Shave",
+  "name_jp": "ボルテクスシェイブ",
+  "type": "Magic",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Armored Fish"
+  ],
+  "text": "Flash\nTarget an opposing Spirit. Exhaust it.",
+  "image": "26RSD03-013.png",
+  "block": "A",
+  "saga": 50,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "EXHAUST_OPP",
+     "n": 1
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD04-005",
+  "name": "Chimeniruga",
+  "name_jp": "チムニルガ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 4,
+  "reduction": {
+   "white": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Leucomyst",
+   "Mineroid"
+  ],
+  "text": "",
+  "image": "26RSD04-005.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD05-005",
+  "name": "Lucance",
+  "name_jp": "ルクアンス",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 4,
+  "reduction": {
+   "yellow": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Topaz",
+   "Thunder Dragon"
+  ],
+  "text": "",
+  "image": "26RSD05-005.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD06-005",
+  "name": "Slouth",
+  "name_jp": "スロウス",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {
+   "blue": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Cyantree",
+   "Ferobeast"
+  ],
+  "text": "",
+  "image": "26RSD06-005.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD07-003",
+  "name": "Kamen Rider Zeztz Physicam Wing",
+  "name_jp": "仮面ライダーゼッツ フィジカムウイング",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "ZEZTZ",
+   "Kamen"
+  ],
+  "text": "",
+  "image": "26RSD07-003.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD07-006",
+  "name": "Kamen Rider Zeztz Technolom Machinery",
+  "name_jp": "仮面ライダーゼッツ テクノロムマシーナリー",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "ZEZTZ",
+   "Kamen"
+  ],
+  "text": "",
+  "image": "26RSD07-006.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD09-002",
+  "name": "Marugris",
+  "name_jp": "マルグリース",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Windflame"
+  ],
+  "text": "",
+  "image": "26RSD09-002.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD09-005",
+  "name": "The Archer Coupiel",
+  "name_jp": "射手クーピエル",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Luminaze"
+  ],
+  "text": "",
+  "image": "26RSD09-005.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD10-001",
+  "name": "Thispressa",
+  "name_jp": "ティスプレッサ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 2,
+  "reduction": {
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Amorphite"
+  ],
+  "text": "",
+  "image": "26RSD10-001.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD10-005",
+  "name": "Glan-Silus",
+  "name_jp": "グラン・シルス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Oceanic Green",
+   "Armored Fish"
+  ],
+  "text": "[LV2] (When Attacks)\nYou can target an opposing Cost 3 or less Spirit. Exhaust it.",
+  "image": "26RSD10-005.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1,
+      "costLe": 3
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD10-006",
+  "name": "Calling to the Beyond, Sireni",
+  "name_jp": "彼方へ呼びかけるシレイニ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 5,
+  "reduction": {
+   "green": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 2,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Oceanic Green",
+   "Vortexite"
+  ],
+  "text": "",
+  "image": "26RSD10-006.png",
+  "block": "A",
+  "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD10-007",
+  "name": "Lamydoneus",
+  "name_jp": "ラミドネウス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 5,
+  "reduction": {
+   "green": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Oceanic Green",
+   "Abyssen"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nYou can target an opposing Cost 5 or less Spirit. Exhaust it.",
+  "image": "26RSD10-007.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1,
+      "costLe": 5
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  }
 ]

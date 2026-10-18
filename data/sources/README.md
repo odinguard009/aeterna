@@ -8,6 +8,10 @@ Reference data only. The game does not load these files; import tools read them 
 - Fields per card: `id`, `set`, `name`, `name_jp`, `type`, `color`, `cost`, `reduction`, `symbols` (counted from the wiki's core icons), `families`, `keyword`, `levels` (`lv`, `cores`, `bp`), `effect` (English, wiki markup removed), `rarity`, `secret_variant`, `source`, `missing`.
 - Known gaps: BS77 lists only 18 cards so far and its 3 AX cards have no page; about 300 cards have no effect text (mostly vanilla Spirits); 116 card numbers appear twice (Secret or variant rows in the set lists) and must be merged on import.
 
+## fandom-cards-26r.json (v0.62.0)
+- Source: battle-spirits.fandom.com set pages of Standard block A (26RSD01-10, 26RBS01-03, 26RCB01, 26RDB01) and their card pages, read with `curl` through the wiki API by `tools/fetch_fandom_std.py` on 2026-10-18 (read-only, 50 titles per call).
+- 681 rows (one per card number on a set page), same fields as the export above plus `ex_symbols` (EX symbols, counted as symbols: Standard CR 2-10-3); page disambiguation such as "(26RCB01-029)" is dropped from names. `tools/import_fandom.py` stages them as Saga 50 (block "A"); these rows win over the same numbers listed in a BS set (the six 26RSD Soul Magic cards of BS75).
+
 ## fandom-brave-combine.tsv (v0.60.0)
 - Source: battle-spirits.fandom.com card pages, fields `bravecondition` and the Brave line of `level`, read through the wiki API in the owner's built-in browser on 2026-10-17 (the export above drops them).
 - 441 page titles (460 staged Brave cards; some pages hold several card numbers). `tools/import_fandom.py` (`brave_of`) turns the conditions the engine can check (cost N or more, families, family & cost, no condition) into `brave`; the rest (two-sided Left/Right, Ultimates, Grandwalker Nexus, symbol or keyword holders, "or less") stay without data and are listed as `brave_unparsed` in `data/import/report.json`.

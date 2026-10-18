@@ -17,10 +17,12 @@ const COLORS = new Set(['red', 'purple', 'green', 'white', 'yellow', 'blue']);
 const TYPES = new Set(['Spirit', 'Nexus', 'Magic', 'Brave', 'Ultimate']);
 const SAGA_END = [[9, 1], [13, 2], [18, 3], [23, 4], [30, 5], [34, 6], [39, 7], [43, 8], [47, 9], [51, 10], [55, 11], [59, 12], [63, 13], [67, 14], [71, 15], [75, 16], [77, 17]];
 const sagaOf = n => SAGA_END.find(([end]) => n <= end)[1];
+const isStd = c => /^26R/.test(c.set);              // v0.62.0: Standard block A lives in saga-50.json (block "A")
+const eternal = all.filter(c => !isStd(c));
 const noImage = new Set(report.image_problems.map(p => p.id));
 
-test('I01 one staging file per Saga 1-17', () => {
-  assert.deepEqual(Object.keys(bySaga).map(Number), Array.from({ length: 17 }, (_, i) => i + 1));
+test('I01 one staging file per Saga 1-17, plus 50 for Standard block A', () => {
+  assert.deepEqual(Object.keys(bySaga).map(Number), [...Array.from({ length: 17 }, (_, i) => i + 1), 50]);
 });
 test('I02 card numbers are unique across all files', () => {
   assert.equal(new Set(all.map(c => c.id)).size, all.length);
@@ -28,8 +30,8 @@ test('I02 card numbers are unique across all files', () => {
 test('I03 every card sits in the file of its Saga', () => {
   for (const [s, cards] of Object.entries(bySaga)) for (const c of cards) assert.equal(c.saga, Number(s), c.id);
 });
-test('I04 Saga follows the set number (BS75 -> 16, BS76/77 -> 17)', () => {
-  for (const c of all) assert.equal(c.saga, sagaOf(Number(c.set.slice(2))), c.id);
+test('I04 Saga follows the set number (BS75 -> 16, BS76/77 -> 17, 26R* -> 50)', () => {
+  for (const c of all) assert.equal(c.saga, isStd(c) ? 50 : sagaOf(Number(c.set.slice(2))), c.id);
 });
 test('I05 required fields are present on every card', () => {
   for (const c of all) for (const k of ['id', 'name', 'type', 'color', 'colors', 'cost', 'reduction', 'symbols', 'levels', 'families', 'text', 'rarity', 'flags', 'image', 'block', 'saga', 'status'])
@@ -63,8 +65,8 @@ test('I11 level core thresholds ascend (wiki errors are listed in the report) an
 test('I12 card numbers look like official numbers (BS12-034, BS02-X01, promo CP13-01)', () => {
   for (const c of all) assert.match(c.id, /^[0-9A-Z]+\d+-[0-9A-Z]+$/, c.id);
 });
-test('I13 block equals the set number of the booster set', () => {
-  for (const c of all) assert.equal(c.block, c.set.slice(2), c.id);
+test('I13 block equals the set number of the booster set (Standard: "A")', () => {
+  for (const c of all) assert.equal(c.block, isStd(c) ? 'A' : c.set.slice(2), c.id);
 });
 test('I14 every card has an image unless the report lists it', () => {
   for (const c of all) assert.ok(c.image || noImage.has(c.id), `${c.id} ${c.name} has no image and is not in the report`);
@@ -75,10 +77,11 @@ test('I15 every report entry without image really has no image field', () => {
 test('I16 image file names have a known extension', () => {
   for (const c of all) if (c.image) assert.match(c.image, /\.(png|jpe?g|gif|webp)$/i, c.id);
 });
-test('I17 most cards are matched to an image (>= 93%, at most 460 staged cards without one)', () => {
+test('I17 most Eternal cards are matched to an image (>= 93%, at most 460 staged cards without one)', () => {
   // v0.59: an absolute bound too, because promoting cards (which have images) lowers the staged ratio although nothing got worse
-  const withImg = all.filter(c => c.image).length;
-  assert.ok(withImg / all.length >= 0.93 && all.length - withImg <= 460, `${withImg}/${all.length}`);
+  // v0.62.0: Standard block A is not in the image index yet (its cards are listed in the report like any card without image)
+  const withImg = eternal.filter(c => c.image).length;
+  assert.ok(withImg / eternal.length >= 0.93 && eternal.length - withImg <= 460, `${withImg}/${eternal.length}`);
 });
 test('I18 cards of data/cards (hand-verified) are not duplicated in staging', () => {
   for (const c of all) assert.ok(!curated.has(c.id), c.id);
@@ -102,7 +105,7 @@ test('I22 number conflicts (same number, different cards) are reported with the 
   for (const k of report.number_conflicts) { assert.ok(k.names.length > 1, k.id); assert.equal(by[k.id].name, k.kept, k.id); assert.ok(k.names.includes(k.kept), k.id); }
 });
 test('I23 Token rows are left out (tokens live in data/cards/tokens.json)', () => {
-  assert.equal(report.tokens.length, 2);
+  assert.equal(report.tokens.length, 3);              // v0.62.0: + one Standard block A Token Spirit row
   const ids = new Set(all.map(c => c.id));
   for (const id of report.tokens) assert.ok(!ids.has(id), id);
 });

@@ -17,11 +17,11 @@ before(async () => { g = await openGame(''); });
 after(async () => { await closeBrowser(); });
 
 // v0.51.0: the pack is compressed (packages/engine/src/01a-card-pack.js) and grows with every promoted card, so the code budget
-// (B01/B02) is measured without it and the pack has its own budget (B03, B13: all 8,041 cards).
+// (B01/B02) is measured without it and the pack has its own budget (B03, B13: all cards, 8,709 since v0.62.0).
 const packLen = between('/*PACK_START*/', '/*PACK_END*/'), code = html.slice(0, html.indexOf('/*PACK_START*/')) + html.slice(html.indexOf('/*PACK_END*/'));
 test('B01 index.html without the card pack stays under 700 KB', () => assert.ok(Buffer.byteLength(code) < 700e3, Buffer.byteLength(code)));
 test('B02 index.html without the card pack, gzipped, stays under 200 KB', () => { const n = gzipSync(code, { level: 9 }).length; assert.ok(n < 200e3, n); });
-test('B03 the embedded card pack stays under 1.6 MB (room for all 8,041 cards; never embed staging data)', () => assert.ok(packLen < 1.6e6, packLen));
+test('B03 the embedded card pack stays under 1.6 MB (room for all cards; never embed staging data)', () => assert.ok(packLen < 1.6e6, packLen));
 test('B04 the stylesheet stays under 90 KB', () => {
   const css = (html.match(/<style[\s\S]*?<\/style>/g) || []).reduce((n, s) => n + s.length, 0);
   assert.ok(css < 90e3, css);
@@ -56,7 +56,7 @@ test('B12 starting a new match takes under 1.5 s', async () => {
 // B13 (v0.51.0): the whole card list in the pack, phone layout, CPU slowed 4x (~ a mid-range phone; measured 2.3 s).
 // Limit 4 s so only real regressions fail. v0.60.2: skipped in the quick loop (BS_QUICK), where parallel test files on a
 // 2-core session machine gave 4-8 s for the same build; CI (npm test) still guards it. Skipped in the light clone without data/import.
-test('B13 with all 8,041 cards in the pack the phone layout is ready in under 4 s with no errors', { skip: (!existsSync(join(ROOT, 'data/import/saga-01.json')) && 'light clone without data/import') || (process.env.BS_QUICK && 'timing test: runs in CI (npm test), not in the parallel quick loop') }, async () => {
+test('B13 with all cards in the pack the phone layout is ready in under 4 s with no errors', { skip: (!existsSync(join(ROOT, 'data/import/saga-01.json')) && 'light clone without data/import') || (process.env.BS_QUICK && 'timing test: runs in CI (npm test), not in the parallel quick loop') }, async () => {
   const { buildParts } = await import('../../tools/build.mjs'), { projectedCards } = await import('../../tools/pack_size.mjs');
   const dir = mkdtempSync(join(tmpdir(), 'bse-pack-')), file = join(dir, 'full.html');
   writeFileSync(file, buildParts({ cards: projectedCards() }).html);

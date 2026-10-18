@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "18 Oct 2026",
-  "next": "next: Standard block A import (wiki API with curl; v2 reads its target + action pairs; Opus), then heads by single-blocker counts (step timings, Burst variants, Mirage, Rush forms); 618 of 8,041 cards playable"
+  "next": "next: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -200,6 +200,10 @@
     {
      "s": "done",
      "t": "Compiler v2 prototype (v0.61.0): selector grammar, target pairs, [LV1-2-3] heads, lever report: +10 cards, 618 / 8,041"
+    },
+    {
+     "s": "done",
+     "t": "Standard block A import (v0.62.0): 674 cards from the wiki API, compiled with v2, +51 cards, 669 / 8,709"
     }
    ]
   },
@@ -586,8 +590,12 @@
      "t": "Compiler v2 prototype (v0.61.0): clause grammar on top of v1 (identical output for v1 cards), +10 cards, 0 in Saga 17; blockers are heads, not verbs"
     },
     {
+     "s": "done",
+     "t": "Standard block A import (v0.62.0): 674 cards staged, +51 playable (38 vanilla, 13 with effects); levers measured"
+    },
+    {
      "s": "next",
-     "t": "Standard block A import (~700 card numbers, 26R sets), compiled with v2, promoted colour by colour"
+     "t": "Block A keyword heads: Soul Magic (33 cards), True Release / Super Unleash (185 texts), Invoke (108), Legacy / Succession (137)"
     },
     {
      "s": "later",
@@ -595,7 +603,7 @@
     },
     {
      "s": "later",
-     "t": "v1.0: every card playable (8,041): needs v2 and keyword heads first"
+     "t": "v1.0: every card playable (8,709 with Standard block A): needs v2 and keyword heads first"
     }
    ]
   },
@@ -853,5 +861,5 @@
    "note": "Manual session on Opus: compiler v2 prototype (tools/compile_v2.py, gate test, lever report), +10 cards; auto mode switched ON by the owner. Budget-counter difference read before the last commit."
   }
  ],
- "next": "next: Standard block A import (wiki API with curl; v2 reads its target + action pairs; Opus), then heads by single-blocker counts (step timings, Burst variants, Mirage, Rush forms); 618 of 8,041 cards playable"
+ "next": "next: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
 }

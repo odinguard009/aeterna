@@ -18,6 +18,8 @@ import json, os, re, sys, glob, unicodedata, collections, difflib, hashlib, urll
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 SRC = os.path.join(ROOT, 'data/sources/fandom-cards-bs01-bs77.json')
+SRC_STD = os.path.join(ROOT, 'data/sources/fandom-cards-26r.json')   # v0.62.0: Standard block A (tools/fetch_fandom_std.py)
+STD_SAGA = 50   # v0.62.0: Standard block A cards live in saga-50.json (block "A"); 50 keeps them apart from the Eternal Sagas 1-17
 IDX = os.path.join(ROOT, 'data/index/saga_card_index.json')
 OUT = os.path.join(ROOT, 'data/import')
 SAGA_END = [(9, 1), (13, 2), (18, 3), (23, 4), (30, 5), (34, 6), (39, 7), (43, 8), (47, 9), (51, 10),
@@ -27,6 +29,8 @@ SET_RE = re.compile(r'^(?:<[^>]*>)*(BS\d+|SD\d+|CB\d+|BSC\d+|\d\dRBS\d+|CBX\d+|P
 
 
 def saga_of(set_code):
+    if re.match(r'^26R', set_code or ''):
+        return STD_SAGA
     m = re.match(r'^BS(\d+)$', set_code or '')
     if not m:
         return None
@@ -169,6 +173,7 @@ def convert(r, image):
     sym = r.get('symbols') or {}
     lv = [{k: v for k, v in (('cores', L.get('cores')), ('bp', L.get('bp'))) if v is not None} for L in r.get('levels') or []]
     m = re.match(r'^BS(\d+)$', r['set'] or '')
+    block = m.group(1) if m else ('A' if re.match(r'^26R', r['set'] or '') else None)
     if t_fixed == 'Spirit' and not lv and re.match(r'^(Main|Flash)\s*\n', r.get('effect') or ''):
         t_fixed = 'Magic'                          # v0.51.2: Magic cards typed "Spirit" in the export (no levels, Main/Flash text)
     return {
@@ -179,14 +184,19 @@ def convert(r, image):
         'symbols': sum(sym.values()) if isinstance(sym, dict) else sym,
         'levels': lv, 'families': r.get('families') or [], 'keyword': r.get('keyword'),
         'text': r.get('effect') or '', 'rarity': [r['rarity']] if r.get('rarity') else [],
-        'flags': flags, 'image': image, 'block': m.group(1) if m else None, 'saga': saga_of(r['set']),
+        'flags': flags, 'image': image, 'block': block, 'saga': saga_of(r['set']),
         'source': r.get('source'), 'status': 'imported', 'stats_verified': False, 'fxComplete': False,
+        **({'ex_symbols': r['ex_symbols']} if r.get('ex_symbols') else {}),
     }
 
 
 def main():
     check = '--check' in sys.argv
     rows = json.load(open(SRC))['cards']
+    if os.path.exists(SRC_STD):                 # block A rows win over the same numbers listed in a BS set (e.g. BS75 box promos)
+        std = json.load(open(SRC_STD))['cards']
+        std_ids = {r['id'] for r in std}
+        rows = [r for r in rows if r['id'] not in std_ids] + std
     by_set, by_name = build_image_index()
     braves = brave_table()
     nexus_lv, uts = nexus_table(), ut_table()

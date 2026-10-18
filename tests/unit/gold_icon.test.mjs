@@ -27,7 +27,8 @@ test('the four cards named in the roadmap carry their Ultimate reduction symbols
   assert.deepEqual([by['BS74-X14'], by['BS75-016'], by['BS75-077'], by['BS75-X04']].map(c => c.reduction.ultimate), [1, 1, 1, 2]);
 });
 test('staged ultimate count equals the Fandom gold count of the chosen record (skipped without data/sources)', { skip: !have }, () => {
-  const rows = read('data/sources/fandom-cards-bs01-bs77.json').cards;
+  const std = 'data/sources/fandom-cards-26r.json';                  // v0.62.0: Standard block A rows
+  const rows = read('data/sources/fandom-cards-bs01-bs77.json').cards.concat(existsSync(join(ROOT, std)) ? read(std).cards : []);
   let withGold = 0;
   for (const c of staged) {
     const r = rows.find(x => x.id === c.id && norm(x.name) === norm(c.name));

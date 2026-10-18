@@ -56,12 +56,18 @@ export function buildParts(opts = {}) {   // opts.cards: build with another card
 }
 
 
+// v0.62.0: card total (playable + staged) from the unlock report line (tools/unlock_report.py); the build never reads the
+// staging files themselves (test B07). 8,041 until Standard block A was imported.
+function cardTotal() {
+  const m = rd('docs/reports/unlock-report.md').match(/playable [\d,]+ \/ ([\d,]+) cards/);
+  return m ? Number(m[1].replace(/,/g, '')) : 8041;
+}
 // README "Current build" line follows packages/engine/src/01-cards.js VERSION and the playable card count (it went stale at v0.41.5).
 const README_RE = /^Current build: \*\*v[^*]+\*\*.*$/m;
 function readmeLine() {
   const v = rd('packages/engine/src/01-cards.js').match(/const VERSION = '([^']+)'/)[1];
   const n = JSON.parse(rd('data/cards/all-cards.json')).length;
-  return `Current build: **v${v}** (${n.toLocaleString('en-US')} of 8,041 cards playable). Download \`aeterna-v${v}.html\` from the [latest release](https://github.com/odinguard009/aeterna/releases/latest) and open it in Chrome or Edge; release notes are in [CHANGELOG.md](CHANGELOG.md).`;
+  return `Current build: **v${v}** (${n.toLocaleString('en-US')} of ${cardTotal().toLocaleString('en-US')} cards playable). Download \`aeterna-v${v}.html\` from the [latest release](https://github.com/odinguard009/aeterna/releases/latest) and open it in Chrome or Edge; release notes are in [CHANGELOG.md](CHANGELOG.md).`;
 }
 // v0.59.7 (C5): release notes live in CHANGELOG.md; its newest "## vX.Y.Z" heading must be the current VERSION.
 const changelogHead = () => (rd('CHANGELOG.md').match(/^## (v\d[\d.]*)\s*$/m) || [, null])[1];
