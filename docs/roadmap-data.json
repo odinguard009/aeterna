@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "18 Oct 2026",
-  "next": "next: Q2 test waits (Opus), then the card session Brave part 2 (owner: summon a Brave card from the Hand first, ~24 cards); 608 of 8,041 cards playable"
+  "next": "next: compiler v2 prototype (clause-level: target + action sentences; Opus), then the Standard block A import (owner present for the browser); 608 of 8,041 cards playable"
  },
  "phases": [
   {
@@ -192,6 +192,10 @@
     {
      "s": "done",
      "t": "Brave completion part 1 (v0.60.0): combine data for 287 Braves from the Fandom pages, braved effects on the combined Spirit: +15 cards, 608 / 8,041"
+    },
+    {
+     "s": "done",
+     "t": "Priority report + Fandom data gaps (v0.60.3): newest cards first; Nexus levels and Ultimate Trigger lines"
     }
    ]
   },
@@ -559,7 +563,7 @@
   {
    "phase": {
     "name": "Road to playable (estimate, 18 Oct 2026)",
-    "sub": "Sessions from v0.60.2 at the measured pace (~12 cards per card session); a rough guide, re-estimated as levers are measured.",
+    "sub": "Owner, 2026-10-18: newest cards first (Standard block A, then Eternal newest Saga), whole decks per colour; no manual mode. Session counts are rough and are re-estimated after the compiler v2 measurement.",
     "ver": "estimate",
     "open": true,
     "kind": "leaves"
@@ -570,20 +574,24 @@
      "t": "Alpha: playable vs CPU on PC and Android with ready colour decks (608 of 8,041 cards)"
     },
     {
+     "s": "done",
+     "t": "Data gaps (v0.60.3): Nexus levels for 717 cards, Ultimate Trigger lines for 119 from Fandom (0 unlocks alone)"
+    },
+    {
      "s": "next",
-     "t": "Planned order done (Q2-Q4, M2-M4, UI languages, card sessions between): ~17 sessions, ~700 cards"
+     "t": "Compiler v2: clause-level parser (target + action sentences), prototype and measurement first"
     },
     {
      "s": "later",
-     "t": "Data gaps closed (Nexus level thresholds for 760 cards, 173 Braves without combine data): ~5-10 sessions, size unmeasured"
+     "t": "Standard block A import (~700 card numbers, 26R sets), compiled with v2, promoted colour by colour"
     },
     {
      "s": "later",
-     "t": "Beta: ~1,500 cards (about 19%), several decks per colour, public link: ~60-90 sessions at today's pace"
+     "t": "Beta: 40 playable cards per colour in Standard and in the newest Eternal Saga, public link"
     },
     {
      "s": "later",
-     "t": "v1.0: every card playable (8,041): out of reach at ~12 cards per session; needs bigger levers first"
+     "t": "v1.0: every card playable (8,041): needs v2 and keyword heads first"
     }
    ]
   },
@@ -833,5 +841,5 @@
    "note": "Manual session on Opus: Brave completion part 1 (combine data from 441 Fandom pages, braved effects on the combined Spirit, +15 cards); README links and screenshots removed until v1.0; auto mode ON with a 20-minute delay. Budget-counter difference read before the last commit."
   }
  ],
- "next": "next: Q2 test waits (Opus), then the card session Brave part 2 (owner: summon a Brave card from the Hand first, ~24 cards); 608 of 8,041 cards playable"
+ "next": "next: compiler v2 prototype (clause-level: target + action sentences; Opus), then the Standard block A import (owner present for the browser); 608 of 8,041 cards playable"
 }

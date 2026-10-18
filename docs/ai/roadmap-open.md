@@ -2,6 +2,12 @@
 
 Read the lines for the colour or mechanic you touch before starting. Newest first. When an item is finished, delete it here.
 
+## Card priority and compiler v2 (owner, 2026-10-18; first in the session order)
+- **Priority:** newest cards first: Standard block A (official format since April 2026, ~700 card numbers, only 6 in the data), then Eternal by Saga from 17 down; inside a tier whole decks per colour (target 40 distinct playable cards per colour) before totals. Report: `python3 tools/priority_report.py` -> `docs/reports/priority-report.md`. Version marks (XV, LT, RV, X) are new cards with their own text, not reprints.
+- **No manual mode** for unsupported cards (owner, 2026-10-18: it would confuse the game). Aegis has none either.
+- **Data gaps: done in v0.60.3** (Nexus levels 717, Ultimate Trigger lines 119; 0 cards unlocked on their own). Left: 43 Nexus without a page match, 171 Braves whose condition the engine cannot check yet (Brave part 2).
+- **Next sessions:** 1. compiler v2 prototype + measurement, 2. block A import (owner present for the browser), 3. keyword heads by measured unlocks. Plan and evidence: `docs/ai/compiler-v2-plan.md`. Then the order below continues (Q2, Brave part 2, ...).
+
 ## Session order (owner, 2026-10-17; replaces the plan order below where they differ)
 Opus for every session. Migration and quality sessions alternate with card sessions (card session = the next mechanic by measured unlocks from "Plan from the audit" below: Brave completion, When Destroyed, Grandwalker Nexus effects, ...). Delete each line when done.
 4. **Q2 test waits** (M1 done in v0.60.1): replace the fixed `wait_for_timeout` calls in `tests/suites` (318 on 2026-10-17) with waits on a visible state (modal open, step label, log line); the count is a shrink-only ratchet.

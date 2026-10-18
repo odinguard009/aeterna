@@ -14,7 +14,7 @@ Rules
 - Rows with the same card number are merged when the name is the same (rarities are collected);
   a different name under one number is a conflict: the row whose name has an image in that set wins, the rest is reported.
 - Token rows go to the report (tokens live in data/cards/tokens.json)."""
-import json, os, re, sys, glob, unicodedata, collections, difflib
+import json, os, re, sys, glob, unicodedata, collections, difflib, hashlib, urllib.parse
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 SRC = os.path.join(ROOT, 'data/sources/fandom-cards-bs01-bs77.json')
@@ -112,6 +112,50 @@ def brave_table():
     return t
 
 
+NEXUS_SRC = os.path.join(ROOT, 'data/sources/fandom-nexus-levels.tsv')     # v0.60.3: Nexus level thresholds
+UT_SRC = os.path.join(ROOT, 'data/sources/fandom-ultimate-trigger.tsv')     # v0.60.3: Ultimate Trigger [LVn] (timing)
+
+
+def page_title(card):
+    return urllib.parse.unquote((card.get('source') or '').split('/wiki/')[-1]).replace('_', ' ')
+
+
+def nexus_table():
+    """sha1(title)[:6] -> cores per level (levels 1, 2, ...), from the Fandom `level` field."""
+    t = {}
+    if not os.path.exists(NEXUS_SRC): return t
+    for line in open(NEXUS_SRC, encoding='utf8'):
+        if line.startswith('#') or not line.strip(): continue
+        k, v = line.split()
+        t[k] = [int(x) for x in v.split(',')]
+    return t
+
+
+def ut_params(raw):
+    """Wiki typos fixed: 'LV4][LV5]' and '[V3]' -> '[LV4][LV5]', '[LV3]'."""
+    raw = re.sub(r'\[V(\d)\]', r'[LV\1]', raw.strip())
+    return '[' + raw if raw.startswith('LV') else raw
+
+
+def ut_table():
+    t = {}
+    if not os.path.exists(UT_SRC): return t
+    for line in open(UT_SRC, encoding='utf8'):
+        if line.startswith('#') or '\t' not in line: continue
+        title, v = line.rstrip('\n').split('\t')
+        t[title] = [ut_params(x) for x in v.split(';')]
+    return t
+
+
+def add_ut_lines(text, params):
+    """Puts the dropped level/timing back after each bare 'Ultimate Trigger' paragraph head, in page order."""
+    it = iter(params)
+    def rep(m):
+        p = next(it, None)
+        return m.group(0) if p is None else m.group(1) + 'Ultimate Trigger ' + p + '\n'
+    return re.sub(r'(^|\n)Ultimate Trigger[ \t]*\n', rep, text)
+
+
 def convert(r, image):
     t = r['type'] or ''
     t_fixed = {'Spirt': 'Spirit'}.get(t, t)
@@ -145,6 +189,7 @@ def main():
     rows = json.load(open(SRC))['cards']
     by_set, by_name = build_image_index()
     braves = brave_table()
+    nexus_lv, uts = nexus_table(), ut_table()
     have = {c['id'] for f in glob.glob(os.path.join(ROOT, 'data/cards/saga-[0-9][0-9].json')) for c in json.load(open(f))}
     rep = collections.defaultdict(list)
     groups = collections.OrderedDict()
@@ -184,6 +229,15 @@ def main():
             key = (card.get('source') or '').split('/wiki/')[-1]
             if braves.get(key): card['brave'] = braves[key]
             else: rep['brave_unparsed' if key in braves else 'brave_no_data'].append(cid)
+        if card['type'] == 'Nexus' and not card['levels']:
+            lv = nexus_lv.get(hashlib.sha1(page_title(card).encode('utf8')).hexdigest()[:6])
+            if lv and lv[0] == 0:
+                card['levels'] = [{'cores': n} for n in lv]; rep['nexus_levels_added'].append(cid)
+            else: rep['nexus_levels_missing'].append(cid)
+        if card['type'] == 'Ultimate' and re.search(r'(^|\n)Ultimate Trigger[ \t]*\n', card['text']):
+            ps = uts.get(page_title(card))
+            if ps: card['text'] = add_ut_lines(card['text'], ps); rep['ut_lines_added'].append(cid)
+            else: rep['ut_lines_missing'].append(cid)
         if card['saga'] is None:
             rep['no_saga'].append(cid)
             continue

@@ -134,8 +134,10 @@ test('C56-17 every staged Ultimate either compiles or names a reason (no crash)'
   const r = py(`out = []\nfor c in ce.staged():\n  if c['type'] != 'Ultimate': continue\n  try: ce.compile_card(c); out.append('ok')\n  except ce.Review as e: out.append(str(e)[:20])\nprint(json.dumps(out))`);
   assert.ok(r.length > 200 && r.every(x => typeof x === 'string' && x.length));
 });
-test('C56-18 the Ultimate Trigger data gap is named for Ultimate-Dragsaurus (BS24-058)', () => {
-  assert.match(py(`c = next(x for x in ce.staged() if x['id'] == 'BS24-058')\ntry: ce.compile_card(c); print(json.dumps('ok'))\nexcept ce.Review as e: print(json.dumps(str(e)))`), /drops its \[LVn\]/);
+// v0.60.3: the [LVn] (timing) line now comes from data/sources/fandom-ultimate-trigger.tsv, so the review moves on to the body sentence
+test('C56-18 Ultimate-Dragsaurus (BS24-058) has its Ultimate Trigger line back; the review names the body sentence', () => {
+  const r = py(`c = next(x for x in ce.staged() if x['id'] == 'BS24-058')\ntry: ce.compile_card(c); print(json.dumps('ok'))\nexcept ce.Review as e: print(json.dumps(str(e)))`);
+  assert.doesNotMatch(r, /drops its \[LVn\]/); assert.match(r, /^sentence: For each one cost of the card sent to Trash/);
 });
 test('C56-19 parse: ULT_TRIGGER and utHit are valid, ULT_TRIGGER with parameters and a bad utHit are not', async () => {
   const r = await ev(`const a = BS.parseActionList([{ do: 'ULT_TRIGGER' }, { do: 'DRAW', n: 1, if: { utHit: true } }]); const b = BS.parseActionList([{ do: 'ULT_TRIGGER', n: 2 }]); const c = BS.parseActionList([{ do: 'DRAW', n: 1, if: { utHit: 1 } }]);

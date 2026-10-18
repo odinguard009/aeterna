@@ -66,6 +66,7 @@ echo "[session_start] version $(node -p "require('./package.json').version")"
 git log --oneline -5 | sed 's/^/[session_start]   /'
 grep -m1 -o '\*\*Next:.*' CLAUDE.md | cut -c1-400 | sed 's/^/[session_start] /' || true
 python3 tools/unlock_report.py --line 2>/dev/null | sed 's/^/[session_start] /' || true
+python3 tools/priority_report.py --line 2>/dev/null | sed 's/^/[session_start] /' || true   # v0.60.3
 python3 tools/rules_audit.py --line 2>/dev/null | sed 's/^/[session_start] /' || true
 RC=$(python3 -c "import json;print(json.load(open('docs/rules-audit-verdicts.json'))['checked'])" 2>/dev/null || echo 2000-01-01)
 [ $(( ( $(date +%s) - $(date -d "$RC" +%s) ) / 86400 )) -gt 30 ] && echo "[session_start] WARNING rules checked $RC (>30 days): repeat Rules audit R1 (docs/manual-notes.md sources table)" || true

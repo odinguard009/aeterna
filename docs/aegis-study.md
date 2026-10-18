@@ -45,6 +45,12 @@ Status: 1 done in v0.25 (`residual`), 3 and 4 done in v0.26, 2 and 6 done in v0.
 7. **CPU as an evaluation policy** with weight profiles and a lethal check (replaces "CPU strength" on the roadmap).
 8. **UX polish** from the list above, one piece per release.
 
+## Card coverage at scale (2026-10-18, owner request)
+- Aegis lists 4,480 cards across 66 sets and has 4,559 card modules (`apps/api/src/cards/<SET>/<ID>.ts`), every one `coverage: "full"`; there is no manual-resolution mode for unsupported cards. Each module is a small declarative `CompiledCard` in a composable IR (for example `{ trigger: "OnPlay", actions: [{ kind: "RevealAdd", revealCount: 5, add: [{ filter: { kind: ["Tamer"] }, count: 1, to: "hand" }], rest: "deckBottomAnyOrder" }] }`), registered with `registerIrCard`; reprints import the original module.
+- Scale came from many small commits (6,451 at the studied commit), scenario tests per card and a deck audit that plays every effect card of every stored famous deck (`deckCardCoverage.test.ts`).
+- Product release dates live in one table (`packages/shared/src/cards/cardPool.ts`) and drive formats and the ban list.
+- Taken for Aeterna: the clause-level compiler (`docs/ai/compiler-v2-plan.md`), newest-first priority with a release table (`tools/priority_report.py`), deck-based targets. Not taken: a manual mode (owner, 2026-10-18: it would confuse the game).
+
 ## Second study (2026-10-17, owner request)
 Adopted next (order in `docs/ai/roadmap-open.md` "Session order"): strict effects mode, in-game error reports, match fuzzer, waits on state instead of fixed sleeps in UI tests, rules knowledge base with fingerprinted citations, a one-card verification skill, and the monorepo with server/client (`docs/ai/monorepo-plan.md`). UI languages (owner): English, Japanese, Thai, Chinese, then by market; not Indonesian. Later: event stream with seq/batch for animation pacing, bots trained from match records.
 

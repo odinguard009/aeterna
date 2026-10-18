@@ -2,6 +2,16 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.60.3
+- **Card priority, data gaps and the compiler v2 plan** (owner, 2026-10-18; no gameplay change, staging data only):
+  - Priority (owner: newest cards first): `tools/priority_report.py` -> `docs/reports/priority-report.md`: Standard block A (official format since April 2026; ~700 card numbers in 26R sets, only 6 in the data), then Eternal by Saga from 17 down, playable per colour against a target of 40 per colour, shared effect texts. `session_start.sh` prints its line.
+  - Card pool facts: 17 exact duplicates and 18 shared texts (56 staged cards) in 8,041; version marks XV (24), LT (4), RV (303 numbers) are new cards with their own text, not reprints.
+  - Data gaps closed from the Fandom pages (wiki API, owner's built-in browser): Nexus level thresholds for 717 staged Nexus cards (`data/sources/fandom-nexus-levels.tsv`, 1,375 pages) and the Ultimate Trigger `[LVn] (timing)` line for 119 Ultimates (`data/sources/fandom-ultimate-trigger.tsv`); `tools/import_fandom.py` fills them (report keys `nexus_levels_added`, `ut_lines_added`, `*_missing`). Measured with a scratch recompile: 0 cards unlocked on their own (each still has a sentence the v1 compiler does not read).
+  - Compiler v2 plan (`docs/ai/compiler-v2-plan.md`): the v1 compiler reads 0 of 12 simple block A samples ("Target ... Spirit. Destroy it."); v2 parses target and action clauses separately. Aegis study: 4,559 card modules, all full coverage, composable IR, no manual mode (`docs/aegis-study.md`). Owner: no manual mode for unsupported cards.
+  - Roadmap: compiler v2 prototype next, then the block A import; mind map updated.
+  - Tests P603-01..08 (`tests/unit/priority603.test.mjs`); C56-18 now checks that the Ultimate Trigger line is back and the review names the body sentence; timing test B17 skips in the quick loop like B13 (still in CI).
+  - Revert: `git revert` this commit (staging data, tools and docs only).
+
 ## v0.60.2
 - **Faster sessions** (owner, 2026-10-18; no gameplay change):
   - One version bump + one release per session: tasks commit locally, the first commit opens the version, one push at the end (CLAUDE.md "Session scope", `docs/ai/release.md`, skill `bs-session-runner`).

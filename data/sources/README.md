@@ -11,3 +11,11 @@ Reference data only. The game does not load these files; import tools read them 
 ## fandom-brave-combine.tsv (v0.60.0)
 - Source: battle-spirits.fandom.com card pages, fields `bravecondition` and the Brave line of `level`, read through the wiki API in the owner's built-in browser on 2026-10-17 (the export above drops them).
 - 441 page titles (460 staged Brave cards; some pages hold several card numbers). `tools/import_fandom.py` (`brave_of`) turns the conditions the engine can check (cost N or more, families, family & cost, no condition) into `brave`; the rest (two-sided Left/Right, Ultimates, Grandwalker Nexus, symbol or keyword holders, "or less") stay without data and are listed as `brave_unparsed` in `data/import/report.json`.
+
+## fandom-nexus-levels.tsv (v0.60.3)
+- Source: the `level` field of all 1,375 pages in Category:Nexus, read through the wiki API in the owner's built-in browser on 2026-10-18 (the export above drops Nexus levels).
+- Key = first 6 hex digits of SHA-1 of the page title, value = cores per level. `tools/import_fandom.py` fills `levels` of staged Nexus cards without levels (717 filled, 43 without a page match: `nexus_levels_missing` in `data/import/report.json`).
+
+## fandom-ultimate-trigger.tsv (v0.60.3)
+- Source: the `{{tk|Ultimate Trigger|...}}` parameter of the pages in Category:Ultimate Trigger (same read, 130 staged titles); the export drops this `[LVn] (timing)` line.
+- `tools/import_fandom.py` writes it back after each bare "Ultimate Trigger" paragraph head (119 cards; wiki typos `LV4]` and `[V3]` fixed on import).
