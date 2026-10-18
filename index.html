@@ -504,7 +504,7 @@
   #view-playmat .viewport { z-index: 1; }
 
   /* header = turn banner */
-  #view-playmat header.ae-head { padding: 0 6px 0 0; height: 34px; gap: 0; background: var(--ae-head); border: 0; border-radius: 0; box-shadow: inset 0 -2px 0 var(--you); justify-content: flex-start; }
+  #view-playmat header.ae-head { padding: 0 6px 0 0; height: 34px; gap: 0; background: var(--ae-head); border: 0; border-radius: 0; box-shadow: inset 0 -2px 0 var(--you); justify-content: flex-start; overflow-x: clip; }
   .ae-turn { height: 100%; display: flex; align-items: center; gap: 8px; padding: 0 24px 0 12px; background: var(--you); color: var(--you-ink); clip-path: polygon(0 0, 100% 0, calc(100% - 16px) 100%, 0 100%); white-space: nowrap; }
   #view-playmat .ae-turn h1 { color: inherit; font-size: 14px; font-weight: 900; font-style: italic; letter-spacing: .06em; text-transform: uppercase; }
   .ae-ver { font-size: 11px; font-weight: 700; }
@@ -983,7 +983,7 @@ applyTheme();
    type: 'Spirit' | 'Nexus' | 'Magic'      symbol: card color     symbols: number of symbols
    reduction: {color: n}         levels: [{cores, bp}]  (Nexus levels have no bp)
    --------------------------------------------------------------------- */
-const VERSION = '0.63.0';
+const VERSION = '0.63.1';
 document.title = 'Aeterna - Engine v' + VERSION;
 const CARDS = {};
 function defCard(o) {

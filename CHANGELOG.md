@@ -2,6 +2,9 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.63.1
+- **Regression part 3 fixed:** on a 844x390 phone (landscape) the U1 header was 1 px wider than the screen (the skewed LOG / EXIT TO LOBBY buttons count as overflow), so the page scrolled sideways and test 29 of `tests/suites/v27_tests.py` failed. The header now clips sideways overflow (`overflow-x: clip` on `#view-playmat header.ae-head`); the buttons are not cut (they end 2.6 px inside the header). Suite 31/31.
+
 ## v0.63.0
 - **U1 battle screen restyle** (UI/UX overhaul, owner design approval 2026-10-18 21:17: mockup v11 + `docs/DESIGN.md` section 0). Same v0.62.1 layout on PC and phone; only the style changes. No rules change.
   - Theme (`apps/web/src/00c-theme.js`): the player's side colour (Teal default, or Red, Purple, Green, White, Yellow, Blue, Silver, Gold) and Dark/Light mode, in Settings > Appearance, saved on the device (`aeterna.theme.v1`). The CPU is crimson, blue when the player picks red. Lobby picker comes with U2.
