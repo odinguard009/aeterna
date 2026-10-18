@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "18 Oct 2026",
-  "next": "next: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
+  "next": "next: U1 UI overhaul (tokens + app shell, docs/DESIGN.md; Opus), then card sessions alternate with U2-U7: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -438,6 +438,18 @@
      "t": "UI polish: card names wrap by word, PC turn-step bar, bigger touch targets (v0.40.3)"
     },
     {
+     "s": "done",
+     "t": "UI overhaul prep (owner, 18 Oct 2026): Aegis screens + tokens studied, docs/DESIGN.md (night arena, core gems, step rail), design skills redesign-existing-projects + web-design-guidelines, design system and three battle-screen mockups as artifacts"
+    },
+    {
+     "s": "next",
+     "t": "U1 tokens + app shell: --ae-* tokens with old names as aliases, top bar, turn badge, narration pill, toasts"
+    },
+    {
+     "s": "later",
+     "t": "U2 battle board PC, U3 battle board phone, U4 decision overlays + attack line, U5 deck builder restyle, U6 lobby, U7 design audit pass"
+    },
+    {
      "s": "later",
      "t": "Hover zoom on PC, quick actions"
     },
@@ -869,5 +881,5 @@
    "note": "Manual session on Opus: Standard block A import (wiki API, 674 cards staged, +51 playable), levers measured, player-view pass by a subagent (90k tokens incl.). Budget-counter difference read before the last commit."
   }
  ],
- "next": "next: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
+ "next": "next: U1 UI overhaul (tokens + app shell, docs/DESIGN.md; Opus), then card sessions alternate with U2-U7: block A keyword heads by measured unlocks, one per card session (Soul Magic first: 33 cards wait only for it; then True Release, Invoke, Legacy), then the Eternal heads (step timings, Burst variants, Mirage, Rush forms); 669 of 8,709 cards playable"
 }

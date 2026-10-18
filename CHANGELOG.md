@@ -2,6 +2,13 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.62.1
+- **UI/UX overhaul prepared** (owner, 2026-10-18: "like Aegis, with the card game's own touch"). No change to the game itself; this release only adds the plan and tools for the U sessions.
+  - `docs/DESIGN.md`: design system for the overhaul. Taken from Aegis (studied live on PC 1280x800 and phone 375x812, tokens read from its CSS): token-driven shell, corner piles, centre band, fanned hand, one-line narration, toasts, decision overlays. Own touch: cores drawn as gems everywhere they count, the seven steps as a step rail, attribute-colour card frames, rims for "can act" / "your choice" / "threat", Flash and Burst colours. Dark "night arena" default, gold accent kept, system fonts only (offline file).
+  - New skills: `redesign-existing-projects` (from Leonxlnx/taste-skill, MIT, with Aeterna notes on top: DESIGN.md wins, no network images or fonts) and `web-design-guidelines` (Vercel, MIT; rules kept as an offline snapshot in the skill). The taste skill's main `design-taste-frontend` was not taken: it says itself it is not for app screens.
+  - Design System artifact "Aeterna Arena" and Design artifact "Aeterna battle screen" (directions A Arena Night = default, B Core Forge, C Clean Table, plus phone and block overlay of A) on claude.ai, for the owner to pick a direction.
+  - Roadmap item U (`docs/ai/roadmap-open.md`): U1 tokens + app shell, U2 board PC, U3 board phone, U4 decision overlays, U5 deck builder, U6 lobby, U7 audit; alternating with card sessions, U1 next. CLAUDE.md: U sessions may change colours, layout and structure as DESIGN.md says.
+
 ## v0.62.0
 - **Standard block A import** (owner priority 2026-10-18: newest cards first): 669 of 8,709 cards playable (+51; the card pool grows from 8,041 to 8,709).
   - `tools/fetch_fandom_std.py` reads the 15 block A set pages (26RSD01-10, 26RBS01-03, 26RCB01, 26RDB01) and their card pages through the wiki API with `curl`-style GET requests (50 titles per call, one at a time) into `data/sources/fandom-cards-26r.json`: 681 rows, same format as the BS01-BS77 export. EX symbols count as symbols (Standard Comprehensive Rules 2-10-3 and the Standard manual glossary) and are also kept as `ex_symbols` for the Legacy / Succession rule later.
