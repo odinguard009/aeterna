@@ -31,6 +31,8 @@ All colours are CSS custom properties on `:root` in `src/styles.css`. Old names 
 | Rim: threat | `--ae-rim-threat` | `#f97316` | opposing attacker, card that targets yours |
 | Flash window | `--ae-flash` | `#a78bfa` | step rail marker + "Flash?" prompt |
 | Burst | `--ae-burst` | `#e879f9` | Burst slot ribbon, Burst reveal |
+| Frame trim (gold) | `--ae-trim` / `--ae-trim-deep` | `#d4b062` / `#7a5a24` | cost ring, hairlines, symbol ring on cards |
+| Level rungs | `--ae-lv1` / `--ae-lv2` / `--ae-lv3` | `#2f7fd8` / `#e8892c` / `#e9b41c` | level ladder chips; hues approximated from the card images; numbers white (LV3: dark) |
 | Attribute colours | `--color-red` ... `--color-white`, `--color-ultimate`, `--color-god` | keep current values | card frame and symbol only; text on yellow and white is always dark |
 
 Contrast: body text and labels at least 4.5:1 on their background; large numbers (BP, Life) at least 3:1. Status is never shown by colour alone (rim + icon or label).
@@ -47,7 +49,21 @@ Contrast: body text and labels at least 4.5:1 on their background; large numbers
 - **Narration pill:** top centre, one line, the current action ("CPU summons Blaze Colt (paid 2)"); the full log stays in the Log drawer.
 - **Toasts:** top-left stack, max 3, auto-hide after 3 s, for state changes (Life lost, cores moved, Burst set). Never for things that need an answer.
 - **Decision overlay:** scrim + centred sheet: small chip (what kind of decision), title (question), subtitle (one line why), card row, then buttons (secondary outline left, primary filled right; "Check board" ghost button to peek). Used for opening hand, targets, block, Flash, Burst, Contract choices. Phone: full-width bottom sheet.
-- **Card (on board and in hand):** attribute-colour frame (2px, double for two colours), cost top-left in a dark circle with the cost-reduction symbol count, card type tag top-right, name centre, BP bottom-left (tabular), level badge bottom-right ("Lv2"), **core pips** along the bottom edge (one gem per core, Soul Core marked), exhausted = rotated 90 degrees (current rule) with a soft dim. Rims from section 2. Tap/hover opens the inspector (zoomed card with full text and the `residual` clauses). Card art is never shipped.
+- **Card (on board and in hand):** follows the card frame below. Exhausted = rotated 90 degrees (current rule) with a soft dim. Rims from section 2. Tap/hover opens the inspector (zoomed card with full text and the `residual` clauses). Card art is never shipped: the art window shows the player's own image when they added one (current feature), else an attribute-colour gradient with the card type mark.
+
+### Card frame (owner, 2026-10-18: "the card game's frame is the coolest and most elegant")
+Studied on four printed cards from the Fandom wiki (block A 26RBS01-002 Spirit, -109 Magic, -091 Nexus; Eternal BS76-054 Spirit with three levels). The printed frames come in two generations; both share one layout grammar, and we draw that grammar in our own CSS shapes. We never copy the printed ornaments, textures, logos or art, and no card image is stored in the repo.
+- **Grammar (both skins):**
+  - **Cost disc** top-left, overlapping the frame: dark centre, big white italic numeral, gold ring (`--ae-trim`).
+  - **Reduction gems** right of the disc: one small faceted hexagon per reduction symbol, in the attribute colour.
+  - **Art window** fills the top ~55%, with a thin gold hairline arc along the top edge.
+  - **Name plate:** a horizontal band across the card with pointed (hexagonal) ends and a gold hairline; the family tab sits on top of it, centred (small, lighter band).
+  - **Level ladder** at the left of the text box, one rung per level: a chip with the core count + "LV n" chip, then the BP in big tabular numerals under it. Rung colours: LV1 `--ae-lv1` blue, LV2 `--ae-lv2` orange, LV3 `--ae-lv3` gold-yellow (as printed). Magic and Nexus without BP show only the level chips.
+  - **Effect text box** right of the ladder; keyword and timing chips inline (timing in `--ae-lv1` blue, keyword boxed), Flash marked with the `--ae-flash` bolt.
+  - **Symbol gem** bottom-right: faceted gem in the attribute colour inside a gold ring.
+  - **Type mark:** block A skin = vertical tab under the cost disc ("SPIRIT", "MAGIC", "NEXUS", pointed bottom); classic skin = small label at the left of the name plate.
+- **Skins (a setting, default Arena):** **Arena** = the block A look: near-black frame and text box, attribute colour in the side panels, gold hairlines; fits the night arena board. **Classic** = the Eternal look: frame in the attribute colour, light text box. The skin follows the player's setting, not the card's block, so a mixed deck still looks consistent.
+- **Sizes:** inspector and deck builder show the full frame (text box included). Hand cards show disc, gems, art window, name plate and the ladder without the text box. Field cards (`--card-w`, ~88px) keep disc + gems, name plate, the current level's rung with BP, core pips and the symbol gem; the type tab shrinks to a corner mark.
 - **Pile slot (deck, trash, removed, void):** a small card stack with a count badge (Aegis piles), label under it in caps; tap opens the pile viewer.
 - **Core tray:** Reserve, Count, Trash and Life as rows of gems with the number beside them (gems up to 10, then "10+" with the number). Life is red-rimmed gems. Cost preview: while choosing what to pay, the gems that will move pulse.
 - **Burst slot:** face-down card with a magenta "BURST" ribbon; empty slot dashed.
