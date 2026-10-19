@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "20 Oct 2026",
-  "next": "next: card bundle = 3-4 packs per release from the top of pack-plan.md \"Measured order\" (estimates are at most ~3x real; v0.78.0 +23): \"put a core\" Grandwalker / two-destination leftovers, \"target and attack\", \"if you control\" keyword / another-X conditions, Brave destroy filters, SUMMON_HAND by type, DESTROY_TOTAL, then Mirage / Rush / Accel; 859 of 8,709 cards playable"
+  "next": "next: A1 partial promotion (staged cards enter the library with the missing clauses listed, \"!\" mark in Library and deck builder, \"Complete only\" filter; playable = complete cards), then A2 card-author agent pilot on one Standard block A set (measure cards per 100k tokens against v0.78.0 +23); plan W bundles wait behind A; 859 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -599,7 +599,7 @@
   {
    "phase": {
     "name": "Road to playable (estimate, 18 Oct 2026)",
-    "sub": "Owner, 2026-10-18: newest cards first (Standard block A, then Eternal newest Saga), whole decks per colour; no manual mode. Session counts are rough and are re-estimated after the compiler v2 measurement.",
+    "sub": "Owner, 2026-10-18: newest cards first (Standard block A, then Eternal newest Saga), whole decks per colour; no manual mode; partial cards marked \"!\" allowed since 20 Oct 2026. Session counts are rough and are re-estimated after the compiler v2 measurement.",
     "ver": "estimate",
     "open": true,
     "kind": "leaves"
@@ -647,6 +647,10 @@
     },
     {
      "s": "next",
+     "t": "Owner, 2026-10-20: partial promotion with a \"!\" mark in Library and deck builder (A1), then a card-author agent pilot on one block A set (A2), modelled on Aegis's one-module-per-card route"
+    },
+    {
+     "s": "later",
      "t": "One pack per card session: step window (v0.70.0, +4), Burst forms + condition clauses (v0.71.0, +12), battle heads (v0.72.0, +13), leave heads + connectives (v0.73.0, +12), first bundle (v0.74.0, +13), second bundle (v0.75.0, +23), third bundle (v0.76.0, +14), fourth bundle (v0.77.0, +23); next a bundle of 3-4 packs per release from the measured order End of battle (Curse, Brilliance, \"At the end of battle\") + ally battle results in v0.78.0 (+23)."
     },
     {
