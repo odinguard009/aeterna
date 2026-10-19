@@ -234,9 +234,14 @@ def own_np(np):
     return match, bool(m.group(1))
 
 
-def own_grammar(s):
+BATTLE_TRIGGERS = {'ACTIVATE', 'ATTACKS', 'BLOCKS', 'ATTACKS+BLOCKS', 'ALLY_ATTACKS', 'OPP_ATTACKS'}
+
+
+def own_grammar(s, ctx=None):
     """v0.68 own-target and battle-length sentences (BP_TARGET / SYMBOL_TARGET, 02l); None = not this shape"""
     x = s.strip().rstrip('.')
+    battle_ok = ctx is None or bool(BATTLE_TRIGGERS & set(ctx.get('trigger') or ()))
+    if re.search(r'during this battle', x, re.I) and not battle_ok: raise Review('v2 battle effect outside a battle trigger')      # A7 review
     m = SELF_BATTLE_BP.match(x)
     if m: return [{'do': 'BP_TARGET', 'n': bpv(m.group(1)), 'to': 'self', 'battle': True}]
     if SELF_BATTLE_SYM.match(x): return [{'do': 'SYMBOL_PLUS', 'n': 1}]
@@ -275,8 +280,8 @@ def own_grammar(s):
     return None
 
 
-def grammar(s):
-    og = own_grammar(s)
+def grammar(s, ctx=None):
+    og = own_grammar(s, ctx)
     if og is not None: return og, bool(re.match(r'^(?:you can|you may) ', s, re.I))
     m = TARGET.match(s.strip().rstrip('.'))
     if m:      # "Target an opposing ... Spirit. Destroy it." -> one clause
@@ -292,7 +297,7 @@ def action_of(s, ctx):
         return _V1_ACTION_OF(s, ctx)
     except Review as e1:
         try:
-            return grammar(s)
+            return grammar(s, ctx)
         except Review as e2:
             raise Review(str(e2) if str(e2).startswith('v2 ') and not str(e2).startswith('v2 clause') else str(e1)) from None
 

@@ -226,7 +226,7 @@ function removeSpirit(p, s, why, byOpponent) {
   if (why === 'destroyed' && !s.noFx && G && G.evQ && (CARDS[s.id].effects || []).some(e => e.trigger === 'DESTROYED')) G.evQ.push({ type: 'DESTROYED', key: p.key, inst: s, byOpp: !!byOpponent });   // (When Destroyed), manual p. 31; noFx = "the effects of the destroyed target can't activate"
   delete s.noFx;
   p.reserve.n += s.cores; if (s.soul) p.reserve.soul = true;
-  s.cores = 0; s.soul = false; s.exhausted = false; s.heavy = false; s.noAB = false; s.bpMod = 0;
+  s.cores = 0; s.soul = false; s.exhausted = false; s.heavy = false; s.noAB = false; s.bpMod = 0; s.bpB = null; s.fxBattle = null;      // v0.68: battle BP / Once Per Battle end when it leaves
   const under = s.under; s.under = [];
   for (const u of under) { u.under = []; p.trash.push(u); }
   shedBrave(p, s, p.trash);

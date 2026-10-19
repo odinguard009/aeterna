@@ -24,6 +24,7 @@ const invokeMatchOK = m => m == null || (typeof m === 'object' && (m.family == n
 /* parse hook (02c): returns an error text or null; copies the checked fields onto o */
 function invokeParse(e, o) {
   o.invoke = true;
+  o.once = e.once === true || e.oncePer === 'battle' || !!e.sameName;      // limits only when printed (A7 review): no "once" key = unlimited
   if (e.when != null) { if (!INVOKE_WHEN[e.when]) return `Invoke "when" must be one of ${Object.keys(INVOKE_WHEN).join(', ')}`; o.when = e.when; }
   if (e.oncePer != null) { if (e.oncePer !== 'battle') return 'Invoke "oncePer" must be "battle"'; o.oncePer = 'battle'; o.once = true; }
   if (e.cost == null) return null;
@@ -54,7 +55,9 @@ async function payInvokeCost(p, f, c) {
   const nm = CARDS[f.id].name;
   if (c.pay) {
     if (coresAvailable(p) < c.pay) return false;
-    payCost(p, c.pay); log(`${nm}: ${who(p)} ${p.cpu ? 'pays' : 'pay'} ${c.pay} cost${c.pay === 1 ? '' : 's'}.`); checkDepletion(p); return true;
+    const got = takeCores(p, c.pay, f.uid);      // Reserve first, never the Invoke source itself (A7 review); the cores go to the Trash
+    if (got.n + (got.soul ? 1 : 0) < c.pay) return false;
+    p.trashCores.n += got.n; if (got.soul) p.trashCores.soul = true; log(`${nm}: ${who(p)} ${p.cpu ? 'pays' : 'pay'} ${c.pay} cost${c.pay === 1 ? '' : 's'}.`); checkDepletion(p); return true;
   }
   if (c.destroySelf) {
     if (p.nexus.includes(f)) removeNexus(p, f, 'destroyed'); else if (p.spirits.includes(f)) removeSpirit(p, f, 'destroyed', false); else return false;
@@ -132,7 +135,9 @@ Object.assign(FX_ACTIONS, {
 function cpuInvokeOK(p, f, e, timing) {
   const c = e.cost || {}, acts = e.actions.map(a => a.do), opp = G.p[other(p.key)];
   if (c.pay && coresAvailable(p) - c.pay < 1) return false;
-  if (c.destroySelf && !acts.some(x => x === 'DESTROY' || x === 'BOUNCE_OPP')) return false;     // trade the card only for an opposing card
+  const rt = e.actions.find(x => x.do === 'RETURN_TRASH'), mine = CARDS[f.id].cost;
+  const better = !!rt && p.trash.some(t => (rt.anyType || CARDS[t.id].type === 'Spirit') && fxMatch(CARDS[t.id], rt.match) && CARDS[t.id].cost > mine);
+  if (c.destroySelf && !acts.some(x => x === 'DESTROY' || x === 'BOUNCE_OPP') && !better) return false;     // trade the card for an opposing card, or for a stronger card from the Trash (A6 note)
   if (c.exhaustSelf && timing === 'MAIN' && p.spirits.includes(f) && G.active === p.key) return false;   // keep the Spirit ready to attack
   if (acts.some(x => x === 'BP_TARGET')) {
     if (timing !== 'FLASH' || !G.attacker || !G.blocker) return false;

@@ -155,3 +155,18 @@ test('INV68-14 BP_MINUS zeroDestroy destroys the target only when it is at 0 BP'
     return [gone, O.spirits.includes(strong), BS.bpOf(strong)];`);
   assert.deepEqual(r, [true, true, 4000]);
 });
+test('INV68-15 review fixes: no "once" key = unlimited; battle BP ends when the Spirit leaves; pay never takes the source cores', async () => {
+  const r = await ev(`const p = BS.parseEffects([{ trigger: 'ACTIVATE', invoke: true, actions: [{ do: 'DRAW', n: 1 }] }]).effects[0].once;
+    const b = sp('T68-BLK', P, 1), a = sp('T68-FOE', O, 1); G.attacker = a; G.blocker = b; G.battleNo = 1;
+    await BS.FX_ACTIONS.BP_TARGET.run({ p: P, opp: O, src: b, ctx: {} }, { do: 'BP_TARGET', n: 3000, to: 'self', battle: true });
+    const up = BS.bpOf(b); BS.removeSpirit(P, b, 'destroyed', true); P.trash = P.trash.filter(x => x !== b); P.spirits.push(b); b.cores = 1;
+    const back = BS.bpOf(b);
+    const s = sp('T68-PAY', P, 2); G.active = P.key; G.step = 5; G.attacker = sp('T68-FOE', P, 1); G.blocker = null; G.battleNo = 2; P.reserve.n = 3;
+    const ok = await BS.activateFx(P, s, BS.CARDS['T68-PAY'].effects.findIndex(e => e.invoke));
+    return [p, up, back, ok, s.cores, P.reserve.n];`);
+  assert.deepEqual(r, [false, 8000, 5000, true, 2, 0]);
+});
+test('INV68-16 compiler: "during this battle" outside a battle trigger stays in review', () => {
+  assert.match(compile('[LV1] (When Summoned)\nDuring this battle, this Spirit gains +3000 BP.').review || '', /battle/);
+  assert.equal(compile('[LV1] (When Attacks)\nDuring this battle, this Spirit gains +3000 BP.').effects[0].actions[0].battle, true);
+});

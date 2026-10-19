@@ -296,8 +296,8 @@ async function activateFx(p, f, idx) {
   const opp = G.p[other(p.key)];
   if (e.cost && e.cost.nexusToVoid) { f.cores -= e.cost.nexusToVoid; p.void += e.cost.nexusToVoid; log(`${card.name}: ${e.cost.nexusToVoid} cores are sent to the Void.`); }
   if (e.cost && e.cost.exhaustSelf) { f.exhausted = true; log(`${card.name} is exhausted.`); }
-  if (e.oncePer === 'battle') markUsedBattle(f, idx); else markUsed(p, f, idx, e);
   if (e.invoke && !(await payInvokeCost(p, f, e.cost))) return false;      // v0.68: part A must resolve in full (Std FAQ on Effects Q11)
+  if (e.oncePer === 'battle') markUsedBattle(f, idx); else markUsed(p, f, idx, e);      // marked after a paid cost (A7 review)
   log(`${card.name}: [${e.invoke ? 'Invoke' : 'Activate'}] ${fxDescribe(e)}.`);
   await asResolving(() => runActions({ p, opp, src: f, ctx: {} }, e, 'ACTIVATE'));
   checkDepletion(p); checkDepletion(opp);
