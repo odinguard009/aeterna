@@ -43,82 +43,20 @@ Goal: the same quality per release with far fewer tokens. Each rule says who doe
 - A pre-push hook (`.githooks/pre-push`: build check, lint, quick tests) so CI/Regression minutes and polling are not spent on broken pushes.
 - Replay-first bug reproduction (already in place: seeds and `BS.runReplay`).
 
-## 8. Measured baseline (v0.30.1)
-- Instructions read every session: CLAUDE.md ~602 tokens (was ~2181 in v0.30.0); topic guides are read only when relevant.
-- Code: `index.html` ~80k tokens; effects split into 4 parts (`02a` 2.3k, `02b` 8.2k = the one `FX_ACTIONS` table, `02c` 2.0k, `02d` 4.2k tokens); every other part <= 5.6k. Read single actions in `02b` by grep + offset, not the whole table.
-- Checks: lint ~3 s, quick tests ~2 s, full Node tests ~90 s; full Python regression ~20 min moved from the session to GitHub.
-- Brainstorm context: docs pack ~17k tokens vs ~100k for code + docs.
+## 8. Lessons kept from the measurements of v0.30-v0.39 and the checks of 2026-10-14..16
+Condensed in v0.69.3 (P0 B8); the full measurements stay in git history (this file before v0.69.3).
+- Fixed context dominates: ~44% of a session is the system prompt, tool list and skill/plugin descriptions re-sent on every call, ~34% the growing conversation history, ~4% the work itself (v0.34 measurement, ~6.2M effective tokens in 167 calls). So: fewer calls, batched commands, one script per step, short CLAUDE.md (it is re-sent on every call; history lives in `CHANGELOG.md`).
+- After the release, stop: Q&A and research in the same session cost twice the release (v0.34.0: 2.1M release, 4M afterwards). Ask several things in one message.
+- A minor release costs ~1-2M effective tokens in ~60-70 calls; past ~80 calls push, leave a handoff comment on issue #3 (done / next / failing seed / tokens so far) and continue in a new session.
+- Never read `index.html` (~80k tokens) or a whole card JSON; grep + offset in the source parts, one-line `python3 -c` queries on card data (the Fandom JSON alone is ~2M tokens and once pushed the Project over its limit: card data lives only in the repo).
+- Big listings are expensive: never list a laptop folder recursively; use the image index `data/index/saga_card_index.json` first. Images: contact sheets of ~20 cropped corners, one colour at a time, only unverified fields; every image is re-sent on every later call.
+- Cheap guards beat repeated Regression runs: `tools/check_renames.py` in the pre-push hook catches removed names / labels still used in tests (v0.31 lost a second Regression to that); for a single-word UI text change run the suites that grep the old word.
+- `add_repo` first, then one light sparse clone without `data/sources` and the big report table; never two git operations at once.
+- Gates count only `v*` release commits (OVERLAP guard, backup due every 5 releases), so chore/docs commits block nothing. Idle auto-mode runs end at the gate `check` (one `gh api` call, a few thousand tokens).
+- Shared mechanics once: build a mechanic several decks need in one version, not piecemeal per deck.
+- Every roadmap session shows `Token awal` at the start and `Token terpakai` (budget-counter difference, not the billed figure) at the end and in a handoff.
+- Owner-side savings: turn off unused connectors, skills and plugins in the Project (settings apply to new sessions only); keep the Project instructions short and let CLAUDE.md hold the rules (copies drift); Claude Code desktop/terminal sessions carry a smaller system prompt than the claude.ai chat.
 
-## 9. Lessons from v0.31 (2026-10-14, ~300k tokens, 33 min)
-- Biggest waste: a second full Regression run because two Python checks still used a removed function and an old label. Fix: `tools/check_renames.py` in the pre-push hook (seconds, no browser): removed top-level names still used in tests, removed labels still asserted, case-sensitive label checks that are not Title Case. Verified: it reports exactly the three misses of v0.31.
-- Project docs trimmed to `CLAUDE.md` + `card-list.md` (they are loaded into every message; all other docs live in the repo and are read only when needed). Do not copy repo docs back into the Project.
-- Every tool call re-sends the whole context: batch commands, prefer one script over several small calls.
-- Repo not attached at session start cost three failed clones: call `add_repo` first.
-
-## 10. Measured v0.34 session (2026-10-14, ~6.2M effective tokens, 167 calls)
-- Fixed instructions re-read on every call: ~161k tokens (system prompt, tool list, skill and plugin descriptions) = 44% of the session. Project docs and CLAUDE.md are a small part of it; the owner can cut it only by turning off unused plugins, skills and connectors.
-- Conversation history re-read: 34%. Release work (v0.34.0) used ~2.1M; the Q&A and research after the release in the same session used ~4M. Rule: after the release, stop; questions and research go to a separate short session or a claude.ai chat.
-- Work itself (shell, files, laptop, browser): ~4%. The rules in sections 1-3 work; keep them.
-- Big listings: `device_list_dir` with `recursive:true` on a Card Asset folder returns 100-265k characters; list one Saga `images` folder and filter in Python instead. The image index `data/index/saga_card_index.json` already maps names to files: use it before listing the laptop.
-- Project knowledge must stay small: the Fandom JSON (2.08M tokens) pushed the Project over its 2.0M limit and was removed on 2026-10-14. Card data lives in the repo only; query it with one-line `python3 -c`.
-- Ask several things in one message; every reply re-reads the whole session.
-
-## 11. Check of 2026-10-14 (v0.34.2)
-- Repo: `npm run loop` (3 calls -> 1); `test:quick` picks up test files by pattern; light sparse clone without `data/sources` (5.9 MB) and `docs/reports/red-cards-check-table.html` (1.1 MB): ~2 s, 5.2 MB working tree.
-- Owner settings (the 44% fixed share): turn off in this Project what it does not use: connectors Claude in Chrome (the built-in browser is preferred), Claude Docs, Visualize; skills dataviz, cowork-plugin, plugin-authoring, deep-research, skill-creator, docx/pptx/xlsx. Memory and past-chat search add long instructions to every call; CLAUDE.md already holds the working agreement, so they can be turned off (then every rule must live in CLAUDE.md).
-- Release sessions run cheaper in Claude Code (desktop/terminal) than in the claude.ai chat, whose system prompt carries widgets, artifacts, image search and memory tools.
-
-## 12. Budget after v0.39 (estimate 2026-10-14, effective tokens incl. cache re-reads)
-v0.35-v0.39 were built before this plan was written. Basis: a minor release ~2M in ~60-70 calls; ~16k fixed context per call; history grows with every call and image.
-| Next work | Without the rules below | Target |
-|---|---|---|
-| v0.40 yellow (last colour) | 2-3M | 1.0-1.5M |
-| Magic effect types (blue, green, purple Magic in one version) | 2-3M | 1.2-1.8M |
-| Image check of the four colour decks (contact sheets) | 3-5M | 0.8-1.2M |
-| UI patch (approved items together) | 1-1.5M | 0.5-0.8M |
-Rules to hit the target:
-- Colour versions follow `docs/ai/colour-version.md`; legacy suites read counts from the card data (v0.39.1), so no extra patch + Regression run per deck (v0.37.1 was one).
-- Shared mechanics once: Magic effect types are needed by three decks, so build them in one version instead of piecemeal.
-- Images: contact sheets of ~20 cropped corners, one colour at a time, only fields that are unverified (`note` on the card); every image stays in the history and is re-sent on every later call.
-- Calls <= 60 per version; one script per step; `npm run -s loop`.
-- Past ~80 calls: push, leave a handoff comment on the issue (done / next / failing seed), continue in a new session.
-- Model (the owner picks it at session start): Opus for engine work (Magic types); Sonnet for yellow, the image check and the UI patch.
-- After the release: stop; questions go to a separate session.
-
-## 13. Check of 2026-10-15 (docs patch)
-- CLAUDE.md: open items moved to `docs/ai/roadmap-open.md` (read rule kept in CLAUDE.md); the six "Done" lines became one (history lives in `CHANGELOG.md`).
-- The Project doc `claude/CLAUDE.md` duplicated the repo CLAUDE.md, so Claude Code sessions loaded it twice; it is now a short stub. `claude/card-list.md` covered only red and white (repo has 126 cards in six colours); it is now a pointer to `data/cards`.
-- Settings changes (plugins, skills, connectors) only apply to sessions started after the change; the skill list of a running session does not shrink.
-- Session scope is now Claude's call (owner, 2026-10-15). Estimates in §12 are the basis; the 80-call handoff rule and "heavy task alone" stay.
-
-## 14. Process check of 2026-10-16 (skills and gates)
-- Superseded by section 16: every session marks start and end on issue #1; a crashed manual mark (MANUAL) expires after 3 hours.
-- Backup: only when 5+ commits sit on `main` after the newest `backup/v*` branch (and before a UI change). Before this, every session pushed one (v0.47.6, v0.48.0, v0.48.1, v0.48.2 in a row).
-- Tester skill: the local full Python run (5 calls of ~10 min) and the local 30-game sims are gone from the skill; the GitHub Regression is the single full gate (as `release.md` already said).
-- The tester and effect-adder skills no longer tell sessions to re-read CLAUDE.md (it loads automatically).
-- Effect-adder: removed the Project copy of `rules-coverage.md` (the Project holds only `claude/CLAUDE.md` and `claude/card-list.md`); card data order is the Fandom export first; the stale `02-effects.js` name and the old roadmap list became pointers (`code-map.md`, `roadmap-open.md`).
-- Card data order in `bs-card-data-check` now matches the owner rule: Fandom export in the repo first, then the official list, live Fandom, cardrush/yuyu-tei last, images only as the final resort; a tool refusal (403) is not bypassed, a render/login failure goes to the browser.
-- The OVERLAP guard (`session_start.sh`) and the scheduled gate (`session_gate.sh check`) only count `v*` release commits, so a chore/docs commit no longer blocks the next session for 30 minutes.
-- End of session also refreshes the `**Done:**` / `**Next:**` lines in CLAUDE.md and deletes finished items in `roadmap-open.md` (`session_start.sh` prints the Next line); session start and end carry the `Ver. X.Y.Z` and `gunakan model ...` lines.
-- Checked in the cloud workspace on 2026-10-16: `session_end_check.mjs` passes in ~6 s (game file copy, `test:release`, mind map), `/mnt/user-data/outputs` exists, the backup-due command works, CI is green on the process commit.
-- Every roadmap session shows `Token awal` in its opening line and `Token terpakai` (start minus the `total_tokens` counter left) in the final summary and in the 80-call handoff comment (owner, 2026-10-16); the figure is the budget-counter difference, not the billed number.
-- Owner setting, still open: the account-level skills `anthropic-skills:bs-*` duplicate the repo skills, and the runner copy is older (it still mentions scheduling and quota pause). Removing them leaves one copy per skill and shortens the fixed context.
-
-## 15. Audit of 2026-10-16 (owner approved all suggestions)
-- Direction: 152 of 8,041 cards were playable after ~50 versions, because every card's effects are written by hand and recent heavy sessions unlocked ~10 cards each. The roadmap is now ordered by cards unlocked per token across all Sagas (`tools/unlock_report.py` -> `docs/reports/unlock-report.md`, playable count in `session_start.sh`): compact pack, effect compiler, then Sonnet batch promotion per Saga.
-- CLAUDE.md: 12.1k -> 7.0k characters (it is re-sent on every call); the stopped chain, gate, lock and quota rules moved to `docs/ai/next-session-prompt.md`.
-- Backup: counts `v*` release commits since the newest `backup/v*` branch, not all commits (chore/docs commits had triggered four backups in a row, v0.48.0-v0.49.0). 24 merged branches approved for deletion (names and SHAs in `docs/ai/deleted-branches.md`; the session proxy blocks deletion, so the owner removes them on GitHub); the newest 3 backups and 3 unmerged branches kept.
-- Tests: 20+ new tests per minor version only; a patch carries the tests that guard its fix. (Replaced 2026-10-19: no count, see section 17.)
-- `check_renames.py` check 4 flags removed multi-word UI text still asserted in tests (no false positives on five older bases). It would not have caught the v0.50.0 failure (a single-word substring check, `'Banished' in modal(pg)`), so `release.md` now says to run the suites that grep the old word before pushing a UI text change.
-- `release.md` no longer mentions Project docs (the Project holds none).
-- §14's open owner setting is resolved: the account-level `anthropic-skills:bs-*` copies no longer appear in the skill list.
-- Owner side, still open: run "Lanjutkan roadmap" in Claude Code (desktop) rather than the claude.ai chat when possible (§11); keep the Project instructions short and let CLAUDE.md hold the rules (three copies drift).
-
-## 16. Auto mode / idle chain (2026-10-16)
-- Idle runs end at the gate `check` (one `gh api` script, no clone), so a STOP run costs a few thousand tokens; the switch and session state are issue #1 comments, read with `since=7 days`.
-- Between tasks an auto session spends one `switch` call; nothing else is added to a session.
-- Each fired run still opens a session in the owner's list; for a long pause the owner can disable the task in the app instead of `OFF`.
-
-## 17. Test cleanup (owner, 2026-10-19: "too many tests")
+## 9. Test cleanup (owner, 2026-10-19: "too many tests")
 - Measured: the quick set had grown to 1,214 tests (~3 min) and ran at session start, after every task and in the pre-push hook; local `npm test` repeated what CI runs; Regression ran every session.
 - Now: loop = smoke + changed test files (~15 s), full quick set once in the pre-push hook, no local `npm test`, Regression only when `tools/regression_due.sh` says DUE (+ weekly scheduled run), player-view pass at backups and UI changes, no new-test quotas. Details and the open proposals B1-B10: `docs/ai/process-plan.md`.

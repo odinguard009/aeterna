@@ -9,6 +9,8 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
   - B3: `tools/session_start.sh` also prints the chain-stop state, `Mode hemat` and an open handoff (newest "Handoff" comment on issue #3 newer than the last release commit); the skill's separate context, chain-stop and hemat calls are gone (2-3 calls per session).
   - B6: `tools/mechanic_inventory.py` runs at the session end only when the session changed `data/glossary/mechanics.json` or `data/import`.
   - B7: `tools/session_end_check.mjs` checks the GitHub Release asset `aeterna-vX.Y.Z.html` itself (warning with the newest Release run when missing; `--no-release` skips it), replacing the separate `gh api` call.
+  - B4/B5: card-session prep with HEMAT ON: no sizing subagent (`tools/pack_plan.py` + one scratch recompile by main); the rules-research subagent runs only when the next pack's blocker has no `prep.rules` in `data/glossary/mechanics.json` (CLAUDE.md, skill `bs-session-runner`, `roadmap-open.md`). HEMAT OFF team agents unchanged.
+  - B8: `docs/ai/token-economy.md` sections 8-16 (measurements v0.30-v0.39, checks of 2026-10-14..16) condensed to 11 lessons; 15.6k -> 7.6k characters (full text in git history).
 
 ## v0.69.2
 - **K2: generated tests per compiled action** (`docs/ai/compiler-v2-plan.md` point 5; plan W in `docs/ai/roadmap-open.md`). No game change.
