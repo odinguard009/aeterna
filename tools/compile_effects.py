@@ -152,6 +152,10 @@ TRIGGERS = [
     (r'\(When Summoned/Destroyed\)', ['SUMMONED', 'DESTROYED']),      # v0.54: (When Destroyed) = engine trigger DESTROYED (manual p. 31)
     (r'\(When Destroyed\)', ['DESTROYED']),
     (r'\(When Destroyed by the Opponent\)', ['DESTROYED_OPP']),      # v0.55: CR 12-2-1-12-1 (opposing effect or BP comparison)
+    (r'When this Spirit is destroyed by the opponent,', ['DESTROYED_OPP']),      # v0.73 leave heads (docs/mechanics/leave-heads.md)
+    (r'When this Spirit is destroyed by (?:opposing effects|an opposing effect),', ['DESTROYED_OPPFX']),
+    (r'When this Spirit would leave the [Ff]ield due to the opponent,', ['LEAVES']),
+    (r'When this Spirit would leave the [Ff]ield (?:due to|by) (?:opposing effects?|an opposing effect),', ['LEAVES_OPPFX']),
     (r'\(When Battles\)\s*When only the opposing Spirit(?:/Ultimate)? is destroyed (?:by comparing BP|via BP comparison|by BP comparison),', ['BATTLE_WIN']),   # v0.55: CR 8-1-6-2
     (r'\(When Attacks/Blocks\)|\(When Attacks or Blocks\)', ['ATTACKS+BLOCKS']),
     (r'\(When Summoned\)', ['SUMMONED']),
@@ -308,7 +312,7 @@ def spirit_paragraph_main(p, card, rush):
         e, f = spirit_paragraph_main(body, card, rush)
         if f or not e: raise Review('braved paragraph with card flags: ' + body[:60])
         for x in e:
-            if x['trigger'] in ('DESTROYED', 'SUMMONED', 'ADVENT', 'REVEALED', 'ACCEL') or x.get('zone') or x.get('nexusBrave'): raise Review('braved paragraph trigger ' + x['trigger'])
+            if x['trigger'] in ('DESTROYED', 'LEAVES', 'SUMMONED', 'ADVENT', 'REVEALED', 'ACCEL') or x.get('zone') or x.get('nexusBrave'): raise Review('braved paragraph trigger ' + x['trigger'])
             x['braved'] = True
         return e, f
     mu = UT_PARA.match(p)
@@ -450,14 +454,15 @@ def trig_effects(p, card, trig, tmatch, lv, rush, flags, extra=None):
             if o: raise Review('Rush: optional Rush effect: ' + s[:60])
             acts += [dict(x, **{'if': {'hasSymbol': rush[0]}}) for x in a]
         rush = None
-    if ('DESTROYED' in trig or 'DESTROYED_OPP' in trig) and any(a['do'] in SELF_ACTS and a.get('to', 'self') == 'self' for a in acts):
+    if (set(trig) & {'DESTROYED', 'DESTROYED_OPP', 'DESTROYED_OPPFX', 'LEAVES', 'LEAVES_OPPFX'}) and any(a['do'] in SELF_ACTS and a.get('to', 'self') == 'self' for a in acts):
         raise Review('(When Destroyed) effect about this Spirit: ' + p[:80])
     out = []
     for t in trig:
-        e = {'trigger': 'ATTACKS', 'alsoBlocks': True} if t == 'ATTACKS+BLOCKS' else {'trigger': 'DESTROYED'} if t == 'DESTROYED_OPP' else {'trigger': t}
+        e = {'trigger': 'ATTACKS', 'alsoBlocks': True} if t == 'ATTACKS+BLOCKS' else {'trigger': t.split('_OPP')[0]} if t in ('DESTROYED_OPP', 'DESTROYED_OPPFX', 'LEAVES_OPPFX') else {'trigger': t}
         if lv: e['lv'] = lv
         if tmatch: e['match'] = dict(tmatch)
         if t == 'DESTROYED_OPP': e['if'] = {'byOpp': True}
+        if t in ('DESTROYED_OPPFX', 'LEAVES_OPPFX'): e['if'] = {'byOppFx': True}
         if extra: e.update(extra)
         if opt: e['optional'] = True
         e['actions'] = acts

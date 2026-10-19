@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "19 Oct 2026",
-  "next": "next: card pack 4 = the rest of the event trigger heads (\"When this Spirit is destroyed / would leave the Field\" by the opponent, (When Battles) bodies, an end-of-battle trigger), then Mirage / Rush / Accel; size by a scratch recompile first; battle heads done in v0.72.0 (+13); 751 of 8,709 cards playable"
+  "next": "next: card pack 5 = the rest of the event trigger heads ((When Battles) bodies, an end-of-battle trigger, \"When the opponent ...\", (Once per Turn: Same Name)), then Mirage / Rush / Accel; size by a scratch recompile first; leave heads + connectives done in v0.73.0 (+12); 763 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -647,7 +647,7 @@
     },
     {
      "s": "next",
-     "t": "One pack per card session: step window (v0.70.0, +4), Burst forms + condition clauses (v0.71.0, +12), battle heads (v0.72.0, +13); next the rest of the event trigger heads, then Mirage / Rush / Accel"
+     "t": "One pack per card session: step window (v0.70.0, +4), Burst forms + condition clauses (v0.71.0, +12), battle heads (v0.72.0, +13), leave heads + connectives (v0.73.0, +12); next the rest of the event trigger heads, then Mirage / Rush / Accel"
     },
     {
      "s": "later",
@@ -1031,7 +1031,15 @@
    "calls": "~60",
    "basis": "measured",
    "note": "Scheduled auto HEMAT ON card session on Opus: battle heads ((During Attack) BATTLE_WIN as attacker, attack Life hits, per-count BP). Real unlock +13 (pack-plan row 28, scratch recompile 14)."
+  },
+  {
+   "ver": "v0.73.0",
+   "date": "19 Oct 2026",
+   "tokens": 125000,
+   "calls": "~55",
+   "basis": "measured",
+   "note": "Scheduled auto HEMAT ON card session on Opus: leave heads (LEAVES trigger, byOppFx) and the \"Then,\" / \", and\" connectives. Real unlock +12 (pack-plan row 41; heads alone 1, connectives 11)."
   }
  ],
- "next": "next: card pack 4 = the rest of the event trigger heads (\"When this Spirit is destroyed / would leave the Field\" by the opponent, (When Battles) bodies, an end-of-battle trigger), then Mirage / Rush / Accel; size by a scratch recompile first; battle heads done in v0.72.0 (+13); 751 of 8,709 cards playable"
+ "next": "next: card pack 5 = the rest of the event trigger heads ((When Battles) bodies, an end-of-battle trigger, \"When the opponent ...\", (Once per Turn: Same Name)), then Mirage / Rush / Accel; size by a scratch recompile first; leave heads + connectives done in v0.73.0 (+12); 763 of 8,709 cards playable"
 }

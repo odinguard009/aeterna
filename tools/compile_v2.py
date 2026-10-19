@@ -389,6 +389,8 @@ def clean(text):
 
 
 BURST_WORD = re.compile(r'\bbursts?\b|\u263c', re.I)
+THEN_LEAD = re.compile(r'^Then,\s*(.+)$', re.I)
+AND_SPLIT = re.compile(r'^(.+?),? and ((?:draw|put|send|return|destroy|discard|exhaust|refresh|your counter)\b.+)$', re.I)
 
 
 def action_of(s, ctx):
@@ -401,6 +403,20 @@ def action_of(s, ctx):
         if any(set(cond) & set(y.get('if') or {}) for y in a): raise Review('sentence: ' + s[:140])
         return [dict(y, **{'if': dict(y.get('if') or {}, **cond)}) for y in a], o
     if BURST_WORD.search(s): raise Review('Burst sentence: ' + s[:140])
+    m = THEN_LEAD.match(s.strip())
+    if m:      # v0.73 "Then, B." = B only when the previous action was done (CR Effect Texts "Then"; engine if.prev)
+        body = m.group(1).strip(); body = body[0].upper() + body[1:]
+        a, o = action_of(body, ctx)
+        if not a or 'prev' in (a[0].get('if') or {}): raise Review('sentence: ' + s[:140])
+        return [dict(a[0], **{'if': dict(a[0].get('if') or {}, prev=True)})] + a[1:], o
+    m = AND_SPLIT.match(s.strip())
+    if m:      # v0.73 "A, and B." = both, in order (each half must read on its own; an optional second half stays in review)
+        try:
+            a1, o1 = action_of(m.group(1).rstrip(',') + '.', ctx)
+            b = m.group(2); a2, o2 = action_of(b[0].upper() + b[1:], ctx)
+        except Review:
+            a1 = None
+        if a1 and not o2 and not any('prev' in (y.get('if') or {}) for y in a2): return a1 + a2, o1
     try:
         return _V1_ACTION_OF(s, ctx)
     except Review as e1:

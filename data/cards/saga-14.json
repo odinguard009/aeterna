@@ -1,0 +1,209 @@
+[
+ {
+  "id": "BS67-027",
+  "name": "AI Heli-Armscopter",
+  "name_jp": "AIヘリ・アームズコプター",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Silver Zero",
+   "Machine"
+  ],
+  "text": "[LV1][LV2] {{ua|Purple/Blue}}\nThis Spirit is unaffected by opposing Purple/Blue Spirit/Ultimate/Nexus/Magic effects.\n\n[LV1][LV2] (When Blocks)\nYour counter +2. Then, during this battle, this Spirit gains +5000 BP.\n\n[LV2] (Opposing Attack Step)\nThis Spirit can block while exhausted.",
+  "image": "67-027.png",
+  "block": "67",
+  "saga": 14,
+  "mechanics": [
+   "Ultra Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ],
+    "from": {
+     "colors": [
+      "purple",
+      "blue"
+     ],
+     "types": [
+      "Spirit",
+      "Ultimate",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   },
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 2
+     },
+     {
+      "do": "BP_TARGET",
+      "n": 5000,
+      "to": "self",
+      "battle": true,
+      "if": {
+       "prev": true
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "STATIC",
+    "flag": "BLOCK_EXHAUSTED",
+    "to": "self",
+    "lv": [
+     2
+    ],
+    "if": {
+     "step": "ATTACK",
+     "oppTurn": true
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS67-065",
+  "name": "The JudgmentFangGun Tribal Claw",
+  "name_jp": "審判牙銃トライバルクロウ",
+  "type": "Brave",
+  "color": "green",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Exalted Sword",
+   "Judgment"
+  ],
+  "text": "[LV1] (When Summoned)\nExhaust an opposing Spirit/Ultimate, and put a core from the Void to your Reserve.",
+  "image": "67-065.png",
+  "block": "67",
+  "saga": 14,
+  "brave": {
+   "bp": 3000,
+   "family": [
+    "Judgment"
+   ],
+   "costGe": 4
+  },
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1
+    ],
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     },
+     {
+      "do": "VOID_TO_RESERVE",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS67-066",
+  "name": "The AccelSword Boost Blade",
+  "name_jp": "加速剣ブーストブレード",
+  "type": "Brave",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 1
+  },
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Exalted Sword",
+   "Silver Zero"
+  ],
+  "text": "[LV1] (When Summoned)\nReturn an opposing Spirit/Ultimate to the Hand.\n\nDuring Brave (When Blocks)\nYour counter +1, and put a core from the Void to any Spirit you control.",
+  "image": "67-066.png",
+  "block": "67",
+  "saga": 14,
+  "brave": {
+   "bp": 2000,
+   "family": [
+    "Silver Zero"
+   ]
+  },
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1
+    ],
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "hand",
+      "kind": "spirit"
+     }
+    ]
+   },
+   {
+    "trigger": "BLOCKS",
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     },
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit"
+     }
+    ],
+    "braved": true
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ }
+]

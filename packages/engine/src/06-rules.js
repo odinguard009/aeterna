@@ -253,11 +253,20 @@ function checkDepletion(p) {                       // Depletion is not Destructi
     }
   }
 }
+/* v0.73 "When this Spirit would leave the Field due to the opponent / due to opposing effects" (LEAVES): queued when a Spirit with such an
+   effect leaves by an opposing effect (destroyed, depleted, returned, removed) or by BP comparison; the card waits in Standby (Trash) or
+   resolves from its new zone (Hand / Deck), as (When Destroyed) does (house reading: the effect resolves just after it left). */
+function leaveEvent(p, s, byOpp, byOppFx) {
+  if (!byOpp || s.noFx || !G || !G.evQ || !(CARDS[s.id].effects || []).some(e => e.trigger === 'LEAVES')) return;
+  G.evQ.push({ type: 'LEAVES', key: p.key, inst: s, byOppFx: !!byOppFx });
+}
 function removeSpirit(p, s, why, byOpponent) {
   const lv = p.spirits.includes(s) ? lvIndex(s) : -1;
   if (!removeFrom(p.spirits, s)) return;
   s.lostLv = lv;
-  if (why === 'destroyed' && !s.noFx && G && G.evQ && (CARDS[s.id].effects || []).some(e => e.trigger === 'DESTROYED')) G.evQ.push({ type: 'DESTROYED', key: p.key, inst: s, byOpp: !!byOpponent });   // (When Destroyed), manual p. 31; noFx = "the effects of the destroyed target can't activate"
+  const oppFx = byOpponent === true || (byOpponent !== 'battle' && !!G && !!G.fxBy && G.fxBy !== p.key);   // v0.73: by an opposing effect (byOpponent 'battle' = BP comparison)
+  if (why === 'destroyed' && !s.noFx && G && G.evQ && (CARDS[s.id].effects || []).some(e => e.trigger === 'DESTROYED')) G.evQ.push({ type: 'DESTROYED', key: p.key, inst: s, byOpp: !!byOpponent, byOppFx: oppFx });
+  leaveEvent(p, s, !!byOpponent || oppFx, oppFx);   // (When Destroyed), manual p. 31; noFx = "the effects of the destroyed target can't activate"
   delete s.noFx;
   p.reserve.n += s.cores; if (s.soul) p.reserve.soul = true;
   s.cores = 0; s.soul = false; s.exhausted = false; s.heavy = false; s.noAB = false; s.bpMod = 0; s.bpB = null; s.fxBattle = null;      // v0.68: battle BP / Once Per Battle end when it leaves
@@ -279,7 +288,7 @@ function removeSpirit(p, s, why, byOpponent) {
   log(`${poss(p)} ${CARDS[s.id].name} is ${why}.`);
   if (why === 'destroyed' && byOpponent && G && G.burstQ) G.burstQ.push({ key: p.key });
   if (G && G.evQ && ((why === 'destroyed' && byOpponent) || why === 'depleted')) G.evQ.push({ type: 'LOST', key: p.key, inst: s });
-  if (G && G.evQ && G.evQ.some(e => e.inst === s && (e.type === 'DESTROYED' || (e.type === 'LOST' && lostHeard(p))))) { s.standbyTo = 'trash'; p.standby.push(s); }   // v0.57.0 Standby (JP 17.0 item 4): waits while its leave triggers resolve
+  if (G && G.evQ && G.evQ.some(e => e.inst === s && (e.type === 'DESTROYED' || e.type === 'LEAVES' || (e.type === 'LOST' && lostHeard(p))))) { s.standbyTo = 'trash'; p.standby.push(s); }   // v0.57.0 Standby (JP 17.0 item 4): waits while its leave triggers resolve
   else p.trash.push(s);
 }
 /* v0.57.0 Standby state (JP 17.0 revision notice item 4): a card that left the Field waits in p.standby while the queued

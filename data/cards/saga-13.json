@@ -1,5 +1,138 @@
 [
  {
+  "id": "BS60-025",
+  "name": "The TreeSpirit Futaba",
+  "name_jp": "樹精フタバ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Jade Thunder",
+   "Plant Spirit"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nYour counter +1, and put a core from the Void to this Spirit.\n\n[LV1][LV2] (When Attacks)\nYour counter +1, and exhaust an opposing Spirit.",
+  "image": "BS60 025.png",
+  "block": "60",
+  "saga": 13,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     },
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self"
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     },
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS60-050",
+  "name": "Another Pentan",
+  "name_jp": "アナザー・ペンタン",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {
+   "yellow": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Golden Cloud",
+   "Song Bird",
+   "Drifting Spirit"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nYour Counter +1, and draw a card from the deckbottom.\n\n[LV2]\nWhen this Spirit would leave the Field due to the opponent, your counter +2.",
+  "image": "BS60 050.png",
+  "block": "60",
+  "saga": 13,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     },
+     {
+      "do": "DRAW_BOTTOM",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "LEAVES",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 2
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS60-061",
   "name": "Rammer-Golem X",
   "name_jp": "ランマ―・ゴレムX",

@@ -10664,6 +10664,45 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS14-100",
+  "name": "Storm Attack",
+  "name_jp": "ストームアタック",
+  "type": "Magic",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "Flash\nExhaust an opposing Spirit. Then, refresh a Spirit you control.",
+  "image": "Storm Attack.png",
+  "block": "14",
+  "saga": 3,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "EXHAUST_OPP",
+     "n": 1
+    },
+    {
+     "do": "REFRESH_SPIRIT",
+     "if": {
+      "prev": true
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS15-002",
   "name": "Pygmygator",
   "name_jp": "ピグミゲーター",
@@ -13105,6 +13144,53 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS19-067",
+  "name": "Gaimimus",
+  "name_jp": "ガイミムス",
+  "type": "Brave",
+  "color": "red",
+  "cost": 4,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Terra Dragon"
+  ],
+  "text": "When Braved (When Brave Attacks)\nDraw a card, and destroy an opposing Nexus.",
+  "image": "BS19-067.jpg",
+  "block": "19",
+  "saga": 4,
+  "brave": {
+   "bp": 3000,
+   "costGe": 4
+  },
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     },
+     {
+      "do": "DESTROY",
+      "nexus": true
+     }
+    ],
+    "braved": true
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS19-071",
   "name": "Bambull",
   "name_jp": "バンブール",
@@ -14663,6 +14749,63 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS21-047",
+  "name": "The SuperHumanGiant Adolphus",
+  "name_jp": "怪力巨人アドルファス",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 2,
+  "reduction": {
+   "blue": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Fighting Spirit"
+  ],
+  "text": "[LV1][LV2] (Your Attack Step)\nWhen your \"Fighting Spirit\" family Spirit attacks, that Spirit gains +2000 BP and discard a card from the opposing decktop.",
+  "image": "BS21-047.jpg",
+  "block": "21",
+  "saga": 4,
+  "effects": [
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "match": {
+     "family": [
+      "Fighting Spirit"
+     ],
+     "noUlt": true
+    },
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 2000,
+      "to": "attacker"
+     },
+     {
+      "do": "CRUSH",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS21-049",
@@ -18490,6 +18633,61 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS41-003",
+  "name": "The CometDragon Sungrazer",
+  "name_jp": "彗星竜サングレーザー",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Astral Dragon"
+  ],
+  "text": "[LV1][LV2][LV3] (When Attacks)\nDraw a card, and destroy an opposing 3000 BP or less Spirit.",
+  "image": null,
+  "block": "41",
+  "saga": 8,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     },
+     {
+      "do": "DESTROY",
+      "bpLe": 3000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS41-037",
   "name": "Ardworks",
   "name_jp": "アードワークス",
@@ -18533,6 +18731,69 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS43-028",
+  "name": "The ArmoredMothShinobi Nijuuboshi",
+  "name_jp": "甲蛾忍ニジュウボシ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 2,
+   "red": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Ninja Gale",
+   "Shellman"
+  ],
+  "text": "[LV1][LV2] (When Attacks)\nExhaust an opposing Spirit, and put a core from the Void to this Spirit.\n{{Rush|Red}}\n(While you have a Red symbol, the following effect activates next)\n: Draw a card.",
+  "image": "The ArmoredMothShinobi Nijuuboshi.png",
+  "block": "43",
+  "saga": 8,
+  "mechanics": [
+   "Rush"
+  ],
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     },
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self"
+     },
+     {
+      "do": "DRAW",
+      "n": 1,
+      "if": {
+       "hasSymbol": "red"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS44-049",
@@ -18834,6 +19095,60 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS47-053",
+  "name": "Wenet",
+  "name_jp": "ウェネト",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 2,
+  "reduction": {
+   "yellow": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Imaginary Beast"
+  ],
+  "text": "[LV1][LV2][LV3]  When this Spirit would leave the field due to opposing effects, draw one card.",
+  "image": "Wenet.png",
+  "block": "47",
+  "saga": 9,
+  "effects": [
+   {
+    "trigger": "LEAVES",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "if": {
+     "byOppFx": true
+    },
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS48-090",
@@ -19258,6 +19573,92 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS55-046",
+  "name": "The DivineHuntingMachine Artemic-Hound",
+  "name_jp": "猟神機アルテミックハウンド",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 6,
+  "reduction": {
+   "white": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 2,
+    "bp": 8000
+   },
+   {
+    "cores": 5,
+    "bp": 12000
+   }
+  ],
+  "families": [
+   "Primal",
+   "Worldswalker",
+   "Machine Beast"
+  ],
+  "text": "[LV1][LV2][LV3] {{ha|Purple/White/Blue}}\nThis Spirit is unaffected by opposing Purple/White/Blue Spirit/Brave/Nexus/Magic effects.\n\n[LV2][LV3] (Opposing Attack Step)\nWhen an opposing Spirit/Ultimate attacks, put a core from the Void to this Spirit, and refresh this Spirit.",
+  "image": "The DivineHuntingMachine Artemic-Hound.jpg",
+  "block": "55",
+  "saga": 11,
+  "mechanics": [
+   "Heavy Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "from": {
+     "colors": [
+      "purple",
+      "white",
+      "blue"
+     ],
+     "types": [
+      "Spirit",
+      "Brave",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   },
+   {
+    "trigger": "OPP_ATTACKS",
+    "lv": [
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self"
+     },
+     {
+      "do": "REFRESH"
+     }
+    ],
+    "if": {
+     "step": "ATTACK",
+     "oppTurn": true
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS58-044",
   "name": "The WaterLilyBird Uma",
   "name_jp": "睡蓮鳥ウマー",
@@ -19368,6 +19769,139 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS60-025",
+  "name": "The TreeSpirit Futaba",
+  "name_jp": "樹精フタバ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Jade Thunder",
+   "Plant Spirit"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nYour counter +1, and put a core from the Void to this Spirit.\n\n[LV1][LV2] (When Attacks)\nYour counter +1, and exhaust an opposing Spirit.",
+  "image": "BS60 025.png",
+  "block": "60",
+  "saga": 13,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     },
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self"
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     },
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS60-050",
+  "name": "Another Pentan",
+  "name_jp": "アナザー・ペンタン",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {
+   "yellow": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Golden Cloud",
+   "Song Bird",
+   "Drifting Spirit"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nYour Counter +1, and draw a card from the deckbottom.\n\n[LV2]\nWhen this Spirit would leave the Field due to the opponent, your counter +2.",
+  "image": "BS60 050.png",
+  "block": "60",
+  "saga": 13,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     },
+     {
+      "do": "DRAW_BOTTOM",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "LEAVES",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 2
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS60-061",
   "name": "Rammer-Golem X",
   "name_jp": "ランマ―・ゴレムX",
@@ -19416,6 +19950,213 @@
       "discard": 1
      }
     ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS67-027",
+  "name": "AI Heli-Armscopter",
+  "name_jp": "AIヘリ・アームズコプター",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Silver Zero",
+   "Machine"
+  ],
+  "text": "[LV1][LV2] {{ua|Purple/Blue}}\nThis Spirit is unaffected by opposing Purple/Blue Spirit/Ultimate/Nexus/Magic effects.\n\n[LV1][LV2] (When Blocks)\nYour counter +2. Then, during this battle, this Spirit gains +5000 BP.\n\n[LV2] (Opposing Attack Step)\nThis Spirit can block while exhausted.",
+  "image": "67-027.png",
+  "block": "67",
+  "saga": 14,
+  "mechanics": [
+   "Ultra Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ],
+    "from": {
+     "colors": [
+      "purple",
+      "blue"
+     ],
+     "types": [
+      "Spirit",
+      "Ultimate",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   },
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 2
+     },
+     {
+      "do": "BP_TARGET",
+      "n": 5000,
+      "to": "self",
+      "battle": true,
+      "if": {
+       "prev": true
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "STATIC",
+    "flag": "BLOCK_EXHAUSTED",
+    "to": "self",
+    "lv": [
+     2
+    ],
+    "if": {
+     "step": "ATTACK",
+     "oppTurn": true
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS67-065",
+  "name": "The JudgmentFangGun Tribal Claw",
+  "name_jp": "審判牙銃トライバルクロウ",
+  "type": "Brave",
+  "color": "green",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Exalted Sword",
+   "Judgment"
+  ],
+  "text": "[LV1] (When Summoned)\nExhaust an opposing Spirit/Ultimate, and put a core from the Void to your Reserve.",
+  "image": "67-065.png",
+  "block": "67",
+  "saga": 14,
+  "brave": {
+   "bp": 3000,
+   "family": [
+    "Judgment"
+   ],
+   "costGe": 4
+  },
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1
+    ],
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     },
+     {
+      "do": "VOID_TO_RESERVE",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS67-066",
+  "name": "The AccelSword Boost Blade",
+  "name_jp": "加速剣ブーストブレード",
+  "type": "Brave",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 1
+  },
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Exalted Sword",
+   "Silver Zero"
+  ],
+  "text": "[LV1] (When Summoned)\nReturn an opposing Spirit/Ultimate to the Hand.\n\nDuring Brave (When Blocks)\nYour counter +1, and put a core from the Void to any Spirit you control.",
+  "image": "67-066.png",
+  "block": "67",
+  "saga": 14,
+  "brave": {
+   "bp": 2000,
+   "family": [
+    "Silver Zero"
+   ]
+  },
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1
+    ],
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "hand",
+      "kind": "spirit"
+     }
+    ]
+   },
+   {
+    "trigger": "BLOCKS",
+    "actions": [
+     {
+      "do": "COUNTER",
+      "n": 1
+     },
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit"
+     }
+    ],
+    "braved": true
    }
   ],
   "fxComplete": true,

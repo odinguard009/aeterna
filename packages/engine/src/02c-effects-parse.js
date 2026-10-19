@@ -42,11 +42,11 @@ function parseCond(c) {
     const okStr = (k === 'controlName' || k === 'hasName' || k === 'soulOn' || k === 'nexusBraved') && typeof v === 'string' && v.length > 0 && v.length <= 60;
     const okCol = k === 'hasSymbol' && COLORS.includes(v);
     const okStep = k === 'step' && STEPS.includes(v);
-    const okBool = (k === 'byOpp' || k === 'utHit' || k === 'prev' || k === 'sealed' || k === 'oppTurn' || k === 'attackStep' || k === 'oppRemovedSpirit' || k === 'oppNoAB' || k === 'burstSet' || k === 'oppBurstSet') && typeof v === 'boolean';
+    const okBool = (k === 'byOpp' || k === 'byOppFx' || k === 'utHit' || k === 'prev' || k === 'sealed' || k === 'oppTurn' || k === 'attackStep' || k === 'oppRemovedSpirit' || k === 'oppNoAB' || k === 'burstSet' || k === 'oppBurstSet') && typeof v === 'boolean';
     const okCtrl = k === 'ctrl' && [].concat(v).length > 0 && [].concat(v).every(x => x && typeof x === 'object' && ['Spirit', 'Ultimate', 'Both'].includes(x.type) && (x.n == null || (Number.isInteger(x.n) && x.n >= 1 && x.n <= 5))
       && (x.colors == null || (Array.isArray(x.colors) && x.colors.length && x.colors.every(y => COLORS.includes(y)))) && (x.costGe == null || Number.isInteger(x.costGe)) && (x.family == null || (typeof x.family === 'string' && x.family))
       && Object.keys(x).every(y => ['n', 'type', 'colors', 'costGe', 'family'].includes(y)));   // v0.71 "if you control any <colour/family> Spirit/Ultimate" (same shape as summonIf.ctrl)
-    if (!okInt && !okStr && !okBool && !okCol && !okStep && !okCtrl) return { error: `unknown or invalid condition "${k}" (byOpp, hasSymbol, lifeLe, anyLifeLe, counterGe, soulGe, oppHandGe, voidGe, soulLe, putGe, lifeGe, oppRemovedGe, removedGe, oppSpiritsLe, oppNexusGe, oppNoAB, oppRemovedSpirit, controlName, hasName, soulOn, nexusBraved, oppTurn, attackStep, step, prev, utHit, burstSet, oppBurstSet, ctrl)` };
+    if (!okInt && !okStr && !okBool && !okCol && !okStep && !okCtrl) return { error: `unknown or invalid condition "${k}" (byOpp, byOppFx, hasSymbol, lifeLe, anyLifeLe, counterGe, soulGe, oppHandGe, voidGe, soulLe, putGe, lifeGe, oppRemovedGe, removedGe, oppSpiritsLe, oppNexusGe, oppNoAB, oppRemovedSpirit, controlName, hasName, soulOn, nexusBraved, oppTurn, attackStep, step, prev, utHit, burstSet, oppBurstSet, ctrl)` };
   }
   return { cond: Object.assign({}, c) };
 }

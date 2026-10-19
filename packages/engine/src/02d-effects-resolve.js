@@ -10,7 +10,8 @@ async function runActions(c, e, trg) {
     if (a.if && !fxIf(c.p, c.opp, a.if, c.ctx)) continue;
     if (!FX_ACTIONS[a.do]) { fxUnknown('action', a.do); continue; }             // v0.59.4 strict effects (release: skip it)
     c.ctx.did = true;
-    await FX_ACTIONS[a.do].run(c, a);
+    const by = G.fxBy; G.fxBy = c.p.key;                 // v0.73: whose effect is resolving (LEAVES / byOppFx: "due to opposing effects", depletion and returns included)
+    try { await FX_ACTIONS[a.do].run(c, a); } finally { G.fxBy = by; }
     last = c.ctx.did !== false;
     if (a.cost && !last) return;                        // v0.43: a cost that could not be paid stops the rest of the effect
   }
@@ -29,7 +30,7 @@ function collectFx(ev) {
   const add = (trg, f, e, idx) => out.push({ owner, opp, f, idx, e, trg, trigger, ctx });
   const collect = (trg, f) => { for (const { e, idx } of fxEntries(f)) if (e.trigger === trg) add(trg, f, e, idx); };
   if (trigger === 'ADVENT') { const card = CARDS[src.id]; if (card.effects) card.effects.forEach((e, idx) => { if (e.trigger === 'ADVENT' || (e.trigger === 'SUMMONED' && e.alsoAdvent)) add(e.trigger, src, e, idx); }); ctx.subject = src; }
-  else if (trigger === 'SUMMONED' || trigger === 'ATTACKS' || trigger === 'MANIFEST' || trigger === 'DESTROYED' || trigger === 'BATTLE_WIN') collect(trigger, src);
+  else if (trigger === 'SUMMONED' || trigger === 'ATTACKS' || trigger === 'MANIFEST' || trigger === 'DESTROYED' || trigger === 'LEAVES' || trigger === 'BATTLE_WIN') collect(trigger, src);
   else if (trigger === 'BLOCKS') { for (const { e, idx } of fxEntries(src)) { if (e.trigger === 'BLOCKS' || (e.trigger === 'ATTACKS' && e.alsoBlocks)) add('BLOCKS', src, e, idx); } }
   else if (trigger === 'MIRAGE_OWN_LIFE' || trigger === 'MIRAGE_OPP_LIFE') { if (owner.mirage) collect(trigger, owner.mirage); }
   else for (const f of fieldList(owner)) collect(trigger, f);
@@ -41,8 +42,8 @@ function collectFx(ev) {
 function fxValid(it) {
   const { owner, opp, f, idx, e, trg, ctx } = it, subj = ctx.subject || ctx.attacker;
   const isMir = trg === 'MIRAGE_OWN_LIFE' || trg === 'MIRAGE_OPP_LIFE';
-  const fromHand = e.zone === 'hand', dead = trg === 'DESTROYED';
-  if (isMir ? !(owner.mirage === f && f.mirage) : fromHand ? !owner.hand.includes(f) : dead ? !(owner.trash.includes(f) || owner.standby.includes(f) || owner.soulState.includes(f)) : !fieldList(owner).includes(f)) return false;
+  const fromHand = e.zone === 'hand', dead = trg === 'DESTROYED' || trg === 'LEAVES';
+  if (isMir ? !(owner.mirage === f && f.mirage) : fromHand ? !owner.hand.includes(f) : trg === 'LEAVES' ? fieldList(owner).includes(f) : dead ? !(owner.trash.includes(f) || owner.standby.includes(f) || owner.soulState.includes(f)) : !fieldList(owner).includes(f)) return false;
   if (!isMir && !fromHand && e.lv && !e.lv.includes(dead ? f.lostLv + lvBase(CARDS[f.id]) : lvNo(f))) return false;
   if (e.oc && (dead || !ocActive(f))) return false;
   if (e.braved && !f.brave) return false;

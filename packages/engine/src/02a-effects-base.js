@@ -8,6 +8,8 @@
              REVEALED (this card is revealed from the deck by your effect), ALLY_DESTROYS (your attacker matching "match" destroys the blocker in battle)
              v0.55: BATTLE_WIN (this card attacked or blocked and only the opposing Spirit was destroyed by BP comparison, Standard CR 8-1-6-2);
              conditions byOpp (DESTROYED by an opposing effect or BP comparison, CR 12-2-1-12-1) and hasSymbol (Rush: "while you have a X symbol")
+             v0.73: LEAVES (this card leaves the Field due to the opponent: destroyed, depleted, returned or removed by an opposing effect,
+             or destroyed by BP comparison; resolved while it waits in Standby / from its new zone); condition byOppFx (by an opposing effect only)
    --------------------------------------------------------------------- */
 /* v0.59.4 STRICT EFFECTS (Q1, Aegis idea): an unknown trigger, action, condition or STATIC flag name is a bug, never a silent no-op.
    Strict (automated runs: navigator.webdriver = Playwright tests and sims, or ?strict=1): throw. Release: warn once per name and skip it. */
@@ -19,9 +21,9 @@ function fxUnknown(kind, name) {
   if (!FX_WARNED.has(m)) { FX_WARNED.add(m); try { console.warn('[effects] ' + m); } catch (e) { /* no console */ } }
   return false;
 }
-const FX_COND_KEYS = new Set(['soulGe', 'oppHandGe', 'voidGe', 'controlName', 'oppTurn', 'soulLe', 'putGe', 'hasName', 'prev', 'sealed', 'lifeLe', 'lifeGe', 'anyLifeLe', 'counterGe', 'soulOn', 'attackStep', 'nexusBraved', 'oppSpiritsLe', 'oppNoAB', 'oppNexusGe', 'oppRemovedGe', 'oppRemovedSpirit', 'byOpp', 'hasSymbol', 'removedGe', 'utHit', 'ctrl', 'step', 'burstSet', 'oppBurstSet']);
-const FX_TRIGGERS = ['SUMMONED', 'ATTACKS', 'ALLY_ATTACKS', 'ALLY_BLOCKED', 'ALLY_SUMMONED', 'ADVENT', 'ACTIVATE', 'STATIC', 'OPP_HAND_UP', 'ALLY_LIFE_HIT', 'ALLY_LOST', 'START_ATTACK', 'MIRAGE_OWN_LIFE', 'MIRAGE_OPP_LIFE', 'SOUL_PLACED', 'MANIFEST', 'BLOCKS', 'DESTROYED', 'REVEALED', 'ALLY_DESTROYS', 'OPP_REMOVED', 'ACCEL', 'SILVER_WHEEL', 'BATTLE_WIN', 'OPP_ATTACKS'];
-const FX_TRIGGER_TEXT = { OPP_ATTACKS: 'When an opposing Spirit attacks', BATTLE_WIN: 'When Battles (only the opposing Spirit is destroyed by BP comparison)', ACCEL: 'Accel', SILVER_WHEEL: 'When you activate Silver Wheel', SUMMONED: 'When Summoned', ATTACKS: 'When Attacks', ALLY_ATTACKS: 'When an ally attacks', ALLY_BLOCKED: 'When an ally is blocked', ALLY_SUMMONED: 'When an ally is summoned', ADVENT: 'When Advents', ACTIVATE: 'Activate', OPP_HAND_UP: 'When the opposing Hand increases by an opposing effect', ALLY_LIFE_HIT: 'When an ally attack reduces the Life', ALLY_LOST: 'When an ally is depleted/destroyed by the opponent', START_ATTACK: 'Start of your Attack Step', MIRAGE_OWN_LIFE: 'Mirage: when your Life is reduced', MIRAGE_OPP_LIFE: 'Mirage: when the opposing Life is reduced', SOUL_PLACED: 'When your Soul Core is sent to a Nexus', MANIFEST: 'When Manifests', BLOCKS: 'When Blocks', DESTROYED: 'When Destroyed', REVEALED: 'When revealed from the deck', ALLY_DESTROYS: 'When your X destroys an opposing Spirit in battle', OPP_REMOVED: 'When cards are put onto the opposing Removed Zone' };
+const FX_COND_KEYS = new Set(['soulGe', 'oppHandGe', 'voidGe', 'controlName', 'oppTurn', 'soulLe', 'putGe', 'hasName', 'prev', 'sealed', 'lifeLe', 'lifeGe', 'anyLifeLe', 'counterGe', 'soulOn', 'attackStep', 'nexusBraved', 'oppSpiritsLe', 'oppNoAB', 'oppNexusGe', 'oppRemovedGe', 'oppRemovedSpirit', 'byOpp', 'hasSymbol', 'removedGe', 'utHit', 'ctrl', 'step', 'burstSet', 'oppBurstSet', 'byOppFx']);
+const FX_TRIGGERS = ['SUMMONED', 'ATTACKS', 'ALLY_ATTACKS', 'ALLY_BLOCKED', 'ALLY_SUMMONED', 'ADVENT', 'ACTIVATE', 'STATIC', 'OPP_HAND_UP', 'ALLY_LIFE_HIT', 'ALLY_LOST', 'START_ATTACK', 'MIRAGE_OWN_LIFE', 'MIRAGE_OPP_LIFE', 'SOUL_PLACED', 'MANIFEST', 'BLOCKS', 'DESTROYED', 'REVEALED', 'ALLY_DESTROYS', 'OPP_REMOVED', 'ACCEL', 'SILVER_WHEEL', 'BATTLE_WIN', 'OPP_ATTACKS', 'LEAVES'];
+const FX_TRIGGER_TEXT = { OPP_ATTACKS: 'When an opposing Spirit attacks', BATTLE_WIN: 'When Battles (only the opposing Spirit is destroyed by BP comparison)', ACCEL: 'Accel', SILVER_WHEEL: 'When you activate Silver Wheel', SUMMONED: 'When Summoned', ATTACKS: 'When Attacks', ALLY_ATTACKS: 'When an ally attacks', ALLY_BLOCKED: 'When an ally is blocked', ALLY_SUMMONED: 'When an ally is summoned', ADVENT: 'When Advents', ACTIVATE: 'Activate', OPP_HAND_UP: 'When the opposing Hand increases by an opposing effect', ALLY_LIFE_HIT: 'When an ally attack reduces the Life', ALLY_LOST: 'When an ally is depleted/destroyed by the opponent', START_ATTACK: 'Start of your Attack Step', MIRAGE_OWN_LIFE: 'Mirage: when your Life is reduced', MIRAGE_OPP_LIFE: 'Mirage: when the opposing Life is reduced', SOUL_PLACED: 'When your Soul Core is sent to a Nexus', MANIFEST: 'When Manifests', BLOCKS: 'When Blocks', DESTROYED: 'When Destroyed', LEAVES: 'When this Spirit would leave the Field due to the opponent', REVEALED: 'When revealed from the deck', ALLY_DESTROYS: 'When your X destroys an opposing Spirit in battle', OPP_REMOVED: 'When cards are put onto the opposing Removed Zone' };
 /* v0.60.0 Brave completion: a Spirit combined with a Brave gains the Brave's [When Braved] / During (Spirit) Brave effects (braved:true; JP 合体時);
    an effect with braved:true is off while its card is not combined (a Brave alone in Spirit form, an unbraved Spirit). Brave effects are indexed from BR_IDX. */
 const BR_IDX = 200;
@@ -70,6 +72,7 @@ function fxIf(owner, opp, c, ctx) {
   if (c.oppRemovedGe != null && !(opp.removed.length >= c.oppRemovedGe)) return false;      // v0.38: cards in the opposing Removed Zone
   if (c.oppRemovedSpirit != null && opp.removed.some(t => ['Spirit', 'Ultimate'].includes(CARDS[t.id].type)) !== c.oppRemovedSpirit) return false;
   if (c.byOpp != null && !!(ctx && ctx.byOpp) !== c.byOpp) return false;                  // v0.55 "(When Destroyed by the Opponent)"
+  if (c.byOppFx != null && !!(ctx && ctx.byOppFx) !== c.byOppFx) return false;            // v0.73 "destroyed by / would leave the Field due to opposing effects" (not BP comparison)
   if (c.hasSymbol != null && !((symbolsOn(owner)[c.hasSymbol] || 0) >= 1)) return false;   // v0.55 Rush: a Field symbol of that colour
   if (c.removedGe != null && !((ctx && ctx.removedN || 0) >= c.removedGe)) return false;   // cards this effect put onto the opposing Removed Zone
   if (c.utHit != null && !!(ctx && ctx.utHit) !== c.utHit) return false;               // v0.56 Ultimate Trigger hit
@@ -210,7 +213,9 @@ async function chooseCard(c, L, title, text, optional) {
   return L.find(x => x.id === id) || L[0];
 }
 function bounceCard(owner, t, to) {                   // return a field card to the Hand or the bottom of the Deck (cores go to the Reserve)
+  const wasSpirit = owner.spirits.includes(t); if (wasSpirit) t.lostLv = lvIndex(t);
   if (!removeFrom(owner.spirits, t)) removeFrom(owner.nexus, t);
+  if (wasSpirit && G && G.fxBy && G.fxBy !== owner.key) leaveEvent(owner, t, true, true);   // v0.73 LEAVES: returned by an opposing effect
   releaseCores(owner, t);
   t.cores = 0; t.soul = false; t.exhausted = false; t.heavy = false; t.noAB = false; t.bpMod = 0;
   for (const u of t.under) { u.under = []; owner.trash.push(u); }

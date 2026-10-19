@@ -689,6 +689,11 @@
   "K_BRAVE",
   "M_THEN"
  ],
+ "BS14-100": [
+  "A_REFRESH",
+  "A_EXHAUST",
+  "M_THEN"
+ ],
  "BS15-002": [],
  "BS15-010": [],
  "BS15-019": [],
@@ -829,6 +834,10 @@
  "BS19-056": [],
  "BS19-058": [],
  "BS19-063": [],
+ "BS19-067": [
+  "A_DESTROY_NEXUS",
+  "K_BRAVE"
+ ],
  "BS19-071": [
   "T_SUMMONED",
   "A_EXHAUST",
@@ -951,6 +960,12 @@
   "C_LEVEL",
   "K_HOLY_LIFE",
   "A_VOID_TO_LIFE"
+ ],
+ "BS21-047": [
+  "T_ALLY_ATTACKS",
+  "A_BP_PLUS",
+  "A_DISCARD_OPP",
+  "C_LEVEL"
  ],
  "BS21-049": [],
  "BS21-055": [
@@ -1191,10 +1206,22 @@
   "T_SUMMONED",
   "C_LEVEL"
  ],
+ "BS41-003": [
+  "T_ATTACKS",
+  "A_DESTROY_BP",
+  "C_LEVEL"
+ ],
  "BS41-037": [
   "A_BP_PLUS",
   "C_LEVEL",
   "T_BLOCKS"
+ ],
+ "BS43-028": [
+  "T_ATTACKS",
+  "A_VOID",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "K_RUSH"
  ],
  "BS44-049": [],
  "BS45-043": [],
@@ -1215,6 +1242,10 @@
   "T_SUMMONED",
   "C_LEVEL",
   "M_OPTIONAL"
+ ],
+ "BS47-053": [
+  "A_DRAW",
+  "C_LEVEL"
  ],
  "BS48-090": [
   "A_EXHAUST",
@@ -1250,6 +1281,15 @@
   "C_COUNTER",
   "K_HIGH_SPEED"
  ],
+ "BS55-046": [
+  "A_REFRESH",
+  "A_VOID",
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_BRAVE",
+  "K_ULTIMATE",
+  "K_ARMOR"
+ ],
  "BS58-044": [
   "T_ATTACKS",
   "C_LEVEL"
@@ -1260,12 +1300,54 @@
   "C_LEVEL",
   "K_RUSH"
  ],
+ "BS60-025": [
+  "T_SUMMONED",
+  "T_ATTACKS",
+  "A_COUNTER",
+  "A_VOID",
+  "A_EXHAUST",
+  "C_LEVEL"
+ ],
+ "BS60-050": [
+  "T_SUMMONED",
+  "A_COUNTER",
+  "C_LEVEL",
+  "A_DRAW_BOTTOM"
+ ],
  "BS60-061": [
   "T_ATTACKS",
   "T_ALLY_LIFE_HIT",
   "A_DRAW",
   "C_LEVEL",
   "A_LOOT"
+ ],
+ "BS67-027": [
+  "A_COUNTER",
+  "A_BP_PLUS",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_ULTIMATE",
+  "K_ARMOR",
+  "T_BLOCKS",
+  "M_THEN"
+ ],
+ "BS67-065": [
+  "T_SUMMONED",
+  "A_VOID",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "K_ULTIMATE"
+ ],
+ "BS67-066": [
+  "T_SUMMONED",
+  "A_COUNTER",
+  "A_VOID",
+  "C_LEVEL",
+  "K_BRAVE",
+  "K_ULTIMATE",
+  "T_BLOCKS",
+  "T_DURING_BRAVE"
  ],
  "BS68-012": [
   "T_SUMMONED",
