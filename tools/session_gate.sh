@@ -7,6 +7,8 @@
 #   DONE vX.Y.Z         a session (manual or auto) finished and sent the game file; ends every session, lanes included
 #   UNLOCK [lane]       a session stopped early (error, quota, ~80 calls); with a lane it ends only that lane
 #   LANEDONE lane branch  a lane session finished its branch (no release yet; the merge step ends with DONE)
+#   HEMAT ON / HEMAT OFF  token-saving switch (owner, 2026-10-19); newest one wins; none yet = ON. ON = the pre-v0.68 session
+#                       (single main session, read-only subagents only as CLAUDE.md "Mode hemat" says); OFF = team session (v0.68)
 # Lanes (P1, v0.63.1; opt-in): LOCK/MANUAL/UNLOCK may carry a lane as second word (ui | card). A start with a lane
 #   blocks only that lane; a start without a lane blocks everything (the single-lane flow, unchanged).
 #   any other text      owner activity: restarts the idle timer, like a new session
@@ -22,6 +24,8 @@
 #   unlock [lane]    early stop / error of any session (of that lane)
 #   on | off [why]   owner switch ("otomatis on" / "otomatis off" in chat, a comment on issue #1, or the Actions workflow "Auto mode")
 #   switch           prints ON or OFF (cheap; auto sessions run it between tasks)
+#   hemat [on|off|status]  token-saving switch ("hemat on" / "hemat off" / "hemat status" in chat); prints "Mode hemat: ON|OFF";
+#                    every session reads it at the start (team or not) and prints it in the final summary
 #   status           one-line summary for the owner ("otomatis status")
 #   busy [lane]      exit 3 when a LOCK or MANUAL session is active (in that lane; used by session_start.sh)
 # Offline test: GATE_FIXTURE=1 with COMMENTS / COMMITS (tab-separated "time<TAB>first line") and GATE_NOW skips gh
@@ -108,6 +112,12 @@ elif want and want != next_model: print(f"STOP next item needs {next_model}, thi
 else: print("GO")
 PY
 }
+hemat_state() { # newest "HEMAT ON|OFF" comment on issue #1 (whole history: the switch can be older than 7 days); none = ON
+  local rows
+  if [ "${GATE_FIXTURE:-}" = 1 ]; then rows=$(printf '%s\n' "${COMMENTS:-}" | cut -f2-)
+  else rows=$(gh api --paginate "repos/$R/issues/$L/comments?per_page=100" --jq '.[] | .body | split("\n")[0]') || return 1; fi
+  printf '%s\n' "$rows" | grep -iE '^HEMAT[[:space:]]+(ON|OFF)\b' | tail -1 | awk '{v=toupper($2)} END {print (v=="OFF" ? "OFF" : "ON")}'
+}
 cmd=${1:-check}; shift || true
 case "$cmd" in
   check)
@@ -124,7 +134,13 @@ case "$cmd" in
   unlock) lane_ok "${1:-}" || exit 2; post "UNLOCK${1:+ $1}" && echo "unlocked${1:+ ($1 lane)}" ;;
   on)     post "ON ${*:-}" && echo "Mode otomatis: ON" ;;
   off)    post "OFF ${*:-}" && echo "Mode otomatis: OFF" ;;
+  hemat)  case "${1:-status}" in
+            on|ON)   post "HEMAT ON ${*:2}" && echo "Mode hemat: ON" ;;
+            off|OFF) post "HEMAT OFF ${*:2}" && echo "Mode hemat: OFF" ;;
+            status)  v=$(hemat_state) || { echo "gate error (gh api failed)"; exit 1; }; echo "Mode hemat: $v" ;;
+            *) echo "usage: $0 hemat on|off|status"; exit 2 ;;
+          esac ;;
   switch|status) evaluate "$cmd" || { echo "gate error (gh api failed)"; exit 1; } ;;
   busy)   lane_ok "${1:-}" || exit 2; v=$(evaluate busy "" "${1:-}") || exit 1; echo "$v"; [ "${v%% *}" = BUSY ] && exit 3; exit 0 ;;
-  *) echo "usage: $0 check opus [lane]|lock [lane]|manual [lane]|done vX.Y.Z next=Opus|lanedone <lane> <branch>|unlock [lane]|on|off [why]|switch|status|busy [lane]  (lanes: $LANES)"; exit 2 ;;
+  *) echo "usage: $0 check opus [lane]|lock [lane]|manual [lane]|done vX.Y.Z next=Opus|lanedone <lane> <branch>|unlock [lane]|on|off [why]|hemat on|off|status|switch|status|busy [lane]  (lanes: $LANES)"; exit 2 ;;
 esac

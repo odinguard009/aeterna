@@ -91,3 +91,11 @@ test('G08 file ownership: shared files and the other lane are refused on a lane 
   assert.equal(p.length, 3);
   assert.match(p[0], /index\.html: shared file/); assert.match(p[1], /belongs to the card lane/); assert.match(p[2], /VERSION line/);
 });
+
+// 2026-10-19 (owner): token-saving switch "hemat"; newest HEMAT ON/OFF comment wins, none = ON; other comments are ignored.
+test('G20 hemat switch: default ON, newest HEMAT comment wins, ON/OFF auto comments do not count', () => {
+  assert.equal(gate(['hemat'], [ON]).out, 'Mode hemat: ON');
+  assert.equal(gate(['hemat', 'status'], [ON, [50, 'HEMAT OFF'], [40, 'OFF']]).out, 'Mode hemat: OFF');
+  assert.equal(gate(['hemat', 'status'], [[60, 'HEMAT OFF'], [30, 'hemat on'], [10, 'DONE v0.69.0']]).out, 'Mode hemat: ON');
+  assert.equal(gate(['hemat', 'maybe'], [ON]).code, 2);
+});

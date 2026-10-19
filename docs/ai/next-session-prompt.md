@@ -11,6 +11,7 @@
 
 ## Owner switch (any of these)
 - In a claude.ai chat of this project: `otomatis on`, `otomatis off`, `otomatis status`. Claude calls `add_repo` (push), then runs, without cloning: `gh api repos/odinguard009/aeterna/contents/tools/session_gate.sh --jq .content | base64 -d | bash -s on|off|status`, and answers with the one-line result.
+- Mode hemat (owner, 2026-10-19; default ON; CLAUDE.md "Mode hemat"): `hemat on`, `hemat off`, `hemat status` work the same way with `bash -s hemat on|off|status`. Scheduled runs read it after the clone like any session (`bash tools/session_gate.sh hemat`); with HEMAT ON they run without the team agents.
 - On GitHub (also the mobile app): comment `ON` or `OFF` on issue #1.
 - GitHub Actions: workflow "Auto mode" -> Run workflow -> on/off.
 - Hard stop (fallback, no runs at all): disable the scheduled task in the Claude app.

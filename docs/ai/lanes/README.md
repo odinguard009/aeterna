@@ -15,8 +15,8 @@ The list lives in `tools/lanes.mjs` (`node tools/lanes.mjs --owner <path>`). The
 lane's files and a changed `VERSION` line on a `lane/*` branch; `node tools/lanes.mjs --unstage-shared` drops the generated files
 that `npm run -s loop` rewrote. The pre-push hook skips the build check there (the merge step rebuilds).
 
-## Team session (one chat; owner, 2026-10-19 07:02; the default since then)
-One roadmap session runs main + agents in ONE chat (CLAUDE.md "Team session", skill `bs-session-runner` step 8). Main works on `main`
+## Team session (one chat; owner, 2026-10-19 07:02; only with HEMAT OFF since 2026-10-19 12:27, CLAUDE.md "Mode hemat")
+One roadmap session runs main + agents in ONE chat (CLAUDE.md "Team session", skill `bs-session-runner` step 9). Main works on `main`
 (engine + current card head = card-lane files) and holds the gate. Agents with write work get a git worktree of the same clone:
 A1 UI on `lane/ui` (`../wt-ui`), A5 Q3 on `lane/q3` (`../wt-q3`); the pre-commit hook enforces their lane files, they commit locally
 and never fetch or push. Before the final push main runs `bash tools/lane_merge.sh --local` (merges the local lane branches, prints
