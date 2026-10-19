@@ -11,7 +11,7 @@
 | Mirage | partial | 297 | 7 | R·· | K_MIRAGE | partial: 06-rules.js mirage set/usable, 02d-effects-resolve.js only MIRAGE_OWN_LIFE/OPP_LIFE triggers (subagent grep 2026-10-19) |
 | Soul Core in card text | partial | 253 | 33 | ··· | - | Soul Core rules done (setup, Seal, Life, Reserve); cards that move or pay with it follow their own keywords |
 | Ultimate card | partial | 253 | 4 | ··· | - | Ultimate type + Ultra Manifest v0.46.0, compiler v0.56.0; Ultimate Trigger level lines missing in the export (110 cards) |
-| Rush | partial | 135 | 13 | R·· | - | partial: per-action if.hasSymbol (02a-effects-base.js), single-symbol forms only; multi-symbol forms open |
+| Rush | partial | 134 | 14 | R·· | - | partial: per-action if.hasSymbol (02a-effects-base.js), single-symbol forms only; multi-symbol forms open |
 | Ultimate Trigger | partial | 105 | 0 | R·· | K_ULTIMATE | partial: ULT_TRIGGER + utHit (02i-effects-keywords.js); Guard and Trigger Counter not wired |
 | Invoke (Standard activation) | partial | 102 | 6 | RDL | K_STANDARD_INVOKE | v0.68.0: Invoke heads, five cost kinds, BP_TARGET / SYMBOL_TARGET; open: conditional costs, core moves, F Change / Amplify / Current / Magirrate templates (Standard activations; v0.64.0 prep) |
 | Soul Burst | missing | 100 | 0 | ··· | K_BURST | no engine match (grep 2026-10-19); the K_BURST glossary seed is too broad (the wiki redirects Soul Burst to Burst) |
@@ -154,7 +154,7 @@
 | Violent High Speed | missing | 1 | 0 | ··· | K_HIGH_SPEED | no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable |
 | Wave Crush | missing | 1 | 0 | ··· | K_CRUSH | no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable |
 | XV Crush | missing | 1 | 0 | ··· | K_CRUSH | no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable |
-| Spirit card | done | 5335 | 662 | ··· | - | base rules: summon, levels, BP, attack/block (rules-coverage A) |
+| Spirit card | done | 5322 | 675 | ··· | - | base rules: summon, levels, BP, attack/block (rules-coverage A) |
 | Nexus card | done | 835 | 19 | ··· | - | deploy, levels, Nexus effects through the effect engine |
 | Burst | done | 430 | 23 | ··· | K_BURST | v0.55.2 resolution order |
 | Contract Advent | done | 193 | 6 | ··· | K_ADVENT | engine done (CLAUDE.md Done list) |
