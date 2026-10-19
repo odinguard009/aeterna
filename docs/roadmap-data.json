@@ -994,7 +994,7 @@
    "tokens": 0,
    "calls": "~40",
    "basis": "measured",
-   "note": "Scheduled auto HEMAT ON session on Opus: K2 generated tests per compiled action (tests/unit/lib/fx-props.mjs, FX01-FX03; 221 of 277 shipped actions covered, mutation sweep 202/202). No game change."
+   "note": "Scheduled auto HEMAT ON session on Opus: K2 generated tests per compiled action (tests/unit/lib/fx-props.mjs, FX01-FX03; 221 of 277 shipped actions covered, mutation sweep 202/202). No game change. Backup backup/v0.69.2; player-view pass 40/40 checks, 10/10 CPU matches."
   }
  ],
  "next": "next: card pack 1 = step timing heads (one window condition if.step, docs/mechanics/step-timings.md; real unlock by scratch recompile), then Burst forms; 722 of 8,709 cards playable"
