@@ -1,6 +1,6 @@
 # Process plan: which session steps run less often or go away (owner, 2026-10-19)
 
-Owner: "too many tests"; "update the steps we have been doing: a step that can run every few sessions or be dropped gets a plan". Part A is applied (owner approved, 2026-10-19 17:30). Part B waits for the owner's go; each row is reversible.
+Owner: "too many tests"; "update the steps we have been doing: a step that can run every few sessions or be dropped gets a plan". Part A is applied (owner approved, 2026-10-19 17:30). Part B: owner approved on 2026-10-19 18:37 ("apply in the next session"): roadmap item P0, done by the next session before K3; each row is reversible.
 
 ## A. Applied 2026-10-19 (tests)
 | Step | Before | Now | Why |
@@ -17,7 +17,7 @@ Unchanged on purpose: CI on every push, pre-push hook, `test:release` on the del
 
 Honest note: card packs often touch core engine files (the last 5 releases together changed 8 of them), so Regression will still run in many card sessions; it is skipped mainly for compiler-only, UI-only and docs sessions.
 
-## B. Proposed (waiting for the owner)
+## B. Approved, next session (P0; owner 2026-10-19 18:37)
 | # | Step | Now | Proposal | Saving |
 |---|---|---|---|---|
 | B1 | CLAUDE.md `**Done:**` line (6.3k of 19k characters) | updated every session; CLAUDE.md is re-sent on every tool call | replace with one line pointing to `CHANGELOG.md` and the mind map; keep only `**Next:**` | ~1.6k tokens on every call (~100k+ per session) |
@@ -29,6 +29,6 @@ Honest note: card packs often touch core engine files (the last 5 releases toget
 | B7 | Release check (`gh api .../releases/tags/vX.Y.Z`) | separate call | inside `tools/session_end_check.mjs` | one call |
 | B8 | `docs/ai/token-economy.md` sections 8-16 (measurements v0.30-v0.39) | kept as history | condense to ~15 lines of lessons; history stays in git | smaller doc when read |
 | B9 | Python legacy suites (v0.11 era) in Regression | run with every Regression | audit against the Node tests (`pychecks.test.mjs` already mirrors some); drop the Python checks that have a Node twin | Actions minutes, faster Regression |
-| B10 | K2 (next roadmap item: generated tests per compiled action) | planned as browser tests | generate pure Node tests where possible (no page load), else list them as SLOW (CI only), so the quick set does not grow back to minutes | keeps the loop fast |
+| B10 | K2 generated tests (done in v0.69.2: `fxprops692.test.mjs`) | check its time in the quick set | generate pure Node tests where possible (no page load), else list them as SLOW (CI only), so the quick set does not grow back to minutes | keeps the loop fast |
 
 Kept every session (owner rules or cheap): gate marks, opening line, `unlock_report.py --line`, mind map + game file to the owner, `session_end_check.mjs`, backup check (every 5 releases), final summary with tokens.

@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "19 Oct 2026",
-  "next": "next: card pack 1 = step timing heads (one window condition if.step, docs/mechanics/step-timings.md; real unlock by scratch recompile), then Burst forms; 722 of 8,709 cards playable"
+  "next": "next: P0 process cleanup (B1-B10 of docs/ai/process-plan.md, patch), then card pack 1 = step timing heads (one window condition if.step, docs/mechanics/step-timings.md; real unlock by scratch recompile), then Burst forms; 722 of 8,709 cards playable"
  },
  "phases": [
   {
