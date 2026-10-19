@@ -7,7 +7,8 @@
 //   5. (v0.69.3, P0 B7; warning only) the GitHub Release v<version> carries aeterna-v<version>.html; if not, the newest
 //      Release workflow run is printed so the final message can name the problem (skip with --no-release).
 // Usage: node tools/session_end_check.mjs [--no-backup] [--no-release] [--out DIR]
-// Then SendUserFile BOTH the game file and docs/roadmap.html before the session closes.
+//   6. (owner, 2026-10-20) prints MINDMAP due / not due: the mind map is updated and sent every 3rd release or when the plan changed.
+// Then SendUserFile the game file (always) and docs/roadmap.html (when MINDMAP due) before the session closes.
 import { readFileSync, existsSync, statSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 
@@ -30,6 +31,9 @@ else {
 const mt = f => statSync(f).mtimeMs;
 if (mt('docs/roadmap.html') + 1000 < mt('docs/roadmap-data.json')) fail('docs/roadmap.html is older than docs/roadmap-data.json (run node tools/build.mjs)');
 else ok('mind map is up to date');
+// Mind map cadence (owner, 2026-10-20): update roadmap-data.json and send docs/roadmap.html every 3rd release, or
+// whenever the plan changed this session; otherwise the final message only names the mind map version.
+console.log((spawnSync('node', ['tools/mindmap_due.mjs'], { encoding: 'utf8' }).stdout || 'MINDMAP unknown (tools/mindmap_due.mjs failed)').trim());
 if (!args.includes('--no-backup')) {
   const r = spawnSync('git', ['ls-remote', '--heads', 'origin', `backup/v${ver}`], { encoding: 'utf8' });
   if (r.status !== 0 || !r.stdout.trim()) fail(`branch backup/v${ver} not on origin (git push origin HEAD:refs/heads/backup/v${ver})`);
@@ -44,5 +48,5 @@ if (!args.includes('--no-release')) {
     console.log(`WARN GitHub Release v${ver} without aeterna-v${ver}.html yet (it runs after CI on main); newest Release run: ${(w.stdout || 'unknown (gh failed)').trim()}. Re-run this check after CI; still missing = name it in the final message`);
   }
 }
-console.log(bad.length ? `[session_end_check] ${bad.length} problem(s): fix, then send BOTH files with SendUserFile` : `[session_end_check] ready: SendUserFile ${file} and docs/roadmap.html`);
+console.log(bad.length ? `[session_end_check] ${bad.length} problem(s): fix, then send the game file (and the mind map when due) with SendUserFile` : `[session_end_check] ready: SendUserFile ${file} (and docs/roadmap.html when MINDMAP due)`);
 process.exit(bad.length ? 1 : 0);

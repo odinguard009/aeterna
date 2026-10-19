@@ -60,3 +60,12 @@ Condensed in v0.69.3 (P0 B8); the full measurements stay in git history (this fi
 ## 9. Test cleanup (owner, 2026-10-19: "too many tests")
 - Measured: the quick set had grown to 1,214 tests (~3 min) and ran at session start, after every task and in the pre-push hook; local `npm test` repeated what CI runs; Regression ran every session.
 - Now: loop = smoke + changed test files (~15 s), full quick set once in the pre-push hook, no local `npm test`, Regression only when `tools/regression_due.sh` says DUE (+ weekly scheduled run), player-view pass at backups and UI changes, no new-test quotas. Details and the open proposals B1-B10: `docs/ai/process-plan.md`.
+
+## 10. Per-step savings (owner, 2026-10-20: "lakukan itu")
+No per-step measurement existed; these follow from where a card session spends its calls (estimate: build loop ~40-50%, card checks at promotion ~15-25%, end steps ~10-15%, sizing ~5-10%, start ~5%).
+- **Promotion check by sample:** a script prints one line per promoted card (id, compiled actions, residual); main reads text vs JSON in full only for cards with a new action or condition, cards whose actions have no generator in `tests/unit/lib/fx-props.mjs`, and a random 1 in 4 of the rest (seeded, ids listed in the release notes). A wrong card found in the sample = read the whole batch.
+- **Batched build loop:** write the scenario first, then all edits for one pattern, then ONE `npm run -s loop`; never edit-loop-edit-loop per sentence.
+- **One end script (to build in session A1):** extend `tools/release_docs.sh` so one call does the CHANGELOG count lines, README build line, unlock report, pack plan, mind map (when due), copies the game file to the outputs folder and runs `tools/session_end_check.mjs`; the final steps then cost 2-3 calls instead of ~8 while the history is longest.
+- **Mind map every 3rd release** (`tools/mindmap_due.mjs`; also when the plan changed); the game file is still sent every session.
+- **Measure per step:** every roadmap session notes the token counter at the start and end of each step (start, sizing, research, build, promotion, end) and writes the table into its handoff / final message; after three sessions this section is replaced by the measured split.
+- Kept: the pre-push full quick set (time, not tokens; it stops broken releases).
