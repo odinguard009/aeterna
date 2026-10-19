@@ -91,6 +91,12 @@ def selector(np):
         if mm: f['costRank'] = mm.group(1); continue
         if re.match(r"(?:a )?cost equal (?:to )?or (?:inferior|less) (?:to|than) (?:this spirit'?s?|that of this spirit)(?: cost)?$", x): f['costLeSelf'] = True; continue
         if re.match(r"(?:a )?bp equal (?:to )?or (?:inferior|less) (?:to|than) (?:the attacking spirit'?s?|that of the attacking spirit)(?: bp)?$", x): f['bpLeAttacker'] = True; continue
+        if re.match(r"bp equal (?:to )?or (?:inferior|less) (?:to|than) (?:this (?:spirit|ultimate)'?s?|that of this (?:spirit|ultimate))(?: bp)?$", x): f['bpLeSelf'] = True; continue      # v0.76
+        if re.match(r'(?:the )?same bp as this (?:spirit|ultimate)$', x): f['bpEqSelf'] = True; continue
+        mm = re.match(r'(two|three|\d) or more symbols$', x)
+        if mm: f['symbolsGe'] = n_of(mm.group(1)); continue
+        mm = re.match(r'(?:a )?cost equal (?:to )?or (?:inferior|less) (?:to|than) the (?:total )?number of (?:(nexus(?:es)?)|"([^"]+)" family spirits?)(?: you control)?$', x)
+        if mm: f['costLePer'] = {'type': 'Nexus'} if mm.group(1) else {'type': 'Spirit', 'family': mm.group(2)}; continue
         mm = re.match(r'(one|two|three|\d) cores? or (?:less|fewer) on (?:it|them)$|(?:only )?(one|1) core on (?:it|them)$', x)
         if mm: f['coresLe'] = n_of(mm.group(1) or mm.group(2)); continue
         f['other:' + x] = True
@@ -120,7 +126,7 @@ def v_destroy(sel):
     if sel['kind'] == 'nexus':
         need('destroy', sel, ())
         return [{'do': 'DESTROY', 'nexus': True}]
-    B = ('bpLe', 'costLe', 'coresLe', 'costRank', 'costLeSelf', 'bpLeAttacker')
+    B = ('bpLe', 'costLe', 'coresLe', 'costRank', 'costLeSelf', 'bpLeAttacker', 'bpLeSelf', 'bpEqSelf', 'symbolsGe', 'costLePer')      # v0.76: the last four
     need('destroy', sel, B + ('exhausted',))      # v0.68: exhausted only (DESTROY exhaustedOnly, 02l)
     keys = [k for k in B if k in sel['f']]
     if not keys and sel['f'].get('exhausted'): return [{'do': 'DESTROY', 'exhaustedOnly': True}]      # v0.75: "an opposing exhausted Spirit" (any BP)
@@ -283,8 +289,14 @@ def own_grammar(s, ctx=None):
         sel = selector('an opposing ' + low(m.group(1)))
         if not sel or sel['kind'] != 'spirit' or sel['f']: raise Review('v2 send cores: ' + m.group(1)[:40])
         return [{'do': 'OPP_CORES_TO_RESERVE', 'targets': 1, 'each': n_of(m.group(2).lower())}]
-    m = re.match(r'^target an? "([^"]+)" family spirit card in your trash\.\s*return it to (?:the|your) hand$', x, re.I)
-    if m: return [{'do': 'RETURN_TRASH', 'match': {'family': [m.group(1)]}}]
+    m = re.match(r'^(?:(?:you can|you may) )?return an? ((?:"[^"]+"/)*"[^"]+") (?:card )?from your trash to (?:the|your) hand$', x, re.I)
+    if m:      # v0.76: '"A"/"B"' = any card whose name includes A or B (RETURN_TRASH anyType + match.name)
+        return [{'do': 'RETURN_TRASH', 'anyType': True, 'match': {'name': re.findall(r'"([^"]+)"', m.group(1))}}]
+    m = re.match(r'^target an? (?:cost (\d+) or more )?"([^"]+)" family spirit card in your trash\.\s*return it to (?:the|your) hand$', x, re.I)
+    if m:      # v0.76: optional "Cost N or more"
+        a = {'do': 'RETURN_TRASH', 'match': {'family': [m.group(2)]}}
+        if m.group(1): a['match']['costGe'] = int(m.group(1))
+        return [a]
     m = OWN_REFRESH.match(x)
     if m:
         match, att = own_np(m.group(1))
@@ -294,6 +306,12 @@ def own_grammar(s, ctx=None):
     if m: return void_cores(m, x)
     # v0.74: sentences for actions the engine already has (no engine change): own discard, counters plural, opposing Life
     y = re.sub(r'^(?:you can|you may) ', '', x, flags=re.I)
+    m = re.match(r'^by discarding an? (?:(spirit|nexus|magic) |"([^"]+)" family )?card from your hand, draw (a|one|two|three) cards?(?: from your deck)?$', y, re.I)
+    if m:      # v0.76 "By doing A, do B" (CR Effect Texts): optional (grammar() sets it), B only when A was done
+        d = {'do': 'DISCARD_HAND', 'n': 1}
+        if m.group(1): d['match'] = {'type': m.group(1).capitalize()}
+        if m.group(2): d['match'] = {'family': [m.group(2)]}
+        return [d, {'do': 'DRAW', 'n': n_of(m.group(3).lower()), 'if': {'prev': True}}]
     m = re.match(r'^discard (a|one|two|three) cards? from your hand$', y, re.I)
     if m: return [{'do': 'DISCARD_HAND', 'n': n_of(m.group(1).lower())}]
     m = re.match(r'^your counters? \+(\d)$', y, re.I)
@@ -412,20 +430,29 @@ def grammar(s, ctx=None):
     rg = reveal_grammar(s)
     if rg is not None: return rg, bool(re.match(r'^(?:you can|you may) ', s, re.I))
     og = own_grammar(s, ctx)
-    if og is not None: return og, bool(re.match(r'^(?:you can|you may) ', s, re.I))
+    if og is not None: return og, bool(re.match(r'^(?:you can|you may|by discarding) ', s, re.I))      # v0.76: "By doing A, do B" is optional
     m = TARGET.match(s.strip().rstrip('.'))
     if m:      # "Target an opposing ... Spirit. Destroy it." -> one clause
         opt = bool(re.match(r'^(?:you can|you may) ', s, re.I))
         x = low(m.group(2) + ' ' + m.group(1) + (m.group(3) or ''))
-        return clause(x), opt
+        return self_bound_ok(clause(x), ctx), opt
     x, opt = head(s)
-    return clause(x), opt
+    return self_bound_ok(clause(x), ctx), opt
+
+
+def self_bound_ok(acts, ctx):
+    """v0.76: "BP equal or inferior to / the same BP as this Spirit" reads the source on the Field; after it left (When
+    Destroyed, leave heads) the engine keeps no last-known BP, so those stay in review"""
+    trig = ' '.join(ctx.get('trigger') or ()) if isinstance(ctx, dict) else ''
+    if re.search(r'DESTROY|LEAVE|DEPLET|REMOVED', trig) and any(a.get('bpLeSelf') or a.get('bpEqSelf') for a in acts):
+        raise Review('v2 destroy: this Spirit\'s BP after it left')
+    return acts
 
 
 # v0.71 condition clauses in front of an action: "If you have a Burst set, ...", "If you control any Ultimate, also, ...".
 # The condition becomes the action's "if" (engine fxIf: burstSet, oppBurstSet, ctrl). "instead" (a replacement) stays in review.
 COND_LEAD = re.compile(r'^(?:then,? )?(?:if|when) (.+?), (?:also,? )?(?!instead)(.+)$', re.I)
-CTRL_ANY = re.compile(r'^you control (?:any|an?|one or more) (?:(red|purple|green|white|yellow|blue) )?(?:"([^"]+)" family )?(spirit/ultimate|spirit|ultimate)s?$', re.I)
+CTRL_ANY = re.compile(r'^you control (?:any|an?|one or more) (exhausted )?(?:(red|purple|green|white|yellow|blue) )?(?:"([^"]+)" family )?(spirit/ultimate|spirit|ultimate)s?$', re.I)
 
 
 def cond_of(x):
@@ -445,11 +472,14 @@ def cond_of(x):
         if m.group(2): q['colors'] = [m.group(2).lower()]
         if m.group(3): q['family'] = m.group(3)
         return {'ctrl': q} if q['n'] <= 5 else None
+    m = re.fullmatch(r'you control (?:an? |any )?"([^"]+)"', x, re.I)      # v0.76: a quoted card name (part of the name, like [Name])
+    if m: return {'controlName': m.group(1).strip()}
     m = CTRL_ANY.fullmatch(x)
     if m:
-        q = {'n': 1, 'type': 'Both' if '/' in m.group(3) else m.group(3).capitalize()}
-        if m.group(1): q['colors'] = [m.group(1).lower()]
-        if m.group(2): q['family'] = m.group(2)
+        q = {'n': 1, 'type': 'Both' if '/' in m.group(4) else m.group(4).capitalize()}
+        if m.group(2): q['colors'] = [m.group(2).lower()]
+        if m.group(3): q['family'] = m.group(3)
+        if m.group(1): q['exhausted'] = True      # v0.76 "any exhausted ..." (fxIf ctrl.exhausted)
         return {'ctrl': q}
     return None
 
@@ -510,7 +540,7 @@ def sentences(body):
             out[-1] = out[-1] + ' ' + x      # v0.68: "... give it -N BP. Then, if it has 0 BP, destroy it." is one effect
         elif out and REVEAL_HEAD.match(out[-1]) and not REVEAL_REST.search(out[-1]):
             out[-1] = out[-1] + ' ' + x      # v0.69: "Reveal N cards from your decktop." + "Among them, add ..." + "Return any remaining cards ..." is one effect
-        elif out and re.match(r'^(?:(?:you can|you may) )?target ', out[-1], re.I) and out[-1].endswith('.'):
+        elif out and re.match(r'^(?:if you control [^,.]+, )?(?:(?:you can|you may) )?target ', out[-1], re.I) and out[-1].endswith('.'):
             out[-1] = out[-1] + ' ' + x      # join "Target X." with its action sentence
         else:
             out.append(x)

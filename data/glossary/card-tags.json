@@ -512,6 +512,10 @@
   "A_BP_PLUS",
   "A_VOID"
  ],
+ "BS10-003": [
+  "T_ATTACKS",
+  "C_LEVEL"
+ ],
  "BS10-004": [],
  "BS10-005": [
   "T_ATTACKS",
@@ -763,6 +767,11 @@
  ],
  "BS15-029": [],
  "BS15-037": [],
+ "BS15-040": [
+  "T_SUMMONED",
+  "C_LEVEL",
+  "M_BY_DOING"
+ ],
  "BS15-046": [],
  "BS15-056": [
   "T_SUMMONED",
@@ -1061,6 +1070,7 @@
   "A_VOID",
   "K_BRAVE"
  ],
+ "BS21-083": [],
  "BS22-001": [],
  "BS22-013": [],
  "BS22-022": [],
@@ -1188,6 +1198,10 @@
   "C_LEVEL",
   "S_UNAFFECTED"
  ],
+ "BS29-037": [
+  "T_ALLY_ATTACKS",
+  "C_LEVEL"
+ ],
  "BS30-025": [
   "T_ATTACKS",
   "A_EXHAUST",
@@ -1220,6 +1234,11 @@
  "BS31-066": [],
  "BS31-069": [],
  "BS32-001": [],
+ "BS32-012": [
+  "T_SUMMONED",
+  "C_LEVEL",
+  "M_BY_DOING"
+ ],
  "BS32-015": [],
  "BS32-021": [
   "T_ATTACKS",
@@ -1314,6 +1333,11 @@
  ],
  "BS37-048": [],
  "BS37-067": [],
+ "BS38-008": [
+  "T_ATTACKS",
+  "C_LEVEL",
+  "K_ULTIMATE"
+ ],
  "BS38-009": [
   "C_LEVEL",
   "K_ULTIMATE",
@@ -1367,6 +1391,12 @@
  ],
  "BS44-049": [],
  "BS45-043": [],
+ "BS46-013": [
+  "T_ATTACKS",
+  "A_BP_PLUS",
+  "C_LEVEL",
+  "K_ULTIMATE"
+ ],
  "BS46-015": [],
  "BS46-016": [
   "A_EXHAUST",
@@ -1388,6 +1418,14 @@
  "BS47-053": [
   "A_DRAW",
   "C_LEVEL"
+ ],
+ "BS48-024": [
+  "T_SUMMONED",
+  "T_ATTACKS",
+  "A_DRAW",
+  "C_LEVEL",
+  "K_ULTIMATE",
+  "M_BY_DOING"
  ],
  "BS48-090": [
   "A_EXHAUST",
@@ -1749,6 +1787,13 @@
   "K_ULTIMATE",
   "M_OPTIONAL",
   "M_REPLACEMENT"
+ ],
+ "BS69-014": [
+  "T_ATTACKS",
+  "A_TRASH_TO_RESERVE",
+  "A_RETURN_TRASH",
+  "C_LEVEL",
+  "M_OPTIONAL"
  ],
  "BS69-023": [
   "T_SUMMONED",
@@ -3395,6 +3440,11 @@
   "M_UP_TO"
  ],
  "26RBS02-002": [],
+ "26RBS02-004": [
+  "T_SUMMONED",
+  "A_EXHAUST",
+  "C_LEVEL"
+ ],
  "26RBS02-008": [
   "A_BP_PLUS",
   "C_LEVEL"
@@ -3498,6 +3548,10 @@
   "T_ALLY_LIFE_HIT",
   "C_LEVEL"
  ],
+ "26RCB01-036": [
+  "T_SUMMONED",
+  "C_LEVEL"
+ ],
  "26RCB01-040": [],
  "26RCB01-041": [
   "T_SUMMONED",
@@ -3506,6 +3560,11 @@
  "26RCB01-044": [],
  "26RSD01-002": [
   "A_BP_PLUS",
+  "C_LEVEL"
+ ],
+ "26RSD01-003": [
+  "T_SUMMONED",
+  "A_EXHAUST",
   "C_LEVEL"
  ],
  "26RSD01-004": [
@@ -3518,6 +3577,12 @@
   "A_BP_PLUS",
   "C_LEVEL",
   "K_STANDARD_INVOKE"
+ ],
+ "26RSD01-009": [
+  "T_SUMMONED",
+  "A_BP_PLUS",
+  "A_EXHAUST",
+  "C_LEVEL"
  ],
  "26RSD01-X02": [
   "T_ATTACKS",
@@ -3540,6 +3605,12 @@
  "26RSD02-005": [],
  "26RSD02-006": [
   "T_SUMMONED",
+  "C_LEVEL"
+ ],
+ "26RSD02-007": [
+  "T_SUMMONED",
+  "A_BP_PLUS",
+  "A_EXHAUST",
   "C_LEVEL"
  ],
  "26RSD02-008": [

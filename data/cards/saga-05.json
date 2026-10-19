@@ -723,6 +723,67 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS29-037",
+  "name": "The Investigator Nord",
+  "name_jp": "調査員ノルド",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "red": 1,
+   "purple": 1,
+   "green": 1,
+   "white": 1,
+   "yellow": 1,
+   "blue": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Fighting Spirit",
+   "Investigator"
+  ],
+  "text": "[LV1][LV2] (Your Attack Step)\nWhen your \"Investigator\" family Spirit attacks, destroy an opposing Spirit with a cost equal or inferior to the number of \"Investigator\" family Spirits you control.",
+  "image": "The Investigator Nord.jpg",
+  "block": "29",
+  "saga": 5,
+  "effects": [
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "match": {
+     "family": [
+      "Investigator"
+     ],
+     "noUlt": true
+    },
+    "actions": [
+     {
+      "do": "DESTROY",
+      "costLePer": {
+       "type": "Spirit",
+       "family": "Investigator"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS30-025",
   "name": "The ArmoredSwordsman Blizzard",
   "name_jp": "甲剣士ブリザード",

@@ -1,5 +1,77 @@
 [
  {
+  "id": "BS48-024",
+  "name": "The SnakeQueen Neferlula",
+  "name_jp": "蛇王妃ネフェルーラ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Dark Snake"
+  ],
+  "text": "[LV1][LV2] (When Summoned) By discarding a \"Dark Snake\" family card from your Hand, draw two cards.\n\n[LV2] (When Attacks) Send two cores from an opposing Spirit/Ultimate to the Reserve.",
+  "image": "The SnakeQueen Neferlula.png",
+  "block": "48",
+  "saga": 10,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "DISCARD_HAND",
+      "n": 1,
+      "match": {
+       "family": [
+        "Dark Snake"
+       ]
+      }
+     },
+     {
+      "do": "DRAW",
+      "n": 2,
+      "if": {
+       "prev": true
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 2
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS48-090",
   "name": "Nix Spark",
   "name_jp": "ニクスバーク",

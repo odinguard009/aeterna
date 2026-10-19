@@ -1473,6 +1473,67 @@
   ]
  },
  {
+  "id": "BS69-014",
+  "name": "The CupronickelDragonKnight Vandish",
+  "name_jp": "白銅の竜騎士ヴァンディッシュ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 2000
+   },
+   {
+    "cores": 5,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Primal",
+   "Evil Shadow"
+  ],
+  "text": "[LV1][LV2][LV3] (When Attacks)\n(Once per turn: Same Name) You can return a \"DragonKnight\"/\"Camelot\" from your Trash to the Hand.",
+  "image": "BS69-014+.png",
+  "block": "69",
+  "saga": 15,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "once": true,
+    "sameName": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "RETURN_TRASH",
+      "anyType": true,
+      "match": {
+       "name": [
+        "DragonKnight",
+        "Camelot"
+       ]
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS69-023",
   "name": "The Lionheart Medon",
   "name_jp": "勇士メドーン",

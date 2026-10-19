@@ -85,7 +85,7 @@ function fxIf(owner, opp, c, ctx) {
    q = { n, type: 'Spirit'|'Ultimate'|'Both', colors: [any of], costGe, family }; counts the owner's Spirit-form cards on the Field */
 const ctrlCount = (owner, q) => owner.spirits.filter(f => { const k = CARDS[f.id], u = k.type === 'Ultimate';
   return (q.type === 'Both' || (q.type === 'Ultimate') === u) && (!q.colors || q.colors.some(x => (k.colors || [k.symbol]).includes(x)))
-    && (q.costGe == null || k.cost >= q.costGe) && (!q.family || (k.families || []).includes(q.family)); }).length;
+    && (q.costGe == null || k.cost >= q.costGe) && (!q.family || (k.families || []).includes(q.family)) && (!q.exhausted || f.exhausted); }).length;      // v0.76 exhausted: "any exhausted X"
 /* v0.72 "for each X you control": cards on the owner's Field matching per {type: 'Spirit'|'Nexus', colors, family, name (part of the name)}; the source itself counts */
 const PER_TYPES = ['Spirit', 'Nexus'];
 const perOk = q => !!q && typeof q === 'object' && PER_TYPES.includes(q.type) && (q.colors == null || (Array.isArray(q.colors) && q.colors.length && q.colors.every(x => COLORS.includes(x))))

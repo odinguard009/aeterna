@@ -1291,6 +1291,67 @@
   "ex_symbols": 1
  },
  {
+  "id": "26RBS02-004",
+  "name": "The BirdTrio Sparrows",
+  "name_jp": "三羽一体スパロッツ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Windfang"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nIf you control any exhausted Red Spirit, target a Cost 6 or more \"Windfang\" family Spirit card in your Trash. Return it to the Hand.",
+  "image": "26RBS02-004.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "RETURN_TRASH",
+      "match": {
+       "family": [
+        "Windfang"
+       ],
+       "costGe": 6
+      },
+      "if": {
+       "ctrl": {
+        "n": 1,
+        "type": "Spirit",
+        "colors": [
+         "red"
+        ],
+        "exhausted": true
+       }
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RBS02-008",
   "name": "The Experienced Elderly",
   "name_jp": "老練なエルダリー",
@@ -2752,6 +2813,57 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RCB01-036",
+  "name": "Magnugiga",
+  "name_jp": "マグナギガ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 6,
+  "reduction": {
+   "white": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "RYUKI",
+   "Mirror Monster"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nIf you control any \"Kamen Rider Zolda\", target an opposing Spirit. Return it to the Hand.",
+  "image": "26RCB01-036.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "hand",
+      "kind": "spirit",
+      "if": {
+       "controlName": "Kamen Rider Zolda"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RCB01-040",
   "name": "Kamen Rider Lazer Bike Gamer Level 2",
   "name_jp": "仮面ライダーレーザー バイクゲーマー レベル2",
@@ -2918,6 +3030,64 @@
   "ex_symbols": 1
  },
  {
+  "id": "26RSD01-003",
+  "name": "Rowamiku",
+  "name_jp": "ロワミーク",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Windfang"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nIf you control any exhausted Red Spirit, target an opposing 3000 BP or less Spirit. Destroy it.",
+  "image": "26RSD01-003.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "bpLe": 3000,
+      "if": {
+       "ctrl": {
+        "n": 1,
+        "type": "Spirit",
+        "colors": [
+         "red"
+        ],
+        "exhausted": true
+       }
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RSD01-004",
   "name": "Haarier",
   "name_jp": "ハーリア",
@@ -3078,6 +3248,71 @@
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
   "ex_symbols": 1
+ },
+ {
+  "id": "26RSD01-009",
+  "name": "The FlyingAce Reufalx",
+  "name_jp": "飛傑レウファルス",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 6,
+  "reduction": {
+   "red": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Windfang"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nIf you control any exhausted \"Windfang\" family Spirit, target an opposing 5000 BP or less Spirit. Destroy it.\n\n[LV2] (True Release) (During Attack)\nThis Spirit gains +2000 BP.",
+  "image": "26RSD01-009.png",
+  "block": "A",
+  "saga": 50,
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "bpLe": 5000,
+      "if": {
+       "ctrl": {
+        "n": 1,
+        "type": "Spirit",
+        "family": "Windfang",
+        "exhausted": true
+       }
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "STATIC",
+    "bp": 2000,
+    "to": "self",
+    "attackingOnly": true,
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RSD01-X02",
@@ -3379,6 +3614,71 @@
       "do": "DRAW",
       "n": 1
      }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD02-007",
+  "name": "Lady Lamica",
+  "name_jp": "ラミーカ女史",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Bloodrouse"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nIf you control any exhausted \"Bloodrouse\" family Spirit, target an opposing Spirit. Send a core, besides , from it to the Reserve.\n\n[LV2] (True Release) (During Attack)\nThis Spirit gains +2000 BP.",
+  "image": "26RSD02-007.png",
+  "block": "A",
+  "saga": 50,
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 1,
+      "if": {
+       "ctrl": {
+        "n": 1,
+        "type": "Spirit",
+        "family": "Bloodrouse",
+        "exhausted": true
+       }
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "STATIC",
+    "bp": 2000,
+    "to": "self",
+    "attackingOnly": true,
+    "lv": [
+     2
     ]
    }
   ],

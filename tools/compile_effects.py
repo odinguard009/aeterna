@@ -445,6 +445,9 @@ def spirit_paragraph_main(p, card, rush):
 
 def trig_effects(p, card, trig, tmatch, lv, rush, flags, extra=None):
     acts, opt = [], False
+    mo = re.match(r'^\(Once per Turn: Same Name\)\s*', p, re.I)
+    if mo:      # v0.76: the limit in front of a triggered body (CR Categories of Effects "(Once Per Turn: Same Name)"): once per turn for all cards of this name
+        p = p[mo.end():]; extra = dict(extra or {}, once=True, sameName=True)
     if rush and not p: raise Review('Rush without a main effect')
     for s in sentences(p):
         a, o = action_of(s, {'trigger': trig})

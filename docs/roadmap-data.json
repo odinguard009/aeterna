@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "20 Oct 2026",
-  "next": "next: card bundle = 3-4 packs per release from the top of pack-plan.md \"Measured order\" (estimates are at most ~3x real: v0.74.0 ~58 -> +13, v0.75.0 ~72 -> +23): \"(once per turn:\", \"by discarding a\", \"if you control\", ally battle results, SUMMON_HAND by type, DESTROY_TOTAL, then Mirage / Rush / Accel; 799 of 8,709 cards playable"
+  "next": "next: card bundle = 3-4 packs per release from the top of pack-plan.md \"Measured order\" (estimates are at most ~3x real; v0.76.0 +14): \"put a core\" leftovers, \"at the end\", \"When only the\", \"target and attack\", ally battle results, SUMMON_HAND by type, DESTROY_TOTAL, then Mirage / Rush / Accel; 813 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -647,7 +647,7 @@
     },
     {
      "s": "next",
-     "t": "One pack per card session: step window (v0.70.0, +4), Burst forms + condition clauses (v0.71.0, +12), battle heads (v0.72.0, +13), leave heads + connectives (v0.73.0, +12), first bundle (v0.74.0, +13), second bundle (v0.75.0, +23); next a bundle of 3-4 packs per release from the measured order"
+     "t": "One pack per card session: step window (v0.70.0, +4), Burst forms + condition clauses (v0.71.0, +12), battle heads (v0.72.0, +13), leave heads + connectives (v0.73.0, +12), first bundle (v0.74.0, +13), second bundle (v0.75.0, +23), third bundle (v0.76.0, +14); next a bundle of 3-4 packs per release from the measured order"
     },
     {
      "s": "later",
@@ -1055,6 +1055,14 @@
    "calls": "~50",
    "basis": "estimate",
    "note": "Scheduled auto HEMAT ON card session on Opus: second measured bundle (pack-plan rows 1-4 + 9): Void to Trash / Nexus / each to every, reveal endings, DESTROY all / exhausted only, Flash Magic battle effects. Real unlock +23 (estimate ~72)."
+  },
+  {
+   "ver": "v0.76.0",
+   "date": "20 Oct 2026",
+   "tokens": 150000,
+   "calls": "~70",
+   "basis": "estimate",
+   "note": "Scheduled auto HEMAT ON card session on Opus: third measured bundle: destroy filters (this Spirit's BP, same BP, two or more symbols, cost up to a count), condition clauses (any exhausted X, a quoted name) in front of target pairs, By discarding A draw B, (Once per Turn: Same Name) in front of a triggered body, Trash returns by name / cost. Real unlock +14."
   }
  ]
 }

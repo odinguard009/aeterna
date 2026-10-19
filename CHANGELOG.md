@@ -2,6 +2,14 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.76.0
+- **Bundle release: destroy filters, control conditions, "By discarding A, draw B", same-name limits** (card session, plan W, third measured bundle; rule note `docs/mechanics/pack76.md`):
+  - Compiler: "Destroy an opposing Spirit with BP equal or inferior to this Spirit's / the same BP as this Spirit / two or more symbols / a cost equal or less than the number of <Nexuses | \"X\" family Spirits> you control"; "If you control any exhausted <colour | family> Spirit" and 'If you control any "Name"' in front of "Target ... . <Verb> it."; "target a Cost N or more \"X\" family Spirit card in your Trash"; 'return a "A"/"B" from your Trash to the Hand'; "By discarding a [type | family] card from your Hand, draw N" (optional, draw only after the discard); "(Once per Turn: Same Name)" in front of a triggered body. Self-BP texts under When Destroyed stay in review (no last-known BP).
+  - Engine: `DESTROY` `bpLeSelf` / `bpEqSelf` / `symbolsGe` / `costLePer` (new module `02m-effects-filters.js`); condition `ctrl.exhausted`.
+  - Tests: `tests/unit/pack76.test.mjs` (PK76-01..05).
+  - **Measured unlock: +14 cards** (813 of 8,709 playable), 6 of them Standard block A. Promoted cards were removed from `data/import`.
+  - Revert note: `git revert` of the v0.76.0 commit restores v0.75.0 (no data migration; the 14 cards return to `data/import` with `python3 tools/import_fandom.py`).
+
 ## v0.75.0
 - **Bundle release: Void destinations, reveal endings, mass / exhausted destruction, Flash battle effects** (card session, plan W, second measured bundle: pack-plan rows 1-4 and 9; rule note `docs/mechanics/pack75.md`):
   - Compiler: "Put a core from the Void to <your Trash | this Spirit[, and refresh it] | one of your [A/B] Nexuses>" and "... each to every <X> you control"; reveal endings "Discard the remaining cards", singular "card", "to the decktop or deckbottom", one-card "If that card is X, add it to the Hand. If not, return it to the decktop / discard it."; "Destroy every / all opposing N BP or less Spirits", "Destroy an opposing exhausted Spirit", ", and effects of the destroyed ... can't activate", ", and when destroys, draw a card"; a Flash Magic may say "during this battle".
