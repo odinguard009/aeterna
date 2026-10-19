@@ -143,6 +143,9 @@ PER_STATIC = re.compile(r'^(\(During Attack\)\s*)?' + PER_NP + r',? this spirit 
 BATTLE_HEADS = [      # v0.72 heads read before TRIGGERS: (trigger list, extra effect keys)
     (r"\((?:During Attack|When Attacks)\)\s*When this Spirit's attack reduces the opposing Life,", ['ALLY_LIFE_HIT'], {'self': True}),
     (r'\(During Attack\)\s*When only the opposing Spirit(?:/Ultimate)? is destroyed (?:by comparing BP|via BP comparison|by BP comparison),', ['BATTLE_WIN'], {'attackingOnly': True}),
+    # v0.74: "(When Attacks) When only the opposing Spirit is destroyed ..." = the battle result as the attacker, "(When Blocks) ..." as the blocker
+    (r'\(When Attacks\)\s*When only the opposing Spirit(?:/Ultimate)? is destroyed(?: (?:by comparing BP|via BP comparison|by BP comparison))?,', ['BATTLE_WIN'], {'attackingOnly': True}),
+    (r'\(When Blocks\)\s*When only the opposing Spirit(?:/Ultimate)? is destroyed(?: (?:by comparing BP|via BP comparison|by BP comparison))?,', ['BATTLE_WIN'], {'blockingOnly': True}),
 ]
 
 
@@ -156,7 +159,7 @@ TRIGGERS = [
     (r'When this Spirit is destroyed by (?:opposing effects|an opposing effect),', ['DESTROYED_OPPFX']),
     (r'When this Spirit would leave the [Ff]ield due to the opponent,', ['LEAVES']),
     (r'When this Spirit would leave the [Ff]ield (?:due to|by) (?:opposing effects?|an opposing effect),', ['LEAVES_OPPFX']),
-    (r'\(When Battles\)\s*When only the opposing Spirit(?:/Ultimate)? is destroyed (?:by comparing BP|via BP comparison|by BP comparison),', ['BATTLE_WIN']),   # v0.55: CR 8-1-6-2
+    (r'(?:\(When (?:Battles|Attacks/Blocks|Attacks or Blocks)\)\s*)?When only the opposing Spirit(?:/Ultimate)? is destroyed(?: (?:by comparing BP|via BP comparison|by BP comparison))?,', ['BATTLE_WIN']),   # v0.55: CR 8-1-6-2; v0.74: the "(When Battles)" head and the "by BP comparison" words are optional in the older texts
     (r'\(When Attacks/Blocks\)|\(When Attacks or Blocks\)', ['ATTACKS+BLOCKS']),
     (r'\(When Summoned\)', ['SUMMONED']),
     (r'\(When Attacks\)', ['ATTACKS']),

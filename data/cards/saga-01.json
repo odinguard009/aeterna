@@ -3878,6 +3878,38 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS03-126",
+  "name": "Potion Berry",
+  "name_jp": "ポーションベリー",
+  "type": "Magic",
+  "color": "green",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "Flash\nPut a core from the Void to a Spirit.",
+  "image": "Potion Berry.jpg",
+  "block": "03",
+  "saga": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "VOID_TO_CARD",
+     "n": 1,
+     "to": "anySpirit"
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS04-003",
   "name": "DarkGoradon",
   "name_jp": "ダークゴラドン",
@@ -4949,6 +4981,49 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS05-020",
+  "name": "Polluc&Castar",
+  "name_jp": "ポルック＆カスター",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Clown"
+  ],
+  "text": "[LV2] (When Battles)\nWhen only the opposing Spirit is destroyed, put a core from the Void to your Reserve.",
+  "image": "Polluc&Castar.jpg",
+  "block": "05",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BATTLE_WIN",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_RESERVE",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS05-021",
   "name": "Gengoron",
   "name_jp": "ゲンゴロン",
@@ -5812,6 +5887,56 @@
   "saga": 1,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-029",
+  "name": "Maparrot",
+  "name_jp": "メイパロット",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 5,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Song Bird"
+  ],
+  "text": "[LV1][LV2][LV3] (When Summoned)\nPut a core from the Void to any of your Spirit.",
+  "image": "Maparrot.jpg",
+  "block": "06",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS06-030",
@@ -7165,6 +7290,57 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS09-020",
+  "name": "Yamiyanma",
+  "name_jp": "ヤミヤンマ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 2,
+  "reduction": {
+   "green": 1,
+   "white": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Parasite"
+  ],
+  "text": "[LV1][LV2] (When Summoned) Put a core from the Void to any of your White Spirits.",
+  "image": "Yamiyanma.jpg",
+  "block": "09",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit",
+      "match": {
+       "color": "white"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS09-041",

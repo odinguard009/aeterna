@@ -2,6 +2,16 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.74.0
+- **Bundle release: Void cores, attack/block battle results, sentences for existing actions** (card session, plan W fifth pack, first release built from a measured bundle; rule note `docs/mechanics/void-cores.md`):
+  - Process (owner, 2026-10-20 "do all suggestions"): `python3 tools/pack_plan.py --measure` (new `tools/pack_measure.py`, tests PM01-03) ranks packs by measured yield instead of the upper bound; docs now travel inside the release commit (`bash tools/release_docs.sh`); CI fixed (test G06 exercised the daily cap the owner had removed from the gate).
+  - Compiler: "Put a core from the Void to <Reserve | one of your [colour] [\"family\"] Spirits>" (`VOID_TO_RESERVE` / `VOID_TO_CARD` + `match`, optional with "You can"); "(When Attacks) When only the opposing Spirit is destroyed ..." = `BATTLE_WIN` + `attackingOnly`, "(When Blocks) ..." = `BATTLE_WIN` + `blockingOnly`, the "(When Battles)" head and "by BP comparison" are optional; "Discard N cards from your Hand" (`DISCARD_HAND`), "Your counters +N", "Send an opposing Life to their Reserve / the Trash".
+  - Engine: `VOID_TO_CARD` takes `match`; `BATTLE_WIN` flag `blockingOnly` (only as the blocker).
+  - Tests: `tests/unit/void74.test.mjs` (VD74-01..06), `tests/unit/pack_measure.test.mjs`.
+  - **Measured unlock: +13 cards** (Potion Berry, Polluc&Castar, Maparrot, Yamiyanma, Vulcan-Arms, Taranty, Konohazukuro, The InsectivoreGrass Drosella, Kuwagatank, Knife Cicada, The ArmoredSwordsman Blizzard, Raiden Hydra, Lemonohashi): 776 of 8,709. The bundle was estimated at ~58 by the measured ranking: the measure swaps one sentence, real cards need all of theirs.
+  - Promoted cards were removed from `data/import` (`tools/import_fandom.py`).
+  - Revert note: `git revert` of the v0.74.0 commit restores v0.73.0 (no data migration; the 13 cards return to `data/import` with `python3 tools/import_fandom.py`).
+
 ## v0.73.0
 - **Leave heads and effect connectives** (card session, plan W fourth pack, event trigger heads; rule note `docs/mechanics/leave-heads.md`, Comprehensive Rules / Categories of Effects "Spirit/Nexus' When Destroyed Effects", Destruction "Resolving Destruction", Depletion "Depleted by the Opponent", Fandom Curtain Call / True-Curse wording):
   - Compiler: "When this Spirit is destroyed by the opponent," = `DESTROYED` + `byOpp`; "When this Spirit is destroyed by opposing effects / an opposing effect," = `DESTROYED` + `byOppFx` (not BP comparison); "When this Spirit would leave the Field due to the opponent," = new trigger `LEAVES`; "... would leave the Field due to / by opposing effect(s)," = `LEAVES` + `byOppFx`. Connectives in `tools/compile_v2.py`: "Then, B." = B with `if.prev` (only when the previous action was done); "A, and B." = both actions in order (each half must read alone; a condition in front covers both; an optional second half stays in review).

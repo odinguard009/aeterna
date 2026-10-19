@@ -52,6 +52,7 @@ function fxValid(it) {
   if (e.self && subj !== f && (trg === 'SOUL_PLACED' || trg === 'ALLY_LIFE_HIT')) return false;
   if (e.other && subj === f) return false;
   if (e.attackingOnly && trg === 'BATTLE_WIN' && !ctx.attacking) return false;     // v0.72 (During Attack) battle result: only as the attacker
+  if (e.blockingOnly && trg === 'BATTLE_WIN' && ctx.attacking) return false;     // v0.74 (When Blocks) battle result: only as the blocker
   if (trg === 'ALLY_SUMMONED' && subj && CARDS[subj.id].type === 'Brave' && !(e.match && e.match.type === 'Brave')) return false;     // a Brave summon is not a Spirit summon (manual p. 35)
   if (e.once && usedThisTurn(owner, f, idx, e)) return false;
   if (!fxIf(owner, opp, e.if, ctx)) return false;

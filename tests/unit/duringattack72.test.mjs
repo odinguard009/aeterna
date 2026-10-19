@@ -88,5 +88,6 @@ test('DA72-05 promoted cards carry the read effects (13 cards, v0.72.0)', async 
   assert.deepEqual(by['26RBS01-086'].effects[0].per, { type: 'Nexus', colors: ['blue'] });
   assert.equal(by['26RBS01-036'].effects[0].attackingOnly, true);
   assert.deepEqual([by['BS12-001'].effects[0].trigger, by['BS12-001'].effects[0].self], ['ALLY_LIFE_HIT', true]);
-  assert.equal(by['BS21-060'], undefined, 'Brave "(When Brave Attacks)" Life head stays staged');
+  // v0.74.0: the Brave "(When Brave Attacks)" Life head was staged here; its body (Void core to this Spirit) reads now, so it is promoted
+  assert.deepEqual([by['BS21-060'].effects[0].trigger, by['BS21-060'].effects[0].self, by['BS21-060'].effects[0].braved], ['ALLY_LIFE_HIT', true, true]);
 });

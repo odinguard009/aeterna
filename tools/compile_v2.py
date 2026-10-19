@@ -278,7 +278,41 @@ def own_grammar(s, ctx=None):
         match, att = own_np(m.group(1))
         if att or 'costGe' in match: raise Review('v2 refresh: filter')
         return [{'do': 'REFRESH_SPIRIT', 'match': match}] if match else [{'do': 'REFRESH_SPIRIT'}]
+    m = VOID_CORES.match(re.sub(r'^(?:you can|you may) ', '', x, flags=re.I))      # grammar() adds the optional flag
+    if m: return void_cores(m, x)
+    # v0.74: sentences for actions the engine already has (no engine change): own discard, counters plural, opposing Life
+    y = re.sub(r'^(?:you can|you may) ', '', x, flags=re.I)
+    m = re.match(r'^discard (a|one|two|three) cards? from your hand$', y, re.I)
+    if m: return [{'do': 'DISCARD_HAND', 'n': n_of(m.group(1).lower())}]
+    m = re.match(r'^your counters? \+(\d)$', y, re.I)
+    if m: return [{'do': 'COUNTER', 'n': int(m.group(1))}]
+    m = re.match(r'^send (an|one|two) opposing life to (?:their|the opposing|the) reserve$', y, re.I)
+    if m: return [{'do': 'LIFE_TO_RESERVE', 'n': n_of(m.group(1).lower())}]
+    if re.match(r'^send (?:an|one) opposing life to (?:the|their) trash$', y, re.I): return [{'do': 'OPP_LIFE_TO_TRASH', 'n': 1}]
     return None
+
+
+# ---------- v0.74: "Put N core(s) from the Void to <destination>" ----------
+VOID_CORES = re.compile(r'^put (a|one|two|three|\d) cores? from (?:the )?void (?:to|on|onto|in|into) (.+)$', re.I)
+_VS_NP = r'(?:(' + COL + r') )?(?:"([^"]+(?:"\s*/\s*"[^"]+)*)" family )?spirits?'
+VOID_SPIRIT = re.compile(r'^(?:(?:any (?:one )?of your|one of your|your) ' + _VS_NP + r'|(?:any|a) ' + _VS_NP + r' you control)$')      # an own-side marker is required (an unmarked "a Spirit" is not guessed)
+
+
+def void_cores(m, x):
+    """destinations the engine has: your Reserve (VOID_TO_RESERVE) and one of your Spirits, optionally one colour or one family
+    (VOID_TO_CARD to anySpirit + match). Trash, Nexus, "each to every ..." and two-destination sentences stay in review."""
+    n = n_of(m.group(1).lower())
+    dest = low(m.group(2).strip())
+    if re.fullmatch(r'(?:your|the) reserve', dest): return [{'do': 'VOID_TO_RESERVE', 'n': n}]
+    d = VOID_SPIRIT.match(dest)
+    if not d: raise Review('sentence: ' + x[:140])
+    a = {'do': 'VOID_TO_CARD', 'n': n, 'to': 'anySpirit'}
+    match = {}
+    col, fam = (d.group(1) or d.group(3)), (d.group(2) or d.group(4))
+    if col: match['color'] = col
+    if fam: match['family'] = re.split(r'"\s*/\s*"', fam)
+    if match: a['match'] = match
+    return [a]
 
 
 # ---------- v0.69: "Reveal N cards from your decktop. Among them, add/deploy <card>. Return/Discard any remaining cards." ----------

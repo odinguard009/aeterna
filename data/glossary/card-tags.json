@@ -278,6 +278,9 @@
  "BS03-089": [],
  "BS03-091": [],
  "BS03-099": [],
+ "BS03-126": [
+  "A_VOID"
+ ],
  "BS04-003": [],
  "BS04-005": [],
  "BS04-009": [],
@@ -325,6 +328,11 @@
  "BS05-012": [],
  "BS05-015": [],
  "BS05-019": [],
+ "BS05-020": [
+  "A_VOID",
+  "C_LEVEL",
+  "T_BATTLE_WIN"
+ ],
  "BS05-021": [],
  "BS05-023": [
   "A_VOID",
@@ -369,6 +377,11 @@
  "BS06-020": [],
  "BS06-025": [],
  "BS06-027": [],
+ "BS06-029": [
+  "T_SUMMONED",
+  "A_VOID",
+  "C_LEVEL"
+ ],
  "BS06-030": [
   "T_ATTACKS",
   "A_VOID",
@@ -462,6 +475,11 @@
   "T_ATTACKS",
   "C_LEVEL",
   "S_MUST_BLOCK"
+ ],
+ "BS09-020": [
+  "T_SUMMONED",
+  "A_VOID",
+  "C_LEVEL"
  ],
  "BS09-041": [
   "C_LEVEL",
@@ -596,6 +614,11 @@
  "BS12-033": [],
  "BS12-041": [],
  "BS12-044": [],
+ "BS12-060": [
+  "T_SUMMONED",
+  "C_LEVEL",
+  "M_THEN"
+ ],
  "BS13-001": [],
  "BS13-009": [],
  "BS13-017": [
@@ -678,6 +701,9 @@
   "A_AWAKEN",
   "M_OPTIONAL"
  ],
+ "BS14-069": [
+  "K_BRAVE"
+ ],
  "BS14-072": [
   "K_BRAVE"
  ],
@@ -723,6 +749,12 @@
  "BS16-004": [],
  "BS16-010": [],
  "BS16-020": [],
+ "BS16-023": [
+  "T_ATTACKS",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "K_HIGH_SPEED"
+ ],
  "BS16-025": [],
  "BS16-028": [],
  "BS16-030": [
@@ -974,6 +1006,11 @@
   "C_LEVEL",
   "K_BRAVE"
  ],
+ "BS21-060": [
+  "T_ALLY_LIFE_HIT",
+  "A_VOID",
+  "K_BRAVE"
+ ],
  "BS22-001": [],
  "BS22-013": [],
  "BS22-022": [],
@@ -1027,6 +1064,10 @@
  "BS23-040": [],
  "BS24-021": [],
  "BS24-049": [],
+ "BS24-081": [
+  "T_SUMMONED",
+  "C_LEVEL"
+ ],
  "BS24-104": [
   "A_EXHAUST",
   "K_ULTIMATE"
@@ -1066,9 +1107,25 @@
  "BS28-019": [
   "K_HIGH_SPEED"
  ],
+ "BS28-022": [
+  "T_SUMMONED",
+  "A_VOID",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "K_BURST"
+ ],
  "BS29-023": [
   "C_LEVEL",
   "S_UNAFFECTED"
+ ],
+ "BS30-025": [
+  "T_ATTACKS",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "K_BRAVE",
+  "M_THEN",
+  "T_DURING_BRAVE",
+  "K_RUSH"
  ],
  "BS31-001": [],
  "BS31-009": [],
@@ -1263,6 +1320,12 @@
  "BS50-050": [],
  "BS50-RV006": [],
  "BS51-062": [],
+ "BS51-071": [
+  "T_SUMMONED",
+  "T_ALLY_ATTACKS",
+  "A_VOID",
+  "C_LEVEL"
+ ],
  "BS52-001": [
   "T_ATTACKS",
   "C_LEVEL"
@@ -1299,6 +1362,14 @@
   "A_VOID",
   "C_LEVEL",
   "K_RUSH"
+ ],
+ "BS59-039": [
+  "A_VOID",
+  "C_LEVEL",
+  "T_DESTROYED",
+  "M_OPTIONAL",
+  "A_DRAW_BOTTOM",
+  "T_DESTROYED_OPP"
  ],
  "BS60-025": [
   "T_SUMMONED",

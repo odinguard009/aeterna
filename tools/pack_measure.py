@@ -8,8 +8,9 @@ that sessions did by hand: for a row it removes ONLY the head / template from th
 that row, recompiles them with compile_v2 and counts the cards that now compile. The cards that still fail show the
 next blockers (what the pack must bundle to reach them).
 
-Rows whose blocker is a whole sentence ("sentence: ...", "Burst sentence", "keyword", card kinds) have no head to
-strip: they are not measured and get the median ratio of their family (marked "~" in the report).
+A "sentence: ..." row has no head: its sentence is swapped for "Draw a card." (a sentence the compiler reads), so the
+measure says how many cards would compile if that sentence became readable (the action it needs still has to be built).
+Rows without anything to swap ("Burst sentence", "keyword", card kinds) get the median ratio of their family ("~").
 
 Used by `python3 tools/pack_plan.py --measure`; also runnable alone:
   python3 tools/pack_measure.py "no trigger: (When Battles)"   -> measured yield of that one blocker"""
@@ -44,15 +45,33 @@ def strip_head(text, key):
     return t2 if n else None
 
 
+KNOWN_SENTENCE = 'Draw a card.'    # an action the compiler already reads: the swap tests the REST of the card
+
+
+def swap_sentence(text, msg):
+    """`msg` = the Review message "sentence: <first 140 chars>" of a card; its sentence is replaced by a readable one"""
+    frag = msg[len('sentence: '):][:60].strip()
+    i = (text or '').find(frag) if frag else -1
+    if i < 0: return None
+    m = re.compile(r'[^.\n]*(?:\([^)]*\)[^.\n]*)*\.').match(text, i)
+    j = m.end() if m else min(len(text), i + 140)
+    return text[:i] + KNOWN_SENTENCE + text[j:]
+
+
 def measure(pool, review_ids, B, key):
     """-> (cards with exactly this blocker, cards that compile once the head is stripped, next blockers revealed) or None"""
     alone = [c for c in pool if c['id'] in review_ids and B.get(c['id']) == {key}]
     if not alone: return (0, 0, [])
-    stripped = []
+    stripped, swapped = [], 0
+    sent = key.startswith('sentence: ')
+    msgs = {r[0]: r[2] for r in v2.run(alone)[1]} if sent else {}
     for c in alone:
-        t2 = strip_head(c.get('text'), key)
-        if t2 is None: return None
+        t2 = swap_sentence(c.get('text'), msgs.get(c['id'], '')) if sent else strip_head(c.get('text'), key)
+        if t2 is None:      # this card's text does not show the head/sentence: it stays unchanged and counts as not compiling
+            stripped.append(c); continue
+        swapped += 1
         stripped.append(dict(c, text=t2.strip()))
+    if not swapped: return None
     ok, rev = v2.run(stripped)
     still = [c for c in stripped if c['id'] in {r[0] for r in rev}]
     nxt = collections.Counter()

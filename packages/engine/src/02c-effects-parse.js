@@ -126,6 +126,7 @@ function parseEffects(arr) {
       if (e.optional) o.optional = true; if (e.once) o.once = true; if (e.sameName) o.sameName = true; if (e.alsoAdvent && e.trigger === 'SUMMONED') o.alsoAdvent = true; if (e.self && (e.trigger === 'SOUL_PLACED' || e.trigger === 'ALLY_LIFE_HIT')) o.self = true;
       if (e.other === true && /^ALLY_/.test(e.trigger)) o.other = true; if (e.noStack === true) o.noStack = true;      // v0.40: "your other X" / "(Can't Stack)"
       if (e.attackingOnly === true && e.trigger === 'BATTLE_WIN') o.attackingOnly = true;   // v0.72 (During Attack): only as the attacker
+      if (e.blockingOnly === true && e.trigger === 'BATTLE_WIN') o.blockingOnly = true;   // v0.74 (When Blocks) battle result: only as the blocker
       if (e.alsoBlocks && e.trigger === 'ATTACKS') o.alsoBlocks = true; if (e.zone === 'hand' && (e.trigger === 'ALLY_BLOCKED' || e.trigger === 'SILVER_WHEEL')) o.zone = 'hand';
       if (e.onceKey != null) { if (!/^[A-Za-z0-9_-]{1,20}$/.test(String(e.onceKey))) return { error: '"onceKey" must be a short name' }; o.onceKey = String(e.onceKey); }
       if (e.trigger === 'ACCEL') {                       // v0.50 Accel: used from the Hand by paying the Accel cost, then the card goes to the Removed Zone

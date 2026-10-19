@@ -3878,6 +3878,38 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS03-126",
+  "name": "Potion Berry",
+  "name_jp": "ポーションベリー",
+  "type": "Magic",
+  "color": "green",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "Flash\nPut a core from the Void to a Spirit.",
+  "image": "Potion Berry.jpg",
+  "block": "03",
+  "saga": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "VOID_TO_CARD",
+     "n": 1,
+     "to": "anySpirit"
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS04-003",
   "name": "DarkGoradon",
   "name_jp": "ダークゴラドン",
@@ -4949,6 +4981,49 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS05-020",
+  "name": "Polluc&Castar",
+  "name_jp": "ポルック＆カスター",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Clown"
+  ],
+  "text": "[LV2] (When Battles)\nWhen only the opposing Spirit is destroyed, put a core from the Void to your Reserve.",
+  "image": "Polluc&Castar.jpg",
+  "block": "05",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BATTLE_WIN",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_RESERVE",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS05-021",
   "name": "Gengoron",
   "name_jp": "ゲンゴロン",
@@ -5812,6 +5887,56 @@
   "saga": 1,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-029",
+  "name": "Maparrot",
+  "name_jp": "メイパロット",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 5,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Song Bird"
+  ],
+  "text": "[LV1][LV2][LV3] (When Summoned)\nPut a core from the Void to any of your Spirit.",
+  "image": "Maparrot.jpg",
+  "block": "06",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS06-030",
@@ -7165,6 +7290,57 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS09-020",
+  "name": "Yamiyanma",
+  "name_jp": "ヤミヤンマ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 2,
+  "reduction": {
+   "green": 1,
+   "white": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Parasite"
+  ],
+  "text": "[LV1][LV2] (When Summoned) Put a core from the Void to any of your White Spirits.",
+  "image": "Yamiyanma.jpg",
+  "block": "09",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit",
+      "match": {
+       "color": "white"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS09-041",
@@ -9258,6 +9434,63 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS12-060",
+  "name": "Vulcan-Arms",
+  "name_jp": "バルカン・アームズ",
+  "type": "Brave",
+  "color": "blue",
+  "cost": 5,
+  "reduction": {
+   "blue": 2,
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Artificial Soldier"
+  ],
+  "text": "[LV1] (When Summoned)\nDraw three cards. Then, discard two cards from your Hand.",
+  "image": "Vulcan-Arms.jpg",
+  "block": "12",
+  "saga": 2,
+  "brave": {
+   "bp": 5000,
+   "family": [
+    "Astral Deity",
+    "Galaxian",
+    "Astral Soul"
+   ]
+  },
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 3
+     },
+     {
+      "do": "DISCARD_HAND",
+      "n": 2,
+      "if": {
+       "prev": true
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS13-001",
   "name": "Hiquick",
   "name_jp": "ヒクイック",
@@ -10574,6 +10807,51 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS14-069",
+  "name": "Taranty",
+  "name_jp": "タランチュー",
+  "type": "Brave",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Parasite"
+  ],
+  "text": "[When Braved] (When Brave Attacks) When only the opposing Spirit is destroyed by comparing BP, put a core from the void to this Spirit.",
+  "image": "Taranty.png",
+  "block": "14",
+  "saga": 3,
+  "brave": {
+   "bp": 4000,
+   "costGe": 4
+  },
+  "effects": [
+   {
+    "trigger": "BATTLE_WIN",
+    "attackingOnly": true,
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self"
+     }
+    ],
+    "braved": true
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS14-072",
   "name": "Gurangatch",
   "name_jp": "グランガッチ",
@@ -11188,6 +11466,61 @@
   "saga": 3,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS16-023",
+  "name": "Konohazukuro",
+  "name_jp": "コノハズクロー",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   },
+   {
+    "cores": 6,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Winged Beast"
+  ],
+  "text": "Flash - High Speed\nThis Spirit card in Hand can be summoned by paying the cost with cores in the Reserve. In this case, cores to be put on this Spirit must also be from the Reserve.\n\n[LV2][LV3] (When Attacks)\nWhen only the opposing Spirit is destroyed by comparing BP, exhaust an opposing Spirit.",
+  "image": "Konohazukuro.jpg",
+  "block": "16",
+  "saga": 3,
+  "mechanics": [
+   "High Speed"
+  ],
+  "highSpeed": true,
+  "effects": [
+   {
+    "trigger": "BATTLE_WIN",
+    "lv": [
+     2,
+     3
+    ],
+    "attackingOnly": true,
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS16-025",
@@ -14898,6 +15231,52 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS21-060",
+  "name": "The InsectivoreGrass Drosella",
+  "name_jp": "食虫草ドロセラー",
+  "type": "Brave",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 2,
+   "yellow": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Plant Spirit"
+  ],
+  "text": "[When Braved] (When Brave Attacks) When this Spirit's attack reduces the opposing Life, put a core from the Void to this Spirit.",
+  "image": "BS21-060.jpg",
+  "block": "21",
+  "saga": 4,
+  "brave": {
+   "bp": 3000,
+   "costGe": 4
+  },
+  "effects": [
+   {
+    "trigger": "ALLY_LIFE_HIT",
+    "self": true,
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self"
+     }
+    ],
+    "braved": true
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS22-001",
   "name": "Pistojasaurus",
   "name_jp": "ピストジャサウルス",
@@ -15660,6 +16039,59 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS24-081",
+  "name": "Kuwagatank",
+  "name_jp": "クワガータンク",
+  "type": "Brave",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 2,
+   "yellow": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Shell Insect"
+  ],
+  "text": "[LV1] (When Summoned) Put 1 core from void to any of your \"Blade Beast\"/\"Imaginary Beast\" family Spirit.",
+  "image": "Kuwagatank.jpg",
+  "block": "24",
+  "saga": 5,
+  "brave": {
+   "bp": 4000,
+   "costGe": 4
+  },
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit",
+      "match": {
+       "family": [
+        "Blade Beast",
+        "Imaginary Beast"
+       ]
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS24-104",
   "name": "Binding Creeper",
   "name_jp": "バインディングクリーパー",
@@ -16022,6 +16454,59 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS28-022",
+  "name": "Knife Cicada",
+  "name_jp": "ナイフシケイダー",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Blade Insect"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nPut a core from Void to your Reserve. If you have a set Burst, also, exhaust an opposing Spirit.",
+  "image": "Knife Cicada.jpg",
+  "block": "28",
+  "saga": 5,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_RESERVE",
+      "n": 1
+     },
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1,
+      "if": {
+       "burstSet": true
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS29-023",
   "name": "The Investigator Euro",
   "name_jp": "調査員エウロー",
@@ -16079,6 +16564,93 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS30-025",
+  "name": "The ArmoredSwordsman Blizzard",
+  "name_jp": "甲剣士ブリザード",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 5,
+  "reduction": {
+   "white": 2,
+   "blue": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 7000
+   },
+   {
+    "cores": 4,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Fencer",
+   "Armored Dragon"
+  ],
+  "text": "[LV1][LV2][LV3] (When Attacks/Blocks)\nReturn an opposing 5000 BP or less Spirit to the Hand.\n{{Rush|Blue}}\n(While you have a Blue symbol, the following effect activates next)\n: Draw two cards. Then, discard a card from your Hand.\n\nDuring Brave [LV2][LV3] (Opposing Attack Step)\nThis Spirit can block while exhausted.",
+  "image": "The ArmoredSwordsman Blizzard.png",
+  "block": "30",
+  "saga": 5,
+  "mechanics": [
+   "Rush"
+  ],
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "alsoBlocks": true,
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "hand",
+      "kind": "spirit",
+      "bpLe": 5000
+     },
+     {
+      "do": "DRAW",
+      "n": 2,
+      "if": {
+       "hasSymbol": "blue"
+      }
+     },
+     {
+      "do": "DISCARD_HAND",
+      "n": 1,
+      "if": {
+       "hasSymbol": "blue"
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "STATIC",
+    "flag": "BLOCK_EXHAUSTED",
+    "to": "self",
+    "lv": [
+     2,
+     3
+    ],
+    "if": {
+     "step": "ATTACK",
+     "oppTurn": true
+    },
+    "braved": true
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS31-001",
@@ -19379,6 +19951,91 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS51-071",
+  "name": "Raiden Hydra",
+  "name_jp": "ライデンハイドラ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {
+   "blue": 1,
+   "red": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Celeste",
+   "Ocean Emperor"
+  ],
+  "text": "[LV1][LV2][LV3] (When Summoned)\nPut a core from the Void to any \"Terra Dragon\" family Spirit you control.\n\n[LV2][LV3] (Your Attack Step)\nWhen your \"Terra Dragon\" family Spirit attacks, put a core from the Void to any \"Terra Dragon\"/\"Ocean Emperor\" family Spirit you control.",
+  "image": "Raiden-Hydra.png",
+  "block": "51",
+  "saga": 10,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit",
+      "match": {
+       "family": [
+        "Terra Dragon"
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     2,
+     3
+    ],
+    "match": {
+     "family": [
+      "Terra Dragon"
+     ],
+     "noUlt": true
+    },
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit",
+      "match": {
+       "family": [
+        "Terra Dragon",
+        "Ocean Emperor"
+       ]
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS52-001",
   "name": "Ryuuman-Dash",
   "name_jp": "リューマン・ダッシュ",
@@ -19760,6 +20417,80 @@
       "n": 1,
       "if": {
        "hasSymbol": "yellow"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS59-039",
+  "name": "Lemonohashi",
+  "name_jp": "レモノハシ",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 2,
+  "reduction": {
+   "yellow": 1,
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Proximate",
+   "Hunter Beast"
+  ],
+  "text": "[LV1][LV2] (When Destroyed by the Opponent)\nYou can draw a card from the deckbottom.\n\n[LV2] (When Destroyed by the Opponent)\nYou can put a core from the Void to any \"Winged Beast\" family Spirit you control.",
+  "image": "BS59 039.png",
+  "block": "59",
+  "saga": 12,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "if": {
+     "byOpp": true
+    },
+    "optional": true,
+    "actions": [
+     {
+      "do": "DRAW_BOTTOM",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     2
+    ],
+    "if": {
+     "byOpp": true
+    },
+    "optional": true,
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit",
+      "match": {
+       "family": [
+        "Winged Beast"
+       ]
       }
      }
     ]

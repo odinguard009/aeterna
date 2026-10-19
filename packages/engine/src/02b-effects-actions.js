@@ -214,10 +214,11 @@ const FX_ACTIONS = {
     } },
   VOID_TO_RESERVE: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5, txt: a => `put ${a.n} core${a.n === 1 ? '' : 's'} from the Void to your Reserve`,
     run: async (c, a) => { const m = takeFromVoid(c.p, a.n); c.p.reserve.n += m; log(`${CARDS[c.src.id].name}: ${m} core${m === 1 ? '' : 's'} move from the Void to the Reserve.`); } },
-  VOID_TO_CARD: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5 && ['self', 'anySpirit'].includes(a.to), txt: a => a.perOppHandPairs ? 'put a core from the Void to one of your Spirits for every two cards in the opposing Hand' : a.perDistinctSoul ? 'put a core from the Void to one of your Spirits for each differently-named card in Soul State' : `put ${a.n} core${a.n === 1 ? '' : 's'} from the Void to ${a.to === 'self' ? 'this Spirit' : 'one of your Spirits'}`,
-    can: (c, a) => (!a.perOppHandPairs || c.opp.hand.length >= 2) && (!a.perDistinctSoul || c.p.soulState.length > 0) && (a.to === 'self' ? c.p.spirits.includes(c.src) : c.p.spirits.length > 0),
+  VOID_TO_CARD: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5 && ['self', 'anySpirit'].includes(a.to) && (a.match == null || (a.to === 'anySpirit' && hasMatch(a.match))),      // v0.74: match = "any of your <colour|family> Spirits"
+    cands: (c, a) => c.p.spirits.filter(x => fxMatch(CARDS[x.id], a.match)), txt: a => a.perOppHandPairs ? 'put a core from the Void to one of your Spirits for every two cards in the opposing Hand' : a.perDistinctSoul ? 'put a core from the Void to one of your Spirits for each differently-named card in Soul State' : `put ${a.n} core${a.n === 1 ? '' : 's'} from the Void to ${a.to === 'self' ? 'this Spirit' : a.match ? 'one of your matching Spirits' : 'one of your Spirits'}`,
+    can: (c, a) => (!a.perOppHandPairs || c.opp.hand.length >= 2) && (!a.perDistinctSoul || c.p.soulState.length > 0) && (a.to === 'self' ? c.p.spirits.includes(c.src) : FX_ACTIONS.VOID_TO_CARD.cands(c, a).length > 0),
     run: async (c, a) => {
-      const t = a.to === 'self' ? (c.p.spirits.includes(c.src) ? c.src : null) : await fxPickTarget(c, c.p.spirits.slice(), `✨ <b>${esc(CARDS[c.src.id].name)}</b><br>Tap the Spirit that receives the core${a.n === 1 ? '' : 's'} from the Void (glowing).`);
+      const t = a.to === 'self' ? (c.p.spirits.includes(c.src) ? c.src : null) : await fxPickTarget(c, FX_ACTIONS.VOID_TO_CARD.cands(c, a), `✨ <b>${esc(CARDS[c.src.id].name)}</b><br>Tap the Spirit that receives the core${a.n === 1 ? '' : 's'} from the Void (glowing).`);
       const want = a.perOppHandPairs ? Math.floor(c.opp.hand.length / 2) : a.perDistinctSoul ? new Set(c.p.soulState.map(x => x.id)).size : a.n;
       const m = t ? takeFromVoid(c.p, want) : 0; c.ctx.put = m; if (!m) { c.ctx.did = false; return; }
       t.cores += m; log(`${CARDS[c.src.id].name}: ${m} core${m === 1 ? '' : 's'} move from the Void to ${CARDS[t.id].name}.`);
