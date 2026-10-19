@@ -107,3 +107,6 @@ Until v1.0 the public name is the neutral codename. `tools/brand_guard.mjs` (loo
 
 ## 9. Planned
 The monorepo move (TypeScript workspace, server/client, database, online play) is planned in `docs/ai/monorepo-plan.md`; until it lands, the single built HTML file stays the product.
+
+## Rules knowledge base (v0.68.0)
+Rules KB: `docs/rules/kb.json` + `tools/rules_kb.py`, schema in `docs/rules/README.md` (official rule sections with ids, pages, paraphrases and SHA-256 fingerprints; `--list-cited` checks every engine citation, `--check` flags changed manual sections).
