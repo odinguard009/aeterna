@@ -86,6 +86,7 @@ What to build next (v0.69.1): `python3 tools/pack_plan.py` orders the compile_v2
 |---|---|---|
 | Node unit + engine tests | `tests/unit/*.test.mjs` (quiet board via `BS.testSetup()`) | `npm test`; quick subset `npm run -s loop` |
 | Property tests | `tests/unit/props.test.mjs` | `npm run test:props` |
+| Generated action tests (v0.69.2) | `tests/unit/fxprops692.test.mjs` + `tests/unit/lib/fx-props.mjs`: one quiet board per action of every shipped card with complete effects, built from the action JSON (synthetic `FXP-` fixtures); uncovered shapes listed by FX01 | `node --test tests/unit/fxprops692.test.mjs` |
 | Scenarios | `tests/scenarios/*.json`, loaded with `BS.loadScenario(spec)` | used by unit and Python tests |
 | Python Playwright suites (UI flows, sims) | `tests/suites`, `tests/legacy` | `python3 tests/run_all.py --only <names>`; full run only on GitHub |
 | Release file check | `tests/unit/release.test.mjs` | `RELEASE_FILE=... npm run -s test:release` |

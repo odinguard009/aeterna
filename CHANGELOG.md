@@ -2,6 +2,12 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.69.2
+- **K2: generated tests per compiled action** (`docs/ai/compiler-v2-plan.md` point 5; plan W in `docs/ai/roadmap-open.md`). No game change.
+  - `tests/unit/lib/fx-props.mjs` builds one quiet board per action of every shipped card with complete effects, from the action JSON alone, with synthetic `FXP-` fixture cards (cost / BP / family chosen from the action), and checks the property its sentence promises: DESTROY at the BP / cost / core bound is destroyed and one step over is not (also exhaustedOnly, thenDraw, Nexus, lowest / highest cost); EXHAUST_OPP / HEAVY_EXHAUST_OPP exhaust exactly N; BOUNCE_OPP reaches the Hand or the deck bottom and respects its bound; BP_MINUS leaves BP and destroys at 0 BP only with zeroDestroy (Eternal FAQ p. 68); DRAW / DRAW_BOTTOM / MILL / Crush move the right cards; COUNTER max, Void to Reserve / Life / a Spirit, BP_PLUS self / attacker / own, REFRESH, REFRESH_SPIRIT (match), REVEAL_PICK (add the match, rest to the bottom or Trash), OPP_CORES_TO_RESERVE.
+  - `tests/unit/fxprops692.test.mjs`: FX01 coverage (221 of 277 shipped actions, 80%; floor 75%, uncovered shapes printed), FX02 every board passes, FX03 mutation check (a wrong bound, count, destination or zeroDestroy flag fails its board). A one-off mutation sweep (each board run with N+1, bound+1 step, the other destination or rest) failed 202 of 202 mutated boards.
+  - Promotion is now "read the card + generated test": a promoted card whose actions all have generators needs no hand-written action test (`docs/ai/release.md`).
+
 ## v0.69.1
 - **K1: pattern dictionary and pack plan** (owner, 2026-10-19: "pattern first, then card by card"; plan item W in `docs/ai/roadmap-open.md`). No game change.
   - `tools/wiki_rules.py`: caches the 302 Fandom keyword pages and 12 rules pages (Comprehensive Rules, Standard rule manual) in `build/` and writes `docs/reports/wiki-rules-index.md` (179 keyword pages used by staged cards, which ones carry a format / default-text section, mechanic status; rules pages with their sections). `--show` / `--section` / `--for` read a page or the rule source of a compiler blocker locally. The repo keeps links, section names and counts only.

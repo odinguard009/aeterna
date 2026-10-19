@@ -1,7 +1,7 @@
 # Release and tests (read when releasing or adding tests)
 
 ## Tests
-- Tests guard behaviour, not a count (owner, 2026-10-19; the 20+/50+ quotas are gone): one test per new action, condition or trigger head, one per promoted card group and one per fixed bug; docs-only changes need none. Prefer Node tests in `tests/unit/` (quiet board via `BS.testSetup()`, see `engine.test.mjs`); Python suites `tests/suites/vNN_tests.py` only for UI flows (add to `NO_FIXTURES` in `tests/run_all.py` when they must run without TST cards).
+- Tests guard behaviour, not a count (owner, 2026-10-19; the 20+/50+ quotas are gone): one test per new action, condition or trigger head, one per promoted card group and one per fixed bug; a promoted card whose actions all have a generator in `tests/unit/lib/fx-props.mjs` (test FX02, v0.69.2) needs no hand-written action test, only the read against its text; docs-only changes need none. Prefer Node tests in `tests/unit/` (quiet board via `BS.testSetup()`, see `engine.test.mjs`); Python suites `tests/suites/vNN_tests.py` only for UI flows (add to `NO_FIXTURES` in `tests/run_all.py` when they must run without TST cards).
 - Ratchet lists in `tests/unit/known-gaps.json` only shrink.
 - While working: `npm run -s loop` (build + lint + brand guard + smoke tests + test files changed on the branch, ~15 s, one call); touched Python suites only: `python3 tests/make_fixtures.py` once, then `python3 tests/run_all.py --only <names>`.
 - UI text changed (zone names, modal or pill text): `grep -rln '<old word>' tests` and run those Python suites locally with `--only` before pushing. `check_renames.py` catches removed multi-word text, but not single-word substring checks such as `'Banished' in modal(pg)` (the v0.50.0 Regression failure).

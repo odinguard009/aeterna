@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "19 Oct 2026",
-  "next": "next: K2 generated tests per compiled action (patch), then card packs from docs/reports/pack-plan.md, first the step timing heads (window condition, docs/mechanics/step-timings.md); U5 paused; 722 of 8,709 cards playable"
+  "next": "next: card pack 1 = step timing heads (one window condition if.step, docs/mechanics/step-timings.md; real unlock by scratch recompile), then Burst forms; 722 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -638,8 +638,12 @@
      "t": "K1 pattern dictionary + pack plan (v0.69.1): 302 Fandom keyword pages and the Comprehensive Rules mapped to compiler blockers; greedy pack order (first 10 steps ~800 cards, upper bound)"
     },
     {
+     "s": "done",
+     "t": "K2 generated tests per compiled action (v0.69.2): one board per action of every shipped card from its JSON (221 of 277 actions, 80%), mutation check; promotion = read + generated test"
+    },
+    {
      "s": "next",
-     "t": "K2 generated tests per compiled action, then one pack per card session: step timing heads, Burst forms, event trigger heads, Mirage / Rush / Accel"
+     "t": "One pack per card session: step timing heads first (window condition if.step), then Burst forms, event trigger heads, Mirage / Rush / Accel"
     },
     {
      "s": "later",
@@ -983,7 +987,15 @@
    "calls": "~35",
    "basis": "measured",
    "note": "Manual HEMAT ON planning session on Opus (owner approved plan W: pattern first, then card by card): K1 wiki rules index (302 keyword + 12 rules pages), blocker -> rule map, greedy pack plan, step-timings rule note, skill bs-wiki-rules; U5 paused. No game change."
+  },
+  {
+   "ver": "v0.69.2",
+   "date": "19 Oct 2026",
+   "tokens": 0,
+   "calls": "~40",
+   "basis": "measured",
+   "note": "Scheduled auto HEMAT ON session on Opus: K2 generated tests per compiled action (tests/unit/lib/fx-props.mjs, FX01-FX03; 221 of 277 shipped actions covered, mutation sweep 202/202). No game change."
   }
  ],
- "next": "next: U5 battle overlays and prompts (HEMAT ON: alone; stylesheet at ~89.4 KB of 90 KB: trim old CSS first), then a card head sized by real recompile (\"target an opposing\" 29 alone, (Your Attack Step) 24, (During Attack) 21); 722 of 8,709 cards playable"
+ "next": "next: card pack 1 = step timing heads (one window condition if.step, docs/mechanics/step-timings.md; real unlock by scratch recompile), then Burst forms; 722 of 8,709 cards playable"
 }
