@@ -13,11 +13,14 @@ blocker and still fail on a later sentence. The real unlock of a pack is measure
 built (`docs/ai/compiler-v2-plan.md`); this table gives the order, not a promise.
 
   python3 tools/pack_plan.py            -> writes docs/reports/pack-plan.md
-  python3 tools/pack_plan.py --steps N  -> table length (default 60)"""
+  python3 tools/pack_plan.py --steps N  -> table length (default 60)
+  python3 tools/pack_plan.py --measure  -> adds the measured yield (tools/pack_measure.py: head swapped for a known head,
+                                           body recompiled) and orders the packs by it (owner, 2026-10-20)"""
 import collections, json, os, re, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import compile_v2 as v2  # noqa: E402
+import pack_measure as pm  # noqa: E402
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 OUT = os.path.join(ROOT, 'docs/reports/pack-plan.md')
@@ -64,6 +67,19 @@ def main(a):
         new = [i for i, r in open_.items() if r <= {k}]
         done |= set(new)
         rows.append((k, len(new), sum(1 for i in new if blk.get(i) == 'A'), len(done), touch[k]))
+    meas = {}
+    if '--measure' in a:
+        for k, *_ in rows:
+            meas[k] = pm.measure(pool, revids, B, k)
+        ratios = collections.defaultdict(list)
+        for k, r in meas.items():
+            if r and r[0]: ratios[family(k)].append(r[1] / r[0])
+        allr = sorted(x for v in ratios.values() for x in v) or [0.0]
+        med = lambda v: sorted(v)[len(v) // 2]
+        def ratio(k):
+            r = meas.get(k)
+            if r and r[0]: return r[1] / r[0], ''
+            return (med(ratios[family(k)]) if ratios.get(family(k)) else med(allr)), '~'
     per = collections.Counter(min(len(s), 4) for s in B.values())
     fam = collections.Counter()
     for k, n, *_ in rows: fam[family(k)] += n
@@ -75,9 +91,32 @@ def main(a):
          '(`python3 tools/wiki_rules.py --for "<blocker>"`, index `docs/reports/wiki-rules-index.md`).', '',
          '## Greedy order', '', '"New" = cards whose last open blocker is this row; "Block A" = of those, Standard block A; '
          '"Touches" = open cards that still list it.', '',
-         '| Step | Blocker | Family | New | Block A | Total | Touches | Rule source |', '|---|---|---|---|---|---|---|---|']
+         '| Step | Blocker | Family | New | Block A | Total | Touches |' + (' Measured | Est. real |' if meas else '') + ' Rule source |',
+         '|---|---|---|---|---|---|---|' + ('---|---|' if meas else '') + '---|']
+    est = {}
     for n, (k, new, a_, tot, t) in enumerate(rows, 1):
-        L.append(f'| {n} | {k.replace("|", "/")[:80]} | {family(k)} | {new} | {a_} | {tot:,} | {t} | {src(k) or "-"} |')
+        extra = ''
+        if meas:
+            r, mark = ratio(k)
+            est[k] = new * r
+            m = meas[k]
+            extra = f' {m[1]}/{m[0]} |' if m and m[0] else ' - |'
+            extra += f' {mark}{est[k]:.0f} |'
+        L.append(f'| {n} | {k.replace("|", "/")[:80]} | {family(k)} | {new} | {a_} | {tot:,} | {t} |{extra} {src(k) or "-"} |')
+    if meas:
+        L += ['', '## Measured order (real yield first)', '',
+              'Measured = of the cards whose ONLY blocker is the row, how many compile once its head is swapped for a head the '
+              'compiler already reads (`tools/pack_measure.py`); this tests the BODY under the head, the part the upper bound ignores '
+              '(v0.70.0 step window: ~300 promised, +4 built). Est. real = New x measured ratio; "~" = no pure single-blocker sample or no '
+              'head to swap, so the median ratio of the family is used. It is an estimate: the pack still has to teach the engine the head itself.', '',
+              '| Rank | Blocker | Est. real | Upper bound | Next blockers revealed (bundle these) |', '|---|---|---|---|---|']
+        order = sorted(rows, key=lambda r: -est[r[0]])[:20]
+        for n, (k, new, *_r) in enumerate(order, 1):
+            nx = meas[k][2] if meas[k] else []
+            L.append(f'| {n} | {k.replace("|", "/")[:70]} | {est[k]:.0f} | {new} | ' + ('; '.join(f'{x.replace("|", "/")[:40]} ({c})' for x, c in nx) or '-') + ' |')
+        top = order[:4]
+        L += ['', f'**Suggested bundle for one release (owner, 2026-10-20: 3-4 packs per release):** ' + '; '.join(k.replace('|', '/')[:50] for k, *_ in top)
+              + f' (about {sum(est[k] for k, *_ in top):.0f} cards by estimate).']
     L += ['', '## By family (cards completed inside the table)', '', '| Family | Cards |', '|---|---|']
     L += [f'| {f} | {v:,} |' for f, v in fam.most_common()]
     L += ['', 'Packs for sessions: take consecutive rows of one family (e.g. all step timing heads) so one engine change '

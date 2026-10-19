@@ -8,68 +8,97 @@ Staged pool 7,946 cards; compile_v2 compiles 1 new (not promoted yet), 7,945 sta
 
 "New" = cards whose last open blocker is this row; "Block A" = of those, Standard block A; "Touches" = open cards that still list it.
 
-| Step | Blocker | Family | New | Block A | Total | Touches | Rule source |
-|---|---|---|---|---|---|---|---|
-| 1 | wiki template {{Mirage}} | keyword template | 47 | 0 | 47 | 201 | Mirage |
-| 2 | wiki template {{Rush}} | keyword template | 47 | 0 | 94 | 65 | Rush |
-| 3 | keyword | card kind | 47 | 3 | 141 | 263 | - |
-| 4 | wiki template {{mirage}} | keyword template | 36 | 0 | 177 | 101 | Mirage |
-| 5 | wiki template {{Burst}} | Burst | 34 | 0 | 211 | 114 | Burst; Comprehensive Rules/Categories of Effects #Burst Activation; Comprehensive Rules/Categories of Effects #"After Your Burst Activates" |
-| 6 | Burst sentence | Burst | 34 | 0 | 245 | 147 | Burst; Comprehensive Rules/Categories of Effects #Burst Activation; Comprehensive Rules/Categories of Effects #"After Your Burst Activates" |
-| 7 | sentence: put a core | sentence verb | 34 | 7 | 279 | 100 | - |
-| 8 | sentence: target an opposing | sentence verb | 34 | 29 | 313 | 63 | Comprehensive Rules/Effect Texts #Targets of Effects; Comprehensive Rules/Effect Texts #Do as Much as Possible |
-| 9 | wiki template {{Accel}} | keyword template | 28 | 0 | 341 | 156 | Accel; Comprehensive Rules/Card Cost and Payment #{{Tk|Accel}} |
-| 10 | v2 reveal: no "remaining cards" ending | sentence verb | 28 | 3 | 369 | 75 | Comprehensive Rules/Effect Texts #"Remaining Cards" & "Otherwise" (「残ったカード」と「それ以外」/「他のカード」); Comprehensive Rules/Other Explanations of Rules #Revealed Cards |
-| 11 | Rush on a Magic | card kind | 28 | 0 | 397 | 28 | Rush |
-| 12 | no trigger: (When Battles) | event trigger head | 27 | 0 | 424 | 87 | Comprehensive Rules/Categories of Effects #Spirits' "When Attacks/Blocks" Effects |
-| 13 | no trigger: When this card | event trigger head | 22 | 0 | 446 | 146 | Comprehensive Rules/Depletion #When Spirits/Ultimates are Depleted by the Opponent; Comprehensive Rules/Categories of Effects #Spirit/Nexus' "When Destroyed" Effects; Comprehensive Rules/Destruction #Resolving Destruction |
-| 14 | no trigger: Flash - (Either | step timing head | 23 | 0 | 469 | 106 | Comprehensive Rules/Categories of Effects #Effects Which Activate During Specific Steps; Comprehensive Rules/Categories of Effects #Interruptive Effects |
-| 15 | no trigger: (Once per Turn: Same Name) | event trigger head | 24 | 0 | 493 | 139 | Comprehensive Rules/Categories of Effects #"(Once Per Turn: Same Name)" and "Once Per Turn, ..." |
-| 16 | no trigger: When the opponent | event trigger head | 23 | 0 | 516 | 70 | - |
-| 17 | sentence: (once per turn: | duration / connective | 23 | 0 | 539 | 57 | Comprehensive Rules/Categories of Effects #"(Once Per Turn: Same Name)" and "Once Per Turn, ..." |
-| 18 | v2 battle effect outside a battle trigger | sentence verb | 22 | 6 | 561 | 23 | - |
-| 19 | no trigger: While you control | turn / while head | 21 | 0 | 582 | 96 | Comprehensive Rules/Categories of Effects #Constant Effects |
-| 20 | no trigger: When this Spirit | event trigger head | 21 | 1 | 603 | 83 | Comprehensive Rules/Depletion #When Spirits/Ultimates are Depleted by the Opponent; Comprehensive Rules/Categories of Effects #Spirit/Nexus' "When Destroyed" Effects; Comprehensive Rules/Destruction #Resolving Destruction |
-| 21 | Armor text | card kind | 21 | 0 | 624 | 76 | Armor (Keyword); Comprehensive Rules/Effect Texts #"Unaffected by Effects" Effects (効果を受けない) |
-| 22 | no trigger: (Permanent) | turn / while head | 21 | 0 | 645 | 28 | Comprehensive Rules/Categories of Effects #Constant Effects |
-| 23 | sentence: if you control | sentence verb | 20 | 8 | 665 | 71 | Comprehensive Rules/Effect Texts #Do as Much as Possible |
-| 24 | no trigger: (Can't Stack) | event trigger head | 20 | 3 | 685 | 91 | Comprehensive Rules/Effect Texts #Denial Effects (～できない) |
-| 25 | no trigger: (During Attack) | event trigger head | 20 | 20 | 705 | 51 | - |
-| 26 | Ultimate with no summon condition block (Contract Advent / Manifest or other tex | card kind | 20 | 0 | 725 | 20 | Ultimate Trigger |
-| 27 | no trigger: This Spirit can't | event trigger head | 19 | 2 | 744 | 75 | Comprehensive Rules/Effect Texts #Denial Effects (～できない) |
-| 28 | no trigger: Once per turn, | event trigger head | 19 | 0 | 763 | 72 | Comprehensive Rules/Categories of Effects #"(Once Per Turn: Same Name)" and "Once Per Turn, ..." |
-| 29 | no trigger: (When Deployed) | event trigger head | 18 | 4 | 781 | 89 | Comprehensive Rules/Categories of Effects #"When Summoned/[[Advent|Advents]]" Effects and "When Deployed" Effects; Comprehensive Rules/Categories of Effects #Summoning or Deploying via Effects |
-| 30 | no trigger: (Your Turn) | turn / while head | 20 | 1 | 801 | 82 | Comprehensive Rules/Categories of Effects #Constant Effects |
-| 31 | no trigger: (Opposing Turn) | turn / while head | 20 | 1 | 821 | 77 | Comprehensive Rules/Categories of Effects #Constant Effects |
-| 32 | no trigger: When your Life | event trigger head | 20 | 1 | 841 | 81 | - |
-| 33 | no trigger: Give all your | event trigger head | 19 | 1 | 860 | 54 | - |
-| 34 | no trigger: When your Spirits | event trigger head | 19 | 0 | 879 | 51 | - |
-| 35 | no trigger: Cards can't be | event trigger head | 19 | 0 | 898 | 44 | Comprehensive Rules/Effect Texts #Denial Effects (～できない) |
-| 36 | sentence: when only the | sentence verb | 18 | 0 | 916 | 70 | Comprehensive Rules/Categories of Effects #Spirits' "When Attacks/Blocks" Effects |
-| 37 | sentence: destroy an opposing | sentence verb | 18 | 0 | 934 | 63 | Comprehensive Rules/Destruction #Resolving Destruction; Comprehensive Rules/Effect Texts #Targets of Effects |
-| 38 | v2 destroy: filter other | sentence verb | 19 | 1 | 953 | 61 | Comprehensive Rules/Destruction #Resolving Destruction; Comprehensive Rules/Effect Texts #Targets of Effects |
-| 39 | no trigger: When your Spirit | event trigger head | 18 | 1 | 971 | 61 | - |
-| 40 | no trigger: When only the | event trigger head | 19 | 2 | 990 | 47 | - |
-| 41 | wiki template {{Seal}} | keyword template | 18 | 0 | 1,008 | 55 | Seal |
-| 42 | Magic paragraph without Main/Flash: When this card was either revealed from deck | card kind | 18 | 0 | 1,026 | 18 | - |
-| 43 | no trigger: (Start of Your Attack Step) | step timing head | 17 | 4 | 1,043 | 60 | Comprehensive Rules/Categories of Effects #Effects Which Activate During Specific Steps; Comprehensive Rules/Categories of Effects #"At the Beginning of the Step"/"At the End of the Step"; Official Rule Manual (Standard) #Turn Procedures |
-| 44 | no trigger: When an opposing | event trigger head | 17 | 0 | 1,060 | 44 | - |
-| 45 | no trigger: When you're summoning | event trigger head | 17 | 1 | 1,077 | 42 | - |
-| 46 | no trigger: (When Depleted/Destroyed by the Opponent) | event trigger head | 17 | 0 | 1,094 | 31 | Comprehensive Rules/Depletion #When Spirits/Ultimates are Depleted by the Opponent; Comprehensive Rules/Categories of Effects #Spirit/Nexus' "When Destroyed" Effects; Comprehensive Rules/Destruction #Resolving Destruction |
-| 47 | no trigger: (During Your Battle Phase) | step timing head | 17 | 0 | 1,111 | 24 | Comprehensive Rules/Categories of Effects #Effects Which Activate During Specific Steps |
-| 48 | sentence: by discarding a | sentence verb | 16 | 0 | 1,127 | 43 | Comprehensive Rules/Effect Texts #"By doing A, do B" (～することで、～する) |
-| 49 | wiki template {{SSoul}} | keyword template | 16 | 0 | 1,143 | 35 | Spirit Soul |
-| 50 | no trigger: This Spirit is | event trigger head | 16 | 0 | 1,159 | 27 | - |
-| 51 | sentence: target one of | sentence verb | 16 | 16 | 1,175 | 25 | Comprehensive Rules/Effect Texts #Targets of Effects; Comprehensive Rules/Effect Texts #Do as Much as Possible |
-| 52 | no trigger: While you have | turn / while head | 15 | 0 | 1,190 | 54 | Comprehensive Rules/Categories of Effects #Constant Effects |
-| 53 | no trigger: Flash - (Opposing | step timing head | 16 | 2 | 1,206 | 46 | Comprehensive Rules/Categories of Effects #Effects Which Activate During Specific Steps; Comprehensive Rules/Categories of Effects #Interruptive Effects |
-| 54 | wiki template {{Assault}} | keyword template | 15 | 0 | 1,221 | 43 | Assault |
-| 55 | no trigger: All your Spirits | event trigger head | 15 | 4 | 1,236 | 35 | - |
-| 56 | no trigger: If you control | event trigger head | 15 | 7 | 1,251 | 35 | - |
-| 57 | v2 destroy: count all | sentence verb | 15 | 0 | 1,266 | 28 | Comprehensive Rules/Destruction #Resolving Destruction; Comprehensive Rules/Effect Texts #Targets of Effects |
-| 58 | sentence: target and attack | sentence verb | 15 | 0 | 1,281 | 53 | Comprehensive Rules/Effect Texts #Targets of Effects; Comprehensive Rules/Effect Texts #Do as Much as Possible |
-| 59 | sentence: at the end | sentence verb | 16 | 0 | 1,297 | 43 | - |
-| 60 | sentence: discard a card | sentence verb | 15 | 0 | 1,312 | 27 | - |
+| Step | Blocker | Family | New | Block A | Total | Touches | Measured | Est. real | Rule source |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | wiki template {{Mirage}} | keyword template | 47 | 0 | 47 | 201 | 0/47 | 0 | Mirage |
+| 2 | wiki template {{Rush}} | keyword template | 47 | 0 | 94 | 65 | 2/46 | 2 | Rush |
+| 3 | keyword | card kind | 47 | 3 | 141 | 263 | - | ~0 | - |
+| 4 | wiki template {{mirage}} | keyword template | 36 | 0 | 177 | 101 | 0/36 | 0 | Mirage |
+| 5 | wiki template {{Burst}} | Burst | 34 | 0 | 211 | 114 | 0/31 | 0 | Burst; Comprehensive Rules/Categories of Effects #Burst Activation; Comprehensive Rules/Categories of Effects #"After Your Burst Activates" |
+| 6 | Burst sentence | Burst | 34 | 0 | 245 | 147 | - | ~0 | Burst; Comprehensive Rules/Categories of Effects #Burst Activation; Comprehensive Rules/Categories of Effects #"After Your Burst Activates" |
+| 7 | sentence: put a core | sentence verb | 34 | 7 | 279 | 100 | - | ~0 | - |
+| 8 | sentence: target an opposing | sentence verb | 34 | 29 | 313 | 63 | - | ~0 | Comprehensive Rules/Effect Texts #Targets of Effects; Comprehensive Rules/Effect Texts #Do as Much as Possible |
+| 9 | wiki template {{Accel}} | keyword template | 28 | 0 | 341 | 156 | 0/23 | 0 | Accel; Comprehensive Rules/Card Cost and Payment #{{Tk|Accel}} |
+| 10 | v2 reveal: no "remaining cards" ending | sentence verb | 28 | 3 | 369 | 75 | - | ~0 | Comprehensive Rules/Effect Texts #"Remaining Cards" & "Otherwise" (「残ったカード」と「それ以外」/「他のカード」); Comprehensive Rules/Other Explanations of Rules #Revealed Cards |
+| 11 | Rush on a Magic | card kind | 28 | 0 | 397 | 28 | - | ~0 | Rush |
+| 12 | no trigger: (When Battles) | event trigger head | 27 | 0 | 424 | 87 | 4/24 | 4 | Comprehensive Rules/Categories of Effects #Spirits' "When Attacks/Blocks" Effects |
+| 13 | no trigger: When this card | event trigger head | 22 | 0 | 446 | 146 | 0/5 | 0 | Comprehensive Rules/Depletion #When Spirits/Ultimates are Depleted by the Opponent; Comprehensive Rules/Categories of Effects #Spirit/Nexus' "When Destroyed" Effects; Comprehensive Rules/Destruction #Resolving Destruction |
+| 14 | no trigger: Flash - (Either | step timing head | 23 | 0 | 469 | 106 | - | ~0 | Comprehensive Rules/Categories of Effects #Effects Which Activate During Specific Steps; Comprehensive Rules/Categories of Effects #Interruptive Effects |
+| 15 | no trigger: (Once per Turn: Same Name) | event trigger head | 24 | 0 | 493 | 139 | 0/9 | 0 | Comprehensive Rules/Categories of Effects #"(Once Per Turn: Same Name)" and "Once Per Turn, ..." |
+| 16 | no trigger: When the opponent | event trigger head | 23 | 0 | 516 | 70 | 3/14 | 5 | - |
+| 17 | sentence: (once per turn: | duration / connective | 23 | 0 | 539 | 57 | - | ~0 | Comprehensive Rules/Categories of Effects #"(Once Per Turn: Same Name)" and "Once Per Turn, ..." |
+| 18 | v2 battle effect outside a battle trigger | sentence verb | 22 | 6 | 561 | 23 | - | ~0 | - |
+| 19 | no trigger: While you control | turn / while head | 21 | 0 | 582 | 96 | 0/13 | 0 | Comprehensive Rules/Categories of Effects #Constant Effects |
+| 20 | no trigger: When this Spirit | event trigger head | 21 | 1 | 603 | 83 | 2/15 | 3 | Comprehensive Rules/Depletion #When Spirits/Ultimates are Depleted by the Opponent; Comprehensive Rules/Categories of Effects #Spirit/Nexus' "When Destroyed" Effects; Comprehensive Rules/Destruction #Resolving Destruction |
+| 21 | Armor text | card kind | 21 | 0 | 624 | 76 | - | ~0 | Armor (Keyword); Comprehensive Rules/Effect Texts #"Unaffected by Effects" Effects (効果を受けない) |
+| 22 | no trigger: (Permanent) | turn / while head | 21 | 0 | 645 | 28 | 0/21 | 0 | Comprehensive Rules/Categories of Effects #Constant Effects |
+| 23 | sentence: if you control | sentence verb | 20 | 8 | 665 | 71 | - | ~0 | Comprehensive Rules/Effect Texts #Do as Much as Possible |
+| 24 | no trigger: (Can't Stack) | event trigger head | 20 | 3 | 685 | 91 | 0/8 | 0 | Comprehensive Rules/Effect Texts #Denial Effects (～できない) |
+| 25 | no trigger: (During Attack) | event trigger head | 20 | 20 | 705 | 51 | 0/12 | 0 | - |
+| 26 | Ultimate with no summon condition block (Contract Advent / Manifest or other tex | card kind | 20 | 0 | 725 | 20 | - | ~0 | Ultimate Trigger |
+| 27 | no trigger: This Spirit can't | event trigger head | 19 | 2 | 744 | 75 | - | ~3 | Comprehensive Rules/Effect Texts #Denial Effects (～できない) |
+| 28 | no trigger: Once per turn, | event trigger head | 19 | 0 | 763 | 72 | 0/5 | 0 | Comprehensive Rules/Categories of Effects #"(Once Per Turn: Same Name)" and "Once Per Turn, ..." |
+| 29 | no trigger: (When Deployed) | event trigger head | 18 | 4 | 781 | 89 | 1/3 | 6 | Comprehensive Rules/Categories of Effects #"When Summoned/[[Advent|Advents]]" Effects and "When Deployed" Effects; Comprehensive Rules/Categories of Effects #Summoning or Deploying via Effects |
+| 30 | no trigger: (Your Turn) | turn / while head | 20 | 1 | 801 | 82 | 0/5 | 0 | Comprehensive Rules/Categories of Effects #Constant Effects |
+| 31 | no trigger: (Opposing Turn) | turn / while head | 20 | 1 | 821 | 77 | 0/9 | 0 | Comprehensive Rules/Categories of Effects #Constant Effects |
+| 32 | no trigger: When your Life | event trigger head | 20 | 1 | 841 | 81 | 3/11 | 5 | - |
+| 33 | no trigger: Give all your | event trigger head | 19 | 1 | 860 | 54 | - | ~3 | - |
+| 34 | no trigger: When your Spirits | event trigger head | 19 | 0 | 879 | 51 | 2/9 | 4 | - |
+| 35 | no trigger: Cards can't be | event trigger head | 19 | 0 | 898 | 44 | - | ~3 | Comprehensive Rules/Effect Texts #Denial Effects (～できない) |
+| 36 | sentence: when only the | sentence verb | 18 | 0 | 916 | 70 | - | ~0 | Comprehensive Rules/Categories of Effects #Spirits' "When Attacks/Blocks" Effects |
+| 37 | sentence: destroy an opposing | sentence verb | 18 | 0 | 934 | 63 | - | ~0 | Comprehensive Rules/Destruction #Resolving Destruction; Comprehensive Rules/Effect Texts #Targets of Effects |
+| 38 | v2 destroy: filter other | sentence verb | 19 | 1 | 953 | 61 | - | ~0 | Comprehensive Rules/Destruction #Resolving Destruction; Comprehensive Rules/Effect Texts #Targets of Effects |
+| 39 | no trigger: When your Spirit | event trigger head | 18 | 1 | 971 | 61 | 2/7 | 5 | - |
+| 40 | no trigger: When only the | event trigger head | 19 | 2 | 990 | 47 | 4/8 | 10 | - |
+| 41 | wiki template {{Seal}} | keyword template | 18 | 0 | 1,008 | 55 | 0/13 | 0 | Seal |
+| 42 | Magic paragraph without Main/Flash: When this card was either revealed from deck | card kind | 18 | 0 | 1,026 | 18 | - | ~0 | - |
+| 43 | no trigger: (Start of Your Attack Step) | step timing head | 17 | 4 | 1,043 | 60 | 0/6 | 0 | Comprehensive Rules/Categories of Effects #Effects Which Activate During Specific Steps; Comprehensive Rules/Categories of Effects #"At the Beginning of the Step"/"At the End of the Step"; Official Rule Manual (Standard) #Turn Procedures |
+| 44 | no trigger: When an opposing | event trigger head | 17 | 0 | 1,060 | 44 | 1/3 | 6 | - |
+| 45 | no trigger: When you're summoning | event trigger head | 17 | 1 | 1,077 | 42 | 0/11 | 0 | - |
+| 46 | no trigger: (When Depleted/Destroyed by the Opponent) | event trigger head | 17 | 0 | 1,094 | 31 | 2/10 | 3 | Comprehensive Rules/Depletion #When Spirits/Ultimates are Depleted by the Opponent; Comprehensive Rules/Categories of Effects #Spirit/Nexus' "When Destroyed" Effects; Comprehensive Rules/Destruction #Resolving Destruction |
+| 47 | no trigger: (During Your Battle Phase) | step timing head | 17 | 0 | 1,111 | 24 | 0/12 | 0 | Comprehensive Rules/Categories of Effects #Effects Which Activate During Specific Steps |
+| 48 | sentence: by discarding a | sentence verb | 16 | 0 | 1,127 | 43 | - | ~0 | Comprehensive Rules/Effect Texts #"By doing A, do B" (～することで、～する) |
+| 49 | wiki template {{SSoul}} | keyword template | 16 | 0 | 1,143 | 35 | 0/11 | 0 | Spirit Soul |
+| 50 | no trigger: This Spirit is | event trigger head | 16 | 0 | 1,159 | 27 | - | ~3 | - |
+| 51 | sentence: target one of | sentence verb | 16 | 16 | 1,175 | 25 | - | ~0 | Comprehensive Rules/Effect Texts #Targets of Effects; Comprehensive Rules/Effect Texts #Do as Much as Possible |
+| 52 | no trigger: While you have | turn / while head | 15 | 0 | 1,190 | 54 | 0/3 | 0 | Comprehensive Rules/Categories of Effects #Constant Effects |
+| 53 | no trigger: Flash - (Opposing | step timing head | 16 | 2 | 1,206 | 46 | - | ~0 | Comprehensive Rules/Categories of Effects #Effects Which Activate During Specific Steps; Comprehensive Rules/Categories of Effects #Interruptive Effects |
+| 54 | wiki template {{Assault}} | keyword template | 15 | 0 | 1,221 | 43 | 0/4 | 0 | Assault |
+| 55 | no trigger: All your Spirits | event trigger head | 15 | 4 | 1,236 | 35 | - | ~2 | - |
+| 56 | no trigger: If you control | event trigger head | 15 | 7 | 1,251 | 35 | 1/9 | 2 | - |
+| 57 | v2 destroy: count all | sentence verb | 15 | 0 | 1,266 | 28 | - | ~0 | Comprehensive Rules/Destruction #Resolving Destruction; Comprehensive Rules/Effect Texts #Targets of Effects |
+| 58 | sentence: target and attack | sentence verb | 15 | 0 | 1,281 | 53 | - | ~0 | Comprehensive Rules/Effect Texts #Targets of Effects; Comprehensive Rules/Effect Texts #Do as Much as Possible |
+| 59 | sentence: at the end | sentence verb | 16 | 0 | 1,297 | 43 | - | ~0 | - |
+| 60 | sentence: discard a card | sentence verb | 15 | 0 | 1,312 | 27 | - | ~0 | - |
+
+## Measured order (real yield first)
+
+Measured = of the cards whose ONLY blocker is the row, how many compile once its head is swapped for a head the compiler already reads (`tools/pack_measure.py`); this tests the BODY under the head, the part the upper bound ignores (v0.70.0 step window: ~300 promised, +4 built). Est. real = New x measured ratio; "~" = no pure single-blocker sample or no head to swap, so the median ratio of the family is used. It is an estimate: the pack still has to teach the engine the head itself.
+
+| Rank | Blocker | Est. real | Upper bound | Next blockers revealed (bundle these) |
+|---|---|---|---|---|
+| 1 | no trigger: When only the | 10 | 19 | no trigger: When only the (1); sentence: refresh the blocking (1); sentence: discard cards from (1) |
+| 2 | no trigger: (When Deployed) | 6 | 18 | sentence: put a core (1); sentence: show up to (1) |
+| 3 | no trigger: When an opposing | 6 | 17 | braved paragraph trigger SUMMONED (1); sentence: unless the opponent (1) |
+| 4 | no trigger: When your Life | 5 | 20 | no trigger: When your Life (2); sentence: summon this spirit (1); sentence: refresh a yellow (1) |
+| 5 | no trigger: When your Spirit | 5 | 18 | no trigger: When your Spirit (3); sentence: it returns to (1); sentence: send all cores (1) |
+| 6 | no trigger: When the opponent | 5 | 23 | no trigger: When the opponent (4); sentence: they must pay (1); sentence: send four cores (1) |
+| 7 | no trigger: (When Battles) | 4 | 27 | sentence: at the end (2); sentence: when only the (2); braved paragraph trigger SUMMONED (2) |
+| 8 | no trigger: When your Spirits | 4 | 19 | sentence: by discarding four (1); Burst sentence (1); sentence: they remain on (1) |
+| 9 | no trigger: (When Depleted/Destroyed by the Opponent) | 3 | 17 | sentence: send a core (1); sentence: send three cores (1); sentence: if you control (1) |
+| 10 | no trigger: This Spirit can't | 3 | 19 | - |
+| 11 | no trigger: Give all your | 3 | 19 | - |
+| 12 | no trigger: Cards can't be | 3 | 19 | - |
+| 13 | no trigger: When this Spirit | 3 | 21 | sentence: guard that ultimate (2); no trigger: When this Spirit (1); sentence: send a core (1) |
+| 14 | no trigger: This Spirit is | 3 | 16 | - |
+| 15 | no trigger: All your Spirits | 2 | 15 | - |
+| 16 | wiki template {{Rush}} | 2 | 47 | sentence: destroy an opposing (4); sentence: put a core (4); sentence: this spirit gains (3) |
+| 17 | no trigger: If you control | 2 | 15 | sentence: all your spirits (1); sentence: you draw +1 (1); sentence: increase the number (1) |
+| 18 | wiki template {{Mirage}} | 0 | 47 | sentence: during set (when (4); sentence: during set (your (3); sentence: during set (either (2) |
+| 19 | keyword | 0 | 47 | - |
+| 20 | wiki template {{mirage}} | 0 | 36 | Magic paragraph without Main/Flash: (Whe (2); Magic paragraph without Main/Flash: (Whe (1); Magic paragraph without Main/Flash: (Whe (1) |
+
+**Suggested bundle for one release (owner, 2026-10-20: 3-4 packs per release):** no trigger: When only the; no trigger: (When Deployed); no trigger: When an opposing; no trigger: When your Life (about 27 cards by estimate).
 
 ## By family (cards completed inside the table)
 
