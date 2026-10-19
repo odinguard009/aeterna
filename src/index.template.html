@@ -40,46 +40,67 @@
   <footer class="home-foot"><span id="home-ver" translate="no">Aeterna</span><button data-a="go-howto">HOW TO PLAY</button><button data-a="go-settings">SETTINGS &amp; HISTORY</button><button data-a="rules">RULES COVERAGE</button><span class="t-pcf">Unofficial non-commercial fan project</span></footer>
 </div>
 
-<div id="view-settings" class="app-view">
-  <div class="db-header"><h2>Settings</h2><div class="db-tools"><button class="btn-nav-small" data-a="go-lobby">◄ Back to Lobby</button></div></div>
-  <div class="lib-sec"><h3>Appearance</h3>Your side colour (the CPU is crimson, or blue when you pick red) and the battle screen mode. Saved on this device.
-    <div class="lib-row"><label class="sel-row">Colour <select id="set-color" class="sel"></select></label><label class="sel-row">Mode <select id="set-mode" class="sel"><option value="dark">Dark</option><option value="light">Light</option></select></label></div></div>
-  <div class="lib-sec"><h3>Game speed</h3>Animation and CPU pause length.
-    <div class="lib-row"><select id="set-speed" class="sel"><option value="normal">Normal</option><option value="fast">Fast</option><option value="instant">Instant</option></select></div></div>
-  <div class="lib-sec"><h3>Sound</h3>Short synthesized sounds for attacks, hits, summons and draws (no audio files).
-    <div class="lib-row"><select id="set-sound" class="sel"><option value="off">Off</option><option value="on">On</option></select></div></div>
-  <div class="lib-sec"><h3>CPU style</h3>How the CPU weighs attacks, blocks and plays (balanced is the default).
-    <div class="lib-row"><select id="set-cpu" class="sel"></select></div></div>
-  <div class="lib-sec"><h3>Saved data</h3>Decks, imported cards, images and settings stay in this browser only.
-    <div class="lib-row"><button class="btn-nav-small" data-a="set-reset">Reset settings</button></div></div>
-  <div class="lib-sec"><h3>Match history</h3><div id="set-hist"></div>
-    <div class="lib-row"><button class="btn-nav-small" data-a="hist-clear">Clear history</button></div></div>
-  <div id="set-msg" class="lib-msg"></div>
+<div id="view-settings" class="app-view ae-view">
+  <main class="ae-page set">
+    <header class="ae-phead"><div class="tx"><span class="ae-eyebrow">SETTINGS</span><h1>PREFERENCES</h1><p>Saved on this device.</p></div>
+      <button class="ae-ghost" data-a="go-lobby">◄ HOME</button></header>
+    <div class="set-grid">
+      <nav class="set-menu" id="set-menu" aria-label="Settings sections"><button data-a="set-sec" data-v="appearance" aria-current="true">Appearance</button><button data-a="set-sec" data-v="speed">Game speed</button><button data-a="set-sec" data-v="sound">Sound</button><button data-a="set-sec" data-v="cpu">CPU style</button><button data-a="set-sec" data-v="images">Card images</button><button data-a="set-sec" data-v="data">Saved data</button><button data-a="set-sec" data-v="history">Match history</button></nav>
+      <div class="set-body">
+        <section class="set-card" id="set-s-appearance" aria-labelledby="set-h-appearance"><h2 id="set-h-appearance">Appearance</h2>
+          <div class="srow"><div class="tx"><b id="set-l-mode">Mode</b><span>Dark or light board and menus.</span></div><span class="ae-toggle" id="set-mode" role="group" aria-labelledby="set-l-mode"><button data-a="theme-mode" data-v="dark" aria-pressed="true">DARK</button><button data-a="theme-mode" data-v="light" aria-pressed="false">LIGHT</button></span></div>
+          <div class="srow top"><div class="tx"><b id="set-l-color">Your colour</b><span>Marks your side: turn banner, zone tags, Life, card glow, buttons. Teal by default, or one of the eight card symbol colours.</span></div><div class="pgrid" id="set-color" role="group" aria-labelledby="set-l-color"></div></div>
+          <div class="srow"><div class="tx"><b>Playmat image</b><span>Your own picture behind the battle board. It fills the board; edges are trimmed when the shape differs, the centre stays.</span></div><span class="set-acts"><label class="ae-ghost ae-upl"><span>UPLOAD</span><input id="set-mat" type="file" accept="image/*" aria-label="Upload playmat image"></label><button class="ae-ghost" data-a="set-mat-clear" id="set-mat-clear">REMOVE</button></span></div>
+          <div class="srow"><div class="tx"><b>CPU colour</b><span>Crimson; blue when your colour is red, so the two sides never match.</span></div><span class="set-val" id="set-cpucol">Crimson</span></div>
+        </section>
+        <section class="set-card" id="set-s-speed" aria-labelledby="set-h-speed"><h2 id="set-h-speed">Game speed</h2>
+          <div class="srow"><div class="tx"><b>Speed</b><span>Animation and CPU pause length.</span></div><select id="set-speed" class="sel" aria-label="Game speed"><option value="normal">Normal</option><option value="fast">Fast</option><option value="instant">Instant</option></select></div></section>
+        <section class="set-card" id="set-s-sound" aria-labelledby="set-h-sound"><h2 id="set-h-sound">Sound</h2>
+          <div class="srow"><div class="tx"><b>Sound effects</b><span>Short synthesized sounds for attacks, hits, summons and draws (no audio files).</span></div><select id="set-sound" class="sel" aria-label="Sound"><option value="off">Off</option><option value="on">On</option></select></div></section>
+        <section class="set-card" id="set-s-cpu" aria-labelledby="set-h-cpu"><h2 id="set-h-cpu">CPU style</h2>
+          <div class="srow"><div class="tx"><b>Style</b><span>How the CPU weighs attacks, blocks and plays (balanced is the default).</span></div><select id="set-cpu" class="sel" aria-label="CPU style"></select></div></section>
+        <section class="set-card" id="set-s-images" aria-labelledby="set-h-images"><h2 id="set-h-images">Card images</h2>
+          <div class="srow"><div class="tx"><b>Your card images</b><span id="set-imgs">Pictures you add in the Library. They stay on this device.</span></div><button class="ae-ghost" data-a="go-lib">OPEN LIBRARY</button></div></section>
+        <section class="set-card" id="set-s-data" aria-labelledby="set-h-data"><h2 id="set-h-data">Saved data</h2>
+          <div class="srow"><div class="tx"><b>Reset settings</b><span>Decks, imported cards, images and settings stay in this browser only. Reset puts speed, sound, CPU deck and CPU style back to the defaults.</span></div><button class="ae-ghost" data-a="set-reset">RESET</button></div></section>
+        <section class="set-card" id="set-s-history" aria-labelledby="set-h-history"><h2 id="set-h-history">Match history</h2>
+          <div id="set-hist" class="set-hist"></div>
+          <div class="srow"><div class="tx"><b>Clear history</b><span>Removes the list of finished matches.</span></div><button class="ae-ghost" data-a="hist-clear">CLEAR</button></div></section>
+        <div id="set-msg" class="lib-msg" role="status"></div>
+      </div>
+    </div>
+  </main>
 </div>
 
-<div id="view-howto" class="app-view">
-  <div class="db-header"><h2>How to play</h2><div class="db-tools"><button class="btn-nav-small" data-a="go-lobby">◄ Back to Lobby</button></div></div>
-  <div class="lib-sec"><h3>Goal</h3>Reduce the opposing Life from 5 to 0 by attacking with your Spirits, or make the opponent run out of cards at the start of their turn.</div>
-  <div class="lib-sec"><h3>A turn</h3><ul>
-    <li><b>Start / Core:</b> you gain a core (the first player skips it on turn 1).</li>
-    <li><b>Draw:</b> draw one card. <b>Refresh:</b> exhausted cards stand up and Trash cores return to the Reserve.</li>
-    <li><b>Main:</b> summon Spirits, deploy Nexuses, cast Magic, set a Burst, move cores, use effects. Press <b>NEXT</b> to move on.</li>
-    <li><b>Attack:</b> choose a Spirit to attack. The defender may block with one ready Spirit; the higher BP wins (ties destroy both). An unblocked attack removes Life equal to its symbols.</li>
-    <li><b>End:</b> the turn passes. In Standard there is also a second Main step.</li></ul></div>
-  <div class="lib-sec"><h3>Cores and costs</h3><ul>
-    <li>Pay a card's cost with Reserve cores (or cores from your Spirits). Matching-color cards on your field reduce the cost.</li>
-    <li>A Spirit's <b>level</b> depends on the cores on it; more cores means more BP. A Spirit with too few cores is depleted and goes to the Trash.</li>
-    <li>The <b>Soul Core</b> is a special core; some effects send it to the Trash, a Nexus or the Void.</li></ul></div>
-  <div class="lib-sec"><h3>Special cards</h3><ul>
-    <li><b>Burst:</b> set a card face down in the Burst area; it flips by itself when its condition happens.</li>
-    <li><b>Flash:</b> Magic and effects usable during the two Flash windows of a battle (defender first).</li>
-    <li><b>Advent / Contract Advent / Manifest:</b> stack or summon a stronger card using the Soul Core. Buttons appear on the card in your Hand.</li>
-    <li><b>Soul State / Void:</b> extra zones shown in the top-right corner (Soul State) and the side panel (Void).</li></ul></div>
-  <div class="lib-sec"><h3>Controls</h3><ul>
-    <li>Tap a card to open its actions; tap a zone (Trash, Soul State, Burst...) to look inside it. Long-press a card to zoom it.</li>
-    <li>On a PC, hover a card to read it. Keyboard: <b>Space</b> or <b>Enter</b> = Next step, <b>L</b> = game log, <b>Esc</b> = close.</li>
-    <li>The game log (📜) lists everything that happened. Settings let you change the game speed and sounds.</li></ul></div>
-  <div class="lib-sec"><h3>Your cards</h3>Open <b>Card Library</b> to import card data and your own card images (they stay on your device). The Deck Builder has 8 deck slots and ready-made decks.</div>
+<div id="view-howto" class="app-view ae-view">
+  <main class="ae-page doc">
+    <header class="ae-phead"><div class="tx"><span class="ae-eyebrow">HOW TO PLAY</span><h1>THE BASICS</h1><p>A match in five minutes: goal, turn, cores, special cards and controls.</p></div>
+      <button class="ae-ghost" data-a="go-lobby">◄ HOME</button></header>
+    <div class="doc-grid">
+      <section class="doc-card"><h2>Goal</h2><p>Reduce the opposing Life from 5 to 0 by attacking with your Spirits, or make the opponent run out of cards at the start of their turn.</p></section>
+      <section class="doc-card"><h2>A turn</h2><ul>
+        <li><b>Start / Core:</b> you gain a core (the first player skips it on turn 1).</li>
+        <li><b>Draw:</b> draw one card. <b>Refresh:</b> exhausted cards stand up and Trash cores return to the Reserve.</li>
+        <li><b>Main:</b> summon Spirits, deploy Nexuses, cast Magic, set a Burst, move cores, use effects. Press <b>NEXT</b> to move on.</li>
+        <li><b>Attack:</b> choose a Spirit to attack. The defender may block with one ready Spirit; the higher BP wins (ties destroy both). An unblocked attack removes Life equal to its symbols.</li>
+        <li><b>End:</b> the turn passes. In Standard there is also a second Main step.</li></ul></section>
+      <section class="doc-card"><h2>Cores and costs</h2><ul>
+        <li>Pay a card's cost with Reserve cores (or cores from your Spirits). Matching-color cards on your field reduce the cost.</li>
+        <li>A Spirit's <b>level</b> depends on the cores on it; more cores means more BP. A Spirit with too few cores is depleted and goes to the Trash.</li>
+        <li>The <b>Soul Core</b> is a special core; some effects send it to the Trash, a Nexus or the Void.</li></ul></section>
+      <section class="doc-card"><h2>Special cards</h2><ul>
+        <li><b>Burst:</b> set a card face down in the Burst area; it flips by itself when its condition happens.</li>
+        <li><b>Flash:</b> Magic and effects usable during the two Flash windows of a battle (defender first).</li>
+        <li><b>Advent / Contract Advent / Manifest:</b> stack or summon a stronger card using the Soul Core. Buttons appear on the card in your Hand.</li>
+        <li><b>Soul State / Void:</b> extra zones shown in the top-right corner (Soul State) and the side panel (Void).</li></ul></section>
+      <section class="doc-card"><h2>Controls</h2><ul>
+        <li>Tap a card to open its actions; tap a zone (Trash, Soul State, Burst…) to look inside it. Long-press a card to zoom it.</li>
+        <li>On a PC, hover a card to read it. Keyboard: <kbd>Space</kbd> or <kbd>Enter</kbd> = Next step, <kbd>L</kbd> = game log, <kbd>Esc</kbd> = close.</li>
+        <li>The game log (📜) lists everything that happened. Settings let you change the game speed and sounds.</li></ul></section>
+      <section class="doc-card"><h2>Your cards</h2><p>Open the <b>Library</b> to import card data and your own card images (they stay on your device). The Deck Builder has 8 deck slots and ready-made decks.</p>
+        <div class="doc-acts"><button class="ae-ghost" data-a="go-lib">OPEN LIBRARY</button><button class="ae-ghost" data-a="rules">RULES COVERAGE</button></div></section>
+    </div>
+  </main>
 </div>
 
 <div id="view-play" class="app-view">
@@ -151,21 +172,25 @@
   <div class="db-backdrop" data-a="db-sheet" data-v=""></div>
 </div>
 
-<div id="view-library" class="app-view">
-  <div class="db-header"><h2>Card Library</h2><div class="db-tools"><button class="btn-nav-small" data-a="go-lobby">◄ Back to Lobby</button></div></div>
-  <div class="lib-sec"><h3>1. Card data (JSON)</h3>
-    Load your own card list. Only Spirit and Nexus cards work in this build. Imported cards have no coded effect, so their text is shown for reference only.
-    <div class="lib-row"><label class="file-btn">Import card data<input id="in-cards" type="file" accept=".json,application/json"></label>
-    <button class="btn-nav-small" data-a="lib-template">Download template</button><button class="btn-nav-small" data-a="lib-cards-clear">Remove imported cards</button></div></div>
-  <div class="lib-sec"><h3>2. Card images</h3>
-    Pick image files from your own device. A file is matched to a card by (1) the <b>image</b> field in your card data, so any file name works, (2) the card ID (for example <b>BS76-001.png</b>), or (3) the exact card name. Images stay in this browser only and are never uploaded.
-    <div class="lib-row"><label class="file-btn">Import images<input id="in-imgs" type="file" accept="image/*" multiple></label>
-    <button class="btn-nav-small" data-a="lib-imgs-clear">Remove all images</button><span id="lib-imgcount"></span></div></div>
-  <div class="lib-sec"><h3>3. Deck list (text)</h3>
-    One card per line: <b>3 BS44-001</b> or <b>3x Card Name</b>. Lines starting with # are ignored.
-    <textarea id="lib-deck" class="lib-area" spellcheck="false"></textarea>
-    <div class="lib-row"><button class="btn-nav-small" data-a="lib-deck-import">Import as my deck</button><button class="btn-nav-small" data-a="lib-deck-export">Export my deck</button></div></div>
-  <div id="lib-msg" class="lib-msg"></div>
+<div id="view-library" class="app-view ae-view">
+  <main class="ae-page doc">
+    <header class="ae-phead"><div class="tx"><span class="ae-eyebrow" id="lib-eyebrow">CARD LIBRARY</span><h1>LIBRARY</h1><p>Card data, your card images and deck lists. Everything stays on this device.</p></div>
+      <button class="ae-ghost" data-a="go-lobby">◄ HOME</button></header>
+    <section class="doc-card"><h2><span class="no" aria-hidden="true">1</span>Card data (JSON)</h2>
+      <p>Load your own card list. Only Spirit and Nexus cards work in this build. Imported cards have no coded effect, so their text is shown for reference only.</p>
+      <div class="doc-acts"><label class="ae-ghost ae-upl primary"><span>IMPORT CARD DATA</span><input id="in-cards" type="file" accept=".json,application/json"></label>
+      <button class="ae-ghost" data-a="lib-template">DOWNLOAD TEMPLATE</button><button class="ae-ghost" data-a="lib-cards-clear">REMOVE IMPORTED CARDS</button></div></section>
+    <section class="doc-card"><h2><span class="no" aria-hidden="true">2</span>Card images</h2>
+      <p>Pick image files from your own device. A file is matched to a card by (1) the <b>image</b> field in your card data, so any file name works, (2) the card ID (for example <b translate="no">BS76-001.png</b>), or (3) the exact card name. Images stay in this browser only and are never uploaded.</p>
+      <div class="doc-acts"><label class="ae-ghost ae-upl primary"><span>IMPORT IMAGES</span><input id="in-imgs" type="file" accept="image/*" multiple></label>
+      <button class="ae-ghost" data-a="lib-imgs-clear">REMOVE ALL IMAGES</button></div>
+      <span id="lib-imgcount" class="doc-note" role="status"></span></section>
+    <section class="doc-card"><h2><span class="no" aria-hidden="true">3</span>Deck list (text)</h2>
+      <p>One card per line: <b translate="no">3 BS44-001</b> or <b>3x Card Name</b>. Lines starting with # are ignored.</p>
+      <textarea id="lib-deck" class="lib-area" spellcheck="false" aria-label="Deck list" name="deck-list" autocomplete="off" placeholder="3 BS44-001&#10;3x Card Name…"></textarea>
+      <div class="doc-acts"><button class="ae-ghost" data-a="lib-deck-import">IMPORT AS MY DECK</button><button class="ae-ghost" data-a="lib-deck-export">EXPORT MY DECK</button></div></section>
+    <div id="lib-msg" class="lib-msg" role="status"></div>
+  </main>
 </div>
 
 <div id="view-playmat" class="app-view">

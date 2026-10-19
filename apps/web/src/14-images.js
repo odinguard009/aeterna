@@ -23,7 +23,7 @@ async function loadImages() {
   await new Promise(res => {
     try {
       const tx = IDB.transaction('img', 'readonly'), rq = tx.objectStore('img').openCursor();
-      rq.onsuccess = () => { const c = rq.result; if (c) { if (CARDS[c.key]) setImg(c.key, c.value); c.continue(); } };
+      rq.onsuccess = () => { const c = rq.result; if (c) { if (c.key === MAT_KEY) matUse(c.value); else if (CARDS[c.key]) setImg(c.key, c.value); c.continue(); } };   // v0.68.0: the playmat shares the store
       tx.oncomplete = tx.onerror = tx.onabort = () => res();
     } catch (e) { res(); }
   });
@@ -60,7 +60,7 @@ async function importImages(files) {
   }
   return { ok, miss };
 }
-async function clearImages() { Object.keys(IMG).forEach(id => { URL.revokeObjectURL(IMG[id]); delete IMG[id]; }); await idbTx('readwrite', st => st.clear()); }
+async function clearImages() { Object.keys(IMG).forEach(id => { URL.revokeObjectURL(IMG[id]); delete IMG[id]; }); await idbTx('readwrite', st => { st.clear(); if (MAT.blob) st.put(MAT.blob, MAT_KEY); }); }   // the playmat is not a card image: it stays
 const imgCls = id => (IMG[id] ? ' has-img' : '');
 const imgSty = id => (IMG[id] ? `;background-image:url('${IMG[id]}')` : '');
 function refreshViews() {
@@ -118,6 +118,7 @@ document.addEventListener('change', async e => {
   else if (t.id === 'db-slot') { switchSlot(Number(t.value)); DB_UNDO.length = 0; renderDeckBuilder(); }
   else if (t.id === 'db-name') { SLOTS[ACTIVE_SLOT].name = (t.value.trim() || 'Deck ' + (ACTIVE_SLOT + 1)).slice(0, 24); saveDeck(); renderDeckBuilder(); }
   else if (t.id === 'db-preset') { const id = t.value; t.value = ''; if (id) { if (deckTotal(PLAYER_DECK) > 0) { const ok = await ask({ title: 'Replace this deck?', html: `Load "${esc((PREBUILT.find(d => d.id === id) || {}).name || id)}" into slot ${ACTIVE_SLOT + 1}? The current cards in the slot are replaced.`, buttons: [{ label: 'Replace', cls: 'primary', value: true }, { label: 'Cancel', cls: 'cancel', value: false }] }); if (!ok) return; } dbSnap(); loadPrebuilt(id); renderDeckBuilder(); } }
+  else if (t.id === 'set-mat' && t.files && t.files[0]) { const f = t.files[0]; t.value = ''; await matSet(f); }
   else if (t.id === 'set-speed') { SETTINGS.speed = SPEEDS[t.value] ? t.value : 'normal'; saveSettings(); }
   else if (t.id === 'set-cpu') setCpuProfile(t.value);
   else if (t.id === 'set-color') { setTheme('color', t.value); navTools(); if (G) render(); }
