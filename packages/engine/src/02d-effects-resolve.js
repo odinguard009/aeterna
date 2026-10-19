@@ -98,7 +98,7 @@ async function resolvePool(pending) {
     G.resolving = (G.resolving || 0) + 1;
     try { await runActions(c, e, trigger === 'ADVENT' ? 'SUMMONED' : trg); } finally { G.resolving--; }
     render(); await wait(350);
-    if (trg === 'SUMMONED' && trigger === 'SUMMONED' && !G.over) await maybeBurst(opp, 'OPP_SUMMON_FX', { summoned: f });
+    if (trg === 'SUMMONED' && (trigger === 'SUMMONED' || trigger === 'ADVENT') && !G.over) await maybeBurst(opp, trigger === 'ADVENT' ? 'OPP_ADVENT_FX' : 'OPP_SUMMON_FX', { summoned: f });   // v0.71: an Advent's (When Summoned) effect only answers the "/Advents" condition
     await flushBursts();
     await flushDerived();                                   // effects caused by this one resolve before the ones still pending
   }

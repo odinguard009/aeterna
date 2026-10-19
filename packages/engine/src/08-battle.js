@@ -34,6 +34,7 @@ async function doBattleInner(attKey, att) {
   render(); await wait(450);
   await fireFxMulti([{ owner: A, trigger: 'ATTACKS', src: att, ctx: { attacker: att } }, { owner: A, trigger: 'ALLY_ATTACKS', src: att, ctx: { attacker: att } }, { owner: D, trigger: 'OPP_ATTACKS', src: att, ctx: { attacker: att } }]);   // one simultaneous pool
   if (G.over) { G.attacker = null; return; }
+  if (A.spirits.includes(att)) { await maybeBurst(D, 'OPP_ATTACK', { attacker: att }); await flushBursts(); if (G.over) { G.attacker = null; return; } }   // v0.71 Burst "After an opposing Spirit attacks": after the attack's (When Attacks) effects
   att = (await flashTiming(attKey, att, null))[0];
   if (G.over) return;
   if (!A.spirits.includes(att)) { log('The attack ends: the attacking Spirit left the field.'); render(); return; }
@@ -81,10 +82,12 @@ async function maybeBurst(owner, trigger, ctx) {
   const b = owner.burst; if (!b || b.mirage || !G || G.over) return false;
   if (G.noBurst === owner.key) return false;           // v0.38 "the opponent can't activate Burst effects" (this battle)
   const def = CARDS[b.id].burst, opp = G.p[other(owner.key)];
+  const when = def && def.when === 'OPP_SUMMON_ADV_FX' && (trigger === 'OPP_SUMMON_FX' || trigger === 'OPP_ADVENT_FX') ? def.when : trigger;   // v0.71 "(When Summoned/Advents)" Burst condition
   const also = !!def && !!def.also && def.also.when === trigger && (!ctx || !ctx.subject || fxMatch(CARDS[ctx.subject.id], def.also.match)) && (!def.also.if || fxIf(owner, opp, def.also.if));   // v0.47 Dana Draw
-  if (!def || (def.when !== trigger && !also)) return false;
+  if (!def || (def.when !== when && !also)) return false;
   const c = { p: owner, opp, src: b, ctx: Object.assign({}, ctx), burst: true, summoned: false };
   if (!fxIf(owner, opp, def.if)) return false;
+  if (def.noUlt && ctx && ctx.attacker && CARDS[ctx.attacker.id].type === 'Ultimate') return false;   // v0.71 "After an opposing Spirit attacks" (not "Spirit/Ultimate")
   if (!def.actions.some(a => !FX_ACTIONS[a.do].can || FX_ACTIONS[a.do].can(c, a))) return false;
   const use = owner.cpu ? true : (await ask({
     title: '💥 Burst', peek: true, wide: true, html: `${esc(CARDS[b.id].name)} can be activated (${esc(BURST_WHEN[def.when])}): ${esc(fxDescribe(def))}.` + cardStripHTML([b]),

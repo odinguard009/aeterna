@@ -25,6 +25,7 @@ Review = v1.Review
 _V1_ACTION_OF = v1.action_of
 _V1_SENTENCES = v1.sentences
 _V1_COMPILE = v1.compile_card
+_V1_CLEAN = v1.clean
 
 NUMW = {'a': 1, 'an': 1, 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6}
 COL = r'(?:red|purple|green|white|yellow|blue)'
@@ -344,7 +345,62 @@ def grammar(s, ctx=None):
     return clause(x), opt
 
 
+# v0.71 condition clauses in front of an action: "If you have a Burst set, ...", "If you control any Ultimate, also, ...".
+# The condition becomes the action's "if" (engine fxIf: burstSet, oppBurstSet, ctrl). "instead" (a replacement) stays in review.
+COND_LEAD = re.compile(r'^(?:then,? )?(?:if|when) (.+?), (?:also,? )?(?!instead)(.+)$', re.I)
+CTRL_ANY = re.compile(r'^you control (?:any|an?|one or more) (?:(red|purple|green|white|yellow|blue) )?(?:"([^"]+)" family )?(spirit/ultimate|spirit|ultimate)s?$', re.I)
+
+
+def cond_of(x):
+    """condition text -> fxIf dict or None"""
+    x = x.strip()
+    m = re.fullmatch(r"you (don't |do not )?have an? (?:set burst|burst set)", x, re.I)
+    if m: return {'burstSet': not m.group(1)}
+    m = re.fullmatch(r"the opponent (doesn't |does not )?ha(?:s|ve) an? (?:set burst|burst set)", x, re.I)
+    if m: return {'oppBurstSet': not m.group(1)}
+    m = re.fullmatch(r'you control (?:an? |any )?\[([^\]/]+)\]', x, re.I)
+    if m: return {'controlName': m.group(1).strip()}
+    m = re.fullmatch(r'you have (one|two|three|four|five|\d) counters? or more', x, re.I)
+    if m: return {'counterGe': n_of(m.group(1).lower())}
+    m = re.fullmatch(r'you control (one|two|three|four|five|six|\d) or more (?:(red|purple|green|white|yellow|blue) )?(?:"([^"]+)" family )?(spirit/ultimate|spirit|ultimate)s', x, re.I)
+    if m:
+        q = {'n': n_of(m.group(1).lower()), 'type': 'Both' if '/' in m.group(4) else m.group(4).capitalize()}
+        if m.group(2): q['colors'] = [m.group(2).lower()]
+        if m.group(3): q['family'] = m.group(3)
+        return {'ctrl': q} if q['n'] <= 5 else None
+    m = CTRL_ANY.fullmatch(x)
+    if m:
+        q = {'n': 1, 'type': 'Both' if '/' in m.group(3) else m.group(3).capitalize()}
+        if m.group(1): q['colors'] = [m.group(1).lower()]
+        if m.group(2): q['family'] = m.group(2)
+        return {'ctrl': q}
+    return None
+
+
+def clean(text):
+    """v0.71: v1 clean() without its blanket "Burst" stop: a sentence that names a Burst reaches action_of, which reads the
+    Burst conditions above and sends every other Burst sentence to review (BURST_WORD)"""
+    try:
+        return _V1_CLEAN(text)
+    except Review as e:
+        if str(e) != 'Burst': raise
+    t = (text or '').replace('\r', '').strip()
+    return v1.VERSION_LABEL.sub('', t).strip()
+
+
+BURST_WORD = re.compile(r'\bbursts?\b|\u263c', re.I)
+
+
 def action_of(s, ctx):
+    m = COND_LEAD.match(s.strip())
+    cond = cond_of(m.group(1)) if m else None
+    if cond:
+        if re.search(r'\binstead\b', s, re.I): raise Review('sentence: ' + s[:140])
+        body = m.group(2).strip(); body = body[0].upper() + body[1:]
+        a, o = action_of(body, ctx)
+        if any(set(cond) & set(y.get('if') or {}) for y in a): raise Review('sentence: ' + s[:140])
+        return [dict(y, **{'if': dict(y.get('if') or {}, **cond)}) for y in a], o
+    if BURST_WORD.search(s): raise Review('Burst sentence: ' + s[:140])
     try:
         return _V1_ACTION_OF(s, ctx)
     except Review as e1:
@@ -381,24 +437,45 @@ def rush_norm(t):
     return RUSH_VAR.sub(lambda m: '{{Rush|%s}}%s(While you have a %s symbol, the following effect activates next)' % (m.group(1), m.group(2), m.group(1)), t)
 
 
+def burst_norm(t):
+    """v0.71: older export spelling "\u263c[ Burst: <condition> ]" = {{Burst|<condition>}}"""
+    return re.sub(r'\u263c\s*\[\s*Burst:\s*([^\]]+?)\s*\]', lambda m: '{{Burst|' + m.group(1) + '}}', t) if t and '\u263c' in t else t
+
+
 def compile_card(c):
     t = c.get('text')
+    t2 = burst_norm(t)
+    if t2 != t: c = dict(c, text=t2); t = t2
     if t and '{{Rush|' in t:
         t2 = rush_norm(t)
         if t2 != t: c = dict(c, text=t2); t = t2
     if t and '[LV' in t and '-' in t:
         c = dict(c, text=lv_dash(t))
-    return _V1_COMPILE(c)
+    alt, t0 = None, c.get('text')
+    m = BURST_COST.search(t0 or '')
+    if m:       # v0.71 "While you have a Burst set, this Spirit card in Hand becomes Cost N" = costAlt {cost, if: {burstSet}} (engine costAltActive)
+        if c['type'] != 'Spirit': raise Review('Burst cost paragraph on a ' + c['type'])
+        alt = {'cost': int(m.group(1)), 'if': {'burstSet': True}}
+        c = dict(c, text=(t0[:m.start()] + '\n\n' + t0[m.end():]).strip())
+    n = _V1_COMPILE(c)
+    if alt:
+        if n.get('costAlt'): raise Review('two cost changes')
+        n['costAlt'] = alt; n['text'] = t0
+    return n
+
+
+BURST_COST = re.compile(r'(?:^|\n\s*\n)\s*While you have an? (?:set Burst|Burst set), this Spirit card in (?:your )?Hand becomes Cost (\d+)\.?\s*(?=\n\s*\n|$)', re.I)
 
 
 def install():
     """route v1's helpers through v2 (module globals are looked up at call time)"""
     v1.action_of = action_of
     v1.sentences = sentences
+    v1.clean = clean
 
 
 def uninstall():
-    v1.action_of, v1.sentences = _V1_ACTION_OF, _V1_SENTENCES
+    v1.action_of, v1.sentences, v1.clean = _V1_ACTION_OF, _V1_SENTENCES, _V1_CLEAN
 
 
 def run(cards):
@@ -422,7 +499,7 @@ def blockers(c):
         first = str(e)
     if c['type'] not in ('Spirit', 'Brave', 'Nexus') or not c.get('levels'): return [first]
     out = []
-    t = v1.invoke_mark(v1.TRUE_RELEASE.sub('[LV2] ', v1.LEGACY_HEAD.sub('', lv_dash(c.get('text') or ''), count=1)))      # v0.68: Invoke + True Release heads are read; v0.69: the (Legacy) head too
+    t = v1.invoke_mark(v1.TRUE_RELEASE.sub('[LV2] ', v1.LEGACY_HEAD.sub('', lv_dash(burst_norm(c.get('text')) or ''), count=1)))      # v0.68: Invoke + True Release heads are read; v0.69: the (Legacy) head too
     try:
         b, t = v1.burst_block(t)
     except Review as e:

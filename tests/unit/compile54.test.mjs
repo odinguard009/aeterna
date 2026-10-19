@@ -40,7 +40,7 @@ test('C54-04 Burst block: known conditions, summon this card, then-Flash for Mag
   assert.deepEqual(s.burst, { when: 'LIFE_DECREASE', actions: [{ do: 'DRAW', n: 1 }, { do: 'SUMMON_SELF' }] });
   const m = compile("{{Burst|After your Spirit is destroyed by the opponent}}\nDraw two cards. Then, by paying the cost, activate this card's Flash effect.\n\nFlash\nDraw a card.", { type: 'Magic', levels: [] });
   assert.deepEqual(m.burst, { when: 'ALLY_DESTROYED', actions: [{ do: 'DRAW', n: 2 }], thenFlash: true });
-  assert.match(compile('{{Burst|After an opposing Spirit/Ultimate attacks}}\nSummon this card.\n\n[LV1] (When Attacks) Draw a card.').review, /Burst condition/);
+  assert.match(compile('{{Burst|After an opposing Grand Skill resolves}}\nSummon this card.\n\n[LV1] (When Attacks) Draw a card.').review, /Burst condition/);   // v0.71: "attacks" is a known condition now (OPP_ATTACK)
   assert.match(compile('{{Burst|After your Life is reduced}}\nDraw a card.\n\n[LV1] (When Attacks) Draw a card.').review, /without the summon/);
 });
 test('C54-05 in the game: a destroyed Spirit draws, Attack Step BP only on your turn, the second colour counts', async () => {

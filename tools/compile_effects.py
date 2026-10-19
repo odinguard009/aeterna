@@ -230,6 +230,7 @@ OPP_ATT_BODY = re.compile(r'^When an opposing (?:Cost (\d+) or less )?Spirit(/Ul
 ALLY_ATT_BODY = re.compile(r'^When (?:one of )?your (?:"([^"]+)" family |(Red|Purple|Green|White|Yellow|Blue) )?Spirits? attacks?,\s*')
 OWN_BP_BODY = re.compile(r'^All (?:of )?your (?:"([^"]+)" family )?Spirits (?:gain|get) \+(\d[\d,]*) ?BP\.?$', re.I)
 SELF_BP_BODY = re.compile(r'^This Spirit (?:gains|gets) \+(\d[\d,]*) ?BP\.?$', re.I)
+BURST_WHILE = re.compile(r"^While you (don't )?have an? (?:set Burst|Burst set),\s*", re.I)
 BLOCK_EXH_BODY = re.compile(r'^This Spirit can block (?:opposing Spirits )?while exhausted\.?$', re.I)
 
 
@@ -241,6 +242,9 @@ def step_window(p, card, lv, rush):
     if not body or STEP_HEAD.match(body): raise Review('no trigger: ' + p[:100])
     win = {'step': step}
     if who != 'Either': win['oppTurn'] = who == 'Opposing'
+    mw = BURST_WHILE.match(body)
+    if mw:      # v0.71 "(Your Attack Step) While you have a set Burst, <effect>" = one more window condition
+        win['burstSet'] = not mw.group(1); body = body[mw.end():].strip(); body = body[0].upper() + body[1:]
     flags = {}
     e = None
     mm = OPP_ATT_BODY.match(body)
@@ -498,29 +502,35 @@ def magic_card(paras, n=None):
 
 
 # ---------- Burst (v0.54) ----------
-BURST_WHEN = [   # Fandom {{Burst|...}} condition -> engine BURST_WHEN key (02c-effects-parse.js)
-    (r'after your life is reduced', 'LIFE_DECREASE'),
-    (r'after your spirit is destroyed by the opponent', 'ALLY_DESTROYED'),
-    (r"after an opposing spirit(?:/brave|/ultimate)?'s \(when summoned\) effect (?:resolves|activates)", 'OPP_SUMMON_FX'),
-    (r'after the opposing hand increases (?:via|with|by) an opposing effect', 'OPP_HAND_UP'),
+BURST_WHEN = [   # Fandom {{Burst|...}} condition -> engine BURST_WHEN key (02c-effects-parse.js); v0.71: export spelling variants + OPP_ATTACK, OPP_SUMMON_ADV_FX
+    (r'after your life is (?:ree?duced|decreased)', 'LIFE_DECREASE'),
+    (r'after your spirit(?:/ultimate)? is destroyed by the opponent', 'ALLY_DESTROYED'),
+    (r"after an opp?posing spirit(?:/brave|/ultimate)?'s \(when summoned\) effect (?:resolves|activates)", 'OPP_SUMMON_FX'),
+    (r"after an opposing spirit(?:/brave|/ultimate)?'s \(when summoned/advents?\) effect (?:resolves|activates)", 'OPP_SUMMON_ADV_FX'),
+    (r'after the opposing hand increases (?:via|with|by) (?:an opposing effect|opposing effects)', 'OPP_HAND_UP'),
+    (r'after an opposing spirit attacks', 'OPP_ATTACK'),
+    (r'after an opposing spirit/ultimate attacks', 'OPP_ATTACK'),
 ]
 BURST_BLOCK = re.compile(r'^\s*\{\{[Bb]urst\|([^}|]*)\}\}\s*(.*)$', re.S)
 
 def burst_block(text):
-    """Split off a leading {{Burst|condition}} block -> (burst dict or None, rest of the text)."""
+    """Split off the {{Burst|condition}} paragraph -> (burst dict or None, rest of the text).
+    v0.71: the Burst paragraph may stand anywhere (Fandom puts it first or after the card's own Main/Flash text)."""
     blocks = re.split(r'\n\s*\n', (text or '').replace('\r', '').strip())
-    m = BURST_BLOCK.match(blocks[0]) if blocks else None
-    if not m: return None, text
+    i = next((k for k, x in enumerate(blocks) if BURST_BLOCK.match(x)), None)
+    if i is None: return None, text
+    m = BURST_BLOCK.match(blocks[i])
     cond = m.group(1).strip().lower()
     when = next((k for rx, k in BURST_WHEN if re.fullmatch(rx, cond)), None)
     if when is None: raise Review('Burst condition: ' + cond[:70])
     b = {'when': when, 'actions': []}
+    if cond == 'after an opposing spirit attacks': b['noUlt'] = True
     for s in sentences(re.sub(r'\s+', ' ', m.group(2))):
         x = s.rstrip('.').strip()
         if re.fullmatch(r'(?:After this effect resolves, )?summon this (?:Spirit )?card(?: without paying the cost)?', x, re.I):
             b['actions'].append({'do': 'SUMMON_SELF'}); continue
-        mm = re.fullmatch(r"Then,? by paying the cost, activate this card's (Flash|Main) effect", x, re.I)
-        if mm: b['then' + mm.group(1).capitalize()] = True; continue
+        mm = re.fullmatch(r"Then,? by paying the cost, activate (?:this card's (Flash|Main) effect|the (Flash|Main) effect of this card)", x, re.I)
+        if mm: b['then' + (mm.group(1) or mm.group(2)).capitalize()] = True; continue
         if any(a['do'] == 'SUMMON_SELF' for a in b['actions']): raise Review('Burst sentence after the summon: ' + s[:80])
         a, o = action_of(s, {'kind': 'burst'})
         if o: raise Review('optional clause in Burst: ' + s[:80])
@@ -528,7 +538,7 @@ def burst_block(text):
         b['actions'] += a
     if not b['actions']: raise Review('Burst without actions')
     if len(b['actions']) > 5: raise Review('Burst with more than 5 actions')
-    return b, '\n\n'.join(blocks[1:])
+    return b, '\n\n'.join(blocks[:i] + blocks[i + 1:])
 
 
 # ---------- Ultimate summon condition (v0.56) ----------

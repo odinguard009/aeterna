@@ -123,6 +123,77 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS14-009",
+  "name": "Warrior-Dragon",
+  "name_jp": "ウォーリアー・ドラゴン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 6,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 6,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Dragon, Dragon Warrior"
+  ],
+  "text": "[LV1][LV2][LV3] Flash- Awaken - You can put any number of cores from Spirits you control to this Spirit.\n\n[LV2][LV3] (Your Attack Step) While you have a set Burst, this Spirit gains +4000 BP.",
+  "image": "Warrior-Dragon.png",
+  "block": "14",
+  "saga": 3,
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "once": false,
+    "cpuSkip": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "AWAKEN"
+     }
+    ],
+    "lv": [
+     1,
+     2,
+     3
+    ]
+   },
+   {
+    "trigger": "STATIC",
+    "bp": 4000,
+    "to": "self",
+    "lv": [
+     2,
+     3
+    ],
+    "if": {
+     "step": "ATTACK",
+     "oppTurn": false,
+     "burstSet": true
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS14-012",
   "name": "Straw-Puppet",
   "name_jp": "ストロゥ・パペット",
@@ -591,6 +662,77 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS14-037",
+  "name": "Ezono-Owl",
+  "name_jp": "エゾノ・アウル",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Machine Beast"
+  ],
+  "text": "[LV1][LV2][LV3] (Opposing Attack Step)\nWhen an opposing Spirit attacks, refresh this Spirit.\n\n[LV1][LV2][LV3] (When Blocks)\nIf you have a set Burst, put a core from the Void to this Spirit.",
+  "image": "Ezono-Owl.png",
+  "block": "14",
+  "saga": 3,
+  "effects": [
+   {
+    "trigger": "OPP_ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "match": {
+     "noUlt": true
+    },
+    "actions": [
+     {
+      "do": "REFRESH"
+     }
+    ]
+   },
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self",
+      "if": {
+       "burstSet": true
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS14-038",
   "name": "The Shooter Vali",
   "name_jp": "弓機兵ヴァーリ",
@@ -914,6 +1056,53 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS14-099",
+  "name": "Arms Shock",
+  "name_jp": "武迅衝",
+  "type": "Magic",
+  "color": "green",
+  "cost": 2,
+  "reduction": {
+   "green": 1
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "{{Burst|After an oppposing Spirit/Brave's (When Summoned) effect resolves}}\n Exhaust an opposing Spirit. Then by paying the cost, activate this card's Main effect.\n\nMain\nPut a core from the Void to any Spirit you control.",
+  "image": "Arms Shock.png",
+  "block": "14",
+  "saga": 3,
+  "mechanics": [
+   "Burst"
+  ],
+  "burst": {
+   "when": "OPP_SUMMON_FX",
+   "actions": [
+    {
+     "do": "EXHAUST_OPP",
+     "n": 1
+    }
+   ],
+   "thenMain": true
+  },
+  "magic": {
+   "timing": [
+    "MAIN"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "VOID_TO_CARD",
+     "n": 1,
+     "to": "anySpirit"
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS15-002",
   "name": "Pygmygator",
   "name_jp": "ピグミゲーター",
@@ -1204,6 +1393,104 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS15-080",
+  "name": "Triple Stab",
+  "name_jp": "光速三段突",
+  "type": "Magic",
+  "color": "white",
+  "cost": 6,
+  "reduction": {
+   "white": 3
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "{{Burst|After an opposing Spirit attacks}}\nDuring this turn, all your Spirits gain +3000 BP. Then, by paying the cost, activate this card's Flash effect.\n\nFlash\nReturn an opposing Spirit to the deckbottom.",
+  "image": "Triple Stab.png",
+  "block": "15",
+  "saga": 3,
+  "mechanics": [
+   "Burst"
+  ],
+  "burst": {
+   "when": "OPP_ATTACK",
+   "actions": [
+    {
+     "do": "BP_PLUS",
+     "n": 3000,
+     "to": "own"
+    }
+   ],
+   "noUlt": true,
+   "thenFlash": true
+  },
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BOUNCE_OPP",
+     "to": "deckBottom",
+     "kind": "spirit"
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS16-001",
+  "name": "Nodeppo",
+  "name_jp": "ノデッポ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 2,
+  "reduction": {
+   "red": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Emperor Beast"
+  ],
+  "text": "[LV1][LV2] (When Summoned) When you have a Burst set, destroy an opposing 3000 BP or less Spirit.",
+  "image": "Nodeppo.jpg",
+  "block": "16",
+  "saga": 3,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "bpLe": 3000,
+      "if": {
+       "burstSet": true
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS16-004",

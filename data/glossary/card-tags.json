@@ -244,6 +244,10 @@
  ],
  "BS03-051": [],
  "BS03-052": [],
+ "BS03-057": [
+  "T_ATTACKS",
+  "C_LEVEL"
+ ],
  "BS03-060": [],
  "BS03-063": [],
  "BS03-068": [],
@@ -598,6 +602,13 @@
   "C_LEVEL",
   "S_MUST_BLOCK"
  ],
+ "BS14-009": [
+  "A_BP_PLUS",
+  "A_AWAKEN",
+  "C_LEVEL",
+  "K_BURST",
+  "M_OPTIONAL"
+ ],
  "BS14-012": [],
  "BS14-013": [
   "A_EXHAUST",
@@ -631,6 +642,13 @@
   "K_ARMOR"
  ],
  "BS14-036": [],
+ "BS14-037": [
+  "A_REFRESH",
+  "A_VOID",
+  "C_LEVEL",
+  "K_BURST",
+  "T_BLOCKS"
+ ],
  "BS14-038": [],
  "BS14-046": [],
  "BS14-048": [],
@@ -644,6 +662,14 @@
  ],
  "BS14-072": [
   "K_BRAVE"
+ ],
+ "BS14-099": [
+  "T_SUMMONED",
+  "A_VOID",
+  "A_EXHAUST",
+  "K_BURST",
+  "K_BRAVE",
+  "M_THEN"
  ],
  "BS15-002": [],
  "BS15-010": [],
@@ -659,6 +685,17 @@
  "BS15-056": [
   "T_SUMMONED",
   "C_LEVEL"
+ ],
+ "BS15-080": [
+  "A_BP_PLUS",
+  "K_BURST",
+  "M_THEN"
+ ],
+ "BS16-001": [
+  "T_SUMMONED",
+  "A_DESTROY_BP",
+  "C_LEVEL",
+  "K_BURST"
  ],
  "BS16-004": [],
  "BS16-010": [],
@@ -940,6 +977,10 @@
  "BS23-040": [],
  "BS24-021": [],
  "BS24-049": [],
+ "BS24-104": [
+  "A_EXHAUST",
+  "K_ULTIMATE"
+ ],
  "BS25-039": [
   "T_ATTACKS",
   "T_ALLY_LIFE_HIT",
@@ -1017,6 +1058,11 @@
  "BS32-059": [],
  "BS33-005": [],
  "BS33-012": [],
+ "BS33-015": [
+  "T_ATTACKS",
+  "C_LEVEL",
+  "K_ULTIMATE"
+ ],
  "BS33-022": [
   "A_REFRESH",
   "K_HIGH_SPEED"
@@ -1084,6 +1130,18 @@
  ],
  "BS37-048": [],
  "BS37-067": [],
+ "BS38-009": [
+  "C_LEVEL",
+  "K_ULTIMATE",
+  "T_DESTROYED",
+  "T_DESTROYED_OPP"
+ ],
+ "BS38-041": [
+  "T_SUMMONED",
+  "A_VOID",
+  "C_LEVEL",
+  "K_BURST"
+ ],
  "BS40-001": [],
  "BS40-012": [
   "C_LEVEL",
@@ -1142,6 +1200,12 @@
  "BS53-001": [
   "A_BP_PLUS",
   "C_LEVEL"
+ ],
+ "BS53-011": [
+  "A_DRAW",
+  "C_LEVEL",
+  "T_DESTROYED",
+  "T_DESTROYED_OPP"
  ],
  "BS54-021": [
   "C_COUNTER",
@@ -3252,6 +3316,10 @@
  "26RSD07-003": [],
  "26RSD07-006": [],
  "26RSD09-002": [],
+ "26RSD09-003": [
+  "C_LEVEL",
+  "T_DESTROYED"
+ ],
  "26RSD09-005": [],
  "26RSD09-012": [
   "A_BP_PLUS"

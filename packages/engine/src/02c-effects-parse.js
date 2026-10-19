@@ -34,7 +34,7 @@ async function summonPaid(p, inst) {                  // official: "summon/deplo
 }
 const summonBy = (p, inst, pay) => pay ? summonPaid(p, inst) : summonFree(p, inst);
 function fxDescribe(e) { return (e.invoke && e.cost ? invokeCostText(e.cost) + ' ▶ ' : '') + e.actions.map(a => FX_ACTIONS[a.do].txt(a)).join(', then '); }
-const BURST_WHEN = { LIFE_DECREASE: 'After your Life is reduced', ALLY_DESTROYED: 'After your Spirit is destroyed by the opponent', OPP_SUMMON_FX: "After an opposing Spirit's (When Summoned) effect activates", OPP_HAND_UP: 'After the opposing Hand increases with an opposing effect' };
+const BURST_WHEN = { LIFE_DECREASE: 'After your Life is reduced', ALLY_DESTROYED: 'After your Spirit is destroyed by the opponent', OPP_SUMMON_FX: "After an opposing Spirit's (When Summoned) effect activates", OPP_HAND_UP: 'After the opposing Hand increases with an opposing effect', OPP_ATTACK: 'After an opposing Spirit attacks', OPP_SUMMON_ADV_FX: "After an opposing Spirit's (When Summoned/Advents) effect resolves" };   // v0.71 OPP_ATTACK, OPP_SUMMON_ADV_FX
 function parseCond(c) {
   if (typeof c !== 'object' || c === null) return { error: 'effect "if" must be an object' };
   for (const [k, v] of Object.entries(c)) {
@@ -42,8 +42,11 @@ function parseCond(c) {
     const okStr = (k === 'controlName' || k === 'hasName' || k === 'soulOn' || k === 'nexusBraved') && typeof v === 'string' && v.length > 0 && v.length <= 60;
     const okCol = k === 'hasSymbol' && COLORS.includes(v);
     const okStep = k === 'step' && STEPS.includes(v);
-    const okBool = (k === 'byOpp' || k === 'utHit' || k === 'prev' || k === 'sealed' || k === 'oppTurn' || k === 'attackStep' || k === 'oppRemovedSpirit' || k === 'oppNoAB') && typeof v === 'boolean';
-    if (!okInt && !okStr && !okBool && !okCol && !okStep) return { error: `unknown or invalid condition "${k}" (byOpp, hasSymbol, lifeLe, anyLifeLe, counterGe, soulGe, oppHandGe, voidGe, soulLe, putGe, lifeGe, oppRemovedGe, removedGe, oppSpiritsLe, oppNexusGe, oppNoAB, oppRemovedSpirit, controlName, hasName, soulOn, nexusBraved, oppTurn, attackStep, step, prev, utHit)` };
+    const okBool = (k === 'byOpp' || k === 'utHit' || k === 'prev' || k === 'sealed' || k === 'oppTurn' || k === 'attackStep' || k === 'oppRemovedSpirit' || k === 'oppNoAB' || k === 'burstSet' || k === 'oppBurstSet') && typeof v === 'boolean';
+    const okCtrl = k === 'ctrl' && [].concat(v).length > 0 && [].concat(v).every(x => x && typeof x === 'object' && ['Spirit', 'Ultimate', 'Both'].includes(x.type) && (x.n == null || (Number.isInteger(x.n) && x.n >= 1 && x.n <= 5))
+      && (x.colors == null || (Array.isArray(x.colors) && x.colors.length && x.colors.every(y => COLORS.includes(y)))) && (x.costGe == null || Number.isInteger(x.costGe)) && (x.family == null || (typeof x.family === 'string' && x.family))
+      && Object.keys(x).every(y => ['n', 'type', 'colors', 'costGe', 'family'].includes(y)));   // v0.71 "if you control any <colour/family> Spirit/Ultimate" (same shape as summonIf.ctrl)
+    if (!okInt && !okStr && !okBool && !okCol && !okStep && !okCtrl) return { error: `unknown or invalid condition "${k}" (byOpp, hasSymbol, lifeLe, anyLifeLe, counterGe, soulGe, oppHandGe, voidGe, soulLe, putGe, lifeGe, oppRemovedGe, removedGe, oppSpiritsLe, oppNexusGe, oppNoAB, oppRemovedSpirit, controlName, hasName, soulOn, nexusBraved, oppTurn, attackStep, step, prev, utHit, burstSet, oppBurstSet, ctrl)` };
   }
   return { cond: Object.assign({}, c) };
 }
@@ -66,6 +69,7 @@ function parseBurst(b) {
   const r = parseActionList(b.actions); if (r.error) return { error: 'burst: ' + r.error };
   const o = { when: b.when, actions: r.actions };
   if (b.if != null) { const c = parseCond(b.if); if (c.error) return { error: 'burst: ' + c.error }; o.if = c.cond; }
+  if (b.noUlt === true) { if (b.when !== 'OPP_ATTACK') return { error: 'burst: "noUlt" only with OPP_ATTACK' }; o.noUlt = true; }   // v0.71
   if (b.thenFlash === true) o.thenFlash = true;           // v0.44 "Then by paying the cost, activate this card's (Flash) effect"
   if (b.thenMain === true) o.thenMain = true;             // v0.47 Dana Draw: "Then, by paying the cost, activate the Main effect of this card"
   if (b.also != null) {                                   // v0.47 Dana Draw: "When your Scalostle Brave is summoned, if ..., you can immediately activate this set card"
