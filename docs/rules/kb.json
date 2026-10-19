@@ -543,35 +543,6 @@
  ],
  "aliases": [
   {
-   "key": "ETR p.12",
-   "to": [
-    "ETR:contract.setup",
-    "ETR:setup"
-   ],
-   "note": "Contract setup is on pp. 11 and 54 in VER.17.0 (p. 12 is \"How to read a card\")"
-  },
-  {
-   "key": "ETR p.61",
-   "to": [
-    "ETR:over-count"
-   ],
-   "note": "Over Count is on p. 60 in VER.17.0"
-  },
-  {
-   "key": "ETR p.70 Q1",
-   "to": [
-    "ETR:faq.braves-q1"
-   ],
-   "note": "the Braves FAQ Q1 is on p. 69 in VER.17.0"
-  },
-  {
-   "key": "ETR FAQ-effects Q3",
-   "to": [
-    "ETR:faq.effects-q4"
-   ],
-   "note": "the engine cites Q3 for the immunity order, which VER.17.0 numbers Q4 (Q3 is cannot > must > may)"
-  },
-  {
    "key": "ETR name:depletion",
    "to": [
     "ETR:cores.depletion"

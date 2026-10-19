@@ -117,7 +117,7 @@ function parseCard(o) {
     else if (!b || typeof b !== 'object' || !int(Number(b.bp), 0, 99999) || !strs(b.family) || !strs(b.name) || (b.costGe != null && !int(b.costGe, 0, 30)) || (b.nexus != null && (typeof b.nexus !== 'object' || !b.nexus.name || !strs(b.nexus.name)))) err2.push('a Brave needs "brave": {"bp":5000,"family":[...],"name":[...],"costGe":N,"nexus":{"name":[...]}} (family/name/costGe/nexus optional)');
     else { brave = { bp: Number(b.bp) }; if (b.family) brave.family = b.family.slice(); if (b.name) brave.name = b.name.slice(); if (b.costGe != null) brave.costGe = b.costGe; if (b.nexus) brave.nexus = { name: b.nexus.name.slice() }; }
   } else if (o.brave != null) err2.push('"brave" is only for Brave cards');
-  if (o.overCount != null) {          // {"count":4,"bp":5000}: Over Count condition and BP+ (manual p. 61)
+  if (o.overCount != null) {          // {"count":4,"bp":5000}: Over Count condition and BP+ (manual p. 60)
     const a = o.overCount;
     if (type !== 'Spirit' || !a || typeof a !== 'object' || !int(a.count, 1, 30) || !int(Number(a.bp == null ? 0 : a.bp), 0, 99999)) err2.push('invalid "overCount" (use {"count":4,"bp":5000} on a Spirit)');
     else overCount = { count: a.count, bp: Number(a.bp || 0) };

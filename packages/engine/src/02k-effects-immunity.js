@@ -2,7 +2,7 @@
 /* =====================================================================
    v0.58 IMMUNITY (rules audit R3 item 2 + session E): every effect action that lists targets (FX_ACTIONS[k].cands) skips a card
    on the OPPOSING Field that is unaffected by this effect's source (fxImmune with the acting effect c). An action marked
-   ignoreImmune ("cannot be prevented") keeps them: FAQ Q3 order "cannot be prevented" > "unaffected" > "cannot activate".
+   ignoreImmune ("cannot be prevented") keeps them: FAQ Q4 order "cannot be prevented" > "unaffected" > "cannot activate".
    Trash: a card with trashUnaffected ("this card in Trash is unaffected by any effects") is never picked from a Trash by an effect.
    ===================================================================== */
 const trashSafe = t => !!(t && CARDS[t.id] && CARDS[t.id].trashUnaffected);

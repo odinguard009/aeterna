@@ -31,11 +31,11 @@ function lvIndex(i) {
   return k;
 }
 function bpOf(i) { const k = lvIndex(i); if (k < 0) return 0; const b = CARDS[i.id].levels[k].bp; return b == null ? 0 : Math.max(0, b + (i.bpMod || 0) + bpBattle(i) + staticBp(i) + braveBp(i) + (ocActive(i) ? CARDS[i.id].overCount.bp : 0)); }
-/* Over Count (Eternal manual p. 61): active while the owner's Count meets the card's OC condition, whatever the Spirit's Lv; adds its BP like a combined Brave */
+/* Over Count (Eternal manual p. 60): active while the owner's Count meets the card's OC condition, whatever the Spirit's Lv; adds its BP like a combined Brave */
 function ocActive(i) { const oc = CARDS[i.id] && CARDS[i.id].overCount; if (!oc || !G) return false; const o = ownerOf(i); return !!o && o.count >= oc.count; }
 /* Brave (manual p. 34-36): a combined Brave (inst.brave) adds its BP+ and symbol to the Spirit; one Brave per Spirit; no cost to combine or separate */
 const braveBp = i => (i.brave ? CARDS[i.brave.id].brave.bp : 0);
-/* Saga Brave (manual p. 38): a Brave with "brave.nexus" may also combine with a Grandwalker Nexus whose name matches; a Nexus treated as a Spirit cannot be braved (p. 70 Q1) */
+/* Saga Brave (manual p. 38): a Brave with "brave.nexus" may also combine with a Grandwalker Nexus whose name matches; a Nexus treated as a Spirit cannot be braved (p. 69 Q1) */
 const isNexusBrave = (b, s) => !!s && CARDS[s.id].type === 'Nexus' && !!b && !!CARDS[b.id].brave && !!CARDS[b.id].brave.nexus;
 function braveFits(b, s) {
   const bc = CARDS[b.id].brave, k = CARDS[s.id];

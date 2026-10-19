@@ -85,7 +85,7 @@ const STATIC_FLAGS = ['MUST_BLOCK', 'NO_RETURN', 'CORES_DRAW', 'UNAFFECTED_SOUL'
 /* v0.58 "unaffected" (session E): STATIC UNAFFECTED { to: 'self'|'own', match, from: { colors, types } } = unaffected by OPPOSING effects
    whose source card has one of those colours and card types (Armor: Spirit/Nexus/Magic, Heavy Armor: Spirit/Brave/Nexus/Magic,
    Ultra Armor: Spirit/Ultimate/Nexus/Magic; no "from" = all opposing effects). c = the acting effect { p: its owner, src: its card }.
-   Priority (Eternal manual FAQ Q3): "cannot be prevented" (action ignoreImmune) > "unaffected" > "cannot activate". */
+   Priority (Eternal manual FAQ Q4): "cannot be prevented" (action ignoreImmune) > "unaffected" > "cannot activate". */
 const fxImmune = (owner, t, c) => !!t && ((!!t.soul && flagActive(owner, 'UNAFFECTED_SOUL', t)) || (!!c && !!c.p && !!c.src && c.p !== owner && unaffectedBy(owner, t, c.src)));
 function unaffectedBy(owner, t, src) {
   const k = CARDS[src.id]; if (!k) return false;

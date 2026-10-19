@@ -48,7 +48,7 @@ function newPlayer(key, name, cpu, counts) {
   prepareTokens(P, counts);                 // Token cards are prepared outside the Deck (no shuffle, no RNG use)
   return P;
 }
-function contractToDeck(p) {                // setup choice (manual p.12): a Contract card in the starting Hand goes back to the Deck, one card is drawn instead
+function contractToDeck(p) {                // setup choice (manual pp. 11, 54): a Contract card in the starting Hand goes back to the Deck, one card is drawn instead
   const i = p.hand.findIndex(h => CARDS[h.id].contract);
   if (i < 0) return false;
   p.deck.push(p.hand.splice(i, 1)[0]); shuffle(p.deck);
