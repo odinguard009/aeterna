@@ -33,7 +33,7 @@
 R=odinguard009/aeterna; L=1
 LANES="ui card"
 lane_ok() { [ -z "${1:-}" ] || case " $LANES " in *" $1 "*) return 0 ;; *) echo "unknown lane '$1' (use: $LANES)" >&2; return 1 ;; esac; }
-IDLE_MIN=20      # owner rule (2026-10-17, was 30): start only after 20 minutes without a session or owner activity
+IDLE_MIN=0       # min idle minutes since the last session/owner activity; 0 = no wait (owner, 2026-10-20, was 20)
 STALE_H=5        # a LOCK older than this is a crashed auto session
 MANUAL_H=3       # a MANUAL older than this is a crashed manual session
 NOPROG=3         # auto sessions without a new v* commit before the switch goes OFF by itself
