@@ -1003,8 +1003,8 @@
   {
    "ver": "v0.69.3",
    "date": "19 Oct 2026",
-   "tokens": 0,
-   "calls": "~60",
+   "tokens": 280000,
+   "calls": "~55",
    "basis": "measured",
    "note": "Manual HEMAT ON session on Opus: P0 process cleanup B1-B10 (docs/ai/process-plan.md). No game change."
   }
