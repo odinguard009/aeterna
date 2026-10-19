@@ -26,7 +26,7 @@ test('PK75-01 compiler: Void cores to the Trash, this Spirit (+ refresh), Nexuse
   assert.deepEqual(acts(S + 'Put a core from the Void each to every "Plant Spirit"/"Winged Beast" family Spirit you control.'),
     [{ do: 'VOID_TO_CARD', n: 1, to: 'eachSpirit', match: { family: ['Plant Spirit', 'Winged Beast'] } }]);
   assert.deepEqual(acts(S + 'Put a core from the Void each to every Blue Nexus you control.'), [{ do: 'VOID_TO_CARD', n: 1, to: 'eachNexus', match: { color: 'blue' } }]);
-  for (const t of ['each to every Spirit with Rush you control', 'to any Red-only Grandwalker Nexus you control', 'to your Nexus/Grandstone Nexus', 'to your Spirit/Reserve'])
+  for (const t of ['each to every Spirit with Rush you control', 'to any Red-only Grandwalker Nexus you control', 'to your Nexus/Grandstone Nexus'])      // v0.77: 'to your Spirit/Reserve' compiles (orReserve, PK77-02)
     assert.match(String(acts(S + `Put a core from the Void ${t}.`)), /^REVIEW/, t);
 });
 

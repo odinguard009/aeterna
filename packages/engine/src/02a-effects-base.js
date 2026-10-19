@@ -21,7 +21,7 @@ function fxUnknown(kind, name) {
   if (!FX_WARNED.has(m)) { FX_WARNED.add(m); try { console.warn('[effects] ' + m); } catch (e) { /* no console */ } }
   return false;
 }
-const FX_COND_KEYS = new Set(['soulGe', 'oppHandGe', 'voidGe', 'controlName', 'oppTurn', 'soulLe', 'putGe', 'hasName', 'prev', 'sealed', 'lifeLe', 'lifeGe', 'anyLifeLe', 'counterGe', 'soulOn', 'attackStep', 'nexusBraved', 'oppSpiritsLe', 'oppNoAB', 'oppNexusGe', 'oppRemovedGe', 'oppRemovedSpirit', 'byOpp', 'hasSymbol', 'removedGe', 'utHit', 'ctrl', 'step', 'burstSet', 'oppBurstSet', 'byOppFx']);
+const FX_COND_KEYS = new Set(['soulGe', 'oppHandGe', 'voidGe', 'controlName', 'oppTurn', 'soulLe', 'putGe', 'hasName', 'prev', 'sealed', 'lifeLe', 'lifeGe', 'anyLifeLe', 'counterGe', 'soulOn', 'attackStep', 'nexusBraved', 'oppSpiritsLe', 'oppNoAB', 'oppNexusGe', 'oppRemovedGe', 'oppRemovedSpirit', 'byOpp', 'hasSymbol', 'removedGe', 'utHit', 'ctrl', 'step', 'burstSet', 'oppBurstSet', 'byOppFx', 'fewerSpirits', 'nexusGe']);
 const FX_TRIGGERS = ['SUMMONED', 'ATTACKS', 'ALLY_ATTACKS', 'ALLY_BLOCKED', 'ALLY_SUMMONED', 'ADVENT', 'ACTIVATE', 'STATIC', 'OPP_HAND_UP', 'ALLY_LIFE_HIT', 'ALLY_LOST', 'START_ATTACK', 'MIRAGE_OWN_LIFE', 'MIRAGE_OPP_LIFE', 'SOUL_PLACED', 'MANIFEST', 'BLOCKS', 'DESTROYED', 'REVEALED', 'ALLY_DESTROYS', 'OPP_REMOVED', 'ACCEL', 'SILVER_WHEEL', 'BATTLE_WIN', 'OPP_ATTACKS', 'LEAVES'];
 const FX_TRIGGER_TEXT = { OPP_ATTACKS: 'When an opposing Spirit attacks', BATTLE_WIN: 'When Battles (only the opposing Spirit is destroyed by BP comparison)', ACCEL: 'Accel', SILVER_WHEEL: 'When you activate Silver Wheel', SUMMONED: 'When Summoned', ATTACKS: 'When Attacks', ALLY_ATTACKS: 'When an ally attacks', ALLY_BLOCKED: 'When an ally is blocked', ALLY_SUMMONED: 'When an ally is summoned', ADVENT: 'When Advents', ACTIVATE: 'Activate', OPP_HAND_UP: 'When the opposing Hand increases by an opposing effect', ALLY_LIFE_HIT: 'When an ally attack reduces the Life', ALLY_LOST: 'When an ally is depleted/destroyed by the opponent', START_ATTACK: 'Start of your Attack Step', MIRAGE_OWN_LIFE: 'Mirage: when your Life is reduced', MIRAGE_OPP_LIFE: 'Mirage: when the opposing Life is reduced', SOUL_PLACED: 'When your Soul Core is sent to a Nexus', MANIFEST: 'When Manifests', BLOCKS: 'When Blocks', DESTROYED: 'When Destroyed', LEAVES: 'When this Spirit would leave the Field due to the opponent', REVEALED: 'When revealed from the deck', ALLY_DESTROYS: 'When your X destroys an opposing Spirit in battle', OPP_REMOVED: 'When cards are put onto the opposing Removed Zone' };
 /* v0.60.0 Brave completion: a Spirit combined with a Brave gains the Brave's [When Braved] / During (Spirit) Brave effects (braved:true; JP 合体時);
@@ -79,6 +79,8 @@ function fxIf(owner, opp, c, ctx) {
   if (c.burstSet != null && !!(owner.burst && !owner.burst.mirage) !== c.burstSet) return false;      // v0.71 "if/while you have a (set) Burst" (Fandom Burst: a face-down card in the Burst Area)
   if (c.oppBurstSet != null && !!(opp.burst && !opp.burst.mirage) !== c.oppBurstSet) return false;   // v0.71 "while the opponent has a set Burst"
   if (c.ctrl != null && ![].concat(c.ctrl).every(q => ctrlCount(owner, q) >= (q.n == null ? 1 : q.n))) return false;   // v0.56 Ultimate summon conditions
+  if (c.fewerSpirits != null && (spiritCount(owner) < spiritCount(opp)) !== c.fewerSpirits) return false;   // v0.77 "if you control fewer Spirits than the opponent" (Spirits only, counted when it resolves)
+  if (c.nexusGe != null && !(perCount(owner, Object.assign({ type: 'Nexus' }, c.nexusGe, { n: undefined })) >= (c.nexusGe.n || 1))) return false;   // v0.77 "if you control a <colour> Nexus"
   return true;
 }
 /* v0.56 "you control N or more <colour/cost/family> Spirits/Ultimates" (Ultimate summon conditions, {{Sumcon|...}}):
@@ -86,6 +88,7 @@ function fxIf(owner, opp, c, ctx) {
 const ctrlCount = (owner, q) => owner.spirits.filter(f => { const k = CARDS[f.id], u = k.type === 'Ultimate';
   return (q.type === 'Both' || (q.type === 'Ultimate') === u) && (!q.colors || q.colors.some(x => (k.colors || [k.symbol]).includes(x)))
     && (q.costGe == null || k.cost >= q.costGe) && (!q.family || (k.families || []).includes(q.family)) && (!q.exhausted || f.exhausted); }).length;      // v0.76 exhausted: "any exhausted X"
+const spiritCount = q => q.spirits.filter(f => CARDS[f.id].type !== 'Ultimate').length;      // v0.77 fewerSpirits
 /* v0.72 "for each X you control": cards on the owner's Field matching per {type: 'Spirit'|'Nexus', colors, family, name (part of the name)}; the source itself counts */
 const PER_TYPES = ['Spirit', 'Nexus'];
 const perOk = q => !!q && typeof q === 'object' && PER_TYPES.includes(q.type) && (q.colors == null || (Array.isArray(q.colors) && q.colors.length && q.colors.every(x => COLORS.includes(x))))

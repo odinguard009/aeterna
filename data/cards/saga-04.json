@@ -189,6 +189,53 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS19-015",
+  "name": "Mitransnake",
+  "name_jp": "ミトランスネーク",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Dark Snake"
+  ],
+  "text": "[LV2] (When Attacks)\nSend a core from any opposing Spirit to the Reserve. When this effect brought the number of cores on that Spirit to 0, draw a card.",
+  "image": "BS19-015.jpg",
+  "block": "19",
+  "saga": 4,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 1,
+      "drawPerDepleted": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS19-016",
   "name": "Clionet",
   "name_jp": "クリオネード",
@@ -2181,6 +2228,58 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS21-023",
+  "name": "Mandrahora",
+  "name_jp": "マンドラホラ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 4,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Plant Spirit"
+  ],
+  "text": "[LV2] (Your Attack Step) When your \"Imaginary Beast\" family Spirit attacks, put a core from the Void to that Spirit.",
+  "image": "BS21-023.jpg",
+  "block": "21",
+  "saga": 4,
+  "effects": [
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     2
+    ],
+    "match": {
+     "family": [
+      "Imaginary Beast"
+     ],
+     "noUlt": true
+    },
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "attacker"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS21-030",
   "name": "The CrimsonGoddess Macha",
   "name_jp": "真紅の女神マッハ",
@@ -3357,6 +3456,84 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS23-009",
+  "name": "Caucasustricera",
+  "name_jp": "コーカサストリケラ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 8,
+  "reduction": {
+   "red": 3,
+   "green": 3
+  },
+  "symbols": 2,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 3,
+    "bp": 10000
+   },
+   {
+    "cores": 6,
+    "bp": 13000
+   }
+  ],
+  "families": [
+   "Terra Dragon, Parasite"
+  ],
+  "text": "[LV1][LV2][LV3] (Your Attack Step) When your \"Parasite\" family Spirit attacks, destroy an opposing 5000 BP or less Spirit.\n\n[LV2][LV3] (Your Attack Step) When your \"Terra Dragon\" family Spirit attacks, put a core from the Void to that Spirit.",
+  "image": "BS23-009.jpg",
+  "block": "23",
+  "saga": 4,
+  "effects": [
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "match": {
+     "family": [
+      "Parasite"
+     ],
+     "noUlt": true
+    },
+    "actions": [
+     {
+      "do": "DESTROY",
+      "bpLe": 5000
+     }
+    ]
+   },
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     2,
+     3
+    ],
+    "match": {
+     "family": [
+      "Terra Dragon"
+     ],
+     "noUlt": true
+    },
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "attacker"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS23-012",
   "name": "The WolfKnight Loup-Gar",
   "name_jp": "狼騎士ルーガー",
@@ -3409,6 +3586,59 @@
       "if": {
        "hasSymbol": "white"
       }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS23-017",
+  "name": "Shadow-Aldius",
+  "name_jp": "シャドー・アルデウス",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 6,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 5,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Dark Snake",
+   "Zombie"
+  ],
+  "text": "[LV1][LV2][LV3] (When Summoned)\nDestroy an opposing exhausted Spirit. When this effect destroys any Spirit, draw a card.",
+  "image": "BS23-017.jpg",
+  "block": "23",
+  "saga": 4,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "exhaustedOnly": true,
+      "thenDraw": 1
      }
     ]
    }

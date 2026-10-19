@@ -284,6 +284,8 @@ def own_grammar(s, ctx=None):
         sel = selector('an opposing ' + low(m.group(1)))
         if not sel or sel['kind'] != 'spirit' or sel['f']: raise Review('v2 bp minus: ' + m.group(1)[:40])
         return [{'do': 'BP_MINUS', 'n': v1.bpm(m.group(2)), 'zeroDestroy': True}]
+    m = OPP_CORES_T.match(x)
+    if m: return opp_cores_t(m)
     m = re.match(r'^target an opposing (.+?)\.\s*send (a|one|two|three) cores?,? besides ,? from it to (?:the|their|its owner\'?s) reserve$', x, re.I)
     if m:      # "besides <Soul Core icon>" (the export drops the icon): normal cores only = OPP_CORES_TO_RESERVE
         sel = selector('an opposing ' + low(m.group(1)))
@@ -302,8 +304,11 @@ def own_grammar(s, ctx=None):
         match, att = own_np(m.group(1))
         if att or 'costGe' in match: raise Review('v2 refresh: filter')
         return [{'do': 'REFRESH_SPIRIT', 'match': match}] if match else [{'do': 'REFRESH_SPIRIT'}]
+    m = WHEN_FX.match(x)
+    if m:      # v0.77 "<Destroy X | Send a core from an opposing Spirit ...>. When this effect destroys / depletes any Spirit, draw a card."
+        return when_fx(m, ctx)
     m = VOID_CORES.match(re.sub(r'^(?:you can|you may) ', '', x, flags=re.I))      # grammar() adds the optional flag
-    if m: return void_cores(m, x)
+    if m: return void_cores(m, x, ctx)
     # v0.74: sentences for actions the engine already has (no engine change): own discard, counters plural, opposing Life
     y = re.sub(r'^(?:you can|you may) ', '', x, flags=re.I)
     m = re.match(r'^by discarding an? (?:(spirit|nexus|magic) |"([^"]+)" family )?card from your hand, draw (a|one|two|three) cards?(?: from your deck)?$', y, re.I)
@@ -312,6 +317,12 @@ def own_grammar(s, ctx=None):
         if m.group(1): d['match'] = {'type': m.group(1).capitalize()}
         if m.group(2): d['match'] = {'family': [m.group(2)]}
         return [d, {'do': 'DRAW', 'n': n_of(m.group(3).lower()), 'if': {'prev': True}}]
+    m = re.match(r'^gain (a|one|two|\d) cores? on this spirit$', y, re.I)
+    if m: return [{'do': 'VOID_TO_CARD', 'n': n_of(m.group(1).lower()), 'to': 'self'}]      # v0.77 early wording of "put N cores from the Void to ..." (house reading)
+    m = re.match(r'^gain (a|one|two|\d) cores? in your reserve$', y, re.I)
+    if m: return [{'do': 'VOID_TO_RESERVE', 'n': n_of(m.group(1).lower())}]
+    m = re.match(r'^gain (a|one|two|\d) cores? on (?:a |one |target )?nexus you control$', y, re.I)
+    if m: return [{'do': 'VOID_TO_CARD', 'n': n_of(m.group(1).lower()), 'to': 'anyNexus'}]
     m = re.match(r'^discard (a|one|two|three) cards? from your hand$', y, re.I)
     if m: return [{'do': 'DISCARD_HAND', 'n': n_of(m.group(1).lower())}]
     m = re.match(r'^your counters? \+(\d)$', y, re.I)
@@ -320,6 +331,46 @@ def own_grammar(s, ctx=None):
     if m: return [{'do': 'LIFE_TO_RESERVE', 'n': n_of(m.group(1).lower())}]
     if re.match(r'^send (?:an|one) opposing life to (?:the|their) trash$', y, re.I): return [{'do': 'OPP_LIFE_TO_TRASH', 'n': 1}]
     return None
+
+
+# ---------- v0.77: "Target an opposing <X> Spirit. Send N core(s) | cores ... until one core remains ... from it to the Reserve." ----------
+OPP_CORES_T = re.compile(r'^target an opposing (?P<np>.+?)\.\s*send (?:(?P<n>a|one|two|three) cores?(?:,? besides)?\s*,?\s*from it to (?:the|their|its owner\'?s) reserve'
+                         r'(?P<keep>\.\s*its number of cores can\'t be brought to (?:less than one|below one|0))?|cores from it to (?:the|their) reserve until one core remains)'
+                         r'(?:\.?\s*\(the opponent chooses which cores? to send\.?\))?'
+                         r'(?:\.\s*(?P<dep>if it depletes|when this effect depletes (?:it|that spirit|any spirit)),? draw a card)?\.?$', re.I)
+
+
+def opp_cores_t(m):
+    sel = selector('an opposing ' + low(m.group('np')))
+    if not sel or sel['kind'] != 'spirit' or sel['count'] != 1: raise Review('v2 send cores: ' + m.group('np')[:40])
+    need('send cores', sel, ('costLe', 'exhausted', 'coresLe'))
+    a = {'do': 'OPP_CORES_TO_RESERVE', 'targets': 1, 'each': n_of(m.group('n').lower()) if m.group('n') else 1}
+    if not m.group('n'): a['untilOne'] = True
+    if m.group('keep'): a['keepOne'] = True
+    for k in ('costLe', 'coresLe'):
+        if k in sel['f']: a[k] = sel['f'][k]
+    if sel['f'].get('exhausted'): a['exhaustedOnly'] = True
+    if m.group('dep'): a['drawPerDepleted'] = True
+    return [a]
+
+
+# ---------- v0.77: "When this effect destroys / depletes any Spirit, draw a card." after the action it watches ----------
+WHEN_FX_TAIL = r'(?:if it depletes|when this effect (?:(destroys) any (?:opposing )?spirits?(?:/ultimates?)?|(depletes) any (?:opposing )?spirits?(?:/ultimates?)?|brought the number of cores on that spirit to (?:0|zero))),? draw (a|one) cards?'
+WHEN_FX = re.compile(r'^(.+?\.)\s*' + WHEN_FX_TAIL + r'$', re.I)
+
+
+def when_fx(m, ctx):
+    """the watched action must be one DESTROY of one target (thenDraw) or one OPP_CORES_TO_RESERVE of one target (drawPerDepleted);
+    anything else stays in review"""
+    first = m.group(1).strip()
+    send = re.match(r'^send (?:a|one) core from (?:an|any|one) opposing spirit to (?:the|their|its owner\'?s|the opposing) reserve\.$', first, re.I)
+    if send:
+        if m.group(2): raise Review('sentence: ' + first[:140])
+        return [{'do': 'OPP_CORES_TO_RESERVE', 'targets': 1, 'each': 1, 'drawPerDepleted': True}]
+    if not m.group(2): raise Review('sentence: ' + first[:140])
+    a, o = action_of(first, ctx)
+    if o or len(a) != 1 or a[0]['do'] != 'DESTROY' or a[0].get('all') or a[0].get('nexus') or a[0].get('thenDraw') or a[0].get('if'): raise Review('sentence: when this effect destroys')
+    return [dict(a[0], thenDraw=n_of(m.group(4).lower()))]
 
 
 # ---------- v0.74: "Put N core(s) from the Void to <destination>" (v0.75: Trash, Nexus, "each to every", two colours) ----------
@@ -337,7 +388,7 @@ def _void_match(col, fam):
     return match
 
 
-def void_cores(m, x):
+def void_cores(m, x, ctx=None):
     """destinations the engine has: your Reserve (VOID_TO_RESERVE), your Trash (VOID_TO_TRASH, v0.75), this Spirit, one of your
     Spirits / Nexuses with an optional colour (one or "A/B" = either) or family (VOID_TO_CARD anySpirit / anyNexus + match), and
     "each to every <X> you control" (VOID_TO_CARD eachSpirit / eachNexus). "-only" colours, "other", keyword filters, Grandstone
@@ -350,6 +401,11 @@ def void_cores(m, x):
         if re.fullmatch(r'(?:your|the) trash', dest): return [{'do': 'VOID_TO_TRASH', 'n': n}]
         if re.fullmatch(r'this spirit', dest): return [{'do': 'VOID_TO_CARD', 'n': n, 'to': 'self'}]
         if re.fullmatch(r'this spirit,? and refresh it', dest): return [{'do': 'VOID_TO_CARD', 'n': n, 'to': 'self'}, {'do': 'REFRESH'}]
+        if re.fullmatch(r'this spirit,? or (?:to )?your reserve', dest): return [{'do': 'VOID_TO_CARD', 'n': n, 'to': 'self', 'orReserve': True}]      # v0.77: the owner picks
+        if re.fullmatch(r'your spirit/reserve', dest): return [{'do': 'VOID_TO_CARD', 'n': n, 'to': 'anySpirit', 'orReserve': True}]
+        if re.fullmatch(r'that spirit', dest):      # v0.77 "When your X Spirit attacks, ... to that Spirit" = the attacker of the event
+            if not (isinstance(ctx, dict) and set(ctx.get('trigger') or ()) & {'ALLY_ATTACKS', 'ATTACKS'}): raise Review('sentence: ' + x[:140])
+            return [{'do': 'VOID_TO_CARD', 'n': n, 'to': 'attacker'}]
         d = VOID_SPIRIT.match(dest)
         if not d: raise Review('sentence: ' + x[:140])
         col, fam, kind = (d.group(1) or d.group(4)), (d.group(2) or d.group(5)), (d.group(3) or d.group(6))
@@ -431,6 +487,7 @@ def grammar(s, ctx=None):
     if rg is not None: return rg, bool(re.match(r'^(?:you can|you may) ', s, re.I))
     og = own_grammar(s, ctx)
     if og is not None: return og, bool(re.match(r'^(?:you can|you may|by discarding) ', s, re.I))      # v0.76: "By doing A, do B" is optional
+    s = re.sub(r'^((?:(?:you can|you may) )?target an opposing [^.,]+), (destroy|exhaust|return) it\b', lambda q: q.group(1) + '. ' + q.group(2).capitalize() + ' it', s.strip(), flags=re.I)      # v0.77 "Target X, destroy it."
     m = TARGET.match(s.strip().rstrip('.'))
     if m:      # "Target an opposing ... Spirit. Destroy it." -> one clause
         opt = bool(re.match(r'^(?:you can|you may) ', s, re.I))
@@ -474,6 +531,9 @@ def cond_of(x):
         return {'ctrl': q} if q['n'] <= 5 else None
     m = re.fullmatch(r'you control (?:an? |any )?"([^"]+)"', x, re.I)      # v0.76: a quoted card name (part of the name, like [Name])
     if m: return {'controlName': m.group(1).strip()}
+    if re.fullmatch(r'you control fewer spirits than (?:the|your) opponent', x, re.I): return {'fewerSpirits': True}      # v0.77
+    m = re.fullmatch(r'you control (?:an?|any) (red|purple|green|white|yellow|blue) nexus', x, re.I)
+    if m: return {'nexusGe': {'n': 1, 'colors': [m.group(1).lower()]}}      # v0.77
     m = CTRL_ANY.fullmatch(x)
     if m:
         q = {'n': 1, 'type': 'Both' if '/' in m.group(4) else m.group(4).capitalize()}
@@ -540,6 +600,8 @@ def sentences(body):
             out[-1] = out[-1] + ' ' + x      # v0.68: "... give it -N BP. Then, if it has 0 BP, destroy it." is one effect
         elif out and REVEAL_HEAD.match(out[-1]) and not REVEAL_REST.search(out[-1]):
             out[-1] = out[-1] + ' ' + x      # v0.69: "Reveal N cards from your decktop." + "Among them, add ..." + "Return any remaining cards ..." is one effect
+        elif out and re.fullmatch(WHEN_FX_TAIL + r'\.?', x.strip(), re.I) and out[-1].endswith('.'):
+            out[-1] = out[-1] + ' ' + x      # v0.77: "When this effect destroys any Spirit, draw a card." belongs to the sentence before it
         elif out and re.match(r'^(?:if you control [^,.]+, )?(?:(?:you can|you may) )?target ', out[-1], re.I) and out[-1].endswith('.'):
             out[-1] = out[-1] + ' ' + x      # join "Target X." with its action sentence
         else:

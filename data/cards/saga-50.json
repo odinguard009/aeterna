@@ -520,6 +520,55 @@
   "ex_symbols": 1
  },
  {
+  "id": "26RBS01-023",
+  "name": "The VioletScreech Dracuroar",
+  "name_jp": "紫叫ドラキュロアー",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Bloodrouse"
+  ],
+  "text": "[LV2] (When Attacks)\nTarget an opposing Cost 5 or less Spirit. Send cores from it to the Reserve until one core remains. (The opponent chooses which cores to send)",
+  "image": "26RBS01-023 (Fixed).png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 1,
+      "untilOne": true,
+      "costLe": 5
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RBS01-027",
   "name": "Leben-Leichnam",
   "name_jp": "レベン＝ライヒナム",
@@ -577,6 +626,57 @@
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
   "ex_symbols": 1
+ },
+ {
+  "id": "26RBS01-029",
+  "name": "Beelzeret",
+  "name_jp": "ベルゼレット",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 7,
+  "reduction": {
+   "purple": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 3,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Bloodrouse"
+  ],
+  "text": "(Legacy)\n[LV1][LV2] (When Summoned)\nTarget an opposing Spirit. Send one core from it to the Reserve. (The opponent chooses which core to send.)",
+  "image": "26RBS01-029.png",
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Legacy"
+  ],
+  "legacy": true,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RBS01-032",
@@ -1405,6 +1505,55 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RBS02-015",
+  "name": "Cemerippet",
+  "name_jp": "セメリペット",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Corpse"
+  ],
+  "text": "[LV1][LV2] (When Destroyed)\nTarget an opposing exhausted Spirit. Send a core, besides , from it to the Reserve.",
+  "image": "26RBS02-015.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 1,
+      "exhaustedOnly": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RBS02-020",
   "name": "The Risen Douvou",
   "name_jp": "再起するドゥーブー",
@@ -1984,6 +2133,175 @@
      {
       "do": "DRAW",
       "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-011",
+  "name": "Boggarl",
+  "name_jp": "ボガール",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Dark Puce",
+   "Phantasprite"
+  ],
+  "text": "[LV2] (When Attacks)\nTarget an opposing Cost 5 or less Spirit. Send two cores, besides , from it to the Reserve. Its number of cores can't be brought to less than one.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 2,
+      "keepOne": true,
+      "costLe": 5
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-012",
+  "name": "Guardy",
+  "name_jp": "ガルディー",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Dark Puce",
+   "Mutant"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nTarget an opposing Spirit with three cores or less on it. Send cores from it to the Reserve until one core remains. (The opponent chooses which cores to send)",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 1,
+      "untilOne": true,
+      "coresLe": 3
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-014",
+  "name": "Ilulion",
+  "name_jp": "イルリオン",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Dark Puce",
+   "Mutant"
+  ],
+  "text": "[LV1][LV2] (When Destroyed)\nDraw a card.\n\n[LV2] (True Release) (Your Attack Step)\nWhen your \"Dark Puce\" family Spirit attacks, target an opposing Cost 6 or less Spirit. Send a core from it to the Reserve. Its number of cores can't be brought to less than one. (The opponent chooses which core to send)",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "ALLY_ATTACKS",
+    "lv": [
+     2
+    ],
+    "match": {
+     "family": [
+      "Dark Puce"
+     ],
+     "noUlt": true
+    },
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 1,
+      "keepOne": true,
+      "costLe": 6
      }
     ]
    }
@@ -2985,6 +3303,79 @@
   "ex_symbols": 1
  },
  {
+  "id": "26RCB01-X01",
+  "name": "Kamen Rider Zangetsu-Shin Melon Energy Arms",
+  "name_jp": "仮面ライダー斬月・真 メロンエナジーアームズ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 7,
+  "reduction": {
+   "red": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 8000
+   },
+   {
+    "cores": 2,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "GAIM",
+   "Kamen"
+  ],
+  "text": "(Legacy)\n[LV1][LV2] (When Attacks/Blocks)\nTarget an opposing 5000 BP or less Spirit, destroy it.\n\n[LV2] (Your Attack Step) {{Invoke|Flash}} (Once Per Turn)\nTarget one of your Spirits. During this battle, it gains +2000 BP.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Legacy"
+  ],
+  "legacy": true,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "alsoBlocks": true,
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "bpLe": 5000
+     }
+    ]
+   },
+   {
+    "trigger": "ACTIVATE",
+    "invoke": true,
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "when": "yourAttack",
+    "once": true,
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_TARGET",
+      "n": 2000,
+      "to": "pick",
+      "battle": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RSD01-002",
   "name": "Gen-Bor",
   "name_jp": "ゲン＝ボー",
@@ -3541,6 +3932,54 @@
   "ex_symbols": 1
  },
  {
+  "id": "26RSD02-004",
+  "name": "Garsis",
+  "name_jp": "ガルシス",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Bloodrouse"
+  ],
+  "text": "[LV2] (True Release) (When Attacks)\nTarget an opposing Cost 4 or less Spirit. Send a core, besides from it to the Reserve.",
+  "image": "26RSD02-004.png",
+  "block": "A",
+  "saga": 50,
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 1,
+      "costLe": 4
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RSD02-005",
   "name": "Boogilugar",
   "name_jp": "ブギールガー",
@@ -3730,6 +4169,113 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD02-014",
+  "name": "Soul Bite",
+  "name_jp": "ソウルバイト",
+  "type": "Magic",
+  "color": "purple",
+  "cost": 6,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Bloodrouse"
+  ],
+  "text": "{{Soul Magic|p||If you control any Purple symbol, you can use it with just the .}}\nFlash\nTarget an opposing Spirit. Send two cores from it to the Reserve. (The opponent chooses which cores to send)",
+  "image": "26RSD02-014.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "soulMagic": "purple",
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "OPP_CORES_TO_RESERVE",
+     "targets": 1,
+     "each": 2
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD02-X01",
+  "name": "The HeadNurse Nephila",
+  "name_jp": "ネフィラー婦長",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 7,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 3,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Bloodrouse"
+  ],
+  "text": "(Legacy)\n[LV1][LV2] (When Summoned)\nTarget an opposing Spirit. Send cores from it to the Reserve until one core remains. (The opponent chooses which cores to send.)\n\n[LV2] (When Attacks)\nTarget an opposing Spirit. Send a core, besides , from it to the Reserve. If it depletes, draw a card.",
+  "image": "26RSD02-X01.png",
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Legacy"
+  ],
+  "legacy": true,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 1,
+      "untilOne": true
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "OPP_CORES_TO_RESERVE",
+      "targets": 1,
+      "each": 1,
+      "drawPerDepleted": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RSD03-002",
@@ -5206,6 +5752,52 @@
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
   "ex_symbols": 1
+ },
+ {
+  "id": "26RSD10-003",
+  "name": "Sharky",
+  "name_jp": "シャーキー",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Abyssen"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nPut a core from the Void to this Spirit, or your Reserve.",
+  "image": "26RSD10-003.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self",
+      "orReserve": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RSD10-004",

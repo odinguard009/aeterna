@@ -2,6 +2,14 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.77.0
+- **Bundle release: "When this effect destroys / depletes", Void choices, core floors, new conditions** (card session, plan W, fourth measured bundle; rule note `docs/mechanics/pack77.md`):
+  - Compiler: "<Destroy X>. When this effect destroys any [opposing] Spirit[/Ultimate], draw a card." (`DESTROY` `thenDraw`); "Send a core from an/any opposing Spirit to the Reserve. When this effect depletes any Spirit / brought the number of cores on that Spirit to 0 / If it depletes, draw a card." (`drawPerDepleted`); "Put a core from the Void to your Spirit/Reserve | this Spirit, or your Reserve | that Spirit" (after "When your X Spirit attacks"); early wording "Gain N core(s) on this spirit / in your Reserve / on target nexus"; conditions "If you control fewer Spirits than the opponent" and "If you control a <colour> nexus"; "Target an opposing <Cost N or less | exhausted | N cores or less> Spirit. Send N core(s) from it to the Reserve [. Its number of cores can't be brought to less than one]" and "... until one core remains"; "Target X, destroy it." with a comma.
+  - Engine: new module `02n-effects-pack77.js`: `VOID_TO_CARD` `orReserve` (the owner picks; CPU takes the Spirit) and `to: 'attacker'`; `OPP_CORES_TO_RESERVE` `costLe` / `exhaustedOnly` / `coresLe` / `keepOne` / `untilOne`; conditions `fewerSpirits`, `nexusGe`.
+  - Tests: `tests/unit/pack77.test.mjs` (PK77-01..05); generators for the new shapes in `tests/unit/lib/fx-props.mjs` (FX01 coverage 77%); PK75-01 updated ("to your Spirit/Reserve" now compiles).
+  - **Measured unlock: +23 cards** (836 of 8,709 playable), 11 of them Standard block A. Promoted cards were removed from `data/import`.
+  - Revert note: `git revert` of the v0.77.0 commit restores v0.76.0 (no data migration; the 23 cards return to `data/import` with `python3 tools/import_fandom.py`).
+
 ## v0.76.0
 - **Bundle release: destroy filters, control conditions, "By discarding A, draw B", same-name limits** (card session, plan W, third measured bundle; rule note `docs/mechanics/pack76.md`):
   - Compiler: "Destroy an opposing Spirit with BP equal or inferior to this Spirit's / the same BP as this Spirit / two or more symbols / a cost equal or less than the number of <Nexuses | \"X\" family Spirits> you control"; "If you control any exhausted <colour | family> Spirit" and 'If you control any "Name"' in front of "Target ... . <Verb> it."; "target a Cost N or more \"X\" family Spirit card in your Trash"; 'return a "A"/"B" from your Trash to the Hand'; "By discarding a [type | family] card from your Hand, draw N" (optional, draw only after the discard); "(Once per Turn: Same Name)" in front of a triggered body. Self-BP texts under When Destroyed stay in review (no last-known BP).

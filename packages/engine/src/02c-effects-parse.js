@@ -42,11 +42,13 @@ function parseCond(c) {
     const okStr = (k === 'controlName' || k === 'hasName' || k === 'soulOn' || k === 'nexusBraved') && typeof v === 'string' && v.length > 0 && v.length <= 60;
     const okCol = k === 'hasSymbol' && COLORS.includes(v);
     const okStep = k === 'step' && STEPS.includes(v);
-    const okBool = (k === 'byOpp' || k === 'byOppFx' || k === 'utHit' || k === 'prev' || k === 'sealed' || k === 'oppTurn' || k === 'attackStep' || k === 'oppRemovedSpirit' || k === 'oppNoAB' || k === 'burstSet' || k === 'oppBurstSet') && typeof v === 'boolean';
+    const okBool = (k === 'byOpp' || k === 'byOppFx' || k === 'utHit' || k === 'prev' || k === 'sealed' || k === 'oppTurn' || k === 'attackStep' || k === 'oppRemovedSpirit' || k === 'oppNoAB' || k === 'burstSet' || k === 'oppBurstSet' || k === 'fewerSpirits') && typeof v === 'boolean';
+    const okNexus = k === 'nexusGe' && v && typeof v === 'object' && (v.n == null || (Number.isInteger(v.n) && v.n >= 1 && v.n <= 5)) && (v.colors == null || (Array.isArray(v.colors) && v.colors.length && v.colors.every(y => COLORS.includes(y))))
+      && (v.family == null || (typeof v.family === 'string' && v.family)) && Object.keys(v).every(y => ['n', 'colors', 'family'].includes(y));   // v0.77
     const okCtrl = k === 'ctrl' && [].concat(v).length > 0 && [].concat(v).every(x => x && typeof x === 'object' && ['Spirit', 'Ultimate', 'Both'].includes(x.type) && (x.n == null || (Number.isInteger(x.n) && x.n >= 1 && x.n <= 5))
       && (x.colors == null || (Array.isArray(x.colors) && x.colors.length && x.colors.every(y => COLORS.includes(y)))) && (x.costGe == null || Number.isInteger(x.costGe)) && (x.family == null || (typeof x.family === 'string' && x.family))
       && (x.exhausted == null || x.exhausted === true) && Object.keys(x).every(y => ['n', 'type', 'colors', 'costGe', 'family', 'exhausted'].includes(y)));   // v0.71 "if you control any <colour/family> Spirit/Ultimate" (same shape as summonIf.ctrl)
-    if (!okInt && !okStr && !okBool && !okCol && !okStep && !okCtrl) return { error: `unknown or invalid condition "${k}" (byOpp, byOppFx, hasSymbol, lifeLe, anyLifeLe, counterGe, soulGe, oppHandGe, voidGe, soulLe, putGe, lifeGe, oppRemovedGe, removedGe, oppSpiritsLe, oppNexusGe, oppNoAB, oppRemovedSpirit, controlName, hasName, soulOn, nexusBraved, oppTurn, attackStep, step, prev, utHit, burstSet, oppBurstSet, ctrl)` };
+    if (!okInt && !okStr && !okBool && !okCol && !okStep && !okCtrl && !okNexus) return { error: `unknown or invalid condition "${k}" (byOpp, byOppFx, hasSymbol, lifeLe, anyLifeLe, counterGe, soulGe, oppHandGe, voidGe, soulLe, putGe, lifeGe, oppRemovedGe, removedGe, oppSpiritsLe, oppNexusGe, oppNoAB, oppRemovedSpirit, controlName, hasName, soulOn, nexusBraved, oppTurn, attackStep, step, prev, utHit, burstSet, oppBurstSet, ctrl, fewerSpirits, nexusGe)` };
   }
   return { cond: Object.assign({}, c) };
 }

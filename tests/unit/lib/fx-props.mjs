@@ -140,6 +140,10 @@ function simple(card, a) {
     case 'VOID_TO_TRASH': return only(a, ['n']) && { body: `const t = P.trashCores.n, r = P.reserve.n; await run(src, RA); return P.trashCores.n === t + A.n && P.reserve.n === r ? '' : 'trash cores ' + t + ' -> ' + P.trashCores.n;` };
     case 'VOID_TO_LIFE': return only(a, ['n']) && { body: `const l = P.life; await run(src, RA); return P.life === l + A.n ? '' : 'life ' + l + ' -> ' + P.life;` };
     case 'VOID_TO_CARD':
+      if (a.to === 'attacker' && only(a, ['n', 'to'])) return { body: `const t = sp(${J(FILL)}, P, 1), r = P.reserve.n; await run(src, RA, { attacker: t }); return t.cores === 1 + A.n && P.reserve.n === r ? '' : 'attacker cores 1 -> ' + t.cores;` };      // v0.77
+      if (a.orReserve && only(a, ['n', 'to', 'orReserve']) && ['self', 'anySpirit'].includes(a.to)) return (spirit || a.to === 'anySpirit') && { onField: a.to === 'self', body: `const t = A.to === 'self' ? src : sp(${J(FILL)}, P, 1), c0 = t.cores, r = P.reserve.n; await run(src, RA);
+      if (t.cores !== c0 + A.n || P.reserve.n !== r) return 'the CPU did not put the core on the Spirit: ' + c0 + ' -> ' + t.cores;
+      ${PRE_RESET} P.spirits = []; const r2 = P.reserve.n; await run(src, RA); return P.reserve.n === r2 + A.n ? '' : 'no Spirit: reserve ' + r2 + ' -> ' + P.reserve.n;` };      // v0.77: CPU takes the Spirit, else the Reserve
       if (!only(a, ['n', 'to'])) return null;
       if (a.to === 'self') return spirit && { onField: true, body: `const c0 = src.cores, r = P.reserve.n; await run(src, RA); if (src.cores !== c0 + A.n) return 'cores ' + c0 + ' -> ' + src.cores; return P.reserve.n === r ? '' : 'the cores came from the Reserve';` };
       return a.to === 'anySpirit' && { body: `const t = sp(${J(FILL)}, P, 1); await run(src, RA); return t.cores === 1 + A.n ? '' : 'cores 1 -> ' + t.cores;` };
@@ -163,6 +167,18 @@ function simple(card, a) {
       ${fillMatches(a.match) ? '' : `${PRE_RESET} const f = sp(${J(FILL)}, P, 1); f.exhausted = true; await run(src, RA); if (!f.exhausted) return 'a Spirit that does not match was refreshed';`} return '';` };
       return only(a, []) && { body: `const t = sp(${J(FILL)}, P, 1); t.exhausted = true; await run(src, RA); return t.exhausted ? 'still exhausted' : '';` };
     case 'OPP_CORES_TO_RESERVE':
+      if (a.targets === 1 && only(a, ['targets', 'each', 'costLe', 'exhaustedOnly', 'coresLe', 'keepOne', 'untilOne', 'drawPerDepleted']) && !(a.drawPerDepleted && (a.keepOne || a.untilOne))
+        && ['costLe', 'exhaustedOnly', 'coresLe', 'keepOne', 'untilOne', 'drawPerDepleted'].some(k => a[k] != null)) {      // v0.77 filters / floors / draw on depletion
+        const T = a.costLe != null ? sid(a.costLe, 1000) : FILL, K = a.coresLe != null ? Math.min(a.coresLe, 4) : 4;
+        return { fix: a.costLe != null ? [{ cost: a.costLe, bp: 1000 }, { cost: a.costLe + 1, bp: 1000 }] : [], body: `const ex = ${a.exhaustedOnly ? 'true' : 'false'}, mk = (id, n, e) => { const i = sp(id, O, n); i.exhausted = e; return i; };
+      const D = []; ${a.costLe != null ? `D.push(mk(${J(sid(a.costLe + 1, 1000))}, ${K}, ex));` : ''} ${a.exhaustedOnly ? `D.push(mk(${J(T)}, ${K}, false));` : ''} ${a.coresLe != null ? `D.push(mk(${J(T)}, ${a.coresLe + 1}, ex));` : ''}
+      const d0 = D.map(x => x.cores);
+      if (A.drawPerDepleted) { for (let j = 0; j < 3; j++) dk(${J(FILL)}); const t = mk(${J(T)}, Math.min(A.each, ${K}), ex); const h = P.hand.length; await run(src, RA);
+        if (O.spirits.includes(t) || P.hand.length !== h + 1) return 'depleted target: hand ' + h + ' -> ' + P.hand.length; }
+      else { const t = mk(${J(T)}, ${K}, ex); await run(src, RA); const want = A.untilOne ? 1 : A.keepOne ? Math.max(1, ${K} - A.each) : ${K} - A.each;
+        if (t.cores !== want) return 'target cores ${K} -> ' + t.cores + ', want ' + want; }
+      return D.every((x, j) => x.cores === d0[j]) ? '' : 'a Spirit outside the filter lost cores';` };
+      }
       if (!only(a, ['targets', 'each'])) return null;
       return { body: `const L = []; for (let j = 0; j < A.targets + 1; j++) L.push(sp(${J(FILL)}, O, A.each + 2)); const r = O.reserve.n, before = L.reduce((s, t) => s + t.cores, 0);
       await run(src, RA); const moved = before - L.reduce((s, t) => s + t.cores, 0), hit = L.filter(t => t.cores < A.each + 2);

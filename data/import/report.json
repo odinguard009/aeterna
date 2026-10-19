@@ -1,15 +1,15 @@
 {
  "stats": {
-  "cards": 7896,
+  "cards": 7873,
   "per_saga": {
-   "1": 806,
-   "2": 335,
+   "1": 801,
+   "2": 334,
    "3": 412,
-   "4": 422,
+   "4": 418,
    "5": 672,
    "6": 370,
    "7": 539,
-   "8": 500,
+   "8": 498,
    "9": 496,
    "10": 499,
    "11": 331,
@@ -19,23 +19,23 @@
    "15": 357,
    "16": 334,
    "17": 110,
-   "50": 558
+   "50": 547
   },
   "tokens": 3,
   "missing_page": 3,
-  "skipped_curated": 810,
+  "skipped_curated": 833,
   "number_conflicts": 5,
   "nexus_levels_added": 717,
   "nexus_levels_missing": 43,
   "level_problems": 3,
-  "image_problems": 585,
+  "image_problems": 580,
   "merged": 111,
   "brave_unparsed": 171,
   "ut_lines_added": 119,
   "odd_reduction": 809,
   "brave_no_data": 2,
   "ut_lines_missing": 1,
-  "without_image": 583
+  "without_image": 578
  },
  "tokens": [
   "BS73-T001",
@@ -86,6 +86,7 @@
   "BS01-077",
   "BS01-080",
   "BS01-081",
+  "BS01-082",
   "BS01-084",
   "BS01-085",
   "BS01-089",
@@ -102,6 +103,7 @@
   "BS02-014",
   "BS02-023",
   "BS02-025",
+  "BS02-029",
   "BS02-032",
   "BS02-037",
   "BS02-039",
@@ -136,9 +138,11 @@
   "BS03-045",
   "BS03-051",
   "BS03-052",
+  "BS03-056",
   "BS03-057",
   "BS03-060",
   "BS03-063",
+  "BS03-065",
   "BS03-068",
   "BS03-071",
   "BS03-072",
@@ -170,6 +174,7 @@
   "BS04-046",
   "BS04-048",
   "BS04-056",
+  "BS04-059",
   "BS04-060",
   "BS04-062",
   "BS04-064",
@@ -287,6 +292,7 @@
   "BS11-002",
   "BS11-003",
   "BS11-005",
+  "BS11-006",
   "BS11-009",
   "BS11-012",
   "BS11-021",
@@ -394,6 +400,7 @@
   "BS19-004",
   "BS19-012",
   "BS19-013",
+  "BS19-015",
   "BS19-016",
   "BS19-019",
   "BS19-023",
@@ -441,6 +448,7 @@
   "BS21-016",
   "BS21-019",
   "BS21-020",
+  "BS21-023",
   "BS21-030",
   "BS21-032",
   "BS21-035",
@@ -466,7 +474,9 @@
   "BS22-064",
   "BS22-066",
   "BS23-001",
+  "BS23-009",
   "BS23-012",
+  "BS23-017",
   "BS23-029",
   "BS23-040",
   "BS24-021",
@@ -559,7 +569,9 @@
   "BS41-003",
   "BS41-037",
   "BS41-049",
+  "BS41-052",
   "BS42-041",
+  "BS43-016",
   "BS43-028",
   "BS44-049",
   "BS45-043",
@@ -752,10 +764,13 @@
   "26RSD02-001",
   "26RSD02-002",
   "26RSD02-003",
+  "26RSD02-004",
   "26RSD02-005",
   "26RSD02-006",
   "26RSD02-007",
   "26RSD02-008",
+  "26RSD02-014",
+  "26RSD02-X01",
   "26RSD03-002",
   "26RSD03-003",
   "26RSD03-004",
@@ -790,7 +805,9 @@
   "26RBS01-016",
   "26RBS01-019",
   "26RBS01-020",
+  "26RBS01-023",
   "26RBS01-027",
+  "26RBS01-029",
   "26RBS01-032",
   "26RBS01-033",
   "26RBS01-036",
@@ -822,9 +839,11 @@
   "26RCB01-040",
   "26RCB01-041",
   "26RCB01-044",
+  "26RCB01-X01",
   "26RBS02-002",
   "26RBS02-004",
   "26RBS02-008",
+  "26RBS02-015",
   "26RBS02-020",
   "26RBS02-024",
   "26RBS02-025",
@@ -842,11 +861,15 @@
   "26RSD09-005",
   "26RSD09-012",
   "26RSD10-001",
+  "26RSD10-003",
   "26RSD10-004",
   "26RSD10-005",
   "26RSD10-006",
   "26RSD10-007",
   "26RBS03-010",
+  "26RBS03-011",
+  "26RBS03-012",
+  "26RBS03-014",
   "26RBS03-021",
   "26RBS03-025",
   "26RBS03-052",
@@ -2575,11 +2598,6 @@
    "problem": "no image (near: The Valkyrie RoseWeiss.jpg)"
   },
   {
-   "id": "BS41-052",
-   "name": "The Balancing Shrewmouse",
-   "problem": "no image"
-  },
-  {
    "id": "BS41-056",
    "name": "The ThroneAngelia Safiel",
    "problem": "no image"
@@ -4125,11 +4143,6 @@
    "problem": "ambiguous name (2 files, none in set 26RCB01)"
   },
   {
-   "id": "26RCB01-X01",
-   "name": "Kamen Rider Zangetsu-Shin Melon Energy Arms",
-   "problem": "ambiguous name (2 files, none in set 26RCB01)"
-  },
-  {
    "id": "26RCB01-X02",
    "name": "Kamen Rider Gaim Kiwami Arms",
    "problem": "ambiguous name (2 files, none in set 26RCB01)"
@@ -4200,23 +4213,8 @@
    "problem": "no image"
   },
   {
-   "id": "26RBS03-011",
-   "name": "Boggarl",
-   "problem": "no image"
-  },
-  {
-   "id": "26RBS03-012",
-   "name": "Guardy",
-   "problem": "no image"
-  },
-  {
    "id": "26RBS03-013",
    "name": "The FoxPossessed Renki",
-   "problem": "no image"
-  },
-  {
-   "id": "26RBS03-014",
-   "name": "Ilulion",
    "problem": "no image"
   },
   {
