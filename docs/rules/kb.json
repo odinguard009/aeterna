@@ -588,6 +588,10 @@
  ],
  "known_gaps": [
   {
+   "key": "STD 12-2-1-3",
+   "reason": "Legacy (= Succession, v0.69.0): cited from the research notes in data/glossary/mechanics.json (kw:legacy: Standard CR 12-2-1-3, Fandom Legacy page and Q&A 31541-31543, 31620, 31866); no chunk yet because the Standard manual text was not read in this session; build the chunk with page and fingerprint in Q3 part 2"
+  },
+  {
    "key": "ETR name:summon-condition",
    "reason": "Ultimate summon conditions: the engine marks it a house reading; no manual section matched yet (VER.17.0 Ultimate pp. 39-40 to be read in part 2)"
   },

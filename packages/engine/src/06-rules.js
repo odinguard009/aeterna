@@ -174,11 +174,45 @@ function extraReduction(p, card) {
   }
   return out;
 }
+/* v0.69 LEGACY (= Succession; Standard CR 12-2-1-3, Fandom Q&A 31541-31543, 31620, 31866): summoning / casting a card with Legacy you may banish EX-symbol
+   cards of the reduction colour from your Trash, one per reduction symbol, before the Field symbols reduce the cost; none banished = Legacy not activated;
+   never with a fixed cost (costAlt). House reading: applied automatically with the fewest EX cards that give the lowest cost (a Field symbol that can pay
+   a reduction symbol saves an EX card). EX colour = the card's colour(s) (no two-colour EX card exists in block A). */
+function legacyPlan(p, card, syms, extra) {
+  if (!card || !card.legacy || !p || costAltActive(p, card)) return null;
+  const slots = []; for (const [k, n] of Object.entries(card.reduction || {})) for (let i = 0; i < n; i++) slots.push(k);
+  const pool = p.trash.filter(t => CARDS[t.id] && CARDS[t.id].exSymbols > 0);
+  if (!slots.length || !pool.length) return null;
+  syms = syms || fieldSymbols(p, card.soulReduce, true).concat(card.trashSymbols ? p.trash.flatMap(t => symbolAttrs(CARDS[t.id])) : []);
+  const fits = (k, a) => (k === 'all' ? a.some(x => COLORS.includes(x)) : a.includes(k));
+  const need = slots.map((k, i) => ({ k, i, fit: syms.filter(a => fits(k, a)).length })).sort((a, b) => a.fit - b.fit);   // slots the Field cannot pay come first
+  const left = pool.slice(), pick = [];
+  for (const s of need) {
+    const j = left.findIndex(t => { const c = CARDS[t.id], cols = c.colors && c.colors.length ? c.colors : [c.symbol]; return s.k === 'all' ? cols.some(x => COLORS.includes(x)) : cols.includes(s.k); });
+    if (j >= 0) { pick.push({ s, t: left[j] }); left.splice(j, 1); }
+  }
+  let best = null;
+  for (let k = 0; k <= pick.length; k++) {                      // fewest EX cards for the lowest cost
+    const gone = new Set(pick.slice(0, k).map(x => x.s.i)), rest = { reduction: {} };
+    slots.forEach((c, i) => { if (!gone.has(i)) rest.reduction[c] = (rest.reduction[c] || 0) + 1; });
+    const total = k + reductionOf(rest, syms, extra || extraReduction(p, card));
+    if (!best || total > best.total) best = { n: k, cards: pick.slice(0, k).map(x => x.t), total };
+  }
+  return best.n > 0 ? best : null;
+}
 function effCost(p, card) {                       // cost reduction is mandatory when possible
   const syms = fieldSymbols(p, card.soulReduce, true);
-  if (card.trashSymbols) for (const t of p.trash) for (const x of symbolAttrs(CARDS[t.id])) syms.push(x);   // v0.47 Lightning Tempest: "you can also use symbols from your Trash to reduce the cost"
-  const r = reductionOf(card, syms, extraReduction(p, card));
+  if (card.trashSymbols) for (const t of p.trash) for (const x of symbolAttrs(CARDS[t.id])) syms.push(x);   // v0.47 Lightning Tempest: "you can also use symbols from your Trash to reduce the cost
+  const extra = extraReduction(p, card), lp = legacyPlan(p, card, syms, extra);
+  const r = lp ? lp.total : reductionOf(card, syms, extra);
   return Math.max(0, (costAltActive(p, card) ? Math.min(card.cost, card.costAlt.cost) : card.cost) - r);
+}
+function legacyPay(p, inst) {                     // v0.69: banish the Legacy cards (call once, before the cost is paid: the state must still be the one effCost saw)
+  const lp = legacyPlan(p, CARDS[inst.id]); inst.legacyN = lp ? lp.n : 0;
+  if (!lp) return 0;
+  for (const t of lp.cards) { removeFrom(p.trash, t); p.removed.push(t); }
+  log(`${who(p)} ${p.cpu ? 'banishes' : 'banish'} ${lp.n} EX-symbol card${lp.n === 1 ? '' : 's'} from the Trash via Legacy.`);
+  return lp.n;
 }
 function canPlayCard(p, inst) { const c = CARDS[inst.id]; return summonOK(p, c) && effCost(p, c) + minCores(c) <= coresAvailable(p); }
 
@@ -275,7 +309,7 @@ function draw(p, n) {
 /* the owner's Hand increased through one of the owner's own effects: the opponent sees an "opposing Hand increase by an opposing effect" */
 function handUp(p, k) { if (G && !G.over && k !== 0 && G.evQ) G.evQ.push({ type: 'HAND_UP', key: p.key }); }
 function summon(p, inst, plan) {
-  const card = CARDS[inst.id], c = effCost(p, card);
+  const card = CARDS[inst.id], c = effCost(p, card); legacyPay(p, inst);
   removeFrom(p.hand, inst); removeFrom(p.soulState, inst); removeFrom(p.removed, inst); inst.inSoulState = false; inst.mirage = false;   // v0.50: Accel Spirits are summoned from the Removed Zone
   payCost(p, c, plan);
   inst.cores = 0; inst.soul = false; inst.exhausted = false; inst.heavy = false; inst.noAB = false; inst.summonedTurn = G.turnNo; inst.bpMod = 0;
@@ -365,6 +399,7 @@ function magicText(card) {
 }
 async function castMagic(p, ch) {                         // ch = { inst, target, plan }
   const inst = ch.inst, fromTrash = magicFromTrash(p, inst), card = CARDS[inst.id], m = magicFxAt(p, inst, ch.ctx), sm = soulMagicPick(p, card, ch), alt = !sm && costAltActive(p, card), c = effCost(p, card), opp = G.p[other(p.key)];
+  if (!sm) legacyPay(p, inst);
   if (alt) { p.onceUsed = p.onceUsed || {}; p.onceUsed['costalt:' + card.name] = G.turnNo; }
   const smHolder = sm ? soulMagicHolder(p) : null;              // chosen before the card leaves the Hand (symbols stay as they are)
   removeFrom(p.hand, inst); if (fromTrash) removeFrom(p.trash, inst);

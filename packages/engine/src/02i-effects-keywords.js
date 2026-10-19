@@ -14,7 +14,7 @@ function highSpeedOK(p, inst) {
 const highSpeedSources = p => p.hand.filter(h => highSpeedOK(p, h));
 async function highSpeedSummon(p, inst) {
   if (!highSpeedOK(p, inst)) return false;
-  const card = CARDS[inst.id], c = effCost(p, card);
+  const card = CARDS[inst.id], c = effCost(p, card); legacyPay(p, inst);
   const fromN = Math.min(c, p.reserve.n), plan = { reserve: fromN, by: {}, rsoul: c > fromN, fsoul: null };
   removeFrom(p.hand, inst); inst.mirage = false;
   payCost(p, c, plan);

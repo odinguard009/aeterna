@@ -29338,7 +29338,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS01-003",
@@ -29370,7 +29371,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS01-005",
@@ -29416,7 +29418,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS01-006",
@@ -29524,6 +29527,121 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RBS01-012",
+  "name": "Regulinaz",
+  "name_jp": "レグリナズ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 6,
+  "reduction": {
+   "red": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Windfang"
+  ],
+  "text": "(Legacy)\n[LV1][LV2] (During Attack) {{Invoke|Flash}} (Once Per Turn)\nDiscard a \"Windfang\" family card from your Hand ▶ During this battle, this Spirit gains +3000 BP.",
+  "image": "26RBS01-012.png",
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Legacy"
+  ],
+  "legacy": true,
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "invoke": true,
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "when": "duringAttack",
+    "once": true,
+    "lv": [
+     1,
+     2
+    ],
+    "cost": {
+     "discard": {
+      "match": {
+       "family": [
+        "Windfang"
+       ]
+      }
+     }
+    },
+    "actions": [
+     {
+      "do": "BP_TARGET",
+      "n": 3000,
+      "to": "self",
+      "battle": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-015",
+  "name": "Protomaia",
+  "name_jp": "プロトメイア",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 8,
+  "reduction": {
+   "red": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 9000
+   },
+   {
+    "cores": 3,
+    "bp": 11000
+   }
+  ],
+  "families": [
+   "Red Cloud",
+   "Dayspring"
+  ],
+  "text": "(Legacy)\n[LV2] (True Release) Clash (During Attack)\nOpposing Spirits must block if possible.",
+  "image": "26RBS01-015.png",
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Legacy"
+  ],
+  "legacy": true,
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "MUST_BLOCK",
+    "to": "self",
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RBS01-016",
   "name": "Bonrat",
   "name_jp": "ボンラット",
@@ -29568,7 +29686,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS01-019",
@@ -29600,7 +29719,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS01-020",
@@ -29644,7 +29764,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS01-027",
@@ -29702,7 +29823,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS01-032",
@@ -29794,6 +29916,43 @@
    }
   ],
   "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
+ },
+ {
+  "id": "26RBS01-045",
+  "name": "Lione-Macina",
+  "name_jp": "リオネ＝マキナ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 8,
+  "reduction": {
+   "green": 6
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 9000
+   },
+   {
+    "cores": 3,
+    "bp": 12000
+   }
+  ],
+  "families": [
+   "Oceanic Green",
+   "Amorphite"
+  ],
+  "text": "(Legacy)",
+  "image": "26RBS01-045.png",
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Legacy"
+  ],
+  "legacy": true,
+  "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
@@ -29842,7 +30001,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS01-052",
@@ -29889,7 +30049,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS01-064",
@@ -29921,7 +30082,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS01-069",
@@ -30016,6 +30178,74 @@
   "image": "26RBS01-078.png",
   "block": "A",
   "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
+ },
+ {
+  "id": "26RBS01-090",
+  "name": "The AzureGait Balpnir",
+  "name_jp": "蒼駆バルプニール",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 8,
+  "reduction": {
+   "blue": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 8000
+   },
+   {
+    "cores": 2,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Cyantree",
+   "Sylvareign"
+  ],
+  "text": "(Legacy)\n\n[LV2] (During Attack) {{Invoke|Flash}} (Once Per Turn)\nExhaust one of your \"Cyantree\" family Nexuses ▶ Target an opposing Cost 4 or less Spirit. Destroy it.",
+  "image": "26RBS01-090.png",
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Legacy"
+  ],
+  "legacy": true,
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "invoke": true,
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "when": "duringAttack",
+    "once": true,
+    "lv": [
+     2
+    ],
+    "cost": {
+     "exhaustOwn": {
+      "kind": "nexus",
+      "match": {
+       "family": [
+        "Cyantree"
+       ]
+      }
+     }
+    },
+    "actions": [
+     {
+      "do": "DESTROY",
+      "costLe": 4
+     }
+    ]
+   }
+  ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
@@ -30149,7 +30379,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS02-008",
@@ -30234,7 +30465,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS02-025",
@@ -30265,7 +30497,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS02-027",
@@ -30323,7 +30556,72 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
+ },
+ {
+  "id": "26RBS02-034",
+  "name": "The Dismemberer Buzzsawn",
+  "name_jp": "八つ裂きバズソーン",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 6,
+  "reduction": {
+   "green": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Armored Fish"
+  ],
+  "text": "(Legacy)\n[LV1][LV2] (When Summoned)\nPut a core from the Void to this Spirit.\n\n[LV2] (When Destroyed)\nYou can target an opposing Spirit. Exhaust it.",
+  "image": "26RBS02-034.png",
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Legacy"
+  ],
+  "legacy": true,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self"
+     }
+    ]
+   },
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RBS02-043",
@@ -30355,7 +30653,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS02-049",
@@ -30434,7 +30733,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS02-058",
@@ -30481,7 +30781,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS03-010",
@@ -30558,7 +30859,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS03-025",
@@ -30589,7 +30891,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS03-052",
@@ -30621,7 +30924,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS03-061",
@@ -30653,7 +30957,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS03-065",
@@ -30685,7 +30990,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS03-066",
@@ -30717,7 +31023,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS03-068",
@@ -30749,7 +31056,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS03-071",
@@ -30780,7 +31088,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS03-072",
@@ -30811,7 +31120,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RBS03-074",
@@ -30842,7 +31152,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RCB01-006",
@@ -30874,7 +31185,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RCB01-010",
@@ -30906,7 +31218,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RCB01-012",
@@ -31000,7 +31313,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RCB01-029",
@@ -31032,7 +31346,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RCB01-033",
@@ -31096,7 +31411,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RCB01-044",
@@ -31128,7 +31444,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD01-002",
@@ -31172,7 +31489,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD01-005",
@@ -31204,7 +31522,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD01-007",
@@ -31281,7 +31600,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD02-001",
@@ -31328,7 +31648,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD02-002",
@@ -31418,7 +31739,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD02-005",
@@ -31450,7 +31772,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD02-006",
@@ -31602,7 +31925,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD03-004",
@@ -31634,7 +31958,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD03-005",
@@ -31666,7 +31991,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD03-013",
@@ -31701,7 +32027,8 @@
    ]
   },
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD03-014",
@@ -31740,7 +32067,8 @@
    ]
   },
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD04-005",
@@ -31771,6 +32099,60 @@
   "image": "26RSD04-005.png",
   "block": "A",
   "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
+ },
+ {
+  "id": "26RSD04-008",
+  "name": "The MightyArm Anatoma",
+  "name_jp": "豪腕アナトマ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 7,
+  "reduction": {
+   "white": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 2,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Leucomyst",
+   "Mineroid"
+  ],
+  "text": "(Legacy)\n[LV1][LV2] (When Summoned)\nTarget an opposing 6000 BP or less Spirit. Return it to the Hand.",
+  "image": "26RSD04-008.png",
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Legacy"
+  ],
+  "legacy": true,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "hand",
+      "kind": "spirit",
+      "bpLe": 6000
+     }
+    ]
+   }
+  ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
@@ -31809,7 +32191,8 @@
    ]
   },
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD05-001",
@@ -31857,7 +32240,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD05-003",
@@ -31985,7 +32369,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD05-008",
@@ -32051,6 +32436,71 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RSD05-X02",
+  "name": "The SpellThunder Lucnas",
+  "name_jp": "雷術ルクーナス",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 7,
+  "reduction": {
+   "yellow": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 3,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Thunder Dragon"
+  ],
+  "text": "(Legacy)\n[LV1][LV2] (When Summoned)\nTarget an opposing Spirit. During this turn, give it -4000 BP. Then, if it has 0 BP, destroy it.\n\n[LV2] (True Release) (When Attacks)\nTarget an opposing Spirit. During this turn, give it -4000 BP. Then, if it has 0 BP, destroy it.",
+  "image": "26RSD05-X02.png",
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Legacy"
+  ],
+  "legacy": true,
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_MINUS",
+      "n": 4000,
+      "zeroDestroy": true
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_MINUS",
+      "n": 4000,
+      "zeroDestroy": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RSD06-003",
   "name": "Melrak",
   "name_jp": "メルラク",
@@ -32094,7 +32544,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD06-005",
@@ -32126,7 +32577,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD06-007",
@@ -32224,7 +32676,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD07-006",
@@ -32256,7 +32709,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD09-002",
@@ -32286,7 +32740,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD09-005",
@@ -32317,6 +32772,58 @@
   "image": "26RSD09-005.png",
   "block": "A",
   "saga": 50,
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
+ },
+ {
+  "id": "26RSD09-012",
+  "name": "Blaze Draw",
+  "name_jp": "ブレイズドロー",
+  "type": "Magic",
+  "color": "red",
+  "cost": 4,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Purgatory Wings"
+  ],
+  "text": "(Legacy)\nMain\nDraw two cards.\n\nFlash\nTarget one of your Spirits. During this turn, give it +2000 BP.",
+  "image": "26RSD09-012.png",
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Legacy"
+  ],
+  "legacy": true,
+  "magic": {
+   "timing": [
+    "MAIN",
+    "FLASH"
+   ],
+   "effect": null,
+   "value": 0,
+   "by": {
+    "MAIN": {
+     "effect": "DRAW",
+     "value": 2
+    },
+    "FLASH": {
+     "effect": "ACTIONS",
+     "value": 0,
+     "actions": [
+      {
+       "do": "BP_TARGET",
+       "n": 2000,
+       "to": "pick"
+      }
+     ]
+    }
+   }
+  },
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
@@ -32349,7 +32856,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD10-004",
@@ -32393,7 +32901,8 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD10-005",
@@ -32473,7 +32982,8 @@
   "block": "A",
   "saga": 50,
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  },
  {
   "id": "26RSD10-007",
@@ -32522,6 +33032,7 @@
    }
   ],
   "fxComplete": true,
-  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
+  "ex_symbols": 1
  }
 ]

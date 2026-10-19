@@ -2935,6 +2935,15 @@
   "T_SUMMONED",
   "C_LEVEL"
  ],
+ "26RBS01-012": [
+  "A_BP_PLUS",
+  "C_LEVEL",
+  "K_STANDARD_INVOKE"
+ ],
+ "26RBS01-015": [
+  "C_LEVEL",
+  "S_MUST_BLOCK"
+ ],
  "26RBS01-016": [
   "A_EXHAUST",
   "C_LEVEL",
@@ -2959,6 +2968,7 @@
   "T_DESTROYED",
   "M_OPTIONAL"
  ],
+ "26RBS01-045": [],
  "26RBS01-046": [
   "C_LEVEL",
   "T_DESTROYED"
@@ -2978,6 +2988,11 @@
   "A_BP_MINUS"
  ],
  "26RBS01-078": [],
+ "26RBS01-090": [
+  "A_EXHAUST",
+  "C_LEVEL",
+  "K_STANDARD_INVOKE"
+ ],
  "26RBS01-110": [],
  "26RBS01-X07": [
   "T_SUMMONED",
@@ -2999,6 +3014,14 @@
   "A_BP_PLUS",
   "A_EXHAUST",
   "C_LEVEL"
+ ],
+ "26RBS02-034": [
+  "T_SUMMONED",
+  "A_VOID",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "T_DESTROYED",
+  "M_OPTIONAL"
  ],
  "26RBS02-043": [],
  "26RBS02-049": [
@@ -3090,6 +3113,10 @@
   "K_STANDARD_SUCCESSION"
  ],
  "26RSD04-005": [],
+ "26RSD04-008": [
+  "T_SUMMONED",
+  "C_LEVEL"
+ ],
  "26RSD04-013": [],
  "26RSD05-001": [
   "C_LEVEL",
@@ -3120,6 +3147,13 @@
   "M_THEN",
   "A_BP_MINUS"
  ],
+ "26RSD05-X02": [
+  "T_SUMMONED",
+  "T_ATTACKS",
+  "C_LEVEL",
+  "M_THEN",
+  "A_BP_MINUS"
+ ],
  "26RSD06-003": [
   "C_LEVEL",
   "T_DESTROYED"
@@ -3135,6 +3169,9 @@
  "26RSD07-006": [],
  "26RSD09-002": [],
  "26RSD09-005": [],
+ "26RSD09-012": [
+  "A_BP_PLUS"
+ ],
  "26RSD10-001": [],
  "26RSD10-004": [
   "A_BP_PLUS",

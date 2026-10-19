@@ -16,7 +16,7 @@ sentence not in the tables below. The output still has to pass the game's parseC
 import json, glob, os, re, sys, collections
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
-KEEP = ('id', 'name', 'name_jp', 'type', 'color', 'cost', 'reduction', 'symbols', 'levels', 'families', 'text', 'image', 'block', 'saga', 'brave')
+KEEP = ('id', 'name', 'name_jp', 'type', 'color', 'cost', 'reduction', 'symbols', 'levels', 'families', 'text', 'image', 'block', 'saga', 'brave', 'ex_symbols')
 NUM = {'a': 1, 'an': 1, 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8}
 num = lambda s: int(s) if s.isdigit() else NUM[s.lower()]
 W = r'(\d+|a|an|one|two|three|four|five)'
@@ -588,6 +588,8 @@ def invoke_para(p, card, lv, rush):
 
 TRUE_RELEASE = re.compile(r"\[LV2\]'?\s*\(True Release\)\s*")
 
+LEGACY_HEAD = re.compile(r'(?m)^[ \t]*\(Legacy\)[ \t]*(?:\n|$)')
+
 
 def compile_card(c):
     n = {k: c[k] for k in KEEP if k in c}
@@ -603,6 +605,9 @@ def compile_card(c):
         if c['type'] != 'Magic': raise Review('Soul Magic on a ' + c['type'])
         if not col: raise Review('Soul Magic colour: ' + sm.group(1)[:10])
         n['soulMagic'] = col; txt = txt[sm.end():]
+    if txt and LEGACY_HEAD.search(txt):      # v0.69 Legacy (= Succession, Standard CR 12-2-1-3): the "(Legacy)" line is the head, banishing EX cards from the Trash pays reduction symbols (engine: legacyPlan)
+        if c['type'] not in ('Spirit', 'Nexus', 'Magic'): raise Review('Legacy on a ' + c['type'])
+        n['legacy'] = True; txt = LEGACY_HEAD.sub('', txt, count=1)
     if txt and '(True Release)' in txt:     # v0.66 True Release (= Super Unleash, Standard CR 12-2-1-1): LV2 by its cores OR by the Soul Core alone
         if c['type'] not in ('Spirit', 'Nexus'): raise Review('True Release on a ' + c['type'])
         if len(c.get('levels') or []) < 2: raise Review('True Release without an LV2')

@@ -368,7 +368,7 @@ def blockers(c):
         first = str(e)
     if c['type'] not in ('Spirit', 'Brave', 'Nexus') or not c.get('levels'): return [first]
     out = []
-    t = v1.invoke_mark(v1.TRUE_RELEASE.sub('[LV2] ', lv_dash(c.get('text') or '')))      # v0.68: Invoke + True Release heads are read
+    t = v1.invoke_mark(v1.TRUE_RELEASE.sub('[LV2] ', v1.LEGACY_HEAD.sub('', lv_dash(c.get('text') or ''), count=1)))      # v0.68: Invoke + True Release heads are read; v0.69: the (Legacy) head too
     try:
         b, t = v1.burst_block(t)
     except Review as e:
