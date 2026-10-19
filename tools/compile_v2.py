@@ -280,7 +280,59 @@ def own_grammar(s, ctx=None):
     return None
 
 
+# ---------- v0.69: "Reveal N cards from your decktop. Among them, add/deploy <card>. Return/Discard any remaining cards." ----------
+REVEAL_HEAD = re.compile(r'^(?:(?:you can|you may) )?reveal (a|one|two|three|four|five|\d) cards? from your decktop\.', re.I)
+REVEAL_REST = re.compile(r'\.\s*(return any remaining cards to the deck ?bottom(?: in any order)?|discard any remaining cards)\.?$', re.I)
+DIFF_NAME = r"(?: with (?:a )?(?:card )?name different (?:from|to) this (?:spirit|nexus)'?s)?"
+REVEAL_NP = re.compile(r'^(?:an?|one) (?:(?P<col>' + COL + r') )?(?:cost (?P<cost>\d+) or less )?(?:"(?P<fam>[^"]+(?:"\s*/\s*"[^"]+)*)" family )?(?:(?P<kind>spirit|nexus|magic) )?card' + DIFF_NAME + r'$')
+
+
+def reveal_np(np):
+    """one card noun phrase -> engine match + diffName; Review for forms the engine match cannot say (keywords, two kinds, no printed effects, unquoted families)"""
+    x = low(np.strip())
+    m = REVEAL_NP.match(x)
+    if not m: raise Review('v2 reveal: card phrase ' + np.strip()[:60])
+    if not (m.group('fam') or m.group('kind') or m.group('col') or m.group('cost')): raise Review('v2 reveal: any card')
+    match = {}
+    if m.group('fam'): match['family'] = [f.strip() for f in re.findall(r'"([^"]+)"', np)]
+    if m.group('kind'): match['type'] = m.group('kind').capitalize()
+    if m.group('col'): match['color'] = m.group('col')
+    if m.group('cost'): match['costLe'] = int(m.group('cost'))
+    return match, 'name different' in x
+
+
+def reveal_grammar(s):
+    """-> [action] or None when the sentence is not a reveal-from-decktop effect (REVEAL_PICK / REVEAL_DEPLOY, 02b)"""
+    x = s.strip()
+    h = REVEAL_HEAD.match(x)
+    if not h: return None
+    n = n_of(h.group(1).lower())
+    body = x[h.end():].strip()
+    r = REVEAL_REST.search(body)
+    if not r: raise Review('v2 reveal: no "remaining cards" ending')
+    rest = 'trash' if r.group(1).lower().startswith('discard') else 'bottom'
+    body = body[:r.start()].strip().rstrip('.')
+    body = re.sub(r'^among them,?\s*', '', body, flags=re.I)
+    body = re.sub(r'^(?:you can|you may)\s+', '', body, flags=re.I)
+    m = re.match(r'^add (?:to (?:the |your )?hand )?(.+?)(?: among them)?(?: to (?:the |your )?hand)?$', body, re.I)
+    if m:
+        match, diff = reveal_np(m.group(1))
+        a = {'do': 'REVEAL_PICK', 'n': n, 'match': match, 'rest': rest}
+        if diff: a['diffName'] = True
+        return [a]
+    m = re.match(r'^(?:summon/deploy|deploy|summon) (.+?)(, without paying the cost)?$', body, re.I)
+    if m:
+        if rest != 'bottom': raise Review('v2 reveal: deploy then discard')
+        match, diff = reveal_np(m.group(1))
+        a = {'do': 'REVEAL_DEPLOY', 'n': n, 'match': match, 'pay': not m.group(2)}
+        if diff: a['diffName'] = True
+        return [a]
+    raise Review('v2 reveal: ' + body[:60])
+
+
 def grammar(s, ctx=None):
+    rg = reveal_grammar(s)
+    if rg is not None: return rg, bool(re.match(r'^(?:you can|you may) ', s, re.I))
     og = own_grammar(s, ctx)
     if og is not None: return og, bool(re.match(r'^(?:you can|you may) ', s, re.I))
     m = TARGET.match(s.strip().rstrip('.'))
@@ -307,6 +359,8 @@ def sentences(body):
     for x in _V1_SENTENCES(body):
         if out and re.fullmatch(r'then,? if it has 0 ?bp,? destroy it\.?', x.strip(), re.I) and re.search(r'-\d[\d,]* ?bp\.$', out[-1], re.I):
             out[-1] = out[-1] + ' ' + x      # v0.68: "... give it -N BP. Then, if it has 0 BP, destroy it." is one effect
+        elif out and REVEAL_HEAD.match(out[-1]) and not REVEAL_REST.search(out[-1]):
+            out[-1] = out[-1] + ' ' + x      # v0.69: "Reveal N cards from your decktop." + "Among them, add ..." + "Return any remaining cards ..." is one effect
         elif out and re.match(r'^(?:(?:you can|you may) )?target ', out[-1], re.I) and out[-1].endswith('.'):
             out[-1] = out[-1] + ' ' + x      # join "Target X." with its action sentence
         else:

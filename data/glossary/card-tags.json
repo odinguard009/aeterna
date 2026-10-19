@@ -3035,6 +3035,11 @@
   "M_THEN",
   "A_BP_MINUS"
  ],
+ "26RBS02-064": [
+  "A_SUMMON_FREE",
+  "C_LEVEL",
+  "T_DESTROYED"
+ ],
  "26RBS03-010": [
   "T_SUMMONED",
   "C_LEVEL"
@@ -3043,12 +3048,23 @@
  "26RBS03-025": [],
  "26RBS03-052": [],
  "26RBS03-061": [],
+ "26RBS03-063": [
+  "A_REVEAL_DECK",
+  "C_LEVEL",
+  "T_DESTROYED",
+  "M_OPTIONAL",
+  "A_REVEAL_ADD"
+ ],
  "26RBS03-065": [],
  "26RBS03-066": [],
  "26RBS03-068": [],
  "26RBS03-071": [],
  "26RBS03-072": [],
  "26RBS03-074": [],
+ "26RCB01-001": [
+  "T_SUMMONED",
+  "C_LEVEL"
+ ],
  "26RCB01-006": [],
  "26RCB01-010": [],
  "26RCB01-012": [
@@ -3060,16 +3076,34 @@
   "C_LEVEL",
   "T_DESTROYED"
  ],
+ "26RCB01-026": [
+  "T_SUMMONED",
+  "C_LEVEL"
+ ],
  "26RCB01-029": [],
  "26RCB01-033": [],
  "26RCB01-040": [],
+ "26RCB01-041": [
+  "T_SUMMONED",
+  "C_LEVEL"
+ ],
  "26RCB01-044": [],
  "26RSD01-002": [
   "A_BP_PLUS",
   "C_LEVEL"
  ],
+ "26RSD01-004": [
+  "T_ATTACKS",
+  "C_LEVEL"
+ ],
  "26RSD01-005": [],
  "26RSD01-007": [
+  "T_ATTACKS",
+  "A_BP_PLUS",
+  "C_LEVEL",
+  "K_STANDARD_INVOKE"
+ ],
+ "26RSD01-X02": [
   "T_ATTACKS",
   "A_BP_PLUS",
   "C_LEVEL",
@@ -3105,6 +3139,13 @@
  ],
  "26RSD03-004": [],
  "26RSD03-005": [],
+ "26RSD03-009": [
+  "T_SUMMONED",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "T_BLOCKS",
+  "M_OPTIONAL"
+ ],
  "26RSD03-013": [
   "A_EXHAUST"
  ],
@@ -3124,6 +3165,13 @@
   "M_OPTIONAL",
   "M_THEN",
   "A_BP_MINUS"
+ ],
+ "26RSD05-002": [
+  "T_SUMMONED",
+  "A_REVEAL_DECK",
+  "C_LEVEL",
+  "M_OPTIONAL",
+  "A_REVEAL_ADD"
  ],
  "26RSD05-003": [
   "C_LEVEL",
@@ -3154,6 +3202,13 @@
   "M_THEN",
   "A_BP_MINUS"
  ],
+ "26RSD06-002": [
+  "T_SUMMONED",
+  "A_REVEAL_DECK",
+  "C_LEVEL",
+  "M_OPTIONAL",
+  "A_REVEAL_ADD"
+ ],
  "26RSD06-003": [
   "C_LEVEL",
   "T_DESTROYED"
@@ -3164,6 +3219,10 @@
   "A_EXHAUST",
   "C_LEVEL",
   "K_STANDARD_INVOKE"
+ ],
+ "26RSD07-002": [
+  "T_SUMMONED",
+  "C_LEVEL"
  ],
  "26RSD07-003": [],
  "26RSD07-006": [],

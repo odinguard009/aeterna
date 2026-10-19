@@ -1537,6 +1537,60 @@
   "ex_symbols": 1
  },
  {
+  "id": "26RBS02-064",
+  "name": "Bearama",
+  "name_jp": "ベアラマ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "blue": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Ferobeast"
+  ],
+  "text": "[LV1][LV2] (When Destroyed)\nReveal three cards from your decktop. Among them, deploy a \"Ferobeast\" family Nexus card, without paying the cost. Return any remaining cards to the deckbottom in any order.",
+  "image": "26RBS02-064.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "REVEAL_DEPLOY",
+      "n": 3,
+      "match": {
+       "family": [
+        "Ferobeast"
+       ],
+       "type": "Nexus"
+      },
+      "pay": false
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RBS03-010",
   "name": "Gashahound",
   "name_jp": "ガシャハウンド",
@@ -1711,6 +1765,63 @@
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
   "ex_symbols": 1
+ },
+ {
+  "id": "26RBS03-063",
+  "name": "The Attuned Narloth",
+  "name_jp": "感応するナルロス",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "blue": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 5,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Cyantree",
+   "Sylvareign"
+  ],
+  "text": "[LV1][LV2] (When Destroyed)\nYou can reveal three cards from your decktop. Among them, add a \"Venabeast\"/\"Sylvareign\" family Spirit card with a card name different from this Spirit's to the Hand. Return any remaining cards to the deckbottom.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 3,
+      "match": {
+       "family": [
+        "Venabeast",
+        "Sylvareign"
+       ],
+       "type": "Spirit"
+      },
+      "rest": "bottom",
+      "diffName": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RBS03-065",
@@ -1908,6 +2019,61 @@
   "ex_symbols": 1
  },
  {
+  "id": "26RCB01-001",
+  "name": "Kamen Rider Gaim Orange Arms",
+  "name_jp": "仮面ライダー鎧武 オレンジアームズ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 3,
+  "reduction": {
+   "red": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "GAIM",
+   "Kamen"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nReveal three cards from your decktop. Among them, add a \"GAIM\" family Spirit card with a name different to this Spirit's to the Hand. Return any remaining cards to the deckbottom in any order.",
+  "image": "26RCB01-001.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 3,
+      "match": {
+       "family": [
+        "GAIM"
+       ],
+       "type": "Spirit"
+      },
+      "rest": "bottom",
+      "diffName": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RCB01-006",
   "name": "Kamen Rider Sigurd Cherry Energy Arms",
   "name_jp": "仮面ライダーシグルド チェリーエナジーアームズ",
@@ -2069,6 +2235,61 @@
   "ex_symbols": 1
  },
  {
+  "id": "26RCB01-026",
+  "name": "Kamen Rider Ryuki",
+  "name_jp": "仮面ライダー龍騎",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "RYUKI",
+   "Kamen"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nReveal three cards from your decktop. Among them, add a \"RYUKI\" family Spirit card with a name different to this Spirit's to the Hand. Return any remaining cards to the deckbottom in any order.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 3,
+      "match": {
+       "family": [
+        "RYUKI"
+       ],
+       "type": "Spirit"
+      },
+      "rest": "bottom",
+      "diffName": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RCB01-029",
   "name": "Kamen Rider Gai",
   "name_jp": "仮面ライダーガイ",
@@ -2167,6 +2388,61 @@
   "ex_symbols": 1
  },
  {
+  "id": "26RCB01-041",
+  "name": "Kamen Rider Ex-Aid Action Gamer Level 2",
+  "name_jp": "仮面ライダーエグゼイド アクションゲーマー レベル2",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "blue": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "EX-AID",
+   "Kamen"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nReveal three cards from your decktop. Among them, add an \"EX-AID\" family Spirit card with a name different to this Spirit's to the Hand. Return any remaining cards to the deckbottom in any order.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 3,
+      "match": {
+       "family": [
+        "EX-AID"
+       ],
+       "type": "Spirit"
+      },
+      "rest": "bottom",
+      "diffName": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RCB01-044",
   "name": "Kamen Rider Brave Quest Gamer Level 2",
   "name_jp": "仮面ライダーブレイブ クエストゲーマー レベル2",
@@ -2243,6 +2519,57 @@
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
   "ex_symbols": 1
+ },
+ {
+  "id": "26RSD01-004",
+  "name": "Haarier",
+  "name_jp": "ハーリア",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Windfang"
+  ],
+  "text": "[LV2] (When Attacks)\nReveal two cards from your decktop. Among them, add a \"Windfang\" family card to the Hand. Discard any remaining cards.",
+  "image": "26RSD01-004.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 2,
+      "match": {
+       "family": [
+        "Windfang"
+       ]
+      },
+      "rest": "trash"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RSD01-005",
@@ -2354,6 +2681,93 @@
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
   "ex_symbols": 1
+ },
+ {
+  "id": "26RSD01-X02",
+  "name": "The FlyingIron Akurai",
+  "name_jp": "飛剛アクライ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 7,
+  "reduction": {
+   "red": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 4,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Windfang"
+  ],
+  "text": "(Legacy)\n[LV1][LV2] (During Attack){{Invoke|Flash}} (Once Per Turn)\nDiscard a \"Windfang\" family card from your Hand ▶ During this battle, this Spirit gains +3000 BP.\n\n[LV2] (True Release) (When Attacks)\nReveal three cards from your decktop. Among them, add a \"Windfang\" family card to the Hand. Discard any remaining cards.",
+  "image": "26RSD01-X02.png",
+  "block": "A",
+  "saga": 50,
+  "mechanics": [
+   "Legacy"
+  ],
+  "legacy": true,
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "invoke": true,
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "when": "duringAttack",
+    "once": true,
+    "lv": [
+     1,
+     2
+    ],
+    "cost": {
+     "discard": {
+      "match": {
+       "family": [
+        "Windfang"
+       ]
+      }
+     }
+    },
+    "actions": [
+     {
+      "do": "BP_TARGET",
+      "n": 3000,
+      "to": "self",
+      "battle": true
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 3,
+      "match": {
+       "family": [
+        "Windfang"
+       ]
+      },
+      "rest": "trash"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RSD02-001",
@@ -2747,6 +3161,72 @@
   "ex_symbols": 1
  },
  {
+  "id": "26RSD03-009",
+  "name": "The TransparentHood Olindias",
+  "name_jp": "透笠オリンディアス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 6,
+  "reduction": {
+   "green": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 2,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Armored Fish"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nReveal three cards from your decktop. Among them, you can summon/deploy a Cost 3 or less \"Armored Fish\" family card. Return any remaining cards to the deckbottom in any order.\n\n[LV2] (When Blocks)\nYou can target an opposing Spirit. Exhaust it.",
+  "image": "26RSD03-009.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "REVEAL_DEPLOY",
+      "n": 3,
+      "match": {
+       "family": [
+        "Armored Fish"
+       ],
+       "costLe": 3
+      },
+      "pay": true
+     }
+    ]
+   },
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RSD03-013",
   "name": "Vortex Shave",
   "name_jp": "ボルテクスシェイブ",
@@ -2994,6 +3474,60 @@
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
   "ex_symbols": 1
+ },
+ {
+  "id": "26RSD05-002",
+  "name": "Amaru",
+  "name_jp": "アマール",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {
+   "yellow": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Thunder Dragon"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nYou can reveal three cards from your decktop. Among them, add a \"Thunder Dragon\" family Magic card to the Hand. Return any remaining cards to the deckbottom in any order.",
+  "image": "26RSD05-002.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 3,
+      "match": {
+       "family": [
+        "Thunder Dragon"
+       ],
+       "type": "Magic"
+      },
+      "rest": "bottom"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RSD05-003",
@@ -3253,6 +3787,60 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RSD06-002",
+  "name": "Deertora",
+  "name_jp": "ディアトラ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "blue": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Ferobeast"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nYou can reveal three cards from your decktop. Among them, add a \"Ferobeast\" family Nexus card to the Hand. Return any remaining cards to the deckbottom in any order.",
+  "image": "26RSD06-002.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 3,
+      "match": {
+       "family": [
+        "Ferobeast"
+       ],
+       "type": "Nexus"
+      },
+      "rest": "bottom"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RSD06-003",
   "name": "Melrak",
   "name_jp": "メルラク",
@@ -3397,6 +3985,61 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD07-002",
+  "name": "Kamen Rider Zeztz Physicam Impact",
+  "name_jp": "仮面ライダーゼッツ フィジカムインパクト",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "ZEZTZ",
+   "Kamen"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nReveal three cards from your decktop. Among them, add a \"ZEZTZ\" family Spirit card with a name different to this Spirit's to the Hand. Return any remaining cards to the deckbottom in any order.",
+  "image": "26RSD07-002.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 3,
+      "match": {
+       "family": [
+        "ZEZTZ"
+       ],
+       "type": "Spirit"
+      },
+      "rest": "bottom",
+      "diffName": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RSD07-003",

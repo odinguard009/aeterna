@@ -60,7 +60,7 @@ test('C61-04 filters the engine lacks stay in review with a lever reason', () =>
   assert.equal(acts('[LV1] (When Summoned) Destroy two opposing Cost 3 or less Spirits.').review, 'v2 destroy: count 2');
   assert.equal(acts('[LV1] (When Summoned) Exhaust two opposing Spirits.').review, 'v2 exhaust: exactly 2 (engine: up to)');
   assert.equal(acts('[LV1] (When Summoned) Destroy an opposing Spirit.').review, 'v2 destroy: no bound');
-  assert.match(acts('[LV1] (When Summoned) Reveal three cards from your decktop.').review, /^sentence/);
+  assert.match(acts('[LV1] (When Summoned) Reveal three cards from your decktop.').review, /^(sentence|v2 reveal)/);
 });
 
 test('C61-05 the v2 promotion (v0.61.0) is in the card data', () => {

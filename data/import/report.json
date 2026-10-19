@@ -1,6 +1,6 @@
 {
  "stats": {
-  "cards": 7998,
+  "cards": 7987,
   "per_saga": {
    "1": 816,
    "2": 342,
@@ -19,23 +19,23 @@
    "15": 358,
    "16": 334,
    "17": 110,
-   "50": 586
+   "50": 575
   },
   "tokens": 3,
   "missing_page": 3,
-  "skipped_curated": 708,
+  "skipped_curated": 719,
   "number_conflicts": 5,
   "nexus_levels_added": 717,
   "nexus_levels_missing": 43,
   "level_problems": 3,
-  "image_problems": 594,
+  "image_problems": 591,
   "merged": 111,
   "brave_unparsed": 171,
   "ut_lines_added": 119,
   "odd_reduction": 811,
   "brave_no_data": 2,
   "ut_lines_missing": 1,
-  "without_image": 592
+  "without_image": 589
  },
  "tokens": [
   "BS73-T001",
@@ -669,8 +669,10 @@
   "BS76-X02",
   "BS77-040",
   "26RSD01-002",
+  "26RSD01-004",
   "26RSD01-005",
   "26RSD01-007",
+  "26RSD01-X02",
   "26RSD02-001",
   "26RSD02-002",
   "26RSD02-003",
@@ -680,17 +682,20 @@
   "26RSD03-003",
   "26RSD03-004",
   "26RSD03-005",
+  "26RSD03-009",
   "26RSD03-013",
   "26RSD03-014",
   "26RSD04-005",
   "26RSD04-008",
   "26RSD04-013",
   "26RSD05-001",
+  "26RSD05-002",
   "26RSD05-003",
   "26RSD05-004",
   "26RSD05-005",
   "26RSD05-008",
   "26RSD05-X02",
+  "26RSD06-002",
   "26RSD06-003",
   "26RSD06-005",
   "26RSD06-007",
@@ -717,15 +722,19 @@
   "26RBS01-090",
   "26RBS01-110",
   "26RBS01-X07",
+  "26RSD07-002",
   "26RSD07-003",
   "26RSD07-006",
+  "26RCB01-001",
   "26RCB01-006",
   "26RCB01-010",
   "26RCB01-012",
   "26RCB01-025",
+  "26RCB01-026",
   "26RCB01-029",
   "26RCB01-033",
   "26RCB01-040",
+  "26RCB01-041",
   "26RCB01-044",
   "26RBS02-002",
   "26RBS02-008",
@@ -737,6 +746,7 @@
   "26RBS02-049",
   "26RBS02-051",
   "26RBS02-058",
+  "26RBS02-064",
   "26RSD09-002",
   "26RSD09-005",
   "26RSD09-012",
@@ -750,6 +760,7 @@
   "26RBS03-025",
   "26RBS03-052",
   "26RBS03-061",
+  "26RBS03-063",
   "26RBS03-065",
   "26RBS03-066",
   "26RBS03-068",
@@ -3918,11 +3929,6 @@
    "problem": "ambiguous name (2 files, none in set 26RCB01)"
   },
   {
-   "id": "26RCB01-026",
-   "name": "Kamen Rider Ryuki",
-   "problem": "ambiguous name (2 files, none in set 26RCB01)"
-  },
-  {
    "id": "26RCB01-027",
    "name": "Kamen Rider Knight",
    "problem": "ambiguous name (2 files, none in set 26RCB01)"
@@ -3965,11 +3971,6 @@
   {
    "id": "26RCB01-039",
    "name": "Kamen Rider Snipe Shooting Gamer Level 2",
-   "problem": "ambiguous name (2 files, none in set 26RCB01)"
-  },
-  {
-   "id": "26RCB01-041",
-   "name": "Kamen Rider Ex-Aid Action Gamer Level 2",
    "problem": "ambiguous name (2 files, none in set 26RCB01)"
   },
   {
@@ -4375,11 +4376,6 @@
   {
    "id": "26RBS03-062",
    "name": "Euus-Callus",
-   "problem": "no image"
-  },
-  {
-   "id": "26RBS03-063",
-   "name": "The Attuned Narloth",
    "problem": "no image"
   },
   {
