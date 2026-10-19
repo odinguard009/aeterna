@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "20 Oct 2026",
-  "next": "next: A1 partial promotion (staged cards enter the library with the missing clauses listed, \"!\" mark in Library and deck builder, \"Complete only\" filter; playable = complete cards), then A2 card-author agent pilot on one Standard block A set (measure cards per 100k tokens against v0.78.0 +23); plan W bundles wait behind A; 859 of 8,709 cards playable"
+  "next": "next: A1 partial promotion (staged cards enter the library with the missing clauses listed, \"!\" mark in Library and deck builder, \"Complete only\" filter; two counts: playable = in the library, complete = every effect runs), then A2 card-author agent pilot on one Standard block A set (measure cards per 100k tokens against v0.78.0 +23); plan W bundles wait behind A; 859 of 8,709 cards playable"
  },
  "phases": [
   {
