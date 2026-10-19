@@ -14,3 +14,4 @@ The rows from before 2026-10-17 belonged to the owner's private vault repo (its 
 | backup/v0.62.1 | 13fc3ae03b92adf6f6b7971d0bc46acde96ef70c |
 | backup/v0.63.0 | 44abfea6b09ace960cb1848704ced4560c5174ca |
 | backup/v0.64.0 | c27d6b8911b5a8f698f6c60a6c39b100e935d63f |
+| backup/v0.66.0 | 17f3e9d15500658af802272e04dc81a948c029fb |
