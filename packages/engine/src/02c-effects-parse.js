@@ -116,6 +116,7 @@ function parseEffects(arr) {
     } else if (e.trigger === 'STATIC') {
       if (!Number.isInteger(e.bp) || e.bp === 0 || Math.abs(e.bp) > 30000) return { error: 'STATIC effect needs a whole-number "bp"' };
       o.bp = e.bp; o.to = e.to === 'own' ? 'own' : 'self'; if (e.attackingOnly) o.attackingOnly = true; if (e.braved === true) o.braved = true;
+      if (e.per != null) { if (!perOk(e.per) || o.to !== 'self') return { error: 'STATIC "per" must look like {"type":"Spirit","family":"X"} (to: self)' }; o.per = JSON.parse(JSON.stringify(e.per)); }   // v0.72
     } else {
       if (!Array.isArray(e.actions) || !e.actions.length || e.actions.length > 6) return { error: 'every triggered effect needs 1-6 "actions"' };
       const ar = parseActionList(e.actions); if (ar.error) return { error: ar.error };
@@ -124,6 +125,7 @@ function parseEffects(arr) {
       if (typeof e.subjBraved === 'string' && e.subjBraved && e.trigger === 'ALLY_ATTACKS') o.subjBraved = e.subjBraved;   // v0.45: "when your <family> Brave Spirit attacks" (Agateram Unleash)                      // [During Brave]: only while a Brave is combined with this Spirit (v0.37)
       if (e.optional) o.optional = true; if (e.once) o.once = true; if (e.sameName) o.sameName = true; if (e.alsoAdvent && e.trigger === 'SUMMONED') o.alsoAdvent = true; if (e.self && (e.trigger === 'SOUL_PLACED' || e.trigger === 'ALLY_LIFE_HIT')) o.self = true;
       if (e.other === true && /^ALLY_/.test(e.trigger)) o.other = true; if (e.noStack === true) o.noStack = true;      // v0.40: "your other X" / "(Can't Stack)"
+      if (e.attackingOnly === true && e.trigger === 'BATTLE_WIN') o.attackingOnly = true;   // v0.72 (During Attack): only as the attacker
       if (e.alsoBlocks && e.trigger === 'ATTACKS') o.alsoBlocks = true; if (e.zone === 'hand' && (e.trigger === 'ALLY_BLOCKED' || e.trigger === 'SILVER_WHEEL')) o.zone = 'hand';
       if (e.onceKey != null) { if (!/^[A-Za-z0-9_-]{1,20}$/.test(String(e.onceKey))) return { error: '"onceKey" must be a short name' }; o.onceKey = String(e.onceKey); }
       if (e.trigger === 'ACCEL') {                       // v0.50 Accel: used from the Hand by paying the Accel cost, then the card goes to the Removed Zone

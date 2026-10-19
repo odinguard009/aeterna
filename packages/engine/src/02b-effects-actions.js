@@ -56,10 +56,11 @@ const FX_ACTIONS = {
       if (a.nexus) removeNexus(c.opp, t, 'destroyed'); else { removeSpirit(c.opp, t, 'destroyed', true); checkDepletion(c.opp); }
       if (a.thenDraw) { const k = draw(c.p, a.thenDraw); log(`${who(c.p)} ${c.p.cpu ? 'draws' : 'draw'} ${k} card${k === 1 ? '' : 's'}.`); handUp(c.p, k); }
     } },
-  BP_PLUS: { chk: a => Number.isInteger(a.n) && a.n >= 1000 && ['self', 'attacker', 'own'].includes(a.to || 'self'), txt: a => `${a.to === 'own' ? 'your matching Spirits' : a.to === 'attacker' ? 'the attacking Spirit' : 'this Spirit'} gain +${a.n} BP this turn`,
+  BP_PLUS: { chk: a => Number.isInteger(a.n) && a.n >= 1000 && ['self', 'attacker', 'own'].includes(a.to || 'self') && (a.per == null || perOk(a.per)), txt: a => `${a.to === 'own' ? 'your matching Spirits' : a.to === 'attacker' ? 'the attacking Spirit' : 'this Spirit'} gain +${a.n} BP${a.per ? ' for each matching card you control' : ''} this turn`,
     run: async (c, a) => {
       const L = (a.to || 'self') === 'self' ? [c.src] : a.to === 'attacker' ? (c.ctx.attacker ? [c.ctx.attacker] : []) : c.p.spirits.filter(s => fxMatch(CARDS[s.id], a.match));
-      for (const s of L) { s.bpMod = (s.bpMod || 0) + a.n; log(`${CARDS[s.id].name} gets +${a.n} BP.`); }
+      const n = a.per ? a.n * perCount(c.p, a.per) : a.n;     // v0.72 per: counted when it resolves
+      if (n) for (const s of L) { s.bpMod = (s.bpMod || 0) + n; log(`${CARDS[s.id].name} gets +${n} BP.`); }
     } },
   CORE_TO_SELF: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5, txt: a => `+${a.n} core to this card`,
     can: c => c.p.reserve.n > 0,

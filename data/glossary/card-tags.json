@@ -28,6 +28,10 @@
   "C_LEVEL",
   "M_OPTIONAL"
  ],
+ "BS01-021": [
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
  "BS01-026": [],
  "BS01-028": [],
  "BS01-030": [
@@ -493,6 +497,10 @@
   "C_LEVEL"
  ],
  "BS10-028": [],
+ "BS10-030": [
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
  "BS10-031": [],
  "BS10-032": [
   "A_BP_PLUS",
@@ -573,6 +581,11 @@
   "K_BRAVE",
   "K_CRUSH"
  ],
+ "BS12-001": [
+  "T_ATTACKS",
+  "T_ALLY_LIFE_HIT",
+  "C_LEVEL"
+ ],
  "BS12-002": [],
  "BS12-009": [
   "C_LEVEL"
@@ -585,6 +598,11 @@
  "BS12-044": [],
  "BS13-001": [],
  "BS13-009": [],
+ "BS13-017": [
+  "T_ATTACKS",
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
  "BS13-018": [],
  "BS13-021": [
   "A_REFRESH",
@@ -745,6 +763,10 @@
   "C_LEVEL",
   "K_CRUSH"
  ],
+ "BS18-004": [
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
  "BS18-007": [],
  "BS18-010": [],
  "BS18-019": [],
@@ -758,6 +780,12 @@
   "C_LEVEL"
  ],
  "BS18-028": [],
+ "BS18-030": [
+  "A_BP_PLUS",
+  "A_VOID",
+  "C_LEVEL",
+  "T_BLOCKS"
+ ],
  "BS18-037": [],
  "BS18-049": [],
  "BS19-001": [],
@@ -840,6 +868,13 @@
   "C_LEVEL",
   "T_BLOCKS",
   "A_BP_MINUS",
+  "K_RUSH"
+ ],
+ "BS20-034": [
+  "A_BP_PLUS",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "T_BLOCKS",
   "K_RUSH"
  ],
  "BS20-035": [
@@ -1087,6 +1122,10 @@
  ],
  "BS34-027": [],
  "BS34-030": [],
+ "BS34-031": [
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
  "BS34-048": [],
  "BS34-049": [],
  "BS34-050": [],
@@ -1220,6 +1259,13 @@
   "A_VOID",
   "C_LEVEL",
   "K_RUSH"
+ ],
+ "BS60-061": [
+  "T_ATTACKS",
+  "T_ALLY_LIFE_HIT",
+  "A_DRAW",
+  "C_LEVEL",
+  "A_LOOT"
  ],
  "BS68-012": [
   "T_SUMMONED",
@@ -3057,6 +3103,11 @@
   "T_DESTROYED",
   "M_OPTIONAL"
  ],
+ "26RBS01-036": [
+  "A_EXHAUST",
+  "C_LEVEL",
+  "M_OPTIONAL"
+ ],
  "26RBS01-045": [],
  "26RBS01-046": [
   "C_LEVEL",
@@ -3077,6 +3128,10 @@
   "A_BP_MINUS"
  ],
  "26RBS01-078": [],
+ "26RBS01-086": [
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
  "26RBS01-090": [
   "A_EXHAUST",
   "C_LEVEL",
@@ -3171,6 +3226,10 @@
  ],
  "26RCB01-029": [],
  "26RCB01-033": [],
+ "26RCB01-034": [
+  "T_ALLY_LIFE_HIT",
+  "C_LEVEL"
+ ],
  "26RCB01-040": [],
  "26RCB01-041": [
   "T_SUMMONED",
@@ -3228,6 +3287,13 @@
  ],
  "26RSD03-004": [],
  "26RSD03-005": [],
+ "26RSD03-008": [
+  "T_ATTACKS",
+  "A_BP_PLUS",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "M_OPTIONAL"
+ ],
  "26RSD03-009": [
   "T_SUMMONED",
   "A_EXHAUST",

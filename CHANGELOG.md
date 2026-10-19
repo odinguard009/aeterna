@@ -2,6 +2,14 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.72.0
+- **Battle heads: (During Attack) results, attack Life hits, "for each X you control"** (card session, plan W third pack, event trigger heads; rule note `docs/mechanics/battle-heads.md`, Standard rule manual "Examples on Activation Timings" + Comprehensive Rules / Categories of Effects "Spirits' When Attacks/Blocks Effects"):
+  - Compiler: "(During Attack) When only the opposing Spirit is destroyed by/via BP comparison / by comparing BP, ..." = `BATTLE_WIN` with `attackingOnly` (as the attacker only; (When Battles) stays attacker or blocker); "(During Attack|When Attacks) When this Spirit's attack reduces the opposing Life, ..." = `ALLY_LIFE_HIT` with `self`; "For each [colour] [\"F\" family | \"N\"-named] Spirit/Nexus you control (on your Field), this Spirit gains +N BP" as a constant (no head, (During Attack) = only while attacking, step windows) and as a sentence under (When Attacks)/(When Blocks) (`BP_PLUS` counted when it resolves).
+  - Engine: `per` {type Spirit|Nexus, colors, family, name} on STATIC BP effects and on `BP_PLUS` (the source counts itself; Ultimates are not Spirits); `attackingOnly` on `BATTLE_WIN` (the battle event now says whether the winner attacked).
+  - Tests: `tests/unit/duringattack72.test.mjs` (DA72-01..05).
+  - **Measured unlock: +13 cards** (The FlameDragon Ma-Gwo, The General Antman, Veloci-Harpe, Anaguma-Kosuke, Basa-Razan, Wild-Horn, Nega-Sabretiger, The GenjiEightKnights Genta, Rammer-Golem X, The Immature Nere-Iro, Ligeron, Kamen Rider Tiger, The HeavyJaws Dorogoliath; 4 of them Standard block A): 751 of 8,709. The pack-plan row "(During Attack)" promised up to 28; a scratch recompile gave 14, and the Brave "(When Brave Attacks)" Life head (The InsectivoreGrass Drosella) stays staged until a Brave's own trigger subject is tested.
+  - Promoted cards were removed from `data/import` (`tools/import_fandom.py`).
+
 ## v0.71.0
 - **Burst forms and condition clauses** (card session, plan W second pack "Burst forms"; rule note `docs/mechanics/burst-forms.md`, Fandom "Burst" + Comprehensive Rules / Categories of Effects "Burst Activation"):
   - Compiler: the `{{Burst|...}}` paragraph is read wherever it stands (the export often puts it after the card's Main/Flash text); the older `☼[ Burst: ... ]` spelling; condition spelling variants ("oppposing", "reeduced", "decreased", "Spirit/Ultimate", "via opposing effects"); "activate the Main/Flash effect of this card" as the then-effect. The blanket stop on any text naming a Burst is gone: such sentences now reach the grammar and, unless read, are reviewed as "Burst sentence".

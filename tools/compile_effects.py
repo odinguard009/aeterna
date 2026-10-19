@@ -81,6 +81,8 @@ def action_of(s, ctx):
     if 'opposing' in L: L = L.replace('spirit/ultimate', 'spirit')      # v0.54: the engine's opposing targets already include Ultimates
     fam = [   # v0.54: family names keep their case
         (r'^refresh an? "([^"]+)" family spirit (?:you control|of yours)$', lambda m: [{'do': 'REFRESH_SPIRIT', 'match': {'family': [m.group(1)]}}]),
+        (r'^(?:during this turn, )?' + PER_NP + r',? this spirit (?:gains|gets) \+(\d[\d,]*) ?bp(?: (?:until (?:the )?end of (?:the )?turn|during this turn))?$',
+         lambda m: [{'do': 'BP_PLUS', 'n': bp(m.group(5)), 'per': per_of(m)}]),      # v0.72 "For each X you control, this Spirit gains +N BP"
     ]
     if 'ALLY_ATTACKS' in (ctx.get('trigger') or ()):      # v0.59: "that Spirit" = the attacking ally (engine target 'attacker')
         m = re.match(r'^that spirit (?:gains|gets) \+(\d[\d,]*) ?bp(?: (?:during|until the end of) this turn)?$', L)
@@ -125,6 +127,23 @@ def action_of(s, ctx):
         m = re.match(p, L)
         if m: return f(m), opt
     raise Review('sentence: ' + s[:140])
+
+
+# v0.72 "for each <colour> <"F" family | "N"-named> Spirit/Nexus you control" -> engine "per" {type, colors, family, name}
+PER_NP = r'for each (?:(red|purple|green|white|yellow|blue) )?(?:"([^"]+)" family |"([^"]+)"-named )?(spirit|nexus)(?:es|s)? (?:you control|on your field)'
+
+def per_of(m):
+    q = {'type': m.group(4).capitalize()}
+    if m.group(1): q['colors'] = [m.group(1).lower()]
+    if m.group(2): q['family'] = m.group(2)
+    if m.group(3): q['name'] = m.group(3)
+    return q
+
+PER_STATIC = re.compile(r'^(\(During Attack\)\s*)?' + PER_NP + r',? this spirit (?:gains|gets) \+(\d[\d,]*) ?bp\.?$', re.I)
+BATTLE_HEADS = [      # v0.72 heads read before TRIGGERS: (trigger list, extra effect keys)
+    (r"\((?:During Attack|When Attacks)\)\s*When this Spirit's attack reduces the opposing Life,", ['ALLY_LIFE_HIT'], {'self': True}),
+    (r'\(During Attack\)\s*When only the opposing Spirit(?:/Ultimate)? is destroyed (?:by comparing BP|via BP comparison|by BP comparison),', ['BATTLE_WIN'], {'attackingOnly': True}),
+]
 
 
 # ---------- Spirit / Nexus paragraphs ----------
@@ -362,8 +381,20 @@ def spirit_paragraph_main(p, card, rush):
         if lv: e['lv'] = lv
         return [e], flags
     # trigger
-    trig, tmatch = None, None
-    for rx, ts in TRIGGERS:
+    trig, tmatch, extra = None, None, None
+    for rx, ts, ex in BATTLE_HEADS:
+        mm = re.match(r'^' + rx + r'\s*', p)
+        if mm: trig, extra, p = ts, ex, p[mm.end():]; break
+    mm = None if trig else PER_STATIC.match(p)
+    if mm:      # v0.72 static "for each X you control" BP (with (During Attack): only while attacking)
+        e = {'trigger': 'STATIC', 'bp': bp(mm.group(6)), 'to': 'self'}
+        if lv: e['lv'] = lv
+        if mm.group(1): e['attackingOnly'] = True
+        q = re.match(PER_NP, p[mm.end(1) if mm.group(1) else 0:], re.I)
+        e['per'] = per_of(q)
+        if rush: raise Review('Rush with a static effect')
+        return [e], flags
+    for rx, ts in ([] if trig else TRIGGERS):
         mm = re.match(r'^' + rx + r'\s*', p)
         if mm: trig = ts; p = p[mm.end():]; break
     if trig is None:      # v0.59: step-prefixed attack triggers (the step is implied by the attack itself)
@@ -402,10 +433,10 @@ def spirit_paragraph_main(p, card, rush):
         sw = step_window(p, card, lv, rush)      # v0.70: generic step window head
         if sw is not None: e, f2 = sw; flags.update(f2); return e, flags
         raise Review('no trigger: ' + p[:100])
-    return trig_effects(p, card, trig, tmatch, lv, rush, flags)
+    return trig_effects(p, card, trig, tmatch, lv, rush, flags, extra)
 
 
-def trig_effects(p, card, trig, tmatch, lv, rush, flags):
+def trig_effects(p, card, trig, tmatch, lv, rush, flags, extra=None):
     acts, opt = [], False
     if rush and not p: raise Review('Rush without a main effect')
     for s in sentences(p):
@@ -427,6 +458,7 @@ def trig_effects(p, card, trig, tmatch, lv, rush, flags):
         if lv: e['lv'] = lv
         if tmatch: e['match'] = dict(tmatch)
         if t == 'DESTROYED_OPP': e['if'] = {'byOpp': True}
+        if extra: e.update(extra)
         if opt: e['optional'] = True
         e['actions'] = acts
         out.append(e)

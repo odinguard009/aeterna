@@ -61,7 +61,7 @@ async function doBattleInner(attKey, att) {
     else if (ab < bb) removeSpirit(A, att, 'destroyed', true);
     else { removeSpirit(D, blk, 'destroyed', true); removeSpirit(A, att, 'destroyed', true); }
     if (ab >= bb && G.evQ) G.evQ.push({ type: 'DESTROYS', key: A.key, inst: att });
-    if (ab !== bb && G.evQ) G.evQ.push(ab > bb ? { type: 'BATTLE_WIN', key: A.key, inst: att } : { type: 'BATTLE_WIN', key: D.key, inst: blk });   // v0.55 (When Battles): only the opposing Spirit destroyed (CR 8-1-6-2)
+    if (ab !== bb && G.evQ) G.evQ.push(ab > bb ? { type: 'BATTLE_WIN', key: A.key, inst: att, att: true } : { type: 'BATTLE_WIN', key: D.key, inst: blk, att: false });   // v0.55 (When Battles): only the opposing Spirit destroyed (CR 8-1-6-2)
     checkDepletion(A); checkDepletion(D);
     render();
     await flushBursts();
@@ -154,7 +154,7 @@ async function flushBursts() {                         // queued Bursts and even
     } else if (ev.type === 'LOST') {
       await fireFx(G.p[ev.key], 'ALLY_LOST', null, { subject: ev.inst });
     } else if (ev.type === 'DESTROYED') await fireFx(G.p[ev.key], 'DESTROYED', ev.inst, { subject: ev.inst, byOpp: !!ev.byOpp });
-    else if (ev.type === 'BATTLE_WIN') await fireFx(G.p[ev.key], 'BATTLE_WIN', ev.inst, { subject: ev.inst });
+    else if (ev.type === 'BATTLE_WIN') await fireFx(G.p[ev.key], 'BATTLE_WIN', ev.inst, { subject: ev.inst, attacking: !!ev.att });
     else if (ev.type === 'DESTROYS') await fireFx(G.p[ev.key], 'ALLY_DESTROYS', null, { attacker: ev.inst, subject: ev.inst });
     releaseStandby(false);                               // v0.57.0: a card whose leave triggers have all resolved leaves Standby
   }

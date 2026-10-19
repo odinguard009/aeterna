@@ -83,6 +83,12 @@ function fxIf(owner, opp, c, ctx) {
 const ctrlCount = (owner, q) => owner.spirits.filter(f => { const k = CARDS[f.id], u = k.type === 'Ultimate';
   return (q.type === 'Both' || (q.type === 'Ultimate') === u) && (!q.colors || q.colors.some(x => (k.colors || [k.symbol]).includes(x)))
     && (q.costGe == null || k.cost >= q.costGe) && (!q.family || (k.families || []).includes(q.family)); }).length;
+/* v0.72 "for each X you control": cards on the owner's Field matching per {type: 'Spirit'|'Nexus', colors, family, name (part of the name)}; the source itself counts */
+const PER_TYPES = ['Spirit', 'Nexus'];
+const perOk = q => !!q && typeof q === 'object' && PER_TYPES.includes(q.type) && (q.colors == null || (Array.isArray(q.colors) && q.colors.length && q.colors.every(x => COLORS.includes(x))))
+  && (q.family == null || typeof q.family === 'string') && (q.name == null || typeof q.name === 'string');
+const perCount = (owner, q) => (q.type === 'Nexus' ? owner.nexus : owner.spirits.filter(f => CARDS[f.id].type !== 'Ultimate')).filter(f => { const k = CARDS[f.id];
+  return (!q.colors || q.colors.some(x => (k.colors || [k.color, k.symbol]).includes(x))) && (!q.family || (k.families || []).includes(q.family)) && (!q.name || k.name.includes(q.name)); }).length;
 function ownerOf(i) { if (!G) return null; for (const k of ['player', 'opponent']) if (fieldList(G.p[k]).includes(i)) return G.p[k]; return null; }
 const STATIC_FLAGS = ['MUST_BLOCK', 'NO_RETURN', 'CORES_DRAW', 'UNAFFECTED_SOUL', 'COST_DESTROY_PLUS', 'EXTRA_REDUCTION', 'NO_END_ATTACK', 'UNAFFECTED', 'HAND_UNAFFECTED', 'BLOCK_EXHAUSTED'];
 /* flag effects: MUST_BLOCK (opposing Spirits must block this attacker), NO_RETURN (cannot be returned by opposing effects), CORES_DRAW (draw once per turn when cores are sent by your effects),
@@ -154,7 +160,7 @@ function staticBp(i) {
       if ((e.to || 'self') === 'self' ? src !== i : !fxMatch(CARDS[i.id], e.match)) continue;
       if (e.attackingOnly && G.attacker !== i) continue;
       if (!fxIf(o, opp, e.if)) continue;
-      sum += e.bp;
+      sum += e.per ? e.bp * perCount(o, e.per) : e.bp;      // v0.72 "For each X you control, this Spirit gains +N BP" (per)
     }
   }
   return sum;

@@ -672,6 +672,54 @@
   "ex_symbols": 1
  },
  {
+  "id": "26RBS01-036",
+  "name": "The Immature Nere-Iro",
+  "name_jp": "未熟なネレ＝イロ",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Oceanic Green",
+   "Vortexite"
+  ],
+  "text": "[LV2] (During Attack)\nWhen only the opposing Spirit is destroyed by BP comparison, you can target an opposing Spirit. Exhaust it.",
+  "image": "26RBS01-036.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "BATTLE_WIN",
+    "lv": [
+     2
+    ],
+    "attackingOnly": true,
+    "optional": true,
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RBS01-045",
   "name": "Lione-Macina",
   "name_jp": "リオネ＝マキナ",
@@ -933,6 +981,56 @@
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
   "ex_symbols": 1
+ },
+ {
+  "id": "26RBS01-086",
+  "name": "Ligeron",
+  "name_jp": "ライガロン",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 6,
+  "reduction": {
+   "blue": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Cyantree",
+   "Benevoclaw"
+  ],
+  "text": "[LV1][LV2] (During Attack)\nFor each Blue Nexus you control, this Spirit gains +1000 BP.",
+  "image": "26RBS01-086.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "bp": 1000,
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ],
+    "attackingOnly": true,
+    "per": {
+     "type": "Nexus",
+     "colors": [
+      "blue"
+     ]
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RBS01-090",
@@ -2355,6 +2453,56 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RCB01-034",
+  "name": "Kamen Rider Tiger",
+  "name_jp": "仮面ライダータイガ",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 5,
+  "reduction": {
+   "white": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "RYUKI",
+   "Kamen"
+  ],
+  "text": "[LV1][LV2] (During Attack)\nWhen this Spirit's attack reduces the opposing Life, target an opposing 4000 BP or less Spirit. Return it to the Hand.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "ALLY_LIFE_HIT",
+    "lv": [
+     1,
+     2
+    ],
+    "self": true,
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "hand",
+      "kind": "spirit",
+      "bpLe": 4000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RCB01-040",
   "name": "Kamen Rider Lazer Bike Gamer Level 2",
   "name_jp": "仮面ライダーレーザー バイクゲーマー レベル2",
@@ -3159,6 +3307,67 @@
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
   "ex_symbols": 1
+ },
+ {
+  "id": "26RSD03-008",
+  "name": "The HeavyJaws Dorogoliath",
+  "name_jp": "重顎ドロゴリアス",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 5,
+  "reduction": {
+   "green": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 2,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Armored Fish"
+  ],
+  "text": "[LV1][LV2] (During Attack)\nFor each \"Armored Fish\" family Spirit you control, this Spirit gains +1000 BP.\n\n[LV2] (When Attacks)\nYou can target an opposing Cost 3 or less Spirit. Exhaust it.",
+  "image": "26RSD03-008.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "bp": 1000,
+    "to": "self",
+    "lv": [
+     1,
+     2
+    ],
+    "attackingOnly": true,
+    "per": {
+     "type": "Spirit",
+     "family": "Armored Fish"
+    }
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1,
+      "costLe": 3
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RSD03-009",
