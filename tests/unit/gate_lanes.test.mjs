@@ -9,10 +9,10 @@ import { ROOT } from './lib/game.mjs';
 const NOW = '2026-10-19T12:00:00Z';
 const ago = (min) => new Date(Date.parse(NOW) - min * 60000).toISOString().replace('.000', '');
 const rows = (list) => list.map(([min, body]) => `${ago(min)}\t${body}`).join('\n');
-function gate(args, comments, commits = []) {
+function gate(args, comments, commits = [], extraEnv = {}) {
   const r = spawnSync('bash', [join(ROOT, 'tools/session_gate.sh'), ...args], {
     encoding: 'utf8',
-    env: { ...process.env, GATE_FIXTURE: '1', GATE_NOW: NOW, COMMENTS: rows(comments), COMMITS: rows(commits), STOP_FILE: '0' },
+    env: { ...process.env, GATE_FIXTURE: '1', GATE_NOW: NOW, COMMENTS: rows(comments), COMMITS: rows(commits), STOP_FILE: '0', ...extraEnv },
   });
   return { out: r.stdout.trim(), code: r.status, err: r.stderr.trim() };
 }
@@ -61,7 +61,8 @@ test('G05 stale lane marks expire like before (MANUAL 3 h, LOCK 5 h)', () => {
 
 test('G06 daily cap counts LOCKs of both lanes; unknown lane is refused', () => {
   const c = [[1000, 'ON'], ...[700, 650, 600, 550, 500, 450].map((m) => [m, m % 100 ? 'LOCK ui' : 'LOCK card']), [400, 'UNLOCK']];
-  assert.match(gate(['check', 'opus'], c, [[420, 'v0.63.1: x']]).out, /^STOP daily cap: 6/);
+  assert.match(gate(['check', 'opus'], c, [[420, 'v0.63.1: x']], { GATE_MAX_AUTO_24H: '6' }).out, /^STOP daily cap: 6/);
+  assert.equal(gate(['check', 'opus'], c, [[420, 'v0.63.1: x']]).out, 'GO', 'no cap by default (owner, 2026-10-20)');
   const bad = gate(['busy', 'web'], [ON]);
   assert.equal(bad.code, 2); assert.match(bad.err, /unknown lane 'web'/);
 });
