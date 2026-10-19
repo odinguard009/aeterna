@@ -1,5 +1,5 @@
 // v0.47.5 (process fix 5, owner 2026-10-16): Node copies of the Python Regression checks that need no browser,
-// so `npm run -s loop` catches them before the GitHub Regression run. The Python originals stay until both agree.
+// so the pre-push hook (full quick set) catches them before the GitHub Regression run. The Python originals stay until both agree.
 // Sources: tests/suites/v21_tests.py (glossary consistency) and v28_tests.py [26].
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

@@ -33,5 +33,5 @@ for l in ui card q3; do
   [ -f "$f" ] && grep -q '^- \[ \]' "$f" && { echo "[lane_merge] open notes in $f:"; grep '^- \[ \]' "$f" | sed 's/^/  /'; }
 done
 [ -z "$merged" ] && { echo "[lane_merge] no lane had new commits"; exit 0; }
-npm run -s loop
+npm run -s loop -- --full
 echo "[lane_merge] merged:$merged. Next: apply the notes (tick them '- [x]'), bump the version once, CHANGELOG, commit, push, release."

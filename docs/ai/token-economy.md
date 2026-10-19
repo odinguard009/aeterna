@@ -14,7 +14,7 @@ Goal: the same quality per release with far fewer tokens. Each rule says who doe
 
 ## 3. Running things (Claude)
 - Every command prints only what decides the next step: pipe through `grep -E "^not ok|^# (pass|fail)"`, `tail -3`, `--jq`. No raw logs, no full test listings.
-- Work loop: `npm run -s loop` = build -> lint -> quick tests in ONE tool call with a one-line result (failures print only the failing lines). `test:quick` runs every `tests/unit/*.test.mjs` except the slow ones in `tools/quick-tests.mjs`, so new test files need no `package.json` edit. Python suites only for UI flows the change touches.
+- Work loop: `npm run -s loop` = build -> lint -> brand guard -> smoke tests + changed test files (~15 s; `-- --full` = all quick tests, ~3 min, pre-push only) in ONE tool call with a one-line result (failures print only the failing lines). `test:quick` runs every `tests/unit/*.test.mjs` except the slow ones in `tools/quick-tests.mjs`, so new test files need no `package.json` edit. Python suites only for UI flows the change touches.
 - No local full regression and no local sims: GitHub runs them (dispatch, see `release.md`; 10 sims for a patch, 30 for a minor). Regression is not awaited (owner, 2026-10-18); the next session reads it. To wait for **CI** on your push use ONE command:
   `for i in $(seq 1 40); do s=$(gh api "repos/odinguard009/aeterna/actions/runs?per_page=6" --jq '[.workflow_runs[] | select(.head_sha=="'$(git rev-parse HEAD)'")] | map("\(.name):\(.status):\(.conclusion)") | join(" ")'); case "$s" in *in_progress*|*queued*|"") sleep 30;; *) echo "$s"; break;; esac; done`
   On failure read only the failing lines: `gh run view <id> --log-failed | grep -E "BAD|FAIL|Error" | head -20` (or the `last-run-*` artifact).
@@ -108,7 +108,7 @@ Rules to hit the target:
 - Direction: 152 of 8,041 cards were playable after ~50 versions, because every card's effects are written by hand and recent heavy sessions unlocked ~10 cards each. The roadmap is now ordered by cards unlocked per token across all Sagas (`tools/unlock_report.py` -> `docs/reports/unlock-report.md`, playable count in `session_start.sh`): compact pack, effect compiler, then Sonnet batch promotion per Saga.
 - CLAUDE.md: 12.1k -> 7.0k characters (it is re-sent on every call); the stopped chain, gate, lock and quota rules moved to `docs/ai/next-session-prompt.md`.
 - Backup: counts `v*` release commits since the newest `backup/v*` branch, not all commits (chore/docs commits had triggered four backups in a row, v0.48.0-v0.49.0). 24 merged branches approved for deletion (names and SHAs in `docs/ai/deleted-branches.md`; the session proxy blocks deletion, so the owner removes them on GitHub); the newest 3 backups and 3 unmerged branches kept.
-- Tests: 20+ new tests per minor version only; a patch carries the tests that guard its fix.
+- Tests: 20+ new tests per minor version only; a patch carries the tests that guard its fix. (Replaced 2026-10-19: no count, see section 17.)
 - `check_renames.py` check 4 flags removed multi-word UI text still asserted in tests (no false positives on five older bases). It would not have caught the v0.50.0 failure (a single-word substring check, `'Banished' in modal(pg)`), so `release.md` now says to run the suites that grep the old word before pushing a UI text change.
 - `release.md` no longer mentions Project docs (the Project holds none).
 - §14's open owner setting is resolved: the account-level `anthropic-skills:bs-*` copies no longer appear in the skill list.
@@ -118,3 +118,7 @@ Rules to hit the target:
 - Idle runs end at the gate `check` (one `gh api` script, no clone), so a STOP run costs a few thousand tokens; the switch and session state are issue #1 comments, read with `since=7 days`.
 - Between tasks an auto session spends one `switch` call; nothing else is added to a session.
 - Each fired run still opens a session in the owner's list; for a long pause the owner can disable the task in the app instead of `OFF`.
+
+## 17. Test cleanup (owner, 2026-10-19: "too many tests")
+- Measured: the quick set had grown to 1,214 tests (~3 min) and ran at session start, after every task and in the pre-push hook; local `npm test` repeated what CI runs; Regression ran every session.
+- Now: loop = smoke + changed test files (~15 s), full quick set once in the pre-push hook, no local `npm test`, Regression only when `tools/regression_due.sh` says DUE (+ weekly scheduled run), player-view pass at backups and UI changes, no new-test quotas. Details and the open proposals B1-B10: `docs/ai/process-plan.md`.

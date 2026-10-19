@@ -19,7 +19,7 @@ Read `docs/manual-notes.md`; fetch the official PDF only for a rule that is miss
 1. Read the card text exactly; write the card's `effects` JSON in `data/cards/saga-NN.json` before touching engine code (data: the Fandom export in the repo first, `data/import` and `data/sources` (needs `git sparse-checkout add data/sources`), then the official card list; card images only when those cannot settle it; never AI guesses).
 2. If a trigger/action/condition is missing, add it to the tables with a validation rule so bad JSON is rejected.
 3. Expose new helpers through `window.BS` (in `16-events.js`) when tests need them.
-4. `python3 tools/build_cards.py && python3 tools/tag_effects.py && npm run -s loop` (loop = build + lint + quick tests).
+4. `python3 tools/build_cards.py && python3 tools/tag_effects.py && npm run -s loop` (loop = build + lint + smoke tests + changed test files).
 5. Tests, cheapest first: Node engine tests in the style of `tests/unit/engine.test.mjs` (quiet board via `BS.testSetup()`; positive, negative/condition false, once-per-turn, human prompt vs CPU) -> `npm run test:quick`; a scenario (`tests/scenarios`, `BS.loadScenario`) or a `tests/suites/vNN_tests.py` case for UI prompts; `npm run test:props` for CPU-vs-CPU with the card in a deck. Then the release gate in `docs/ai/release.md`.
 6. If the glossary entry is listed in `tests/unit/known-gaps.json`, remove it once it has a rule note (the ratchet test enforces this).
 7. Close the matching GitHub issue (`Fixes #N` in the commit; tick the checklist in the roadmap issue).

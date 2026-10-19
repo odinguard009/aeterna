@@ -34,7 +34,7 @@ Build, runtime, effect engine, card data pipeline, compiler, tests and tooling: 
 Only Node 20+, Playwright and TypeScript are needed (no npm packages to install). `index.html` is generated: edit `src/`, then build.
 ```
 node tools/build.mjs     # build index.html
-npm run -s loop          # build + lint + quick tests
+npm run -s loop          # build + lint + smoke tests + changed test files
 npm test                 # unit + property tests
 ```
 Docs index: [`docs/README.md`](docs/README.md). Working agreement for AI sessions: [`CLAUDE.md`](CLAUDE.md). Bugs and planned work: GitHub Issues.

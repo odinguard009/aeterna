@@ -79,7 +79,7 @@ if [ -n "$LANE" ]; then
   echo "[session_start] lane rules: own files only (node tools/lanes.mjs --owner <path>), no version bump, shared changes as notes in docs/ai/lanes/$LANE.md; end with: bash tools/session_gate.sh lanedone $LANE $B"
 fi
 echo "[session_start] HEAD: $(git log --oneline -1)"
-echo "[session_start] baseline loop (build + lint + quick tests)"
+echo "[session_start] baseline loop (build + lint + smoke tests)"
 LOOP_RC=0; npm run -s loop || LOOP_RC=$?   # v0.60.2: print the summary even when the baseline fails, exit with its code at the end
 # short summary (owner, 2026-10-16): enough context to pick the work without reading more files
 echo "[session_start] version $(node -p "require('./package.json').version")"

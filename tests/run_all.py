@@ -9,7 +9,7 @@ import argparse, json, os, re, shutil, subprocess, sys, time
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 SUITES = os.path.join(ROOT, 'tests', 'suites')
 NO_FIXTURES = {'v24_tests', 'v26_tests', 'v27_tests', 'v28_tests', 'v29_tests'}          # these must run without the TST prototype cards
-LEGACY = ['fx', 'scen60', 'mag', 'burst', 'hid', 'std', 'fmt', 'deep']   # legacy/imp needs local files, legacy/sizes only prints sizes
+LEGACY = ['fx', 'scen60', 'mag', 'burst', 'hid', 'std', 'fmt', 'deep']   # legacy/imp and legacy/sizes removed 2026-10-19
 def suites():
     return sorted(f[:-3] for f in os.listdir(SUITES) if f.endswith('.py') and not f.endswith('_sims.py'))
 def run(cmd, env_fixtures, timeout=900):

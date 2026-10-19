@@ -11,8 +11,9 @@ Repo: odinguard009/aeterna. `index.html` is BUILT from `src/` (`node tools/build
 1. **Node layer** (`tests/unit/*.test.mjs`, `node --test`, headless Chromium, nothing to install):
    - `npm run test:quick` (~2-5 s): build/layout, card data, engine helpers on a quiet board.
    - `npm run test:props` (~80 s): seeded CPU-vs-CPU properties (match ends, invariants, no page errors, winner by Life 0 / deck-out, determinism, replay).
-   - `npm test` = both (local release gate together with `node tools/lint.mjs` and `python3 tools/check_renames.py`; the Python Regression runs on GitHub).
-2. **Python Playwright regression** (`tests/run_all.py`): UI flows and the historic suites (legacy fx, scen60, mag, burst, hid, std, fmt, deep). `python3 tests/make_fixtures.py` once per session, then only `--only <suites>` for the UI flows the change touches. No local full run and no local 30-game sims: the final Regression is dispatched on GitHub (`docs/ai/release.md`, `token-economy.md` section 3). Sims: `inputs[sims]=30` when engine/rules/CPU changed, 10 otherwise.
+   - `npm run -s loop` = build, lint, smoke tests + the test files changed on the branch (~15 s); `-- --full` = every quick test (~3 min, run by the pre-push hook).
+   - `npm test` = quick + props: CI runs it on every push; run it locally only to reproduce a CI failure.
+2. **Python Playwright regression** (`tests/run_all.py`): UI flows and the historic suites (legacy fx, scen60, mag, burst, hid, std, fmt, deep). `python3 tests/make_fixtures.py` once per session, then only `--only <suites>` for the UI flows the change touches. No local full run and no local 30-game sims: the final Regression is dispatched on GitHub (`docs/ai/release.md`, `token-economy.md` section 3). Dispatch only when `bash tools/regression_due.sh` says DUE (it picks 10 or 30 sims); a weekly scheduled run covers the rest.
 
 ## Writing new tests
 - Prefer Node engine tests: `quietBoard()` from `tests/unit/lib/game.mjs`, then `page.evaluate(() => { BS.testSetup(); ... })`. testSetup empties both Hands: set `p.deckSize = p.deck.length` before `BS.checkInvariants()`; after manual setups keep `p.made` / `deckSize` / the single Soul Core consistent (take cores with `BS.takeFromVoid`).

@@ -19,4 +19,4 @@ Usage example:
     PYTHONPATH=tests python3 tests/suites/v23_tests.py
     python3 tests/suites/v24_tests.py        # no fixtures
 
-Legacy notes: `legacy/*.py` load `/mnt/user-data/outputs/aeterna-v0.11.1.html`; copy the build there to run them. `legacy/sizes.py` only prints card sizes; `legacy/imp.py` needs local `cards.json` and `imgs/` files that are not in the repo (card import is covered by `suites/import_all.py`).
+Legacy notes: `legacy/*.py` load `/mnt/user-data/outputs/aeterna-v0.11.1.html`; copy the build there to run them. (`legacy/imp.py` and `legacy/sizes.py` were removed on 2026-10-19: one needed files outside the repo, the other only printed sizes; card import is covered by `suites/import_all.py`.)

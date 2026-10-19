@@ -1,10 +1,14 @@
 # Full Python Playwright regression (the release gate), run on GitHub instead of in Claude's session.
-# Triggers: "Run workflow" (Claude starts it through the REST dispatch API) or a release tag pushed by the user. The 5 Python parts and the fuzz job run in parallel.
+# Triggers: "Run workflow" (Claude starts it through the REST dispatch API when tools/regression_due.sh says DUE), a release tag
+# pushed by the user, and a weekly scheduled run (Sunday 03:17 WIB, 30 sims + 20 fuzz) as the safety net for sessions that skip it
+# (process cleanup, owner 2026-10-19). The 5 Python parts and the fuzz job run in parallel.
 # Claude checks the result with: gh api repos/odinguard009/aeterna/actions/runs?per_page=3
 name: Regression
 on:
   push:
     tags: ['v*']
+  schedule:
+    - cron: '17 20 * * 6'
   workflow_dispatch:
     inputs:
       sims:

@@ -1,27 +1,45 @@
-// One-call work loop: build -> lint -> quick tests, printing only what decides the next step.
-// Usage: npm run -s loop        (exit code 0 = all green)
+// One-call work loop: build -> lint -> brand guard -> tests, printing only what decides the next step.
+// Usage: npm run -s loop          (fast: smoke tests + the test files changed on this branch; ~10-30 s)
+//        npm run -s loop -- --full (every quick test, ~3 min; the pre-push hook runs this once per push)
+// Process cleanup (owner, 2026-10-19, "too many tests"): the full quick set ran at session start, after every task and again in
+// the pre-push hook (~3 min each). Now it runs once per push; the loop runs the smoke set plus what the session touched.
 import { spawnSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
 
-const run = (args) => spawnSync(process.execPath, args, { encoding: 'utf8' });
+const FULL = process.argv.includes('--full');
+const SMOKE = ['build', 'data', 'pack', 'budget', 'engine'].map((f) => `tests/unit/${f}.test.mjs`);
+const SLOW = /(^|\/)(props|fuzz596)\.test\.mjs$/;   // CI only (npm test)
+
+const run = (args, env) => spawnSync(process.execPath, args, { encoding: 'utf8', env: { ...process.env, ...env } });
+const git = (args) => (spawnSync('git', args, { encoding: 'utf8' }).stdout || '').split('\n').filter(Boolean);
 const tail = (s, n) => s.trim().split('\n').slice(-n).join('\n');
 
+function changedTests() {
+  const base = git(['rev-parse', '--verify', '-q', 'origin/main']).length ? 'origin/main' : 'HEAD';
+  const names = [...git(['diff', '--name-only', base, '--', 'tests/unit']),
+    ...git(['ls-files', '--others', '--exclude-standard', 'tests/unit'])];
+  return names.filter((f) => f.endsWith('.test.mjs') && !SLOW.test(f) && existsSync(f));
+}
+
+const testArgs = FULL ? ['tools/quick-tests.mjs'] : ['--test', ...new Set([...SMOKE, ...changedTests()])];
 const steps = [
   ['build', ['tools/build.mjs']],
   ['lint', ['tools/lint.mjs']],
   ['brand guard', ['tools/brand_guard.mjs']],
-  ['quick tests', ['tools/quick-tests.mjs']],
+  [FULL ? 'quick tests' : 'smoke + changed tests', testArgs],
 ];
 
 for (const [name, args] of steps) {
-  const r = run(args);
+  const r = run(args, name.includes('test') ? { BS_QUICK: '1' } : {});
   const out = `${r.stdout || ''}${r.stderr || ''}`;
   if (r.status !== 0) {
     const fails = out.split('\n').filter((l) => /^not ok|^# (pass|fail)|Error|error:/.test(l));
     console.log(`[loop] ${name} FAILED\n${(fails.length ? fails.slice(0, 20).join('\n') : tail(out, 15))}`);
     process.exit(1);
   }
-  if (name === 'quick tests') {
+  if (name.includes('test')) {
     const pass = out.match(/^# pass (\d+)/m);
-    console.log(`[loop] build ok, lint clean, quick tests ${pass ? pass[1] + ' passed' : 'ok'}`);
+    const files = FULL ? '' : ` (${testArgs.length - 1} files; full set: npm run -s loop -- --full, also run by pre-push)`;
+    console.log(`[loop] build ok, lint clean, ${name} ${pass ? pass[1] + ' passed' : 'ok'}${files}`);
   }
 }
