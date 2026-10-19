@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "19 Oct 2026",
-  "next": "next: P0 process cleanup (B1-B10 of docs/ai/process-plan.md, patch), then card pack 1 = step timing heads (one window condition if.step, docs/mechanics/step-timings.md; real unlock by scratch recompile), then Burst forms; 722 of 8,709 cards playable"
+  "next": "next: card pack 1 = step timing heads (one window condition if.step, docs/mechanics/step-timings.md; real unlock by scratch recompile), then Burst forms; 722 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -642,6 +642,10 @@
      "t": "K2 generated tests per compiled action (v0.69.2): one board per action of every shipped card from its JSON (221 of 277 actions, 80%), mutation check; promotion = read + generated test"
     },
     {
+     "s": "done",
+     "t": "P0 process cleanup (v0.69.3): CLAUDE.md 19.4k -> 13.2k and roadmap-open 38k -> 21k characters, start/end steps folded into scripts, card-prep subagents only when needed, legacy suites audited (kept)"
+    },
+    {
      "s": "next",
      "t": "One pack per card session: step timing heads first (window condition if.step), then Burst forms, event trigger heads, Mirage / Rush / Accel"
     },
@@ -995,6 +999,14 @@
    "calls": "~40",
    "basis": "measured",
    "note": "Scheduled auto HEMAT ON session on Opus: K2 generated tests per compiled action (tests/unit/lib/fx-props.mjs, FX01-FX03; 221 of 277 shipped actions covered, mutation sweep 202/202). No game change. Backup backup/v0.69.2; player-view pass 40/40 checks, 10/10 CPU matches."
+  },
+  {
+   "ver": "v0.69.3",
+   "date": "19 Oct 2026",
+   "tokens": 0,
+   "calls": "~60",
+   "basis": "measured",
+   "note": "Manual HEMAT ON session on Opus: P0 process cleanup B1-B10 (docs/ai/process-plan.md). No game change."
   }
  ],
  "next": "next: card pack 1 = step timing heads (one window condition if.step, docs/mechanics/step-timings.md; real unlock by scratch recompile), then Burst forms; 722 of 8,709 cards playable"
