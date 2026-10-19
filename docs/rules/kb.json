@@ -1,0 +1,690 @@
+{
+ "schema": 1,
+ "note": "Ids, pages, headings, one-sentence paraphrases (own words) and SHA-256 fingerprints only; never manual text. Schema: docs/rules/README.md; tool: tools/rules_kb.py.",
+ "extractor": "pdftotext (poppler 24.02) -enc UTF-8, one page per file; text normalised by tools/rules_kb.py norm()",
+ "manuals": {
+  "ETR": {
+   "title": "Eternal Rule Manual (English)",
+   "version": "VER.17.0",
+   "url": "https://asia-en.battlespirits.com/pdf/official-rule-manual_eternal.pdf",
+   "pages": 79,
+   "last_modified": "2026-03-27",
+   "pdf_sha256": "ce741f5779c5f21673cc722991c9e27d1418669ae816ed0bd13365ea60001831",
+   "read": "2026-10-19"
+  },
+  "STD": {
+   "title": "Standard Comprehensive Rules (English)",
+   "version": "Ver.1.0 (2026-04-01)",
+   "url": "https://asia-en.battlespirits.com/pdf/comprehensive-rules-standard.pdf",
+   "pages": 24,
+   "pdf_sha256": "48fe6950040eaf5bf860b965d62996f9d0a1bb75ee9eca4b4c9a9407405b4303",
+   "read": "2026-10-19"
+  }
+ },
+ "chunks": [
+  {
+   "id": "ETR:deck",
+   "manual": "ETR",
+   "page": 9,
+   "title": "Deck",
+   "anchor": "■ Deck",
+   "until": "■ Core",
+   "paraphrase": "A deck has at least 40 cards and no upper limit, at most three copies per card name, and only one kind of Contract card.",
+   "sha256": "eae2cd596c3d7c98010dd3d802b4fe044ef53a3a76aba2cdda947c560b3ba2c4"
+  },
+  {
+   "id": "ETR:setup",
+   "manual": "ETR",
+   "page": 10,
+   "page_end": 11,
+   "title": "Game setup",
+   "anchor": "GAME SETUP",
+   "paraphrase": "Each player starts with 5 Life cores, 3 Reserve cores plus the Soul Core and a 4-card hand, may set a Contract card aside before shuffling, and may redraw once.",
+   "sha256": "d8daa8fef43f145580c1a351941e7e9abd6af03917737047a37b504da2687a6f"
+  },
+  {
+   "id": "ETR:card.symbols",
+   "manual": "ETR",
+   "page": 13,
+   "title": "Symbols on a card",
+   "anchor": "❺ Symbol",
+   "until": "❻ Block Icons",
+   "paraphrase": "Symbols mostly match the card colour, drive cost reduction and Life damage, and include special God and Ultimate symbols, some God symbols also having a colour.",
+   "sha256": "02ad35bcce2581a6952fec9a271200157eb9a8d6e3ac176776f21f961c2959e5"
+  },
+  {
+   "id": "ETR:turn.core-step",
+   "manual": "ETR",
+   "page": 19,
+   "title": "Core Step",
+   "anchor": "❷ Core Step",
+   "until": "❸ Draw Step",
+   "paraphrase": "The turn player moves one core from the Void to their Reserve.",
+   "sha256": "48ae12cf10c44d7fffddcc9931401a158f918d79918ecf0898402c9df72f2e3c"
+  },
+  {
+   "id": "ETR:turn.refresh-step",
+   "manual": "ETR",
+   "page": 20,
+   "title": "Refresh Step",
+   "anchor": "❹ Refresh Step",
+   "until": "❺ Main Step",
+   "paraphrase": "Exhausted cards on your Field stand up again and the cores in your Trash go back to your Reserve.",
+   "sha256": "d72c1923e9554ee66b4d373b37ac164d3aa5eb4b3e8d20a6e375db3e55ced221"
+  },
+  {
+   "id": "ETR:turn.first-turn",
+   "manual": "ETR",
+   "page": 20,
+   "title": "First turn exception",
+   "anchor": "【!】 First Turn Exception",
+   "paraphrase": "On the very first turn of the game the starting player skips only the Core Step and the Attack Step.",
+   "sha256": "8358e087d14a1880e231420a84806b64914d1f9273155221f3b79e16e617a7b4"
+  },
+  {
+   "id": "ETR:main.nexus",
+   "manual": "ETR",
+   "page": 22,
+   "title": "Deploying a Nexus",
+   "anchor": "DEPLOYING A NEXUS",
+   "until": "USING MAGIC",
+   "paraphrase": "Any number of Nexuses may be deployed for their cost, but no cores are placed on Grandwalker or Grandstone Nexuses when they are deployed.",
+   "sha256": "bf140cc4356d916ac14ac03e2e9a22cd245b170cedf507b3d9f97ed563d059f0"
+  },
+  {
+   "id": "ETR:main.moving-cores",
+   "manual": "ETR",
+   "page": 22,
+   "title": "Moving cores",
+   "anchor": "MOVING CORES",
+   "paraphrase": "In the Main Step cores may be moved freely between the Reserve and Field cards, except onto or off Grandwalker and Grandstone Nexuses, and a card left below its lowest level is depleted.",
+   "sha256": "c47b46afd99937a6a91d3a7eae49a3a3b52321adc6a27ff657d603b0fc2342eb"
+  },
+  {
+   "id": "ETR:cost.paying",
+   "manual": "ETR",
+   "page": 24,
+   "page_end": 26,
+   "title": "Paying costs",
+   "anchor": "COST AND CORES",
+   "paraphrase": "Matching Field symbols reduce a cost up to its reduction symbols, reduction is mandatory, six-colour reduction symbols take any colour, and only Reserve or ordinary Field cores pay.",
+   "sha256": "06d788b2885af64d9b40da451ad9caf5b26d82de8231241522794272eb233553"
+  },
+  {
+   "id": "ETR:cores.depletion",
+   "manual": "ETR",
+   "page": 27,
+   "page_end": 28,
+   "title": "Depletion",
+   "anchor": "■Depletion of Spirits and Ultimates",
+   "until": "【!】 Cores and the Soul Core",
+   "paraphrase": "A Spirit or Ultimate without enough cores for its lowest level is depleted, which is not destruction, so destruction triggers do not fire.",
+   "sha256": "133c74182413f3797ba526bb72617c36bf2fba85bb31f708e60c58e64c9c5395"
+  },
+  {
+   "id": "ETR:cores.soul-core",
+   "manual": "ETR",
+   "page": 28,
+   "title": "Cores and the Soul Core",
+   "anchor": "【!】 Cores and the Soul Core",
+   "paraphrase": "The Soul Core acts like a normal core but may only sit in the Reserve, on Field cards or in the Trash.",
+   "sha256": "b2645ceddd7e509473ff5d272b6299897bb6b6c516149cd783e631cac2d6ca6e"
+  },
+  {
+   "id": "ETR:battle.block",
+   "manual": "ETR",
+   "page": 30,
+   "title": "Declaring a block",
+   "anchor": "❸ Declare a Block",
+   "until": "❹ Flash Timing (Second)",
+   "paraphrase": "The defender may block with one untapped Spirit or Ultimate, which is exhausted, and block-timing effects then trigger.",
+   "sha256": "d20adf64c064763b985c8581c1007a29c81db99f97e7b02c97b1eba52de48e9c"
+  },
+  {
+   "id": "ETR:battle.resolution",
+   "manual": "ETR",
+   "page": 30,
+   "title": "Battle resolution",
+   "anchor": "❺ Battle Resolution",
+   "paraphrase": "An unblocked attack takes Life equal to its symbols, while a blocked one compares BP.",
+   "sha256": "b774143c90d6195953c3d760ca4c63e7a44c4896be921c721fa493c43a0afb0b"
+  },
+  {
+   "id": "ETR:battle.destruction",
+   "manual": "ETR",
+   "page": 31,
+   "title": "Destruction after the BP comparison",
+   "anchor": "❻ Spirit/Ultimate Destruction",
+   "until": "THE BACK-AND-FORTH OF FLASH TIMING",
+   "paraphrase": "The lower BP is destroyed and equal BP destroys both, with destruction effects resolving before the card reaches the Trash.",
+   "sha256": "698b8d5ee441eb53562b242c5621251dde2269a49cb4246c489b88181fcd838e"
+  },
+  {
+   "id": "ETR:brave.basics",
+   "manual": "ETR",
+   "page": 33,
+   "title": "What a Brave is",
+   "paraphrase": "A Brave can stand alone as a Spirit or combine with a fitting Spirit, adding its BP, symbol and effects to it.",
+   "sha256": "3e120b9a56a67430535bcf13a5c68648b165389cb0d9f81e8b9ed2b461605cea"
+  },
+  {
+   "id": "ETR:brave.summon",
+   "manual": "ETR",
+   "page": 34,
+   "title": "Summoning a Brave and direct combine",
+   "anchor": "■ Summoning and Direct Combine",
+   "until": "■ Combine and Separation",
+   "paraphrase": "A Brave may be summoned as a Spirit or straight onto a fitting Spirit, and summoning it as a Spirit does not count as a Spirit summon.",
+   "sha256": "380cd6eec3ac82bb09eaf43735d8c8e0444e5a319f9ce53fc10b0654250e00cb"
+  },
+  {
+   "id": "ETR:brave.combine",
+   "manual": "ETR",
+   "page": 34,
+   "title": "Combine and separate",
+   "anchor": "■ Combine and Separation",
+   "paraphrase": "Combining or separating in the Main Step costs nothing, a Spirit takes one Brave, and a pair that stops meeting the condition separates at once.",
+   "sha256": "0d0e7d3ab497e3008dd2054362a91fe382cb65efbce08baa01be912808bbbd8e"
+  },
+  {
+   "id": "ETR:brave.leave",
+   "manual": "ETR",
+   "page": 35,
+   "title": "When a combined Spirit leaves the Field",
+   "anchor": "■ When a Brave Spirit Leaves the Field",
+   "until": "IMAGINE BRAVE",
+   "paraphrase": "The Brave either stays as a Spirit by taking cores or leaves together with the Spirit to the same place.",
+   "sha256": "6a4612aca26c956e4bd3a039df3922ecf5a50e9fb1c9caeac47c1db67dec6984"
+  },
+  {
+   "id": "ETR:brave.imagine",
+   "manual": "ETR",
+   "page": 35,
+   "page_end": 36,
+   "title": "Imagine Brave",
+   "anchor": "IMAGINE BRAVE",
+   "paraphrase": "An Imagine Brave combines with one Spirit on each side, and each pair then counts as its own combined Spirit.",
+   "sha256": "a3382d10b5c5529b8b6da3e82d163cb287a536f1de907a6d5c64e70326273033"
+  },
+  {
+   "id": "ETR:brave.saga",
+   "manual": "ETR",
+   "page": 37,
+   "page_end": 38,
+   "title": "Saga Brave",
+   "anchor": "SAGA BRAVE",
+   "paraphrase": "A Saga Brave may also combine with a matching Grandwalker Nexus, which gains its Nexus-combined effects.",
+   "sha256": "9bf96f2069824ccacf8e486a9ef6a304bb7d107fee2f888afee482c7df6b7926"
+  },
+  {
+   "id": "ETR:ultimate.basics",
+   "manual": "ETR",
+   "page": 39,
+   "title": "What an Ultimate is",
+   "paraphrase": "An Ultimate needs at least level 3 when summoned and its Ultimate symbol only reduces Ultimate reduction symbols.",
+   "sha256": "ad2b8a6de9fda6d9c55d4988acf50fd3738b4f26ec8f55dcb88d9f6cdf0ea021"
+  },
+  {
+   "id": "ETR:ultimate.field",
+   "manual": "ETR",
+   "page": 40,
+   "title": "Ultimates on the Field",
+   "anchor": "■ Ultimates on the Field",
+   "until": "■ U-Trigger",
+   "paraphrase": "Ultimates are a separate card type that effects naming only Spirits do not touch.",
+   "sha256": "1c30e9d27e76d93a3faa328657d2e88e9d8ac6bc0d73931f78724fdde946fee9"
+  },
+  {
+   "id": "ETR:gw.nexus",
+   "manual": "ETR",
+   "page": 41,
+   "page_end": 42,
+   "title": "Grandwalker Nexus",
+   "anchor": "GRANDWALKER/GRANDSTONE",
+   "until": "■ Accumulating Cores with 《Oracle》",
+   "paraphrase": "Grandwalker Nexuses ignore effects other than their own or ones aimed at Grandwalkers, their God symbol reduces only God costs, and their cores are placed only by effects.",
+   "sha256": "8bea6dad903f71f977565623a97bdb3b7a6a78bf670e6f0243f58852d487d8e8"
+  },
+  {
+   "id": "ETR:gw.contract",
+   "manual": "ETR",
+   "page": 44,
+   "title": "Contract Grandwalker Nexus",
+   "anchor": "CONTRACT",
+   "until": "■ Accumulating Cores with 《True Oracle》",
+   "paraphrase": "A Contract Grandwalker Nexus is both a Contract card and a Grandwalker, reaches level 2 from your Count, and has a coloured God symbol.",
+   "sha256": "0b431c0e917fa46d78937a34249b728379159dec4059e16c251f813ef7948a7a"
+  },
+  {
+   "id": "ETR:burst",
+   "manual": "ETR",
+   "page": 46,
+   "page_end": 47,
+   "title": "Burst",
+   "anchor": "BURST",
+   "paraphrase": "One Burst may be set face down per turn and is activated for free when its condition is met.",
+   "sha256": "0f4eac304be6c631df54a00439ea85fb18dce2273f49419b5d7a5a6feb4cf886"
+  },
+  {
+   "id": "ETR:burst-area",
+   "manual": "ETR",
+   "page": 49,
+   "title": "The Burst Area and Mirage",
+   "anchor": "■The Burst Area and Mirage",
+   "until": "SEAL",
+   "paraphrase": "One Burst and one Mirage may share the Burst Area, which is outside the Field, so its symbols do not reduce costs.",
+   "sha256": "6a2613baf354b07462952c2654802835a608373536edc1cb5ddf6498ad4a6821"
+  },
+  {
+   "id": "ETR:seal",
+   "manual": "ETR",
+   "page": 49,
+   "title": "Seal",
+   "anchor": "SEAL",
+   "until": "ADVENT",
+   "paraphrase": "Seal optionally moves your Soul Core into your Life, and [During Seal] effects work while it stays there.",
+   "sha256": "f799985813c608cf6d909206a7ad509f5593afb9d83067f48ca92b42daf2d98d"
+  },
+  {
+   "id": "ETR:contract.setup",
+   "manual": "ETR",
+   "page": 54,
+   "title": "Contract cards at game start",
+   "anchor": "■ Deckbuilding and Rules at the Start of the Game",
+   "until": "■ About Soul State",
+   "paraphrase": "A Contract card may be taken out before shuffling and added to the opening hand, which then draws one card fewer.",
+   "sha256": "d555b5c141e9450e822548fe8a80c433d44e90bd3e58e7e474e15b16612e1c38"
+  },
+  {
+   "id": "ETR:contract.soul-state",
+   "manual": "ETR",
+   "page": 54,
+   "page_end": 55,
+   "title": "Soul State",
+   "anchor": "■ About Soul State",
+   "until": "■ [Soul State] Effects and [Contract Advent Source]",
+   "paraphrase": "A Contract card leaving the Field because of the opponent may stay in Soul State instead, where it holds no cores, its symbols do not reduce costs, and most effects cannot touch it.",
+   "sha256": "bfdf03622f26d10a08d1cb6b6b9d70609188998692023fa071ccd0e792098d24"
+  },
+  {
+   "id": "ETR:manifest",
+   "manual": "ETR",
+   "page": 56,
+   "title": "Manifest",
+   "anchor": "MANIFEST",
+   "until": "EFFECTS THAT CREATE TOKENS",
+   "paraphrase": "Manifest summons from the hand by sending the Soul Core to the Trash and paying one cost with a core from a Grandwalker Nexus.",
+   "sha256": "83758a87faca2de83d8151a0386ea860438886a3f32b63cb1b67ca28bdad07e2"
+  },
+  {
+   "id": "ETR:tokens",
+   "manual": "ETR",
+   "page": 56,
+   "page_end": 57,
+   "title": "Token cards",
+   "anchor": "EFFECTS THAT CREATE TOKENS",
+   "paraphrase": "Token cards are prepared outside the deck and only enter the Field through effects.",
+   "sha256": "06480141f91cb7ac291c00e0f1fe88d722d6339420b165d4a935c9ec15425a24"
+  },
+  {
+   "id": "ETR:effects.simultaneous",
+   "manual": "ETR",
+   "page": 58,
+   "page_end": 59,
+   "title": "Effects that activate together",
+   "anchor": "■ When Multiple Effects Activate Simultaneously",
+   "until": "SET ASIDE CARD",
+   "paraphrase": "Constant effects go before timed ones, the turn player orders effects within a group, and an effect caused by a resolving effect resolves first.",
+   "sha256": "77571ae49799523683bbe35493dff72a923153db686db9fae70201530e596588"
+  },
+  {
+   "id": "ETR:set-aside",
+   "manual": "ETR",
+   "page": 59,
+   "title": "Set aside cards",
+   "anchor": "SET ASIDE CARD",
+   "until": "COUNT",
+   "paraphrase": "Set-aside cards can be used like hand cards but are neither the hand nor the Field.",
+   "sha256": "0e7db1a711a548ecc79a070cf3f303e2d0ff5c549ccb3abdbb3cb75de268b9f0"
+  },
+  {
+   "id": "ETR:count",
+   "manual": "ETR",
+   "page": 59,
+   "page_end": 60,
+   "title": "Count",
+   "anchor": "COUNT",
+   "until": "■ About 《OC (Over Count)》",
+   "paraphrase": "Count cores sit outside the Field, come from and return to the Void, and are only touched by Count effects.",
+   "sha256": "20f328a695d7e9f720d808cd8e21bdb4683bd5ee6a7ed231ad160d944444bd6e"
+  },
+  {
+   "id": "ETR:over-count",
+   "manual": "ETR",
+   "page": 60,
+   "title": "Over Count",
+   "anchor": "■ About 《OC (Over Count)》",
+   "until": "HEAVY EXHAUST",
+   "paraphrase": "An Over Count Spirit gets its bonus BP and [During OC] effects while the Count condition holds, whatever its level.",
+   "sha256": "4d2dd1971cf3cd977820985dd8a00909bc79f4e8fc54bc04dbef85b3cde4aee3"
+  },
+  {
+   "id": "ETR:heavy-exhaust",
+   "manual": "ETR",
+   "page": 60,
+   "page_end": 61,
+   "title": "Heavy Exhaust",
+   "anchor": "HEAVY EXHAUST",
+   "paraphrase": "Only effects heavy-exhaust a card, which then counts as exhausted and needs one refresh to become normally exhausted.",
+   "sha256": "e6fac88ae0d3e974072bbd6fdac1ca279d9a44a92dc638c57fcf1f61c9749b8e"
+  },
+  {
+   "id": "ETR:faq.effects-q3",
+   "manual": "ETR",
+   "page": 62,
+   "title": "FAQ effects Q3: can vs cannot",
+   "anchor": "Q3.",
+   "until": "Q4.",
+   "paraphrase": "A 'cannot' effect beats a 'must' effect, which beats a 'may' or 'do' effect.",
+   "sha256": "a8b10c85d05d0c2c2fbe6673d857353fd912790633b270585250255df02eeaa7"
+  },
+  {
+   "id": "ETR:faq.effects-q4",
+   "manual": "ETR",
+   "page": 62,
+   "title": "FAQ effects Q4: immunity order",
+   "anchor": "Q4.",
+   "until": "Q5.",
+   "paraphrase": "'Cannot be prevented' beats 'unaffected', which beats 'cannot activate'.",
+   "sha256": "dd096f710cd593193b770ec2079ec3e7929427749b76830d0f9a4c92378d3589"
+  },
+  {
+   "id": "ETR:faq.effects-q5",
+   "manual": "ETR",
+   "page": 62,
+   "title": "FAQ effects Q5: 'by doing X, do Y'",
+   "anchor": "Q5.",
+   "paraphrase": "The X part must be possible and is only done when the Y part can also be done, and the player may skip the whole effect.",
+   "sha256": "120f3e53f919a64fc00c47e339cdc8c85605c8264b3853322d9948a5687e9dae"
+  },
+  {
+   "id": "ETR:faq.effects-q6",
+   "manual": "ETR",
+   "page": 63,
+   "title": "FAQ effects Q6: 'if you do'",
+   "anchor": "Q6.",
+   "until": "Q7.",
+   "paraphrase": "With 'you can do X; if you do, Y', X may be done even when Y can only partly be done.",
+   "sha256": "e3a35dbf79bd5f393c590d8ba1de0d7ed490bdf99dbd4be8975e960c1b84c9fe"
+  },
+  {
+   "id": "ETR:faq.effects-q9",
+   "manual": "ETR",
+   "page": 63,
+   "title": "FAQ effects Q9: once per turn",
+   "anchor": "Q9.",
+   "until": "Q10.",
+   "paraphrase": "Once per turn counts per card, while the same-name version counts for all copies of that name.",
+   "sha256": "36e11865d8025bee3f2c30224c5388d4b3f0e29433f1b848c5ffaa4bd69e27d3"
+  },
+  {
+   "id": "ETR:faq.soul-core",
+   "manual": "ETR",
+   "page": 65,
+   "title": "FAQ: the Soul Core",
+   "anchor": "ABOUT THE SOUL CORE",
+   "until": "ABOUT PAYING COSTS",
+   "paraphrase": "When an effect would send the Soul Core to the Void, a normal core goes instead.",
+   "sha256": "3c0ae6777ab4b1931b39ecf952ecb576b4ab862cc5845bab1de1ce1bb566b6dd"
+  },
+  {
+   "id": "ETR:faq.bp",
+   "manual": "ETR",
+   "page": 68,
+   "page_end": 69,
+   "title": "FAQ: BP plus and minus",
+   "anchor": "ABOUT 'BP+' AND 'BP-' EFFECTS",
+   "until": "ABOUT BRAVES",
+   "paraphrase": "BP changes stack on the current level, a Spirit at 0 BP is only destroyed by a card clause checked when applied, and \"all opposing\" BP effects also hit later summons that turn.",
+   "sha256": "134528fb1a3abae72b2cf933a2b7f1c9e1ad6cf2051139d66671390f5ae1615d"
+  },
+  {
+   "id": "ETR:faq.braves-q1",
+   "manual": "ETR",
+   "page": 69,
+   "title": "FAQ Braves Q1: no Brave on a Brave",
+   "anchor": "Q1.",
+   "until": "Q2.",
+   "paraphrase": "A Brave cannot combine with a Brave or a Nexus that is being treated as a Spirit.",
+   "sha256": "22ac717edfc5ad1feb2baca2e6ee25d59c80d88707ecc9f0ef60c27c5a9a26c7"
+  },
+  {
+   "id": "ETR:faq.braves-q2",
+   "manual": "ETR",
+   "page": 69,
+   "title": "FAQ Braves Q2: a Brave's summon effect",
+   "anchor": "Q2.",
+   "until": "Q3.",
+   "paraphrase": "A Brave's 'when summoned' effect stays a Brave effect even when it is summoned as a Spirit.",
+   "sha256": "5e27f45fd5a5494d529b27c4dcfa4437599e8c142f2409e11d953d2ba2adc7aa"
+  },
+  {
+   "id": "STD:1-4-6",
+   "manual": "STD",
+   "page": 2,
+   "cr": "1-4-6",
+   "title": "No negative values",
+   "paraphrase": "Effects never push a printed number below zero.",
+   "sha256": "cc24a9565b9b48726d18db2c9b4bfe350149cbabfaaafaaaef5d8345b59809bb"
+  },
+  {
+   "id": "STD:4-8",
+   "manual": "STD",
+   "page": 8,
+   "cr": "4-8",
+   "title": "Void",
+   "paraphrase": "The Void is the public core supply with no limit, and more cores are added from outside the game if it runs out.",
+   "sha256": "a3f0caa64db86de59e7a185baf6159be20fbe104a4508a1059461f38e7fa5372"
+  },
+  {
+   "id": "STD:5-7-3",
+   "manual": "STD",
+   "page": 10,
+   "cr": "5-7-3",
+   "title": "One Soul Core",
+   "paraphrase": "Each player has one Soul Core, which effects naming cores also affect.",
+   "sha256": "3bdec45f04179b288e7bd19afe5c4ec12ee80a51181ce52ba7a3c2b551ab5118"
+  },
+  {
+   "id": "STD:7-3",
+   "manual": "STD",
+   "page": 13,
+   "cr": "7-3",
+   "title": "Core Step",
+   "paraphrase": "The turn player adds one core from the Void to the Reserve, except on the first player's first turn.",
+   "sha256": "2efd4135ba65c9a74f20d81b5fdee5026980ff1ca549727b8059935a1a6b7180"
+  },
+  {
+   "id": "STD:8-1-6",
+   "manual": "STD",
+   "page": 15,
+   "cr": "8-1-6",
+   "title": "Spirit destruction in battle",
+   "paraphrase": "BP comparison destroys the loser and the effects of that destruction trigger at that point.",
+   "sha256": "d5ccb2aaacfb6fa11292c5c9d5f87e0728a3e697ef8cf37d09dedb338aa1b4a1"
+  },
+  {
+   "id": "STD:12-2-1-1",
+   "manual": "STD",
+   "page": 22,
+   "cr": "12-2-1-1",
+   "title": "Super Unleash (True Release)",
+   "paraphrase": "A card with this keyword reaches level 2 with only the Soul Core on it.",
+   "sha256": "cc53242a233589eb7fcd85759bf7b12e850d95233135cbb382dcf6bc835cad4b"
+  },
+  {
+   "id": "STD:12-2-1-2",
+   "manual": "STD",
+   "page": 22,
+   "cr": "12-2-1-2",
+   "title": "Soul Magic",
+   "paraphrase": "A Soul Magic card can be used by paying its whole cost with just the Soul Core while you control a symbol of its colour.",
+   "sha256": "fb11fb065baef1fb4b45223fda9688afda2b4870a6adb41d6a9ba506d0d22e54"
+  },
+  {
+   "id": "STD:12-2-1-12",
+   "manual": "STD",
+   "page": 23,
+   "cr": "12-2-1-12",
+   "title": "When Destroyed (by the opponent)",
+   "paraphrase": "'When Destroyed' triggers on destruction, and the 'by the opponent' form only on an opposing effect or BP comparison.",
+   "sha256": "caad612c381e3c1b6414c295bd1a6d1ea95bffb55ce869669e64d2e3fda259af"
+  }
+ ],
+ "aliases": [
+  {
+   "key": "ETR p.12",
+   "to": [
+    "ETR:contract.setup",
+    "ETR:setup"
+   ],
+   "note": "Contract setup is on pp. 11 and 54 in VER.17.0 (p. 12 is \"How to read a card\")"
+  },
+  {
+   "key": "ETR p.61",
+   "to": [
+    "ETR:over-count"
+   ],
+   "note": "Over Count is on p. 60 in VER.17.0"
+  },
+  {
+   "key": "ETR p.70 Q1",
+   "to": [
+    "ETR:faq.braves-q1"
+   ],
+   "note": "the Braves FAQ Q1 is on p. 69 in VER.17.0"
+  },
+  {
+   "key": "ETR FAQ-effects Q3",
+   "to": [
+    "ETR:faq.effects-q4"
+   ],
+   "note": "the engine cites Q3 for the immunity order, which VER.17.0 numbers Q4 (Q3 is cannot > must > may)"
+  },
+  {
+   "key": "ETR name:depletion",
+   "to": [
+    "ETR:cores.depletion"
+   ],
+   "note": "named section"
+  },
+  {
+   "key": "ETR name:contract-gw-level",
+   "to": [
+    "ETR:gw.contract"
+   ],
+   "note": "named section"
+  },
+  {
+   "key": "ETR name:symbols",
+   "to": [
+    "ETR:card.symbols"
+   ],
+   "note": "named section"
+  },
+  {
+   "key": "ETR name:moving-cores",
+   "to": [
+    "ETR:main.moving-cores"
+   ],
+   "note": "named section"
+  },
+  {
+   "key": "ETR name:deck",
+   "to": [
+    "ETR:deck"
+   ],
+   "note": "named section"
+  },
+  {
+   "key": "ETR name:soul-core",
+   "to": [
+    "ETR:cores.soul-core",
+    "ETR:faq.soul-core"
+   ],
+   "note": "named section"
+  }
+ ],
+ "known_gaps": [
+  {
+   "key": "ETR name:summon-condition",
+   "reason": "Ultimate summon conditions: the engine marks it a house reading; no manual section matched yet (VER.17.0 Ultimate pp. 39-40 to be read in part 2)"
+  },
+  {
+   "key": "ETR name:accel",
+   "reason": "Accel has no section in the Eternal manual VER.17.0; the engine follows the Fandom Accel page"
+  },
+  {
+   "key": "ETR name:revealed-from-deck",
+   "reason": "\"When revealed from the deck\" timing: not in VER.17.0; chosen ruling (docs/manual-notes.md)"
+  },
+  {
+   "key": "ETR name:multicolour-symbols",
+   "reason": "multicolour plain symbols: house reading, the manual does not say"
+  },
+  {
+   "key": "ETR name:cant-attack-block",
+   "reason": "\"can't attack/block\" has no own manual section in VER.17.0; the engine reading stands"
+  }
+ ],
+ "named": [
+  {
+   "match": "manual \"Depletion\"",
+   "key": "ETR name:depletion"
+  },
+  {
+   "match": "(FAQ: X must be performable)",
+   "key": "ETR FAQ-effects Q5"
+  },
+  {
+   "match": "Official rule (Eternal manual): the Lv of a Contract Grandwalker Nexus",
+   "key": "ETR name:contract-gw-level"
+  },
+  {
+   "match": "Symbols (Eternal rule manual VER.17.0)",
+   "key": "ETR name:symbols"
+  },
+  {
+   "match": "/* manual core movement during the Main Step",
+   "key": "ETR name:moving-cores"
+  },
+  {
+   "match": "(manual: 40 or more cards, max 3 per name",
+   "key": "ETR name:deck"
+  },
+  {
+   "match": "(Eternal manual, Cores and the Soul Core)",
+   "key": "ETR name:soul-core"
+  },
+  {
+   "match": "manual page not read this session",
+   "key": "ETR name:summon-condition"
+  },
+  {
+   "match": "the Eternal manual text read has no Accel section",
+   "key": "ETR name:accel"
+  },
+  {
+   "match": "the Eternal manual VER.17.0 gives no timing",
+   "key": "ETR name:revealed-from-deck"
+  },
+  {
+   "match": "house reading; the manual does not say",
+   "key": "ETR name:multicolour-symbols"
+  },
+  {
+   "match": "manual \"Can't attack/block\" effects",
+   "key": "ETR name:cant-attack-block"
+  }
+ ]
+}
