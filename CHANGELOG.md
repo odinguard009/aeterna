@@ -2,6 +2,11 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.69.3
+- **P0 process cleanup** (`docs/ai/process-plan.md` part B, owner 2026-10-19 18:37). No game change; every step is reversible (git history keeps the old text).
+  - B1: the CLAUDE.md `**Done:**` line (6.3k characters, re-sent with every tool call) is now one pointer to `CHANGELOG.md`, the mind map and `docs/ai/roadmap-archive.md`; sessions update only the `**Next:**` line. CLAUDE.md 19.4k -> 13.2k characters.
+  - B2: superseded and finished sections of `docs/ai/roadmap-open.md` ("Plan from the audit 2026-10-16", "Earlier plan 2026-10-15", CPU-tweak bundle, "Index by mechanic", "Items", finished card-priority bullets) moved to `docs/ai/roadmap-archive.md` (not read at session start): 38.0k -> 20.8k characters. `tools/gen_roadmap.mjs` reads Index / Items from the archive, `tools/rules_audit.py` scans it too (counts unchanged: 250 items, 91 confirmed, 47 house, 112 open; the committed report was stale at 242).
+
 ## v0.69.2
 - **K2: generated tests per compiled action** (`docs/ai/compiler-v2-plan.md` point 5; plan W in `docs/ai/roadmap-open.md`). No game change.
   - `tests/unit/lib/fx-props.mjs` builds one quiet board per action of every shipped card with complete effects, from the action JSON alone, with synthetic `FXP-` fixture cards (cost / BP / family chosen from the action), and checks the property its sentence promises: DESTROY at the BP / cost / core bound is destroyed and one step over is not (also exhaustedOnly, thenDraw, Nexus, lowest / highest cost); EXHAUST_OPP / HEAVY_EXHAUST_OPP exhaust exactly N; BOUNCE_OPP reaches the Hand or the deck bottom and respects its bound; BP_MINUS leaves BP and destroys at 0 BP only with zeroDestroy (Eternal FAQ p. 68); DRAW / DRAW_BOTTOM / MILL / Crush move the right cards; COUNTER max, Void to Reserve / Life / a Spirit, BP_PLUS self / attacker / own, REFRESH, REFRESH_SPIRIT (match), REVEAL_PICK (add the match, rest to the bottom or Trash), OPP_CORES_TO_RESERVE.

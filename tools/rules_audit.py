@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Rules audit (v0.55.1, roadmap 'Rules audit' R2): every rule the engine claims is listed with its source and a verdict.
 Items: every table row of docs/rules-coverage.md, every glossary `rule` note (data/glossary/effects.json) and every
-'house reading / ruling chosen / not covered / unverified' line in docs/manual-notes.md + docs/ai/roadmap-open.md.
+'house reading / ruling chosen / not covered / unverified' line in docs/manual-notes.md + docs/ai/roadmap-open.md + docs/ai/roadmap-archive.md.
 Verdicts: confirmed (official page/section cited) | house (no official text; kept, reason given) | conflict (the source
 says otherwise -> an R3 fix) | open (no source cited yet / needs a check). Hand-set verdicts in
 docs/rules-audit-verdicts.json win; the rest is classified from the citation words of the item itself.
@@ -24,7 +24,7 @@ def items():
         yield ('coverage', sec[:60], cells[0], ' | '.join(cells[1:]), sec)
     for g in json.load(open(P('data/glossary/effects.json'), encoding='utf-8')):
         if g.get('rule'): yield ('glossary', 'data/glossary/effects.json', g['id'], g['rule'], '')
-    for f in ('docs/manual-notes.md', 'docs/ai/roadmap-open.md'):
+    for f in ('docs/manual-notes.md', 'docs/ai/roadmap-open.md', 'docs/ai/roadmap-archive.md'):
         for i, ln in enumerate(open(P(f), encoding='utf-8'), 1):
             if re.search(r'house reading|ruling chosen|not covered|unverified', ln, re.I) and not ln.startswith('#') and 'rules_audit' not in ln:
                 yield ('note', f'{f}:{i}', ln.strip()[:70], ln.strip(), '')
