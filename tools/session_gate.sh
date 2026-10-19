@@ -37,7 +37,7 @@ IDLE_MIN=20      # owner rule (2026-10-17, was 30): start only after 20 minutes 
 STALE_H=5        # a LOCK older than this is a crashed auto session
 MANUAL_H=3       # a MANUAL older than this is a crashed manual session
 NOPROG=3         # auto sessions without a new v* commit before the switch goes OFF by itself
-MAX_AUTO_24H=6   # at most this many auto sessions (LOCK) in 24 hours
+MAX_AUTO_24H=0   # max auto sessions (LOCK) in 24 hours; 0 = unlimited (owner, 2026-10-20)
 post() { gh api -X POST "repos/$R/issues/$L/comments" -f body="$1" --jq .created_at >/dev/null; }
 evaluate() { # prints one line: <verdict> <reason...>; verdicts GO, STOP, AUTOOFF, plus state for status/busy
   local since comments commits stop_file
@@ -99,7 +99,7 @@ m = re.search(r"next=(\w+)", done[-1][1], re.I) if done else None
 next_model = "opus"  # owner 2026-10-17: Opus for every session; next= tags are kept for history only
 want = E.get("WANT", "").lower()
 if mode == "status":
-    print(f"Mode otomatis: {switch} | sesi: {active or 'tidak ada'} | idle {idle} min | sesi otomatis 24 jam: {auto24}/{E['MAXA']} | tanpa rilis: {noprog}/{E['NOPROG']} | model berikutnya: {next_model}" + (" | chain-stop.md ADA" if E["STOP_FILE"] == "1" else ""))
+    print(f"Mode otomatis: {switch} | sesi: {active or 'tidak ada'} | idle {idle} min | sesi otomatis 24 jam: {auto24}/{E['MAXA'] if int(E['MAXA']) else 'tanpa batas'} | tanpa rilis: {noprog}/{E['NOPROG']} | model berikutnya: {next_model}" + (" | chain-stop.md ADA" if E["STOP_FILE"] == "1" else ""))
 elif mode == "switch": print(switch)
 elif mode == "busy": print(("BUSY " + active) if active else "FREE")
 elif E["STOP_FILE"] == "1": print("STOP chain-stop.md exists")
@@ -107,7 +107,7 @@ elif switch == "OFF": print("STOP auto mode is OFF")
 elif active: print("STOP " + active)
 elif noprog >= int(E["NOPROG"]): print(f"AUTOOFF no progress: {noprog} auto sessions without a new v* release")
 elif idle < int(E["IDLE_MIN"]): print(f"STOP idle {idle} min < {E['IDLE_MIN']}")
-elif auto24 >= int(E["MAXA"]): print(f"STOP daily cap: {auto24} auto sessions in 24 h")
+elif int(E["MAXA"]) > 0 and auto24 >= int(E["MAXA"]): print(f"STOP daily cap: {auto24} auto sessions in 24 h")
 elif want and want != next_model: print(f"STOP next item needs {next_model}, this task runs {want}")
 else: print("GO")
 PY
