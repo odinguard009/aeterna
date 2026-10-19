@@ -181,14 +181,14 @@
  {
   "id": "kw:legacy",
   "name": "Legacy",
-  "status": "missing",
+  "status": "done",
   "glossary": [],
   "prep": {
    "rules": "Std CR 12-2-1-3 (+11-1-1-4/11-2-1-4/11-3-1-4) and Fandom Q&A 31541-31543, 31620, 31866: remove EX-symbol cards of the reduction colour from your Trash, one reduction symbol each, before Field symbols; max = reduction symbols; 0 removed = not activated; never with \"without paying the cost\"/fixed cost; Legacy-only text counts as printed",
    "data": "block A: 150 staged cards ex_symbols=1 (Spirit 106/Magic 41/Nexus 3), EX colour = card colour, no two-colour EX in any 26R wiki page (scan 2026-10-19); 52 shipped EX cards lost ex_symbols (all-cards.json 0): re-merge from fandom-cards-26r.json; codec keeps the field, parseCard (03-imported-cards.js) drops it; 10 cards count \"EX Symbol banished via this Legacy\"",
    "lever": "alone 3, + Invoke + target sentences 38 (real recompile, A2 2026-10-19)"
   },
-  "note": "= Succession; glossary link K_STANDARD_SUCCESSION is shared with Soul Magic (check the link when building)",
+  "note": "= Succession; done in v0.69.0 (legacyPlan/legacyPay in 06-rules.js; automatic, fewest EX cards for the lowest cost; +8 cards). Effects that count \"EX Symbol banished via this Legacy\" / \"summoned using Legacy\" (10 cards) still wait (inst.legacyN is recorded). glossary link K_STANDARD_SUCCESSION is shared with Soul Magic",
   "verified": true
  },
  {

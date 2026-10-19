@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "19 Oct 2026",
-  "next": "next: team session (Opus): main Legacy / Succession + \"reveal three cards\" (real recompile: Legacy alone 3, with Invoke + targets 38, + reveal three 53), agent A1 U5 battle overlays, A5 Q3 part 2 (tests cite chunk ids); 703 of 8,709 cards playable"
+  "next": "next: U5 battle overlays and prompts (HEMAT ON: alone; stylesheet at ~89.4 KB of 90 KB: trim old CSS first), then a card head sized by real recompile (\"target an opposing\" 29 alone, (Your Attack Step) 24, (During Attack) 21); 722 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -630,8 +630,8 @@
      "t": "True Release / Super Unleash (v0.66.0): Soul Core alone = LV2, (During Attack) +BP and Clash; +14 cards (block A starter decks)"
     },
     {
-     "s": "next",
-     "t": "Block A heads by real recompile: Legacy / Succession + reveal three cards next (Invoke done v0.68.0, +19 cards)"
+     "s": "done",
+     "t": "Legacy / Succession + reveal three cards (v0.69.0): +19 cards (722 of 8,709); next heads by real recompile: \"target an opposing\" 29 alone, (Your Attack Step) 24, (During Attack) 21"
     },
     {
      "s": "later",
@@ -959,7 +959,15 @@
    "calls": "~110",
    "basis": "measured",
    "note": "First team session on Opus: main Invoke + target sentences (+19 cards, INV68-01..16 + scenario), A1 U4 pages + playmat, A5 Q3 rules KB part 1, A2/A3 next-head sizing and rules prep, A4 122 mechanic rows checked + blue deck data, A6 player-view twice, A7 review (fixes applied). A usage limit paused the session once (resets 12:00)."
+  },
+  {
+   "ver": "v0.69.0",
+   "date": "19 Oct 2026",
+   "tokens": 372000,
+   "calls": "~85",
+   "basis": "measured",
+   "note": "Manual HEMAT ON card session on Sonnet 5.5 (owner's hint was Opus): Legacy (+8 cards, L69-01..10 + scenario) and reveal-from-decktop compiler pattern (+11 cards, R69-01..08), player-view subagent, real re-sizing of the block A heads. Tokens: see the release message."
   }
  ],
- "next": "next: card session Invoke (Opus; + target sentences, real recompile: Invoke alone 1, co-blockers 'target one of' 28, (Your Attack Step) ~40 on block A), then U4 Settings / How to play / Library, then Legacy and U5-U8 alternating with card sessions; 684 of 8,709 cards playable"
+ "next": "next: U5 battle overlays and prompts (HEMAT ON: alone; stylesheet at ~89.4 KB of 90 KB: trim old CSS first), then a card head sized by real recompile (\"target an opposing\" 29 alone, (Your Attack Step) 24, (During Attack) 21); 722 of 8,709 cards playable"
 }
