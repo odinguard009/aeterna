@@ -511,7 +511,6 @@ def blockers(c):
     for p in v1.paragraphs(t):
         tpl = re.findall(r'\{\{\s*([#\w]+)', p)
         if tpl: out.append('wiki template {{' + tpl[0] + '}}'); continue
-        if '☼' in p or re.search(r'\bBurst\b', p): out.append('Burst'); continue
         if v1.flag_para(p): continue
         try: v1.spirit_paragraph(p, c)
         except Review as e: out.append(str(e))

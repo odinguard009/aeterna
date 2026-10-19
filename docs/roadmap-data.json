@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "19 Oct 2026",
-  "next": "next: card pack 2 = Burst forms (rows 1-2 of docs/reports/pack-plan.md), sized first by a scratch recompile; step window done in v0.70.0 (+4); 726 of 8,709 cards playable"
+  "next": "next: card pack 3 = event trigger heads (When this Spirit ..., (During Attack), (When Battles); also the bodies under step heads), sized first by a scratch recompile; Burst forms + condition clauses done in v0.71.0 (+12); 738 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -647,7 +647,7 @@
     },
     {
      "s": "next",
-     "t": "One pack per card session: step timing heads first (window condition if.step), then Burst forms, event trigger heads, Mirage / Rush / Accel"
+     "t": "One pack per card session: step window (v0.70.0, +4), Burst forms + condition clauses (v0.71.0, +12); next event trigger heads, then Mirage / Rush / Accel"
     },
     {
      "s": "later",
@@ -1015,7 +1015,15 @@
    "calls": "~60",
    "basis": "measured",
    "note": "Manual HEMAT ON card session on Opus: step timing heads read as a window (if.step, BLOCK_EXHAUSTED, five body forms). Real unlock +4 (upper bound ~300): the bodies under the heads are the real blockers."
+  },
+  {
+   "ver": "v0.71.0",
+   "date": "19 Oct 2026",
+   "tokens": 175000,
+   "calls": "~75",
+   "basis": "measured",
+   "note": "Scheduled auto HEMAT ON card session on Opus: Burst forms (paragraph anywhere, OPP_ATTACK, OPP_SUMMON_ADV_FX) and condition clauses (burstSet, ctrl, counterGe). Real unlock +12 (upper bound 189): the Burst paragraph alone gave 2, the condition clauses the rest."
   }
  ],
- "next": "next: card pack 2 = Burst forms (rows 1-2 of docs/reports/pack-plan.md), sized first by a scratch recompile; step window done in v0.70.0 (+4); 726 of 8,709 cards playable"
+ "next": "next: card pack 3 = event trigger heads (When this Spirit ..., (During Attack), (When Battles); also the bodies under step heads), sized first by a scratch recompile; Burst forms + condition clauses done in v0.71.0 (+12); 738 of 8,709 cards playable"
 }

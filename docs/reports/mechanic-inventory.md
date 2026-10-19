@@ -6,7 +6,7 @@
 
 | Mechanic | Status | Waiting | Playable | Prep | Glossary | Note |
 |---|---|---|---|---|---|---|
-| Magic card | partial | 1108 | 28 | RD· | - | Main/Flash, cost, targets, ACTIONS effects (v0.41/v0.47.0); Magic reveals and some types open (rules-coverage) |
+| Magic card | partial | 1105 | 31 | RD· | - | Main/Flash, cost, targets, ACTIONS effects (v0.41/v0.47.0); Magic reveals and some types open (rules-coverage) |
 | Brave card | partial | 443 | 22 | RD· | - | Brave part 1 v0.60.0 (combine data, braved effects); part 2 open: summon from Hand first, two-sided Braves, 171 Brave conditions |
 | Mirage | partial | 297 | 7 | R·· | K_MIRAGE | partial: 06-rules.js mirage set/usable, 02d-effects-resolve.js only MIRAGE_OWN_LIFE/OPP_LIFE triggers (subagent grep 2026-10-19) |
 | Soul Core in card text | partial | 253 | 33 | ··· | - | Soul Core rules done (setup, Seal, Life, Reserve); cards that move or pay with it follow their own keywords |
@@ -50,7 +50,7 @@
 | Twinkle Seal | missing | 12 | 0 | ··· | A_SEAL | no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable |
 | Astral Unleash | missing | 11 | 0 | ··· | K_UNLEASH | no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable |
 | Astromulet | missing | 11 | 0 | ··· | - | no engine/compiler/test match (A4 grep 2026-10-19) |
-| Awaken | partial | 11 | 10 | ··· | A_AWAKEN | AWAKEN action 02b-effects-actions.js and compiler "Flash - Awaken" paragraph; test only tests/suites/v19_tests.py (Sabecaulus), no unit test; the 11 waiting texts wait on other paragraphs (A4 2026-10-19) |
+| Awaken | partial | 11 | 11 | ··· | A_AWAKEN | AWAKEN action 02b-effects-actions.js and compiler "Flash - Awaken" paragraph; test only tests/suites/v19_tests.py (Sabecaulus), no unit test; the 11 waiting texts wait on other paragraphs (A4 2026-10-19) |
 | Form Change | missing | 11 | 0 | ··· | - | no engine/compiler/test match (A4 grep 2026-10-19) |
 | Ice Wall | missing | 11 | 0 | ··· | - | no engine/compiler/test match (A4 grep 2026-10-19) |
 | Whirlwind | missing | 11 | 0 | ··· | - | no engine/compiler/test match (A4 grep 2026-10-19) |
@@ -154,9 +154,9 @@
 | Violent High Speed | missing | 1 | 0 | ··· | K_HIGH_SPEED | no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable |
 | Wave Crush | missing | 1 | 0 | ··· | K_CRUSH | no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable |
 | XV Crush | missing | 1 | 0 | ··· | K_CRUSH | no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable |
-| Spirit card | done | 5344 | 653 | ··· | - | base rules: summon, levels, BP, attack/block (rules-coverage A) |
+| Spirit card | done | 5335 | 662 | ··· | - | base rules: summon, levels, BP, attack/block (rules-coverage A) |
 | Nexus card | done | 835 | 19 | ··· | - | deploy, levels, Nexus effects through the effect engine |
-| Burst | done | 432 | 17 | ··· | K_BURST | v0.55.2 resolution order |
+| Burst | done | 430 | 23 | ··· | K_BURST | v0.55.2 resolution order |
 | Contract Advent | done | 193 | 6 | ··· | K_ADVENT | engine done (CLAUDE.md Done list) |
 | True Release (= Super Unleash, Standard) | done | 175 | 14 | RDL | - | done v0.66.0: trueRelease field, lvIndex Soul Core = LV2, (During Attack) +BP/Clash; +14 cards (7 with True Release); real recompile re-measure 2026-10-19: True Release alone 1, with (During Attack) 6 |
 | Accel | done | 153 | 5 | ··· | K_ACCEL | v0.50.0 |
