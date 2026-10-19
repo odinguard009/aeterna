@@ -81,6 +81,11 @@ test('G08 file ownership: shared files and the other lane are refused on a lane 
   assert.equal(owner('index.html'), 'shared');
   assert.equal(owner('CHANGELOG.md'), 'shared');
   assert.equal(owner('tests/unit/ui63.test.mjs'), 'free');
+  assert.equal(owner('docs/rules/manual-17.json'), 'q3');
+  assert.equal(owner('tools/rules_kb.py'), 'q3');
+  assert.equal(owner('tests/unit/rules_kb.test.mjs'), 'q3');
+  assert.deepEqual(problems('q3', ['docs/rules/a.json', 'tools/rules_kb.py', 'docs/ai/lanes/q3.md']), []);
+  assert.equal(problems('q3', ['packages/engine/src/02-effects.js', 'apps/web/src/a.js', 'CLAUDE.md']).length, 3, 'q3 may not touch engine, UI or shared files');
   assert.deepEqual(problems('ui', ['apps/web/src/a.js', 'tests/unit/x.test.mjs', 'docs/ai/lanes/ui.md']), []);
   const p = problems('ui', ['index.html', 'packages/engine/src/x.js'], true);
   assert.equal(p.length, 3);

@@ -15,6 +15,18 @@ The list lives in `tools/lanes.mjs` (`node tools/lanes.mjs --owner <path>`). The
 lane's files and a changed `VERSION` line on a `lane/*` branch; `node tools/lanes.mjs --unstage-shared` drops the generated files
 that `npm run -s loop` rewrote. The pre-push hook skips the build check there (the merge step rebuilds).
 
+## Team session (one chat; owner, 2026-10-19 07:02; the default since then)
+One roadmap session runs main + agents in ONE chat (CLAUDE.md "Team session", skill `bs-session-runner` step 8). Main works on `main`
+(engine + current card head = card-lane files) and holds the gate. Agents with write work get a git worktree of the same clone:
+A1 UI on `lane/ui` (`../wt-ui`), A5 Q3 on `lane/q3` (`../wt-q3`); the pre-commit hook enforces their lane files, they commit locally
+and never fetch or push. Before the final push main runs `bash tools/lane_merge.sh --local` (merges the local lane branches, prints
+their notes, rebuilds), applies the notes, gets the A7 review, and releases once. Unfinished lane work at the end is pushed as
+`lane/<x>` and continued by the next session's agent. The two-chat lane session below still works for manual use.
+
+| Lane | Owns |
+|---|---|
+| q3 | `docs/rules/`, `tools/rules_kb.py`, `tools/rules_kb/`, `tests/unit/rules_kb.test.mjs`, `docs/ai/lanes/q3.md` |
+
 ## Lane session ("Lanjutkan roadmap ui" / "Lanjutkan roadmap card")
 1. `bash tools/session_start.sh --lane ui` (or `card`): overlap guard for that lane only, branch `lane/<lane>` (new from `main`, or the
    unmerged remote branch with `main` merged in; never a force-push).

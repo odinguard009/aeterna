@@ -1,4 +1,4 @@
-// P1 parallel lanes (owner, 2026-10-18 21:39; v0.63.1): which files each lane owns and which only the merge step writes.
+// P1 parallel lanes (owner, 2026-10-18 21:39; v0.63.1; lane q3 + one-chat team sessions 2026-10-19): which files each lane owns and which only the merge step writes.
 // Plan and flow: docs/ai/lanes/README.md. Lanes are opt-in: on `main` (single-lane sessions) nothing here applies.
 //   node tools/lanes.mjs --check-staged     pre-commit hook: on a lane/<lane> branch refuse staged changes to shared files,
 //                                           to the other lane's files, and to the VERSION line (no-op on other branches)
@@ -12,6 +12,8 @@ export const LANES = {
   ui: ['apps/web/src/', 'src/styles.css', 'docs/DESIGN.md', 'docs/design/', 'docs/ai/lanes/ui.md'],
   card: ['packages/engine/src/', 'data/', 'tests/scenarios/', 'tools/compile_effects.py', 'tools/compile_v2.py',
     'tools/promote_compiled.mjs', 'tools/import_fandom.py', 'tools/tag_effects.py', 'docs/ai/lanes/card.md'],
+  // Q3 rules knowledge base, built by team agent A5 (owner, 2026-10-19 07:02)
+  q3: ['docs/rules/', 'tools/rules_kb.py', 'tools/rules_kb/', 'tests/unit/rules_kb.test.mjs', 'docs/ai/lanes/q3.md'],
 };
 // written only by the merge + release step on main (lanes put the change they need into docs/ai/lanes/<lane>.md)
 export const SHARED = ['package.json', 'CHANGELOG.md', 'README.md', 'CLAUDE.md', 'index.html', 'docs/progress.html',
