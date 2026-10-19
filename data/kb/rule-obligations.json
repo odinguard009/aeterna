@@ -439,6 +439,14 @@
       "status": "partial",
       "test": "accel50.test.mjs:S01",
       "note": "SILVER_WHEEL trigger is built but no promoted card uses it yet (Contractor Brigit's Contract Field needs the Contract Nexus data)."
+    },
+    {
+      "id": "INVOKE-68",
+      "rule": "Invoke (Standard activation): '<cost> > <effect>' after {{Invoke|Flash}} / {{Invoke|Main}}; the cost part must resolve in full or the effect is not used; Flash = Flash Timings and your Main Step, Main = your Main Step; printed step / (During Attack) / (During Block) heads and (Once Per Turn) / (Once Per Battle) limits apply.",
+      "source": "Standard manual 'FAQ on Effects' Q11; Standard CR 12-2-1-4 / 12-2-1-5 (Main / Flash timings)",
+      "status": "partial",
+      "test": "invoke68.test.mjs:INV68-05",
+      "note": "Costs built: pay N, exhaust/destroy this card, exhaust one of your (family) Nexuses/Spirits, discard a family card. Open: conditional costs ('If ..., exhaust this Spirit'), core moves, returning cards, Change templates."
     }
   ]
 }

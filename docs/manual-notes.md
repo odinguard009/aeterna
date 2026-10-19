@@ -69,6 +69,8 @@ Paraphrased notes from the official PDFs, so a session does not have to fetch th
 - Bursts: declared at the same timing as other effects of the event, starting with the defending player; several Bursts resolve in activation order.
 - A Grandwalker Nexus is unaffected by effects except its own and effects that target a Grandwalker Nexus. A card in the Burst state is unaffected except by effects that target Bursts.
 
+- Invoke (Standard activations; Standard Rule Manual "FAQ on Effects" Q11, read for the v0.64.0 prep; Standard CR 12-2-1-4 / 12-2-1-5 for Main / Flash timing): "<cost> ▶ <effect>" after {{Invoke|Flash}} / {{Invoke|Main}}; the part before ▶ must resolve in full, otherwise the effect does not happen at all (not "as much as possible"); Flash also works in your Main Step; printed heads ((Your / Opposing / Either Attack Step), (During Attack), (During Block)) narrow it and limits apply only when printed ((Once Per Turn), (Once Per Battle), same card name). Engine: v0.68.0 `02l-effects-invoke.js`.
+
 ## Not found in the online text yet
 - Banish (engine: card goes to the Banished zone).
 - **Seal** (Eternal manual p.49, read through WebFetch 2026-10-16): Seal moves your Soul Core from the stated place to your Life; you are Sealed while it is there and [During Seal] effects can be used; using Seal is optional; with a normal core and the Soul Core in Life the player chooses which leaves when Life is reduced (engine: normal cores first). The manual text read does not cover Flag Nexus or Flag Contract Advent.

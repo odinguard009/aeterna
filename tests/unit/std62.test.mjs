@@ -45,7 +45,7 @@ test('S62-02 set list rows: number + linked title; page disambiguation is droppe
 
 test('S62-03 block A staging: saga 50, block "A", 26R numbers only, no number also staged in an Eternal Saga file', () => {
   const std = js('data/import/saga-50.json'), ids = new Set(std.map(c => c.id));
-  assert.ok(std.length >= 600, String(std.length));
+  assert.ok(std.length + js('data/cards/saga-50.json').length >= 600, String(std.length));      // staged + promoted (cards leave staging when promoted)
   for (const c of std) { assert.equal(c.saga, 50, c.id); assert.equal(c.block, 'A', c.id); assert.match(c.id, /^26R[A-Z]+\d+-[A-Z]*\d+$/, c.id); }
   for (let s = 1; s <= 17; s++) for (const c of js(`data/import/saga-${String(s).padStart(2, '0')}.json`)) assert.ok(!ids.has(c.id) && !c.id.startsWith('26R'), c.id);
 });

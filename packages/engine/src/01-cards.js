@@ -3,7 +3,7 @@
    type: 'Spirit' | 'Nexus' | 'Magic'      symbol: card color     symbols: number of symbols
    reduction: {color: n}         levels: [{cores, bp}]  (Nexus levels have no bp)
    --------------------------------------------------------------------- */
-const VERSION = '0.67.0';
+const VERSION = '0.68.0';
 document.title = 'Aeterna - Engine v' + VERSION;
 const CARDS = {};
 function defCard(o) {

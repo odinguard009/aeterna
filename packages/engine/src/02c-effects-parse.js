@@ -33,7 +33,7 @@ async function summonPaid(p, inst) {                  // official: "summon/deplo
   return true;
 }
 const summonBy = (p, inst, pay) => pay ? summonPaid(p, inst) : summonFree(p, inst);
-function fxDescribe(e) { return e.actions.map(a => FX_ACTIONS[a.do].txt(a)).join(', then '); }
+function fxDescribe(e) { return (e.invoke && e.cost ? invokeCostText(e.cost) + ' ▶ ' : '') + e.actions.map(a => FX_ACTIONS[a.do].txt(a)).join(', then '); }
 const BURST_WHEN = { LIFE_DECREASE: 'After your Life is reduced', ALLY_DESTROYED: 'After your Spirit is destroyed by the opponent', OPP_SUMMON_FX: "After an opposing Spirit's (When Summoned) effect activates", OPP_HAND_UP: 'After the opposing Hand increases with an opposing effect' };
 function parseCond(c) {
   if (typeof c !== 'object' || c === null) return { error: 'effect "if" must be an object' };
@@ -132,7 +132,9 @@ function parseEffects(arr) {
         if (e.silverWheel === true) o.silverWheel = true;   // v0.50 "Flash - Silver Wheel": fires SILVER_WHEEL after it resolves
         o.once = e.once !== false; if (e.sameName) o.sameName = true; if (e.cpuSkip) o.cpuSkip = true; if (e.nexusBrave === true) o.nexusBrave = true;
         o.timing = Array.isArray(e.timing) && e.timing.every(x => ['MAIN', 'FLASH'].includes(x)) && e.timing.length ? e.timing.slice() : ['MAIN'];
-        if (e.cost != null) {
+        if (e.invoke === true) {      // v0.68 Invoke (02l-effects-invoke.js): when / oncePer / Invoke costs
+          const r = invokeParse(e, o); if (r) return { error: r };
+        } else if (e.cost != null) {
           if (typeof e.cost !== 'object' || (e.cost.nexusToVoid == null && e.cost.exhaustSelf !== true) || (e.cost.nexusToVoid != null && (!Number.isInteger(e.cost.nexusToVoid) || e.cost.nexusToVoid < 1 || e.cost.nexusToVoid > 5)) || (e.cost.exhaustSelf != null && e.cost.exhaustSelf !== true)) return { error: 'ACTIVATE "cost" must look like {"nexusToVoid":3} or {"exhaustSelf":true}' };
           o.cost = {}; if (e.cost.nexusToVoid != null) o.cost.nexusToVoid = e.cost.nexusToVoid; if (e.cost.exhaustSelf) o.cost.exhaustSelf = true;   // v0.38: "by exhausting this Nexus"
         }

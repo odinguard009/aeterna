@@ -1293,5 +1293,15 @@
     "status": "partial",
     "example": "{\"trigger\":\"DESTROYED\",\"if\":{\"byOpp\":true}}",
     "rule": "Standard CR 12-2-1-12-1: destroyed by an opposing effect or by BP comparison with an opposing Spirit. Open: (When Depleted/Destroyed by the Opponent) (depletion is not destruction, Eternal manual p. 28)."
+  },
+  {
+    "id": "K_STANDARD_INVOKE",
+    "kind": "keyword",
+    "meaning": "{{Invoke|Flash}} / {{Invoke|Main}} <cost> ▶ <effect>",
+    "pattern": "\\{\\{Invoke\\|(Flash|Main)\\}\\}",
+    "engine": "ACTIVATE {invoke:true, timing, when, once, oncePer, cost} (v0.68, 02l-effects-invoke.js)",
+    "status": "partial",
+    "example": "{\"trigger\":\"ACTIVATE\",\"invoke\":true,\"timing\":[\"MAIN\",\"FLASH\"],\"when\":\"duringAttack\",\"once\":true,\"cost\":{\"discard\":{\"match\":{\"family\":[\"Windfang\"]}}},\"actions\":[{\"do\":\"BP_TARGET\",\"n\":3000,\"to\":\"self\",\"battle\":true}]}",
+    "rule": "Standard manual 'FAQ on Effects' Q11: the part before the arrow (the cost) must resolve fully, otherwise the effect is not used; timing from the template (Flash includes your Main Step), narrowed by printed heads; limits only when printed."
   }
 ]

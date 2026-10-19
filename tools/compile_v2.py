@@ -50,7 +50,7 @@ def bpv(s): return int(s.replace(',', ''))
 SEL = re.compile(
     r'^(?P<count>an|a|one|two|three|up to (?:one|two|three|\d)|all|every|each|any number of)?\s*'
     r'(?P<owner>opposing|of the opposing|your|one of your|of your)\s+'
-    r'(?P<mods>(?:(?:cost \d+ or (?:less|more)|\d[\d,]* ?bp or (?:less|more)|exhausted|refreshed|lv\d(?:/lv?\d)*|'
+    r'(?P<mods>(?:(?:cost \d+ or (?:less|more)|\d[\d,]* ?bp or (?:less|more)|exhausted|refreshed|attacking/blocking|attacking|blocking|lv\d(?:/lv?\d)*|'
     + COL + r'(?:/' + COL + r')*|"[^"]+" family|non-braved|braved)\s+)*)'
     r'(?P<kind>spirits?/ultimates?|spirits?/nexus(?:es)?|spirits?|ultimates?|nexus(?:es)?|cards?)'
     r'(?P<post>(?:,? (?:with|that ha(?:s|ve)) [^,]+?)*)'
@@ -70,7 +70,7 @@ def selector(np):
     kind = 'spirit' if re.match(r'spirits?(/ultimates?)?$', kind) else 'any' if 'nexus' in kind and 'spirit' in kind else \
         'nexus' if 'nexus' in kind else 'ultimate' if 'ultimate' in kind else 'card'
     f = {}
-    for x in re.findall(r'cost \d+ or (?:less|more)|\d[\d,]* ?bp or (?:less|more)|exhausted|refreshed|lv\d(?:/lv?\d)*|'
+    for x in re.findall(r'cost \d+ or (?:less|more)|\d[\d,]* ?bp or (?:less|more)|exhausted|refreshed|attacking/blocking|attacking|blocking|lv\d(?:/lv?\d)*|'
                         + COL + r'(?:/' + COL + r')*|"[^"]+" family|non-braved|braved', m.group('mods')):
         mm = re.match(r'cost (\d+) or (less|more)', x)
         if mm: f['costLe' if mm.group(2) == 'less' else 'costGe'] = int(mm.group(1)); continue
@@ -115,20 +115,24 @@ def v_destroy(sel):
         need('destroy', sel, ())
         return [{'do': 'DESTROY', 'nexus': True}]
     B = ('bpLe', 'costLe', 'coresLe', 'costRank', 'costLeSelf', 'bpLeAttacker')
-    need('destroy', sel, B)
+    need('destroy', sel, B + ('exhausted',))      # v0.68: exhausted only (DESTROY exhaustedOnly, 02l)
     keys = [k for k in B if k in sel['f']]
     if len(keys) != 1: raise Review('v2 destroy: ' + ('no bound' if not keys else 'two bounds'))
     k = keys[0]
     if k == 'coresLe' and sel['f'][k] > 10: raise Review('v2 destroy: cores')
-    return [{'do': 'DESTROY', k: sel['f'][k]}]
+    a = {'do': 'DESTROY', k: sel['f'][k]}
+    if sel['f'].get('exhausted'): a['exhaustedOnly'] = True
+    return [a]
 
 
 def v_return(sel, where):
     one_target('return', sel, ('spirit', 'any', 'nexus'))
     if sel['count'] != 1: raise Review('v2 return: count ' + str(sel['count']))
-    need('return', sel, ('costLe', 'exhausted'))
+    need('return', sel, ('costLe', 'exhausted', 'bpLe', 'attacking'))
     a = {'do': 'BOUNCE_OPP', 'to': where, 'kind': sel['kind']}
     if 'costLe' in sel['f']: a['costLe'] = sel['f']['costLe']
+    if 'bpLe' in sel['f']: a['bpLe'] = sel['f']['bpLe']          # v0.68 (02l)
+    if sel['f'].get('attacking'): a['attackingOnly'] = True
     if sel['f'].get('exhausted'): a['exhaustedOnly'] = True
     return [a]
 
@@ -212,7 +216,68 @@ def head(s):
 TARGET = re.compile(r'^(?:(?:you can|you may) )?target (.+?)\.\s*(?:then,? )?(\w[\w ]*?) (?:it|that spirit|them|those spirits)(\b.*)?$', re.I)
 
 
+COLW = r'(red|purple|green|white|yellow|blue)'
+OWN_BP = re.compile(r'^target one of your (.+?)\.\s*during this (battle|turn), (?:it gains|it gets|give it) \+(\d[\d,]*) ?bp$', re.I)
+OWN_SYM = re.compile(r'^target one of your (.+?)\.\s*during this battle, it gains an extra ' + COLW + r' symbol$', re.I)
+OWN_REFRESH = re.compile(r'^target one of your (.+?)\.\s*refresh it$', re.I)
+SELF_BATTLE_BP = re.compile(r'^during this battle, this spirit (?:gains|gets) \+(\d[\d,]*) ?bp$', re.I)
+SELF_BATTLE_SYM = re.compile(r'^during this battle, this spirit gains an extra ' + COLW + r' symbol$', re.I)
+
+
+def own_np(np):
+    """v0.68: "[attacking] [Cost N or more] ["X" family] Spirits" (one of your ...) -> (match, attacking)"""
+    m = re.match(r'^(attacking )?(?:cost (\d+) or more )?(?:"([^"]+)" family )?spirits?$', low(np.strip()))
+    if not m: raise Review('v2 own target: ' + np[:60])
+    match = {}
+    if m.group(3): match['family'] = [m.group(3)]
+    if m.group(2): match['costGe'] = int(m.group(2))
+    return match, bool(m.group(1))
+
+
+def own_grammar(s):
+    """v0.68 own-target and battle-length sentences (BP_TARGET / SYMBOL_TARGET, 02l); None = not this shape"""
+    x = s.strip().rstrip('.')
+    m = SELF_BATTLE_BP.match(x)
+    if m: return [{'do': 'BP_TARGET', 'n': bpv(m.group(1)), 'to': 'self', 'battle': True}]
+    if SELF_BATTLE_SYM.match(x): return [{'do': 'SYMBOL_PLUS', 'n': 1}]
+    m = OWN_BP.match(x)
+    if m:
+        match, att = own_np(m.group(1))
+        a = {'do': 'BP_TARGET', 'n': bpv(m.group(3)), 'to': 'pick'}
+        if m.group(2).lower() == 'battle': a['battle'] = True
+        if att: a['attacking'] = True
+        if match: a['match'] = match
+        return [a]
+    m = OWN_SYM.match(x)
+    if m:
+        match, att = own_np(m.group(1))
+        a = {'do': 'SYMBOL_TARGET', 'n': 1}
+        if att: a['attacking'] = True
+        if match: a['match'] = match
+        return [a]
+    m = re.match(r'^(?:(?:you can|you may) )?target an opposing (.+?)\.\s*during this turn, give it -(\d[\d,]*) ?bp\.?\s*then,? if it has 0 ?bp,? destroy it$', x, re.I)
+    if m:      # v0.68 BP_MINUS zeroDestroy (Standard: 0 BP alone does not destroy, the text does)
+        sel = selector('an opposing ' + low(m.group(1)))
+        if not sel or sel['kind'] != 'spirit' or sel['f']: raise Review('v2 bp minus: ' + m.group(1)[:40])
+        return [{'do': 'BP_MINUS', 'n': v1.bpm(m.group(2)), 'zeroDestroy': True}]
+    m = re.match(r'^target an opposing (.+?)\.\s*send (a|one|two|three) cores?,? besides ,? from it to (?:the|their|its owner\'?s) reserve$', x, re.I)
+    if m:      # "besides <Soul Core icon>" (the export drops the icon): normal cores only = OPP_CORES_TO_RESERVE
+        sel = selector('an opposing ' + low(m.group(1)))
+        if not sel or sel['kind'] != 'spirit' or sel['f']: raise Review('v2 send cores: ' + m.group(1)[:40])
+        return [{'do': 'OPP_CORES_TO_RESERVE', 'targets': 1, 'each': n_of(m.group(2).lower())}]
+    m = re.match(r'^target an? "([^"]+)" family spirit card in your trash\.\s*return it to (?:the|your) hand$', x, re.I)
+    if m: return [{'do': 'RETURN_TRASH', 'match': {'family': [m.group(1)]}}]
+    m = OWN_REFRESH.match(x)
+    if m:
+        match, att = own_np(m.group(1))
+        if att or 'costGe' in match: raise Review('v2 refresh: filter')
+        return [{'do': 'REFRESH_SPIRIT', 'match': match}] if match else [{'do': 'REFRESH_SPIRIT'}]
+    return None
+
+
 def grammar(s):
+    og = own_grammar(s)
+    if og is not None: return og, bool(re.match(r'^(?:you can|you may) ', s, re.I))
     m = TARGET.match(s.strip().rstrip('.'))
     if m:      # "Target an opposing ... Spirit. Destroy it." -> one clause
         opt = bool(re.match(r'^(?:you can|you may) ', s, re.I))
@@ -235,7 +300,9 @@ def action_of(s, ctx):
 def sentences(body):
     out = []
     for x in _V1_SENTENCES(body):
-        if out and re.match(r'^(?:(?:you can|you may) )?target ', out[-1], re.I) and out[-1].endswith('.'):
+        if out and re.fullmatch(r'then,? if it has 0 ?bp,? destroy it\.?', x.strip(), re.I) and re.search(r'-\d[\d,]* ?bp\.$', out[-1], re.I):
+            out[-1] = out[-1] + ' ' + x      # v0.68: "... give it -N BP. Then, if it has 0 BP, destroy it." is one effect
+        elif out and re.match(r'^(?:(?:you can|you may) )?target ', out[-1], re.I) and out[-1].endswith('.'):
             out[-1] = out[-1] + ' ' + x      # join "Target X." with its action sentence
         else:
             out.append(x)
@@ -296,7 +363,7 @@ def blockers(c):
         first = str(e)
     if c['type'] not in ('Spirit', 'Brave', 'Nexus') or not c.get('levels'): return [first]
     out = []
-    t = lv_dash(c.get('text') or '')
+    t = v1.invoke_mark(v1.TRUE_RELEASE.sub('[LV2] ', lv_dash(c.get('text') or '')))      # v0.68: Invoke + True Release heads are read
     try:
         b, t = v1.burst_block(t)
     except Review as e:

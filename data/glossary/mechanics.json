@@ -2266,14 +2266,16 @@
  {
   "id": "kind:invoke",
   "name": "Invoke (Standard activation)",
-  "status": "missing",
-  "glossary": [],
+  "status": "partial",
+  "glossary": [
+   "K_STANDARD_INVOKE"
+  ],
   "prep": {
    "rules": "Std manual \"On Effects\" Q11: \"<cost> ▶ <effect>\" after {{Invoke|Flash}} / {{Invoke|Main}}; the cost part must resolve fully or nothing happens (not as much as possible); timing from the template plus printed (Once Per Turn)/step; no wiki page or Q&A numbers",
    "data": "110 blocks on 108 cards (Flash 83, Main 27); 75 \"cost ▶ effect\" (exhaust 36, pay N 19, destroy 9, discard 4, return 3, send 2, show 2), 13 return-and-summon swaps, the rest no ▶; one damaged cost \"Send your to the Trash\" in saga-50.json",
    "lever": "108 by text, blocker on 74, only blocker on 14 (2026-10-19)"
   },
   "verified": true,
-  "note": "Standard activations; v0.64.0 prep"
+  "note": "v0.68.0: Invoke heads, five cost kinds, BP_TARGET / SYMBOL_TARGET; open: conditional costs, core moves, F Change / Amplify / Current / Magirrate templates (Standard activations; v0.64.0 prep)"
  }
 ]

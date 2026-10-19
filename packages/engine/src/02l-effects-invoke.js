@@ -1,0 +1,165 @@
+/* ---------------------------------------------------------------------
+   v0.68 INVOKE (Standard activations): "{{Invoke|Flash}}" / "{{Invoke|Main}}" + "<cost> ▶ <effect>".
+   Rules (Standard manual "FAQ on Effects" Q11; data/glossary/mechanics.json kind:invoke): the part before ▶ is the cost; it must
+   resolve in full, otherwise the effect is not used at all (never "as much as possible"). The template gives the timing
+   (Flash = every Flash Timing and also your Main Step; Main = your Main Step); a printed step / (During Attack) / (During Block)
+   head narrows it; limits only when printed: (Once Per Turn), (Once Per Battle), "only once per turn with the same card name".
+   Engine form: ACTIVATE {invoke:true, timing, when, once, oncePer:'battle', cost:{pay|exhaustSelf|destroySelf|exhaustOwn|discard}};
+   activatable / activateFx (02d) call the helpers below; the battle counter G.battleNo and G.blocker come from 08-battle.
+   Also the battle-length BP (inst.bpB, read by bpOf) and two own-target actions: BP_TARGET, SYMBOL_TARGET; and extra filters on
+   DESTROY (exhaustedOnly) and BOUNCE_OPP (bpLe, attackingOnly) for the sentences these cards print.
+   --------------------------------------------------------------------- */
+const INVOKE_WHEN = {
+  yourAttack: (p) => G.step === 5 && G.active === p.key,          // (Your Attack Step)
+  oppAttack: (p) => G.step === 5 && G.active !== p.key,           // (Opposing Attack Step)
+  eitherAttack: () => G.step === 5,                                // (Either Attack Step)
+  yourTurn: (p) => G.active === p.key,                             // (Your Turn)
+  duringAttack: (p, f) => !!G.attacker && G.attacker === f,        // (During Attack): while this Spirit is attacking
+  duringBlock: (p, f) => !!G.blocker && G.blocker === f,           // (During Block): while this Spirit is blocking
+  duringAttackBlock: (p, f) => (!!G.attacker && G.attacker === f) || (!!G.blocker && G.blocker === f),
+};
+const INVOKE_COSTS = ['pay', 'exhaustSelf', 'destroySelf', 'exhaustOwn', 'discard'];
+const invokeMatchOK = m => m == null || (typeof m === 'object' && (m.family == null || (Array.isArray(m.family) && m.family.length > 0 && m.family.every(x => typeof x === 'string' && x)))
+  && (m.costGe == null || Number.isInteger(m.costGe)) && (m.color == null || COLORS.includes(m.color)));
+/* parse hook (02c): returns an error text or null; copies the checked fields onto o */
+function invokeParse(e, o) {
+  o.invoke = true;
+  if (e.when != null) { if (!INVOKE_WHEN[e.when]) return `Invoke "when" must be one of ${Object.keys(INVOKE_WHEN).join(', ')}`; o.when = e.when; }
+  if (e.oncePer != null) { if (e.oncePer !== 'battle') return 'Invoke "oncePer" must be "battle"'; o.oncePer = 'battle'; o.once = true; }
+  if (e.cost == null) return null;
+  const c = e.cost;
+  if (typeof c !== 'object' || Object.keys(c).length !== 1 || !INVOKE_COSTS.includes(Object.keys(c)[0])) return `Invoke "cost" must have exactly one of ${INVOKE_COSTS.join(', ')}`;
+  if (c.pay != null && !(Number.isInteger(c.pay) && c.pay >= 1 && c.pay <= 5)) return 'Invoke cost "pay" must be 1-5';
+  if ((c.exhaustSelf != null && c.exhaustSelf !== true) || (c.destroySelf != null && c.destroySelf !== true)) return 'Invoke cost exhaustSelf / destroySelf must be true';
+  if (c.exhaustOwn != null && !(typeof c.exhaustOwn === 'object' && ['nexus', 'spirit'].includes(c.exhaustOwn.kind) && invokeMatchOK(c.exhaustOwn.match))) return 'Invoke cost "exhaustOwn" must look like {"kind":"nexus","match":{"family":["X"]}}';
+  if (c.discard != null && !(typeof c.discard === 'object' && invokeMatchOK(c.discard.match))) return 'Invoke cost "discard" must look like {"match":{"family":["X"]}}';
+  o.cost = JSON.parse(JSON.stringify(c));
+  return null;
+}
+const invokeWhenOK = (p, f, w) => !w || (!!G && !!INVOKE_WHEN[w] && INVOKE_WHEN[w](p, f));
+const exhaustOwnCands = (p, f, x) => (x.kind === 'nexus' ? p.nexus : p.spirits).filter(t => !t.exhausted && fxMatch(CARDS[t.id], x.match));
+const discardCands = (p, x) => p.hand.filter(h => fxMatch(CARDS[h.id], x.match));
+function invokeCostOK(p, f, c) {
+  if (!c) return true;
+  if (c.pay) return coresAvailable(p) >= c.pay;
+  if (c.exhaustSelf) return !f.exhausted;
+  if (c.destroySelf) return p.spirits.includes(f) || p.nexus.includes(f);
+  if (c.exhaustOwn) return exhaustOwnCands(p, f, c.exhaustOwn).length > 0;
+  if (c.discard) return discardCands(p, c.discard).length > 0;
+  return false;
+}
+/* pays the cost (exhaustSelf was already paid by activateFx); false = could not be paid in full, nothing else happens */
+async function payInvokeCost(p, f, c) {
+  if (!c || c.exhaustSelf) return true;
+  const nm = CARDS[f.id].name;
+  if (c.pay) {
+    if (coresAvailable(p) < c.pay) return false;
+    payCost(p, c.pay); log(`${nm}: ${who(p)} ${p.cpu ? 'pays' : 'pay'} ${c.pay} cost${c.pay === 1 ? '' : 's'}.`); checkDepletion(p); return true;
+  }
+  if (c.destroySelf) {
+    if (p.nexus.includes(f)) removeNexus(p, f, 'destroyed'); else if (p.spirits.includes(f)) removeSpirit(p, f, 'destroyed', false); else return false;
+    return true;
+  }
+  if (c.exhaustOwn) {
+    const L = exhaustOwnCands(p, f, c.exhaustOwn); if (!L.length) return false;
+    const t = p.cpu ? L.slice().sort((a, b) => (a === f) - (b === f) || (a.cores - b.cores))[0]
+      : await fxPickTarget({ p, opp: G.p[other(p.key)], src: f, ctx: {} }, L, `✨ <b>${esc(nm)}</b><br>Tap one of your refreshed ${c.exhaustOwn.kind === 'nexus' ? 'Nexuses' : 'Spirits'} to exhaust (the cost).`);
+    if (!t) return false;
+    t.exhausted = true; log(`${nm}: ${CARDS[t.id].name} is exhausted (cost).`); return true;
+  }
+  if (c.discard) {
+    const L = discardCands(p, c.discard); if (!L.length) return false;
+    let t;
+    if (p.cpu) t = L.slice().sort((a, b) => CARDS[a.id].cost - CARDS[b.id].cost)[0];
+    else {
+      const ids = Array.from(new Set(L.map(x => x.id))).slice(0, 8);
+      const id = await ask({ title: `✨ ${nm}`, peek: true, wide: true, html: 'Choose a card to discard from your Hand (the cost).' + cardStripHTML(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
+      t = L.find(x => x.id === id) || L[0];
+    }
+    removeFrom(p.hand, t); p.trash.push(t); log(`${nm}: ${who(p)} ${p.cpu ? 'discards' : 'discard'} ${CARDS[t.id].name} (cost).`); return true;
+  }
+  return false;
+}
+/* (Once Per Battle) */
+const usedThisBattle = (f, idx) => !!G && !!f.fxBattle && f.fxBattle[idx] === G.battleNo;
+function markUsedBattle(f, idx) { f.fxBattle = f.fxBattle || {}; f.fxBattle[idx] = G.battleNo; }
+/* "during this battle" BP: counted while that battle lasts (G.battleNo and an attacker) */
+const bpBattle = i => (i.bpB && G && G.attacker && i.bpB.b === G.battleNo ? i.bpB.n : 0);
+function addBattleBp(s, n) { if (!(s.bpB && s.bpB.b === G.battleNo)) s.bpB = { n: 0, b: G.battleNo }; s.bpB.n += n; }
+const invokeCostText = c => !c ? '' : c.pay ? `pay ${c.pay} cost${c.pay === 1 ? '' : 's'}` : c.exhaustSelf ? 'exhaust this card' : c.destroySelf ? 'destroy this card'
+  : c.exhaustOwn ? `exhaust one of your ${c.exhaustOwn.match && c.exhaustOwn.match.family ? '"' + c.exhaustOwn.match.family.join('"/"') + '" ' : ''}${c.exhaustOwn.kind === 'nexus' ? 'Nexuses' : 'Spirits'}`
+  : c.discard ? `discard a ${c.discard.match && c.discard.match.family ? '"' + c.discard.match.family.join('"/"') + '" family ' : ''}card` : '';
+const ownTargetCands = (c, a) => c.p.spirits.filter(s => fxMatch(CARDS[s.id], a.match) && (!a.attacking || s === G.attacker) && !fxImmune(c.p, s, c));
+Object.assign(FX_ACTIONS, {
+  /* "during this battle/turn, this Spirit gains +N BP" (to:self) / "Target one of your [attacking] X Spirits. ... it gains +N BP" (to:pick) */
+  BP_TARGET: { chk: a => Number.isInteger(a.n) && a.n >= 1000 && a.n <= 30000 && ['self', 'pick'].includes(a.to) && (a.battle == null || a.battle === true) && (a.attacking == null || a.attacking === true) && invokeMatchOK(a.match),
+    txt: a => `${a.to === 'self' ? 'this Spirit gains' : 'one of your ' + (a.attacking ? 'attacking ' : '') + (a.match && a.match.family ? '"' + a.match.family.join('"/"') + '" ' : '') + 'Spirits gains'} +${a.n} BP during this ${a.battle ? 'battle' : 'turn'}`,
+    can: (c, a) => (!a.battle || !!G.attacker) && (a.to === 'self' ? c.p.spirits.includes(c.src) : ownTargetCands(c, a).length > 0),
+    run: async (c, a) => {
+      let t = c.src;
+      if (a.to === 'pick') {
+        const L = ownTargetCands(c, a); if (!L.length) { c.ctx.did = false; return; }
+        const fight = L.find(s => s === G.attacker || s === G.blocker);       // the CPU boosts its own fighting Spirit first
+        t = c.p.cpu && fight ? fight : await fxPickTarget(c, L, `✨ <b>${esc(CARDS[c.src.id].name)}</b><br>Tap one of your Spirits to get +${a.n} BP (glowing).`);
+        if (!t) { c.ctx.did = false; return; }
+      } else if (!c.p.spirits.includes(t)) { c.ctx.did = false; return; }
+      if (a.battle) addBattleBp(t, a.n); else t.bpMod = (t.bpMod || 0) + a.n;
+      log(`${CARDS[t.id].name} gets +${a.n} BP during this ${a.battle ? 'battle' : 'turn'}.`);
+    } },
+  /* "Target one of your X Spirits. During this battle, it gains an extra <colour> symbol." (cleared when the battle ends, like SYMBOL_PLUS) */
+  SYMBOL_TARGET: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 3 && invokeMatchOK(a.match) && (a.attacking == null || a.attacking === true),
+    txt: a => `one of your ${a.match && a.match.family ? '"' + a.match.family.join('"/"') + '" ' : ''}${a.match && a.match.costGe != null ? 'Cost ' + a.match.costGe + '+ ' : ''}Spirits gains ${a.n} extra symbol${a.n === 1 ? '' : 's'} during this battle`,
+    can: (c, a) => !!G.attacker && ownTargetCands(c, a).length > 0,
+    run: async (c, a) => {
+      const L = ownTargetCands(c, a); if (!L.length) { c.ctx.did = false; return; }
+      const t = c.p.cpu ? (L.find(s => s === G.attacker) || L[0]) : await fxPickTarget(c, L, `✨ <b>${esc(CARDS[c.src.id].name)}</b><br>Tap one of your Spirits to gain an extra symbol (glowing).`);
+      if (!t) { c.ctx.did = false; return; }
+      t.symBattle = (t.symBattle || 0) + a.n; log(`${CARDS[t.id].name} gains ${a.n} extra symbol${a.n === 1 ? '' : 's'} during this battle.`);
+    } },
+});
+/* extra filters on existing actions (wrapped here so the Invoke sentences stay in one module) */
+(() => {
+  const D = FX_ACTIONS.DESTROY, dChk = D.chk, dCands = D.cands, dTxt = D.txt;
+  D.chk = a => (a.exhaustedOnly == null || a.exhaustedOnly === true) && dChk(Object.assign({}, a, { exhaustedOnly: undefined }));
+  D.cands = (c, a) => { const L = dCands(c, a); return a.exhaustedOnly ? L.filter(t => t.exhausted) : L; };
+  D.txt = a => dTxt(a) + (a.exhaustedOnly ? ' (exhausted only)' : '');
+  const B = FX_ACTIONS.BOUNCE_OPP, bChk = B.chk, bCands = B.cands, bTxt = B.txt;
+  B.chk = a => (a.bpLe == null || (Number.isInteger(a.bpLe) && a.bpLe >= 0)) && (a.attackingOnly == null || a.attackingOnly === true) && bChk(a);
+  B.cands = (c, a) => bCands(c, a).filter(t => (a.bpLe == null || bpOf(t) <= a.bpLe) && (!a.attackingOnly || t === G.attacker));
+  B.txt = a => bTxt(a).replace(/^return an opposing /, `return an opposing ${a.attackingOnly ? 'attacking ' : ''}`) + (a.bpLe != null ? ` (${a.bpLe} BP or less)` : '');
+})();
+/* CPU: use an Invoke only when it clearly helps (timing is 'MAIN' or 'FLASH'; in a Flash Timing G.attacker / G.blocker are the fighters) */
+function cpuInvokeOK(p, f, e, timing) {
+  const c = e.cost || {}, acts = e.actions.map(a => a.do), opp = G.p[other(p.key)];
+  if (c.pay && coresAvailable(p) - c.pay < 1) return false;
+  if (c.destroySelf && !acts.some(x => x === 'DESTROY' || x === 'BOUNCE_OPP')) return false;     // trade the card only for an opposing card
+  if (c.exhaustSelf && timing === 'MAIN' && p.spirits.includes(f) && G.active === p.key) return false;   // keep the Spirit ready to attack
+  if (acts.some(x => x === 'BP_TARGET')) {
+    if (timing !== 'FLASH' || !G.attacker || !G.blocker) return false;
+    const mine = G.active === p.key ? G.attacker : G.blocker, theirs = mine === G.attacker ? G.blocker : G.attacker;
+    if (!p.spirits.includes(mine) || !opp.spirits.includes(theirs)) return false;
+    const a = e.actions.find(x => x.do === 'BP_TARGET');
+    if (a.to === 'self' && mine !== f) return false;
+    if (a.to === 'pick' && !ownTargetCands({ p, opp, src: f, ctx: {} }, a).includes(mine)) return false;
+    const me = bpOf(mine), them = bpOf(theirs), n = e.actions.filter(x => x.do === 'BP_TARGET').reduce((t, x) => t + x.n, 0);
+    return me <= them && me + n > them;
+  }
+  if (acts.some(x => x === 'SYMBOL_TARGET' || x === 'SYMBOL_PLUS')) {
+    if (timing !== 'FLASH' || G.active !== p.key || !G.attacker || G.blocker) return false;
+    return !opp.spirits.some(s => !s.exhausted && !s.noAB);      // the extra symbol only matters if the attack goes through
+  }
+  return acts.every(x => ['DRAW', 'DESTROY', 'BOUNCE_OPP', 'RETURN_TRASH', 'REFRESH', 'REFRESH_SPIRIT', 'VOID_TO_RESERVE', 'VOID_TO_CARD', 'EXHAUST_OPP', 'HEAVY_EXHAUST_OPP', 'BP_MINUS', 'OPP_CORES_TO_RESERVE'].includes(x));
+}
+/* v0.68 "Target an opposing Spirit. During this turn, give it -N BP. Then, if it has 0 BP, destroy it." (BP_MINUS zeroDestroy):
+   in Standard a Spirit at 0 BP is not destroyed by the rules (Eternal manual FAQ p. 68, as in v0.55), only by this text */
+(() => {
+  const M = FX_ACTIONS.BP_MINUS, mChk = M.chk, mRun = M.run, mTxt = M.txt;
+  M.chk = a => (a.zeroDestroy == null || a.zeroDestroy === true) && mChk(a);
+  M.txt = a => mTxt(a) + (a.zeroDestroy ? ', then destroy it if it has 0 BP' : '');
+  M.run = async (c, a) => {
+    const before = new Map(c.opp.spirits.map(t => [t, t.bpMod || 0]));
+    await mRun(c, a);
+    if (!a.zeroDestroy) return;
+    for (const t of c.opp.spirits.slice()) if (before.has(t) && (t.bpMod || 0) < before.get(t) && bpOf(t) === 0 && !fxImmune(c.opp, t, c)) { removeSpirit(c.opp, t, 'destroyed', true); checkDepletion(c.opp); }
+  };
+})();

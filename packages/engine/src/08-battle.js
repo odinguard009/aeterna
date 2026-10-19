@@ -11,7 +11,7 @@ async function flashTiming(attKey, att, blk) {
     const ch = p.cpu ? cpuFlashChoice(p, attKey, att, blk) : await humanFlashChoice(p, attKey, att, blk);
     if (ch && ch.cadv) { passes = 0; plays++; if (p.cpu) await doContractAdvent(p, ch.cadv, ch.target, 'flash'); else await humanContractAdvent(ch.cadv, 'flash'); } else if (ch && ch.manifest) { passes = 0; plays++; if (p.cpu) await doManifest(p, ch.manifest, ch.target, 'flash'); else await humanManifest(ch.manifest, 'flash'); } else if (ch && ch.hs) { passes = 0; plays++; await highSpeedSummon(p, ch.hs); } else if (ch && ch.accel) { passes = 0; plays++; await useAccel(p, ch.accel.inst, ch.accel.idx, ch.accel.plan, 'FLASH'); } else if (ch && ch.act) { passes = 0; plays++; await activateFx(p, ch.act.f, ch.act.idx); } else if (ch) { passes = 0; plays++; await castMagic(p, ch); render(); await wait(650); await flushBursts(); } else passes++;
     turn++;
-    att = successor(G.p[attKey], att) || att; if (blk) blk = successor(G.p[other(attKey)], blk) || blk; G.attacker = att;
+    att = successor(G.p[attKey], att) || att; if (blk) blk = successor(G.p[other(attKey)], blk) || blk; G.attacker = att; if (blk) G.blocker = blk;
     if (!G.p[attKey].spirits.includes(att) || (blk && !G.p[other(attKey)].spirits.includes(blk))) break;
   }
   return [att, blk];
@@ -24,11 +24,11 @@ function battleEndAttack() {                          // v0.43 "when this battle
   G.attackEnded = G.turnNo; log('The battle ends, and with it the Attack Step.');
 }
 const attackStepOver = () => !!G && G.attackEnded === G.turnNo;
-async function doBattle(attKey, att) { try { await doBattleInner(attKey, att); } finally { if (G) { battleEndAttack(); G.attacker = null; G.noBurst = null; for (const k of ['player', 'opponent']) for (const f of fieldList(G.p[k])) f.symBattle = 0; } } }
+async function doBattle(attKey, att) { try { await doBattleInner(attKey, att); } finally { if (G) { battleEndAttack(); G.attacker = null; G.blocker = null; G.noBurst = null; for (const k of ['player', 'opponent']) for (const f of fieldList(G.p[k])) f.symBattle = 0; } } }
 async function doBattleInner(attKey, att) {
   const A = G.p[attKey], D = G.p[other(attKey)];
   if (!(await payAbTax(A, att, 'attack'))) { render(); return; }   // v0.47 Plutonic Wall
-  att.exhausted = true;
+  att.exhausted = true; G.battleNo = (G.battleNo || 0) + 1; G.blocker = null;      // v0.68: battle counter for (Once Per Battle) / "during this battle" (02l)
   log(`${who(A)} ${A.cpu ? 'attacks' : 'attack'} with ${CARDS[att.id].name} (${bpOf(att)} BP).`);
   G.attacker = att;
   render(); await wait(450);
@@ -47,7 +47,7 @@ async function doBattleInner(attKey, att) {
   if (blockers.length) blk = D.cpu ? (cpuChooseBlock(D, att) || (must ? bound.slice().sort((x, y) => bpOf(x) - bpOf(y))[0] : null)) : await askBlock(att, D, blockers, must);
   if (blk && !(await payAbTax(D, blk, 'block'))) blk = null;
   if (blk) {
-    blk.exhausted = true;
+    blk.exhausted = true; G.blocker = blk;
     log(`${who(D)} ${D.cpu ? 'blocks' : 'block'} with ${CARDS[blk.id].name} (${bpOf(blk)} BP).`);
     render(); await wait(450);
     await fireFxMulti([{ owner: A, trigger: 'ALLY_BLOCKED', src: att, ctx: { attacker: att, blocker: blk } }, { owner: D, trigger: 'BLOCKS', src: blk, ctx: { attacker: att, blocker: blk } }]);   // manual p. 30: one pool after the block

@@ -253,6 +253,7 @@ def spirit_paragraph_main(p, card, rush):
         base = 3 if card['type'] == 'Ultimate' else 1      # v0.56: Ultimate levels are printed LV3+ (engine lvBase 3)
         if any(x < base or x > base - 1 + max(nlv, 1) for x in lv): raise Review(f'[LV{max(lv) if max(lv) >= base else min(lv)}] but the card has {nlv} level(s) from LV{base}')
     flags = {}
+    if INVOKE_MARK_RE.search(p): return [invoke_para(p, card, lv, rush)], flags      # v0.68 Invoke
     if re.match(r'^Your Hand is unaffected by opposing effects\.?$', p):     # v0.58: STATIC HAND_UNAFFECTED (while this card is on the Field)
         e = {'trigger': 'STATIC', 'flag': 'HAND_UNAFFECTED', 'to': 'self'}
         if lv: e['lv'] = lv
@@ -524,6 +525,67 @@ SOUL_MAGIC_COLS = {'r': 'red', 'p': 'purple', 'g': 'green', 'w': 'white', 'y': '
                    'red': 'red', 'purple': 'purple', 'green': 'green', 'white': 'white', 'yellow': 'yellow', 'blue': 'blue'}
 
 
+# ---------- v0.68 Invoke (Standard activations; Std manual "FAQ on Effects" Q11) ----------
+INVOKE_TPL = re.compile(r'\s*\{\{\s*Invoke\s*\|\s*(Flash|Main)\s*\}\}\s*', re.I)
+INVOKE_MARK_RE = re.compile(r'\u27e6INVOKE:(FLASH|MAIN)\u27e7')
+INVOKE_HEADS = {'(Your Attack Step)': 'yourAttack', '(Opposing Attack Step)': 'oppAttack', '(Either Attack Step)': 'eitherAttack',
+                '(Your Turn)': 'yourTurn', '(During Attack)': 'duringAttack', '(During Block)': 'duringBlock', '(During Attack/Block)': 'duringAttackBlock'}
+
+
+def invoke_mark(t):
+    return INVOKE_TPL.sub(lambda m: ' \u27e6INVOKE:%s\u27e7 ' % m.group(1).upper(), t or '') if t else t
+
+
+def invoke_cost(x, card):
+    """the part before the arrow -> engine cost (exactly one kind); Review otherwise"""
+    L = x.strip().rstrip('.').strip()
+    own = 'nexus' if card['type'] == 'Nexus' else 'spirit'
+    m = re.match(r'^pay (one|two|three|four|five|\d) costs?$', L, re.I)
+    if m: return {'pay': num(m.group(1).lower())}
+    m = re.match(r'^(exhaust|destroy) this (spirit|nexus)$', L, re.I)
+    if m and m.group(2).lower() == own: return {'exhaustSelf' if m.group(1).lower() == 'exhaust' else 'destroySelf': True}
+    m = re.match(r'^exhaust one of your "([^"]+)" family (nexus(?:es)?|spirits?)$', L, re.I)
+    if m: return {'exhaustOwn': {'kind': 'nexus' if m.group(2).lower().startswith('nexus') else 'spirit', 'match': {'family': [m.group(1)]}}}
+    m = re.match(r'^exhaust one of your (nexus(?:es)?|spirits)$', L, re.I)
+    if m: return {'exhaustOwn': {'kind': 'nexus' if m.group(1).lower().startswith('nexus') else 'spirit'}}
+    m = re.match(r'^discard (?:a|one) "([^"]+)" family card from your hand$', L, re.I)
+    if m: return {'discard': {'match': {'family': [m.group(1)]}}}
+    raise Review('Invoke cost: ' + L[:80])
+
+
+def invoke_para(p, card, lv, rush):
+    """[LVn] (heads) <INVOKE> (Once Per Turn|Battle) [<cost> ▶] <effect> -> one ACTIVATE effect"""
+    if rush: raise Review('Rush with Invoke')
+    m = re.match(r'^(.*?)\u27e6INVOKE:(FLASH|MAIN)\u27e7\s*(\(Once Per (Turn|Battle)\))?\s*(.*)$', p)
+    pre, kind, oncep, body = m.group(1).strip(), m.group(2), m.group(4), m.group(5).strip()
+    when, main_only = None, False
+    for h in re.findall(r'\([^)]*\)', pre):
+        if h in INVOKE_HEADS and when is None: when = INVOKE_HEADS[h]
+        elif h == '(Your Main Step)' and kind == 'FLASH': main_only = True
+        else: raise Review('Invoke head: ' + h)
+    if re.sub(r'\([^)]*\)', '', pre).strip(): raise Review('Invoke head: ' + pre[:60])
+    if kind == 'MAIN' and when not in (None, 'yourTurn'): raise Review('Invoke head: Main with ' + when)
+    if INVOKE_MARK_RE.search(body): raise Review('two Invoke effects in one paragraph')
+    cost = None
+    if '\u25b6' in body:
+        ctxt, body = body.split('\u25b6', 1); cost = invoke_cost(ctxt, card); body = body.strip()
+    same, acts = False, []
+    for s in sentences(body):
+        if re.fullmatch(r'You can only use this effect of the same card name once per turn\.?', s.strip(), re.I): same = True; continue
+        a, _o = action_of(s, {'trigger': ['ACTIVATE']})
+        acts += a
+    if not acts: raise Review('Invoke without an effect')
+    e = {'trigger': 'ACTIVATE', 'invoke': True, 'timing': ['MAIN', 'FLASH'] if kind == 'FLASH' and not main_only else ['MAIN']}
+    if when: e['when'] = when
+    e['once'] = bool(oncep) or same
+    if oncep == 'Battle': e['oncePer'] = 'battle'
+    if same: e['sameName'] = True
+    if lv: e['lv'] = lv
+    if cost: e['cost'] = cost
+    e['actions'] = acts
+    return e
+
+
 TRUE_RELEASE = re.compile(r"\[LV2\]'?\s*\(True Release\)\s*")
 
 
@@ -547,6 +609,7 @@ def compile_card(c):
         txt2 = TRUE_RELEASE.sub('[LV2] ', txt)       # the export also has "[LV2]' (True Release)" (26RBS01-032)
         if '(True Release)' in txt2: raise Review('True Release outside an [LV2] head')
         n['trueRelease'] = True; txt = txt2
+    txt = invoke_mark(txt)
     b, rest = burst_block(txt)
     if b:
         if c['type'] not in ('Spirit', 'Magic'): raise Review('Burst on a ' + c['type'])

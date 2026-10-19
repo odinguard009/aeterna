@@ -280,7 +280,8 @@ function activatable(p, f, timing) {
     if (timing && !e.timing.includes(timing)) return;
     if (e.lv && !e.nexusBrave && !e.lv.includes(L)) return;
     if (e.oc && !ocActive(f)) return;
-    if (e.once && usedThisTurn(p, f, idx, e)) return;
+    if (e.once && (e.oncePer === 'battle' ? usedThisBattle(f, idx) : usedThisTurn(p, f, idx, e))) return;
+    if (e.invoke && (!invokeWhenOK(p, f, e.when) || !invokeCostOK(p, f, e.cost))) return;      // v0.68 Invoke: timing head + the cost paid in full (02l)
     const ctx = {};
     if (!fxIf(p, opp, e.if, ctx)) return;
     if (e.cost && ((e.cost.nexusToVoid && f.cores < e.cost.nexusToVoid) || (e.cost.exhaustSelf && f.exhausted))) return;
@@ -295,8 +296,9 @@ async function activateFx(p, f, idx) {
   const opp = G.p[other(p.key)];
   if (e.cost && e.cost.nexusToVoid) { f.cores -= e.cost.nexusToVoid; p.void += e.cost.nexusToVoid; log(`${card.name}: ${e.cost.nexusToVoid} cores are sent to the Void.`); }
   if (e.cost && e.cost.exhaustSelf) { f.exhausted = true; log(`${card.name} is exhausted.`); }
-  markUsed(p, f, idx, e);
-  log(`${card.name}: [Activate] ${fxDescribe(e)}.`);
+  if (e.oncePer === 'battle') markUsedBattle(f, idx); else markUsed(p, f, idx, e);
+  if (e.invoke && !(await payInvokeCost(p, f, e.cost))) return false;      // v0.68: part A must resolve in full (Std FAQ on Effects Q11)
+  log(`${card.name}: [${e.invoke ? 'Invoke' : 'Activate'}] ${fxDescribe(e)}.`);
   await asResolving(() => runActions({ p, opp, src: f, ctx: {} }, e, 'ACTIVATE'));
   checkDepletion(p); checkDepletion(opp);
   if (e.silverWheel && !G.over) await fireFx(p, 'SILVER_WHEEL', f);   // v0.50: "when you activate Silver Wheel"
@@ -307,7 +309,7 @@ async function cpuActivate(p) {
   for (let g = 0; g < 8 && !G.over; g++) {
     let did = false;
     for (const f of fieldList(p).slice()) {
-      const a = activatable(p, f, 'MAIN').find(x => !x.e.cpuSkip && !x.e.silverWheel);   // v0.50: Silver Wheel waits for the opposing Attack Step (cpuSilverWheel)
+      const a = activatable(p, f, 'MAIN').find(x => !x.e.cpuSkip && !x.e.silverWheel && (!x.e.invoke || cpuInvokeOK(p, f, x.e, 'MAIN')));   // v0.50: Silver Wheel waits for the opposing Attack Step (cpuSilverWheel)
       if (a) { await activateFx(p, f, a.idx); did = true; break; }
     }
     if (!did) break;

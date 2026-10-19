@@ -56,7 +56,7 @@ test('C61-03 target pairs, [LV1-2-3] heads and Rush spellings', () => {
 });
 
 test('C61-04 filters the engine lacks stay in review with a lever reason', () => {
-  assert.equal(acts('[LV1] (When Summoned) Destroy an opposing exhausted Spirit.').review, 'v2 destroy: filter exhausted');
+  assert.equal(acts('[LV1] (When Summoned) Destroy an opposing refreshed Cost 3 or less Spirit.').review, 'v2 destroy: filter refreshed');      // v0.68: exhausted is supported (exhaustedOnly)
   assert.equal(acts('[LV1] (When Summoned) Destroy two opposing Cost 3 or less Spirits.').review, 'v2 destroy: count 2');
   assert.equal(acts('[LV1] (When Summoned) Exhaust two opposing Spirits.').review, 'v2 exhaust: exactly 2 (engine: up to)');
   assert.equal(acts('[LV1] (When Summoned) Destroy an opposing Spirit.').review, 'v2 destroy: no bound');

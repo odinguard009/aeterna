@@ -75,7 +75,8 @@ Shared: 40+ card deck, max 3 copies by name, 5 Life, 3 Reserve + 1 Soul Core, dr
 | Succession (継召) | ❌ |
 | Soul Magic | ✅ | v0.64.0: `soulMagic` colour on Magic cards; usable with only the Soul Core (Reserve or Field, not Life/Trash) while a symbol of that colour is on your Field (Standard CR 12-2-1-2, Q&A 31159-31161); human picks Soul Core or normal payment, CPU uses it when the normal cost is unpayable or 3+ |
 | Shinkai-ho (Super Unleash) = True Release | ✅ | v0.66.0: `trueRelease` on Spirit / Nexus cards; holding the Soul Core fulfils LV2 (Standard CR 12-2-1-1, manual "True Release", Q&A 31532-31534); "(During Attack)" heads for self +BP and Clash |
-| "While attacking" timing (アタック中) | ❌ |
+| Invoke (Standard activation) | 🟡 | v0.68.0: ACTIVATE `invoke` with timing heads (Your / Opposing / Either Attack Step, Your Turn, During Attack, During Block), (Once Per Turn) / (Once Per Battle), costs pay N, exhaust / destroy this card, exhaust one of your family Nexuses / Spirits, discard a family card (Standard manual "FAQ on Effects" Q11: the cost resolves in full or nothing happens); open: conditional and other costs |
+| "While attacking" timing (アタック中) | 🟡 | v0.66.0 (During Attack) self +BP; v0.68.0 Invoke (During Attack) / (During Block) heads |
 | Standard Rule Card / Play Sheet layout | ❌ |
 
 ## D. Suggested order

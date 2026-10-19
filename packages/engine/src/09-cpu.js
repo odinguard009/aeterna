@@ -78,6 +78,7 @@ function cpuFlashChoice(p, attKey, att, blk) {
   for (const f of fieldList(p)) {
     for (const x of activatable(p, f, 'FLASH')) {
       if (x.e.cpuSkip) continue;
+      if (x.e.invoke) { if (cpuInvokeOK(p, f, x.e, 'FLASH')) return { act: { f, idx: x.idx } }; continue; }   // v0.68 Invoke (02l)
       const doesSummon = x.e.actions.some(a => a.do === 'SOUL_SUMMON'), doesEnter = x.e.actions.some(a => a.do === 'SOUL_ENTER' || a.do === 'COUNTER');
       if (doesSummon && p.spirits.length < 6 && p.soulState.some(sc => canPlaceFree(p, sc) && CARDS[sc.id].type === 'Spirit')) return { act: { f, idx: x.idx } };
       if (!doesSummon && doesEnter) return { act: { f, idx: x.idx } };
