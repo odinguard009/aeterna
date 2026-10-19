@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "19 Oct 2026",
-  "next": "next: card session Invoke (Opus; + target sentences, real recompile: Invoke alone 1, co-blockers 'target one of' 28, (Your Attack Step) ~40 on block A), then U4 Settings / How to play / Library, then Legacy and U5-U8 alternating with card sessions; 684 of 8,709 cards playable"
+  "next": "next: team session (Opus): main Legacy / Succession + \"reveal three cards\" (real recompile: Legacy alone 3, with Invoke + targets 38, + reveal three 53), agent A1 U5 battle overlays, A5 Q3 part 2 (tests cite chunk ids); 703 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -459,7 +459,7 @@
     },
     {
      "s": "later",
-     "t": "U4 Settings/How to play/Library (+ playmat upload), U5 overlays, U6 My decks page, U7 deck builder (filters, list/curve/look tabs, Deck look), U8 audit; card sessions alternate"
+     "t": "U5 overlays, U6 My decks page, U7 deck builder (filters, list/curve/look tabs, Deck look), U8 audit; card sessions alternate (U4 done v0.68.0: Settings / How to play / Library + playmat upload)"
     },
     {
      "s": "later",
@@ -553,7 +553,7 @@
     },
     {
      "s": "later",
-     "t": "Q3: rules knowledge base with fingerprinted citations (no full manual text in the public repo)"
+     "t": "Q3: rules knowledge base with fingerprinted citations: part 1 done v0.68.0 (53 sections, 68 engine citations resolve); part 2 tests cite chunk ids, part 3 skill bs-card-verify"
     },
     {
      "s": "later",
@@ -631,7 +631,7 @@
     },
     {
      "s": "next",
-     "t": "Block A heads by real recompile: Invoke (1 alone), Legacy / Succession (2 alone); size combined with target sentences and step timings first"
+     "t": "Block A heads by real recompile: Legacy / Succession + reveal three cards next (Invoke done v0.68.0, +19 cards)"
     },
     {
      "s": "later",
@@ -951,6 +951,14 @@
    "calls": "~50",
    "basis": "measured",
    "note": "Scheduled auto run on Opus: U3 Play setup page + Watch CPU vs CPU (3 tests), player-view pass (subagent), web-design-guidelines audit. Budget-counter difference read before the last commit."
+  },
+  {
+   "ver": "v0.68.0",
+   "date": "19 Oct 2026",
+   "tokens": 480000,
+   "calls": "~110",
+   "basis": "measured",
+   "note": "First team session on Opus: main Invoke + target sentences (+19 cards, INV68-01..16 + scenario), A1 U4 pages + playmat, A5 Q3 rules KB part 1, A2/A3 next-head sizing and rules prep, A4 122 mechanic rows checked + blue deck data, A6 player-view twice, A7 review (fixes applied). A usage limit paused the session once (resets 12:00)."
   }
  ],
  "next": "next: card session Invoke (Opus; + target sentences, real recompile: Invoke alone 1, co-blockers 'target one of' 28, (Your Attack Step) ~40 on block A), then U4 Settings / How to play / Library, then Legacy and U5-U8 alternating with card sessions; 684 of 8,709 cards playable"
