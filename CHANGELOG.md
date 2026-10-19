@@ -11,6 +11,9 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
   - B7: `tools/session_end_check.mjs` checks the GitHub Release asset `aeterna-vX.Y.Z.html` itself (warning with the newest Release run when missing; `--no-release` skips it), replacing the separate `gh api` call.
   - B4/B5: card-session prep with HEMAT ON: no sizing subagent (`tools/pack_plan.py` + one scratch recompile by main); the rules-research subagent runs only when the next pack's blocker has no `prep.rules` in `data/glossary/mechanics.json` (CLAUDE.md, skill `bs-session-runner`, `roadmap-open.md`). HEMAT OFF team agents unchanged.
   - B8: `docs/ai/token-economy.md` sections 8-16 (measurements v0.30-v0.39, checks of 2026-10-14..16) condensed to 11 lessons; 15.6k -> 7.6k characters (full text in git history).
+  - B9: the 8 Python legacy suites (446 checks, ~6.5 min of the Regression job) were audited against the Node tests: they check page flows (pick bar, block flow, aborted Flash prompt, Magic import errors, six viewports, zoom) that no Node test repeats, so none is dropped; a check is ported to Node only when a session touches its area (`docs/ai/process-plan.md`).
+  - B10: `tests/unit/fxprops692.test.mjs` takes 3.0 s, so it stays in the quick set (no SLOW entry).
+  - Next: plan W card packs (K3: step timing heads first).
 
 ## v0.69.2
 - **K2: generated tests per compiled action** (`docs/ai/compiler-v2-plan.md` point 5; plan W in `docs/ai/roadmap-open.md`). No game change.
