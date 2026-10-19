@@ -18,8 +18,8 @@
   "status": "partial",
   "glossary": [],
   "prep": {
-   "rules": "",
-   "data": "",
+   "rules": "Std CR 12-2-1-4/12-2-1-5, 11-3 (use steps, 11-3-1-6 no area while resolving)",
+   "data": "1110 staged; 296 v2 blockers = paragraph without Main/Flash: Burst ~66, Mirage 55, Trigger Counter 22, revealed-from-deck 33, sent-from-deck 16, \"has family\" 21, Trash/Hand unaffected 15",
    "lever": ""
   },
   "note": "Main/Flash, cost, targets, ACTIONS effects (v0.41/v0.47.0); Magic reveals and some types open (rules-coverage)",
@@ -57,8 +57,8 @@
   "status": "partial",
   "glossary": [],
   "prep": {
-   "rules": "",
-   "data": "",
+   "rules": "Eternal pp. 34-38 (+p. 38 Grandwalker), Fandom Brave page: condition names host type Spirit/Ultimate/Grandwalker Nexus; Main Step swap/separate; direct brave copies exhausted state",
+   "data": "444 staged, 271 with brave; 173 without: TSV has them: 88 \"<br>\"+Grandwalker Nexus two-line, 35 Ultimate or Spirit/Ultimate, 22 [Left/Right], 1 colour",
    "lever": ""
   },
   "note": "Brave part 1 v0.60.0 (combine data, braved effects); part 2 open: summon from Hand first, two-sided Braves, 171 Brave conditions",
@@ -184,9 +184,9 @@
   "status": "missing",
   "glossary": [],
   "prep": {
-   "rules": "Fandom Legacy + Q&A 31541-31543, 31620, 31866: before Field symbols, banish EX-symbol cards of the same colour from your Trash, one per reduction symbol; also when the Field fills them; not beyond the reduction symbols; not for \"without paying the cost\" or fixed costs; Legacy-only text counts as printed effects",
-   "data": "138 cards with keyword Legacy; 204 cards with ex_symbols > 0 (count only, colour = card colour; two-colour EX cards open); the pack does not carry ex_symbols yet",
-   "lever": "137 by text and as blocker, only blocker on 16 (14 Magic cards stop at the \"(Legacy)\" line before Flash/Main), 2026-10-19"
+   "rules": "Std CR 12-2-1-3 (+11-1-1-4/11-2-1-4/11-3-1-4) and Fandom Q&A 31541-31543, 31620, 31866: remove EX-symbol cards of the reduction colour from your Trash, one reduction symbol each, before Field symbols; max = reduction symbols; 0 removed = not activated; never with \"without paying the cost\"/fixed cost; Legacy-only text counts as printed",
+   "data": "block A: 150 staged cards ex_symbols=1 (Spirit 106/Magic 41/Nexus 3), EX colour = card colour, no two-colour EX in any 26R wiki page (scan 2026-10-19); 52 shipped EX cards lost ex_symbols (all-cards.json 0): re-merge from fandom-cards-26r.json; codec keeps the field, parseCard (03-imported-cards.js) drops it; 10 cards count \"EX Symbol banished via this Legacy\"",
+   "lever": "alone 3, + Invoke + target sentences 38 (real recompile, A2 2026-10-19)"
   },
   "note": "= Succession; glossary link K_STANDARD_SUCCESSION is shared with Soul Magic (check the link when building)",
   "verified": true
@@ -397,8 +397,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:catalyze",
@@ -475,8 +475,8 @@
   "status": "partial",
   "glossary": [],
   "prep": {
-   "rules": "",
-   "data": "",
+   "rules": "Std CR 2-10-3: EX symbols are symbols on the Field; only Legacy treats them differently (Trash)",
+   "data": "150 staged + 52 shipped (field missing) block A cards, one EX each, single colour",
    "lever": ""
   },
   "note": "EX symbols count as symbols (v0.62.0); Legacy (pays with EX-symbol cards) missing",
@@ -492,8 +492,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "02i-effects-keywords.js says Guard / Trigger Counter cards are not wired (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:holy-life",
@@ -520,8 +520,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:curse",
@@ -533,13 +533,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:flag-contract-advent",
   "name": "Flag Contract Advent",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_ADVENT"
   ],
@@ -548,8 +548,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kind:flag-nexus",
@@ -574,8 +574,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:type-field",
@@ -587,8 +587,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:neo-core-charge",
@@ -602,8 +602,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "9 Contract Nexuses shipped with ALLY_SUMMONED + CORE_TO_NEXUS (tests blue37 B35-B38); no compiler parse; 15 waiting CX Nexuses need the deploy/trash-3 variant and the {{cs}} template (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:armor",
@@ -630,13 +630,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:double-ultimate-trigger",
   "name": "Double Ultimate Trigger",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_ULTIMATE"
   ],
@@ -645,8 +645,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "compile56 test keeps it in review; base ULT_TRIGGER reusable (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:zero-counter",
@@ -658,13 +658,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:brave-engage",
   "name": "Brave Engage",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_BRAVE"
   ],
@@ -673,8 +673,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:type-vision",
@@ -686,13 +686,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:twinkle-seal",
   "name": "Twinkle Seal",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "A_SEAL"
   ],
@@ -701,8 +701,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:excite",
@@ -714,8 +714,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:true-curse",
@@ -727,8 +727,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no code (BS68-021 residual) (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:awaken",
@@ -742,8 +742,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "AWAKEN action 02b-effects-actions.js and compiler \"Flash - Awaken\" paragraph; test only tests/suites/v19_tests.py (Sabecaulus), no unit test; the 11 waiting texts wait on other paragraphs (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:ice-wall",
@@ -755,8 +755,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:whirlwind",
@@ -768,13 +768,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:astral-unleash",
   "name": "Astral Unleash",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_UNLEASH"
   ],
@@ -783,8 +783,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:astromulet",
@@ -796,8 +796,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:form-change",
@@ -809,8 +809,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:summon-bolt",
@@ -822,13 +822,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:ultimate-hand",
   "name": "Ultimate Hand",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_ULTIMATE"
   ],
@@ -837,8 +837,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "compiler sends the uhand template to review (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:mealtiply",
@@ -850,8 +850,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:seal",
@@ -878,8 +878,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:unsheathe",
@@ -891,8 +891,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:true-clash",
@@ -904,8 +904,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:poison-blade",
@@ -917,8 +917,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:soul-drive",
@@ -930,8 +930,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no code (BS74-X12 residual) (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:reload",
@@ -943,8 +943,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:silver-wheel",
@@ -971,8 +971,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:bunshin",
@@ -984,8 +984,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:grand-skill",
@@ -997,8 +997,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:load",
@@ -1010,8 +1010,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no code; {{Load|n}} not compiled (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:contract-field",
@@ -1025,8 +1025,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "card-specific code (EXTRA_REDUCTION, UNAFFECTED_SOUL, CORE_TO_NEXUS); tests green38 G36/G37; no compiler path; 7 waiting cards on Brave combine data or {{cs}} (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:rumble",
@@ -1038,8 +1038,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:dispersion",
@@ -1051,8 +1051,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:six-heaven-rush",
@@ -1064,8 +1064,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:ultra-heavy-armor",
@@ -1079,8 +1079,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "{{uha}} compiled to STATIC UNAFFECTED (armor58 A58-01); granted Armor open; 6 waiting cards blocked by other paragraphs (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:double-drive",
@@ -1092,13 +1092,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:constellation-seal",
   "name": "Constellation Seal",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "A_SEAL"
   ],
@@ -1107,8 +1107,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:twinkle-trace",
@@ -1120,13 +1120,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:grand-advent",
   "name": "Grand Advent",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_ADVENT"
   ],
@@ -1135,13 +1135,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:reverse-contract-advent",
   "name": "Reverse Contract Advent",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_ADVENT"
   ],
@@ -1150,8 +1150,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:current",
@@ -1163,13 +1163,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no code; {{Current|..}} not compiled (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:celestial-unleash",
   "name": "Celestial Unleash",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_UNLEASH"
   ],
@@ -1178,8 +1178,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:fast-draw",
@@ -1191,8 +1191,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:ultra-holy-life",
@@ -1206,8 +1206,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code; BS69-052 playable only through plain Holy Life (residual lists Ultra Holy Life) (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:shamanism",
@@ -1219,8 +1219,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:kagemusha",
@@ -1232,13 +1232,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:minor-unleash",
   "name": "Minor Unleash",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_UNLEASH"
   ],
@@ -1247,8 +1247,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:sound-speed",
@@ -1260,8 +1260,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:count-break",
@@ -1273,8 +1273,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kind:token",
@@ -1301,8 +1301,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "card-specific code (02f/02g); tests green38 G34/G35; 4 waiting cards on the {{cs}} template (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:level-up",
@@ -1314,13 +1314,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:ultra-awaken",
   "name": "Ultra Awaken",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "A_AWAKEN"
   ],
@@ -1329,8 +1329,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:spell-blight",
@@ -1342,8 +1342,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:horoscoping",
@@ -1355,8 +1355,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:pursuit",
@@ -1368,8 +1368,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:nether-immortality",
@@ -1383,13 +1383,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:seal-flag-contract-advent",
   "name": "Seal Flag Contract Advent",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "A_SEAL",
    "K_ADVENT"
@@ -1399,13 +1399,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:divine-holy-life",
   "name": "Divine Holy Life",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_HOLY_LIFE"
   ],
@@ -1414,8 +1414,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:showdown",
@@ -1427,13 +1427,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:triple-ultimate-trigger",
   "name": "Triple Ultimate Trigger",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_ULTIMATE"
   ],
@@ -1442,8 +1442,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code; base ULT_TRIGGER reusable (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:great-pursuit",
@@ -1455,13 +1455,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:mirage-drain",
   "name": "Mirage Drain",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_MIRAGE"
   ],
@@ -1470,8 +1470,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:ultra-clash",
@@ -1483,8 +1483,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:war-catalyze",
@@ -1496,8 +1496,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:magirrate",
@@ -1509,8 +1509,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:ringing-charge",
@@ -1522,13 +1522,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:burst-tribute",
   "name": "Burst Tribute",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_BURST"
   ],
@@ -1537,13 +1537,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:great-crush",
   "name": "Great Crush",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_CRUSH"
   ],
@@ -1552,13 +1552,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:violent-high-speed",
   "name": "Violent High Speed",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_HIGH_SPEED"
   ],
@@ -1567,13 +1567,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:ultimate-unsheathe",
   "name": "Ultimate Unsheathe",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_ULTIMATE"
   ],
@@ -1582,8 +1582,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:consecutive-blade",
@@ -1595,8 +1595,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:infinite-blade",
@@ -1608,8 +1608,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:soul-swift",
@@ -1621,13 +1621,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:burst-seal",
   "name": "Burst Seal",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "A_SEAL",
    "K_BURST"
@@ -1637,13 +1637,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:super-seal",
   "name": "Super Seal",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "A_SEAL"
   ],
@@ -1652,8 +1652,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:thunder-swift",
@@ -1665,8 +1665,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:twinkle-clash",
@@ -1678,8 +1678,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:great-assault",
@@ -1691,8 +1691,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:dark-esoterica-heaven",
@@ -1704,8 +1704,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:ultra-assault",
@@ -1717,8 +1717,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:hollow-sky",
@@ -1730,8 +1730,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:super-boost",
@@ -1743,13 +1743,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:sky-seal",
   "name": "Sky Seal",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "A_SEAL"
   ],
@@ -1758,8 +1758,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:dark-esoterica-hell",
@@ -1771,8 +1771,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:genesis",
@@ -1784,8 +1784,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:clash-x",
@@ -1797,13 +1797,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:dark-unleash",
   "name": "Dark Unleash",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_UNLEASH"
   ],
@@ -1812,13 +1812,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:ultra-advent",
   "name": "Ultra Advent",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_ADVENT"
   ],
@@ -1827,13 +1827,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:nether-unleash",
   "name": "Nether Unleash",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_UNLEASH"
   ],
@@ -1842,13 +1842,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:creator-unleash",
   "name": "Creator Unleash",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_UNLEASH"
   ],
@@ -1857,8 +1857,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:absolute-sound-speed",
@@ -1870,13 +1870,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:mirage-boost",
   "name": "Mirage Boost",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_MIRAGE"
   ],
@@ -1885,13 +1885,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:mirage-trance",
   "name": "Mirage Trance",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_MIRAGE"
   ],
@@ -1900,8 +1900,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:emperor-road",
@@ -1913,13 +1913,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:mirage-flash",
   "name": "Mirage Flash",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_MIRAGE"
   ],
@@ -1928,13 +1928,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:quadruple-ultimate-trigger",
   "name": "Quadruple Ultimate Trigger",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_ULTIMATE"
   ],
@@ -1943,8 +1943,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code; base ULT_TRIGGER reusable (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:chrono-count-break",
@@ -1956,8 +1956,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:enchain",
@@ -1969,13 +1969,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:final-contract-advent",
   "name": "Final Contract Advent",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_ADVENT"
   ],
@@ -1984,13 +1984,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:high-speed-mystery",
   "name": "High Speed - Mystery",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_HIGH_SPEED"
   ],
@@ -1999,13 +1999,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:wave-crush",
   "name": "Wave Crush",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_CRUSH"
   ],
@@ -2014,13 +2014,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:xv-crush",
   "name": "XV Crush",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_CRUSH"
   ],
@@ -2029,8 +2029,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:heavenly-light",
@@ -2042,13 +2042,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:ultra-contract-advent",
   "name": "Ultra Contract Advent",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_ADVENT"
   ],
@@ -2057,13 +2057,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:curse-unleash",
   "name": "Curse Unleash",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_UNLEASH"
   ],
@@ -2072,13 +2072,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:primordial-unleash",
   "name": "Primordial Unleash",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_UNLEASH"
   ],
@@ -2087,8 +2087,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:rekka-showdown",
@@ -2100,13 +2100,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:infinite-unleash",
   "name": "Infinite Unleash",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_UNLEASH"
   ],
@@ -2115,13 +2115,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:silver-awaken",
   "name": "Silver Awaken",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "A_AWAKEN"
   ],
@@ -2130,13 +2130,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:ultra-thunder-advent",
   "name": "Ultra Thunder Advent",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_ADVENT"
   ],
@@ -2145,8 +2145,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:knight-armor",
@@ -2160,13 +2160,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "engine STATIC UNAFFECTED to:own exists; ARMOR_TPL rejects the 3-argument {{Armor|..|Knight}} form; \"can block while exhausted\" not built (BS75-CX02) (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:chaos-unleash",
   "name": "Chaos Unleash",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "K_UNLEASH"
   ],
@@ -2175,13 +2175,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:imaginate-seal",
   "name": "Imaginate Seal",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "A_SEAL"
   ],
@@ -2190,8 +2190,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:seal-manifest",
@@ -2206,8 +2206,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "engine manifest.seal (02d); tests seal48 S06/S07; BS76-X02 shipped; compiler does not read {{Mani|Seal|..}}; inventory regex misses upper-case \"SEAL MANIFEST\" (playable 1, not 0) (A4 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:camouflage",
@@ -2219,13 +2219,13 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kw:re-awaken",
   "name": "Re Awaken",
-  "status": "partial",
+  "status": "missing",
   "glossary": [
    "A_AWAKEN"
   ],
@@ -2234,8 +2234,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18 from the glossary match; check before relying on it",
-  "verified": false
+  "note": "no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable",
+  "verified": true
  },
  {
   "id": "kw:fish-troop",
@@ -2247,8 +2247,8 @@
    "data": "",
    "lever": ""
   },
-  "note": "seeded 2026-10-18: no glossary entry",
-  "verified": false
+  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "verified": true
  },
  {
   "id": "kind:true-release",
