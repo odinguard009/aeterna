@@ -2969,6 +2969,59 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS03-035",
+  "name": "The GoldenFlower Zonne-Bloem",
+  "name_jp": "太陽花ゾンネ・ブルム",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 7,
+  "reduction": {
+   "green": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Plant Spirit"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nPut a core from the Void each to every \"Plant Spirit\"/\"Winged Beast\" family Spirit you control.",
+  "image": "The GoldenFlower Zonne-Bloem.jpg",
+  "block": "03",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "eachSpirit",
+      "match": {
+       "family": [
+        "Plant Spirit",
+        "Winged Beast"
+       ]
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS03-037",
   "name": "Ratatoscr",
   "name_jp": "ラタトスカ",
@@ -3876,6 +3929,62 @@
   "saga": 1,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-101",
+  "name": "Volcano-Golem",
+  "name_jp": "ボルカノ・ゴレム",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 8,
+  "reduction": {
+   "blue": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   },
+   {
+    "cores": 8,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Artificial Soldier"
+  ],
+  "text": "[LV1][LV2][LV3] (When Attacks)\nWhen only the opposing Spirit is destroyed via BP comparison, put a core from the Void each to every Blue Nexus you control.",
+  "image": "Volcano-Golem.jpg",
+  "block": "03",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BATTLE_WIN",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "attackingOnly": true,
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "eachNexus",
+      "match": {
+       "color": "blue"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS03-126",
@@ -5486,6 +5595,54 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS05-077",
+  "name": "Crystal Aura",
+  "name_jp": "クリスタルオーラ",
+  "type": "Magic",
+  "color": "white",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "Main\nPut a core from the Void each to every \"Ice Princess\" family Spirit you control.\n\n Flash\nDuring this turn, give a Spirit +3000 BP.",
+  "image": "Crystal Aura.jpg",
+  "block": "05",
+  "saga": 1,
+  "magic": {
+   "timing": [
+    "MAIN",
+    "FLASH"
+   ],
+   "effect": null,
+   "value": 0,
+   "by": {
+    "MAIN": {
+     "effect": "ACTIONS",
+     "value": 0,
+     "actions": [
+      {
+       "do": "VOID_TO_CARD",
+       "n": 1,
+       "to": "eachSpirit",
+       "match": {
+        "family": [
+         "Ice Princess"
+        ]
+       }
+      }
+     ]
+    },
+    "FLASH": {
+     "effect": "BP_PLUS",
+     "value": 3000
+    }
+   }
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS06-002",
   "name": "Iguaknife",
   "name_jp": "イグアナイフ",
@@ -5550,6 +5707,73 @@
   "saga": 1,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-007",
+  "name": "The ShamshirDinosaur Parasaur",
+  "name_jp": "曲刀竜パラサウル",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Terra Dragon"
+  ],
+  "text": "[LV1][LV2] (When Attacks)\nReveal a card from your decktop. If that card is a \"Terra Dragon\" family Spirit card, add it to the Hand. If not, return it to the decktop.\n\n[LV2] (When Attacks)\nFor each \"Terra Dragon\" family Spirit you control, this Spirit gains +1000 BP.",
+  "image": "The ShamshirDinosaur Parasaur.jpg",
+  "block": "06",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 1,
+      "match": {
+       "family": [
+        "Terra Dragon"
+       ],
+       "type": "Spirit"
+      },
+      "rest": "top"
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 1000,
+      "per": {
+       "type": "Spirit",
+       "family": "Terra Dragon"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS06-008",
@@ -7632,6 +7856,65 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS10-010",
+  "name": "The BeatDragon Vandalizer",
+  "name_jp": "覇竜ヴァンダライザー",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 7,
+  "reduction": {
+   "red": 5
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Ancient Dragon"
+  ],
+  "text": "[LV1][LV2] (When Summoned) Destroy all opposing Spirits with 3000BP or less.\n\n[LV2] (When Attacks) Destroy an opposing Spirit with 5000BP or less.",
+  "image": "The BeatDragon Vandalizer.jpg",
+  "block": "10",
+  "saga": 2,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "all": true,
+      "bpLe": 3000
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "bpLe": 5000
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS10-011",
   "name": "Onigumon",
   "name_jp": "オニグモン",
@@ -8395,6 +8678,60 @@
   "saga": 2,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS10-064",
+  "name": "The SkullTank Geparberd",
+  "name_jp": "骸戦車ゲパルバート",
+  "type": "Brave",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Zombie"
+  ],
+  "text": "[LV1] (When Summoned)\nDraw a card.\n\nWhen Braved (When Attacks)\nDestroy an opposing exhausted Spirit.",
+  "image": null,
+  "block": "10",
+  "saga": 2,
+  "brave": {
+   "bp": 2000
+  },
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "DESTROY",
+      "exhaustedOnly": true
+     }
+    ],
+    "braved": true
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS10-067",
@@ -11807,6 +12144,57 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS16-051",
+  "name": "Shuddomell",
+  "name_jp": "シュドーメル",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 5,
+  "reduction": {
+   "blue": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Fusion Beast"
+  ],
+  "text": "[LV1][LV2] (When Summoned) You can reveal four cards from your decktop. Among them, add a Nexus card to your Hand. Discard the remaining cards.",
+  "image": "Shuddomell.jpg",
+  "block": "16",
+  "saga": 3,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 4,
+      "match": {
+       "type": "Nexus"
+      },
+      "rest": "trash"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS16-053",
   "name": "Illuyankash",
   "name_jp": "イルルヤンカッシュ",
@@ -13294,6 +13682,60 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS19-048",
+  "name": "Airavata",
+  "name_jp": "アイラヴァター",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {
+   "yellow": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Imaginary Beast"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nYou can reveal a card from your decktop. If that card is an \"Imaginary Beast\" family Spirit card, add it to the Hand. If not, discard it.",
+  "image": "BS19-048.jpg",
+  "block": "19",
+  "saga": 4,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 1,
+      "match": {
+       "family": [
+        "Imaginary Beast"
+       ],
+       "type": "Spirit"
+      },
+      "rest": "trash"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS19-049",
   "name": "The Angelia Miransa",
   "name_jp": "天使ミランサ",
@@ -14237,6 +14679,61 @@
   "saga": 4,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS20-049",
+  "name": "Kamoone",
+  "name_jp": "カモオネ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {
+   "blue": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 4,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Fusion Beast"
+  ],
+  "text": "[LV1][LV2] (When Attacks) Put a core from the Void to any of your Nexus.\n{{Rush|Green}}\n(While you have a Green symbol, the following effect activates next)\n: Put a core from the Void to any of your Spirits.",
+  "image": "BS20-049.jpg",
+  "block": "20",
+  "saga": 4,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anyNexus"
+     },
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit",
+      "if": {
+       "hasSymbol": "green"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS20-050",
@@ -15380,6 +15877,69 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS22-023",
+  "name": "Mega-Neura",
+  "name_jp": "メガ・ネウラー",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 1,
+   "red": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Parasite"
+  ],
+  "text": "Flash - High Speed\nThis Spirit card in Hand can be summoned by paying the cost with cores in the Reserve. In this case, cores to be put on this Spirit must also be from the Reserve.\n\n[LV1][LV2][LV3] (When Summoned)\nPut a core from the Void to any Red/White Spirit you control.",
+  "image": "BS22-023.jpg",
+  "block": "22",
+  "saga": 4,
+  "mechanics": [
+   "High Speed"
+  ],
+  "highSpeed": true,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit",
+      "match": {
+       "color": [
+        "red",
+        "white"
+       ]
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS22-032",
   "name": "The ImperialMachine Mariner No.2",
   "name_jp": "近衛機マリナー2号",
@@ -16135,6 +16695,67 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS25-014",
+  "name": "The ChevalLancer Eligale",
+  "name_jp": "冥騎兵エリゲイル",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   },
+   {
+    "cores": 5,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Infernal Lord"
+  ],
+  "text": "[LV1][LV2][LV3] (When Summoned)\nDraw a card. If you control any Ultimate, also, destroy an opposing exhausted Spirit.",
+  "image": null,
+  "block": "25",
+  "saga": 5,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     },
+     {
+      "do": "DESTROY",
+      "exhaustedOnly": true,
+      "if": {
+       "ctrl": {
+        "n": 1,
+        "type": "Ultimate"
+       }
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS25-039",
   "name": "Calydon",
   "name_jp": "カリュドーン",
@@ -16412,6 +17033,77 @@
       "n": 2,
       "if": {
        "hasSymbol": "red"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS28-009",
+  "name": "General-Dragon",
+  "name_jp": "ジェネラル・ドラゴン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 8,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 3,
+    "bp": 12000
+   },
+   {
+    "cores": 4,
+    "bp": 15000
+   }
+  ],
+  "families": [
+   "Astral Guardian",
+   "Dragon Warrior"
+  ],
+  "text": "[LV1][LV2][LV3] (When Summoned)\nDestroy an opposing 15000 BP or less Spirit/Ultimate.\n\n[LV2][LV3] (When Attacks)\nDestroy all opposing 3000 BP or less Spirits. If you have a Burst set, also, destroy an opposing Nexus.",
+  "image": "General-Dragon.jpg",
+  "block": "28",
+  "saga": 5,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "bpLe": 15000
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "all": true,
+      "bpLe": 3000
+     },
+     {
+      "do": "DESTROY",
+      "nexus": true,
+      "if": {
+       "burstSet": true
       }
      }
     ]
@@ -18431,6 +19123,40 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS35-089",
+  "name": "Crystal Break",
+  "name_jp": "クリスタルブレイク",
+  "type": "Magic",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "Flash\nDestroy every opposing Spirit/Ultimate with one core on them.",
+  "image": "BS35-089 (Fixed).jpg",
+  "block": "35",
+  "saga": 7,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY",
+     "all": true,
+     "coresLe": 1
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS36-006",
   "name": "The LavaBeast Volrus",
   "name_jp": "溶岩獣ヴォルラス",
@@ -19303,6 +20029,130 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS41-049",
+  "name": "Degu of Card Magics",
+  "name_jp": "トランプマジックのデグー",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Drifting Spirit",
+   "Magician"
+  ],
+  "text": "[LV1][LV2][LV3] (When Destroyed)\nYou can reveal a card from your decktop. If that card is a Yellow card, add it to the Hand. Discard any remaining cards.",
+  "image": null,
+  "block": "41",
+  "saga": 8,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 1,
+      "match": {
+       "color": "yellow"
+      },
+      "rest": "trash"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS42-041",
+  "name": "The PatrolWarrior Convatour",
+  "name_jp": "警邏機士コンバトゥール",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 5,
+  "reduction": {
+   "white": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 2,
+    "bp": 7000
+   },
+   {
+    "cores": 4,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Armed Machine"
+  ],
+  "text": "[LV1][LV2][LV3] (When Summoned)\nReturn an opposing Spirit to the Hand.\n\n[LV2][LV3] (When Blocks)\nPut a core from the Void to this Spirit, and refresh it.",
+  "image": "The PatrolWarrior Convatour.jpg",
+  "block": "42",
+  "saga": 8,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "BOUNCE_OPP",
+      "to": "hand",
+      "kind": "spirit"
+     }
+    ]
+   },
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "self"
+     },
+     {
+      "do": "REFRESH"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS43-028",
@@ -20310,6 +21160,71 @@
      "step": "ATTACK",
      "oppTurn": true
     }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS58-002",
+  "name": "The SunStarDragon Del-Sol",
+  "name_jp": "太陽星龍デル・ソール",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {
+   "red": 1,
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   },
+   {
+    "cores": 5,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Proximate",
+   "Astral Dragon"
+  ],
+  "text": "[LV1][LV2][LV3] (When Summoned)\nDestroy an opposing 5000 BP or less Spirit/Ultimates, and effects of the destroyed Spirit/Ultimate can't activate.\n{{Rush|Green}}\n(While you have a Green symbol, the following effect activates next)\n: Put a core from the Void to any of your Spirits.",
+  "image": "BS58 002.png",
+  "block": "58",
+  "saga": 12,
+  "mechanics": [
+   "Rush"
+  ],
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "bpLe": 5000,
+      "noFx": true
+     },
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit",
+      "if": {
+       "hasSymbol": "green"
+      }
+     }
+    ]
    }
   ],
   "fxComplete": true,
@@ -33274,6 +34189,64 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RBS01-121",
+  "name": "Life Link",
+  "name_jp": "ライフリンク",
+  "type": "Magic",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {
+   "yellow": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Topaz",
+   "Echochant"
+  ],
+  "text": "Main\nReveal a card from your decktop. If that's a Magic card, add it to the Hand. Return any remaining card to the decktop or deckbottom.\n\nFlash\nTarget one of your Spirits. During this turn, give it +2000 BP.",
+  "image": "26RBS01-121.png",
+  "block": "A",
+  "saga": 50,
+  "magic": {
+   "timing": [
+    "MAIN",
+    "FLASH"
+   ],
+   "effect": null,
+   "value": 0,
+   "by": {
+    "MAIN": {
+     "effect": "ACTIONS",
+     "value": 0,
+     "actions": [
+      {
+       "do": "REVEAL_PICK",
+       "n": 1,
+       "match": {
+        "type": "Magic"
+       },
+       "rest": "either"
+      }
+     ]
+    },
+    "FLASH": {
+     "effect": "ACTIONS",
+     "value": 0,
+     "actions": [
+      {
+       "do": "BP_TARGET",
+       "n": 2000,
+       "to": "pick"
+      }
+     ]
+    }
+   }
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RBS01-X07",
   "name": "The WaterBlade Wheelca",
   "name_jp": "水刃ウィールカ",
@@ -33458,6 +34431,53 @@
   "ex_symbols": 1
  },
  {
+  "id": "26RBS02-024",
+  "name": "The Stinger Scor-Rubee",
+  "name_jp": "有刺スコー・ルビー",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 8,
+  "reduction": {
+   "purple": 5
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Mutant"
+  ],
+  "text": "[LV2] (True Release) (During Attack)\nWhen this Spirit's attack reduces the opposing Life, target an opposing exhausted Spirit. Destroy it.",
+  "image": "26RBS02-024.png",
+  "block": "A",
+  "saga": 50,
+  "trueRelease": true,
+  "effects": [
+   {
+    "trigger": "ALLY_LIFE_HIT",
+    "lv": [
+     2
+    ],
+    "self": true,
+    "actions": [
+     {
+      "do": "DESTROY",
+      "exhaustedOnly": true
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "26RBS02-025",
   "name": "Sejellin",
   "name_jp": "シゼリン",
@@ -33488,6 +34508,51 @@
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image.",
   "ex_symbols": 1
+ },
+ {
+  "id": "26RBS02-026",
+  "name": "Phindol",
+  "name_jp": "フィンドル",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Vortexite"
+  ],
+  "text": "[LV2] (When Attacks)\nPut a core from the Void to your Trash.",
+  "image": "26RBS02-026.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_TRASH",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RBS02-027",
@@ -33547,6 +34612,53 @@
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
   "ex_symbols": 1
+ },
+ {
+  "id": "26RBS02-031",
+  "name": "The Allurer Anglern",
+  "name_jp": "誘引アングラン",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 5,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 3,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Oceanic Green",
+   "Faint Glow"
+  ],
+  "text": "[LV1][LV2] (When Attacks)\nPut a core from the Void to your Trash.",
+  "image": "26RBS02-031.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_TRASH",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RBS02-034",
@@ -34421,6 +35533,58 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RCB01-018",
+  "name": "Nox Knight",
+  "name_jp": "ノクスナイト",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {
+   "purple": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "ZEZTZ"
+  ],
+  "text": "[LV2] (When Destroyed)\nYou can reveal a card from your decktop. If that's a \"ZEZTZ\" family card, add it to the Hand. Return any remaining card to the deckbottom.",
+  "image": "26RCB01-018.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     2
+    ],
+    "optional": true,
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 1,
+      "match": {
+       "family": [
+        "ZEZTZ"
+       ]
+      },
+      "rest": "bottom"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RCB01-025",
@@ -35320,6 +36484,52 @@
   ],
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "26RSD03-002",
+  "name": "Puffer",
+  "name_jp": "パッファー",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Armored Fish"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nPut a core from the Void to your Trash.",
+  "image": "26RSD03-002.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_TRASH",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RSD03-003",
@@ -36234,6 +37444,101 @@
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image.",
   "ex_symbols": 1
+ },
+ {
+  "id": "26RSD06-004",
+  "name": "Rhiceros",
+  "name_jp": "ライセロス",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 4,
+  "reduction": {
+   "blue": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Cyantree",
+   "Ferobeast"
+  ],
+  "text": "[LV1][LV2] (During Block) {{Invoke|Flash}} (Once Per Turn)\nExhaust one of your \"Ferobeast\" family Nexuses ▶ During this battle, this Spirit gains +3000 BP.\n\n[LV2] (During Attack) {{Invoke|Flash}} (Once Per Turn)\nExhaust one of your \"Ferobeast\" family Nexuses ▶ Put a core from the Void to your Trash.",
+  "image": "26RSD06-004.png",
+  "block": "A",
+  "saga": 50,
+  "effects": [
+   {
+    "trigger": "ACTIVATE",
+    "invoke": true,
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "when": "duringBlock",
+    "once": true,
+    "lv": [
+     1,
+     2
+    ],
+    "cost": {
+     "exhaustOwn": {
+      "kind": "nexus",
+      "match": {
+       "family": [
+        "Ferobeast"
+       ]
+      }
+     }
+    },
+    "actions": [
+     {
+      "do": "BP_TARGET",
+      "n": 3000,
+      "to": "self",
+      "battle": true
+     }
+    ]
+   },
+   {
+    "trigger": "ACTIVATE",
+    "invoke": true,
+    "timing": [
+     "MAIN",
+     "FLASH"
+    ],
+    "when": "duringAttack",
+    "once": true,
+    "lv": [
+     2
+    ],
+    "cost": {
+     "exhaustOwn": {
+      "kind": "nexus",
+      "match": {
+       "family": [
+        "Ferobeast"
+       ]
+      }
+     }
+    },
+    "actions": [
+     {
+      "do": "VOID_TO_TRASH",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "26RSD06-005",

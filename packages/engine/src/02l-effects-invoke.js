@@ -123,9 +123,12 @@ Object.assign(FX_ACTIONS, {
 /* extra filters on existing actions (wrapped here so the Invoke sentences stay in one module) */
 (() => {
   const D = FX_ACTIONS.DESTROY, dChk = D.chk, dCands = D.cands, dTxt = D.txt;
-  D.chk = a => (a.exhaustedOnly == null || a.exhaustedOnly === true) && dChk(Object.assign({}, a, { exhaustedOnly: undefined }));
-  D.cands = (c, a) => { const L = dCands(c, a); return a.exhaustedOnly ? L.filter(t => t.exhausted) : L; };
-  D.txt = a => dTxt(a) + (a.exhaustedOnly ? ' (exhausted only)' : '');
+  // v0.75: exhaustedOnly alone ("Destroy an opposing exhausted Spirit/Ultimate") = no BP/cost bound
+  const anyB = a => a.exhaustedOnly === true && !['nexus', 'bpLe', 'bpLeAttacker', 'symbolsLe', 'bpLeReturned', 'familyInOppTrash', 'costLe', 'costLeSelf', 'costLeDiscarded', 'costRank', 'coresLe'].some(k => a[k] != null);
+  const unb = a => Object.assign({}, a, { exhaustedOnly: undefined }, anyB(a) ? { bpLe: 1e9 } : {});
+  D.chk = a => (a.exhaustedOnly == null || a.exhaustedOnly === true) && dChk(unb(a));
+  D.cands = (c, a) => { const L = dCands(c, unb(a)); return a.exhaustedOnly ? L.filter(t => t.exhausted) : L; };
+  D.txt = a => anyB(a) ? 'destroy 1 opposing exhausted Spirit/Ultimate' + (a.thenDraw ? ', then draw ' + a.thenDraw : '') + (a.noFx ? "; the effects of the destroyed target can't activate" : '') : dTxt(a) + (a.exhaustedOnly ? ' (exhausted only)' : '');
   const B = FX_ACTIONS.BOUNCE_OPP, bChk = B.chk, bCands = B.cands, bTxt = B.txt;
   B.chk = a => (a.bpLe == null || (Number.isInteger(a.bpLe) && a.bpLe >= 0)) && (a.attackingOnly == null || a.attackingOnly === true) && bChk(a);
   B.cands = (c, a) => bCands(c, a).filter(t => (a.bpLe == null || bpOf(t) <= a.bpLe) && (!a.attackingOnly || t === G.attacker));

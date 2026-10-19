@@ -2969,6 +2969,59 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS03-035",
+  "name": "The GoldenFlower Zonne-Bloem",
+  "name_jp": "太陽花ゾンネ・ブルム",
+  "type": "Spirit",
+  "color": "green",
+  "cost": 7,
+  "reduction": {
+   "green": 3
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 5000
+   },
+   {
+    "cores": 4,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Plant Spirit"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nPut a core from the Void each to every \"Plant Spirit\"/\"Winged Beast\" family Spirit you control.",
+  "image": "The GoldenFlower Zonne-Bloem.jpg",
+  "block": "03",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "eachSpirit",
+      "match": {
+       "family": [
+        "Plant Spirit",
+        "Winged Beast"
+       ]
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS03-037",
   "name": "Ratatoscr",
   "name_jp": "ラタトスカ",
@@ -3876,6 +3929,62 @@
   "saga": 1,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-101",
+  "name": "Volcano-Golem",
+  "name_jp": "ボルカノ・ゴレム",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 8,
+  "reduction": {
+   "blue": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   },
+   {
+    "cores": 8,
+    "bp": 9000
+   }
+  ],
+  "families": [
+   "Artificial Soldier"
+  ],
+  "text": "[LV1][LV2][LV3] (When Attacks)\nWhen only the opposing Spirit is destroyed via BP comparison, put a core from the Void each to every Blue Nexus you control.",
+  "image": "Volcano-Golem.jpg",
+  "block": "03",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "BATTLE_WIN",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "attackingOnly": true,
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "eachNexus",
+      "match": {
+       "color": "blue"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS03-126",
@@ -5486,6 +5595,54 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS05-077",
+  "name": "Crystal Aura",
+  "name_jp": "クリスタルオーラ",
+  "type": "Magic",
+  "color": "white",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [],
+  "families": [],
+  "text": "Main\nPut a core from the Void each to every \"Ice Princess\" family Spirit you control.\n\n Flash\nDuring this turn, give a Spirit +3000 BP.",
+  "image": "Crystal Aura.jpg",
+  "block": "05",
+  "saga": 1,
+  "magic": {
+   "timing": [
+    "MAIN",
+    "FLASH"
+   ],
+   "effect": null,
+   "value": 0,
+   "by": {
+    "MAIN": {
+     "effect": "ACTIONS",
+     "value": 0,
+     "actions": [
+      {
+       "do": "VOID_TO_CARD",
+       "n": 1,
+       "to": "eachSpirit",
+       "match": {
+        "family": [
+         "Ice Princess"
+        ]
+       }
+      }
+     ]
+    },
+    "FLASH": {
+     "effect": "BP_PLUS",
+     "value": 3000
+    }
+   }
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS06-002",
   "name": "Iguaknife",
   "name_jp": "イグアナイフ",
@@ -5550,6 +5707,73 @@
   "saga": 1,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-007",
+  "name": "The ShamshirDinosaur Parasaur",
+  "name_jp": "曲刀竜パラサウル",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 4,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Terra Dragon"
+  ],
+  "text": "[LV1][LV2] (When Attacks)\nReveal a card from your decktop. If that card is a \"Terra Dragon\" family Spirit card, add it to the Hand. If not, return it to the decktop.\n\n[LV2] (When Attacks)\nFor each \"Terra Dragon\" family Spirit you control, this Spirit gains +1000 BP.",
+  "image": "The ShamshirDinosaur Parasaur.jpg",
+  "block": "06",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "REVEAL_PICK",
+      "n": 1,
+      "match": {
+       "family": [
+        "Terra Dragon"
+       ],
+       "type": "Spirit"
+      },
+      "rest": "top"
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 1000,
+      "per": {
+       "type": "Spirit",
+       "family": "Terra Dragon"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS06-008",

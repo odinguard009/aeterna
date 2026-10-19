@@ -2,6 +2,14 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.75.0
+- **Bundle release: Void destinations, reveal endings, mass / exhausted destruction, Flash battle effects** (card session, plan W, second measured bundle: pack-plan rows 1-4 and 9; rule note `docs/mechanics/pack75.md`):
+  - Compiler: "Put a core from the Void to <your Trash | this Spirit[, and refresh it] | one of your [A/B] Nexuses>" and "... each to every <X> you control"; reveal endings "Discard the remaining cards", singular "card", "to the decktop or deckbottom", one-card "If that card is X, add it to the Hand. If not, return it to the decktop / discard it."; "Destroy every / all opposing N BP or less Spirits", "Destroy an opposing exhausted Spirit", ", and effects of the destroyed ... can't activate", ", and when destroys, draw a card"; a Flash Magic may say "during this battle".
+  - Engine: new `VOID_TO_TRASH`; `VOID_TO_CARD` targets `anyNexus` / `eachSpirit` / `eachNexus`; `match.color` may list two colours (either); `REVEAL_PICK` rest `top` / `either` (owner chooses, CPU bottom); `DESTROY` `all` and `exhaustedOnly` without a bound.
+  - Tests: `tests/unit/pack75.test.mjs` (PK75-01..06); VD74-01 updated (those sentences now compile).
+  - **Measured unlock: +23 cards** (scratch recompile; 799 of 8,709 playable), 7 of them Standard block A. Promoted cards were removed from `data/import`.
+  - Revert note: `git revert` of the v0.75.0 commit restores v0.74.0 (no data migration; the 23 cards return to `data/import` with `python3 tools/import_fandom.py`).
+
 ## v0.74.0
 - **Bundle release: Void cores, attack/block battle results, sentences for existing actions** (card session, plan W fifth pack, first release built from a measured bundle; rule note `docs/mechanics/void-cores.md`):
   - Process (owner, 2026-10-20 "do all suggestions"): `python3 tools/pack_plan.py --measure` (new `tools/pack_measure.py`, tests PM01-03) ranks packs by measured yield instead of the upper bound; docs now travel inside the release commit (`bash tools/release_docs.sh`); CI fixed (test G06 exercised the daily cap the owner had removed from the gate).

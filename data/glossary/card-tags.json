@@ -223,6 +223,12 @@
  "BS03-025": [],
  "BS03-026": [],
  "BS03-029": [],
+ "BS03-035": [
+  "T_SUMMONED",
+  "A_VOID",
+  "C_LEVEL",
+  "A_VOID_TO_MATCHING"
+ ],
  "BS03-037": [
   "C_LEVEL",
   "S_UNAFFECTED",
@@ -278,6 +284,12 @@
  "BS03-089": [],
  "BS03-091": [],
  "BS03-099": [],
+ "BS03-101": [
+  "T_ATTACKS",
+  "A_VOID",
+  "C_LEVEL",
+  "A_VOID_TO_MATCHING"
+ ],
  "BS03-126": [
   "A_VOID"
  ],
@@ -355,8 +367,18 @@
  "BS05-046": [],
  "BS05-049": [],
  "BS05-052": [],
+ "BS05-077": [
+  "A_BP_PLUS",
+  "A_VOID",
+  "A_VOID_TO_MATCHING"
+ ],
  "BS06-002": [],
  "BS06-004": [],
+ "BS06-007": [
+  "T_ATTACKS",
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
  "BS06-008": [],
  "BS06-009": [
   "T_ATTACKS",
@@ -500,6 +522,11 @@
  ],
  "BS10-007": [],
  "BS10-009": [],
+ "BS10-010": [
+  "T_SUMMONED",
+  "T_ATTACKS",
+  "C_LEVEL"
+ ],
  "BS10-011": [],
  "BS10-013": [
   "T_SUMMONED",
@@ -540,6 +567,12 @@
  "BS10-052": [],
  "BS10-055": [],
  "BS10-057": [],
+ "BS10-064": [
+  "T_SUMMONED",
+  "T_ATTACKS",
+  "A_EXHAUST",
+  "C_LEVEL"
+ ],
  "BS10-067": [
   "T_SUMMONED",
   "A_REFRESH",
@@ -769,6 +802,12 @@
   "T_ATTACKS",
   "C_LEVEL"
  ],
+ "BS16-051": [
+  "T_SUMMONED",
+  "A_REVEAL_DECK",
+  "C_LEVEL",
+  "M_OPTIONAL"
+ ],
  "BS16-053": [],
  "BS17-007": [],
  "BS17-008": [
@@ -857,6 +896,11 @@
  "BS19-041": [],
  "BS19-045": [],
  "BS19-047": [],
+ "BS19-048": [
+  "T_SUMMONED",
+  "C_LEVEL",
+  "M_OPTIONAL"
+ ],
  "BS19-049": [
   "T_SUMMONED",
   "C_LEVEL",
@@ -926,6 +970,12 @@
  ],
  "BS20-040": [],
  "BS20-046": [],
+ "BS20-049": [
+  "T_ATTACKS",
+  "A_VOID",
+  "C_LEVEL",
+  "K_RUSH"
+ ],
  "BS20-050": [
   "T_ATTACKS",
   "C_LEVEL",
@@ -1014,6 +1064,12 @@
  "BS22-001": [],
  "BS22-013": [],
  "BS22-022": [],
+ "BS22-023": [
+  "T_SUMMONED",
+  "A_VOID",
+  "C_LEVEL",
+  "K_HIGH_SPEED"
+ ],
  "BS22-032": [],
  "BS22-033": [
   "T_SUMMONED",
@@ -1072,6 +1128,12 @@
   "A_EXHAUST",
   "K_ULTIMATE"
  ],
+ "BS25-014": [
+  "T_SUMMONED",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "K_ULTIMATE"
+ ],
  "BS25-039": [
   "T_ATTACKS",
   "T_ALLY_LIFE_HIT",
@@ -1103,6 +1165,14 @@
   "A_VOID",
   "C_LEVEL",
   "K_RUSH"
+ ],
+ "BS28-009": [
+  "T_SUMMONED",
+  "T_ATTACKS",
+  "A_DESTROY_NEXUS",
+  "C_LEVEL",
+  "K_BURST",
+  "K_ULTIMATE"
  ],
  "BS28-019": [
   "K_HIGH_SPEED"
@@ -1212,6 +1282,9 @@
  "BS35-034": [],
  "BS35-048": [],
  "BS35-061": [],
+ "BS35-089": [
+  "K_ULTIMATE"
+ ],
  "BS36-006": [],
  "BS36-014": [
   "T_ATTACKS",
@@ -1270,6 +1343,18 @@
  ],
  "BS41-037": [
   "A_BP_PLUS",
+  "C_LEVEL",
+  "T_BLOCKS"
+ ],
+ "BS41-049": [
+  "C_LEVEL",
+  "T_DESTROYED",
+  "M_OPTIONAL"
+ ],
+ "BS42-041": [
+  "T_SUMMONED",
+  "A_REFRESH",
+  "A_VOID",
   "C_LEVEL",
   "T_BLOCKS"
  ],
@@ -1352,6 +1437,13 @@
   "K_BRAVE",
   "K_ULTIMATE",
   "K_ARMOR"
+ ],
+ "BS58-002": [
+  "T_SUMMONED",
+  "A_VOID",
+  "C_LEVEL",
+  "K_ULTIMATE",
+  "K_RUSH"
  ],
  "BS58-044": [
   "T_ATTACKS",
@@ -3291,6 +3383,9 @@
   "K_STANDARD_INVOKE"
  ],
  "26RBS01-110": [],
+ "26RBS01-121": [
+  "A_BP_PLUS"
+ ],
  "26RBS01-X07": [
   "T_SUMMONED",
   "A_BP_PLUS",
@@ -3305,11 +3400,26 @@
   "C_LEVEL"
  ],
  "26RBS02-020": [],
+ "26RBS02-024": [
+  "T_ALLY_LIFE_HIT",
+  "A_EXHAUST",
+  "C_LEVEL"
+ ],
  "26RBS02-025": [],
+ "26RBS02-026": [
+  "T_ATTACKS",
+  "A_VOID",
+  "C_LEVEL"
+ ],
  "26RBS02-027": [
   "T_SUMMONED",
   "A_BP_PLUS",
   "A_EXHAUST",
+  "C_LEVEL"
+ ],
+ "26RBS02-031": [
+  "T_ATTACKS",
+  "A_VOID",
   "C_LEVEL"
  ],
  "26RBS02-034": [
@@ -3367,6 +3477,11 @@
  "26RCB01-012": [
   "C_LEVEL",
   "S_MUST_BLOCK"
+ ],
+ "26RCB01-018": [
+  "C_LEVEL",
+  "T_DESTROYED",
+  "M_OPTIONAL"
  ],
  "26RCB01-025": [
   "A_BP_PLUS",
@@ -3429,6 +3544,11 @@
  ],
  "26RSD02-008": [
   "T_ATTACKS",
+  "C_LEVEL"
+ ],
+ "26RSD03-002": [
+  "T_SUMMONED",
+  "A_VOID",
   "C_LEVEL"
  ],
  "26RSD03-003": [
@@ -3520,6 +3640,13 @@
  "26RSD06-003": [
   "C_LEVEL",
   "T_DESTROYED"
+ ],
+ "26RSD06-004": [
+  "A_BP_PLUS",
+  "A_VOID",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "K_STANDARD_INVOKE"
  ],
  "26RSD06-005": [],
  "26RSD06-007": [

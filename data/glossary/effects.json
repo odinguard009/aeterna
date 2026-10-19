@@ -239,7 +239,7 @@
     "kind": "action",
     "meaning": "Cores to/from the Void",
     "pattern": "Void",
-    "engine": "VOID_TO_RESERVE / VOID_TO_CARD / NEXUS_CORES_TO_VOID",
+    "engine": "VOID_TO_RESERVE / VOID_TO_CARD / VOID_TO_TRASH / NEXUS_CORES_TO_VOID",
     "status": "wired",
     "example": "",
     "rule": "Standard Comprehensive Rules 1.0 4-8-1/4-8-2: the Void is the supply of Cores and has no limit; when it runs out, cores are added from outside the game (engine: takeFromVoid, v0.29). Eternal Rule Manual sec.11: +X cores from the Void onto a Grandwalker Nexus does not count as increasing Cores from the Void. Eternal Rule Manual (Cores and the Soul Core): the Soul Core can never be placed in the Void; it stays where it is and another core goes instead."

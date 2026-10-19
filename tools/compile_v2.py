@@ -111,6 +111,11 @@ def one_target(verb, sel, kinds=('spirit',)):
 # ---------- verbs ----------
 def v_destroy(sel):
     one_target('destroy', sel, ('spirit', 'nexus'))
+    if sel['count'] == 'all' and sel['kind'] == 'spirit' and not sel['upto']:      # v0.75 DESTROY all: one BP or core bound only
+        need('destroy', sel, ('bpLe', 'coresLe'))
+        keys = [k for k in ('bpLe', 'coresLe') if k in sel['f']]
+        if len(keys) != 1: raise Review('v2 destroy: count all ' + ('no bound' if not keys else 'two bounds'))
+        return [{'do': 'DESTROY', 'all': True, keys[0]: sel['f'][keys[0]]}]
     if sel['count'] != 1: raise Review('v2 destroy: count ' + str(sel['count']))
     if sel['kind'] == 'nexus':
         need('destroy', sel, ())
@@ -118,6 +123,7 @@ def v_destroy(sel):
     B = ('bpLe', 'costLe', 'coresLe', 'costRank', 'costLeSelf', 'bpLeAttacker')
     need('destroy', sel, B + ('exhausted',))      # v0.68: exhausted only (DESTROY exhaustedOnly, 02l)
     keys = [k for k in B if k in sel['f']]
+    if not keys and sel['f'].get('exhausted'): return [{'do': 'DESTROY', 'exhaustedOnly': True}]      # v0.75: "an opposing exhausted Spirit" (any BP)
     if len(keys) != 1: raise Review('v2 destroy: ' + ('no bound' if not keys else 'two bounds'))
     k = keys[0]
     if k == 'coresLe' and sel['f'][k] > 10: raise Review('v2 destroy: cores')
@@ -183,6 +189,12 @@ BOTTOM = r"(?:the )?(?:bottom of (?:the|its owner'?s|their|the opposing) deck|(?
 
 def clause(x):
     """one lower-cased clause without the head -> actions"""
+    m = re.match(r'^destroy (.+?), and (effects of the destroyed spirit(?:/ultimates?)? can\'t activate|when (?:it )?destroys?,? draw (a|one|two) cards?)$', x)
+    if m and selector(m.group(1)):      # v0.75: DESTROY noFx / thenDraw tails
+        a = v_destroy(selector(m.group(1)))
+        if m.group(3): a[0]['thenDraw'] = n_of(m.group(3))
+        else: a[0]['noFx'] = True
+        return a
     m = re.match(r'^(destroy|heavy exhaust|heavily exhaust|exhaust) (.+)$', x)
     if m:
         sel = selector(m.group(2))
@@ -241,7 +253,7 @@ BATTLE_TRIGGERS = {'ACTIVATE', 'ATTACKS', 'BLOCKS', 'ATTACKS+BLOCKS', 'ALLY_ATTA
 def own_grammar(s, ctx=None):
     """v0.68 own-target and battle-length sentences (BP_TARGET / SYMBOL_TARGET, 02l); None = not this shape"""
     x = s.strip().rstrip('.')
-    battle_ok = ctx is None or bool(BATTLE_TRIGGERS & set(ctx.get('trigger') or ()))
+    battle_ok = ctx is None or bool(ctx.get('battle')) or bool(BATTLE_TRIGGERS & set(ctx.get('trigger') or ()))
     if re.search(r'during this battle', x, re.I) and not battle_ok: raise Review('v2 battle effect outside a battle trigger')      # A7 review
     m = SELF_BATTLE_BP.match(x)
     if m: return [{'do': 'BP_TARGET', 'n': bpv(m.group(1)), 'to': 'self', 'battle': True}]
@@ -292,32 +304,56 @@ def own_grammar(s, ctx=None):
     return None
 
 
-# ---------- v0.74: "Put N core(s) from the Void to <destination>" ----------
-VOID_CORES = re.compile(r'^put (a|one|two|three|\d) cores? from (?:the )?void (?:to|on|onto|in|into) (.+)$', re.I)
-_VS_NP = r'(?:(' + COL + r') )?(?:"([^"]+(?:"\s*/\s*"[^"]+)*)" family )?spirits?'
+# ---------- v0.74: "Put N core(s) from the Void to <destination>" (v0.75: Trash, Nexus, "each to every", two colours) ----------
+VOID_CORES = re.compile(r'^put (a|one|two|three|\d) cores? from (?:the )?void (each )?(?:to|on|onto|in|into) (.+)$', re.I)
+_VCOL = r'(?:(' + COL + r'(?:/' + COL + r')*) )?'
+_VS_NP = _VCOL + r'(?:"([^"]+(?:"\s*/\s*"[^"]+)*)" family )?(spirits?|nexus(?:es)?)'
 VOID_SPIRIT = re.compile(r'^(?:(?:any (?:one )?of your|one of your|your) ' + _VS_NP + r'|(?:any|a) ' + _VS_NP + r' you control)$')      # an own-side marker is required (an unmarked "a Spirit" is not guessed)
+VOID_EACH = re.compile(r'^(?:every|all|each|all of your|each of your) ' + _VS_NP + r'(?: you control)?$')
+
+
+def _void_match(col, fam):
+    match = {}
+    if col: match['color'] = col if '/' not in col else col.split('/')
+    if fam: match['family'] = re.split(r'"\s*/\s*"', fam)
+    return match
 
 
 def void_cores(m, x):
-    """destinations the engine has: your Reserve (VOID_TO_RESERVE) and one of your Spirits, optionally one colour or one family
-    (VOID_TO_CARD to anySpirit + match). Trash, Nexus, "each to every ..." and two-destination sentences stay in review."""
+    """destinations the engine has: your Reserve (VOID_TO_RESERVE), your Trash (VOID_TO_TRASH, v0.75), this Spirit, one of your
+    Spirits / Nexuses with an optional colour (one or "A/B" = either) or family (VOID_TO_CARD anySpirit / anyNexus + match), and
+    "each to every <X> you control" (VOID_TO_CARD eachSpirit / eachNexus). "-only" colours, "other", keyword filters, Grandstone
+    Nexus and two-destination sentences stay in review."""
     n = n_of(m.group(1).lower())
-    dest = low(m.group(2).strip())
-    if re.fullmatch(r'(?:your|the) reserve', dest): return [{'do': 'VOID_TO_RESERVE', 'n': n}]
-    d = VOID_SPIRIT.match(dest)
-    if not d: raise Review('sentence: ' + x[:140])
-    a = {'do': 'VOID_TO_CARD', 'n': n, 'to': 'anySpirit'}
-    match = {}
-    col, fam = (d.group(1) or d.group(3)), (d.group(2) or d.group(4))
-    if col: match['color'] = col
-    if fam: match['family'] = re.split(r'"\s*/\s*"', fam)
+    each = bool(m.group(2))
+    dest = low(m.group(3).strip())
+    if not each:
+        if re.fullmatch(r'(?:your|the) reserve', dest): return [{'do': 'VOID_TO_RESERVE', 'n': n}]
+        if re.fullmatch(r'(?:your|the) trash', dest): return [{'do': 'VOID_TO_TRASH', 'n': n}]
+        if re.fullmatch(r'this spirit', dest): return [{'do': 'VOID_TO_CARD', 'n': n, 'to': 'self'}]
+        if re.fullmatch(r'this spirit,? and refresh it', dest): return [{'do': 'VOID_TO_CARD', 'n': n, 'to': 'self'}, {'do': 'REFRESH'}]
+        d = VOID_SPIRIT.match(dest)
+        if not d: raise Review('sentence: ' + x[:140])
+        col, fam, kind = (d.group(1) or d.group(4)), (d.group(2) or d.group(5)), (d.group(3) or d.group(6))
+        a = {'do': 'VOID_TO_CARD', 'n': n, 'to': 'anyNexus' if kind.startswith('nexus') else 'anySpirit'}
+    else:
+        d = VOID_EACH.match(dest)
+        if not d: raise Review('sentence: ' + x[:140])
+        col, fam, kind = d.group(1), d.group(2), d.group(3)
+        a = {'do': 'VOID_TO_CARD', 'n': n, 'to': 'eachNexus' if kind.startswith('nexus') else 'eachSpirit'}
+    match = _void_match(col, fam)
     if match: a['match'] = match
     return [a]
 
 
 # ---------- v0.69: "Reveal N cards from your decktop. Among them, add/deploy <card>. Return/Discard any remaining cards." ----------
 REVEAL_HEAD = re.compile(r'^(?:(?:you can|you may) )?reveal (a|one|two|three|four|five|\d) cards? from your decktop\.', re.I)
-REVEAL_REST = re.compile(r'\.\s*(return any remaining cards to the deck ?bottom(?: in any order)?|discard any remaining cards)\.?$', re.I)
+_DTOP = r'(?:the |your )?decktop'
+_DBOT = r'(?:the |your )?deck ?bottom'
+REVEAL_REST = re.compile(r'\.\s*(return (?:any|the) remaining cards? to ' + _DBOT + r'(?:,? in any order)?|discard (?:any|the) remaining cards?'
+                         r'|return (?:any|the) remaining cards? to (?:either )?(?:only )?' + _DTOP + r'(?: only)? or (?:only )?' + _DBOT + r'(?: only)?(?:,? in any order)?'
+                         r'|(?:if not|otherwise),? (?:return it to ' + _DTOP + r'(?: or ' + _DBOT + r')?|return it to ' + _DBOT + r'|discard it))\.?$', re.I)      # v0.75: singular, "the", decktop-or-deckbottom, one-card "If not, ..." endings
+REVEAL_IF = re.compile(r'^if (?:that card|that|it)(?: is|\'s|’s) (.+?), add it to (?:the |your |you )?hand$', re.I)      # v0.75: one revealed card
 DIFF_NAME = r"(?: with (?:a )?(?:card )?name different (?:from|to) this (?:spirit|nexus)'?s)?"
 REVEAL_NP = re.compile(r'^(?:an?|one) (?:(?P<col>' + COL + r') )?(?:cost (?P<cost>\d+) or less )?(?:"(?P<fam>[^"]+(?:"\s*/\s*"[^"]+)*)" family )?(?:(?P<kind>spirit|nexus|magic) )?card' + DIFF_NAME + r'$')
 
@@ -345,8 +381,15 @@ def reveal_grammar(s):
     body = x[h.end():].strip()
     r = REVEAL_REST.search(body)
     if not r: raise Review('v2 reveal: no "remaining cards" ending')
-    rest = 'trash' if r.group(1).lower().startswith('discard') else 'bottom'
+    e = r.group(1).lower()
+    rest = 'trash' if 'discard' in e else 'either' if ' or ' in e else 'top' if 'decktop' in e else 'bottom'
     body = body[:r.start()].strip().rstrip('.')
+    mi = REVEAL_IF.match(body)
+    if mi:
+        if n != 1: raise Review('v2 reveal: "if" form with more cards')
+        match, diff = reveal_np(re.sub(r'^(?:an?|one) ', 'a ', mi.group(1).strip()) if re.search(r'\bcard$', mi.group(1).strip()) else 'a ' + re.sub(r'^(?:an?|one) ', '', mi.group(1).strip()) + ' card')
+        return [{'do': 'REVEAL_PICK', 'n': 1, 'match': match, 'rest': rest}]
+    if rest == 'top': raise Review('v2 reveal: decktop return with more cards')
     body = re.sub(r'^among them,?\s*', '', body, flags=re.I)
     body = re.sub(r'^(?:you can|you may)\s+', '', body, flags=re.I)
     m = re.match(r'^add (?:to (?:the |your )?hand )?(.+?)(?: among them)?(?: to (?:the |your )?hand)?$', body, re.I)

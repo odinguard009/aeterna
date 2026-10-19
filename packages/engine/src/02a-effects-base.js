@@ -36,7 +36,7 @@ function fxEntries(f) {
 function fxMatch(card, m) {
   if (!m || (!m.name && !m.family && m.costGe == null && m.costLe == null && !m.type && !m.color && !m.noUlt)) return true;
   if (m.noUlt && card.type === 'Ultimate') return false;      // v0.59: the text says "Spirit"; texts that include Ultimates print "Spirit/Ultimate"
-  if (m.color && !(card.colors || [card.symbol]).includes(m.color)) return false;      // v0.39: "Purple" Sorcerer cards (colour = card colour)
+  if (m.color && ![].concat(m.color).some(x => (card.colors || [card.symbol]).includes(x))) return false;      // v0.39: "Purple" Sorcerer cards (colour = card colour); v0.75: "Red/White" = either colour
   if (m.costGe != null && card.cost < m.costGe) return false;
   if (m.costLe != null && card.cost > m.costLe) return false;      // v0.69 "Cost N or less" (reveal effects)
   if (m.type && card.type !== m.type) return false;

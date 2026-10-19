@@ -160,6 +160,67 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS25-014",
+  "name": "The ChevalLancer Eligale",
+  "name_jp": "冥騎兵エリゲイル",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   },
+   {
+    "cores": 5,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Infernal Lord"
+  ],
+  "text": "[LV1][LV2][LV3] (When Summoned)\nDraw a card. If you control any Ultimate, also, destroy an opposing exhausted Spirit.",
+  "image": null,
+  "block": "25",
+  "saga": 5,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     },
+     {
+      "do": "DESTROY",
+      "exhaustedOnly": true,
+      "if": {
+       "ctrl": {
+        "n": 1,
+        "type": "Ultimate"
+       }
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS25-039",
   "name": "Calydon",
   "name_jp": "カリュドーン",
@@ -437,6 +498,77 @@
       "n": 2,
       "if": {
        "hasSymbol": "red"
+      }
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS28-009",
+  "name": "General-Dragon",
+  "name_jp": "ジェネラル・ドラゴン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 8,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 6000
+   },
+   {
+    "cores": 3,
+    "bp": 12000
+   },
+   {
+    "cores": 4,
+    "bp": 15000
+   }
+  ],
+  "families": [
+   "Astral Guardian",
+   "Dragon Warrior"
+  ],
+  "text": "[LV1][LV2][LV3] (When Summoned)\nDestroy an opposing 15000 BP or less Spirit/Ultimate.\n\n[LV2][LV3] (When Attacks)\nDestroy all opposing 3000 BP or less Spirits. If you have a Burst set, also, destroy an opposing Nexus.",
+  "image": "General-Dragon.jpg",
+  "block": "28",
+  "saga": 5,
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "bpLe": 15000
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DESTROY",
+      "all": true,
+      "bpLe": 3000
+     },
+     {
+      "do": "DESTROY",
+      "nexus": true,
+      "if": {
+       "burstSet": true
       }
      }
     ]

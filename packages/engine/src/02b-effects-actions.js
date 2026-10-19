@@ -27,8 +27,8 @@ const FX_ACTIONS = {
   SYMBOL_PLUS: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 3, txt: a => `during this battle, this Spirit gains ${a.n} extra symbol${a.n === 1 ? '' : 's'}`,
     can: c => c.p.spirits.includes(c.src) && !!G.attacker,
     run: async (c, a) => { c.src.symBattle = (c.src.symBattle || 0) + a.n; log(`${CARDS[c.src.id].name} gains ${a.n} extra symbol${a.n === 1 ? '' : 's'} during this battle.`); } },
-  DESTROY: { chk: a => (a.nexus === true || a.bpLe != null || a.bpLeAttacker === true || a.symbolsLe != null || a.bpLeReturned === true || a.familyInOppTrash === true || a.costLe != null || a.costLeSelf === true || a.costLeDiscarded === true || a.costRank != null || (Number.isInteger(a.coresLe) && a.coresLe >= 0 && a.coresLe <= 10)) && (a.costLe == null || (Number.isInteger(a.costLe) && a.costLe >= 0 && a.costLe <= 30)) && (a.costRank == null || ['lowest', 'highest'].includes(a.costRank)) && (a.costBoost == null || (a.costBoost && Number.isInteger(a.costBoost.counterGe) && Number.isInteger(a.costBoost.n) && a.costBoost.n > 0)) && (a.bpLe == null || (Number.isInteger(a.bpLe) && a.bpLe >= 0)) && (a.symbolsLe == null || Number.isInteger(a.symbolsLe)) && (a.thenDraw == null || (Number.isInteger(a.thenDraw) && a.thenDraw >= 1 && a.thenDraw <= 3)) && (a.lifeBoost == null || (a.lifeBoost && Number.isInteger(a.lifeBoost.le) && Number.isInteger(a.lifeBoost.n) && a.lifeBoost.n > 0)) && (a.noFx == null || a.noFx === true),
-    txt: a => (a.coresLe != null ? `destroy 1 opposing Spirit/Ultimate with ${a.coresLe} core${a.coresLe === 1 ? '' : 's'} or less on it` : a.nexus ? 'destroy 1 opposing Nexus' : a.costRank ? `destroy 1 opposing Spirit/Ultimate with the ${a.costRank} cost` : (a.costLe != null || a.costLeSelf || a.costLeDiscarded) ? `destroy 1 opposing Spirit/Ultimate with ${a.costLe != null ? 'cost ' + a.costLe + ' or less' : a.costLeSelf ? 'a cost equal or inferior to this Spirit' : 'a cost equal or inferior to the discarded card'}${a.costBoost ? ' (+' + a.costBoost.n + ' with ' + a.costBoost.counterGe + ' counters or more)' : ''}` : `destroy 1 opposing Spirit${a.bpLe != null ? ' with ' + a.bpLe + ' BP or less' + (a.lifeBoost ? ' (+' + a.lifeBoost.n + ' if your Life is ' + a.lifeBoost.le + ' or less)' : '') : a.symbolsLe != null ? ' with ' + a.symbolsLe + ' symbol(s) or less' : a.bpLeReturned ? ' with BP equal or inferior to the LV1 BP of the returned card' : a.familyInOppTrash ? ' with the same family as a card in the opposing Trash' : ' with BP equal or inferior to the attacker'}${a.thenDraw ? ', then draw ' + a.thenDraw : ''}`) + (a.noFx ? "; the effects of the destroyed target can't activate" : ''),
+  DESTROY: { chk: a => (a.all == null || (a.all === true && !a.nexus)) && (a.nexus === true || a.bpLe != null || a.bpLeAttacker === true || a.symbolsLe != null || a.bpLeReturned === true || a.familyInOppTrash === true || a.costLe != null || a.costLeSelf === true || a.costLeDiscarded === true || a.costRank != null || (Number.isInteger(a.coresLe) && a.coresLe >= 0 && a.coresLe <= 10)) && (a.costLe == null || (Number.isInteger(a.costLe) && a.costLe >= 0 && a.costLe <= 30)) && (a.costRank == null || ['lowest', 'highest'].includes(a.costRank)) && (a.costBoost == null || (a.costBoost && Number.isInteger(a.costBoost.counterGe) && Number.isInteger(a.costBoost.n) && a.costBoost.n > 0)) && (a.bpLe == null || (Number.isInteger(a.bpLe) && a.bpLe >= 0)) && (a.symbolsLe == null || Number.isInteger(a.symbolsLe)) && (a.thenDraw == null || (Number.isInteger(a.thenDraw) && a.thenDraw >= 1 && a.thenDraw <= 3)) && (a.lifeBoost == null || (a.lifeBoost && Number.isInteger(a.lifeBoost.le) && Number.isInteger(a.lifeBoost.n) && a.lifeBoost.n > 0)) && (a.noFx == null || a.noFx === true),
+    txt: a => a.all ? 'destroy every opposing Spirit/Ultimate with ' + (a.coresLe != null ? a.coresLe + ' core(s) or less on it' : a.bpLe + ' BP or less') + (a.thenDraw ? ', then draw ' + a.thenDraw : '') + (a.noFx ? "; the effects of the destroyed targets can't activate" : '') : (a.coresLe != null ? `destroy 1 opposing Spirit/Ultimate with ${a.coresLe} core${a.coresLe === 1 ? '' : 's'} or less on it` : a.nexus ? 'destroy 1 opposing Nexus' : a.costRank ? `destroy 1 opposing Spirit/Ultimate with the ${a.costRank} cost` : (a.costLe != null || a.costLeSelf || a.costLeDiscarded) ? `destroy 1 opposing Spirit/Ultimate with ${a.costLe != null ? 'cost ' + a.costLe + ' or less' : a.costLeSelf ? 'a cost equal or inferior to this Spirit' : 'a cost equal or inferior to the discarded card'}${a.costBoost ? ' (+' + a.costBoost.n + ' with ' + a.costBoost.counterGe + ' counters or more)' : ''}` : `destroy 1 opposing Spirit${a.bpLe != null ? ' with ' + a.bpLe + ' BP or less' + (a.lifeBoost ? ' (+' + a.lifeBoost.n + ' if your Life is ' + a.lifeBoost.le + ' or less)' : '') : a.symbolsLe != null ? ' with ' + a.symbolsLe + ' symbol(s) or less' : a.bpLeReturned ? ' with BP equal or inferior to the LV1 BP of the returned card' : a.familyInOppTrash ? ' with the same family as a card in the opposing Trash' : ' with BP equal or inferior to the attacker'}${a.thenDraw ? ', then draw ' + a.thenDraw : ''}`) + (a.noFx ? "; the effects of the destroyed target can't activate" : ''),
     cands: (c, a) => {
       if (a.nexus) return c.opp.nexus.filter(n => !fxImmune(c.opp, n));
       if (a.costRank || a.costLe != null || a.costLeSelf || a.costLeDiscarded) {                    // v0.37 cost based destruction ("Cost Destruction effect")
@@ -49,6 +49,13 @@ const FX_ACTIONS = {
     },
     can: (c, a) => FX_ACTIONS.DESTROY.cands(c, a).length > 0,
     run: async (c, a) => {
+      if (a.all) {      // v0.75 "Destroy every / all opposing <bound> Spirits": every candidate at once
+        const L = FX_ACTIONS.DESTROY.cands(c, a).slice(); if (!L.length) { c.ctx.did = false; return; }
+        for (const t of L) { if (a.noFx) t.noFx = true; removeSpirit(c.opp, t, 'destroyed', true); }
+        checkDepletion(c.opp); c.ctx.destroyedN = L.length;
+        if (a.thenDraw) { const k = draw(c.p, a.thenDraw); log(`${who(c.p)} ${c.p.cpu ? 'draws' : 'draw'} ${k} card${k === 1 ? '' : 's'}.`); handUp(c.p, k); }
+        return;
+      }
       const t = await fxPickTarget(c, FX_ACTIONS.DESTROY.cands(c, a), c.burst ? `💥 <b>Choose a target</b><br>Tap the opposing ${a.nexus ? 'Nexus' : 'Spirit'} to destroy (glowing).` : `✨ <b>${esc(CARDS[c.src.id].name)}</b><br>Tap the opposing ${a.nexus ? 'Nexus' : 'Spirit'} to destroy (glowing).`);
       if (!t) { c.ctx.did = false; return; }
       if (a.noFx) t.noFx = true;
@@ -103,8 +110,8 @@ const FX_ACTIONS = {
       removeFrom(c.p.revealed, c.src); await summonFree(c.p, c.src); c.ctx.did = fieldList(c.p).includes(c.src);
     } },
   /* reveal n cards, add one matching card to the Hand, the rest go to the Trash or the bottom of the Deck (v0.33, e.g. Rainydle) */
-  REVEAL_PICK: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 10 && hasMatch(a.match) && ['trash', 'bottom'].includes(a.rest) && (a.diffName == null || a.diffName === true),   // v0.69 diffName: "a card name different from this Spirit's"
-    txt: a => `reveal ${a.n} cards from the top of your Deck, add a matching card to your Hand, ${a.rest === 'trash' ? 'discard' : 'return to the bottom of the Deck'} the rest`,
+  REVEAL_PICK: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 10 && hasMatch(a.match) && ['trash', 'bottom', 'top', 'either'].includes(a.rest) && (a.diffName == null || a.diffName === true),   // v0.69 diffName: "a card name different from this Spirit's"
+    txt: a => `reveal ${a.n} cards from the top of your Deck, add a matching card to your Hand, ${a.rest === 'trash' ? 'discard' : a.rest === 'top' ? 'return to the top of the Deck' : a.rest === 'either' ? 'return to the top or the bottom of the Deck' : 'return to the bottom of the Deck'} the rest`,      // v0.75 rest top / either
     can: c => c.p.deck.length > 0,
     run: async (c, a) => {
       const nm = CARDS[c.src.id].name, top = c.p.deck.splice(0, Math.min(a.n, c.p.deck.length)); c.p.revealed = top;
@@ -114,7 +121,11 @@ const FX_ACTIONS = {
       if (t) { removeFrom(c.p.revealed, t); c.p.hand.push(t); handUp(c.p, 1); log(`${nm}: ${CARDS[t.id].name} is added to the Hand.`); }
       const rest = c.p.revealed.splice(0);
       if (a.rest === 'trash') { for (const x of rest) c.p.trash.push(x); if (rest.length) log(`${nm}: ${rest.length} card${rest.length === 1 ? '' : 's'} discarded.`); }
-      else for (const x of rest) c.p.deck.push(x);
+      else {
+        let top = a.rest === 'top';      // v0.75: "either the decktop or the deckbottom": the owner chooses (CPU: bottom)
+        if (a.rest === 'either' && rest.length && !c.p.cpu) top = (await ask({ title: `✨ ${nm}`, peek: true, wide: true, html: 'Return the remaining revealed card(s) to the top or the bottom of your Deck?' + cardStripHTML(rest), buttons: [{ label: 'Decktop', cls: 'primary', value: true }, { label: 'Deckbottom', cls: 'blue', value: false }] })) === true;
+        if (top) c.p.deck.unshift(...rest); else for (const x of rest) c.p.deck.push(x);
+      }
       c.ctx.did = !!t;
     } },
   /* v0.37 LOOT: draw n, then discard m cards from the Hand (you choose). drawPlus {n, if}: extra cards when the condition holds; discardLessPerName: -1 discard per matching card you control;
@@ -214,11 +225,19 @@ const FX_ACTIONS = {
     } },
   VOID_TO_RESERVE: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5, txt: a => `put ${a.n} core${a.n === 1 ? '' : 's'} from the Void to your Reserve`,
     run: async (c, a) => { const m = takeFromVoid(c.p, a.n); c.p.reserve.n += m; log(`${CARDS[c.src.id].name}: ${m} core${m === 1 ? '' : 's'} move from the Void to the Reserve.`); } },
-  VOID_TO_CARD: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5 && ['self', 'anySpirit'].includes(a.to) && (a.match == null || (a.to === 'anySpirit' && hasMatch(a.match))),      // v0.74: match = "any of your <colour|family> Spirits"
-    cands: (c, a) => c.p.spirits.filter(x => fxMatch(CARDS[x.id], a.match)), txt: a => a.perOppHandPairs ? 'put a core from the Void to one of your Spirits for every two cards in the opposing Hand' : a.perDistinctSoul ? 'put a core from the Void to one of your Spirits for each differently-named card in Soul State' : `put ${a.n} core${a.n === 1 ? '' : 's'} from the Void to ${a.to === 'self' ? 'this Spirit' : a.match ? 'one of your matching Spirits' : 'one of your Spirits'}`,
+  VOID_TO_TRASH: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5, txt: a => `put ${a.n} core${a.n === 1 ? '' : 's'} from the Void to your Trash`,      // v0.75: the cores come back to the Reserve in the next Refresh Step
+    run: async (c, a) => { const m = takeFromVoid(c.p, a.n); c.p.trashCores.n += m; log(`${CARDS[c.src.id].name}: ${m} core${m === 1 ? '' : 's'} move from the Void to the Trash.`); } },
+  VOID_TO_CARD: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5 && ['self', 'anySpirit', 'anyNexus', 'eachSpirit', 'eachNexus'].includes(a.to) && (a.match == null || (a.to !== 'self' && hasMatch(a.match))),      // v0.74: match = "any of your <colour|family> Spirits"; v0.75: Nexus targets, "each to every <X> you control"
+    cands: (c, a) => (/Nexus$/.test(a.to) ? c.p.nexus : c.p.spirits).filter(x => fxMatch(CARDS[x.id], a.match)), txt: a => a.perOppHandPairs ? 'put a core from the Void to one of your Spirits for every two cards in the opposing Hand' : a.perDistinctSoul ? 'put a core from the Void to one of your Spirits for each differently-named card in Soul State' : `put ${a.n} core${a.n === 1 ? '' : 's'} from the Void ${/^each/.test(a.to) ? 'to each of your ' : 'to '}${a.to === 'self' ? 'this Spirit' : (/^any/.test(a.to) ? 'one of your ' : '') + (a.match ? 'matching ' : '') + (/Nexus$/.test(a.to) ? 'Nexuses' : 'Spirits')}`,
     can: (c, a) => (!a.perOppHandPairs || c.opp.hand.length >= 2) && (!a.perDistinctSoul || c.p.soulState.length > 0) && (a.to === 'self' ? c.p.spirits.includes(c.src) : FX_ACTIONS.VOID_TO_CARD.cands(c, a).length > 0),
     run: async (c, a) => {
-      const t = a.to === 'self' ? (c.p.spirits.includes(c.src) ? c.src : null) : await fxPickTarget(c, FX_ACTIONS.VOID_TO_CARD.cands(c, a), `✨ <b>${esc(CARDS[c.src.id].name)}</b><br>Tap the Spirit that receives the core${a.n === 1 ? '' : 's'} from the Void (glowing).`);
+      if (/^each/.test(a.to)) {      // v0.75: every matching card gets n cores (each one its own)
+        const L = FX_ACTIONS.VOID_TO_CARD.cands(c, a); let m = 0;
+        for (const t of L) { const k = takeFromVoid(c.p, a.n); t.cores += k; m += k; }
+        c.ctx.put = m; if (!m) { c.ctx.did = false; return; }
+        log(`${CARDS[c.src.id].name}: ${a.n} core${a.n === 1 ? '' : 's'} from the Void to each of ${L.map(t => CARDS[t.id].name).join(', ')}.`); return;
+      }
+      const t = a.to === 'self' ? (c.p.spirits.includes(c.src) ? c.src : null) : await fxPickTarget(c, FX_ACTIONS.VOID_TO_CARD.cands(c, a), `✨ <b>${esc(CARDS[c.src.id].name)}</b><br>Tap the ${/Nexus$/.test(a.to) ? 'Nexus' : 'Spirit'} that receives the core${a.n === 1 ? '' : 's'} from the Void (glowing).`);
       const want = a.perOppHandPairs ? Math.floor(c.opp.hand.length / 2) : a.perDistinctSoul ? new Set(c.p.soulState.map(x => x.id)).size : a.n;
       const m = t ? takeFromVoid(c.p, want) : 0; c.ctx.put = m; if (!m) { c.ctx.did = false; return; }
       t.cores += m; log(`${CARDS[c.src.id].name}: ${m} core${m === 1 ? '' : 's'} move from the Void to ${CARDS[t.id].name}.`);

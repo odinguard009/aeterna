@@ -483,7 +483,7 @@ MAGIC_HEAD = [
     (r'^\(Main Step\)\s*|^\(Your Main Ph(?:a|r)ase\)\s*', ['MAIN']),
 ]
 
-def magic_spec(body):
+def magic_spec(body, tim=()):
     """Body -> {"effect":..., "value":...} using the simple MAGIC_FX types where they fit, ACTIONS otherwise."""
     ss = sentences(body)
     if len(ss) == 1:
@@ -499,7 +499,7 @@ def magic_spec(body):
             if m: return f(m)
     acts = []
     for s in ss:
-        a, o = action_of(s, {'kind': 'magic'})
+        a, o = action_of(s, {'kind': 'magic', 'battle': 'FLASH' in tim})      # v0.75: a Flash Magic may say "during this battle" (the actions do nothing outside a battle)
         if o: raise Review('optional clause in Magic: ' + s[:80])
         acts += a
     if any(a['do'] in ('REFRESH', 'VOID_TO_CARD', 'BP_PLUS') and a.get('to', 'self') == 'self' for a in acts):
@@ -525,7 +525,7 @@ def magic_card(paras, n=None):
             m = re.match(rx, p)
             if m: tim = ts; p = p[m.end():]; break
         if tim is None: raise Review('Magic paragraph without Main/Flash: ' + p[:80])
-        spec = magic_spec(p)
+        spec = magic_spec(p, tim)
         for t in tim:
             if t in by: raise Review('two effects for the same timing')
             by[t] = spec

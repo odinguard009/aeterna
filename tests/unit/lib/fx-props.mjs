@@ -137,6 +137,7 @@ function simple(card, a) {
     case 'COUNTER': return only(a, ['n', 'max']) && { body: `await run(src, RA); const want = A.max != null ? Math.min(A.n, A.max) : A.n; if (P.count !== want) return 'count ' + P.count + ', want ' + want;
       P.count = A.max != null ? A.max : 0; if (A.max != null) { await run(src, RA); if (P.count !== A.max) return 'the counter went over its maximum'; } return '';` };
     case 'VOID_TO_RESERVE': return only(a, ['n']) && { body: `const r = P.reserve.n; await run(src, RA); return P.reserve.n === r + A.n ? '' : 'reserve ' + r + ' -> ' + P.reserve.n;` };
+    case 'VOID_TO_TRASH': return only(a, ['n']) && { body: `const t = P.trashCores.n, r = P.reserve.n; await run(src, RA); return P.trashCores.n === t + A.n && P.reserve.n === r ? '' : 'trash cores ' + t + ' -> ' + P.trashCores.n;` };
     case 'VOID_TO_LIFE': return only(a, ['n']) && { body: `const l = P.life; await run(src, RA); return P.life === l + A.n ? '' : 'life ' + l + ' -> ' + P.life;` };
     case 'VOID_TO_CARD':
       if (!only(a, ['n', 'to'])) return null;

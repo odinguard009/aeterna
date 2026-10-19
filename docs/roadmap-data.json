@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "20 Oct 2026",
-  "next": "next: card bundle = 3-4 packs per release from the top of pack-plan.md \"Measured order\" (estimates are at most ~4x real: v0.74.0 estimated ~58, got +13): ally battle results (\"with your X Spirit\"), bodies under the battle heads, SUMMON_HAND by type, DESTROY_TOTAL, then Mirage / Rush / Accel; 776 of 8,709 cards playable"
+  "next": "next: card bundle = 3-4 packs per release from the top of pack-plan.md \"Measured order\" (estimates are at most ~3x real: v0.74.0 ~58 -> +13, v0.75.0 ~72 -> +23): \"(once per turn:\", \"by discarding a\", \"if you control\", ally battle results, SUMMON_HAND by type, DESTROY_TOTAL, then Mirage / Rush / Accel; 799 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -647,7 +647,7 @@
     },
     {
      "s": "next",
-     "t": "One pack per card session: step window (v0.70.0, +4), Burst forms + condition clauses (v0.71.0, +12), battle heads (v0.72.0, +13), leave heads + connectives (v0.73.0, +12), first bundle (v0.74.0, +13); next a bundle of 3-4 packs per release from the measured order"
+     "t": "One pack per card session: step window (v0.70.0, +4), Burst forms + condition clauses (v0.71.0, +12), battle heads (v0.72.0, +13), leave heads + connectives (v0.73.0, +12), first bundle (v0.74.0, +13), second bundle (v0.75.0, +23); next a bundle of 3-4 packs per release from the measured order"
     },
     {
      "s": "later",
@@ -1047,7 +1047,14 @@
    "calls": "~95",
    "basis": "measured",
    "note": "Manual Sonnet session (owner: do all suggestions after the slowdown review): measured pack ranking (pack_plan --measure), CI fix (test G06), docs inside the release commit, first bundle release: Void cores, attack/block battle results, sentences for existing actions. Real unlock +13 (estimate ~58)."
+  },
+  {
+   "ver": "v0.75.0",
+   "date": "20 Oct 2026",
+   "tokens": 200000,
+   "calls": "~50",
+   "basis": "estimate",
+   "note": "Scheduled auto HEMAT ON card session on Opus: second measured bundle (pack-plan rows 1-4 + 9): Void to Trash / Nexus / each to every, reveal endings, DESTROY all / exhausted only, Flash Magic battle effects. Real unlock +23 (estimate ~72)."
   }
- ],
- "next": "next: card bundle = 3-4 packs per release from the top of pack-plan.md \"Measured order\" (estimates are at most ~4x real: v0.74.0 estimated ~58, got +13): ally battle results (\"with your X Spirit\"), bodies under the battle heads, SUMMON_HAND by type, DESTROY_TOTAL, then Mirage / Rush / Accel; 776 of 8,709 cards playable"
+ ]
 }
