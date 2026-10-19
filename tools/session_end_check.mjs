@@ -3,8 +3,10 @@
 //   1. /mnt/user-data/outputs/aeterna-v<package version>.html exists and embeds that VERSION,
 //   2. `npm run -s test:release` passes on that file,
 //   3. docs/roadmap.html is not older than docs/roadmap-data.json,
-//   4. branch backup/v<version> exists on origin (skip with --no-backup when no backup is due).
-// Usage: node tools/session_end_check.mjs [--no-backup] [--out DIR]
+//   4. branch backup/v<version> exists on origin (skip with --no-backup when no backup is due),
+//   5. (v0.69.3, P0 B7; warning only) the GitHub Release v<version> carries aeterna-v<version>.html; if not, the newest
+//      Release workflow run is printed so the final message can name the problem (skip with --no-release).
+// Usage: node tools/session_end_check.mjs [--no-backup] [--no-release] [--out DIR]
 // Then SendUserFile BOTH the game file and docs/roadmap.html before the session closes.
 import { readFileSync, existsSync, statSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
@@ -32,6 +34,15 @@ if (!args.includes('--no-backup')) {
   const r = spawnSync('git', ['ls-remote', '--heads', 'origin', `backup/v${ver}`], { encoding: 'utf8' });
   if (r.status !== 0 || !r.stdout.trim()) fail(`branch backup/v${ver} not on origin (git push origin HEAD:refs/heads/backup/v${ver})`);
   else ok(`backup/v${ver} on origin`);
+}
+if (!args.includes('--no-release')) {
+  const gh = a => spawnSync('gh', ['api', ...a], { encoding: 'utf8' });
+  const r = gh([`repos/odinguard009/aeterna/releases/tags/v${ver}`, '--jq', '[.assets[].name] | join(",")']);
+  if (r.status === 0 && r.stdout.includes(`aeterna-v${ver}.html`)) ok(`GitHub Release v${ver} has aeterna-v${ver}.html`);
+  else {
+    const w = gh(['repos/odinguard009/aeterna/actions/workflows/release.yml/runs?per_page=1', '--jq', '.workflow_runs[0] | "\(.status) \(.conclusion // "-") on \(.head_sha[0:7]) run \(.id)"']);
+    console.log(`WARN GitHub Release v${ver} without aeterna-v${ver}.html yet (it runs after CI on main); newest Release run: ${(w.stdout || 'unknown (gh failed)').trim()}. Re-run this check after CI; still missing = name it in the final message`);
+  }
 }
 console.log(bad.length ? `[session_end_check] ${bad.length} problem(s): fix, then send BOTH files with SendUserFile` : `[session_end_check] ready: SendUserFile ${file} and docs/roadmap.html`);
 process.exit(bad.length ? 1 : 0);

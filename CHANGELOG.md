@@ -6,6 +6,9 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 - **P0 process cleanup** (`docs/ai/process-plan.md` part B, owner 2026-10-19 18:37). No game change; every step is reversible (git history keeps the old text).
   - B1: the CLAUDE.md `**Done:**` line (6.3k characters, re-sent with every tool call) is now one pointer to `CHANGELOG.md`, the mind map and `docs/ai/roadmap-archive.md`; sessions update only the `**Next:**` line. CLAUDE.md 19.4k -> 13.2k characters.
   - B2: superseded and finished sections of `docs/ai/roadmap-open.md` ("Plan from the audit 2026-10-16", "Earlier plan 2026-10-15", CPU-tweak bundle, "Index by mechanic", "Items", finished card-priority bullets) moved to `docs/ai/roadmap-archive.md` (not read at session start): 38.0k -> 20.8k characters. `tools/gen_roadmap.mjs` reads Index / Items from the archive, `tools/rules_audit.py` scans it too (counts unchanged: 250 items, 91 confirmed, 47 house, 112 open; the committed report was stale at 242).
+  - B3: `tools/session_start.sh` also prints the chain-stop state, `Mode hemat` and an open handoff (newest "Handoff" comment on issue #3 newer than the last release commit); the skill's separate context, chain-stop and hemat calls are gone (2-3 calls per session).
+  - B6: `tools/mechanic_inventory.py` runs at the session end only when the session changed `data/glossary/mechanics.json` or `data/import`.
+  - B7: `tools/session_end_check.mjs` checks the GitHub Release asset `aeterna-vX.Y.Z.html` itself (warning with the newest Release run when missing; `--no-release` skips it), replacing the separate `gh api` call.
 
 ## v0.69.2
 - **K2: generated tests per compiled action** (`docs/ai/compiler-v2-plan.md` point 5; plan W in `docs/ai/roadmap-open.md`). No game change.

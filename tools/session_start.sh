@@ -97,5 +97,17 @@ else echo "[session_start] open issues: gh not available here, use the GitHub to
 if command -v gh >/dev/null 2>&1; then
   gh api "repos/odinguard009/aeterna/actions/workflows/regression.yml/runs?per_page=1" --jq '.workflow_runs[0] | "[session_start] last Regression: \(.status) \(.conclusion // "-") on \(.head_sha[0:7]) run \(.id)"' 2>/dev/null || echo "[session_start] last Regression: unknown (gh failed)"
 fi
+# v0.69.3 (P0 B3): chain-stop state, Mode hemat and the newest handoff, so the skill's start steps 2, 4 and the hemat call are one call
+if [ -f docs/ai/chain-stop.md ]; then echo "[session_start] CHAIN-STOP: docs/ai/chain-stop.md exists - stop unless the owner is present and has answered (then delete it)"; else echo "[session_start] chain-stop: none"; fi
+bash tools/session_gate.sh hemat status 2>/dev/null | sed 's/^/[session_start] /' || echo "[session_start] Mode hemat: unknown (gate error = treat as ON)"
+if command -v gh >/dev/null 2>&1; then
+  # only a handoff newer than the newest release commit matters (older ones were finished by a later session)
+  HO=$(gh api "repos/odinguard009/aeterna/issues/comments?sort=created&direction=desc&per_page=100" \
+    --jq '[.[] | select((.issue_url|endswith("/issues/3")) and (.body|test("^\\s*Handoff";"i")))][0] | if . == null then "" else "\(.created_at)\t\(.body|gsub("\\s+";" ")|.[0:300])" end' 2>/dev/null) || HO="?"
+  RELT=$(git log -1 --format=%ct --grep='^v[0-9]' 2>/dev/null); RELT=${RELT:-$(git log -1 --format=%ct)}   # light clone (depth 1): HEAD time
+  if [ "$HO" = "?" ]; then echo "[session_start] newest handoff: unknown (gh failed)"
+  elif [ -n "$HO" ] && [ "$(date -d "${HO%%$'\t'*}" +%s)" -gt "$RELT" ]; then echo "[session_start] OPEN HANDOFF ${HO%%$'\t'*}: ${HO#*$'\t'}"
+  else echo "[session_start] handoff: none newer than the last release"; fi
+fi
 if [ "$LOOP_RC" != 0 ]; then echo "[session_start] baseline loop FAILED (see above): fix it first"; exit "$LOOP_RC"; fi
 echo "[session_start] ready"
