@@ -161,6 +161,7 @@ TRIGGERS = [
     (r'When this Spirit would leave the [Ff]ield (?:due to|by) (?:opposing effects?|an opposing effect),', ['LEAVES_OPPFX']),
     (r'(?:\(When (?:Battles|Attacks/Blocks|Attacks or Blocks)\)\s*)?When only the opposing Spirit(?:/Ultimate)? is destroyed(?: (?:by comparing BP|via BP comparison|by BP comparison))?,', ['BATTLE_WIN']),   # v0.55: CR 8-1-6-2; v0.74: the "(When Battles)" head and the "by BP comparison" words are optional in the older texts
     (r'\(When Attacks/Blocks\)|\(When Attacks or Blocks\)', ['ATTACKS+BLOCKS']),
+    (r'\(When Battles\)(?=\s*At the end of (?:the )?battle,)', ['ATTACKS+BLOCKS']),      # v0.78: (When Battles) = this Spirit attacks or blocks (house reading, only with an end-of-battle body)
     (r'\(When Summoned\)', ['SUMMONED']),
     (r'\(When Attacks\)', ['ATTACKS']),
     (r'\(When Blocks\)|\(When Blocking\)', ['BLOCKS']),
@@ -169,7 +170,43 @@ SELF_ACTS = ('REFRESH', 'VOID_TO_CARD', 'BP_PLUS', 'SELF_TO_HAND', 'CRUSH', 'AWA
 ATTACK_STEP = {'(Your Attack Step)': {'attackStep': True, 'oppTurn': False}}
 KEYWORD_LINES = {   # keyword -> handler(levels, body) returning effect list and card flags
     'Crush': 'crush', 'Holy Life': 'holy', 'High Speed': 'speed', 'Clash': 'clash',
+    'Curse': 'curse', 'Brilliance': 'brilliance',      # v0.78 end-of-battle keywords (docs/mechanics/end-of-battle.md)
 }
+CURSE_TEXT = re.compile(r'^\((?:When Attacks|During Your Battle Phase)\)\s*(?:Destroy an opposing Spirit that blocked(?: when the battle resolves)? at the end of (?:the )?battle'
+                        r'|Each time this spirit is blocked, destroy the spirit that blocked this spirit at (?:the )?End of Battle(?: Step)?)\.?$', re.I)
+BRILLIANCE_TEXT = re.compile(r'^\(When Attacks\)\s*At the end of (?:the )?battle, return every Magic card you used during this battle (?:from your Trash )?to your Hand\.?$', re.I)
+
+# v0.78 ally battle result: "When only the opposing [attacking|blocking] Spirit is destroyed by comparing BP [during battle] [with your X]," (CR 8-1-6-2)
+ALLY_WIN = re.compile(r'^When only the opposing (attacking |blocking )?Spirit(?:/Ultimate)? is destroyed (?:by comparing BP|via BP comparison|by BP comparison)(?: during (?:the )?battle)?(?: with your (.+?))?,\s*', re.I)
+NUMS = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5}
+
+
+def ally_np(x):
+    """'"A"/"B" family Spirits' | '"A"-named Spirit' | '[A]/[B]' | 'Spirit with two or more symbols' | '<Colour> Spirit' -> engine match"""
+    x = x.strip()
+    m = re.fullmatch(r'((?:"[^"]+"/?)+) family Spirits?', x)
+    if m: return {'family': re.findall(r'"([^"]+)"', m.group(1)), 'noUlt': True}
+    m = re.fullmatch(r'((?:"[^"]+"/?)+)-named Spirits?', x)
+    if m: return {'name': re.findall(r'"([^"]+)"', m.group(1)), 'noUlt': True}
+    m = re.fullmatch(r'((?:\[[^\]]+\]/?)+)', x)
+    if m: return {'name': [n.strip() for n in re.findall(r'\[([^\]]+)\]', m.group(1))], 'noUlt': True}
+    m = re.fullmatch(r'Spirits? with (one|two|three|four|five|\d) or more symbols', x, re.I)
+    if m: return {'symbolsGe': NUMS.get(m.group(1).lower()) or int(m.group(1)), 'noUlt': True}
+    m = re.fullmatch(r'(Red|Purple|Green|White|Yellow|Blue) Spirits?', x)
+    if m: return {'color': m.group(1).lower(), 'noUlt': True}
+    raise Review('ally battle result with your ' + x[:40])
+
+
+def ally_win(p, side=None):
+    """None, or (rest of the paragraph, match, extra keys) for an ALLY_BATTLE_WIN head; side = 'att' | 'blk' from a step head"""
+    m = ALLY_WIN.match(p)
+    if not m or not (m.group(1) or m.group(2)): return None
+    tm = ally_np(m.group(2)) if m.group(2) else {}
+    s2 = {'attacking ': 'blk', 'blocking ': 'att'}.get((m.group(1) or '').lower())
+    if side and s2 and side != s2: raise Review('ally battle result on the wrong side: ' + p[:60])
+    side = side or s2
+    ex = {'attackingOnly': True} if side == 'att' else {'blockingOnly': True} if side == 'blk' else {}
+    return p[m.end():], tm, ex
 
 RUSH = re.compile(r'(?<!\n)[ \t]*\n?[ \t]*\{\{Rush\|(Red|Purple|Green|White|Yellow|Blue)(?: Symbol)?\}\}\s*\(While you have an? \1 symbol, the following effect activates next\)\s*:?\s*', re.I)
 RUSH_MARK = ' \u27e6RUSH:%s\u27e7 '
@@ -273,7 +310,10 @@ def step_window(p, card, lv, rush):
         win['burstSet'] = not mw.group(1); body = body[mw.end():].strip(); body = body[0].upper() + body[1:]
     flags = {}
     e = None
-    mm = OPP_ATT_BODY.match(body)
+    aw = ally_win(body, 'att' if who == 'Your' else 'blk' if who == 'Opposing' else None) if step == 'ATTACK' else None
+    if aw:      # v0.78 "(Your|Opposing Attack Step) When only the opposing Spirit is destroyed by comparing BP with your X, ..."
+        e, _ = trig_effects(aw[0], card, ['ALLY_BATTLE_WIN'], aw[1] or None, lv, rush, flags, aw[2] or None)
+    mm = None if e is not None else OPP_ATT_BODY.match(body)
     if mm and step == 'ATTACK' and who != 'Your':
         tm = {} if mm.group(2) else {'noUlt': True}
         if mm.group(1): tm['costLe'] = int(mm.group(1))
@@ -387,9 +427,21 @@ def spirit_paragraph_main(p, card, rush):
         e = {'trigger': 'STATIC', 'flag': 'MUST_BLOCK', 'to': 'self'}
         if lv: e['lv'] = lv
         return [e], flags
+    if kw == 'Curse':
+        if not CURSE_TEXT.match(p): raise Review('Curse text: ' + p[:80])
+        e = {'trigger': 'ATTACKS', 'actions': [{'do': 'CURSE'}]}
+        if lv: e['lv'] = lv
+        return [e], flags
+    if kw == 'Brilliance':
+        if not BRILLIANCE_TEXT.match(p): raise Review('Brilliance text: ' + p[:80])
+        e = {'trigger': 'ATTACKS', 'actions': [{'do': 'BRILLIANCE'}]}
+        if lv: e['lv'] = lv
+        return [e], flags
     # trigger
     trig, tmatch, extra = None, None, None
-    for rx, ts, ex in BATTLE_HEADS:
+    aw = ally_win(p)
+    if aw: p, tmatch, extra = aw; trig = ['ALLY_BATTLE_WIN']; tmatch = tmatch or None; extra = extra or None
+    for rx, ts, ex in ([] if trig else BATTLE_HEADS):
         mm = re.match(r'^' + rx + r'\s*', p)
         if mm: trig, extra, p = ts, ex, p[mm.end():]; break
     mm = None if trig else PER_STATIC.match(p)

@@ -24,7 +24,7 @@ function battleEndAttack() {                          // v0.43 "when this battle
   G.attackEnded = G.turnNo; log('The battle ends, and with it the Attack Step.');
 }
 const attackStepOver = () => !!G && G.attackEnded === G.turnNo;
-async function doBattle(attKey, att) { try { await doBattleInner(attKey, att); } finally { if (G) { battleEndAttack(); G.attacker = null; G.blocker = null; G.noBurst = null; for (const k of ['player', 'opponent']) for (const f of fieldList(G.p[k])) f.symBattle = 0; } } }
+async function doBattle(attKey, att) { try { G.eob = []; G.battleMagic = []; G.battleResolved = false; await doBattleInner(attKey, att); if (G && !G.over && G.eob && G.eob.length) await endOfBattle(); } finally { if (G) { G.eob = null; G.battleMagic = null; G.battleResolved = false; battleEndAttack(); G.attacker = null; G.blocker = null; G.noBurst = null; for (const k of ['player', 'opponent']) for (const f of fieldList(G.p[k])) f.symBattle = 0; } } }
 async function doBattleInner(attKey, att) {
   const A = G.p[attKey], D = G.p[other(attKey)];
   if (!(await payAbTax(A, att, 'attack'))) { render(); return; }   // v0.47 Plutonic Wall
@@ -56,7 +56,7 @@ async function doBattleInner(attKey, att) {
     [att, blk] = await flashTiming(attKey, att, blk);
     if (G.over) return;
     if (!A.spirits.includes(att) || !D.spirits.includes(blk)) { log('The battle ends: a fighting Spirit left the field.'); render(); return; }
-    const ab = bpOf(att), bb = bpOf(blk);
+    const ab = bpOf(att), bb = bpOf(blk); G.battleResolved = true;      // v0.78 Curse: armed only when the battle reaches the BP comparison
     if (ab > bb) removeSpirit(D, blk, 'destroyed', 'battle');            // v0.73 'battle' = by the opponent, not by an opposing effect
     else if (ab < bb) removeSpirit(A, att, 'destroyed', 'battle');
     else { removeSpirit(D, blk, 'destroyed', 'battle'); removeSpirit(A, att, 'destroyed', 'battle'); }
@@ -155,7 +155,7 @@ async function flushBursts() {                         // queued Bursts and even
       await fireFx(G.p[ev.key], 'ALLY_LOST', null, { subject: ev.inst });
     } else if (ev.type === 'DESTROYED') await fireFx(G.p[ev.key], 'DESTROYED', ev.inst, { subject: ev.inst, byOpp: !!ev.byOpp, byOppFx: !!ev.byOppFx });
     else if (ev.type === 'LEAVES') await fireFx(G.p[ev.key], 'LEAVES', ev.inst, { subject: ev.inst, byOpp: true, byOppFx: !!ev.byOppFx });
-    else if (ev.type === 'BATTLE_WIN') await fireFx(G.p[ev.key], 'BATTLE_WIN', ev.inst, { subject: ev.inst, attacking: !!ev.att });
+    else if (ev.type === 'BATTLE_WIN') await fireFxMulti([{ owner: G.p[ev.key], trigger: 'BATTLE_WIN', src: ev.inst, ctx: { subject: ev.inst, attacking: !!ev.att } }, { owner: G.p[ev.key], trigger: 'ALLY_BATTLE_WIN', src: null, ctx: { subject: ev.inst, attacking: !!ev.att } }]);   // v0.78 also "... with your X Spirit" on other cards
     else if (ev.type === 'DESTROYS') await fireFx(G.p[ev.key], 'ALLY_DESTROYS', null, { attacker: ev.inst, subject: ev.inst });
     releaseStandby(false);                               // v0.57.0: a card whose leave triggers have all resolved leaves Standby
   }

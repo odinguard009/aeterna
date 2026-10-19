@@ -47,12 +47,12 @@ function fxValid(it) {
   if (!isMir && !fromHand && e.lv && !e.lv.includes(dead ? f.lostLv + lvBase(CARDS[f.id]) : lvNo(f))) return false;
   if (e.oc && (dead || !ocActive(f))) return false;
   if (e.braved && !f.brave) return false;
-  if ((trg === 'ALLY_ATTACKS' || trg === 'OPP_ATTACKS' || trg === 'ALLY_DESTROYS' || trg === 'ALLY_BLOCKED' || trg === 'ALLY_SUMMONED' || trg === 'ALLY_LIFE_HIT' || trg === 'ALLY_LOST' || trg === 'SOUL_PLACED') && !(subj && fxMatch(CARDS[subj.id], e.match))) return false;
+  if ((trg === 'ALLY_ATTACKS' || trg === 'OPP_ATTACKS' || trg === 'ALLY_DESTROYS' || trg === 'ALLY_BLOCKED' || trg === 'ALLY_SUMMONED' || trg === 'ALLY_LIFE_HIT' || trg === 'ALLY_LOST' || trg === 'SOUL_PLACED' || trg === 'ALLY_BATTLE_WIN') && !(subj && fxMatch(CARDS[subj.id], e.match))) return false;
   if (e.subjBraved && !(subj && subj.brave && [subj, subj.brave].some(x => (CARDS[x.id].families || []).includes(e.subjBraved)))) return false;
   if (e.self && subj !== f && (trg === 'SOUL_PLACED' || trg === 'ALLY_LIFE_HIT')) return false;
   if (e.other && subj === f) return false;
-  if (e.attackingOnly && trg === 'BATTLE_WIN' && !ctx.attacking) return false;     // v0.72 (During Attack) battle result: only as the attacker
-  if (e.blockingOnly && trg === 'BATTLE_WIN' && ctx.attacking) return false;     // v0.74 (When Blocks) battle result: only as the blocker
+  if (e.attackingOnly && (trg === 'BATTLE_WIN' || trg === 'ALLY_BATTLE_WIN') && !ctx.attacking) return false;     // v0.72 (During Attack) battle result: only as the attacker
+  if (e.blockingOnly && (trg === 'BATTLE_WIN' || trg === 'ALLY_BATTLE_WIN') && ctx.attacking) return false;     // v0.74 (When Blocks) battle result: only as the blocker
   if (trg === 'ALLY_SUMMONED' && subj && CARDS[subj.id].type === 'Brave' && !(e.match && e.match.type === 'Brave')) return false;     // a Brave summon is not a Spirit summon (manual p. 35)
   if (e.once && usedThisTurn(owner, f, idx, e)) return false;
   if (!fxIf(owner, opp, e.if, ctx)) return false;

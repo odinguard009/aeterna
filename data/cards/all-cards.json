@@ -1678,6 +1678,68 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS01-108",
+  "name": "The Anthill",
+  "name_jp": "無限蟲の蟻塚",
+  "type": "Nexus",
+  "color": "green",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 0
+   },
+   {
+    "cores": 2
+   }
+  ],
+  "families": [],
+  "text": "Original (Jap Version) = [LV1][LV2] (Opposing Attack Step) When only the opposing attacking Spirit is destroyed by comparing BP during battle, refresh the blocking Spirit you control.\n\n [LV2] (Your Attack Step) When only the opposing blocking Spirit is destroyed by comparing BP, refresh the attacking Spirit you control.",
+  "image": "The Anthill.jpg",
+  "block": "01",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ALLY_BATTLE_WIN",
+    "lv": [
+     1,
+     2
+    ],
+    "blockingOnly": true,
+    "actions": [
+     {
+      "do": "REFRESH",
+      "to": "subject"
+     }
+    ],
+    "if": {
+     "step": "ATTACK",
+     "oppTurn": true
+    }
+   },
+   {
+    "trigger": "ALLY_BATTLE_WIN",
+    "lv": [
+     2
+    ],
+    "attackingOnly": true,
+    "actions": [
+     {
+      "do": "REFRESH",
+      "to": "subject"
+     }
+    ],
+    "if": {
+     "step": "ATTACK",
+     "oppTurn": false
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS01-117",
   "name": "Double Draw",
   "name_jp": "ダブルドロー",
@@ -2040,6 +2102,51 @@
   "saga": 1,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS02-015",
+  "name": "Humpdump",
+  "name_jp": "ハンプダンプ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Darkling"
+  ],
+  "text": "[LV2] Curse (When Attacks)\nDestroy an opposing Spirit that blocked when the battle resolves at the end of battle.",
+  "image": "Humpdump.jpg",
+  "block": "02",
+  "saga": 1,
+  "mechanics": [
+   "Curse"
+  ],
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CURSE"
+     }
+    ],
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS02-023",
@@ -2523,6 +2630,55 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS02-050",
+  "name": "Koristal",
+  "name_jp": "コリスタル",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Drifting Spirit"
+  ],
+  "text": "[LV1][LV2] (When Battles)\nAt the end of battle, destroy this Spirit.",
+  "image": "Koristal.jpg",
+  "block": "02",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "alsoBlocks": true,
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "END_BATTLE",
+      "then": [
+       {
+        "do": "DESTROY_SELF"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS02-051",
   "name": "Chunpopo",
   "name_jp": "チュンポポ",
@@ -2965,6 +3121,65 @@
   "saga": 1,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-023",
+  "name": "The ArtificialCreature No.44",
+  "name_jp": "人造生命体No.44",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 7,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Artificial Soldier"
+  ],
+  "text": "[LV1][LV2] Curse (When Attacks)\nDestroy an opposing Spirit that blocked at the end of battle.\n\n[LV2] (When Blocks)\nWhen only the opposing Spirit is destroyed via BP comparison, exhaust an opposing Spirit.",
+  "image": "The ArtificialCreature No.44.jpg",
+  "block": "03",
+  "saga": 1,
+  "mechanics": [
+   "Curse"
+  ],
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CURSE"
+     }
+    ],
+    "lv": [
+     1,
+     2
+    ]
+   },
+   {
+    "trigger": "BATTLE_WIN",
+    "lv": [
+     2
+    ],
+    "blockingOnly": true,
+    "actions": [
+     {
+      "do": "EXHAUST_OPP",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS03-025",
@@ -3490,6 +3705,51 @@
   "saga": 1,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS03-054",
+  "name": "Arcanadoll-Tria",
+  "name_jp": "アルカナドール・トリア",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Magician"
+  ],
+  "text": "[LV2] Brilliance (When Attacks)\nAt the end of battle, return every Magic card you used during this battle to your Hand.",
+  "image": "Arcanadoll-Tria.jpg",
+  "block": "03",
+  "saga": 1,
+  "mechanics": [
+   "Brilliance"
+  ],
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "BRILLIANCE"
+     }
+    ],
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS03-056",
@@ -4306,6 +4566,81 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS04-008",
+  "name": "The AncientDragon Ba-Gaw",
+  "name_jp": "古竜魔人バ・ゴゥ",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 5,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   },
+   {
+    "cores": 7,
+    "bp": 10000
+   }
+  ],
+  "families": [
+   "Dragon",
+   "Ancient Dragon"
+  ],
+  "text": "[LV1][LV2][LV3] (When Attacks)\nThis Spirit gains +5000 BP.\n\n[LV2][LV3] (Your Attack Step)\nWhen only the opposing Spirit is destroyed via BP comparison with your \"Dragon\"/\"Ancient Dragon\" family Spirits, draw a card.",
+  "image": "The AncientDragon Ba-Gaw.jpg",
+  "block": "04",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 5000
+     }
+    ]
+   },
+   {
+    "trigger": "ALLY_BATTLE_WIN",
+    "lv": [
+     2,
+     3
+    ],
+    "match": {
+     "family": [
+      "Dragon",
+      "Ancient Dragon"
+     ],
+     "noUlt": true
+    },
+    "attackingOnly": true,
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ],
+    "if": {
+     "step": "ATTACK",
+     "oppTurn": false
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS04-009",
   "name": "The FlameEmperor Kujaraku",
   "name_jp": "炎皇クジャラク",
@@ -4370,6 +4705,109 @@
   "saga": 1,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-013",
+  "name": "Skulldemon",
+  "name_jp": "スカルデーモン",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   },
+   {
+    "cores": 6,
+    "bp": 6000
+   }
+  ],
+  "families": [
+   "Ogre Wizard"
+  ],
+  "text": "Jap Version = [LV1][LV2][LV3] Curse (When Attacks) Destroy an opposing Spirit that blocked when the battle resolves at the end of battle.",
+  "image": "Skulldemon.jpg",
+  "block": "04",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CURSE"
+     }
+    ],
+    "lv": [
+     1,
+     2,
+     3
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS04-014",
+  "name": "Shadowjuggler",
+  "name_jp": "シャドウジャグラー",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Evil Shadow"
+  ],
+  "text": "Jap Version = [LV1][LV2] (When Destroyed) Draw a card.\n\n [LV2] Curse (When Attacks) Destroy an opposing Spirit that blocked when the battle resolves at the end of battle.",
+  "image": "Shadowjuggler.jpg",
+  "block": "04",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CURSE"
+     }
+    ],
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS04-015",
@@ -5261,6 +5699,49 @@
   "saga": 1,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS05-011",
+  "name": "Redcap",
+  "name_jp": "レッドキャップ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Evil Shadow"
+  ],
+  "text": "[LV1][LV2] Curse (During Your Battle Phase) Each time this spirit is blocked, destroy the spirit that blocked this spirit at End of Battle Step.",
+  "image": "Redcap.jpg",
+  "block": "05",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CURSE"
+     }
+    ],
+    "lv": [
+     1,
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS05-012",
@@ -6206,6 +6687,56 @@
   "saga": 1,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS06-015",
+  "name": "Straysoul",
+  "name_jp": "ストレイソウル",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Darkling"
+  ],
+  "text": "[LV2][LV3] Curse (When Attacks)\nDestroy an opposing Spirit that blocked when the battle resolves at the end of battle.",
+  "image": "Straysoul.jpg",
+  "block": "06",
+  "saga": 1,
+  "mechanics": [
+   "Curse"
+  ],
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CURSE"
+     }
+    ],
+    "lv": [
+     2,
+     3
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS06-016",
@@ -7202,6 +7733,51 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS07-011",
+  "name": "Necrow",
+  "name_jp": "ネクロウ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 2,
+  "reduction": {
+   "purple": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 3,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Spiritual Beast"
+  ],
+  "text": "[LV1][LV2] Curse (During Your Battle Phase) Each time this spirit is blocked, destroy the spirit that blocked this spirit at End of Battle Step.",
+  "image": "Necrow.jpg",
+  "block": "07",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CURSE"
+     }
+    ],
+    "lv": [
+     1,
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS07-019",
   "name": "Spearmink",
   "name_jp": "スペアミンク",
@@ -7313,6 +7889,61 @@
   "saga": 1,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS07-030",
+  "name": "The Sacred Laevateinn",
+  "name_jp": "神機レーヴァテイン",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 2,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 4,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Armed Machine"
+  ],
+  "text": "[LV1][LV2][LV3]\nWhen only the opposing Spirit is destroyed by comparing BP with your [The Gigantic Thor]/[The ArmoredSacred Walhalance], refresh this Spirit.",
+  "image": "The Sacred Laevateinn.jpg",
+  "block": "07",
+  "saga": 1,
+  "effects": [
+   {
+    "trigger": "ALLY_BATTLE_WIN",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "match": {
+     "name": [
+      "The Gigantic Thor",
+      "The ArmoredSacred Walhalance"
+     ],
+     "noUlt": true
+    },
+    "actions": [
+     {
+      "do": "REFRESH"
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS07-032",
@@ -7533,6 +8164,51 @@
   "saga": 1,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS08-010",
+  "name": "Demo-Bone",
+  "name_jp": "デモ・ボーン",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Zombie"
+  ],
+  "text": "[LV2] Curse (When Attacks)\nDestroy an opposing Spirit that blocked when the battle resolves at the end of battle.",
+  "image": "Demo-Bone.jpg",
+  "block": "08",
+  "saga": 1,
+  "mechanics": [
+   "Curse"
+  ],
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CURSE"
+     }
+    ],
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS08-011",
@@ -8794,6 +9470,55 @@
   "saga": 2,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS10-041",
+  "name": "Tin-Soldier",
+  "name_jp": "ティン・ソルジャー",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Toy Beast"
+  ],
+  "text": "[LV1][LV2] (When Battles)\nAt the end of battle, destroy this Spirit.",
+  "image": "Tin-Soldier.jpg",
+  "block": "10",
+  "saga": 2,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "alsoBlocks": true,
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "END_BATTLE",
+      "then": [
+       {
+        "do": "DESTROY_SELF"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS10-044",
@@ -11262,6 +11987,66 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS14-045",
+  "name": "Goristal",
+  "name_jp": "ゴリスタル",
+  "type": "Spirit",
+  "color": "yellow",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Drifting Spirit"
+  ],
+  "text": "[LV1][LV2][LV3] (When Battles)\nWhen only the opposing Spirit is destroyed via BP comparison, destroy this Spirit.\n\n[LV3] (When Destroyed)\nDraw a card.",
+  "image": "Goristal.png",
+  "block": "14",
+  "saga": 3,
+  "effects": [
+   {
+    "trigger": "BATTLE_WIN",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "DESTROY_SELF"
+     }
+    ]
+   },
+   {
+    "trigger": "DESTROYED",
+    "lv": [
+     3
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS14-046",
   "name": "Pam",
   "name_jp": "パム",
@@ -12343,6 +13128,64 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS16-029",
+  "name": "Mibrock-Patrol",
+  "name_jp": "ミブロック・パトロール",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   }
+  ],
+  "families": [
+   "Android"
+  ],
+  "text": "[LV1][LV2] (Opposing Attack Step)\nWhen only the opposing Spirit is destroyed by comparing BP with your \"Mibrock\"-named Spirit, put a core from the Void to any of your Spirits.",
+  "image": "Mibrock-Patrol.jpg",
+  "block": "16",
+  "saga": 3,
+  "effects": [
+   {
+    "trigger": "ALLY_BATTLE_WIN",
+    "lv": [
+     1,
+     2
+    ],
+    "match": {
+     "name": [
+      "Mibrock"
+     ],
+     "noUlt": true
+    },
+    "blockingOnly": true,
+    "actions": [
+     {
+      "do": "VOID_TO_CARD",
+      "n": 1,
+      "to": "anySpirit"
+     }
+    ],
+    "if": {
+     "step": "ATTACK",
+     "oppTurn": true
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS16-030",
   "name": "Serizawand-Duck",
   "name_jp": "セリザワンド・ダック",
@@ -12647,6 +13490,63 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS17-001",
+  "name": "Bari-Burn",
+  "name_jp": "バリ・バーン",
+  "type": "Spirit",
+  "color": "red",
+  "cost": 2,
+  "reduction": {
+   "red": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   },
+   {
+    "cores": 3,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Winged Dragon"
+  ],
+  "text": "[LV1][LV2][LV3] (When Attacks) At the end of battle, during this turn, give a Spirit you control +3000 BP.",
+  "image": "Bari-Burn.jpg",
+  "block": "17",
+  "saga": 3,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "END_BATTLE",
+      "then": [
+       {
+        "do": "BP_TARGET",
+        "n": 3000,
+        "to": "pick"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS17-007",
   "name": "Vajranga",
   "name_jp": "ヴァジュランガ",
@@ -12765,6 +13665,54 @@
   "saga": 3,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS17-018",
+  "name": "The AmethystSnake Zaum",
+  "name_jp": "紫晶の大蛇ザウム",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 7,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 2,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 4000
+   },
+   {
+    "cores": 3,
+    "bp": 8000
+   }
+  ],
+  "families": [
+   "Dark Snake"
+  ],
+  "text": "[LV1][LV2] Curse (When Attacks)\nDestroy an opposing Spirit that blocked when the battle resolves at the end of battle.",
+  "image": "The AmethystSnake Zaum.jpg",
+  "block": "17",
+  "saga": 3,
+  "mechanics": [
+   "Curse"
+  ],
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CURSE"
+     }
+    ],
+    "lv": [
+     1,
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS17-019",
@@ -13471,6 +14419,58 @@
   "saga": 3,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS18-046",
+  "name": "Shaggai-Bug",
+  "name_jp": "シャッガイ・バグ",
+  "type": "Spirit",
+  "color": "blue",
+  "cost": 1,
+  "reduction": {},
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Fusion Beast"
+  ],
+  "text": "[LV2] (Your Attack Step)\nWhen only the opposing Spirit is destroyed by comparing BP with your Spirit with two or more symbols, refresh that Spirit you control.",
+  "image": "Shaggai-Bug.png",
+  "block": "18",
+  "saga": 3,
+  "effects": [
+   {
+    "trigger": "ALLY_BATTLE_WIN",
+    "lv": [
+     2
+    ],
+    "match": {
+     "symbolsGe": 2,
+     "noUlt": true
+    },
+    "attackingOnly": true,
+    "actions": [
+     {
+      "do": "REFRESH",
+      "to": "subject"
+     }
+    ],
+    "if": {
+     "step": "ATTACK",
+     "oppTurn": false
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS18-049",
@@ -15609,6 +16609,55 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS21-011",
+  "name": "Jangohebi",
+  "name_jp": "ジャンゴヘビ",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 1,
+  "reduction": {
+   "purple": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 2,
+    "bp": 2000
+   },
+   {
+    "cores": 4,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Dark Snake"
+  ],
+  "text": "[LV2][LV3] Curse (When Attacks) Destroy an opposing Spirit that blocked when the battle resolves at the end of battle.",
+  "image": "BS21-011.jpg",
+  "block": "21",
+  "saga": 4,
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CURSE"
+     }
+    ],
+    "lv": [
+     2,
+     3
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS21-016",
   "name": "Death-Hydra",
   "name_jp": "デス・ヒュードラ",
@@ -17219,6 +18268,74 @@
   "saga": 4,
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS24-015",
+  "name": "Batknight",
+  "name_jp": "バットナイト",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Zombie"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nDraw a card. If you control any Ultimate, also, draw a card.\n\n[LV2] Curse (When Attacks)\nDestroy an opposing Spirit that blocked when the battle resolves at the end of battle.",
+  "image": "Batknight.jpg",
+  "block": "24",
+  "saga": 5,
+  "mechanics": [
+   "Curse"
+  ],
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     },
+     {
+      "do": "DRAW",
+      "n": 1,
+      "if": {
+       "ctrl": {
+        "n": 1,
+        "type": "Ultimate"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CURSE"
+     }
+    ],
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
   "id": "BS24-021",
@@ -20425,6 +21542,104 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS37-046",
+  "name": "The Gigantic Thride-Gelm",
+  "name_jp": "巨神機スライド・ゲルム",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 7,
+  "reduction": {
+   "white": 4
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 7000
+   },
+   {
+    "cores": 2,
+    "bp": 12000
+   },
+   {
+    "cores": 4,
+    "bp": 16000
+   }
+  ],
+  "families": [
+   "Android"
+  ],
+  "text": "[LV1][LV2][LV3] {{ua|Red/Purple/White/Blue}}\nThis Spirit is unaffected by opposing Red/Purple/White/Blue Spirit/Ultimate/Nexus/Magic effects.\n\n[LV1][LV2][LV3] (Opposing Attack Step)\nThis Spirit can block while exhausted.\n\n[LV2][LV3] (When Attacks/Blocks)\nAt the end of the battle, return an opposing Spirit to the Hand.",
+  "image": "BS37-046.jpg",
+  "block": "37",
+  "saga": 7,
+  "mechanics": [
+   "Ultra Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "from": {
+     "colors": [
+      "red",
+      "purple",
+      "white",
+      "blue"
+     ],
+     "types": [
+      "Spirit",
+      "Ultimate",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   },
+   {
+    "trigger": "STATIC",
+    "flag": "BLOCK_EXHAUSTED",
+    "to": "self",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "if": {
+     "step": "ATTACK",
+     "oppTurn": true
+    }
+   },
+   {
+    "trigger": "ATTACKS",
+    "alsoBlocks": true,
+    "lv": [
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "END_BATTLE",
+      "then": [
+       {
+        "do": "BOUNCE_OPP",
+        "to": "hand",
+        "kind": "spirit"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS37-048",
   "name": "The WhiteMonkey Salabha",
   "name_jp": "白猿のシャラバ",
@@ -22709,6 +23924,53 @@
       "draw": 2,
       "discard": 1
      }
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
+  "id": "BS67-007",
+  "name": "Camelot Rider",
+  "name_jp": "キャメロット・ライダー",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 0,
+  "reduction": {},
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 1000
+   },
+   {
+    "cores": 3,
+    "bp": 2000
+   }
+  ],
+  "families": [
+   "Blood Crystal",
+   "Evil Shadow"
+  ],
+  "text": "[LV1][LV2] Curse (When Attacks)\nDestroy an opposing Spirit that blocked when the battle resolves at the end of battle.",
+  "image": "67-007.png",
+  "block": "67",
+  "saga": 14,
+  "mechanics": [
+   "Curse"
+  ],
+  "effects": [
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CURSE"
+     }
+    ],
+    "lv": [
+     1,
+     2
     ]
    }
   ],

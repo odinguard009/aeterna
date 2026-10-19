@@ -264,6 +264,8 @@ def own_grammar(s, ctx=None):
     m = SELF_BATTLE_BP.match(x)
     if m: return [{'do': 'BP_TARGET', 'n': bpv(m.group(1)), 'to': 'self', 'battle': True}]
     if SELF_BATTLE_SYM.match(x): return [{'do': 'SYMBOL_PLUS', 'n': 1}]
+    m = re.fullmatch(r'(?:during this turn, give (?:a|one) spirit you control \+(\d[\d,]*) ?bp|give (?:a|one) spirit you control \+(\d[\d,]*) ?bp (?:during|until the end of) this turn)', x, re.I)
+    if m: return [{'do': 'BP_TARGET', 'n': bpv(m.group(1) or m.group(2)), 'to': 'pick'}]      # v0.78 "give a Spirit you control +N BP" = one of your Spirits (BP_TARGET pick)
     m = OWN_BP.match(x)
     if m:
         match, att = own_np(m.group(1))
@@ -560,7 +562,23 @@ THEN_LEAD = re.compile(r'^Then,\s*(.+)$', re.I)
 AND_SPLIT = re.compile(r'^(.+?),? and ((?:draw|put|send|return|destroy|discard|exhaust|refresh|your counter)\b.+)$', re.I)
 
 
+EOB_LEAD = re.compile(r'^at the end of (?:the |of )?battle, (.+)$', re.I)
+EOB_TRIG = {'ATTACKS', 'BLOCKS', 'ATTACKS+BLOCKS'}
+SUBJ_REFRESH = re.compile(r'^refresh (?:that spirit|the (?:blocking|attacking|battling) spirit)(?: you control)?\.?$', re.I)
+
+
 def action_of(s, ctx):
+    trig = set((ctx or {}).get('trigger') or ()) if isinstance(ctx, dict) else set()
+    m = EOB_LEAD.match(s.strip())
+    if m and trig and trig <= EOB_TRIG:      # v0.78 "At the end of (the) battle, X." = X waits for the end of this battle (END_BATTLE)
+        body = m.group(1).strip(); body = body[0].upper() + body[1:]
+        a, o = action_of(body, ctx)
+        if o or not a or len(a) > 3: raise Review('sentence: ' + s[:140])
+        return [{'do': 'END_BATTLE', 'then': a}], False
+    if re.fullmatch(r'destroy this spirit\.?', s.strip(), re.I) and trig and not (trig & {'DESTROYED', 'DESTROYED_OPP', 'DESTROYED_OPPFX', 'LEAVES', 'LEAVES_OPPFX'}):
+        return [{'do': 'DESTROY_SELF'}], False      # v0.78 the source destroys itself (own effect)
+    if 'ALLY_BATTLE_WIN' in trig and SUBJ_REFRESH.match(s.strip()):      # v0.78 your Spirit that won the battle
+        return [{'do': 'REFRESH', 'to': 'subject'}], False
     m = COND_LEAD.match(s.strip())
     cond = cond_of(m.group(1)) if m else None
     if cond:

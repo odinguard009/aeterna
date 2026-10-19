@@ -66,7 +66,7 @@ test('VD74-03 compiler: (When Attacks) / (When Blocks) battle result heads; "(Wh
     const c = compile(`[LV1] ${t}, draw a card.`);
     assert.deepEqual(c.effects, [{ trigger: 'BATTLE_WIN', lv: [1], actions: [{ do: 'DRAW', n: 1 }] }], t + ' ' + JSON.stringify(c));
   }
-  assert.match(compile('[LV1] When only the opposing Spirit is destroyed by comparing BP with your "Dragon" family Spirit, draw a card.').review || '', /./, 'ally variants (with your X Spirit) stay in review');
+  assert.equal(compile('[LV1] When only the opposing Spirit is destroyed by comparing BP with your "Dragon" family Spirit, draw a card.').effects[0].trigger, 'ALLY_BATTLE_WIN', 'v0.78: ally variants (with your X Spirit) are ALLY_BATTLE_WIN');
 });
 
 test('VD74-04 engine: BATTLE_WIN blockingOnly fires for the winning blocker only; attackingOnly still for the winning attacker only', async () => {

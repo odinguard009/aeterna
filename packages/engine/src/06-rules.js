@@ -430,6 +430,7 @@ async function castMagic(p, ch) {                         // ch = { inst, target
   } finally { if (!fromBurst && p.limbo === inst) p.limbo = prevLimbo; }
   if (fromTrash) { toRemoved(p, inst); log(`${card.name} is banished (used from the Trash).`); }
   else if (!fromBurst) p.trash.push(inst);
+  if (G && G.attacker && G.battleMagic) G.battleMagic.push({ key: p.key, inst });      // v0.78 Brilliance: Magic used during this battle
   checkDepletion(p); checkDepletion(opp);
 }
 

@@ -1,5 +1,73 @@
 [
  {
+  "id": "BS24-015",
+  "name": "Batknight",
+  "name_jp": "バットナイト",
+  "type": "Spirit",
+  "color": "purple",
+  "cost": 3,
+  "reduction": {},
+  "symbols": 0,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 2000
+   },
+   {
+    "cores": 2,
+    "bp": 3000
+   }
+  ],
+  "families": [
+   "Zombie"
+  ],
+  "text": "[LV1][LV2] (When Summoned)\nDraw a card. If you control any Ultimate, also, draw a card.\n\n[LV2] Curse (When Attacks)\nDestroy an opposing Spirit that blocked when the battle resolves at the end of battle.",
+  "image": "Batknight.jpg",
+  "block": "24",
+  "saga": 5,
+  "mechanics": [
+   "Curse"
+  ],
+  "effects": [
+   {
+    "trigger": "SUMMONED",
+    "lv": [
+     1,
+     2
+    ],
+    "actions": [
+     {
+      "do": "DRAW",
+      "n": 1
+     },
+     {
+      "do": "DRAW",
+      "n": 1,
+      "if": {
+       "ctrl": {
+        "n": 1,
+        "type": "Ultimate"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "trigger": "ATTACKS",
+    "actions": [
+     {
+      "do": "CURSE"
+     }
+    ],
+    "lv": [
+     2
+    ]
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS24-021",
   "name": "Yoroikarasu",
   "name_jp": "ヨロイカラス",

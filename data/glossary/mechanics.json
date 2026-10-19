@@ -526,14 +526,14 @@
  {
   "id": "kw:curse",
   "name": "Curse",
-  "status": "missing",
+  "status": "done",
   "glossary": [],
   "prep": {
-   "rules": "",
-   "data": "",
-   "lever": ""
+   "rules": "Fandom keyword page \"Curse\" + Comprehensive Rules/Categories of Effects \"At the End of...\" (docs/mechanics/end-of-battle.md)",
+   "data": "Fandom export text",
+   "lever": "v0.78.0 (CURSE)"
   },
-  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "note": "engine action CURSE in 02o-effects-battle-end.js; test PK78",
   "verified": true
  },
  {
@@ -567,14 +567,14 @@
  {
   "id": "kw:brilliance",
   "name": "Brilliance",
-  "status": "missing",
+  "status": "done",
   "glossary": [],
   "prep": {
-   "rules": "",
-   "data": "",
-   "lever": ""
+   "rules": "Fandom keyword page \"Brilliance\" + Comprehensive Rules/Categories of Effects \"At the End of...\" (docs/mechanics/end-of-battle.md)",
+   "data": "Fandom export text",
+   "lever": "v0.78.0 (BRILLIANCE)"
   },
-  "note": "no engine/compiler/test match (A4 grep 2026-10-19)",
+  "note": "engine action BRILLIANCE in 02o-effects-battle-end.js; test PK78",
   "verified": true
  },
  {

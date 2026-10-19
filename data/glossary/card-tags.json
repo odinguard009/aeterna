@@ -141,6 +141,10 @@
   "C_LEVEL",
   "T_BLOCKS"
  ],
+ "BS01-108": [
+  "A_REFRESH",
+  "C_LEVEL"
+ ],
  "BS01-117": [
   "A_BP_PLUS"
  ],
@@ -168,6 +172,10 @@
   "C_LEVEL"
  ],
  "BS02-014": [],
+ "BS02-015": [
+  "T_ATTACKS",
+  "C_LEVEL"
+ ],
  "BS02-023": [],
  "BS02-025": [],
  "BS02-029": [
@@ -204,6 +212,10 @@
  ],
  "BS02-046": [],
  "BS02-049": [],
+ "BS02-050": [
+  "C_LEVEL",
+  "T_BATTLE_WIN"
+ ],
  "BS02-051": [],
  "BS02-053": [],
  "BS02-059": [],
@@ -228,6 +240,12 @@
  "BS03-013": [],
  "BS03-018": [],
  "BS03-020": [],
+ "BS03-023": [
+  "T_ATTACKS",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "T_BLOCKS"
+ ],
  "BS03-025": [],
  "BS03-026": [],
  "BS03-029": [],
@@ -262,6 +280,10 @@
  ],
  "BS03-051": [],
  "BS03-052": [],
+ "BS03-054": [
+  "T_ATTACKS",
+  "C_LEVEL"
+ ],
  "BS03-056": [
   "T_ATTACKS",
   "C_LEVEL"
@@ -312,8 +334,22 @@
  ],
  "BS04-003": [],
  "BS04-005": [],
+ "BS04-008": [
+  "T_ATTACKS",
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
  "BS04-009": [],
  "BS04-012": [],
+ "BS04-013": [
+  "T_ATTACKS",
+  "C_LEVEL"
+ ],
+ "BS04-014": [
+  "T_ATTACKS",
+  "C_LEVEL",
+  "T_DESTROYED"
+ ],
  "BS04-015": [],
  "BS04-019": [],
  "BS04-023": [],
@@ -358,6 +394,10 @@
  "BS05-005": [],
  "BS05-006": [],
  "BS05-010": [],
+ "BS05-011": [
+  "T_ALLY_BLOCKED",
+  "C_LEVEL"
+ ],
  "BS05-012": [],
  "BS05-015": [],
  "BS05-019": [],
@@ -412,6 +452,10 @@
   "S_MUST_BLOCK"
  ],
  "BS06-013": [],
+ "BS06-015": [
+  "T_ATTACKS",
+  "C_LEVEL"
+ ],
  "BS06-016": [
   "T_SUMMONED",
   "C_LEVEL"
@@ -478,6 +522,10 @@
   "S_MUST_BLOCK"
  ],
  "BS07-010": [],
+ "BS07-011": [
+  "T_ALLY_BLOCKED",
+  "C_LEVEL"
+ ],
  "BS07-019": [],
  "BS07-028": [
   "C_LEVEL",
@@ -485,6 +533,10 @@
   "K_ARMOR"
  ],
  "BS07-029": [],
+ "BS07-030": [
+  "A_REFRESH",
+  "C_LEVEL"
+ ],
  "BS07-032": [
   "A_BP_PLUS",
   "C_LEVEL",
@@ -504,6 +556,10 @@
   "A_REFRESH"
  ],
  "BS08-001": [],
+ "BS08-010": [
+  "T_ATTACKS",
+  "C_LEVEL"
+ ],
  "BS08-011": [],
  "BS08-019": [
   "A_VOID",
@@ -586,6 +642,10 @@
  ],
  "BS10-036": [],
  "BS10-039": [],
+ "BS10-041": [
+  "C_LEVEL",
+  "T_BATTLE_WIN"
+ ],
  "BS10-044": [],
  "BS10-045": [],
  "BS10-048": [],
@@ -753,6 +813,11 @@
   "T_BLOCKS"
  ],
  "BS14-038": [],
+ "BS14-045": [
+  "C_LEVEL",
+  "T_DESTROYED",
+  "T_BATTLE_WIN"
+ ],
  "BS14-046": [],
  "BS14-048": [],
  "BS14-050": [],
@@ -824,6 +889,10 @@
  ],
  "BS16-025": [],
  "BS16-028": [],
+ "BS16-029": [
+  "A_VOID",
+  "C_LEVEL"
+ ],
  "BS16-030": [
   "C_LEVEL",
   "T_DESTROYED"
@@ -843,6 +912,11 @@
   "M_OPTIONAL"
  ],
  "BS16-053": [],
+ "BS17-001": [
+  "T_ATTACKS",
+  "A_BP_PLUS",
+  "C_LEVEL"
+ ],
  "BS17-007": [],
  "BS17-008": [
   "A_AWAKEN",
@@ -850,6 +924,10 @@
   "M_OPTIONAL"
  ],
  "BS17-010": [],
+ "BS17-018": [
+  "T_ATTACKS",
+  "C_LEVEL"
+ ],
  "BS17-019": [],
  "BS17-027": [
   "K_HIGH_SPEED"
@@ -897,6 +975,10 @@
   "T_BLOCKS"
  ],
  "BS18-037": [],
+ "BS18-046": [
+  "A_REFRESH",
+  "C_LEVEL"
+ ],
  "BS18-049": [],
  "BS19-001": [],
  "BS19-002": [],
@@ -1045,6 +1127,10 @@
   "S_MUST_BLOCK"
  ],
  "BS21-010": [],
+ "BS21-011": [
+  "T_ATTACKS",
+  "C_LEVEL"
+ ],
  "BS21-016": [
   "T_ALLY_ATTACKS",
   "C_LEVEL"
@@ -1173,6 +1259,12 @@
  ],
  "BS23-029": [],
  "BS23-040": [],
+ "BS24-015": [
+  "T_SUMMONED",
+  "T_ATTACKS",
+  "C_LEVEL",
+  "K_ULTIMATE"
+ ],
  "BS24-021": [],
  "BS24-049": [],
  "BS24-081": [
@@ -1376,6 +1468,15 @@
   "M_OPTIONAL",
   "M_THEN"
  ],
+ "BS37-046": [
+  "T_ATTACKS",
+  "A_BOUNCE",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_ULTIMATE",
+  "K_ARMOR"
+ ],
  "BS37-048": [],
  "BS37-067": [],
  "BS38-008": [
@@ -1576,6 +1677,10 @@
   "A_DRAW",
   "C_LEVEL",
   "A_LOOT"
+ ],
+ "BS67-007": [
+  "T_ATTACKS",
+  "C_LEVEL"
  ],
  "BS67-027": [
   "A_COUNTER",
