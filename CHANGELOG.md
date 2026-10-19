@@ -2,6 +2,15 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.69.1
+- **K1: pattern dictionary and pack plan** (owner, 2026-10-19: "pattern first, then card by card"; plan item W in `docs/ai/roadmap-open.md`). No game change.
+  - `tools/wiki_rules.py`: caches the 302 Fandom keyword pages and 12 rules pages (Comprehensive Rules, Standard rule manual) in `build/` and writes `docs/reports/wiki-rules-index.md` (179 keyword pages used by staged cards, which ones carry a format / default-text section, mechanic status; rules pages with their sections). `--show` / `--section` / `--for` read a page or the rule source of a compiler blocker locally. The repo keeps links, section names and counts only.
+  - `data/glossary/wiki-rules-map.json`: 31 compiler blockers mapped to their wiki rule sections (step timings, Burst, durations, connectives, Once per Turn, "by doing A", "remaining cards", targets, denial, keyword templates).
+  - `tools/pack_plan.py` -> `docs/reports/pack-plan.md`: greedy order of the compile_v2 blockers by cards completed (first 10 steps ~800 cards, 60 steps ~2,080; upper bounds, since `blockers()` sees the first failing sentence per paragraph). By family: step timing heads 580, event trigger heads 374, sentence verbs 322, keyword templates 288, Burst 201.
+  - `docs/mechanics/step-timings.md`: rule note for the first pack (paraphrased from the wiki and the Standard manual, measured forms of the 3,364 step heads, build decision: one window condition `if.step` for triggers, statics and activations).
+  - Skill `bs-wiki-rules` (cache, pick the pack, rule source, note in our own words, real recompile); `docs/reports/compile-v2-report.md` regenerated (it still described the 8,040-card pool).
+  - Roadmap: card sessions now build one pack per session from the pack plan; K2 generated tests per action next; U5 paused until the card rate rises.
+
 ## v0.69.0
 - **Legacy (= Succession; Standard CR 12-2-1-3, Fandom "Legacy" + Q&A 31541-31543, 31620, 31866)** (card session): summoning or casting a card with Legacy, EX-symbol cards of the reduction colour in your Trash pay reduction symbols (one card per symbol, before the Field symbols); the paying cards go to the Banished zone.
   - Card data: text head "(Legacy)" -> `legacy: true` (compiler head, Spirit / Nexus / Magic; Brave is reviewed), the Fandom `ex_symbols` -> `exSymbols` through `parseCard` (the 60 shipped block A EX cards that had lost the field got it back from `fandom-cards-26r.json`). A card whose only text is the Legacy head counts as implemented.

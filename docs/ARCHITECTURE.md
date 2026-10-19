@@ -79,6 +79,8 @@ Staging keeps every card; playable is the promoted subset, so the stages are not
 ## 5. Effect compiler
 `python3 tools/compile_effects.py [--saga N] --review docs/reports/compile-review.md --out build/compiled.json` turns staged card text into effect entries by pattern; cards with any unmatched unit are listed in the review file with the reason. Compiler v2 (v0.61.0): `python3 tools/compile_v2.py [--saga N] --out build/compiled.json --report docs/reports/compile-v2-report.md` runs v1 first sentence by sentence (identical output, test C61-01), then a clause grammar (one selector noun phrase shared by destroy / exhaust / return / remove / BP minus / send cores, "Target X. Destroy it." pairs, `[LV1-2-3]` heads); its report lists the engine levers (filters the grammar reads but no action supports) and the cards whose only blocker is each reason; promote its output with `--v2`. `node tools/promote_compiled.mjs build/compiled.json` checks and promotes the compiled cards into `data/cards`. Progress: `python3 tools/unlock_report.py` -> `docs/reports/unlock-report.md` (`playable X / 8,041`); real unlocks of one lever: `python3 tools/lever_report.py` + a scratch recompile (tag counts are upper bounds).
 
+What to build next (v0.69.1): `python3 tools/pack_plan.py` orders the compile_v2 blockers greedily by cards completed (`docs/reports/pack-plan.md`, upper bounds); `python3 tools/wiki_rules.py` caches the Fandom keyword and Comprehensive Rules pages in `build/` and maps blockers to their rule sections (`data/glossary/wiki-rules-map.json`, `docs/reports/wiki-rules-index.md`; skill `bs-wiki-rules`).
+
 ## 6. Tests
 | Layer | Where | Run |
 |---|---|---|

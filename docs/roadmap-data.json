@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "19 Oct 2026",
-  "next": "next: U5 battle overlays and prompts (HEMAT ON: alone; stylesheet at ~89.4 KB of 90 KB: trim old CSS first), then a card head sized by real recompile (\"target an opposing\" 29 alone, (Your Attack Step) 24, (During Attack) 21); 722 of 8,709 cards playable"
+  "next": "next: K2 generated tests per compiled action (patch), then card packs from docs/reports/pack-plan.md, first the step timing heads (window condition, docs/mechanics/step-timings.md); U5 paused; 722 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -632,6 +632,14 @@
     {
      "s": "done",
      "t": "Legacy / Succession + reveal three cards (v0.69.0): +19 cards (722 of 8,709); next heads by real recompile: \"target an opposing\" 29 alone, (Your Attack Step) 24, (During Attack) 21"
+    },
+    {
+     "s": "done",
+     "t": "K1 pattern dictionary + pack plan (v0.69.1): 302 Fandom keyword pages and the Comprehensive Rules mapped to compiler blockers; greedy pack order (first 10 steps ~800 cards, upper bound)"
+    },
+    {
+     "s": "next",
+     "t": "K2 generated tests per compiled action, then one pack per card session: step timing heads, Burst forms, event trigger heads, Mirage / Rush / Accel"
     },
     {
      "s": "later",
