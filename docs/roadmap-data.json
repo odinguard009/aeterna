@@ -975,6 +975,14 @@
    "calls": "~110",
    "basis": "measured",
    "note": "Manual HEMAT ON card session on Sonnet 5.5, finished on Opus 5.5 (owner switched mid-session): Legacy (+8 cards, L69-01..10 + scenario) and reveal-from-decktop compiler pattern (+11 cards, R69-01..08), player-view subagent (285/285 checks, 28/28 CPU matches; notes in roadmap-open), real re-sizing of the block A heads. Tokens: main counter about 560k (subagent ~182k not included). The push hook runs test:quick for minutes: give git push a long timeout."
+  },
+  {
+   "ver": "v0.69.1",
+   "date": "19 Oct 2026",
+   "tokens": 90000,
+   "calls": "~35",
+   "basis": "measured",
+   "note": "Manual HEMAT ON planning session on Opus (owner approved plan W: pattern first, then card by card): K1 wiki rules index (302 keyword + 12 rules pages), blocker -> rule map, greedy pack plan, step-timings rule note, skill bs-wiki-rules; U5 paused. No game change."
   }
  ],
  "next": "next: U5 battle overlays and prompts (HEMAT ON: alone; stylesheet at ~89.4 KB of 90 KB: trim old CSS first), then a card head sized by real recompile (\"target an opposing\" 29 alone, (Your Attack Step) 24, (During Attack) 21); 722 of 8,709 cards playable"
