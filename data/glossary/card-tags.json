@@ -818,6 +818,11 @@
   "C_LEVEL",
   "K_CRUSH"
  ],
+ "BS20-051": [
+  "T_SUMMONED",
+  "T_ALLY_ATTACKS",
+  "C_LEVEL"
+ ],
  "BS20-053": [
   "T_ATTACKS",
   "A_EXHAUST",
@@ -847,6 +852,12 @@
   "K_HIGH_SPEED"
  ],
  "BS21-020": [],
+ "BS21-030": [
+  "A_EXHAUST",
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_BRAVE"
+ ],
  "BS21-032": [
   "A_REFRESH",
   "C_LEVEL"
@@ -1098,6 +1109,11 @@
   "T_DESTROYED_OPP"
  ],
  "BS46-054": [],
+ "BS46-RV004": [
+  "A_BP_PLUS",
+  "C_LEVEL",
+  "S_UNAFFECTED"
+ ],
  "BS46-RV008": [
   "T_SUMMONED",
   "C_LEVEL",
@@ -1106,6 +1122,15 @@
  "BS48-090": [
   "A_EXHAUST",
   "K_ULTIMATE"
+ ],
+ "BS50-040": [
+  "A_BP_PLUS",
+  "A_EXHAUST",
+  "C_LEVEL",
+  "S_UNAFFECTED",
+  "K_BRAVE",
+  "K_ARMOR",
+  "T_BLOCKS"
  ],
  "BS50-050": [],
  "BS50-RV006": [],

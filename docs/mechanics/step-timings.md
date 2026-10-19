@@ -42,6 +42,17 @@ can block" 39, "when an opposing Spirit" 34, "at the start of" 26, "at the end o
   patterns. Bodies the patterns do not know stay in review with their own reason, so the next pack is visible.
 - Tests: scenario first (window open vs closed for each of Your / Opposing / Either), plus start-of-step order.
 
+## Built in v0.70.0
+- Window condition `{"step", "oppTurn"}` on any effect (compiler `step_window`), STATIC `BLOCK_EXHAUSTED`, five body forms
+  (opposing / own attack trigger, own / self +BP, block while exhausted). Real recompile: +4 cards. The head was almost
+  never the last blocker: the body is usually an event trigger the compiler cannot read yet. Most frequent bodies over
+  all step-head paragraphs (2026-10-19): "When your Spirit ..." 73, "When an opposing ..." (BP / other filters) 72,
+  "(Can't Stack)" 65, "When your Life is reduced" 61, "When you're summoning" 60, "When only the ..." 56, "Once per
+  turn," 56, "This Spirit can ..." 52, "When your Spirits ..." 44, "At the start of" 42. These now count as their own
+  blockers in `docs/reports/pack-plan.md`.
+
 ## Open
+- "At the start of / At the end of" step hooks; "Flash - (Either Attack Step)" activated heads; BP-filtered subjects
+  ("When an opposing 6000 BP or less Spirit attacks": `fxMatch` sees the card, not the instance BP).
 - Real unlock by scratch recompile once the window is built (the table counts are upper bounds).
 - Main Step / End Step heads of Nexus cards: check that the Nexus level line is read before the head.

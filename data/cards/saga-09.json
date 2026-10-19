@@ -177,6 +177,82 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS46-RV004",
+  "name": "The Investigator Euro",
+  "name_jp": "調査員エウロー",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "red": 1,
+   "purple": 1,
+   "green": 1,
+   "white": 1,
+   "yellow": 1,
+   "blue": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 4000
+   }
+  ],
+  "families": [
+   "Investigator",
+   "Ice Princess"
+  ],
+  "text": "[LV1][LV2]\nAll your \"Investigator\" family Spirits are unaffected by opposing Spirit/Magic effects.\n\n[LV2] (Opposing Attack Step)\nAll your \"Investigator\" family Spirits gain +3000 BP.",
+  "image": "Euro.png",
+  "block": "46",
+  "saga": 9,
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "own",
+    "lv": [
+     1,
+     2
+    ],
+    "match": {
+     "family": [
+      "Investigator"
+     ]
+    },
+    "from": {
+     "types": [
+      "Spirit",
+      "Magic"
+     ]
+    }
+   },
+   {
+    "trigger": "STATIC",
+    "bp": 3000,
+    "to": "own",
+    "match": {
+     "family": [
+      "Investigator"
+     ]
+    },
+    "lv": [
+     2
+    ],
+    "if": {
+     "step": "ATTACK",
+     "oppTurn": true
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS46-RV008",
   "name": "Shikitsuru",
   "name_jp": "シキツル",

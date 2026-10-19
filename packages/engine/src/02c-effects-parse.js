@@ -41,8 +41,9 @@ function parseCond(c) {
     const okInt = ['lifeLe', 'anyLifeLe', 'counterGe', 'soulGe', 'oppHandGe', 'voidGe', 'soulLe', 'putGe', 'lifeGe', 'oppRemovedGe', 'removedGe', 'oppSpiritsLe', 'oppNexusGe'].includes(k) && Number.isInteger(v);
     const okStr = (k === 'controlName' || k === 'hasName' || k === 'soulOn' || k === 'nexusBraved') && typeof v === 'string' && v.length > 0 && v.length <= 60;
     const okCol = k === 'hasSymbol' && COLORS.includes(v);
+    const okStep = k === 'step' && STEPS.includes(v);
     const okBool = (k === 'byOpp' || k === 'utHit' || k === 'prev' || k === 'sealed' || k === 'oppTurn' || k === 'attackStep' || k === 'oppRemovedSpirit' || k === 'oppNoAB') && typeof v === 'boolean';
-    if (!okInt && !okStr && !okBool && !okCol) return { error: `unknown or invalid condition "${k}" (byOpp, hasSymbol, lifeLe, anyLifeLe, counterGe, soulGe, oppHandGe, voidGe, soulLe, putGe, lifeGe, oppRemovedGe, removedGe, oppSpiritsLe, oppNexusGe, oppNoAB, oppRemovedSpirit, controlName, hasName, soulOn, nexusBraved, oppTurn, attackStep, prev, utHit)` };
+    if (!okInt && !okStr && !okBool && !okCol && !okStep) return { error: `unknown or invalid condition "${k}" (byOpp, hasSymbol, lifeLe, anyLifeLe, counterGe, soulGe, oppHandGe, voidGe, soulLe, putGe, lifeGe, oppRemovedGe, removedGe, oppSpiritsLe, oppNexusGe, oppNoAB, oppRemovedSpirit, controlName, hasName, soulOn, nexusBraved, oppTurn, attackStep, step, prev, utHit)` };
   }
   return { cond: Object.assign({}, c) };
 }
@@ -89,7 +90,7 @@ function parseEffects(arr) {
       const cr = parseCond(e.if); if (cr.error) return { error: cr.error };
       o.if = cr.cond;
     }
-    if (e.match != null) { const m = e.match; if (typeof m !== 'object' || [].concat(m.name || [], m.family || []).some(x => typeof x !== 'string')) return { error: '"match" must look like {"name":["Crimson"],"family":["Lava Fish"]}' }; if (m.costGe != null && !Number.isInteger(m.costGe)) return { error: '"match.costGe" must be a whole number' }; if (m.type != null && !['Spirit', 'Nexus', 'Magic', 'Brave'].includes(m.type)) return { error: '"match.type" must be Spirit, Nexus, Magic or Brave' }; o.match = { name: m.name ? m.name.map(String) : undefined, family: m.family ? m.family.map(String) : undefined, costGe: m.costGe != null ? m.costGe : undefined, type: m.type || undefined, color: m.color || undefined, noUlt: m.noUlt === true || undefined }; }
+    if (e.match != null) { const m = e.match; if (typeof m !== 'object' || [].concat(m.name || [], m.family || []).some(x => typeof x !== 'string')) return { error: '"match" must look like {"name":["Crimson"],"family":["Lava Fish"]}' }; if (m.costGe != null && !Number.isInteger(m.costGe)) return { error: '"match.costGe" must be a whole number' }; if (m.type != null && !['Spirit', 'Nexus', 'Magic', 'Brave'].includes(m.type)) return { error: '"match.type" must be Spirit, Nexus, Magic or Brave' }; o.match = { name: m.name ? m.name.map(String) : undefined, family: m.family ? m.family.map(String) : undefined, costGe: m.costGe != null ? m.costGe : undefined, costLe: Number.isInteger(m.costLe) ? m.costLe : undefined, type: m.type || undefined, color: m.color || undefined, noUlt: m.noUlt === true || undefined }; }
     if (e.trigger === 'STATIC' && e.flag != null) {
       if (!STATIC_FLAGS.includes(e.flag)) return { error: `STATIC "flag" must be one of ${STATIC_FLAGS.join(', ')}` };
       o.flag = e.flag; o.to = e.to === 'own' ? 'own' : 'self'; if (e.braved === true) o.braved = true;      // v0.60 [When Braved] static effects

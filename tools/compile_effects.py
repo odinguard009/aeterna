@@ -219,6 +219,63 @@ def spirit_paragraph(p, card):
 BRAVED_PARA = re.compile(r'^(?:\[When Braved\]|When Braved|During (?:Spirit )?Brave)\s+(?!on\b)')
 
 
+# ---------- v0.70 step window heads ----------
+# "(Your|Opposing|Either) <Step> Step)" is a window, not an event (Fandom Comprehensive Rules / Categories of Effects,
+# "Effects Which Activate During Specific Steps"; docs/mechanics/step-timings.md): the body below it is an ordinary
+# trigger / constant effect, only active while that step runs on that player's turn. Compiled as the effect condition
+# {"step": <STEPS name>, "oppTurn": false|true} (Either = no oppTurn). The legacy forms above stay as they are.
+STEP_HEAD = re.compile(r'^\((Your|Opposing|Either) (Start|Core|Draw|Refresh|Main|Attack|End) Step\)\s*')
+WIN_KEYS = ('step', 'attackStep', 'oppTurn')
+OPP_ATT_BODY = re.compile(r'^When an opposing (?:Cost (\d+) or less )?Spirit(/Ultimate)? attacks,\s*')
+ALLY_ATT_BODY = re.compile(r'^When (?:one of )?your (?:"([^"]+)" family |(Red|Purple|Green|White|Yellow|Blue) )?Spirits? attacks?,\s*')
+OWN_BP_BODY = re.compile(r'^All (?:of )?your (?:"([^"]+)" family )?Spirits (?:gain|get) \+(\d[\d,]*) ?BP\.?$', re.I)
+SELF_BP_BODY = re.compile(r'^This Spirit (?:gains|gets) \+(\d[\d,]*) ?BP\.?$', re.I)
+BLOCK_EXH_BODY = re.compile(r'^This Spirit can block (?:opposing Spirits )?while exhausted\.?$', re.I)
+
+
+def step_window(p, card, lv, rush):
+    """None = not a step head; else (effects, flags) with the window on every effect (Review on a body we cannot read)."""
+    m = STEP_HEAD.match(p)
+    if not m: return None
+    who, step, body = m.group(1), m.group(2).upper(), p[m.end():].strip()
+    if not body or STEP_HEAD.match(body): raise Review('no trigger: ' + p[:100])
+    win = {'step': step}
+    if who != 'Either': win['oppTurn'] = who == 'Opposing'
+    flags = {}
+    e = None
+    mm = OPP_ATT_BODY.match(body)
+    if mm and step == 'ATTACK' and who != 'Your':
+        tm = {} if mm.group(2) else {'noUlt': True}
+        if mm.group(1): tm['costLe'] = int(mm.group(1))
+        e, _ = trig_effects(body[mm.end():], card, ['OPP_ATTACKS'], tm, lv, rush, flags)
+    mm = None if e is not None else ALLY_ATT_BODY.match(body)
+    if mm and step == 'ATTACK' and who != 'Opposing':
+        tm = {'noUlt': True}
+        if mm.group(1): tm['family'] = [mm.group(1)]
+        if mm.group(2): tm['color'] = mm.group(2).lower()
+        e, _ = trig_effects(body[mm.end():], card, ['ALLY_ATTACKS'], tm, lv, rush, flags)
+    if e is None:
+        mm = OWN_BP_BODY.match(body) or SELF_BP_BODY.match(body)
+        if mm:
+            if rush: raise Review('Rush with a step-window constant effect')
+            own = mm.re is OWN_BP_BODY
+            x = {'trigger': 'STATIC', 'bp': bp(mm.group(2) if own else mm.group(1)), 'to': 'own' if own else 'self'}
+            if own and mm.group(1): x['match'] = {'family': [mm.group(1)]}
+            e = [x]
+        elif BLOCK_EXH_BODY.match(body):
+            if rush: raise Review('Rush with a step-window constant effect')
+            e = [{'trigger': 'STATIC', 'flag': 'BLOCK_EXHAUSTED', 'to': 'self'}]
+        if e is not None and lv: e[0]['lv'] = lv
+    if e is None:
+        e, flags = spirit_paragraph_main((''.join('[LV%d]' % x for x in lv) + ' ' if lv else '') + body, card, rush)
+    for x in e:
+        if x['trigger'] in ('ADVENT', 'REVEALED', 'ACCEL', 'MANIFEST') or x.get('zone') or x.get('invoke') or x.get('nexusBrave'):
+            raise Review('step window on ' + x['trigger'] + ': ' + body[:60])
+        if any(k in (x.get('if') or {}) for k in WIN_KEYS): raise Review('step window twice: ' + body[:60])
+        x['if'] = dict(x.get('if') or {}, **win)
+    return e, flags
+
+
 def spirit_paragraph_main(p, card, rush):
     mb = BRAVED_PARA.match(p)
     if mb:      # v0.60: [When Braved] / During (Spirit) Brave = while a Brave is combined with this Spirit (JP 合体時); effects get braved:true
@@ -338,7 +395,13 @@ def spirit_paragraph_main(p, card, rush):
             e = {'trigger': 'STATIC', 'bp': bp(mm.group(1)), 'to': 'own', 'attackingOnly': True}
             if lv: e['lv'] = lv
             return [e], flags
+        sw = step_window(p, card, lv, rush)      # v0.70: generic step window head
+        if sw is not None: e, f2 = sw; flags.update(f2); return e, flags
         raise Review('no trigger: ' + p[:100])
+    return trig_effects(p, card, trig, tmatch, lv, rush, flags)
+
+
+def trig_effects(p, card, trig, tmatch, lv, rush, flags):
     acts, opt = [], False
     if rush and not p: raise Review('Rush without a main effect')
     for s in sentences(p):

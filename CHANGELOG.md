@@ -2,6 +2,14 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.70.0
+- **Step timing heads as a window** (card session, plan W first pack; rule note `docs/mechanics/step-timings.md`, Fandom Comprehensive Rules / Categories of Effects "Effects Which Activate During Specific Steps"): "(Your|Opposing|Either) <Start|Core|Draw|Refresh|Main|Attack|End> Step)" is read as a window, not an event. The compiler (`step_window` in `tools/compile_effects.py`) compiles the body below it with the normal trigger / constant patterns and adds the condition `{"step": <step>, "oppTurn": false|true}` (Either = no `oppTurn`); the older (Your Attack Step) forms of v0.54 / v0.59 are unchanged.
+  - Engine: condition `step` (`fxIf`, `parseCond`); STATIC flag `BLOCK_EXHAUSTED` ("This Spirit can block while exhausted"; `canBlockState` in the block list and the CPU attack/block estimates); `match.costLe` kept on trigger subjects ("When an opposing Cost N or less Spirit attacks").
+  - Body forms read under a window: "When an opposing [Cost N or less] Spirit[/Ultimate] attacks," (Opposing / Either Attack Step), "When your [\"X\" family | <colour>] Spirit attacks," (Your / Either Attack Step), "All your [\"X\" family] Spirits gain +N BP.", "This Spirit gains +N BP.", "This Spirit can block [opposing Spirits] while exhausted."; any other body goes through the normal paragraph patterns (so later trigger work covers headed cards too).
+  - Tests: `tests/unit/step70.test.mjs` (S70-01..04), scenario `tests/scenarios/macha-block-exhausted-opposing-attack-step.json`.
+  - **Measured unlock: +4 cards** (The BillowSwordsman Akashi, The CrimsonGoddess Macha, The Investigator Euro, Dark-Dober X): 726 of 8,709. The pack plan's upper bound (123 + 89 + 99 cards for the three Attack Step heads) counted the head as the only blocker, but in the real recompile the body under the head is itself an unread trigger in almost every card ("When your Life is reduced", "When your Spirit is destroyed", "When only the opposing ...", "At the start of ..."), so the step heads are not a lever on their own: those cards now show their body blocker in `docs/reports/pack-plan.md`.
+  - Promoted cards were removed from `data/import` (test P09 counts shipped + staged).
+
 ## v0.69.3
 - **P0 process cleanup** (`docs/ai/process-plan.md` part B, owner 2026-10-19 18:37). No game change; every step is reversible (git history keeps the old text).
   - B1: the CLAUDE.md `**Done:**` line (6.3k characters, re-sent with every tool call) is now one pointer to `CHANGELOG.md`, the mind map and `docs/ai/roadmap-archive.md`; sessions update only the `**Next:**` line. CLAUDE.md 19.4k -> 13.2k characters.

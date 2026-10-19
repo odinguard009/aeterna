@@ -4,7 +4,7 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "19 Oct 2026",
-  "next": "next: card pack 1 = step timing heads (one window condition if.step, docs/mechanics/step-timings.md; real unlock by scratch recompile), then Burst forms; 722 of 8,709 cards playable"
+  "next": "next: card pack 2 = Burst forms (rows 1-2 of docs/reports/pack-plan.md), sized first by a scratch recompile; step window done in v0.70.0 (+4); 726 of 8,709 cards playable"
  },
  "phases": [
   {
@@ -1007,7 +1007,15 @@
    "calls": "~55",
    "basis": "measured",
    "note": "Manual HEMAT ON session on Opus: P0 process cleanup B1-B10 (docs/ai/process-plan.md). No game change."
+  },
+  {
+   "ver": "v0.70.0",
+   "date": "19 Oct 2026",
+   "tokens": 135000,
+   "calls": "~60",
+   "basis": "measured",
+   "note": "Manual HEMAT ON card session on Opus: step timing heads read as a window (if.step, BLOCK_EXHAUSTED, five body forms). Real unlock +4 (upper bound ~300): the bodies under the heads are the real blockers."
   }
  ],
- "next": "next: card pack 1 = step timing heads (one window condition if.step, docs/mechanics/step-timings.md; real unlock by scratch recompile), then Burst forms; 722 of 8,709 cards playable"
+ "next": "next: card pack 2 = Burst forms (rows 1-2 of docs/reports/pack-plan.md), sized first by a scratch recompile; step window done in v0.70.0 (+4); 726 of 8,709 cards playable"
 }

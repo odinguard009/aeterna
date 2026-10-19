@@ -60,7 +60,7 @@ function cpuKeepMagicOrPay(p, c, M) {
 function cpuLethal(p) {
   const o = G.p[other(p.key)];
   const att = p.spirits.filter(s => !s.exhausted && !s.noAB && symOf(s) > 0).sort((a, b) => symOf(b) - symOf(a));
-  const blocks = o.spirits.filter(s => !s.exhausted && !s.noAB).length;
+  const blocks = o.spirits.filter(s => canBlockState(o, s)).length;
   const through = att.slice(blocks).reduce((n, s) => n + symOf(s), 0);
   return att.length > 0 && through >= o.life;
 }
@@ -100,7 +100,7 @@ function cpuBlockScore(d, att, b, W = cpuW(d)) {
   return saved - mine * (1 + W.risk) - 4 * W.unit;          // a chump block also costs the body's next attack
 }
 function cpuChooseBlock(d, att) {
-  const blockers = d.spirits.filter(s => !s.exhausted && !s.noAB);
+  const blockers = d.spirits.filter(s => canBlockState(d, s));
   if (!blockers.length) return null;
   const fz = fuzzPick(d, blockers); if (fz !== undefined) return fz;
   const W = cpuW(d), lethalHit = symOf(att) >= d.life;

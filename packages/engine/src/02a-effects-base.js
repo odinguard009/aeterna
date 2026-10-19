@@ -19,7 +19,7 @@ function fxUnknown(kind, name) {
   if (!FX_WARNED.has(m)) { FX_WARNED.add(m); try { console.warn('[effects] ' + m); } catch (e) { /* no console */ } }
   return false;
 }
-const FX_COND_KEYS = new Set(['soulGe', 'oppHandGe', 'voidGe', 'controlName', 'oppTurn', 'soulLe', 'putGe', 'hasName', 'prev', 'sealed', 'lifeLe', 'lifeGe', 'anyLifeLe', 'counterGe', 'soulOn', 'attackStep', 'nexusBraved', 'oppSpiritsLe', 'oppNoAB', 'oppNexusGe', 'oppRemovedGe', 'oppRemovedSpirit', 'byOpp', 'hasSymbol', 'removedGe', 'utHit', 'ctrl']);
+const FX_COND_KEYS = new Set(['soulGe', 'oppHandGe', 'voidGe', 'controlName', 'oppTurn', 'soulLe', 'putGe', 'hasName', 'prev', 'sealed', 'lifeLe', 'lifeGe', 'anyLifeLe', 'counterGe', 'soulOn', 'attackStep', 'nexusBraved', 'oppSpiritsLe', 'oppNoAB', 'oppNexusGe', 'oppRemovedGe', 'oppRemovedSpirit', 'byOpp', 'hasSymbol', 'removedGe', 'utHit', 'ctrl', 'step']);
 const FX_TRIGGERS = ['SUMMONED', 'ATTACKS', 'ALLY_ATTACKS', 'ALLY_BLOCKED', 'ALLY_SUMMONED', 'ADVENT', 'ACTIVATE', 'STATIC', 'OPP_HAND_UP', 'ALLY_LIFE_HIT', 'ALLY_LOST', 'START_ATTACK', 'MIRAGE_OWN_LIFE', 'MIRAGE_OPP_LIFE', 'SOUL_PLACED', 'MANIFEST', 'BLOCKS', 'DESTROYED', 'REVEALED', 'ALLY_DESTROYS', 'OPP_REMOVED', 'ACCEL', 'SILVER_WHEEL', 'BATTLE_WIN', 'OPP_ATTACKS'];
 const FX_TRIGGER_TEXT = { OPP_ATTACKS: 'When an opposing Spirit attacks', BATTLE_WIN: 'When Battles (only the opposing Spirit is destroyed by BP comparison)', ACCEL: 'Accel', SILVER_WHEEL: 'When you activate Silver Wheel', SUMMONED: 'When Summoned', ATTACKS: 'When Attacks', ALLY_ATTACKS: 'When an ally attacks', ALLY_BLOCKED: 'When an ally is blocked', ALLY_SUMMONED: 'When an ally is summoned', ADVENT: 'When Advents', ACTIVATE: 'Activate', OPP_HAND_UP: 'When the opposing Hand increases by an opposing effect', ALLY_LIFE_HIT: 'When an ally attack reduces the Life', ALLY_LOST: 'When an ally is depleted/destroyed by the opponent', START_ATTACK: 'Start of your Attack Step', MIRAGE_OWN_LIFE: 'Mirage: when your Life is reduced', MIRAGE_OPP_LIFE: 'Mirage: when the opposing Life is reduced', SOUL_PLACED: 'When your Soul Core is sent to a Nexus', MANIFEST: 'When Manifests', BLOCKS: 'When Blocks', DESTROYED: 'When Destroyed', REVEALED: 'When revealed from the deck', ALLY_DESTROYS: 'When your X destroys an opposing Spirit in battle', OPP_REMOVED: 'When cards are put onto the opposing Removed Zone' };
 /* v0.60.0 Brave completion: a Spirit combined with a Brave gains the Brave's [When Braved] / During (Spirit) Brave effects (braved:true; JP 合体時);
@@ -41,6 +41,8 @@ function fxMatch(card, m) {
   if (!m.name && !m.family) return true;
   return (m.name || []).some(n => card.name.toLowerCase().includes(n.toLowerCase())) || (m.family || []).some(n => (card.families || []).includes(n));
 }
+/* v0.70 STATIC BLOCK_EXHAUSTED ("This Spirit can block while exhausted", usually inside a step window): an exhausted Spirit may still block */
+const canBlockState = (p, s) => !s.noAB && (!s.exhausted || flagActive(p, 'BLOCK_EXHAUSTED', s));
 function fxIf(owner, opp, c, ctx) {
   if (!c) return true;
   for (const k in c) if (!FX_COND_KEYS.has(k)) return fxUnknown('condition', k);     // v0.59.4 strict effects
@@ -60,6 +62,7 @@ function fxIf(owner, opp, c, ctx) {
   if (c.counterGe != null && !(owner.count >= c.counterGe)) return false;
   if (c.soulOn != null) { const nm = String(c.soulOn).toLowerCase(); if (!owner.nexus.some(n => n.soul && CARDS[n.id].name.toLowerCase().includes(nm))) return false; }
   if (c.attackStep != null && (G.step === 5) !== c.attackStep) return false;
+  if (c.step != null && G.step !== STEPS.indexOf(c.step)) return false;          // v0.70 step window "(Your|Opposing|Either) X Step)" (whose turn = oppTurn)
   if (c.nexusBraved != null) { const nm = String(c.nexusBraved).toLowerCase(); if (!owner.nexus.some(n => n.brave && CARDS[n.id].name.toLowerCase().includes(nm))) return false; }   // "if you control any braved Contractor Nuadha" (v0.37)
   if (c.oppSpiritsLe != null && !(opp.spirits.length <= c.oppSpiritsLe)) return false;      // v0.39: "if the opponent doesn't control any Spirit"
   if (c.oppNoAB != null && opp.spirits.some(s => s.noAB) !== c.oppNoAB) return false;      // v0.40: "if any opposing Spirit is under can't attack/block effects"
@@ -79,7 +82,7 @@ const ctrlCount = (owner, q) => owner.spirits.filter(f => { const k = CARDS[f.id
   return (q.type === 'Both' || (q.type === 'Ultimate') === u) && (!q.colors || q.colors.some(x => (k.colors || [k.symbol]).includes(x)))
     && (q.costGe == null || k.cost >= q.costGe) && (!q.family || (k.families || []).includes(q.family)); }).length;
 function ownerOf(i) { if (!G) return null; for (const k of ['player', 'opponent']) if (fieldList(G.p[k]).includes(i)) return G.p[k]; return null; }
-const STATIC_FLAGS = ['MUST_BLOCK', 'NO_RETURN', 'CORES_DRAW', 'UNAFFECTED_SOUL', 'COST_DESTROY_PLUS', 'EXTRA_REDUCTION', 'NO_END_ATTACK', 'UNAFFECTED', 'HAND_UNAFFECTED'];
+const STATIC_FLAGS = ['MUST_BLOCK', 'NO_RETURN', 'CORES_DRAW', 'UNAFFECTED_SOUL', 'COST_DESTROY_PLUS', 'EXTRA_REDUCTION', 'NO_END_ATTACK', 'UNAFFECTED', 'HAND_UNAFFECTED', 'BLOCK_EXHAUSTED'];
 /* flag effects: MUST_BLOCK (opposing Spirits must block this attacker), NO_RETURN (cannot be returned by opposing effects), CORES_DRAW (draw once per turn when cores are sent by your effects),
    UNAFFECTED_SOUL (Ometeotl Contract Field: this card is unaffected by opposing effects while a Soul Core is on it),
    NO_END_ATTACK (v0.43: while the matching Spirit of the owner attacks, the opponent can't end the Attack Step via effects; Sunya Lv3, Crimson Crater Lv2) */

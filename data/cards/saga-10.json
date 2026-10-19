@@ -35,6 +35,95 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "BS50-040",
+  "name": "Dark-Dober X",
+  "name_jp": "ダーク・ドーベルX",
+  "type": "Spirit",
+  "color": "white",
+  "cost": 3,
+  "reduction": {
+   "white": 1
+  },
+  "symbols": 1,
+  "levels": [
+   {
+    "cores": 1,
+    "bp": 3000
+   },
+   {
+    "cores": 2,
+    "bp": 5000
+   },
+   {
+    "cores": 4,
+    "bp": 7000
+   }
+  ],
+  "families": [
+   "Machine Beast"
+  ],
+  "text": "[LV1][LV2][LV3] (Opposing Attack Step)\nThis Spirit can block while exhausted.\n\n[LV1][LV2][LV3] (When Blocks)\nThis Spirit gains +5000 BP.\n\n[LV2][LV3] {{ha|Red/White}}\nThis Spirit is unaffected by opposing Red/White Spirit/Brave/Nexus/Magic effects.",
+  "image": "Dark-Dober X.png",
+  "block": "50",
+  "saga": 10,
+  "mechanics": [
+   "Heavy Armor"
+  ],
+  "effects": [
+   {
+    "trigger": "STATIC",
+    "flag": "BLOCK_EXHAUSTED",
+    "to": "self",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "if": {
+     "step": "ATTACK",
+     "oppTurn": true
+    }
+   },
+   {
+    "trigger": "BLOCKS",
+    "lv": [
+     1,
+     2,
+     3
+    ],
+    "actions": [
+     {
+      "do": "BP_PLUS",
+      "n": 5000
+     }
+    ]
+   },
+   {
+    "trigger": "STATIC",
+    "flag": "UNAFFECTED",
+    "to": "self",
+    "lv": [
+     2,
+     3
+    ],
+    "from": {
+     "colors": [
+      "red",
+      "white"
+     ],
+     "types": [
+      "Spirit",
+      "Brave",
+      "Nexus",
+      "Magic"
+     ]
+    }
+   }
+  ],
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
+ },
+ {
   "id": "BS50-050",
   "name": "Lantern Ghost",
   "name_jp": "ちょうちんゴースト",
