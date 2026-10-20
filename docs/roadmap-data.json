@@ -647,11 +647,11 @@
      "t": "P0 process cleanup (v0.69.3): CLAUDE.md 19.4k -> 13.2k and roadmap-open 38k -> 21k characters, start/end steps folded into scripts, card-prep subagents only when needed, legacy suites audited (kept)"
     },
     {
-     "s": "next",
-     "t": "Owner, 2026-10-20: partial promotion with a \"!\" mark in Library and deck builder (A1, done in v0.79.0: 5,978 cards, two counts), then a card-author agent pilot on one block A set (A2), modelled on Aegis's one-module-per-card route"
+     "s": "done",
+     "t": "Owner, 2026-10-20: partial promotion with a \"!\" mark in Library and deck builder (A1, done in v0.79.0: 5,978 cards, two counts), then a card-author agent pilot on one block A set (A2, done in v0.80.0: +6 complete on 26RBS01, ~1 card per 100k tokens, not better than plan W bundles; ledger docs/audits/26RBS01.md)"
     },
     {
-     "s": "later",
+     "s": "next",
      "t": "One pack per card session: step window (v0.70.0, +4), Burst forms + condition clauses (v0.71.0, +12), battle heads (v0.72.0, +13), leave heads + connectives (v0.73.0, +12), first bundle (v0.74.0, +13), second bundle (v0.75.0, +23), third bundle (v0.76.0, +14), fourth bundle (v0.77.0, +23); next a bundle of 3-4 packs per release from the measured order End of battle (Curse, Brilliance, \"At the end of battle\") + ally battle results in v0.78.0 (+23)."
     },
     {
@@ -1092,6 +1092,17 @@
    "calls": "~95",
    "basis": "estimate",
    "note": "Manual HEMAT ON session on Opus: A1 partial promotion: compiler partial mode (whole paragraphs to residual), 5,978 cards into the library with a \"!\" mark and a \"Complete effects only\" filter, data gate for 745 cards, two counts (playable 6,838, complete 733); gate pagination fix."
+  },
+  {
+   "ver": "v0.80.0",
+   "date": "20 Oct 2026",
+   "tokens": 980000,
+   "calls": "~75",
+   "basis": "estimate (main counter ~330k + agents ~645k)",
+   "note": "Manual HEMAT ON session on Opus: A2 prep (one end script, promotion sample, residual validation, build counts from JSON, residual lists for 30 hand-wired cards) and the A2 card-author pilot on 26RBS01: 3 Opus agents, +6 complete cards, ~1 per 100k tokens; verdict not better, plan W resumes with block A keyword heads."
   }
- ]
+ ],
+ "updated": "20 Oct 2026",
+ "updatedAt": "0.80.0",
+ "next": "next: plan W resumes with a bundle of Standard block A keyword heads from the 26RBS01 ledger (Amplify, Rumble, Shamanism, \"when you use a Magic card\" trigger, Current), sized by scratch recompile"
 }

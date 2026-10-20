@@ -3,7 +3,17 @@
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
 ## v0.80.0
-- (in progress)
+- **A2 card-author pilot on 26RBS01 (roadmap item A2): +6 complete cards; verdict "not better", plan W resumes** (ledger `docs/audits/26RBS01.md`):
+  - Three card-author agents (Opus, existing engine actions only, scratch files) wrote effect JSON for the 146 residual clauses of the 101 partial 26RBS01 cards; main validated every changed card (parseCard + smoke, printed text vs JSON, full quick set). Complete now: 26RBS01-010, -043, -047, -071, -085, -097; more clauses run on -038, -041, -048, -051, -060, -073, -080, -092, -101, -X13. One agent error caught: -041's {{Current}} head was not modelled, so it stays partial.
+  - Measured: agents ~528k tokens + main ~60k for +6 complete = ~1.0 complete card per 100k tokens, against ~8-11 per 100k for the v0.78.0 bundle. Most residual clauses wait on keyword heads the engine lacks (Amplify 17, Rumble 16, Shamanism 15, "when you use a Magic card" 14, Current 11), so the next W bundle takes those.
+  - False-complete sample: 5 checked, 0 failed (`tests/unit/author80.test.mjs` AU80-01..05, scenarios written from the printed text).
+  - **Counts:** playable 6,838 of 8,709, **complete 739** (+6). The six complete cards left `data/import` (importer rerun); partial cards keep their staging records.
+- **A2 prep (token savings and checks):**
+  - `bash tools/release_docs.sh --end`: one call after the push waits for CI, dispatches Regression when due, pushes the backup when due, copies the game file, runs `tools/session_end_check.mjs` and prints the counts / auto-mode / Mode hemat lines. `node tools/promotion_sample.mjs` lists changed cards and the ones main must read in full (new vocabulary, no generated test, seeded 1 in 4).
+  - Test A80-01..03 (`tests/unit/a2prep80.test.mjs`): a partial card must list its missing clauses in `residual` (within the `parseCard` limits); the 30 older hand-wired partial cards got their residual lists (their card detail now names what does not run). Fixes found by it: BS74-CX03 had a residual clause over 400 characters, which made `parseCard` drop the card from the game (split in three); BS71-083 had `fxComplete: true` with a residual.
+  - The README build line reads `docs/reports/card-counts.json` (written by `tools/unlock_report.py`); the build fails when it is missing or out of date instead of falling back to the old 8,041 total.
+  - `tools/promote_compiled.mjs` smoke filler skips prebuilt-deck ids missing from the card table.
+  - Revert note: `git revert` of the v0.80.0 commit restores v0.79.0 (data only: 16 cards' effects/residual, 30 residual lists, two card fixes).
 
 ## v0.79.0
 - **Partial promotion (roadmap item A1, owner 2026-10-20): 5,978 staged cards enter the library with part of their effect missing** (UI change; backup `backup/v0.78.0`):
