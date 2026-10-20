@@ -4,8 +4,8 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "20 Oct 2026",
-  "updatedAt": "0.83.0",
-  "next": "next: F3 part 2 (M3: board actions as intents, the CPU answers io.decide), then F4 replays, F5 test waits; plan W card bundles after phase F; playable 6,838 of 8,709, complete 739"
+  "updatedAt": "0.86.0",
+  "next": "next: F5 test waits (Q2), the last item of phase F; then plan W card bundles in the K, K, U/I lane cycle; playable 6,838 of 8,709, complete 739"
  },
  "phases": [
   {
@@ -584,15 +584,15 @@
      "t": "F3 part 1 (v0.83.0): every human prompt is a serializable decision record through io.decide (05b-decide.js); WEB_GAPS empty; scripted human seat headless"
     },
     {
+     "s": "done",
+     "t": "F3 part 2 (v0.84.0): human board actions as intent records through io.decide (05c-intent.js); cpuAnswer port answerer; headless human seats play their own turns"
+    },
+    {
+     "s": "done",
+     "t": "F4 replays (v0.85.0-v0.86.0): port input records (15b-replay.js), headless replayPort / viewerReplay, fuzz cases carry the record, replay viewer in the match history"
+    },
+    {
      "s": "next",
-     "t": "F3 part 2 (M3): human board actions as intent records, the CPU answers io.decide"
-    },
-    {
-     "s": "later",
-     "t": "F4 replays (M4): input records, replay format, failing fuzz games saved as replays"
-    },
-    {
-     "s": "later",
      "t": "F5 test waits (Q2): fixed waits in tests/suites replaced by state waits"
     },
     {
@@ -615,12 +615,12 @@
      "t": "M1 (v0.60.1): workspace skeleton (packages/engine, apps/web), byte-identical build"
     },
     {
-     "s": "later",
-     "t": "M2-M3 host port: render and player choices through io.view / io.decide (phase F: F2/F3)"
+     "s": "done",
+     "t": "M2-M3 host port (v0.82.0-v0.84.0): render, prompts and board actions through io.view / io.decide (phase F: F2/F3)"
     },
     {
-     "s": "later",
-     "t": "M4 replays: input record + viewer replay (phase F: F4)"
+     "s": "done",
+     "t": "M4 replays (v0.85.0-v0.86.0): port input record + viewer replay + playback in the match history (phase F: F4)"
     },
     {
      "s": "later",
@@ -1155,9 +1155,33 @@
    "calls": "~45",
    "basis": "estimate (budget counter, incl. player-view subagent)",
    "note": "Scheduled auto session on Opus: F3 part 1, human prompts as decision records through io.decide, scripted headless human seat, backup/v0.82.0, player-view pass."
+  },
+  {
+   "ver": "v0.84.0",
+   "date": "20 Oct 2026",
+   "tokens": 140000,
+   "calls": "~45",
+   "basis": "estimate (budget counter; player-view subagent ~98k extra)",
+   "note": "Scheduled auto session on Opus: F3 part 2, board actions as intent records, cpuAnswer port answerer, backup/v0.83.0, player-view pass; chain mode continued."
+  },
+  {
+   "ver": "v0.85.0",
+   "date": "20 Oct 2026",
+   "tokens": 37000,
+   "calls": "~25",
+   "basis": "estimate (budget counter)",
+   "note": "Chain session on Opus: F4 part 1, port input records and headless replay (a real browser match replays in Node to the same log)."
+  },
+  {
+   "ver": "v0.86.0",
+   "date": "20 Oct 2026",
+   "tokens": 50000,
+   "calls": "~30",
+   "basis": "estimate (budget counter)",
+   "note": "Chain session on Opus: F4 part 2, replay viewer in the match history (Watch / Save / Open file), stylesheet shipped without comments, backup/v0.85.0."
   }
  ],
  "updated": "20 Oct 2026",
- "updatedAt": "0.83.0",
- "next": "next: F3 part 2 (M3: board actions as intents, the CPU answers io.decide), then F4 replays, F5 test waits; plan W card bundles after phase F; playable 6,838 of 8,709, complete 739"
+ "updatedAt": "0.86.0",
+ "next": "next: F5 test waits (Q2), the last item of phase F; then plan W card bundles in the K, K, U/I lane cycle; playable 6,838 of 8,709, complete 739"
 }
