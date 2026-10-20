@@ -1,0 +1,42 @@
+# Effect format (schema v1, F1 in v0.81.0)
+
+Card effects are data. A card in `data/cards/saga-*.json` (built into `data/cards/all-cards.json`) carries its effects in JSON that the engine reads through `parseCard` (`packages/engine/src/03-imported-cards.js`), `parseEffects` / `parseBurst` / `parseActionList` (`02c-effects-parse.js`) and the action table `FX_ACTIONS` (`02b`-`02o`). This file is the human description; the machine-readable list is **`packages/engine/fx-schema.json`**, generated from the engine source by `tools/fx_schema.mjs` (never edit it by hand).
+
+## Shape
+```
+card
+  effects: [ effect, ... ]            up to 8
+    trigger                           one of schema.triggers (SUMMONED, ATTACKS, STATIC, ACTIVATE, ...)
+    lv: [1,2]  if: {cond}  match: {filter}  once  optional  braved  ...   (schema.effectFields)
+    actions: [ action, ... ]          1-6, every non-STATIC trigger
+    STATIC: bp + to + per | flag (schema.staticFlags) + flag fields
+  burst: { when (schema.burstWhen), if, actions, thenFlash, thenMain, noUlt, also }
+  magic: { timing: [MAIN|FLASH], effect (schema.magicEffects), value, actions, by: {MAIN:{..}, FLASH:{..}}, trashUse, noMain, oppAttackHand }
+  fxComplete: true | false            false = partial card ("!" mark)
+  residual: [ "printed clause that does not run", ... ]   up to 12, each at most 400 characters
+action
+  do: one of schema.actions           + the fields listed for it (schema.actions.<DO>.fields)
+  if: {cond}                          skip this action unless the condition holds (prev: the previous action happened)
+  cost: true                          "by <action>": when it cannot be paid, the rest of the effect stops
+cond   keys of schema.conditions      (FX_COND_KEYS in 02a-effects-base.js)
+match  keys of schema.matchFields     (fxMatch: name, family, color, type, costGe, costLe, symbolsGe, noUlt)
+```
+Nested actions (`BY.cost`, `BY.then`, `END_BATTLE.then`, `SOUL_TO_NEXUS_THEN.then`, `magic.by.*.actions`, `magic.trashUse.actions`) follow the same action rules.
+
+## How the schema is built
+`tools/fx_schema.mjs` reads `packages/engine/src/*.js`:
+- lists: `FX_TRIGGERS`, `FX_COND_KEYS`, `STATIC_FLAGS`, `BURST_WHEN`, `MAGIC_FX`, `MAGIC_TIMINGS`;
+- effect / Burst / Magic / card fields: what `parseEffects` + `invokeParse` (`e.x`), `parseBurst` (`b.x`), `parseCard` (`o.x`, `c.x`, `m.x`) read; `metaFields` are data-only card fields the engine ignores (note, mechanics, name_jp, ...);
+- per action: every `a.<field>` in its `FX_ACTIONS` entry, in the wrappers that extend it (`const D = FX_ACTIONS.DESTROY; D.chk = ...` in an IIFE, with the local helpers those use) and in helper functions `f(c, a)` it calls; `actionFields` (do, if, cost) come from `runActions`.
+Test FS02 (`tests/unit/fxschema81.test.mjs`) compares the schema with the live engine (action names, Burst timings, trigger and flag lists).
+
+## Validator
+`node tools/fx_validate.mjs` (shipped cards, schema + `BS.parseCard`; exit 1 on any error), `--static` (no browser; run by `npm run loop`), `--staged` (also compiles the staged pool with `tools/compile_v2.py --partial` and writes `docs/reports/fx-validate.md`; staged errors are reported, not fatal; CI runs this). It reports: schema out of date; unknown card, effect, Burst, Magic, match or condition field; unknown trigger, action, STATIC flag, Burst timing or Magic effect; an action field the action's code never reads (it would be silently ignored); a bad `residual` (over 12 entries, empty, over 400 characters = `parseCard` drops the card); `fxComplete: true` with a residual. Gate: zero errors on shipped cards (test FS03).
+
+## Changing the format (after F1: only with a version bump)
+1. Change the engine (new action, field, trigger, condition, flag), scenario first as usual (skill `bs-effect-mechanic-adder`).
+2. `node tools/fx_schema.mjs`: when the format part changed it refuses until `SCHEMA_VERSION` in `tools/fx_schema.mjs` is raised; raise it, re-run, commit `packages/engine/fx-schema.json`.
+3. Add a line below. Additions keep every card valid; a rename or removal must migrate every card in the same commit (the validator lists them).
+
+## Versions
+- v1 (v0.81.0): first schema: 77 actions, 27 triggers, 33 conditions, 10 STATIC flags, 6 Burst timings.

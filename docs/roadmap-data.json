@@ -4,8 +4,8 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "20 Oct 2026",
-  "updatedAt": "0.79.0",
-  "next": "next: A2 card-author agent pilot on one Standard block A set (agents write effect JSON for the residual clauses of the new partial cards with existing actions; measure complete cards per 100k tokens against v0.78.0 +23); plan W bundles wait behind A; playable 6,838 of 8,709, complete 733"
+  "updatedAt": "0.81.0",
+  "next": "next: F2 host port part 1 (M2, headless CPU vs CPU through io.view), then F3 io.decide, F4 replays, F5 test waits; plan W card bundles after phase F; playable 6,838 of 8,709, complete 739"
  },
  "phases": [
   {
@@ -564,6 +564,41 @@
   },
   {
    "phase": {
+    "name": "Foundation first (phase F)",
+    "sub": "Owner, 2026-10-20: fix the effect format, host port, replays and test waits before more card bundles, so new cards do not shake the system.",
+    "ver": "v0.81–",
+    "open": true,
+    "kind": "leaves"
+   },
+   "items": [
+    {
+     "s": "done",
+     "t": "F1 effect JSON schema + validator (v0.81.0): packages/engine/fx-schema.json v1 generated from the engine (77 actions, 27 triggers, 33 conditions), tools/fx_validate.mjs in loop and CI; shipped cards 0 errors; format changes need a schema version bump"
+    },
+    {
+     "s": "next",
+     "t": "F2 host port part 1 (M2): render calls through io.view, headless CPU vs CPU game in Node"
+    },
+    {
+     "s": "later",
+     "t": "F3 host port part 2 (M3): every human/CPU choice through io.decide"
+    },
+    {
+     "s": "later",
+     "t": "F4 replays (M4): input records, replay format, failing fuzz games saved as replays"
+    },
+    {
+     "s": "later",
+     "t": "F5 test waits (Q2): fixed waits in tests/suites replaced by state waits"
+    },
+    {
+     "s": "later",
+     "t": "Then lanes K, K, U/I: plan W bundles (Amplify, Rumble, Shamanism, Magic-use trigger, Current first), U5-U8, languages, server, database, card images"
+    }
+   ]
+  },
+  {
+   "phase": {
     "name": "Online + offline platform",
     "sub": "One engine for the offline file and an online server; no hosting until the owner decides.",
     "ver": "after C5 + a card session",
@@ -577,11 +612,11 @@
     },
     {
      "s": "later",
-     "t": "M2-M3 host port: render and player choices through io.view / io.decide"
+     "t": "M2-M3 host port: render and player choices through io.view / io.decide (phase F: F2/F3)"
     },
     {
      "s": "later",
-     "t": "M4 replays: input record + viewer replay"
+     "t": "M4 replays: input record + viewer replay (phase F: F4)"
     },
     {
      "s": "later",
@@ -1100,9 +1135,17 @@
    "calls": "~75",
    "basis": "estimate (main counter ~330k + agents ~645k)",
    "note": "Manual HEMAT ON session on Opus: A2 prep (one end script, promotion sample, residual validation, build counts from JSON, residual lists for 30 hand-wired cards) and the A2 card-author pilot on 26RBS01: 3 Opus agents, +6 complete cards, ~1 per 100k tokens; verdict not better, plan W resumes with block A keyword heads."
+  },
+  {
+   "ver": "v0.81.0",
+   "date": "20 Oct 2026",
+   "tokens": 200000,
+   "calls": "~70",
+   "basis": "estimate (budget counter)",
+   "note": "Manual session on Opus: F1 effect JSON schema (generated from the engine source) + validator in loop and CI, format doc, release-title fix for the Lane bullet; auto mode switched ON."
   }
  ],
  "updated": "20 Oct 2026",
- "updatedAt": "0.80.1",
- "next": "next: phase F (foundation first): F1 effect JSON schema + validator, then host port M2/M3, replays M4, test waits Q2; plan W card bundles after the format is frozen; then lanes K, K, U/I (2 card sessions : 1 UI/infra: U5-U8, rules base, languages, server, database, card images in the U/I slots)"
+ "updatedAt": "0.81.0",
+ "next": "next: F2 host port part 1 (M2, headless CPU vs CPU through io.view), then F3 io.decide, F4 replays, F5 test waits; plan W card bundles after phase F; playable 6,838 of 8,709, complete 739"
 }

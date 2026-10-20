@@ -27,5 +27,7 @@ jobs:
         run: npm run check
       - name: Lint
         run: npm run lint
+      - name: Effect format (schema + shipped and staged cards; staged errors only reported)
+        run: node tools/fx_validate.mjs --staged
       - name: Unit and property tests
         run: npm test

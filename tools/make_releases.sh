@@ -37,7 +37,7 @@ for v in "${versions[@]}"; do
   if [ -z "${DRY_RUN:-}" ] && gh release view "v$v" >/dev/null 2>&1; then skipped=$((skipped + 1)); continue; fi
   notes="$out/v$v.md"
   awk -v h="## v$v" '$0 == h {f = 1; next} f && /^## / {exit} f' CHANGELOG.md | sed -e '/./,$!d' > "$out/body.md"
-  title=$(grep -m1 '^- ' "$out/body.md" | sed -E 's/^- //; s/\*\*//g; s/`//g; s/[(:].*$//; s/[ .,;]+$//' | cut -c1-70)
+  title=$(grep -v '^- Lane:' "$out/body.md" | grep -m1 '^- ' | sed -E 's/^- //; s/\*\*//g; s/`//g; s/[(:].*$//; s/[ .,;]+$//' | cut -c1-70)
   n=$(git show "$c:data/cards/all-cards.json" | python3 -c 'import json,sys; print(f"{len(json.load(sys.stdin)):,}")')
   {
     cat "$out/body.md"

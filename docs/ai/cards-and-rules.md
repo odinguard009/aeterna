@@ -6,5 +6,6 @@
 - Sites from the cloud: the official card list is JavaScript-only (use the browser); yuyu-tei.jp set/card pages give number, type, colour, cost, levels and Japanese text; bssdb.dev, battlespirits-saga.com and limitlesstcg cover the international Saga game only (not Eternal/Contract cards).
 - Colour = corner icons. Saga placement follows the user's asset folders: BS75 -> Saga 16, BS76 -> Saga 17.
 - Card JSON: edit `data/cards/saga-*.json` only; query with one-line `python3 -c` (fields needed), never print whole files.
+- Effect JSON format: `docs/ai/effect-format.md` (schema `packages/engine/fx-schema.json`, validator `node tools/fx_validate.mjs`; a format change needs a schema version bump).
 - Engine vocabulary and workflow: skill `bs-effect-mechanic-adder`; testing: skill `bs-playwright-tester`; card images: skill `bs-card-image-reader`.
 - Bugs with a seed or replay: reproduce that exact match first (`BS.startNewGame({seed})`, `BS.runReplay`), then fix.

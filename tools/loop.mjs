@@ -1,4 +1,4 @@
-// One-call work loop: build -> lint -> brand guard -> tests, printing only what decides the next step.
+// One-call work loop: build -> lint -> brand guard -> effect format check -> tests, printing only what decides the next step.
 // Usage: npm run -s loop          (fast: smoke tests + the test files changed on this branch; ~10-30 s)
 //        npm run -s loop -- --full (every quick test, ~3 min; the pre-push hook runs this once per push)
 // Process cleanup (owner, 2026-10-19, "too many tests"): the full quick set ran at session start, after every task and again in
@@ -26,6 +26,7 @@ const steps = [
   ['build', ['tools/build.mjs']],
   ['lint', ['tools/lint.mjs']],
   ['brand guard', ['tools/brand_guard.mjs']],
+  ['fx validate', ['tools/fx_validate.mjs', '--static']],      // v0.81 F1: effect format schema + shipped cards (engine parse: test FS03)
   [FULL ? 'quick tests' : 'smoke + changed tests', testArgs],
 ];
 
