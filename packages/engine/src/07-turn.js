@@ -45,7 +45,7 @@ async function matchLoop() {
       await beginTurn(key);
       if (G.over) break;
       if (p.cpu) { G.busy = true; io.view({ type: 'board' }); await cpuTurn(p); }
-      else { G.busy = false; io.view({ type: 'board' }); await new Promise(r => { G.turnResolver = r; }); G.busy = true; }
+      else { await seatTurn(key); G.busy = true; }       // v0.84.0: the seat's board actions are intents through io.decide (05c-intent.js)
       if (G.over || SESSION !== my) break;
       await endStep(key);
       G.next = other(key);

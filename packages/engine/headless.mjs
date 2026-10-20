@@ -10,22 +10,25 @@
 // is a decision record through io.decide, packages/engine/src/05b-decide.js). Test H82-02 keeps it empty.
 //
 // Human seat (v0.83.0): playHeadless({ human: true, answer }) makes the first seat a human whose decisions are
-// answered by answer(seat, record) (default firstAnswer). It has no board actions yet (M3 part 2), so the CPU plays its
-// own turns (human: 'pass' passes them instead); every prompt the engine gives that seat still goes to answer().
+// answered by answer(seat, record) (default firstAnswer). v0.84.0 (F3 = M3 rest): its board actions are answers too:
+// the action decision {kind: 'action', step, turn} takes an intent record (packages/engine/src/05c-intent.js). An answer
+// of undefined lets the engine's port answerer cpuAnswer() decide (firstAnswer does so for actions and payments), so the
+// CPU plays that seat through the port; human: 'pass' ends every turn of that seat at once.
 import vm from 'node:vm';
 import { engineScript } from '../../tools/build.mjs';
 
 export const WEB_GAPS = [];
 
-/** Scripted answer: the first usable button of a choice, the first glowing card of a pick, no payment plan (cancel). */
+/** Scripted answer: the first usable button of a choice, the first glowing card of a pick; actions and payments: the CPU (undefined). */
 export function firstAnswer(seat, d) {
+  if (d.kind === 'action' || d.kind === 'payment') return undefined;
   if (d.kind === 'choice') { const b = (d.buttons || []).find(x => !x.hidden && !x.dis); return b ? b.value : null; }
   if (d.kind === 'pick') return d.uids && d.uids.length ? d.uids[0] : (d.buttons && d.buttons[0] ? d.buttons[0].value : null);
   return null;
 }
 
 const EXPORTS = `
-;globalThis.__engine = { io, bindHost, VIEW_TYPES, DECISION_KINDS, cpuTurn, ABORT, startNewGame, PREBUILT, PRESET_DECK, VERSION, CARDS, matchSummary, checkInvariants,
+;globalThis.__engine = { io, bindHost, VIEW_TYPES, DECISION_KINDS, cpuTurn, cpuAnswer, applyIntent, INTENT_TYPES, ABORT, startNewGame, PREBUILT, PRESET_DECK, VERSION, CARDS, matchSummary, checkInvariants,
   setSimDeckB(d) { SIM_DECK_B = d; }, setSimHuman(v) { SIM_HUMAN = !!v; }, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, setFuzz(o) { FUZZ = Object.assign({}, o || {}); },
   get G() { return G; }, get SIM() { return SIM; } };
 `;
@@ -53,7 +56,7 @@ const deckOf = (E, d) => (typeof d === 'string' ? (E.PREBUILT.find(x => x.id ===
 /** Plays one CPU-vs-CPU match to the end. deckA/deckB: a prebuilt id ('red', 'mitra', ...) or a {cardId: count} map.
  *  Checks the rules invariants after every board view. Resolves a plain summary; never rejects. */
 export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', timeoutMs = 60000, profiles = null, fuzz = null, human = false, answer = firstAnswer } = {}) {
-  const E = loadEngine(), views = {}, errors = [], decisions = [];
+  const E = loadEngine(), views = {}, errors = [], decisions = [], acted = { ok: 0, refused: 0 };
   let logs = 0;
   const A = deckOf(E, deckA), B = deckOf(E, deckB);
   if (!A || !B) return { over: false, errors: ['unknown deck ' + (A ? deckB : deckA)] };
@@ -63,13 +66,16 @@ export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', t
       if (!ev || !E.VIEW_TYPES.includes(ev.type)) throw new Error('unknown view record ' + JSON.stringify(ev));
       JSON.stringify(ev);                               // every record is serializable (M4 replays, M6 server)
       views[ev.type] = (views[ev.type] || 0) + 1;
+      if (ev.type === 'acted') { acted[ev.ok ? 'ok' : 'refused']++; return; }
       if (ev.type === 'board' && E.G && errors.length < 3) { try { E.checkInvariants(); } catch (e) { errors.push('invariant: ' + e.message); } }
     },
     log() { logs++; },
     async decide(seat, d) {
       if (!d || !E.DECISION_KINDS.includes(d.kind)) throw new Error('unknown decision record ' + JSON.stringify(d));
       const rec = JSON.parse(JSON.stringify(d));        // every record is serializable (M4 replays, M6 server)
-      const v = await answer(seat, rec);
+      let v = human === 'pass' && d.kind === 'action' ? { type: 'end' } : await answer(seat, rec);
+      if (v === undefined) v = E.cpuAnswer(seat, rec);
+      if (d.kind === 'action' && !(v && E.INTENT_TYPES.includes(v.type))) throw new Error('not an intent record: ' + JSON.stringify(v));
       if (JSON.stringify(v === undefined ? null : v) === undefined) throw new Error('answer is not serializable');
       decisions.push({ seat, kind: d.kind, v: v === undefined ? null : v });
       return v === undefined ? null : v;
@@ -88,14 +94,10 @@ export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', t
     await E.startNewGame({ seed });
     while (!(E.G && E.G.over) && !errors.length && Date.now() - t0 < timeoutMs) {
       await new Promise(r => setTimeout(r, 2));
-      if (human && E.G && E.G.turnResolver && !E.G.over) {      // the human seat's own turn: no board actions (M3 part 2), so the
-        const r = E.G.turnResolver; E.G.turnResolver = null;     // CPU plays its turn; its effect prompts still go to answer()
-        try { if (human === 'pass') r(); else { E.G.busy = true; await E.cpuTurn(E.G.p.player); r(); } } catch (e) { if (e !== E.ABORT) throw e; }
-      }
     }
   } catch (e) { errors.push('thrown: ' + (e && e.message)); } finally { process.off('unhandledRejection', onRej); }
   const G = E.G, over = !!(G && G.over);
-  return { seed, over, errors, views, logs, decisions, ms: Date.now() - t0, build: E.VERSION, ...(over ? E.matchSummary() : {}), lives: G ? [G.p.player.life, G.p.opponent.life] : null };
+  return { seed, over, errors, views, logs, decisions, acted, ms: Date.now() - t0, build: E.VERSION, ...(over ? E.matchSummary() : {}), lives: G ? [G.p.player.life, G.p.opponent.life] : null };
 }
 
 // CLI: node packages/engine/headless.mjs [seed] [deckA] [deckB]

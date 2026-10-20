@@ -1250,15 +1250,16 @@ applyTheme();
      io.view(ev)            the board or a screen changed; the host draws (web) or ignores it (headless)
      io.log(text)           one game log line was written (G.history keeps the text; hosts may react, e.g. sounds)
      io.decide(seat, d)     v0.83.0 (M3 part 1): every prompt of a human seat, as a decision record (kinds and answers:
-                            packages/engine/src/05b-decide.js); resolves the answer. M3 part 2: the CPU answers it too
+                            packages/engine/src/05b-decide.js); resolves the answer; v0.84.0: board actions too (action -> intent records, packages/engine/src/05c-intent.js)
    View records (`type`):
      board                  redraw the playmat from G
      decks                  the format or the deck list changed (lobby + deck builder)
      screen  {id}           show an app screen ('view-playmat', 'view-deckbuilder', 'view-lobby')
      reset                  a new match starts: drop open prompts and field picks of the previous one
      matchEnd {winner}      the match is over (G.over, G.winner set; after the last board view)
+     acted {seat, ok}       v0.84.0: the seat's intent (answer to an action decision) was applied (ok) or refused
    --------------------------------------------------------------------- */
-const VIEW_TYPES = ['board', 'decks', 'screen', 'reset', 'matchEnd'];
+const VIEW_TYPES = ['board', 'decks', 'screen', 'reset', 'matchEnd', 'acted'];
 /** @typedef {{ type: string, id?: string, winner?: string }} ViewRecord */
 /** @typedef {{ name: string, view: (ev: ViewRecord) => void, log: (text: string) => void, decide: (p: any, d: any) => Promise<any> }} Host */
 /** @type {Host} */
@@ -1280,7 +1281,7 @@ function bindHost(h) {
    type: 'Spirit' | 'Nexus' | 'Magic'      symbol: card color     symbols: number of symbols
    reduction: {color: n}         levels: [{cores, bp}]  (Nexus levels have no bp)
    --------------------------------------------------------------------- */
-const VERSION = '0.83.0';
+const VERSION = '0.84.0';
 const CARDS = {};
 function defCard(o) {
   CARDS[o.id] = Object.assign({ type: 'Spirit', reduction: {}, symbols: 1, families: [], keywords: [], implemented: true, desc: 'Vanilla test card (no effect).', block: 'A' }, o);
@@ -4069,11 +4070,13 @@ function newGame(deckA, deckB, format) {
      pick    {text, uids:[uid], mark?: uid, buttons?:[{label, value, cls?}]} -> a uid from uids or a button value
      payment {card: id, cost, L} -> {reserve, by:{uid: n}, rsoul?, fsoul?: uid} or null (cancelled)
      info    {title, html} -> null
+     action  {step, turn} -> an intent record (v0.84.0, packages/engine/src/05c-intent.js): the seat's next board action
    Web host: apps/web/src/13e-host.js (modals, field picks, the payment dialog). Headless host: packages/engine/headless.mjs
    (scripted answers). A match that changed while a decision was open (SESSION moved on) throws ABORT, as the web prompts did.
-   The CPU still decides in 09-cpu.js without the port (M3 part 2: the CPU becomes a port answerer).
+   Board actions (v0.84.0, M3 rest): the action decision and its intent records, 05c-intent.js; cpuAnswer() there answers
+   any record as the CPU would. The CPU seat of the offline game still decides inline in 09-cpu.js.
    --------------------------------------------------------------------- */
-const DECISION_KINDS = ['choice', 'pick', 'payment', 'info'];
+const DECISION_KINDS = ['choice', 'pick', 'payment', 'info', 'action'];
 const cardIds = L => (L || []).map(x => (typeof x === 'string' ? x : x.id)).filter(id => CARDS[id]);
 async function decide(seat, d) { const s = SESSION; const v = await io.decide(seat, d); if (s !== SESSION) throw ABORT; return v; }
 /** A choice between buttons (the old web ask()); the human seat unless another seat is named. */
@@ -4140,6 +4143,251 @@ async function humanFlashChoice(p, attKey, att, blk) {
     if (ch) return ch;
   }
   return null;
+}
+/* ---------------------------------------------------------------------
+   INTENTS (v0.84.0, phase F3 part 2 = monorepo step M3 rest; docs/ai/monorepo-plan.md "Design" 1)
+   A human seat's board actions are intent records, answers to the decision `{kind: 'action', step, turn}` that
+   seatTurn() asks through the port (io.decide) until the turn ends. An intent is a plain, serializable object
+   (cards by uid); applyIntent() checks it against the rules and resolves true (done) or false (not legal now).
+     {type: 'next'}                     NEXT: Main -> Attack -> (Second Main) -> End, as the NEXT button
+     {type: 'end'}                      press NEXT until the turn ends
+     {type: 'summon'|'cast'|'burst'|'mirage'|'brave'|'cadvent'|'manifest', uid}   a card in the Hand
+                                        (cadvent: also Soul State while Contract Advent from there is allowed)
+     {type: 'accel', uid, idx}          an [Accel] effect of a card in the Hand (Main Step)
+     {type: 'act', uid, idx}            an activated [Main] effect of a field card
+     {type: 'bcombine'|'bseparate', uid}   Brave on the field: combine with a Spirit (asked by a pick) / separate
+     {type: 'core', op, uid}            op: add | remove | move | soul | unsoul | swaphere | swapsoul (move / swapsoul ask a pick)
+     {type: 'attack', uid}              Attack Step: attack with this Spirit
+     {type: 'revive', uid}              [Revive] a card in Soul State
+     {type: 'summonRemoved', uid}       summon an Accel Spirit from the Removed Zone
+   Payments, targets and other prompts inside an action are ordinary decision records (05b-decide.js).
+   Hosts: the web UI sends intents with sendIntent (apps/web/src/13e-host.js); headless scripts answer the action
+   decision (packages/engine/headless.mjs); cpuAnswer() below is a port answerer for any seat (the CPU through the port).
+   Without a running seat loop (test boards) applyIntent() runs the intent at once.
+   --------------------------------------------------------------------- */
+const INTENT_TYPES = ['next', 'end', 'summon', 'cast', 'burst', 'mirage', 'brave', 'cadvent', 'manifest', 'accel', 'act', 'bcombine', 'bseparate', 'core', 'attack', 'revive', 'summonRemoved'];
+const CORE_OPS = ['add', 'remove', 'move', 'soul', 'unsoul', 'swaphere', 'swapsoul'];
+const INTENT_MAX = 400;                               // a seat that sends this many intents in one turn has its turn ended (scripts that loop)
+let SEAT_LOOP = null;                                 // {key, s: SESSION} while seatTurn() waits for that seat's intents
+/** The seat may act now: its own turn, not busy (an attack or the Start of the Attack Step resolving), a human seat. */
+const seatCan = key => !!G && !G.over && !G.busy && G.active === key && !!G.p[key] && !G.p[key].cpu;
+const seatLoopOpen = key => !!SEAT_LOOP && SEAT_LOOP.key === key && SEAT_LOOP.s === SESSION;
+const boardView = () => io.view({ type: 'board' });
+/** Ends the current turn of the seat (the old finishTurn of the web UI). */
+function endTurnNow() { const r = G.turnResolver; G.turnResolver = null; G.busy = true; boardView(); if (r) r(); }
+async function seatTurn(key) {
+  const my = SESSION; let ended = false, n = 0;
+  G.turnResolver = () => { ended = true; };
+  SEAT_LOOP = { key, s: my };
+  G.busy = false; boardView();
+  try {
+    while (!ended && !G.over && SESSION === my) {
+      const it = await decide(key, { kind: 'action', step: G.step, turn: G.turnNo });
+      if (ended || G.over) break;
+      const ok = await applyIntent(key, it);
+      if (SESSION !== my) throw ABORT;
+      io.view({ type: 'acted', seat: key, ok: !!ok });
+      if (++n >= INTENT_MAX && !ended && !G.over) { log(`${who(G.p[key])}: too many actions in one turn, the turn ends.`); G.busy = false; await applyIntent(key, { type: 'end' }); ended = true; }
+    }
+  } finally { if (SEAT_LOOP && SEAT_LOOP.s === my) SEAT_LOOP = null; if (SESSION === my && G) G.turnResolver = null; }
+}
+const handOf = (p, uid) => p.hand.find(h => h.uid === uid) || null;
+const fieldOf = (p, uid) => fieldList(p).find(x => x.uid === uid) || null;
+async function intentNext(key) {
+  if (!seatCan(key)) return false;
+  if (G.step === 4) {
+    if (G.turnNo === 1) { log(G.format === 'standard' ? 'First turn: the Attack and Second Main Steps are skipped.' : 'First turn: the Attack Step is skipped.'); endTurnNow(); }
+    else {
+      setStep(5); log('Attack Step: tap a Spirit to attack.'); G.busy = true; boardView();
+      await startAttackFx(G.p[key]);
+      if (G && !G.over) { G.busy = false; boardView(); }
+    }
+  } else if (G.step === 5) {
+    if (G.format === 'standard') { setStep(6); log('Second Main Step.'); }
+    else endTurnNow();
+  } else if (G.step === 6 && G.format === 'standard') endTurnNow();
+  else return false;
+  return true;
+}
+async function intentSummon(p, inst) {
+  const card = CARDS[inst.id];
+  if (!isSpiritForm(card) && card.type !== 'Nexus') return false;
+  if (!canPlayCard(p, inst)) { log(`Not enough cores for ${card.name}.`); boardView(); return false; }
+  const c = effCost(p, card), L = minCores(card);
+  let plan = null;
+  if (c > 0 && reserveTotal(p) < c + L) { plan = await askPayment(card, c, L); if (!plan) return false; }
+  if (!seatCan(p.key) || !p.hand.includes(inst)) return false;
+  summon(p, inst, plan); boardView();
+  await fireFx(p, 'SUMMONED', inst);
+  return true;
+}
+async function intentCast(p, inst) {
+  if (CARDS[inst.id].type !== 'Magic' || !magicUsable(p, inst, 'main')) return false;
+  const ch = await prepareHumanMagic(p, inst);
+  if (!ch || !seatCan(p.key) || !isMainStep() || !p.hand.includes(inst)) return false;
+  await castMagic(p, ch); boardView(); await flushBursts();
+  return true;
+}
+async function intentMirage(p, inst) {
+  const card = CARDS[inst.id];
+  if (!card.mirage || p.mirageSetThisTurn || !mirageUsable(p, inst)) return false;
+  const c = card.mirage.cost; let plan = null;
+  if (c > 0 && reserveTotal(p) < c) { plan = await askPayment(card, c, 0); if (!plan) return false; }
+  if (!seatCan(p.key) || !isMainStep() || !p.hand.includes(inst) || p.mirageSetThisTurn) return false;
+  removeFrom(p.hand, inst); payCost(p, c, plan); checkDepletion(p);
+  setBurst(p, inst, true); boardView();
+  return true;
+}
+/* Brave (manual p. 34-36): summon directly combined with a Spirit; combine / separate in the Main Step at no cost */
+async function intentBraveSummon(p, inst) {
+  const card = CARDS[inst.id];
+  if (!card.brave || !braveAfford(p, inst) || !braveTargets(p, inst).length) return false;
+  const uid = await pickFromField({ text: `🗡 <b>${esc(card.name)}</b><br>Tap the Spirit to combine with.`, uids: braveTargets(p, inst).map(s => s.uid), buttons: [{ label: 'Cancel', cls: 'cancel', value: 'none' }] });
+  const t = fieldList(p).find(s => s.uid === uid);
+  if (!t || !seatCan(p.key) || !p.hand.includes(inst) || !braveFits(inst, t)) { boardView(); return false; }
+  const c = effCost(p, card); let plan = null;
+  if (c > 0 && reserveTotal(p) < c) { plan = await askPayment(card, c, 0); if (!plan) { boardView(); return false; } }
+  if (!seatCan(p.key) || !p.hand.includes(inst) || !braveFits(inst, t)) return false;
+  braveSummon(p, inst, t, plan); boardView(); await braveSummonedFx(p, inst);
+  return true;
+}
+async function intentBraveField(p, f, sep) {
+  if (sep) { if (!f.brave || !canSeparate(p, f)) return false; separateBrave(p, f); boardView(); return true; }
+  const card = CARDS[f.id];
+  if (card.type !== 'Brave' || !card.brave || !p.spirits.includes(f)) return false;
+  const L = braveTargets(p, f); if (!L.length) return false;
+  const uid = await pickFromField({ text: `🗡 <b>${esc(card.name)}</b><br>Tap the Spirit to combine with.`, uids: L.map(s => s.uid), buttons: [{ label: 'Cancel', cls: 'cancel', value: 'none' }] });
+  const t = L.find(s => s.uid === uid);
+  const ok = !!t && seatCan(p.key) && isMainStep() && p.spirits.includes(f) && braveFits(f, t);
+  if (ok) combineBrave(p, f, t);
+  boardView(); return ok;
+}
+/* core and Soul Core moves on the own field (Main Step), as the buttons of the field card dialog */
+async function intentCore(p, f, op) {
+  const gw = isGW(f), others = fieldList(p).filter(x => x !== f && !isGW(x));      // nothing can be moved onto a Grandwalker Nexus (p. 22)
+  let ok = false;
+  if (op === 'add') ok = !gw && addCore(p, f);
+  else if (op === 'remove') ok = !gw && removeCore(p, f);
+  else if (op === 'soul') {
+    if (f.soul) return false;
+    const r = moveSoulTo(p, f); ok = r === 'ok';
+    if (!ok) await info('Soul Core', r === 'deplete' ? 'Moving the Soul Core would deplete the Spirit it is on. Use Swap instead.' : 'The Soul Core is not available.', p.key);
+  } else if (op === 'unsoul') {
+    if (!f.soul) return false;
+    const r = returnSoul(p, f); ok = r !== 'deplete';
+    if (!ok) await info('Soul Core', 'Returning the Soul Core would deplete this Spirit. Swap it with a normal core first.', p.key);
+  } else if (op === 'swaphere') {
+    const h = others.find(x => x.soul);
+    if (h && f.cores >= 1) { swapSoul(p, h, f); ok = true; }
+  } else if (op === 'move' || op === 'swapsoul') {
+    if (gw || (op === 'move' ? f.cores < 1 : !f.soul)) return false;
+    const L = others.filter(x => (op === 'swapsoul' ? x.cores > 0 : true));
+    if (!L.length) return false;
+    const card = CARDS[f.id];
+    const t = await pickFromField({
+      text: op === 'move' ? `➡ <b>Move 1 core from ${esc(card.name)}</b><br>Tap the card that receives it.` : `🔄 <b>Swap the Soul Core of ${esc(card.name)}</b><br>Tap the card whose normal core trades places with it.`,
+      uids: L.map(x => x.uid), buttons: [{ label: 'Cancel', cls: 'cancel', value: 'none' }]
+    }, p.key);
+    const target = L.find(x => x.uid === t);
+    if (target && seatCan(p.key) && isMainStep() && fieldList(p).includes(f)) { if (op === 'move') moveCore(p, f, target); else swapSoul(p, f, target); ok = true; }
+  }
+  boardView(); return ok;
+}
+async function intentAttack(key, f) {
+  const p = G.p[key];
+  if (!p.spirits.includes(f) || !isSpiritForm(CARDS[f.id])) return false;
+  if (G.step !== 5 || G.turnNo === 1 || f.exhausted || f.noAB || !abTaxOK(p, f) || attackStepOver()) return false;
+  G.busy = true; boardView();
+  await doBattle(key, f);
+  if (!G.over && attackStepOver()) { G.busy = false; await intentNext(key); return true; }   // v0.43: an effect ended the Attack Step
+  if (!G.over) { G.busy = false; boardView(); }
+  return true;
+}
+/** Checks an intent of seat `key` against the rules and runs it; resolves true when it was done, false when not legal now. */
+async function applyIntent(key, it) {
+  if (!it || typeof it !== 'object' || !INTENT_TYPES.includes(it.type) || !seatCan(key)) return false;
+  const p = G.p[key], main = isMainStep(), uid = Number(it.uid);
+  switch (it.type) {
+    case 'next': return intentNext(key);
+    case 'end': {
+      const t = G.turnNo;
+      for (let g = 0; g < 4 && seatCan(key) && G.turnNo === t; g++) if (!(await intentNext(key))) return false;
+      return true;
+    }
+    case 'attack': { const f = fieldOf(p, uid); return !!f && intentAttack(key, f); }
+    case 'revive': { const t = reviveTargets(p).find(x => x.uid === uid); if (!t) return false; const ok = await doRevive(p, t); boardView(); return !!ok; }
+  }
+  if (!main) return false;                            // everything below is a Main Step action
+  switch (it.type) {
+    case 'summon': case 'cast': case 'burst': case 'mirage': case 'brave': case 'manifest': {
+      const inst = handOf(p, uid); if (!inst) return false;
+      if (it.type === 'summon') return intentSummon(p, inst);
+      if (it.type === 'cast') return intentCast(p, inst);
+      if (it.type === 'mirage') return intentMirage(p, inst);
+      if (it.type === 'brave') return intentBraveSummon(p, inst);
+      if (it.type === 'burst') { if (!CARDS[inst.id].burst || p.burstSetThisTurn) return false; setBurst(p, inst); boardView(); return true; }
+      if (!CARDS[inst.id].manifest) return false;
+      const ok = await humanManifest(inst); boardView(); return !!ok;
+    }
+    case 'cadvent': {
+      const inst = cadvSources(p).find(x => x.uid === uid); if (!inst) return false;
+      const ok = await humanContractAdvent(inst, 'main'); boardView(); return !!ok;
+    }
+    case 'accel': {
+      const inst = handOf(p, uid), idx = Number(it.idx); if (!inst || !accelOK(p, inst, idx, 'MAIN')) return false;
+      const r = await humanAccel(inst, idx, 'MAIN');
+      if (!r || !seatCan(key)) { boardView(); return false; }
+      await useAccel(p, r.inst, r.idx, r.plan, 'MAIN'); boardView(); return true;
+    }
+    case 'summonRemoved': { const t = removedSummonable(p).find(x => x.uid === uid); if (!t) return false; const ok = await summonFromRemoved(p, t); boardView(); return !!ok; }
+    case 'act': {
+      const f = fieldOf(p, uid), idx = Number(it.idx); if (!f || !activatable(p, f, 'MAIN').some(x => x.idx === idx)) return false;
+      await activateFx(p, f, idx); boardView(); return true;
+    }
+    case 'bcombine': case 'bseparate': { const f = fieldOf(p, uid); return !!f && intentBraveField(p, f, it.type === 'bseparate'); }
+    case 'core': { const f = fieldOf(p, uid); return !!f && CORE_OPS.includes(it.op) && intentCore(p, f, it.op); }
+  }
+  return false;
+}
+/* ---- the CPU as a port answerer (any seat; headless default for the human seat) ----
+   The CPU seat of the offline game still decides inline (09-cpu.js and the `p.cpu` branches of the effects). */
+/** Cores that pay `cost` while `keep` stay in the Reserve: normal Reserve cores first, then spare normal cores of field cards; null when short. */
+function cpuPaymentPlan(p, cost, keep) {
+  const r = Math.max(0, Math.min(cost, p.reserve.n - (keep || 0)));
+  let need = cost - r; const by = {};
+  for (const f of fieldList(p).filter(x => !isGW(x)).sort((a, b) => spare(b) - spare(a))) {
+    if (need <= 0) break;
+    const k = Math.max(0, Math.min(need, freeCores(f), isSpiritForm(CARDS[f.id]) ? spare(f) : f.cores));
+    if (k > 0) { by[f.uid] = k; need -= k; }
+  }
+  return need > 0 ? null : { reserve: r, by };
+}
+/** The CPU's answer to an action decision: summon what cpuPlayChoice likes, set a Burst, attack by cpuAttackChoice, else NEXT. */
+function cpuIntent(key) {
+  const p = G.p[key];
+  if (isMainStep()) {
+    const pays = h => { const c = CARDS[h.id], n = effCost(p, c), L = minCores(c); return reserveTotal(p) >= n + L || !!cpuPaymentPlan(p, n, L); };
+    const opts = p.hand.filter(h => (isSpiritForm(CARDS[h.id]) || CARDS[h.id].type === 'Nexus') && CARDS[h.id].type !== 'Brave' && canPlayCard(p, h) && cpuCanPlay(p, h) && pays(h));
+    const pick = opts.length ? cpuPlayChoice(p, opts) : null;
+    if (pick) return { type: 'summon', uid: pick.uid };
+    const b = !p.burstSetThisTurn && !p.burst && p.hand.find(h => CARDS[h.id].burst);
+    if (b) return { type: 'burst', uid: b.uid };
+  } else if (G.step === 5) {
+    const a = cpuAttackChoice(p);
+    if (a) return { type: 'attack', uid: a.uid };
+  }
+  return { type: 'next' };
+}
+/** A port answerer for any decision record (05b-decide.js kinds + action): what the CPU would pick. */
+function cpuAnswer(seat, d) {
+  const p = G && G.p[seat];
+  switch (d && d.kind) {
+    case 'action': return p ? cpuIntent(seat) : { type: 'end' };
+    case 'payment': return p ? cpuPaymentPlan(p, d.cost, d.L) : null;
+    case 'choice': { const b = (d.buttons || []).find(x => !x.hidden && !x.dis); return b ? b.value : null; }
+    case 'pick': return d.uids && d.uids.length ? d.uids[0] : (d.buttons && d.buttons[0] ? d.buttons[0].value : null);
+    default: return null;
+  }
 }
 /* ---------------------------------------------------------------------
    RULES HELPERS
@@ -4649,7 +4897,7 @@ async function matchLoop() {
       await beginTurn(key);
       if (G.over) break;
       if (p.cpu) { G.busy = true; io.view({ type: 'board' }); await cpuTurn(p); }
-      else { G.busy = false; io.view({ type: 'board' }); await new Promise(r => { G.turnResolver = r; }); G.busy = true; }
+      else { await seatTurn(key); G.busy = true; }       // v0.84.0: the seat's board actions are intents through io.decide (05c-intent.js)
       if (G.over || SESSION !== my) break;
       await endStep(key);
       G.next = other(key);
@@ -5248,9 +5496,10 @@ async function webPayment(card, c, L) {
 }
 
 /* ---------------------------------------------------------------------
-   HUMAN ACTIONS
+   HUMAN ACTIONS: the dialogs of the human seat. Board actions are intent records (v0.84.0, F3 = M3 rest):
+   the buttons send them with sendIntent (13e-host.js); the engine checks and runs them (packages/engine/src/05c-intent.js).
    --------------------------------------------------------------------- */
-const humanCan = () => G && !G.over && !G.busy && G.active === 'player' && !G.p.player.cpu;
+const humanCan = () => seatCan('player');
 
 function legalityHTML(card) {
   const row = (name, f) => { const r = legalityOf(card.id, f), lim = banStatus(card.id) === 'limit1';
@@ -5353,40 +5602,20 @@ function handButtons(p, inst, withDetail) {
   }
   return buttons;
 }
+const HAND_INTENTS = { play: 'summon', burst: 'burst', cadvent: 'cadvent', manifest: 'manifest', cast: 'cast', brave: 'brave', mirage: 'mirage' };
 function runHandAction(p, inst, v) {
   if (!G || !G.p.player.hand.includes(inst)) return;
-  if (v === 'play') humanPlay(inst);
-  else if (v === 'burst' && humanCan() && !p.burstSetThisTurn) { setBurst(p, inst); render(); }
-  else if (v === 'cadvent') humanContractAdvent(inst, 'main').then(() => { if (G) render(); });
-  else if (v === 'manifest') humanManifest(inst).then(() => { if (G) render(); });
-  else if (v === 'cast') humanCast(inst);
-  else if (v === 'brave') humanBraveSummon(inst);
-  else if (v === 'mirage') humanMirage(inst);
-  else if (typeof v === 'string' && v.startsWith('accel:') && humanCan() && isMainStep()) {
-    const idx = Number(v.slice(6));
-    humanAccel(inst, idx, 'MAIN').then(async r => { if (r && humanCan()) await useAccel(p, r.inst, r.idx, r.plan, 'MAIN'); if (G) render(); }).catch(e => { if (e !== ABORT) throw e; });
-  }
+  if (HAND_INTENTS[v]) sendIntent({ type: HAND_INTENTS[v], uid: inst.uid });
+  else if (typeof v === 'string' && v.startsWith('accel:')) sendIntent({ type: 'accel', uid: inst.uid, idx: Number(v.slice(6)) });
 }
-async function humanMirage(inst) {
-  try {
-    const p = G.p.player, card = CARDS[inst.id];
-    if (!humanCan() || !isMainStep() || !p.hand.includes(inst) || !mirageUsable(p, inst)) return;
-    const c = card.mirage.cost; let plan = null;
-    if (c > 0 && reserveTotal(p) < c) { plan = await askPayment(card, c, 0); if (!plan) return; }
-    if (!humanCan() || !isMainStep() || !p.hand.includes(inst) || p.mirageSetThisTurn) return;
-    removeFrom(p.hand, inst); payCost(p, c, plan); checkDepletion(p);
-    setBurst(p, inst, true); render();
-  } catch (e) { if (e !== ABORT) throw e; }
-}
-async function humanCast(inst) {
-  try {
-    const p = G.p.player;
-    if (!humanCan() || !isMainStep() || !p.hand.includes(inst)) return;
-    const ch = await prepareHumanMagic(p, inst);
-    if (!ch || !humanCan() || !isMainStep() || !p.hand.includes(inst)) return;
-    await castMagic(p, ch); render(); await flushBursts();
-  } catch (e) { if (e !== ABORT) throw e; }
-}
+/* the old entry points (tests and the console use them): each sends one intent and resolves when it was applied */
+const humanMirage = inst => sendIntent({ type: 'mirage', uid: inst.uid });
+const humanCast = inst => sendIntent({ type: 'cast', uid: inst.uid });
+const humanPlay = inst => sendIntent({ type: 'summon', uid: inst.uid });
+const humanBraveSummon = inst => sendIntent({ type: 'brave', uid: inst.uid });
+const humanBraveField = (p, f, v) => sendIntent({ type: v === 'bseparate' ? 'bseparate' : 'bcombine', uid: f.uid });
+const humanAttack = f => sendIntent({ type: 'attack', uid: f.uid });
+const onNext = () => sendIntent({ type: 'next' });
 async function showCardDetail(id, ctx, uid) {
   const card = CARDS[id]; if (!card) return;
   let buttons = [], inst = null;
@@ -5415,40 +5644,6 @@ async function openHandModal(uid) {
   if (!G || !G.p.player.hand.includes(inst)) return;
   if (v === 'detail') showCardDetail(inst.id, 'hand', inst.uid);
   else runHandAction(p, inst, v);
-}
-async function humanPlay(inst) {
-  if (!humanCan() || !isMainStep()) return;
-  const p = G.p.player, card = CARDS[inst.id];
-  if (!canPlayCard(p, inst)) { log(`Not enough cores for ${card.name}.`); render(); return; }
-  const c = effCost(p, card), L = minCores(card);
-  let plan = null;
-  if (c > 0 && reserveTotal(p) < c + L) { plan = await askPayment(card, c, L); if (!plan) return; }
-  if (!humanCan() || !p.hand.includes(inst)) return;
-  summon(p, inst, plan); render();
-  await fireFx(p, 'SUMMONED', inst);
-}
-/* Brave (manual p. 34-36): summon directly combined with a Spirit; combine / separate in the Main Step at no cost */
-async function humanBraveSummon(inst) {
-  try {
-    if (!humanCan() || !isMainStep()) return;
-    const p = G.p.player, card = CARDS[inst.id];
-    if (!p.hand.includes(inst) || !braveAfford(p, inst)) return;
-    const uid = await pickFromField({ text: `🗡 <b>${esc(card.name)}</b><br>Tap the Spirit to combine with.`, uids: braveTargets(p, inst).map(s => s.uid), buttons: [{ label: 'Cancel', cls: 'cancel', value: 'none' }] });
-    const t = fieldList(p).find(s => s.uid === uid);
-    if (!t || !humanCan() || !p.hand.includes(inst) || !braveFits(inst, t)) { render(); return; }
-    const c = effCost(p, card); let plan = null;
-    if (c > 0 && reserveTotal(p) < c) { plan = await askPayment(card, c, 0); if (!plan) { render(); return; } }
-    if (!humanCan() || !p.hand.includes(inst) || !braveFits(inst, t)) return;
-    braveSummon(p, inst, t, plan); render(); await braveSummonedFx(p, inst);
-  } catch (e) { if (e !== ABORT) throw e; }
-}
-async function humanBraveField(p, f, v) {
-  if (!humanCan() || !isMainStep()) return;
-  if (v === 'bseparate') { if (canSeparate(p, f)) separateBrave(p, f); return; }
-  const L = braveTargets(p, f); if (!L.length) return;
-  const uid = await pickFromField({ text: `🗡 <b>${esc(CARDS[f.id].name)}</b><br>Tap the Spirit to combine with.`, uids: L.map(s => s.uid), buttons: [{ label: 'Cancel', cls: 'cancel', value: 'none' }] });
-  const t = L.find(s => s.uid === uid);
-  if (t && humanCan() && isMainStep() && p.spirits.includes(f) && braveFits(f, t)) combineBrave(p, f, t);
 }
 async function openFieldModal(key, kind, uid) {
   const p = G.p[key], f = fieldList(p).find(x => x.uid === uid); if (!f) return;
@@ -5494,43 +5689,13 @@ async function openFieldModal(key, kind, uid) {
   if (!G || G.over) return;
   if (v === 'detail') { showCardDetail(f.id); return; }
   if (!mine) return;
-  if (typeof v === 'string' && v.startsWith('act:')) { if (humanCan() && isMainStep()) await activateFx(p, f, Number(v.slice(4))); render(); return; }
-  if (v === 'bcombine' || v === 'bseparate') { await humanBraveField(p, f, v); render(); return; }
-  if (v === 'add') addCore(p, f);
-  else if (v === 'remove') removeCore(p, f);
-  else if (v === 'soul') { const r = moveSoulTo(p, f); if (r !== 'ok') { await info('Soul Core', r === 'deplete' ? 'Moving the Soul Core would deplete the Spirit it is on. Use Swap instead.' : 'The Soul Core is not available.'); } }
-  else if (v === 'unsoul') { const r = returnSoul(p, f); if (r === 'deplete') await info('Soul Core', 'Returning the Soul Core would deplete this Spirit. Swap it with a normal core first.'); }
-  else if (v === 'swaphere') { const h = fieldList(p).find(x => x.soul && x !== f); if (h) swapSoul(p, h, f); }
-  else if (v === 'movecore' || v === 'swapsoul') {
-    const others = fieldList(p).filter(x => x !== f && !isGW(x) && (v === 'swapsoul' ? x.cores > 0 : true));
-    const t = await pickFromField({
-      text: v === 'movecore' ? `➡ <b>Move 1 core from ${esc(card.name)}</b><br>Tap the card that receives it.` : `🔄 <b>Swap the Soul Core of ${esc(card.name)}</b><br>Tap the card whose normal core trades places with it.`,
-      uids: others.map(x => x.uid), buttons: [{ label: 'Cancel', cls: 'cancel', value: 'none' }]
-    });
-    const target = others.find(x => x.uid === t);
-    if (target && humanCan() && isMainStep()) { if (v === 'movecore') moveCore(p, f, target); else swapSoul(p, f, target); }
-  }
-  else if (v === 'attack') { humanAttack(f); return; }
+  if (typeof v === 'string' && v.startsWith('act:')) { await sendIntent({ type: 'act', uid: f.uid, idx: Number(v.slice(4)) }); return; }
+  if (v === 'bcombine' || v === 'bseparate') { await sendIntent({ type: v, uid: f.uid }); return; }
+  const op = { add: 'add', remove: 'remove', soul: 'soul', unsoul: 'unsoul', swaphere: 'swaphere', movecore: 'move', swapsoul: 'swapsoul' }[v];
+  if (op) { await sendIntent({ type: 'core', op, uid: f.uid }); return; }
+  if (v === 'attack') { sendIntent({ type: 'attack', uid: f.uid }); return; }
   render();
 }
-async function humanAttack(f) {
-  if (!humanCan() || G.step !== 5 || G.turnNo === 1 || f.exhausted || f.noAB || !abTaxOK(G.p.player, f) || attackStepOver()) return;
-  G.busy = true; render();
-  try { await doBattle('player', f); } catch (e) { if (e === ABORT) return; throw e; }
-  if (!G.over && attackStepOver()) { G.busy = false; onNext(); return; }   // v0.43: an effect ended the Attack Step
-  if (!G.over) { G.busy = false; render(); }
-}
-function onNext() {
-  if (!humanCan()) return;
-  if (G.step === 4) {
-    if (G.turnNo === 1) { log(G.format === 'standard' ? 'First turn: the Attack and Second Main Steps are skipped.' : 'First turn: the Attack Step is skipped.'); finishTurn(); }
-    else { setStep(5); log('Attack Step: tap a Spirit to attack.'); G.busy = true; render(); startAttackFx(G.p.player).catch(e => { if (e !== ABORT) throw e; }).then(() => { if (G && !G.over) { G.busy = false; render(); } }); }
-  } else if (G.step === 5) {
-    if (G.format === 'standard') { setStep(6); log('Second Main Step.'); }
-    else finishTurn();
-  } else if (G.step === 6 && G.format === 'standard') finishTurn();
-}
-function finishTurn() { const r = G.turnResolver; G.turnResolver = null; G.busy = true; render(); if (r) r(); }
 
 /* ---------------------------------------------------------------------
    ZONES, LOG, RULES COVERAGE
@@ -5559,8 +5724,8 @@ function openZoneModal(key, zone) {
         modal({ title: `${label} SOUL STATE`, wide: true, html: esc(desc) + cardStripHTML(list, 'Cards'), buttons: rv.map(t => ({ label: `⚡ Revive: deploy ${CARDS[t.id].name}`, cls: 'primary', value: 'r' + t.uid })).concat(ca.map(t => ({ label: `✨ Contract Advent: ${CARDS[t.id].name}`, cls: 'purple', value: 'c' + t.uid }))).concat([{ label: 'Close', cls: 'cancel', value: null }]) })
           .then(async v => {
             if (typeof v !== 'string' || !humanCan()) return;
-            const t = rv.find(x => 'r' + x.uid === v); if (t) { await doRevive(p, t); render(); return; }
-            const u = ca.find(x => 'c' + x.uid === v); if (u) { await humanContractAdvent(u, 'main'); render(); }
+            const t = rv.find(x => 'r' + x.uid === v); if (t) { await sendIntent({ type: 'revive', uid: t.uid }); return; }
+            const u = ca.find(x => 'c' + x.uid === v); if (u) await sendIntent({ type: 'cadvent', uid: u.uid });
           });
         return;
       }
@@ -5570,7 +5735,7 @@ function openZoneModal(key, zone) {
       const rs = mine && humanCan() && isMainStep() ? removedSummonable(p) : [];      // v0.50: Accel Spirits can be summoned from here
       if (rs.length) {
         modal({ title: `${label} REMOVED ZONE`, wide: true, html: esc(desc) + cardStripHTML(list, 'Cards'), buttons: rs.map(t => ({ label: `🎴 Summon ${CARDS[t.id].name} (Pay ${effCost(p, CARDS[t.id])})`, cls: 'primary', value: 'z' + t.uid })).concat([{ label: 'Close', cls: 'cancel', value: null }]) })
-          .then(async v => { const t = rs.find(x => 'z' + x.uid === v); if (t && humanCan()) { try { await summonFromRemoved(p, t); } catch (e) { if (e !== ABORT) throw e; } render(); } });
+          .then(async v => { const t = rs.find(x => 'z' + x.uid === v); if (t && humanCan()) await sendIntent({ type: 'summonRemoved', uid: t.uid }); });
         return;
       }
       break; }
@@ -6241,7 +6406,7 @@ function renderSetPage() {
 /* ---------------------------------------------------------------------
    WEB HOST (v0.82.0, phase F2 = M2): the browser answers the engine's port (packages/protocol/src/00p-protocol.js).
    Views redraw the page, log lines play sounds, decisions (v0.83.0, F3 = M3 part 1; records in packages/engine/src/05b-decide.js)
-   open the modal, the field pick or the payment dialog of 10-modals.js.
+   open the modal, the field pick or the payment dialog of 10-modals.js; the action decision waits for the human's next intent.
    --------------------------------------------------------------------- */
 document.title = 'Aeterna - Engine v' + VERSION;
 let AUDIO = null;
@@ -6266,13 +6431,38 @@ function showGameOver() {
     else if (v === 'lobby') { SESSION++; clearPick(); G = null; switchView('view-lobby'); }
   });
 }
+/* Board actions (v0.84.0, F3 = M3 rest): the engine asks the human seat for its next action (decision kind "action");
+   buttons answer it with an intent (sendIntent). An intent sent while the engine is still running the previous one waits
+   in ACT_Q (same turn only); a press while the engine is busy (G.busy: an attack resolving) is ignored, as before.
+   Without a running seat loop (test boards) the intent runs at once. sendIntent resolves true / false when it was applied. */
+let ACT = null, ACT_DONE = null;
+const ACT_Q = [];
+function actFlush() {
+  const a = ACT; ACT = null; if (a) a(null);
+  const d = ACT_DONE; ACT_DONE = null; if (d) d(false);
+  while (ACT_Q.length) ACT_Q.shift().done(false);
+}
+function webAction(seat, d) {
+  while (ACT_Q.length && ACT_Q[0].turn !== d.turn) ACT_Q.shift().done(false);
+  if (ACT_Q.length) { const e = ACT_Q.shift(); ACT_DONE = e.done; return Promise.resolve(e.it); }
+  return new Promise(res => { ACT = res; });
+}
+function sendIntent(it) {
+  if (!G || !humanCan()) return Promise.resolve(false);
+  if (!seatLoopOpen('player')) return applyIntent('player', it).catch(e => { if (e === ABORT) return false; throw e; });
+  return new Promise(done => {
+    if (ACT) { const a = ACT; ACT = null; ACT_DONE = done; a(it); }
+    else ACT_Q.push({ it, done, turn: G.turnNo });
+  });
+}
 function webView(ev) {
   switch (ev && ev.type) {
     case 'board': render(); break;
     case 'decks': renderLobby(); renderDeckBuilder(); break;
     case 'screen': switchView(ev.id); break;
-    case 'reset': clearPick(); closeModal(null); break;
-    case 'matchEnd': if (!SIM) { recordMatch(ev.winner); showGameOver(); } break;
+    case 'reset': actFlush(); clearPick(); closeModal(null); break;
+    case 'matchEnd': actFlush(); if (!SIM) { recordMatch(ev.winner); showGameOver(); } break;
+    case 'acted': { const d = ACT_DONE; ACT_DONE = null; if (d) d(ev.ok); break; }
     default: throw new Error('unknown view record: ' + JSON.stringify(ev));
   }
 }
@@ -6288,6 +6478,7 @@ function webDecide(seat, d) {
     case 'pick': return webPick(d);
     case 'payment': return webPayment(CARDS[d.card], d.cost, d.L);
     case 'info': return modal({ title: d.title, html: d.html, buttons: [{ label: 'Close', cls: 'cancel', value: null }] });
+    case 'action': return webAction(seat, d);
     default: return Promise.reject(new Error('unknown decision record: ' + JSON.stringify(d)));
   }
 }
@@ -6704,7 +6895,7 @@ function testSetup() {            // dev hook: a quiet board with no match loop 
   switchView('view-playmat'); render(); return G;
 }
 const defBuiltin = o => { defCard(o); BUILTIN_IDS.add(o.id); };      // test fixtures register through this so their ids stay reserved
-window.BS = { endOfBattle, MAT, matUse, setSection, navSync, renderHome, themePop, soulMagicOK, soulMagicHolder, soulMagicPick, THEME, THEME_COLS, setTheme, stepClick, stepTargets, get FX_STRICT() { return FX_STRICT; }, setFxStrict(v) { FX_STRICT = !!v; }, FX_WARNED, collectFx, setFuzz(o) { FUZZ = Object.assign({}, o || {}); }, get FUZZ() { return FUZZ; }, fuzzPick, ERR_LOG, errReport, onGameError, releaseStandby, leaveStandby, renderDeckBuilder, dbChange, dbUndo, dbSheet, DBF, get DB_UNDO() { return DB_UNDO.length; }, accelList, accelCost, accelOK, accelSources, useAccel, removedSummonable, summonFromRemoved, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel, highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, isSealed, soulToLife, lifeTake, braveSummonedFx, abTaxOK, payAbTax, oppAttackHandFx, sentToTrashFx, magicFxAt, summonOK, lvNo, isUlt, noBlockActive, burstFlash, cpuBurstFlash, humanAttack, cpuAttack, attackStepOver, endAttackLocked, battleEndAttack, isGW, freeCores, moveCore, swapSoul, payCost, cpuCanPlay, coresAvailable, addCore, cpuKeepMagicOrPay, nameHTML, switchView, SET_KEY, dbFilterOK, cardColors, contractToDeck, redrawHand, cpuWantsRedraw, setHeavy, refreshOne, toRemoved, fxIf, costDestroyBonus, sendToken, canSendToken, tokenHome, attackSymbols, TOKEN_SUPPLY, isSpiritForm, ocActive, braveFits, braveTargets, combineBrave, braveSummon, separateBrave, canSeparate, braveRecheck, braveAfford, cpuBrave, handButtons, minCores, openFieldModal, cpuMain, VERSION, defBuiltin, beginTurn, endStep, newGame, takeFromVoid, checkDepletion, removeSpirit, lvIndex, mirageUsable, cpuCastMain, magicFx, magicText, costAltActive, flagActive, coresSent, startAttackFx, win, recordMatch, HISTORY: () => HISTORY, toggleLog, effectTextHTML, effectLines, titleCase, liveStatusHTML, openZoom, modal, closeModal, startPeek, SETTINGS, SLOTS: () => SLOTS, get ACTIVE_SLOT() { return ACTIVE_SLOT; }, switchSlot, loadPrebuilt, PREBUILT, cpuDeckFor, saveSettings, PACK_IDS, registerPack, clearImported, summonPaid, reviveTargets, doRevive, handUp, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, soulCoreHolder, rng, seedRng, newSeed, runReplay, lastReplay, fireFxMulti, asResolving, replayOf, loadScenario, gameAct, matchSummary, get REPLAY() { return REPLAY; }, soulSource, soulToNexus, fxImmune, residualHTML, cardDetailHTML, setSimDeckB(d) { SIM_DECK_B = d; }, activatable, activateFx, cpuActivate, toSoulState, bounceCard, runActions, maybeBurst, flushBursts, summonFree, parseBurst, parseActionList, BURST_WHEN, fireFx, parseEffects, staticBp, FX_ACTIONS, removeNexus, magicUsable, magicTargets, castMagic, flashTiming, cpuFlashChoice, setFormat, validateDeck, legalityOf, banStatus, get FORMAT() { return FORMAT; }, isPC, applyLayout, testSetup, mkInst, render, takeCores, IMG, importCards, importImages, textToDeck, deckToText, parseCard, loadImages, get PLAYER_DECK() { return PLAYER_DECK; }, get G() { return G; }, startNewGame, checkInvariants, CARDS, PRESET_DECK, humanCan, onNext, cpuTurn, doBattle, summon, effCost, legacyPlan, legacyPay, canBlockState, canPlayCard, setBurst, fieldList, bpOf, get SESSION() { return SESSION; }, CPU_PROFILES, cpuProfileName, cpuEval, cpuPlayScore, cpuPlayChoice, cpuLethal, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, lifeValue, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, extraReduction };
+window.BS = { endOfBattle, MAT, matUse, setSection, navSync, renderHome, themePop, soulMagicOK, soulMagicHolder, soulMagicPick, THEME, THEME_COLS, setTheme, stepClick, stepTargets, get FX_STRICT() { return FX_STRICT; }, setFxStrict(v) { FX_STRICT = !!v; }, FX_WARNED, collectFx, setFuzz(o) { FUZZ = Object.assign({}, o || {}); }, get FUZZ() { return FUZZ; }, fuzzPick, ERR_LOG, errReport, onGameError, releaseStandby, leaveStandby, renderDeckBuilder, dbChange, dbUndo, dbSheet, DBF, get DB_UNDO() { return DB_UNDO.length; }, accelList, accelCost, accelOK, accelSources, useAccel, removedSummonable, summonFromRemoved, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel, highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, isSealed, soulToLife, lifeTake, braveSummonedFx, abTaxOK, payAbTax, oppAttackHandFx, sentToTrashFx, magicFxAt, summonOK, lvNo, isUlt, noBlockActive, burstFlash, cpuBurstFlash, humanAttack, cpuAttack, attackStepOver, endAttackLocked, battleEndAttack, isGW, freeCores, moveCore, swapSoul, payCost, cpuCanPlay, coresAvailable, addCore, cpuKeepMagicOrPay, nameHTML, switchView, SET_KEY, dbFilterOK, cardColors, contractToDeck, redrawHand, cpuWantsRedraw, setHeavy, refreshOne, toRemoved, fxIf, costDestroyBonus, sendToken, canSendToken, tokenHome, attackSymbols, TOKEN_SUPPLY, isSpiritForm, ocActive, braveFits, braveTargets, combineBrave, braveSummon, separateBrave, canSeparate, braveRecheck, braveAfford, cpuBrave, handButtons, minCores, openFieldModal, cpuMain, VERSION, defBuiltin, beginTurn, endStep, newGame, takeFromVoid, checkDepletion, removeSpirit, lvIndex, mirageUsable, cpuCastMain, magicFx, magicText, costAltActive, flagActive, coresSent, startAttackFx, win, recordMatch, HISTORY: () => HISTORY, toggleLog, effectTextHTML, effectLines, titleCase, liveStatusHTML, openZoom, modal, closeModal, startPeek, SETTINGS, SLOTS: () => SLOTS, get ACTIVE_SLOT() { return ACTIVE_SLOT; }, switchSlot, loadPrebuilt, PREBUILT, cpuDeckFor, saveSettings, PACK_IDS, registerPack, clearImported, summonPaid, reviveTargets, doRevive, handUp, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, soulCoreHolder, rng, seedRng, newSeed, runReplay, lastReplay, fireFxMulti, asResolving, replayOf, loadScenario, gameAct, matchSummary, get REPLAY() { return REPLAY; }, soulSource, soulToNexus, fxImmune, residualHTML, cardDetailHTML, setSimDeckB(d) { SIM_DECK_B = d; }, activatable, activateFx, cpuActivate, toSoulState, bounceCard, runActions, maybeBurst, flushBursts, summonFree, parseBurst, parseActionList, BURST_WHEN, fireFx, parseEffects, staticBp, FX_ACTIONS, removeNexus, magicUsable, magicTargets, castMagic, flashTiming, cpuFlashChoice, setFormat, validateDeck, legalityOf, banStatus, get FORMAT() { return FORMAT; }, isPC, applyLayout, testSetup, mkInst, render, takeCores, IMG, importCards, importImages, textToDeck, deckToText, parseCard, loadImages, get PLAYER_DECK() { return PLAYER_DECK; }, get G() { return G; }, startNewGame, checkInvariants, CARDS, PRESET_DECK, humanCan, onNext, sendIntent, applyIntent, seatLoopOpen, cpuAnswer, INTENT_TYPES, cpuTurn, doBattle, summon, effCost, legacyPlan, legacyPay, canBlockState, canPlayCard, setBurst, fieldList, bpOf, get SESSION() { return SESSION; }, CPU_PROFILES, cpuProfileName, cpuEval, cpuPlayScore, cpuPlayChoice, cpuLethal, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, lifeValue, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, extraReduction };
 navSync();
 renderLobby();
 loadImages();

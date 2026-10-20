@@ -7,11 +7,13 @@
      pick    {text, uids:[uid], mark?: uid, buttons?:[{label, value, cls?}]} -> a uid from uids or a button value
      payment {card: id, cost, L} -> {reserve, by:{uid: n}, rsoul?, fsoul?: uid} or null (cancelled)
      info    {title, html} -> null
+     action  {step, turn} -> an intent record (v0.84.0, packages/engine/src/05c-intent.js): the seat's next board action
    Web host: apps/web/src/13e-host.js (modals, field picks, the payment dialog). Headless host: packages/engine/headless.mjs
    (scripted answers). A match that changed while a decision was open (SESSION moved on) throws ABORT, as the web prompts did.
-   The CPU still decides in 09-cpu.js without the port (M3 part 2: the CPU becomes a port answerer).
+   Board actions (v0.84.0, M3 rest): the action decision and its intent records, 05c-intent.js; cpuAnswer() there answers
+   any record as the CPU would. The CPU seat of the offline game still decides inline in 09-cpu.js.
    --------------------------------------------------------------------- */
-const DECISION_KINDS = ['choice', 'pick', 'payment', 'info'];
+const DECISION_KINDS = ['choice', 'pick', 'payment', 'info', 'action'];
 const cardIds = L => (L || []).map(x => (typeof x === 'string' ? x : x.id)).filter(id => CARDS[id]);
 async function decide(seat, d) { const s = SESSION; const v = await io.decide(seat, d); if (s !== SESSION) throw ABORT; return v; }
 /** A choice between buttons (the old web ask()); the human seat unless another seat is named. */

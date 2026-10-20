@@ -25,8 +25,8 @@ function openZoneModal(key, zone) {
         modal({ title: `${label} SOUL STATE`, wide: true, html: esc(desc) + cardStripHTML(list, 'Cards'), buttons: rv.map(t => ({ label: `⚡ Revive: deploy ${CARDS[t.id].name}`, cls: 'primary', value: 'r' + t.uid })).concat(ca.map(t => ({ label: `✨ Contract Advent: ${CARDS[t.id].name}`, cls: 'purple', value: 'c' + t.uid }))).concat([{ label: 'Close', cls: 'cancel', value: null }]) })
           .then(async v => {
             if (typeof v !== 'string' || !humanCan()) return;
-            const t = rv.find(x => 'r' + x.uid === v); if (t) { await doRevive(p, t); render(); return; }
-            const u = ca.find(x => 'c' + x.uid === v); if (u) { await humanContractAdvent(u, 'main'); render(); }
+            const t = rv.find(x => 'r' + x.uid === v); if (t) { await sendIntent({ type: 'revive', uid: t.uid }); return; }
+            const u = ca.find(x => 'c' + x.uid === v); if (u) await sendIntent({ type: 'cadvent', uid: u.uid });
           });
         return;
       }
@@ -36,7 +36,7 @@ function openZoneModal(key, zone) {
       const rs = mine && humanCan() && isMainStep() ? removedSummonable(p) : [];      // v0.50: Accel Spirits can be summoned from here
       if (rs.length) {
         modal({ title: `${label} REMOVED ZONE`, wide: true, html: esc(desc) + cardStripHTML(list, 'Cards'), buttons: rs.map(t => ({ label: `🎴 Summon ${CARDS[t.id].name} (Pay ${effCost(p, CARDS[t.id])})`, cls: 'primary', value: 'z' + t.uid })).concat([{ label: 'Close', cls: 'cancel', value: null }]) })
-          .then(async v => { const t = rs.find(x => 'z' + x.uid === v); if (t && humanCan()) { try { await summonFromRemoved(p, t); } catch (e) { if (e !== ABORT) throw e; } render(); } });
+          .then(async v => { const t = rs.find(x => 'z' + x.uid === v); if (t && humanCan()) await sendIntent({ type: 'summonRemoved', uid: t.uid }); });
         return;
       }
       break; }

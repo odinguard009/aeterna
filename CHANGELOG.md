@@ -2,6 +2,18 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.84.0
+- Lane: U/I
+- **Host port, part 2b (roadmap phase F, item F3 part 2 = monorepo step M3 rest): the human seat's board actions are intent records through `io.decide`; the CPU can answer any decision through the port.**
+  - `packages/engine/src/05c-intent.js` (new): on a human seat's turn `seatTurn()` asks the decision `{kind: 'action', step, turn}` until the turn ends; the answer is an intent record (`next`, `end`, `summon`, `cast`, `burst`, `mirage`, `brave`, `cadvent`, `manifest`, `accel`, `act`, `bcombine`, `bseparate`, `core {op}`, `attack`, `revive`, `summonRemoved`; cards by uid). `applyIntent()` checks each one against the rules (stricter than before: a scripted intent for a card type, step or effect index the buttons would not offer is refused) and runs it; payments and targets inside an action stay ordinary decision records. The summon / cast / Mirage / Brave / core-move / attack / NEXT code moved here from `apps/web/src/11-human.js`; `G.turnResolver` is now internal to the seat loop. View record `acted {seat, ok}` acknowledges each intent.
+  - `cpuAnswer(seat, record)`: a port answerer for every record kind (actions via `cpuPlayChoice` / `cpuAttackChoice`, payments via `cpuPaymentPlan`). The offline CPU seat still decides inline (`09-cpu.js`).
+  - Web host `apps/web/src/13e-host.js`: the buttons send intents with `sendIntent` (resolves true/false once applied). An intent sent while the previous one still resolves waits for it (same turn only); a press while the engine is busy is ignored as before; on a test board without a running match the intent runs at once. Replays of v0.26 input records are unchanged.
+  - `packages/engine/headless.mjs`: the human seat now plays its own turns through intents (the CPU no longer plays them); an answer of `undefined` lets `cpuAnswer` decide; `human: 'pass'` ends every turn; results carry `acted {ok, refused}`.
+  - Tests `tests/unit/intent84.test.mjs`: I84-01 headless human seat summons, attacks and presses NEXT through intents in 3 matches, I84-02 recorded intents + answers reproduce the match (same hash), I84-03 illegal intents are refused, a seat sending only those has its turns capped and the match still ends, I84-04 `human: 'pass'`, I84-05 browser: intents on a test board and in a real match; H82-05 lists the `acted` view.
+  - Player-view pass (PC 1366x768, phone 412x915, real matches): hand summons with the payment dialog, Contract Advent / Mirage, core and Soul Core moves, attacks with block and Flash prompts, double NEXT, step chip End and clicks during effects; no console errors, no stuck state.
+- Backup branch `backup/v0.83.0` (state before M3 part 2).
+- Revert note: `git revert` of the v0.84.0 commit restores v0.83.0 (action routing only; no card data or rules change).
+
 ## v0.83.0
 - Lane: U/I
 - **Host port, part 2a (roadmap phase F, item F3 = monorepo step M3 part 1): every prompt of a human seat is now a decision record through `io.decide`; the engine calls no web function any more.**

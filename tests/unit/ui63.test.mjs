@@ -36,7 +36,7 @@ test('U03 Attack from Main is legal: same as NEXT', async () => {
 test('U04 End from Main runs the Attack Step (no attacks) and ends the turn through NEXT', async () => {
   const { page } = await open('pc');
   await page.evaluate(() => { BS.testSetup(); window.__ended = 0; BS.G.turnResolver = () => { window.__ended++; }; BS.stepClick(6); });
-  await page.waitForFunction(() => window.__ended === 1, null, { timeout: 8000 });   // finishTurn() ran once, after the Attack Step
+  await page.waitForFunction(() => window.__ended === 1, null, { timeout: 8000 });   // the turn ended once, after the Attack Step
   assert.deepEqual(await page.evaluate(() => [BS.G.step, BS.G.active]), [5, 'player']);
 });
 test('U05 during the CPU turn every step button says the CPU is playing', async () => {

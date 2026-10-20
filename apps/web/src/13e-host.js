@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------------------
    WEB HOST (v0.82.0, phase F2 = M2): the browser answers the engine's port (packages/protocol/src/00p-protocol.js).
    Views redraw the page, log lines play sounds, decisions (v0.83.0, F3 = M3 part 1; records in packages/engine/src/05b-decide.js)
-   open the modal, the field pick or the payment dialog of 10-modals.js.
+   open the modal, the field pick or the payment dialog of 10-modals.js; the action decision waits for the human's next intent.
    --------------------------------------------------------------------- */
 document.title = 'Aeterna - Engine v' + VERSION;
 let AUDIO = null;
@@ -26,13 +26,38 @@ function showGameOver() {
     else if (v === 'lobby') { SESSION++; clearPick(); G = null; switchView('view-lobby'); }
   });
 }
+/* Board actions (v0.84.0, F3 = M3 rest): the engine asks the human seat for its next action (decision kind "action");
+   buttons answer it with an intent (sendIntent). An intent sent while the engine is still running the previous one waits
+   in ACT_Q (same turn only); a press while the engine is busy (G.busy: an attack resolving) is ignored, as before.
+   Without a running seat loop (test boards) the intent runs at once. sendIntent resolves true / false when it was applied. */
+let ACT = null, ACT_DONE = null;
+const ACT_Q = [];
+function actFlush() {
+  const a = ACT; ACT = null; if (a) a(null);
+  const d = ACT_DONE; ACT_DONE = null; if (d) d(false);
+  while (ACT_Q.length) ACT_Q.shift().done(false);
+}
+function webAction(seat, d) {
+  while (ACT_Q.length && ACT_Q[0].turn !== d.turn) ACT_Q.shift().done(false);
+  if (ACT_Q.length) { const e = ACT_Q.shift(); ACT_DONE = e.done; return Promise.resolve(e.it); }
+  return new Promise(res => { ACT = res; });
+}
+function sendIntent(it) {
+  if (!G || !humanCan()) return Promise.resolve(false);
+  if (!seatLoopOpen('player')) return applyIntent('player', it).catch(e => { if (e === ABORT) return false; throw e; });
+  return new Promise(done => {
+    if (ACT) { const a = ACT; ACT = null; ACT_DONE = done; a(it); }
+    else ACT_Q.push({ it, done, turn: G.turnNo });
+  });
+}
 function webView(ev) {
   switch (ev && ev.type) {
     case 'board': render(); break;
     case 'decks': renderLobby(); renderDeckBuilder(); break;
     case 'screen': switchView(ev.id); break;
-    case 'reset': clearPick(); closeModal(null); break;
-    case 'matchEnd': if (!SIM) { recordMatch(ev.winner); showGameOver(); } break;
+    case 'reset': actFlush(); clearPick(); closeModal(null); break;
+    case 'matchEnd': actFlush(); if (!SIM) { recordMatch(ev.winner); showGameOver(); } break;
+    case 'acted': { const d = ACT_DONE; ACT_DONE = null; if (d) d(ev.ok); break; }
     default: throw new Error('unknown view record: ' + JSON.stringify(ev));
   }
 }
@@ -48,6 +73,7 @@ function webDecide(seat, d) {
     case 'pick': return webPick(d);
     case 'payment': return webPayment(CARDS[d.card], d.cost, d.L);
     case 'info': return modal({ title: d.title, html: d.html, buttons: [{ label: 'Close', cls: 'cancel', value: null }] });
+    case 'action': return webAction(seat, d);
     default: return Promise.reject(new Error('unknown decision record: ' + JSON.stringify(d)));
   }
 }

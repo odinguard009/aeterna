@@ -1,7 +1,8 @@
 /* ---------------------------------------------------------------------
-   HUMAN ACTIONS
+   HUMAN ACTIONS: the dialogs of the human seat. Board actions are intent records (v0.84.0, F3 = M3 rest):
+   the buttons send them with sendIntent (13e-host.js); the engine checks and runs them (packages/engine/src/05c-intent.js).
    --------------------------------------------------------------------- */
-const humanCan = () => G && !G.over && !G.busy && G.active === 'player' && !G.p.player.cpu;
+const humanCan = () => seatCan('player');
 
 function legalityHTML(card) {
   const row = (name, f) => { const r = legalityOf(card.id, f), lim = banStatus(card.id) === 'limit1';
@@ -104,40 +105,20 @@ function handButtons(p, inst, withDetail) {
   }
   return buttons;
 }
+const HAND_INTENTS = { play: 'summon', burst: 'burst', cadvent: 'cadvent', manifest: 'manifest', cast: 'cast', brave: 'brave', mirage: 'mirage' };
 function runHandAction(p, inst, v) {
   if (!G || !G.p.player.hand.includes(inst)) return;
-  if (v === 'play') humanPlay(inst);
-  else if (v === 'burst' && humanCan() && !p.burstSetThisTurn) { setBurst(p, inst); render(); }
-  else if (v === 'cadvent') humanContractAdvent(inst, 'main').then(() => { if (G) render(); });
-  else if (v === 'manifest') humanManifest(inst).then(() => { if (G) render(); });
-  else if (v === 'cast') humanCast(inst);
-  else if (v === 'brave') humanBraveSummon(inst);
-  else if (v === 'mirage') humanMirage(inst);
-  else if (typeof v === 'string' && v.startsWith('accel:') && humanCan() && isMainStep()) {
-    const idx = Number(v.slice(6));
-    humanAccel(inst, idx, 'MAIN').then(async r => { if (r && humanCan()) await useAccel(p, r.inst, r.idx, r.plan, 'MAIN'); if (G) render(); }).catch(e => { if (e !== ABORT) throw e; });
-  }
+  if (HAND_INTENTS[v]) sendIntent({ type: HAND_INTENTS[v], uid: inst.uid });
+  else if (typeof v === 'string' && v.startsWith('accel:')) sendIntent({ type: 'accel', uid: inst.uid, idx: Number(v.slice(6)) });
 }
-async function humanMirage(inst) {
-  try {
-    const p = G.p.player, card = CARDS[inst.id];
-    if (!humanCan() || !isMainStep() || !p.hand.includes(inst) || !mirageUsable(p, inst)) return;
-    const c = card.mirage.cost; let plan = null;
-    if (c > 0 && reserveTotal(p) < c) { plan = await askPayment(card, c, 0); if (!plan) return; }
-    if (!humanCan() || !isMainStep() || !p.hand.includes(inst) || p.mirageSetThisTurn) return;
-    removeFrom(p.hand, inst); payCost(p, c, plan); checkDepletion(p);
-    setBurst(p, inst, true); render();
-  } catch (e) { if (e !== ABORT) throw e; }
-}
-async function humanCast(inst) {
-  try {
-    const p = G.p.player;
-    if (!humanCan() || !isMainStep() || !p.hand.includes(inst)) return;
-    const ch = await prepareHumanMagic(p, inst);
-    if (!ch || !humanCan() || !isMainStep() || !p.hand.includes(inst)) return;
-    await castMagic(p, ch); render(); await flushBursts();
-  } catch (e) { if (e !== ABORT) throw e; }
-}
+/* the old entry points (tests and the console use them): each sends one intent and resolves when it was applied */
+const humanMirage = inst => sendIntent({ type: 'mirage', uid: inst.uid });
+const humanCast = inst => sendIntent({ type: 'cast', uid: inst.uid });
+const humanPlay = inst => sendIntent({ type: 'summon', uid: inst.uid });
+const humanBraveSummon = inst => sendIntent({ type: 'brave', uid: inst.uid });
+const humanBraveField = (p, f, v) => sendIntent({ type: v === 'bseparate' ? 'bseparate' : 'bcombine', uid: f.uid });
+const humanAttack = f => sendIntent({ type: 'attack', uid: f.uid });
+const onNext = () => sendIntent({ type: 'next' });
 async function showCardDetail(id, ctx, uid) {
   const card = CARDS[id]; if (!card) return;
   let buttons = [], inst = null;
@@ -166,40 +147,6 @@ async function openHandModal(uid) {
   if (!G || !G.p.player.hand.includes(inst)) return;
   if (v === 'detail') showCardDetail(inst.id, 'hand', inst.uid);
   else runHandAction(p, inst, v);
-}
-async function humanPlay(inst) {
-  if (!humanCan() || !isMainStep()) return;
-  const p = G.p.player, card = CARDS[inst.id];
-  if (!canPlayCard(p, inst)) { log(`Not enough cores for ${card.name}.`); render(); return; }
-  const c = effCost(p, card), L = minCores(card);
-  let plan = null;
-  if (c > 0 && reserveTotal(p) < c + L) { plan = await askPayment(card, c, L); if (!plan) return; }
-  if (!humanCan() || !p.hand.includes(inst)) return;
-  summon(p, inst, plan); render();
-  await fireFx(p, 'SUMMONED', inst);
-}
-/* Brave (manual p. 34-36): summon directly combined with a Spirit; combine / separate in the Main Step at no cost */
-async function humanBraveSummon(inst) {
-  try {
-    if (!humanCan() || !isMainStep()) return;
-    const p = G.p.player, card = CARDS[inst.id];
-    if (!p.hand.includes(inst) || !braveAfford(p, inst)) return;
-    const uid = await pickFromField({ text: `🗡 <b>${esc(card.name)}</b><br>Tap the Spirit to combine with.`, uids: braveTargets(p, inst).map(s => s.uid), buttons: [{ label: 'Cancel', cls: 'cancel', value: 'none' }] });
-    const t = fieldList(p).find(s => s.uid === uid);
-    if (!t || !humanCan() || !p.hand.includes(inst) || !braveFits(inst, t)) { render(); return; }
-    const c = effCost(p, card); let plan = null;
-    if (c > 0 && reserveTotal(p) < c) { plan = await askPayment(card, c, 0); if (!plan) { render(); return; } }
-    if (!humanCan() || !p.hand.includes(inst) || !braveFits(inst, t)) return;
-    braveSummon(p, inst, t, plan); render(); await braveSummonedFx(p, inst);
-  } catch (e) { if (e !== ABORT) throw e; }
-}
-async function humanBraveField(p, f, v) {
-  if (!humanCan() || !isMainStep()) return;
-  if (v === 'bseparate') { if (canSeparate(p, f)) separateBrave(p, f); return; }
-  const L = braveTargets(p, f); if (!L.length) return;
-  const uid = await pickFromField({ text: `🗡 <b>${esc(CARDS[f.id].name)}</b><br>Tap the Spirit to combine with.`, uids: L.map(s => s.uid), buttons: [{ label: 'Cancel', cls: 'cancel', value: 'none' }] });
-  const t = L.find(s => s.uid === uid);
-  if (t && humanCan() && isMainStep() && p.spirits.includes(f) && braveFits(f, t)) combineBrave(p, f, t);
 }
 async function openFieldModal(key, kind, uid) {
   const p = G.p[key], f = fieldList(p).find(x => x.uid === uid); if (!f) return;
@@ -245,41 +192,11 @@ async function openFieldModal(key, kind, uid) {
   if (!G || G.over) return;
   if (v === 'detail') { showCardDetail(f.id); return; }
   if (!mine) return;
-  if (typeof v === 'string' && v.startsWith('act:')) { if (humanCan() && isMainStep()) await activateFx(p, f, Number(v.slice(4))); render(); return; }
-  if (v === 'bcombine' || v === 'bseparate') { await humanBraveField(p, f, v); render(); return; }
-  if (v === 'add') addCore(p, f);
-  else if (v === 'remove') removeCore(p, f);
-  else if (v === 'soul') { const r = moveSoulTo(p, f); if (r !== 'ok') { await info('Soul Core', r === 'deplete' ? 'Moving the Soul Core would deplete the Spirit it is on. Use Swap instead.' : 'The Soul Core is not available.'); } }
-  else if (v === 'unsoul') { const r = returnSoul(p, f); if (r === 'deplete') await info('Soul Core', 'Returning the Soul Core would deplete this Spirit. Swap it with a normal core first.'); }
-  else if (v === 'swaphere') { const h = fieldList(p).find(x => x.soul && x !== f); if (h) swapSoul(p, h, f); }
-  else if (v === 'movecore' || v === 'swapsoul') {
-    const others = fieldList(p).filter(x => x !== f && !isGW(x) && (v === 'swapsoul' ? x.cores > 0 : true));
-    const t = await pickFromField({
-      text: v === 'movecore' ? `➡ <b>Move 1 core from ${esc(card.name)}</b><br>Tap the card that receives it.` : `🔄 <b>Swap the Soul Core of ${esc(card.name)}</b><br>Tap the card whose normal core trades places with it.`,
-      uids: others.map(x => x.uid), buttons: [{ label: 'Cancel', cls: 'cancel', value: 'none' }]
-    });
-    const target = others.find(x => x.uid === t);
-    if (target && humanCan() && isMainStep()) { if (v === 'movecore') moveCore(p, f, target); else swapSoul(p, f, target); }
-  }
-  else if (v === 'attack') { humanAttack(f); return; }
+  if (typeof v === 'string' && v.startsWith('act:')) { await sendIntent({ type: 'act', uid: f.uid, idx: Number(v.slice(4)) }); return; }
+  if (v === 'bcombine' || v === 'bseparate') { await sendIntent({ type: v, uid: f.uid }); return; }
+  const op = { add: 'add', remove: 'remove', soul: 'soul', unsoul: 'unsoul', swaphere: 'swaphere', movecore: 'move', swapsoul: 'swapsoul' }[v];
+  if (op) { await sendIntent({ type: 'core', op, uid: f.uid }); return; }
+  if (v === 'attack') { sendIntent({ type: 'attack', uid: f.uid }); return; }
   render();
 }
-async function humanAttack(f) {
-  if (!humanCan() || G.step !== 5 || G.turnNo === 1 || f.exhausted || f.noAB || !abTaxOK(G.p.player, f) || attackStepOver()) return;
-  G.busy = true; render();
-  try { await doBattle('player', f); } catch (e) { if (e === ABORT) return; throw e; }
-  if (!G.over && attackStepOver()) { G.busy = false; onNext(); return; }   // v0.43: an effect ended the Attack Step
-  if (!G.over) { G.busy = false; render(); }
-}
-function onNext() {
-  if (!humanCan()) return;
-  if (G.step === 4) {
-    if (G.turnNo === 1) { log(G.format === 'standard' ? 'First turn: the Attack and Second Main Steps are skipped.' : 'First turn: the Attack Step is skipped.'); finishTurn(); }
-    else { setStep(5); log('Attack Step: tap a Spirit to attack.'); G.busy = true; render(); startAttackFx(G.p.player).catch(e => { if (e !== ABORT) throw e; }).then(() => { if (G && !G.over) { G.busy = false; render(); } }); }
-  } else if (G.step === 5) {
-    if (G.format === 'standard') { setStep(6); log('Second Main Step.'); }
-    else finishTurn();
-  } else if (G.step === 6 && G.format === 'standard') finishTurn();
-}
-function finishTurn() { const r = G.turnResolver; G.turnResolver = null; G.busy = true; render(); if (r) r(); }
 
