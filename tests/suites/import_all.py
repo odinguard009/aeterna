@@ -35,6 +35,11 @@ with sync_playwright() as p:
             if pg.locator('#in-cards').count():       # the file input takes one file at a time: one chunk file per pick
                 for j,t in enumerate(CH):
                     pg.set_input_files("#in-cards",files=[{"name":f"chunk{j}.json","mimeType":"application/json","buffer":t.encode()}]); settle(pg)
+                    # the file input reads the chunk asynchronously (FileReader), so settle() can return before the cards land:
+                    # wait until this chunk's cards are in (v0.87.0 Regression read 5000 of 6838 here)
+                    want=min((j+1)*2500,n_all)
+                    try: pg.wait_for_function("(w)=>Object.values(BS.CARDS).filter(c=>c.imported).length>=w", arg=want, timeout=15000, polling=50)
+                    except Exception: pass
             ok=True
         n=pg.evaluate("Object.values(BS.CARDS).filter(c=>c.imported).length")
         sagas=pg.evaluate("[...new Set(Object.values(BS.CARDS).filter(c=>c.imported).map(c=>c.saga))].sort().join()")
