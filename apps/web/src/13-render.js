@@ -246,16 +246,18 @@ const HIST_KEY = 'bse.history.v1';
 let HISTORY = (() => { try { const a = JSON.parse(localStorage.getItem(HIST_KEY)); return Array.isArray(a) ? a.slice(-100) : []; } catch (e) { return []; } })();
 function recordMatch(winnerKey) {
   if (!G || !G.meta || G.meta.done) return; G.meta.done = true;
-  HISTORY.push({ t: Date.now(), fmt: G.meta.fmt, you: G.meta.you, cpu: G.meta.cpu, won: winnerKey === 'player', turns: G.turnNo, replay: G.rec ? replayOf(G) : undefined });
+  HISTORY.push({ t: Date.now(), fmt: G.meta.fmt, you: G.meta.you, cpu: G.meta.cpu, won: winnerKey === 'player', turns: G.turnNo, replay: G.rec ? replayOf(G) : undefined, port: portRecord() || undefined });
   if (HISTORY.length > 100) HISTORY.shift();
-  for (let i = 0; i < HISTORY.length - 3; i++) delete HISTORY[i].replay;          // only the last 3 matches keep their replay (storage size)
+  for (let i = 0; i < HISTORY.length - 3; i++) { delete HISTORY[i].replay; delete HISTORY[i].port; }   // only the last 3 matches keep their replays (storage size)
   try { localStorage.setItem(HIST_KEY, JSON.stringify(HISTORY)); } catch (e) { /* blocked */ }
 }
 function histHTML() {
   if (!HISTORY.length) return '<div class="empty-note">No finished matches yet.</div>';
   const w = HISTORY.filter(h => h.won).length, n = HISTORY.length;
   const rows = HISTORY.slice(-10).reverse().map(h => `<tr><td>${new Date(h.t).toLocaleDateString()}</td><td class="${h.won ? 'hist-win' : 'hist-loss'}">${h.won ? 'Win' : 'Loss'}</td><td>${esc(h.you)}</td><td>${esc(h.cpu)}</td><td>${esc(String(h.fmt || '').toUpperCase())}</td><td>${h.turns}</td></tr>`).join('');
-  return `<div>Total: <b>${w}</b> wins, <b>${n - w}</b> losses (${Math.round(100 * w / n)}%) over ${n} match${n === 1 ? '' : 'es'}.</div>
+  // v0.86.0: Watch / Save the port record of the last matches (13f-replay.js); a list above the table, so phones need no sideways scroll
+  const rv = HISTORY.map((h, k) => (h.port ? `<div class="rv-item"><span>${new Date(h.t).toLocaleDateString()} · ${h.won ? 'Win' : 'Loss'} · ${esc(h.you)} vs ${esc(h.cpu)}</span><button class="ae-ghost rv-btn" data-a="rv-watch" data-v="${k}">▶ WATCH</button><button class="ae-ghost rv-btn" data-a="rv-save" data-v="${k}" title="Save the match record (JSON)">SAVE</button></div>` : '')).reverse().join('');
+  return `<div>Total: <b>${w}</b> wins, <b>${n - w}</b> losses (${Math.round(100 * w / n)}%) over ${n} match${n === 1 ? '' : 'es'}.</div>${rv ? `<div class="rv-list">${rv}</div>` : ''}
     <table class="hist-table"><tr><th>Date</th><th>Result</th><th>Your deck</th><th>CPU deck</th><th>Format</th><th>Turn</th></tr>${rows}</table>`;
 }
 

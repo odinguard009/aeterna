@@ -62,7 +62,9 @@ export function buildParts(opts = {}) {   // opts.cards: build with another card
   const js = joinScript(parts, cards);
   const tpl = rd('src/index.template.html');
   for (const m of ['/*@@CSS@@*/\n', '/*@@JS@@*/\n']) if (tpl.split(m).length !== 2) throw new Error('template marker missing: ' + m.trim());
-  const html = tpl.replace('/*@@CSS@@*/\n', () => rd('src/styles.css')).replace('/*@@JS@@*/\n', () => js);
+  // v0.86.0: the page carries the stylesheet without comments and indentation (src/styles.css keeps both; budget B04)
+  const css = rd('src/styles.css').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]+/gm, '').replace(/\n{2,}/g, '\n');
+  const html = tpl.replace('/*@@CSS@@*/\n', () => css).replace('/*@@JS@@*/\n', () => js);
   return { html, js, files, cards: cards.length };
 }
 

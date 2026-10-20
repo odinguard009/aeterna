@@ -28,7 +28,7 @@ export function firstAnswer(seat, d) {
 }
 
 const EXPORTS = `
-;globalThis.__engine = { io, bindHost, VIEW_TYPES, DECISION_KINDS, cpuTurn, cpuAnswer, applyIntent, INTENT_TYPES, portRecord, boardSnapshot, setFormat, ABORT,
+;globalThis.__engine = { io, bindHost, VIEW_TYPES, DECISION_KINDS, cpuTurn, cpuAnswer, applyIntent, INTENT_TYPES, portRecord, boardSnapshot, runPortRecord, setFormat, ABORT,
   setReplayFast() { REPLAY = { fast: true, i: 0 }; }, get FORMAT() { return FORMAT; }, startNewGame, PREBUILT, PRESET_DECK, VERSION, CARDS, matchSummary, checkInvariants,
   setSimDeckB(d) { SIM_DECK_B = d; }, setSimHuman(v) { SIM_HUMAN = !!v; }, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, setFuzz(o) { FUZZ = Object.assign({}, o || {}); },
   get G() { return G; }, get SIM() { return SIM; } };
@@ -57,8 +57,9 @@ const deckOf = (E, d) => (typeof d === 'string' ? (E.PREBUILT.find(x => x.id ===
 
 /** Plays one CPU-vs-CPU match to the end. deckA/deckB: a prebuilt id ('red', 'mitra', ...) or a {cardId: count} map.
  *  Checks the rules invariants after every board view. Resolves a plain summary; never rejects. */
-export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', timeoutMs = 60000, profiles = null, fuzz = null, human = false, answer = firstAnswer } = {}) {
-  const E = loadEngine(), views = {}, errors = [], decisions = [], acted = { ok: 0, refused: 0 };
+// real: true plays a web match (coin toss, Starting Hand prompts; the first seat is always human): records replay in the page.
+export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', timeoutMs = 60000, profiles = null, fuzz = null, human = false, answer = firstAnswer, real = false } = {}) {
+  const E = loadEngine({ sim: !real }), views = {}, errors = [], decisions = [], acted = { ok: 0, refused: 0 };
   let logs = 0;
   const A = deckOf(E, deckA), B = deckOf(E, deckB);
   if (!A || !B) return { over: false, errors: ['unknown deck ' + (A ? deckB : deckA)] };
@@ -93,7 +94,7 @@ export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', t
   process.on('unhandledRejection', onRej);
   const t0 = Date.now();
   try {
-    await E.startNewGame({ seed });
+    await E.startNewGame(real ? { seed, deckA: A, deckB: B, noHistory: true } : { seed });   // real: the rules of a web match, the first seat is human
     while (!(E.G && E.G.over) && !errors.length && Date.now() - t0 < timeoutMs) {
       await new Promise(r => setTimeout(r, 2));
     }
@@ -108,50 +109,22 @@ export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', t
 // { ok, reason, at, total, over, final, same, cut, sameCut, frames? }: `same` = the recorded final result and log hash,
 // `sameCut` = the log count and hash where the record of an unfinished match was cut. viewer: true adds viewer frames.
 export async function replayPort(rec, { timeoutMs = 60000, viewer = false } = {}) {
-  if (rec && rec.port && rec.port.v === 2) rec = rec.port;           // a fuzz case file
-  if (!rec || rec.v !== 2 || !Array.isArray(rec.answers) || !rec.deckA || !rec.deckB || rec.seed == null) return { ok: false, reason: 'not a port record (v 2)' };
-  const E = loadEngine({ sim: !!rec.sim }), frames = [], errors = [];
-  let i = 0, stop = null, last = '';
-  const never = () => new Promise(() => {});
-  E.bindHost({
-    name: 'replay',
-    view(ev) { if (viewer && ev.type === 'board' && E.G) { const f = JSON.stringify(E.boardSnapshot()); if (f !== last) { frames.push(JSON.parse(f)); last = f; } } },
-    log() {},
-    decide(seat, d) {
-      if (stop) return never();
-      const a = rec.answers[i];
-      if (!a) { stop = 'end'; return never(); }                     // the record ends: the match waits here
-      if (a.s !== seat || a.k !== d.kind) { stop = `diverged at answer ${i}: the engine asks ${seat} for ${d.kind}, the record has ${a.s} ${a.k}`; return never(); }
-      i++; return Promise.resolve(a.v);
-    }
-  });
-  if (rec.format && rec.format !== E.FORMAT) E.setFormat(rec.format);
-  if (rec.sim) {
-    E.setSimHuman((rec.human || []).includes('player'));
-    if (rec.cpu && rec.cpu.profiles) E.setSimProfiles(rec.cpu.profiles);
-    if (rec.cpu && rec.cpu.fuzz) E.setFuzz(rec.cpu.fuzz);
-  }
+  const p = rec && rec.port && rec.port.v === 2 ? rec.port : rec;
+  if (!p || p.v !== 2) return { ok: false, reason: 'not a port record (v 2)' };
+  const E = loadEngine({ sim: !!p.sim }), errors = [];
   const onRej = e => { if (errors.length < 3) errors.push(String(e && e.stack ? e.stack.split('\n').slice(0, 3).join(' | ') : e)); };
   process.on('unhandledRejection', onRej);
-  const t0 = Date.now();
   try {
-    E.startNewGame({ seed: rec.seed, deckA: rec.deckA, deckB: rec.deckB, noHistory: true, watch: !!rec.watch }).catch(onRej);
-    while (!(E.G && E.G.over) && !stop && !errors.length && Date.now() - t0 < timeoutMs) await new Promise(r => setTimeout(r, 2));
+    const r = JSON.parse(JSON.stringify(await E.runPortRecord(p, { timeoutMs, viewer })));   // plain objects of this realm
+    if (errors.length) Object.assign(r, { ok: false, reason: 'error: ' + errors[0] });
+    return r;
   } finally { process.off('unhandledRejection', onRej); }
-  const G = E.G, over = !!(G && G.over), final = over ? E.matchSummary() : null;
-  const cut = G ? { log: G.hn || 0, hash: (G.hh >>> 0).toString(16) } : null;
-  const same = !!(rec.final && final && ['winner', 'turn', 'log', 'hash'].every(k => rec.final[k] === final[k]));
-  const sameCut = !!(rec.cut && cut && stop === 'end' && rec.cut.log === cut.log && rec.cut.hash === cut.hash);
-  const reason = errors.length ? 'error: ' + errors[0] : stop && stop !== 'end' ? stop : !over && !stop ? 'time limit' : over && i < rec.answers.length ? `${rec.answers.length - i} answers are left after the end of the match` : '';
-  const out = { ok: !reason, reason, at: i, total: rec.answers.length, over, final, same, cut, sameCut, build: E.VERSION, recBuild: rec.build };
-  if (viewer) out.frames = frames;
-  return out;
 }
 
-/** Viewer replay (v 1) of a port record: board frames that play back in any later version without the engine. */
+/** Viewer replay (v 1) of a port record (engine viewerReplayOf, packages/engine/src/15b-replay.js). */
 export async function viewerReplay(rec, opts = {}) {
   const r = await replayPort(rec, Object.assign({}, opts, { viewer: true }));
-  if (!r.ok && !(r.reason === '' || r.reason == null)) return { ok: false, reason: r.reason };
+  if (!r.ok) return { ok: false, reason: r.reason };
   const p = rec.port && rec.port.v === 2 ? rec.port : rec;
   return { ok: true, replay: { v: 1, kind: 'aeterna-viewer', build: r.build, seed: p.seed, final: r.final, frames: r.frames } };
 }

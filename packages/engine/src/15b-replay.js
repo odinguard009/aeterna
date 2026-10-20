@@ -32,5 +32,57 @@ function boardSnapshot() {
     hand: p.cpu ? p.hand.length : p.hand.map(h => h.id), spirits: p.spirits.map(fc), nexus: p.nexus.map(fc), trash: p.trash.map(x => x.id), soulState: p.soulState.map(x => x.id),
     removed: p.removed.map(x => x.id), burst: p.burst ? (p.cpu ? 'set' : p.burst.id) : null, mirage: p.mirage ? p.mirage.id : null
   });
-  return { t: G.turnNo, st: G.step, a: G.active, n: G.hn || 0, last: G.history.length ? G.history[G.history.length - 1] : '', over: !!G.over, w: G.winner || null, p: { player: side(G.p.player), opponent: side(G.p.opponent) } };
+  return { t: G.turnNo, st: G.step, sn: G.steps[G.step] || '', a: G.active, n: G.hn || 0, last: G.history.length ? G.history[G.history.length - 1] : '', over: !!G.over, w: G.winner || null, p: { player: side(G.p.player), opponent: side(G.p.opponent) } };
+}
+/** Re-runs a port record in this engine (any host: headless, or the web page when no match is open). Every decision is
+ *  answered from the record in order (same seat and kind, else "diverged at answer N"); the host is restored afterwards.
+ *  Resolves { ok, reason, at, total, over, final, same, cut, sameCut, build, recBuild, frames? } (frames: viewer: true). */
+async function runPortRecord(rec, opts) {
+  opts = opts || {};
+  if (rec && rec.port && rec.port.v === 2) rec = rec.port;           // a fuzz case file
+  if (!rec || rec.v !== 2 || !Array.isArray(rec.answers) || !rec.deckA || !rec.deckB || rec.seed == null) return { ok: false, reason: 'not a port record (v 2)' };
+  if (!!rec.sim !== SIM) return { ok: false, reason: rec.sim ? 'a CPU-vs-CPU sim record: replay it with packages/engine/headless.mjs --replay' : 'a record of a real match: this page runs sims only' };
+  const frames = [], MAXF = opts.maxFrames || 4000, fmt = FORMAT, errors = [];
+  let i = 0, stop = null, last = '';
+  const never = () => new Promise(() => {});
+  const prev = bindHost({
+    name: 'replay',
+    view(ev) { if (opts.viewer && ev.type === 'board' && G && frames.length < MAXF) { const f = JSON.stringify(boardSnapshot()); if (f !== last) { frames.push(JSON.parse(f)); last = f; } } },
+    log() {},
+    decide(seat, d) {
+      if (stop) return never();
+      const a = rec.answers[i];
+      if (!a) { stop = 'end'; return never(); }                     // the record ends: the match waits here
+      if (a.s !== seat || a.k !== d.kind) { stop = `diverged at answer ${i}: the engine asks ${seat} for ${d.kind}, the record has ${a.s} ${a.k}`; return never(); }
+      i++; return Promise.resolve(a.v);
+    }
+  });
+  const fast = REPLAY, simH = SIM_HUMAN, prof = CPU_SIM_PROFILES, fz = FUZZ;
+  REPLAY = { fast: true, i: 0, port: true };
+  if (rec.format && rec.format !== FORMAT) setFormat(rec.format);
+  if (SIM) { SIM_HUMAN = (rec.human || []).includes('player'); CPU_SIM_PROFILES = Object.assign({}, rec.cpu && rec.cpu.profiles); FUZZ = Object.assign({}, rec.cpu && rec.cpu.fuzz); }
+  const t0 = Date.now(), timeoutMs = opts.timeoutMs || 60000;
+  let res;
+  try {
+    startNewGame({ seed: rec.seed, deckA: rec.deckA, deckB: rec.deckB, noHistory: true, watch: !!rec.watch }).catch(e => { if (e !== ABORT && errors.length < 3) errors.push(String(e && e.message)); });
+    while (!(G && G.over) && !stop && !errors.length && Date.now() - t0 < timeoutMs) await new Promise(r => setTimeout(r, 2));
+    const over = !!(G && G.over), final = over ? matchSummary() : null, cut = G ? { log: G.hn || 0, hash: (G.hh >>> 0).toString(16) } : null;
+    const same = !!(rec.final && final && ['winner', 'turn', 'log', 'hash'].every(k => rec.final[k] === final[k]));
+    const sameCut = !!(rec.cut && cut && stop === 'end' && rec.cut.log === cut.log && rec.cut.hash === cut.hash);
+    const reason = errors.length ? 'error: ' + errors[0] : stop && stop !== 'end' ? stop : !over && !stop ? 'time limit' : over && i < rec.answers.length ? `${rec.answers.length - i} answers are left after the end of the match` : '';
+    res = { ok: !reason, reason, at: i, total: rec.answers.length, over, final, same, cut, sameCut, build: VERSION, recBuild: rec.build };
+    if (opts.viewer) res.frames = frames;
+  } finally {
+    io.host = prev; REPLAY = fast; if (FORMAT !== fmt) setFormat(fmt);
+    if (SIM) { SIM_HUMAN = simH; CPU_SIM_PROFILES = prof; FUZZ = fz; }
+    if (opts.close) { SESSION++; G = null; }                         // the web page: drop the replayed (maybe waiting) match
+  }
+  return res;
+}
+/** Viewer replay (v 1) of a port record: board frames that play back in any later version without the engine. */
+async function viewerReplayOf(rec, opts) {
+  const r = await runPortRecord(rec, Object.assign({}, opts, { viewer: true }));
+  if (!r.ok) return { ok: false, reason: r.reason };
+  const p = rec.port && rec.port.v === 2 ? rec.port : rec;
+  return { ok: true, replay: { v: 1, kind: 'aeterna-viewer', build: r.build, seed: p.seed, final: r.final, frames: r.frames } };
 }

@@ -2,6 +2,17 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.86.0
+- Lane: U/I
+- **Replays, part 2 (roadmap phase F, item F4 = monorepo step M4 rest; F4 done): a replay viewer in the match history.**
+  - Settings, Match history: the last 3 finished matches keep their port record and are listed above the table (no sideways scroll on phones); **▶ WATCH** re-runs it in the page's own engine and plays the match back frame by frame (Start, Turn back, Back, Next, Turn forward, End; both sides' Life, cores, Spirits with level and cores, Nexus, Hand, Burst, the log line of each frame; the buttons sit in a 4-column grid), **SAVE** downloads the record. New row **Open a replay file**: a saved match record, a fuzz case or a viewer replay; **💾 Save** in the viewer writes the viewer replay (plays back in any later version, no engine needed). A match must be finished or left before watching.
+  - Engine `runPortRecord(record)` / `viewerReplayOf(record)` (`packages/engine/src/15b-replay.js`): one replay runner for every host (the headless `replayPort` / `viewerReplay` now call it); the page refuses CPU-vs-CPU sim records with a pointer to `headless.mjs --replay`. Frames carry the step name. `playHeadless({ real: true })` plays a match by the rules of the web page (coin toss, Starting Hand prompts).
+  - `apps/web/src/13f-replay.js` (new): the viewer; styles `.rv-*`. The build now ships the stylesheet without comments and indentation (`src/styles.css` keeps them; 89.9 KB -> 85.5 KB of the 90 KB budget).
+  - Tests `tests/unit/viewer86.test.mjs`: V86-01 a web-rules record replays in the page to the same frames as in Node, V86-02 the viewer steps by frame and by turn, the history row watches, an open match blocks watching, V86-03 sim records and broken files are refused with a message.
+  - Player-view pass (PC 1366x768, phone 412x915): real match, Watch, every step button, Save + Open of both files, the open-match message; its two findings (Replay column off-screen on phones, stacked viewer buttons) are fixed. Screenshots per layout.
+- Backup branch `backup/v0.85.0` (state before the UI change).
+- Revert note: `git revert` of the v0.86.0 commit restores v0.85.0 (viewer, history column, build CSS strip; no card data or rules change).
+
 ## v0.85.0
 - Lane: U/I
 - **Replays, part 1 (roadmap phase F, item F4 = monorepo step M4 part 1): every match keeps a host-independent input record of its port answers, and Node re-runs it without a browser.**
