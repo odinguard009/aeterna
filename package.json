@@ -17,7 +17,9 @@
     "test:props": "node --test tests/unit/props.test.mjs",
     "pack:ai": "node tools/pack_ai.mjs",
     "ci": "npm run check && npm run lint && npm test",
-    "test:release": "node --test tests/unit/release.test.mjs"
+    "test:release": "node --test tests/unit/release.test.mjs",
+    "usage": "npx -y ccusage@20.0.37 session",
+    "astgrep": "npx -y -p @ast-grep/cli@0.51.0 ast-grep"
   },
   "engines": {
     "node": ">=20"
