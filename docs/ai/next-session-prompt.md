@@ -18,6 +18,7 @@
 - Default without any switch comment: OFF.
 
 ## Rules for sessions
+- Lane order (owner, 2026-10-20, 2 card sessions : 1 UI/infra): every session, manual or scheduled, takes the item of the lane that `session_start.sh` prints as `LANE K|U/I` (`tools/lane_next.mjs`, from the `- Lane:` bullet of the CHANGELOG sections; rules and queue: item L in `docs/ai/roadmap-open.md`). The lane is never stored in the gate or in schedules, so two scheduled runs cannot disagree about it.
 - Manual sessions: after `session_start.sh`, `bash tools/session_gate.sh manual` (exit 3 = an auto session is running: stop and tell the owner); at the end `bash tools/session_gate.sh done vX.Y.Z next=Opus|Sonnet` after the files are sent; on an early stop `unlock`.
 - Auto (scheduled) sessions: gate `check opus|sonnet` before the clone (from the prompt), `lock` after `session_start.sh`, `switch` between tasks (OFF = finish the current commit, push, then end as usual), `done vX.Y.Z next=Opus|Sonnet` at the end, `unlock` on any early stop or error.
 - Sessions never create, change or delete schedules (the app asks the owner to approve schedule changes, and the loop must not wait for the owner). Only the owner installs or removes the task.

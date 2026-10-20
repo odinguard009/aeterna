@@ -85,6 +85,7 @@ LOOP_RC=0; npm run -s loop || LOOP_RC=$?   # v0.60.2: print the summary even whe
 echo "[session_start] version $(node -p "require('./package.json').version")"
 git log --oneline -5 | sed 's/^/[session_start]   /'
 grep -m1 -o '\*\*Next:.*' CLAUDE.md | cut -c1-400 | sed 's/^/[session_start] /' || true
+node tools/lane_next.mjs 2>/dev/null | sed 's/^/[session_start] /' || true   # lane order 2 K : 1 U/I (owner, 2026-10-20)
 python3 tools/unlock_report.py --line 2>/dev/null | sed 's/^/[session_start] /' || true
 python3 tools/priority_report.py --line 2>/dev/null | sed 's/^/[session_start] /' || true   # v0.60.3
 python3 tools/rules_audit.py --line 2>/dev/null | sed 's/^/[session_start] /' || true
