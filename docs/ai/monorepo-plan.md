@@ -41,7 +41,7 @@ npm workspaces (built into npm, no registry needed for local packages) instead o
 - **M5 Types (patches, alongside):** `@ts-check` + JSDoc per package, `tsc --noEmit` in CI and `npm run loop`; `.ts` conversion module by module once checks are clean.
 - **M6 Server (minor):** `apps/server` with rooms, seat-filtered views (hidden hand/deck), decision timeouts, reconnect; uses Node built-ins where possible; dependencies installed only in CI; CI test plays two scripted clients to the end. No deployment.
 - **M7 Database + Docker (minor):** Postgres schema and migrations (accounts, decks, replays), `docs/DATA.md` tables, `docker/compose.yml` for local runs; CI service container for tests. Hosting stays the owner's decision.
-- **L1 UI languages (minor, after M4; owner 2026-10-17):** string table in `apps/web`, then Japanese, Thai, Chinese, further languages by market; details in `roadmap-open.md` "Session order" item 9.
+- **L1 UI languages (DEFERRED by the owner 2026-10-21, UI stays English; was: minor, after M4; owner 2026-10-17):** string table in `apps/web`, then Japanese, Thai, Chinese, further languages by market; details in `roadmap-open.md` "Session order" item 9.
 - **M8 Online client (minor):** lobby, room join, play through the server in `apps/web`; offline mode untouched.
 
 ## Rules for every phase

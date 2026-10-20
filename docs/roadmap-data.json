@@ -5,7 +5,7 @@
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "20 Oct 2026",
   "updatedAt": "0.87.0",
-  "next": "next: phase F done (v0.87.0); paused for the owner's roadmap update of 2026-10-21 (chain-stop.md); playable 6,838 of 8,709, complete 739"
+  "next": "next: S1 Standard Magic (58 cards), the whole U/I queue (languages deferred), then cards with Standard first; phase F done in v0.87.0; playable 6,838 of 8,709, complete 739"
  },
  "phases": [
   {
@@ -597,7 +597,7 @@
     },
     {
      "s": "later",
-     "t": "Then lanes K, K, U/I: plan W bundles (Amplify, Rumble, Shamanism, Magic-use trigger, Current first), U5-U8, languages, server, database, card images"
+     "t": "Then (owner 2026-10-21): S1 Standard Magic (58 cards not yet playable), the whole U/I queue (U5-U8, rules base, M5-M8, card images), then card packs with Standard first; L1 languages deferred"
     }
    ]
   },
@@ -624,7 +624,7 @@
     },
     {
      "s": "later",
-     "t": "UI languages: string table, then Japanese, Thai, Chinese, more by market; card text stays English"
+     "t": "UI languages (DEFERRED by the owner 2026-10-21; UI stays English): string table, then Japanese, Thai, Chinese, more by market"
     },
     {
      "s": "later",
@@ -1191,5 +1191,5 @@
  ],
  "updated": "20 Oct 2026",
  "updatedAt": "0.87.0",
- "next": "next: phase F done (v0.87.0); paused for the owner's roadmap update of 2026-10-21 (chain-stop.md); playable 6,838 of 8,709, complete 739"
+ "next": "next: S1 Standard Magic (58 cards), the whole U/I queue (languages deferred), then cards with Standard first; phase F done in v0.87.0; playable 6,838 of 8,709, complete 739"
 }

@@ -1,10 +1,13 @@
 #!/usr/bin/env node
-// Lane order (owner, 2026-10-20): card lane K and UI/infra lane U/I alternate 2 : 1 (K, K, U/I, K, K, U/I, ...).
-// Stateless: the lane of a release is the first bullet of its CHANGELOG.md section, "- Lane: K" or "- Lane: U/I".
-// A release without that line counts as U/I (older releases and docs/process releases).
-// Phase F override: while any F1-F5 item is still listed in docs/ai/roadmap-open.md, the next lane is U/I.
-// Prints one line: "LANE K|U/I (reason)". Exit code is always 0. The session takes the first ready item of that lane;
-// if the lane has no ready item (empty, blocked, UI without an approved design) it takes the other lane's first item.
+// Lane order (owner, 2026-10-21; replaces the 2 K : 1 U/I cycle of 2026-10-20):
+//   1. phase F: while any F1-F5 item is listed in docs/ai/roadmap-open.md -> U/I;
+//   2. S1 Standard Magic: while the "- **S1 " item is listed -> K (make every Standard card playable first);
+//   3. U/I first: while the "- **U/I queue:**" line still names an item -> U/I;
+//   4. then K (Standard block A first, then the other blocks).
+// The lane of a release is still written as the first bullet of its CHANGELOG.md section ("- Lane: K" or "- Lane: U/I");
+// lanesOf() reads it for reports. Prints one line: "LANE K|U/I (reason)". Exit code is always 0. The session takes the
+// first ready item of that lane; if the lane has no ready item (blocked, or a UI item without an approved design) it
+// takes the other lane's first ready item and writes the Lane: of what it actually did.
 // Usage: node tools/lane_next.mjs   (called by tools/session_start.sh)
 import { readFileSync } from 'node:fs';
 
@@ -18,12 +21,20 @@ export function lanesOf(changelog) {
   return out; // newest first
 }
 
-export function nextLane(changelog, roadmap) {
+export function uiQueue(roadmap) {
+  const m = roadmap.match(/^- \*\*U\/I queue:\*\*(.*)$/m);
+  if (!m) return [];
+  const body = m[1].replace(/\(.*?\)/g, '').trim();
+  if (!body || /^(none|empty|-)\.?$/i.test(body)) return [];
+  return body.split(/[,;]/).map((x) => x.trim().replace(/\.$/, '')).filter(Boolean);
+}
+
+export function nextLane(_changelog, roadmap) {
   if (/^- \*\*F[1-5] /m.test(roadmap)) return { lane: 'U/I', why: 'phase F is still open' };
-  let k = 0;
-  for (const l of lanesOf(changelog)) { if (l === 'K') k++; else break; }
-  if (k >= 2) return { lane: 'U/I', why: `last ${k} releases were K` };
-  return { lane: 'K', why: k === 0 ? 'last release was U/I' : 'last release was 1 K' };
+  if (/^- \*\*S1 /m.test(roadmap)) return { lane: 'K', why: 'S1 Standard Magic is still open' };
+  const q = uiQueue(roadmap);
+  if (q.length) return { lane: 'U/I', why: `U/I queue first: ${q[0]} next, ${q.length} left` };
+  return { lane: 'K', why: 'U/I queue is empty: cards, Standard first' };
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
