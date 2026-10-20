@@ -1,7 +1,8 @@
 /* ---------------------------------------------------------------------
    TURN FLOW
    --------------------------------------------------------------------- */
-function setStep(i) { G.step = i; render(); }
+const isMainStep = () => !!G && (G.step === 4 || (G.format === 'standard' && G.step === 6));   // moved from 11-human.js (v0.82.0)
+function setStep(i) { G.step = i; io.view({ type: 'board' }); }
 async function beginTurn(key) {
   const p = G.p[key];
   G.active = key; G.turnNo++; p.burstSetThisTurn = false; p.mirageSetThisTurn = false; G.burstQ.length = 0; releaseStandby(true); G.evQ.length = 0;
@@ -32,9 +33,9 @@ function win(key, why) {
   G.over = true; G.winner = key; G.busy = true;
   log(`${who(G.p[key])} ${G.p[key].cpu || key === 'opponent' ? 'wins' : 'win'}: ${why}.`);
   if (G.rec) G.rec.final = matchSummary();
-  render();
+  io.view({ type: 'board' });
   if (G.turnResolver) { const r = G.turnResolver; G.turnResolver = null; r(); }
-  if (!SIM) { recordMatch(key); showGameOver(); }
+  io.view({ type: 'matchEnd', winner: key });   // web host: history entry + game-over dialog (not in ?sim=1)
 }
 async function matchLoop() {
   const my = SESSION;
@@ -43,12 +44,26 @@ async function matchLoop() {
       const key = G.next, p = G.p[key];
       await beginTurn(key);
       if (G.over) break;
-      if (p.cpu) { G.busy = true; render(); await cpuTurn(p); }
-      else { G.busy = false; render(); await new Promise(r => { G.turnResolver = r; }); G.busy = true; }
+      if (p.cpu) { G.busy = true; io.view({ type: 'board' }); await cpuTurn(p); }
+      else { G.busy = false; io.view({ type: 'board' }); await new Promise(r => { G.turnResolver = r; }); G.busy = true; }
       if (G.over || SESSION !== my) break;
       await endStep(key);
       G.next = other(key);
     }
   } catch (e) { if (e !== ABORT) throw e; }
 }
-
+/* rules invariants (cores, Soul Core, cards) checked by tests and sims; moved from 13-render.js in v0.82.0 */
+function checkInvariants() {
+  for (const k of ['player', 'opponent']) {
+    const p = G.p[k], fc = fieldList(p).reduce((s, i) => s + i.cores, 0);
+    const normal = p.life - (p.lifeSoul ? 1 : 0) + p.reserve.n + p.trashCores.n + p.count + p.void + fc;
+    if (normal !== p.made) throw new Error(`Core mismatch for ${p.name}: ${normal}`);
+    const soul = (p.reserve.soul ? 1 : 0) + (p.lifeSoul ? 1 : 0) + (p.trashCores.soul ? 1 : 0) + fieldList(p).filter(i => i.soul).length;
+    if (soul !== 1) throw new Error(`Soul Core count for ${p.name}: ${soul}`);
+    const cards = p.deck.length + p.hand.length + p.spirits.filter(i => !i.token).length + p.nexus.length + p.soulState.length + p.standby.length + p.trash.length + p.removed.length + (p.burst ? 1 : 0) + (p.mirage ? 1 : 0) + (p.limbo ? 1 : 0) + p.revealed.length + fieldList(p).reduce((s, i) => s + i.under.length + (i.brave ? 1 : 0), 0);
+    if (cards !== p.deckSize) throw new Error(`Card mismatch for ${p.name}: ${cards} vs ${p.deckSize}`);
+    for (const s of p.spirits) if (totalCores(s) < CARDS[s.id].levels[0].cores) throw new Error(`Undepleted spirit ${CARDS[s.id].name}`);
+    if (p.void < 0 || p.count < 0 || p.reserve.n < 0) throw new Error(`Negative core zone for ${p.name}`);
+    for (const x of p.soulState) if (!x.inSoulState) throw new Error(`Soul State flag for ${CARDS[x.id].name}`);
+  }
+}

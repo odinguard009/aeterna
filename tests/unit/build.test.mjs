@@ -5,7 +5,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { buildParts, packBlob, codec, PACK_RE } from '../../tools/build.mjs';
 import { codeMap } from '../../tools/code_map.mjs';
-import { srcParts } from '../../tools/src_parts.mjs';
+import { srcParts, SRC_DIRS } from '../../tools/src_parts.mjs';
 import { ROOT } from './lib/game.mjs';
 
 const rd = p => readFileSync(join(ROOT, p), 'utf8');
@@ -15,7 +15,7 @@ test('B01 index.html is the exact build of src/', () => {
   assert.equal(rd('index.html'), buildParts().html, 'run: node tools/build.mjs');
 });
 test('B02 every script part is named NN-name.js and the numbers are unique', () => {
-  const all = ['packages/engine/src', 'apps/web/src'].flatMap(d => readdirSync(join(ROOT, d)).filter(f => f.endsWith('.js')));
+  const all = SRC_DIRS.flatMap(d => readdirSync(join(ROOT, d)).filter(f => f.endsWith('.js')));
   assert.equal(all.length, parts.length, 'a .js file in a source folder is not a script part');
   const nums = parts.map(p => { const f = p.split('/').pop(); assert.match(f, /^\d\d[a-z]?-[a-z0-9-]+\.js$/); return f.split('-')[0]; });
   assert.equal(new Set(nums).size, nums.length);

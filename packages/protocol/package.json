@@ -1,0 +1,6 @@
+{
+  "name": "@aeterna/protocol",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Host port shared by the engine and its hosts: io.view / io.log / io.decide and the view, event and decision records (plain JS part joined by tools/build.mjs)."
+}

@@ -39,11 +39,11 @@ async function useAccel(p, inst, idx, plan, timing) {
   log(`${who(p)} ${p.cpu ? 'uses' : 'use'} the Accel effect of ${card.name} (paid ${c}): ${fxDescribe(e)}.`);
   checkDepletion(p);
   const prev = p.limbo; p.limbo = inst;                    // the card is revealed while its effect resolves (in no zone)
-  try { render(); await wait(300); await asResolving(() => runActions({ p, opp, src: inst, ctx: {} }, e, 'ACCEL')); }
+  try { io.view({ type: 'board' }); await wait(300); await asResolving(() => runActions({ p, opp, src: inst, ctx: {} }, e, 'ACCEL')); }
   finally { if (p.limbo === inst) p.limbo = prev; }
   if (G && !p.removed.includes(inst)) { toRemoved(p, inst); log(`${card.name} is put onto the Removed Zone (Accel).`); }
   checkDepletion(p); checkDepletion(opp);
-  render(); await wait(300); await flushBursts();
+  io.view({ type: 'board' }); await wait(300); await flushBursts();
   return true;
 }
 /* Fandom Q5: an Accel Spirit in your Removed Zone can be summoned in your Main Step by paying its cost */

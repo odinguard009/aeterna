@@ -1,7 +1,7 @@
 {
   "name": "aeterna",
   "private": true,
-  "version": "0.81.1",
+  "version": "0.82.0",
   "type": "module",
   "workspaces": [
     "packages/*",
@@ -17,7 +17,8 @@
     "test:props": "node --test tests/unit/props.test.mjs",
     "pack:ai": "node tools/pack_ai.mjs",
     "ci": "npm run check && npm run lint && npm test",
-    "test:release": "node --test tests/unit/release.test.mjs"
+    "test:release": "node --test tests/unit/release.test.mjs",
+    "sim:headless": "node packages/engine/headless.mjs"
   },
   "engines": {
     "node": ">=20"

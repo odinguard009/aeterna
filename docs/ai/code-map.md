@@ -2,16 +2,19 @@
 
 Top-level names per source part. Find the part here, then `grep -n "<name>" <part path>` and read only that range.
 
-## packages/engine/src/00-config.js (91 lines, ~2.6k tokens)
-SIM, STEPS, STEPS_STANDARD, FORMAT_KEY, FORMAT, STANDARD_BLOCKS, BAN_LIST_INFO, BANNED, LIMITED1, normCardNo, banStatus, maxCopies, standardLegal, legalityOf, ABORT, $, other, esc, cap, TC_MINOR, titleCase, RNG_STATE, seedRng, rng, newSeed, shuffle, removeFrom, KEYWORD_GLOSSARY, MAGIC_FX, MAGIC_TIMINGS, SYMBOL_KINDS
+## packages/engine/src/00-config.js (90 lines, ~2.6k tokens)
+SIM, STEPS, STEPS_STANDARD, FORMAT_KEY, FORMAT, STANDARD_BLOCKS, BAN_LIST_INFO, BANNED, LIMITED1, normCardNo, banStatus, maxCopies, standardLegal, legalityOf, ABORT, other, esc, cap, TC_MINOR, titleCase, RNG_STATE, seedRng, rng, newSeed, shuffle, removeFrom, KEYWORD_GLOSSARY, MAGIC_FX, MAGIC_TIMINGS, SYMBOL_KINDS
 
-## apps/web/src/00b-errors.js (48 lines, ~0.8k tokens) — IN-GAME ERROR CATCHER (v0.59.5, Q1 quality bundle, Aegis idea)
-ERR_LOG, errReport, errNotice, onGameError
+## apps/web/src/00b-errors.js (49 lines, ~0.9k tokens) — IN-GAME ERROR CATCHER (v0.59.5, Q1 quality bundle, Aegis idea)
+$, ERR_LOG, errReport, errNotice, onGameError
 
 ## apps/web/src/00c-theme.js (41 lines, ~0.7k tokens) — THEME (v0.63.0, UI/UX overhaul U1; docs/DESIGN.md section 0)
 THEME_KEY, THEME_COLS, THEME, applyTheme, setTheme
 
-## packages/engine/src/01-cards.js (33 lines, ~0.6k tokens) — CARD DATABASE (Training cards + the built-in pack is registered further below)
+## packages/protocol/src/00p-protocol.js (32 lines, ~0.5k tokens) — HOST PORT (v0.82.0, phase F2 = monorepo step M2; docs/ai/monorepo-plan.md "Design" 1)
+VIEW_TYPES, HOST_NONE, io, bindHost
+
+## packages/engine/src/01-cards.js (32 lines, ~0.6k tokens) — CARD DATABASE (Training cards + the built-in pack is registered further below)
 VERSION, CARDS, defCard, TRAIN, PRESET_DECK
 
 ## packages/engine/src/01a-card-pack.js (166 lines, ~2.4k tokens) — CARD PACK CODEC (v0.51.0; this part must load before 03-imported-cards.js: its consts are used at load): compact, synchronous format of the built-in card pack
@@ -38,7 +41,7 @@ _pn
 ## packages/engine/src/02g-effects-yellow.js (85 lines, ~1.9k tokens) — v0.40 YELLOW (Contractor Indra / Thunderive): "can't attack/block" (permanent flag noAB), drawing from the bottom of the Deck, discarding the whole Hand,
 
 
-## packages/engine/src/02h-effects-magic.js (141 lines, ~3.1k tokens) — v0.41 MAGIC effect types (Dana Draw, Whirling Tide, Magic Bullet, Hades Disaster, Thunder Counter, Lightning Tempest).
+## packages/engine/src/02h-effects-magic.js (141 lines, ~3.2k tokens) — v0.41 MAGIC effect types (Dana Draw, Whirling Tide, Magic Bullet, Hades Disaster, Thunder Counter, Lightning Tempest).
 endAttackLocked, _matchTxt, gwCorePlus, sentToTrashFx, abTaxOn, abTaxOK, payAbTax, oppAttackHandFx, braveSummonedFx, braveSummonedEvs
 
 ## packages/engine/src/02i-effects-keywords.js (69 lines, ~1.2k tokens) — v0.49 KEYWORD EFFECTS as engine data (session D, part 1): High Speed, Crush, Holy Life.
@@ -68,14 +71,14 @@ COLORS, BUILTIN_IDS, CARDS_KEY, IMPORTED, CARDS_VER, parseCard, registerImported
 ## packages/engine/src/04-decks.js (84 lines, ~1.6k tokens) — DECK STORAGE AND VALIDATION
 deckTotal, cleanDeck, validateDeck, fmtName, setFormat, errSummary, PREBUILT, defaultDeck, SLOT_KEY, SLOTS, loadSlots, PLAYER_DECK, saveDeck, switchSlot, loadPrebuilt, CPU_DECK_NAME, cpuDeckFor
 
-## packages/engine/src/05-state.js (75 lines, ~1.4k tokens) — GAME STATE
-SET_KEY, SETTINGS, SPEEDS, saveSettings, AUDIO, sfx, G, fnv, recIn, SIM_DECK_B, delay, wait, log, mkInst, newPlayer, contractToDeck, redrawHand, cpuWantsRedraw, newGame
+## packages/engine/src/05-state.js (63 lines, ~1.2k tokens) — GAME STATE
+SET_KEY, SETTINGS, SPEEDS, saveSettings, G, fnv, recIn, SIM_DECK_B, delay, wait, log, mkInst, newPlayer, contractToDeck, redrawHand, cpuWantsRedraw, newGame
 
 ## packages/engine/src/06-rules.js (461 lines, ~8.5k tokens) — RULES HELPERS
 fieldList, isGW, freeCores, freeTotal, totalCores, reserveTotal, minCores, isSpiritForm, isUlt, lvBase, lvNo, summonOK, spare, coresAvailable, isCountLv, lvIndex, bpOf, ocActive, braveBp, isNexusBrave, braveFits, braveTargets, combineBrave, canSeparate, separateBrave, braveAfford, braveSummon, braveRecheck, shedBrave, TOKEN_SUPPLY, tokenIdsOf, prepareTokens, tokenCoreRoom, canSendToken, sendToken, tokenHome, symTurnCols, symZeroAllOn, attackSymbols, symAttrs, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, noBlockActive, costAltActive, extraReduction, legacyPlan, effCost, legacyPay, canPlayCard, takeCores, payCost, checkDepletion, leaveEvent, removeSpirit, lostHeard, leaveStandby, releaseStandby, poss, who, draw, handUp, summon, setBurst, mirageUsable, magicFx, magicFromTrash, magicFxAt, magicTrashOK, magicSources, magicTargets, soulMagicHolder, soulMagicOK, soulMagicPick, magicUsable, magicText, castMagic, addCore, removeCore, moveSoulTo, moveCore, swapSoul, returnSoul
 
-## packages/engine/src/07-turn.js (54 lines, ~0.6k tokens) — TURN FLOW
-setStep, beginTurn, endStep, win, matchLoop
+## packages/engine/src/07-turn.js (69 lines, ~1k tokens) — TURN FLOW
+isMainStep, setStep, beginTurn, endStep, win, matchLoop, checkInvariants
 
 ## packages/engine/src/08-battle.js (165 lines, ~3.4k tokens) — BATTLE
 successor, flashTiming, battleEndAttack, attackStepOver, doBattle, doBattleInner, maybeBurst, burstFlash, flushBursts
@@ -89,14 +92,14 @@ CPU_PROFILES, CPU_PROFILE_NAMES, CPU_SIM_PROFILES, cpuProfileName, cpuW, lifeVal
 ## apps/web/src/10-modals.js (140 lines, ~2.1k tokens) — MODALS (promise based)
 paintModal, modal, PEEK, endPeek, paintPeek, startPeek, peekRefresh, closeModal, modalPress, ask, PICK, clearPick, pickFromField, info, askBlock, askPayment
 
-## apps/web/src/11-human.js (335 lines, ~6.9k tokens) — HUMAN ACTIONS
-isMainStep, humanCan, legalityHTML, FX_KW_START, FX_LINE_STOP, effectLines, fxMark, slashBreak, effectTextHTML, cardDetailHTML, residualHTML, cardFaceHTML, cardStripHTML, uniqById, mullCardHTML, openZoom, handButtons, runHandAction, humanMirage, prepareHumanMagic, humanCast, humanFlashChoice, showCardDetail, openHandModal, humanPlay, humanBraveSummon, humanBraveField, openFieldModal, humanAttack, onNext, finishTurn
+## apps/web/src/11-human.js (334 lines, ~6.9k tokens) — HUMAN ACTIONS
+humanCan, legalityHTML, FX_KW_START, FX_LINE_STOP, effectLines, fxMark, slashBreak, effectTextHTML, cardDetailHTML, residualHTML, cardFaceHTML, cardStripHTML, uniqById, mullCardHTML, openZoom, handButtons, runHandAction, humanMirage, prepareHumanMagic, humanCast, humanFlashChoice, showCardDetail, openHandModal, humanPlay, humanBraveSummon, humanBraveField, openFieldModal, humanAttack, onNext, finishTurn
 
-## packages/engine/src/12-zones.js (70 lines, ~1.6k tokens) — ZONES, LOG, RULES COVERAGE
+## apps/web/src/12-zones.js (70 lines, ~1.6k tokens) — ZONES, LOG, RULES COVERAGE
 openZoneModal, openLogModal, showRules
 
-## apps/web/src/13-render.js (305 lines, ~6.6k tokens) — RENDERING
-nameHTML, isPC, applyLayout, _rz, colorVar, cardColors, isMulti, colorSty, symSlices, symCount, isUltimate, cardCls, rebMark, symBadgeHTML, handCardHTML, gemsHTML, fieldCardHTML, rowHTML, burstAreaHTML, soulAreaHTML, fieldAreaHTML, zoneBox, pv, pileHTML, lifePlate, resPlate, STEP_WARN, stepTargets, stepWarn, stepClick, renderBoard, render, LOG_OPEN, updateLogDrawer, toggleLog, magBtnHTML, liveStatusHTML, HIST_KEY, HISTORY, recordMatch, histHTML, lifeTxt, checkInvariants, switchView, renderSettings, renderLobby
+## apps/web/src/13-render.js (291 lines, ~6.3k tokens) — RENDERING
+nameHTML, isPC, applyLayout, _rz, colorVar, cardColors, isMulti, colorSty, symSlices, symCount, isUltimate, cardCls, rebMark, symBadgeHTML, handCardHTML, gemsHTML, fieldCardHTML, rowHTML, burstAreaHTML, soulAreaHTML, fieldAreaHTML, zoneBox, pv, pileHTML, lifePlate, resPlate, STEP_WARN, stepTargets, stepWarn, stepClick, renderBoard, render, LOG_OPEN, updateLogDrawer, toggleLog, magBtnHTML, liveStatusHTML, HIST_KEY, HISTORY, recordMatch, histHTML, lifeTxt, switchView, renderSettings, renderLobby
 
 ## apps/web/src/13a-deckbuilder.js (209 lines, ~4.2k tokens) — DECK BUILDER (v0.53.0 redesign; list performance from v0.52.1)
 DB_COLORS, DB_TYPES, DB_COSTS, DBF, DB_UNDO, DB_IO, dbArr, dbTypeOf, dbSetOf, dbFilterOK, DBV, DB_GAP, DB_COLL, dbIndex, dbSets, dbActiveCount, DB_SORTS, dbFilter, fxMarked, FX_MARK_LBL, fxMarkHTML, dbCardHTML, dbWindow, dbScroll, dbSearchInput, dbChip, renderDbRail, dbToggle, dbResetFilters, dbSnap, dbCanAdd, dbChange, dbReplace, dbUndo, dbTap, dbImport, dbExport, dbStatsHTML, dbRowsHTML, renderDbDeck, dbSheet, renderDeckBuilder
@@ -110,11 +113,14 @@ PLAY_SPEEDS, playChips, renderPlay, playSet
 ## apps/web/src/13d-pages.js (54 lines, ~1k tokens) — SETTINGS, HOW TO PLAY, LIBRARY PAGES (v0.68.0, UI/UX overhaul U4; docs/DESIGN.md section 0, mockup docs/design/mockup-v11.html "Settings")
 MAT_KEY, MAT, matUse, shrinkMat, matSet, matClear, setMsg, setSection, renderSetPage
 
+## apps/web/src/13e-host.js (39 lines, ~0.6k tokens) — WEB HOST (v0.82.0, phase F2 = M2): the browser answers the engine's port (packages/protocol/src/00p-protocol.js).
+AUDIO, sfx, showGameOver, webView, sfxOf
+
 ## apps/web/src/14-images.js (152 lines, ~2.6k tokens) — CARD IMAGES
 IMG, IDB, normKey, idbOpen, idbTx, setImg, loadImages, shrinkImage, stripExt, findCardByFile, findCardByKey, importImages, clearImages, imgCls, imgSty, refreshViews, libMsg, renderLibrary, deckToText, textToDeck, downloadText, readFileText, libAction
 
-## packages/engine/src/15-match.js (61 lines, ~1.2k tokens) — MATCH START / END
-showGameOver, startNewGame
+## packages/engine/src/15-match.js (51 lines, ~1.1k tokens) — MATCH START / END
+startNewGame, matchSummary
 
-## apps/web/src/16-events.js (215 lines, ~4.5k tokens) — EVENTS (delegation)
-instIdByUid, hScrollable, HDRAG, GAME_ACTS, gameAct, matchSummary, replayOf, lastReplay, runReplay, loadScenario, testSetup, defBuiltin
+## apps/web/src/16-events.js (214 lines, ~4.5k tokens) — EVENTS (delegation)
+instIdByUid, hScrollable, HDRAG, GAME_ACTS, gameAct, replayOf, lastReplay, runReplay, loadScenario, testSetup, defBuiltin

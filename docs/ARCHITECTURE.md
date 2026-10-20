@@ -20,21 +20,25 @@ index.html                + build/game.js (joined script for ESLint)
 
 Top-level functions stay global (inline handlers, `window.BS` and the tests rely on it). Part order matters: `01a-card-pack.js` (pack codec, shared with `tools/build.mjs`) loads before `03-imported-cards.js`. Find code with `docs/ai/code-map.md` (names per part) and `grep -n`.
 
-Workspace layout (M1, v0.60.1; plan `docs/ai/monorepo-plan.md`): root `package.json` declares npm workspaces `packages/*` and `apps/*` (`@aeterna/engine`, `@aeterna/web`; nothing to install). The split is by role, not yet by API: engine parts still call the UI (`render*`, modals) and `00-config.js` / `01-cards.js` still touch `document` / `localStorage` for `$` and the page title; M2-M3 route those through a host port.
+Workspace layout (M1, v0.60.1; plan `docs/ai/monorepo-plan.md`): root `package.json` declares npm workspaces `packages/*` and `apps/*` (`@aeterna/protocol`, `@aeterna/engine`, `@aeterna/web`; nothing to install).
+
+Host port (M2, v0.82.0): `packages/protocol/src/00p-protocol.js` defines `io` (`io.view(record)`, `io.log(text)`, `io.decide(p, d)` for M3) and `bindHost(host)`. Engine parts draw nothing themselves: every board redraw, screen switch, deck refresh, match reset and match end is a serializable view record (`board`, `decks`, `screen {id}`, `reset`, `matchEnd {winner}`); the web host `apps/web/src/13e-host.js` answers them (render, switchView, game-over dialog, sounds per log line, page title). Engine and protocol parts use no `document` / `window`; only `localStorage` (try-wrapped) and `location.search` (`?sim=1`) remain. The human prompts (`ask`, `askBlock`, `askPayment`, `info`, `pickFromField`, ...) are still called directly on human-only paths: `WEB_GAPS` in `packages/engine/headless.mjs`, emptied by M3. `packages/engine/headless.mjs` runs the protocol + engine parts (`tools/build.mjs` `engineScript()`) in a `node:vm` context with no DOM: `playHeadless({seed, deckA, deckB})` plays CPU vs CPU to the end in ~0.1-0.5 s and gives the same log hash as the browser sim (tests H82).
 
 | Parts | Role |
 |---|---|
+| `00p-protocol.js` (packages/protocol) | host port `io`, `bindHost`, view record types |
 | `00-config.js` | steps, formats, ban list, seeded RNG, keyword glossary, small helpers |
 | `01-cards.js`, `01a-card-pack.js`, `03-imported-cards.js` | `VERSION`, card database, pack codec, user-imported cards, tokens |
 | `02a`-`02k` effects | effect engine (section 3) |
 | `04-decks.js` | deck storage, validation, prebuilt decks |
-| `05-state.js` | settings, audio, game state `G`, `newPlayer`, `newGame`, redraw |
+| `05-state.js` | settings, game state `G`, `newPlayer`, `newGame`, redraw |
 | `06-rules.js` | rule helpers: cores, levels, BP, Brave, tokens, symbols, costs, summon, Magic, Standby |
-| `07-turn.js`, `08-battle.js` | turn flow (`matchLoop`, `beginTurn`, `endStep`, `win`), battle, Flash timing, Bursts |
+| `07-turn.js`, `08-battle.js` | turn flow (`matchLoop`, `beginTurn`, `endStep`, `win`, `isMainStep`, `checkInvariants`), battle, Flash timing, Bursts |
 | `09-cpu.js`, `09a-cpu-eval.js` | CPU turn and evaluation policy (profiles, lethal check, attack/block scores) |
 | `10-modals.js`, `11-human.js`, `12-zones.js` | promise-based modals, human actions, zone/log/rules views |
 | `13-render.js`, `13a-deckbuilder.js`, `14-images.js` | board rendering (PC + phone layouts), lobby, deck builder, card images (IndexedDB) |
-| `15-match.js`, `16-events.js` | match start/end, event delegation, replays, scenarios, test hooks `window.BS` |
+| `13e-host.js` (apps/web) | web host of the port: view records, sounds, game-over dialog, page title |
+| `15-match.js` (engine), `16-events.js` (web) | match start (`startNewGame`, `matchSummary`), event delegation, replays, scenarios, test hooks `window.BS` |
 
 ## 2. Runtime
 - **State:** one object `G` (players `G.p.player` / `G.p.opponent`, step, turn number, queues). Browser storage only for decks, imported cards, settings, history, images; the game makes no network calls and no `eval`. Imported card names and text are escaped in every `innerHTML` template; corrupt or blocked storage does not break start-up. Test-only stand-in cards (TST-*) live in `tests/fixtures/prototype_cards.js`, never in the shipped game (suite v24 asserts it).

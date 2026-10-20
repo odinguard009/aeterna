@@ -1096,7 +1096,6 @@ function legalityOf(id, format) {            // -> null when legal, else a short
 }
 /* cores are unlimited: new cores enter the game from an infinite supply (p.made counts them); the Soul Core is a separate core */
 const ABORT = { abort: true };
-const $ = id => document.getElementById(id);
 const other = k => (k === 'player' ? 'opponent' : 'player');
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c]));
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
@@ -1160,6 +1159,7 @@ const SYMBOL_KINDS = ['ultimate', 'god'];          // special symbols besides th
    match seed/turn/step and the input record of the running match, enough to replay it) and "Close". The page keeps its own
    error handling (the events are not cancelled), so tests and the console still see every error.
    --------------------------------------------------------------------- */
+const $ = id => document.getElementById(id);   // DOM lookup for the web parts (moved from 00-config.js in v0.82.0: the engine has no DOM)
 const ERR_LOG = [];
 function errReport() {
   const lines = ['Aeterna error report', 'version: ' + (typeof VERSION !== 'undefined' ? VERSION : '?'), 'time: ' + new Date().toISOString()];
@@ -1244,12 +1244,43 @@ function setTheme(key, val) {
 }
 applyTheme();
 /* ---------------------------------------------------------------------
+   HOST PORT (v0.82.0, phase F2 = monorepo step M2; docs/ai/monorepo-plan.md "Design" 1)
+   The engine talks to its host only through `io`: one engine, several hosts (browser UI, headless
+   Node runner, later the server). Every record passed through the port is a plain, serializable object.
+     io.view(ev)            the board or a screen changed; the host draws (web) or ignores it (headless)
+     io.log(text)           one game log line was written (G.history keeps the text; hosts may react, e.g. sounds)
+     io.decide(p, d)        M3 (next step): every human/CPU choice; until then the engine still calls the web
+                            prompts directly and only the CPU paths run headless
+   View records (`type`):
+     board                  redraw the playmat from G
+     decks                  the format or the deck list changed (lobby + deck builder)
+     screen  {id}           show an app screen ('view-playmat', 'view-deckbuilder', 'view-lobby')
+     reset                  a new match starts: drop open prompts and field picks of the previous one
+     matchEnd {winner}      the match is over (G.over, G.winner set; after the last board view)
+   --------------------------------------------------------------------- */
+const VIEW_TYPES = ['board', 'decks', 'screen', 'reset', 'matchEnd'];
+/** @typedef {{ type: string, id?: string, winner?: string }} ViewRecord */
+/** @typedef {{ name: string, view: (ev: ViewRecord) => void, log: (text: string) => void, decide: (p: any, d: any) => Promise<any> }} Host */
+/** @type {Host} */
+const HOST_NONE = { name: 'none', view: () => {}, log: () => {}, decide: () => Promise.reject(new Error('io.decide: no host answers decisions yet (M3)')) };
+const io = {
+  host: HOST_NONE,
+  view(ev) { this.host.view(ev); },
+  log(text) { this.host.log(text); },
+  decide(p, d) { return this.host.decide(p, d); }
+};
+/** Binds a host ({name, view, log, decide}); missing handlers fall back to the no-op host. Returns the previous host. */
+function bindHost(h) {
+  const prev = io.host;
+  io.host = Object.assign({}, HOST_NONE, h || {});
+  return prev;
+}
+/* ---------------------------------------------------------------------
    CARD DATABASE (Training cards + the built-in pack is registered further below)
    type: 'Spirit' | 'Nexus' | 'Magic'      symbol: card color     symbols: number of symbols
    reduction: {color: n}         levels: [{cores, bp}]  (Nexus levels have no bp)
    --------------------------------------------------------------------- */
-const VERSION = '0.81.1';
-document.title = 'Aeterna - Engine v' + VERSION;
+const VERSION = '0.82.0';
 const CARDS = {};
 function defCard(o) {
   CARDS[o.id] = Object.assign({ type: 'Spirit', reduction: {}, symbols: 1, families: [], keywords: [], implemented: true, desc: 'Vanilla test card (no effect).', block: 'A' }, o);
@@ -1792,7 +1823,7 @@ const FX_ACTIONS = {
     can: c => c.p.deck.length > 0,
     run: async (c, a) => {
       const nm = CARDS[c.src.id].name, top = c.p.deck.splice(0, Math.min(a.n, c.p.deck.length)); c.p.revealed = top;
-      log(`${nm}: ${who(c.p)} ${c.p.cpu ? 'reveals' : 'reveal'} ${top.map(x => CARDS[x.id].name).join(', ') || 'nothing'}.`); render();
+      log(`${nm}: ${who(c.p)} ${c.p.cpu ? 'reveals' : 'reveal'} ${top.map(x => CARDS[x.id].name).join(', ') || 'nothing'}.`); io.view({ type: 'board' });
       await revealedFx(c.p);
       const t = await chooseCard(c, c.p.revealed.filter(x => fxMatch(CARDS[x.id], a.match) && (!a.diffName || CARDS[x.id].name !== nm)), `✨ ${nm}`, 'Choose a revealed card to add to your Hand.', true);
       if (t) { removeFrom(c.p.revealed, t); c.p.hand.push(t); handUp(c.p, 1); log(`${nm}: ${CARDS[t.id].name} is added to the Hand.`); }
@@ -2003,17 +2034,17 @@ const FX_ACTIONS = {
     can: c => c.opp.life > 0,
     run: async (c, a) => {
       const m = Math.min(FX_ACTIONS.OPP_LIFE_TO_TRASH.count(c, a), c.opp.life); if (!m) { c.ctx.did = false; return; }
-      lifeTake(c.opp, m, 'trash'); log(`${CARDS[c.src.id].name}: ${m} opposing Life ${m === 1 ? 'is' : 'are'} sent to the opposing Trash.`); render();
+      lifeTake(c.opp, m, 'trash'); log(`${CARDS[c.src.id].name}: ${m} opposing Life ${m === 1 ? 'is' : 'are'} sent to the opposing Trash.`); io.view({ type: 'board' });
       if (c.opp.life <= 0) { win(c.p.key, `${poss(c.opp)} Life reached 0`); return; }
       await maybeBurst(c.opp, 'LIFE_DECREASE', {});
     } },
   /* v0.45 "(Your Attack Step) the opponent can't block" while this card stays on the Field at minLv or higher (Agateram Lv2-3) */
   OPP_NO_BLOCK: { chk: a => a.minLv == null || (Number.isInteger(a.minLv) && a.minLv >= 1 && a.minLv <= 5), txt: () => 'the opponent can\'t block during this Attack Step',
-    run: async (c, a) => { c.opp.noBlock = { turn: G.turnNo, uid: c.src.uid, owner: c.p.key, minLv: a.minLv || 1 }; log(`${CARDS[c.src.id].name}: ${who(c.opp)} can't block during this Attack Step.`); render(); } },
+    run: async (c, a) => { c.opp.noBlock = { turn: G.turnNo, uid: c.src.uid, owner: c.p.key, minLv: a.minLv || 1 }; log(`${CARDS[c.src.id].name}: ${who(c.opp)} can't block during this Attack Step.`); io.view({ type: 'board' }); } },
   /* v0.48 Seal (manual p.49): send your Soul Core to your Life (from wherever it is: Trash, Reserve or a card that keeps enough cores) */
   SEAL: { chk: () => true, txt: () => 'Seal: send your Soul Core to your Life',
     can: c => !isSealed(c.p) && soulSource(c.p) !== null,
-    run: async c => { c.ctx.did = soulToLife(c.p, soulSource(c.p)); render(); } },
+    run: async c => { c.ctx.did = soulToLife(c.p, soulSource(c.p)); io.view({ type: 'board' }); } },
   /* v0.48 "Thunder God Bombardment" (BS76-X02): reveal n from the decktop; per card whose name contains one of names (case-sensitive,
      so "Z" is the capital letter of "Z"-named cards), send an opposing Life to the Reserve; the revealed cards go to the Hand */
   REVEAL_LIFE_RESERVE: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5 && Array.isArray(a.names) && a.names.length > 0 && a.names.every(x => typeof x === 'string' && x),
@@ -2021,13 +2052,13 @@ const FX_ACTIONS = {
     can: c => c.p.deck.length > 0,
     run: async (c, a) => {
       const nm = CARDS[c.src.id].name, top = c.p.deck.splice(0, Math.min(a.n, c.p.deck.length)); c.p.revealed = top;
-      log(`${nm}: ${who(c.p)} ${c.p.cpu ? 'reveals' : 'reveal'} ${top.map(x => CARDS[x.id].name).join(', ') || 'nothing'}.`); render();
+      log(`${nm}: ${who(c.p)} ${c.p.cpu ? 'reveals' : 'reveal'} ${top.map(x => CARDS[x.id].name).join(', ') || 'nothing'}.`); io.view({ type: 'board' });
       await revealedFx(c.p);
       const k = c.p.revealed.filter(x => a.names.some(s => CARDS[x.id].name.includes(s))).length;
       const got = c.p.revealed.splice(0); for (const x of got) c.p.hand.push(x); if (got.length) { handUp(c.p, got.length); log(`${nm}: ${got.length} revealed card${got.length === 1 ? '' : 's'} added to the Hand.`); }
       c.ctx.did = k > 0;
       const m = Math.min(k, c.opp.life); if (!m) return;
-      lifeTake(c.opp, m, 'reserve'); log(`${nm}: ${m} opposing Life moves to the opposing Reserve.`); render();
+      lifeTake(c.opp, m, 'reserve'); log(`${nm}: ${m} opposing Life moves to the opposing Reserve.`); io.view({ type: 'board' });
       if (c.opp.life <= 0) { win(c.p.key, `${poss(c.opp)} Life reached 0`); return; }
       await maybeBurst(c.opp, 'LIFE_DECREASE', {});
     } },
@@ -2035,7 +2066,7 @@ const FX_ACTIONS = {
     can: c => c.opp.life > 0,
     run: async (c, a) => {
       const m = Math.min(a.n, c.opp.life); if (!m) { c.ctx.did = false; return; }
-      lifeTake(c.opp, m, 'reserve'); log(`${CARDS[c.src.id].name}: ${m} opposing Life moves to the opposing Reserve.`); render();
+      lifeTake(c.opp, m, 'reserve'); log(`${CARDS[c.src.id].name}: ${m} opposing Life moves to the opposing Reserve.`); io.view({ type: 'board' });
       if (c.opp.life <= 0) { win(c.p.key, `${poss(c.opp)} Life reached 0`); return; }
       await maybeBurst(c.opp, 'LIFE_DECREASE', {});
     } },
@@ -2125,7 +2156,7 @@ const FX_ACTIONS = {
     can: c => c.p.deck.length > 0,
     run: async (c, a) => {
       const nm = CARDS[c.src.id].name, top = c.p.deck.splice(0, Math.min(a.n, c.p.deck.length)); c.p.revealed = top;
-      log(`${nm}: ${who(c.p)} ${c.p.cpu ? 'reveals' : 'reveal'} ${top.map(x => CARDS[x.id].name).join(', ') || 'nothing'}.`); render();
+      log(`${nm}: ${who(c.p)} ${c.p.cpu ? 'reveals' : 'reveal'} ${top.map(x => CARDS[x.id].name).join(', ') || 'nothing'}.`); io.view({ type: 'board' });
       await revealedFx(c.p);
       let k = 0;
       const dep = await chooseCard(c, c.p.revealed.filter(x => fxMatch(CARDS[x.id], a.match) && (!a.diffName || CARDS[x.id].name !== nm) && (a.allowBrave && CARDS[x.id].type === 'Brave' ? canPlaceBraveFree(c.p, x) : canPlaceBy(c.p, x, a.pay))), `✨ ${nm}`, 'Choose a revealed card to summon/deploy' + (a.pay ? ' (you pay its cost).' : '.'), true);
@@ -2205,7 +2236,7 @@ async function summonFree(p, inst, opts) {           // summon/deploy without pa
   } else p.nexus.push(inst);
   log(`${who(p)} ${card.type !== 'Nexus' ? (p.cpu ? 'summons' : 'summon') : (p.cpu ? 'deploys' : 'deploy')} ${card.name} without paying the cost.`);
   checkDepletion(p);
-  render(); await wait(350);
+  io.view({ type: 'board' }); await wait(350);
   if (!G.over && fieldList(p).includes(inst)) {
     const evs = [{ owner: p, trigger: 'SUMMONED', src: inst }];
     if (opts && opts.manifest && !isMainStep()) evs.push({ owner: p, trigger: 'MANIFEST', src: inst });   // official: When Manifests activates together with the summon effects, not in the Main Step
@@ -2221,7 +2252,7 @@ async function summonPaid(p, inst) {                  // official: "summon/deplo
   let plan = null;
   if (!p.cpu && c > 0 && reserveTotal(p) < c + L) { plan = await askPayment(card, c, L); if (!plan) return false; }
   if (p.limbo === inst) p.limbo = null;
-  summon(p, inst, plan); render(); await wait(350);
+  summon(p, inst, plan); io.view({ type: 'board' }); await wait(350);
   if (!G.over && fieldList(p).includes(inst)) await fireFx(p, 'SUMMONED', inst);
   return true;
 }
@@ -2449,7 +2480,7 @@ async function resolvePool(pending) {
     log(`${card.name}: [${trigger === 'ADVENT' && trg === 'SUMMONED' ? 'When Advents' : FX_TRIGGER_TEXT[trg]}] ${fxDescribe(e)}.`);
     G.resolving = (G.resolving || 0) + 1;
     try { await runActions(c, e, trigger === 'ADVENT' ? 'SUMMONED' : trg); } finally { G.resolving--; }
-    render(); await wait(350);
+    io.view({ type: 'board' }); await wait(350);
     if (trg === 'SUMMONED' && (trigger === 'SUMMONED' || trigger === 'ADVENT') && !G.over) await maybeBurst(opp, trigger === 'ADVENT' ? 'OPP_ADVENT_FX' : 'OPP_SUMMON_FX', { summoned: f });   // v0.71: an Advent's (When Summoned) effect only answers the "/Advents" condition
     await flushBursts();
     await flushDerived();                                   // effects caused by this one resolve before the ones still pending
@@ -2496,7 +2527,7 @@ function soulSource(p) {
 async function soulToNexus(p, t) {
   const src = soulSource(p); if (!src || !p.nexus.includes(t) || t.soul || src === t) return false;
   if (src === 'trash') p.trashCores.soul = false; else if (src === 'reserve') p.reserve.soul = false; else src.soul = false;
-  t.soul = true; log(`${poss(p)} Soul Core is sent to ${CARDS[t.id].name}.`); render(); await wait(300);
+  t.soul = true; log(`${poss(p)} Soul Core is sent to ${CARDS[t.id].name}.`); io.view({ type: 'board' }); await wait(300);
   if (!G.over) await fireFx(p, 'SOUL_PLACED', t, { subject: t });
   return true;
 }
@@ -2531,7 +2562,7 @@ async function doContractAdvent(p, adv, src, where) {
     if (k > 0) { p.reserve.n -= k; adv.cores += k; log(`${CARDS[adv.id].name}: ${k} core${k === 1 ? '' : 's'} from the Reserve.`); }
   }
   checkDepletion(p);
-  render(); await wait(450);
+  io.view({ type: 'board' }); await wait(450);
   if (!G.over && p.spirits.includes(adv)) await fireFx(p, 'ADVENT', adv);
   return true;
 }
@@ -2611,7 +2642,7 @@ async function revealedFx(p) {
       }
       log(`${card.name}: [${FX_TRIGGER_TEXT.REVEALED}] ${fxDescribe(e)}.`);
       await runActions(c, e, 'REVEALED');
-      render(); await wait(300);
+      io.view({ type: 'board' }); await wait(300);
     }
   }
 }
@@ -2654,7 +2685,7 @@ async function activateFx(p, f, idx) {
   await asResolving(() => runActions({ p, opp, src: f, ctx: {} }, e, 'ACTIVATE'));
   checkDepletion(p); checkDepletion(opp);
   if (e.silverWheel && !G.over) await fireFx(p, 'SILVER_WHEEL', f);   // v0.50: "when you activate Silver Wheel"
-  render(); await wait(350); await flushBursts();
+  io.view({ type: 'board' }); await wait(350); await flushBursts();
   return true;
 }
 async function cpuActivate(p) {
@@ -2680,7 +2711,7 @@ async function doRevive(p, inst) {
   log(`${CARDS[inst.id].name}: [Revive] ${who(p)} ${p.cpu ? 'deploys' : 'deploy'} it from Soul State (paying its cost).`);
   const ok = await summonPaid(p, inst);
   if (!ok) { delete p.onceUsed[reviveKey(inst)]; return false; }
-  render(); await wait(300); await flushBursts();
+  io.view({ type: 'board' }); await wait(300); await flushBursts();
   return true;
 }
 async function cpuRevive(p) { for (let g = 0; g < 3 && !G.over; g++) { const t = reviveTargets(p)[0]; if (!t) break; await doRevive(p, t); } }
@@ -2871,7 +2902,7 @@ Object.assign(FX_ACTIONS, {
         log(`${_pn(c)}: ${who(c.p)} ${c.p.cpu ? 'discards' : 'discard'} ${CARDS[d.id].name}.`);
       }
       await sentToTrashFx(c, out, 'hand');               // v0.47 Hades Disaster discarded by Contractor Hades
-      render();
+      io.view({ type: 'board' });
     } },
   /* send cores from opposing Spirits/Ultimates to the opposing Reserve (not a destruction; a Spirit left below its Lv1 cores is depleted).
      {targets:T, each:K}: up to T different Spirits lose up to K cores each; {total:N}: N cores one by one from any Spirits. drawPerDepleted: draw 1 for each Spirit depleted by this (Vaplus). */
@@ -2898,7 +2929,7 @@ Object.assign(FX_ACTIONS, {
       const gone = [...hit].filter(t => !c.opp.spirits.includes(t)).length;
       if (gone) log(`${_pn(c)}: ${gone} opposing Spirit${gone === 1 ? ' is' : 's are'} depleted.`);
       if (a.drawPerDepleted && gone) { const k = draw(c.p, gone); log(`${_pn(c)}: ${who(c.p)} ${c.p.cpu ? 'draws' : 'draw'} ${k} card${k === 1 ? '' : 's'}.`); handUp(c.p, k); }
-      render();
+      io.view({ type: 'board' });
     } },
   /* "Then, once per turn, your counter +n" (Contractor Hades' Contract Skill): the Count part has its own once-per-turn limit, the rest of the effect does not */
   COUNTER_ONCE: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5, txt: a => `(once per turn) counter +${a.n}`,
@@ -2925,7 +2956,7 @@ Object.assign(FX_ACTIONS, {
       const T = await pickOppSpirits(c, L, a.n, `✨ <b>${esc(_pn(c))}</b><br>Tap the opposing Spirit that can't attack/block for the rest of the game (glowing).`);
       if (!T.length) { c.ctx.did = false; return; }
       for (const t of T) { t.noAB = true; log(`${_pn(c)}: ${poss(c.opp)} ${CARDS[t.id].name} can't attack/block during this game.`); }
-      render();
+      io.view({ type: 'board' });
     } },
   /* draw n cards from the bottom of the Deck (Thunderive) */
   DRAW_BOTTOM: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5, txt: a => `draw ${a.n} card${a.n === 1 ? '' : 's'} from the bottom of the Deck`,
@@ -2941,7 +2972,7 @@ Object.assign(FX_ACTIONS, {
     run: async c => {
       if (!c.p.hand.length) { c.ctx.did = false; return; }
       const k = c.p.hand.length; for (const h of c.p.hand.splice(0)) c.p.trash.push(h);
-      log(`${_pn(c)}: ${who(c.p)} ${c.p.cpu ? 'discards' : 'discard'} the entire Hand (${k} card${k === 1 ? '' : 's'}).`); render();
+      log(`${_pn(c)}: ${who(c.p)} ${c.p.cpu ? 'discards' : 'discard'} the entire Hand (${k} card${k === 1 ? '' : 's'}).`); io.view({ type: 'board' });
     } },
   /* reveal n cards from the top of your Deck and add up to `add` matching cards to the Hand, discarding the rest (Manevajra: three cards, one "Contractor Indra" or "Thunderive" card;
      with moreIf true (eight counters or more) reveal +1 and add +1) */
@@ -2951,7 +2982,7 @@ Object.assign(FX_ACTIONS, {
     run: async (c, a) => {
       const nm = _pn(c), more = !!a.moreIf && fxIf(c.p, c.opp, a.moreIf, c.ctx), n = a.n + (more ? 1 : 0), want = a.add + (more ? 1 : 0);
       const top = c.p.deck.splice(0, Math.min(n, c.p.deck.length)); c.p.revealed = top;
-      log(`${nm}: ${who(c.p)} ${c.p.cpu ? 'reveals' : 'reveal'} ${top.map(x => CARDS[x.id].name).join(', ') || 'nothing'}.`); render();
+      log(`${nm}: ${who(c.p)} ${c.p.cpu ? 'reveals' : 'reveal'} ${top.map(x => CARDS[x.id].name).join(', ') || 'nothing'}.`); io.view({ type: 'board' });
       await revealedFx(c.p);
       let got = 0;
       for (let j = 0; j < want; j++) {
@@ -2970,14 +3001,14 @@ Object.assign(FX_ACTIONS, {
     run: async (c, a) => {
       if (a.lifeLe != null && c.p.life > a.lifeLe) { c.ctx.did = false; return; }
       const m = takeFromVoid(c.p, a.n); if (!m) { c.ctx.did = false; return; }
-      c.p.life += m; log(`${_pn(c)}: ${m} core${m === 1 ? '' : 's'} move from the Void to ${who(c.p)}${c.p.cpu ? "'s" : 'r'} Life.`); render();
+      c.p.life += m; log(`${_pn(c)}: ${m} core${m === 1 ? '' : 's'} move from the Void to ${who(c.p)}${c.p.cpu ? "'s" : 'r'} Life.`); io.view({ type: 'board' });
     } },
   /* send one of your Lives to this Spirit (cost of BY, Vajdra-of-Magan). Not a Life reduction by damage: no Burst. A Life of 1 can't be sent (that would end the game by an own effect). */
   LIFE_TO_SELF: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 2, txt: a => `send ${a.n} of your Life to this Spirit`,
     can: (c, a) => c.p.life > a.n && c.p.spirits.includes(c.src),
     run: async (c, a) => {
       if (c.p.life <= a.n || !c.p.spirits.includes(c.src)) { c.ctx.did = false; return; }
-      lifeTake(c.p, a.n, c.src); log(`${_pn(c)}: ${a.n} Life of ${who(c.p)} moves to ${_pn(c)}.`); render();
+      lifeTake(c.p, a.n, c.src); log(`${_pn(c)}: ${a.n} Life of ${who(c.p)} moves to ${_pn(c)}.`); io.view({ type: 'board' });
     } },
   /* send n cores from your matching Nexus (name) to this Spirit (Vajrawurm Unleash cost) */
   NEXUS_CORES_TO_SELF: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5 && typeof a.name === 'string' && a.name.length > 0, txt: a => `send ${a.n} cores from your "${a.name}" Nexus to this Spirit`,
@@ -2986,12 +3017,12 @@ Object.assign(FX_ACTIONS, {
     run: async (c, a) => {
       const L = FX_ACTIONS.NEXUS_CORES_TO_SELF.cands(c, a); if (!L.length || !c.p.spirits.includes(c.src)) { c.ctx.did = false; return; }
       const t = L.length === 1 ? L[0] : await fxPickTarget(c, L, `✨ <b>${esc(_pn(c))}</b><br>Tap the Nexus that sends ${a.n} cores to this Spirit (glowing).`);
-      t.cores -= a.n; c.src.cores += a.n; log(`${_pn(c)}: ${a.n} cores move from ${CARDS[t.id].name} to ${_pn(c)}.`); render();
+      t.cores -= a.n; c.src.cores += a.n; log(`${_pn(c)}: ${a.n} cores move from ${CARDS[t.id].name} to ${_pn(c)}.`); io.view({ type: 'board' });
     } },
   /* return this Spirit to the Hand (Togevajdra) */
   SELF_TO_HAND: { chk: () => true, txt: () => 'return this Spirit to your Hand',
     can: c => c.p.spirits.includes(c.src),
-    run: async c => { if (!c.p.spirits.includes(c.src)) { c.ctx.did = false; return; } bounceCard(c.p, c.src, 'hand'); checkDepletion(c.p); handUp(c.p, 1); render(); } },
+    run: async c => { if (!c.p.spirits.includes(c.src)) { c.ctx.did = false; return; } bounceCard(c.p, c.src, 'hand'); checkDepletion(c.p); handUp(c.p, 1); io.view({ type: 'board' }); } },
 });
 /* ---------------------------------------------------------------------
    v0.41 MAGIC effect types (Dana Draw, Whirling Tide, Magic Bullet, Hades Disaster, Thunder Counter, Lightning Tempest).
@@ -3017,7 +3048,7 @@ Object.assign(FX_ACTIONS, {
       const L = FX_ACTIONS.SYMBOL_PLUS_TURN.cands(c, a); if (!L.length) { c.ctx.did = false; return; }
       const t = c.p.cpu ? (L.find(s => s === G.attacker) || L.slice().sort((x, y) => (x.exhausted - y.exhausted) || bpOf(y) - bpOf(x))[0]) : await chooseCard(c, L, `✨ ${_pn(c)}`, `Choose your Spirit that gets an extra ${cap(a.color)} symbol this turn.`, false);
       if (!t.symTurn || t.symTurn.turn !== G.turnNo) t.symTurn = { turn: G.turnNo, cols: [] };
-      t.symTurn.cols.push(a.color); log(`${_pn(c)}: ${CARDS[t.id].name} gets an extra ${cap(a.color)} symbol this turn.`); render();
+      t.symTurn.cols.push(a.color); log(`${_pn(c)}: ${CARDS[t.id].name} gets an extra ${cap(a.color)} symbol this turn.`); io.view({ type: 'board' });
     } },
   /* v0.44 "Then, you can send your Soul Core to <Grandwalker Nexus>. When you've done so, activate this effect once and only once more" (then = the actions repeated) */
   SOUL_TO_NEXUS_THEN: { chk: a => hasMatch(a.match) && Array.isArray(a.then) && a.then.length >= 1 && a.then.length <= 3 && a.then.every(x => x && FX_ACTIONS[x.do] && x.do !== 'SOUL_TO_NEXUS_THEN' && FX_ACTIONS[x.do].chk(x)),
@@ -3053,7 +3084,7 @@ Object.assign(FX_ACTIONS, {
       }
       c.ctx.destroyed = [];
       for (const t of picked) if (c.opp.spirits.includes(t)) { removeSpirit(c.opp, t, 'destroyed', true); c.ctx.destroyed.push(t); }
-      checkDepletion(c.opp); c.ctx.did = c.ctx.destroyed.length > 0; render();
+      checkDepletion(c.opp); c.ctx.did = c.ctx.destroyed.length > 0; io.view({ type: 'board' });
     } },
   SYMBOLS_ZERO_OPP: { chk: () => true, txt: () => 'during this turn, the symbol of every opposing Spirit/Ultimate is fixed as zero',
     can: c => c.opp.spirits.length > 0,
@@ -3061,7 +3092,7 @@ Object.assign(FX_ACTIONS, {
       if (!c.opp.spirits.length) { c.ctx.did = false; return; }
       for (const t of c.opp.spirits) if (!fxImmune(c.opp, t, c)) t.symZeroTurn = G.turnNo;     // v0.58: unaffected Spirits keep their symbols
       c.opp.symZeroAll = G.turnNo; c.opp.symZeroBy = { p: c.p, src: c.src };                      // v0.47: also Spirits/Ultimates that come to the Field later this turn
-      log(`${_pn(c)}: the symbols of ${poss(c.opp)} Spirits are zero until the end of the turn.`); render();
+      log(`${_pn(c)}: the symbols of ${poss(c.opp)} Spirits are zero until the end of the turn.`); io.view({ type: 'board' });
     } }
 });
 
@@ -3081,7 +3112,7 @@ async function gwCorePlus(c, n, nm) {
   const L = c.p.nexus.filter(isGW); if (!L.length || n <= 0) return 0;
   const t = L.length === 1 || c.p.cpu ? L[0] : await chooseCard(c, L, `✨ ${nm}`, `Choose the Grandwalker Nexus that gets +${n} core.`, false);
   const m = takeFromVoid(c.p, n); t.cores += m;
-  log(`${nm}: +${m} core to ${CARDS[t.id].name}.`); render(); return m;
+  log(`${nm}: +${m} core to ${CARDS[t.id].name}.`); io.view({ type: 'board' }); return m;
 }
 async function sentToTrashFx(c, cards, from) {
   if (!c || !c.src || !CARDS[c.src.id]) return;
@@ -3106,7 +3137,7 @@ async function payAbTax(p, s, verb) {                 // true = the Spirit may a
   const go = p.cpu ? true : await ask({ title: '🛡 Plutonic Wall', html: `Send a core from ${esc(nm)} to the Trash to ${verb}?`, buttons: [{ label: `Send a core and ${verb}`, cls: 'primary', value: true }, { label: 'Cancel', cls: 'cancel', value: false }] });
   if (!go) return false;
   if (s.cores > 0) { s.cores--; p.trashCores.n++; } else if (s.soul) { s.soul = false; p.trashCores.soul = true; }
-  log(`${who(p)} ${p.cpu ? 'sends' : 'send'} a core from ${nm} to the Trash to ${verb}.`); render(); return true;
+  log(`${who(p)} ${p.cpu ? 'sends' : 'send'} a core from ${nm} to the Trash to ${verb}.`); io.view({ type: 'board' }); return true;
 }
 async function oppAttackHandFx(D) {                    // D = the player whose opponent starts the Attack Step
   const A = G.p[other(D.key)];
@@ -3125,14 +3156,14 @@ async function oppAttackHandFx(D) {                    // D = the player whose o
     }
     gw[0].cores -= oh.gwToVoid; D.void += oh.gwToVoid;
     log(`${who(D)} ${D.cpu ? 'sends' : 'send'} ${oh.gwToVoid} cores from ${CARDS[gw[0].id].name} to the Void.`);
-    await castMagic(D, ch); render(); await flushBursts();
+    await castMagic(D, ch); io.view({ type: 'board' }); await flushBursts();
   }
 }
 async function braveSummonedFx(p, b) { if (G && !G.over && b) { await maybeBurst(p, 'BRAVE_SUMMONED', { subject: b }); await flushBursts(); } }
 async function braveSummonedEvs(evs) { for (const e of evs) if (e.trigger === 'SUMMONED' && e.src && CARDS[e.src.id] && CARDS[e.src.id].type === 'Brave') await braveSummonedFx(e.owner, e.src); }
 Object.assign(FX_ACTIONS, {
   AB_CORE_TAX_TURN: { chk: () => true, txt: () => 'during this turn, when an opposing Spirit/Ultimate would attack/block, unless the opponent sends a core from it to the Trash, it can\'t attack/block',
-    run: async c => { c.opp.abTax = G.turnNo; log(`${_pn(c)}: this turn ${poss(c.opp)} Spirits must send a core to the Trash to attack/block.`); render(); } }
+    run: async c => { c.opp.abTax = G.turnNo; log(`${_pn(c)}: this turn ${poss(c.opp)} Spirits must send a core to the Trash to attack/block.`); io.view({ type: 'board' }); } }
 });
 /* ---------------------------------------------------------------------
    v0.49 KEYWORD EFFECTS as engine data (session D, part 1): High Speed, Crush, Holy Life.
@@ -3160,7 +3191,7 @@ async function highSpeedSummon(p, inst) {
   if (need > 0 && p.reserve.soul) { p.reserve.soul = false; inst.soul = true; need--; }
   p.spirits.push(inst);
   log(`${who(p)} ${p.cpu ? 'summons' : 'summon'} ${card.name} with High Speed (paid ${c} from the Reserve).`);
-  checkDepletion(p); render(); await wait(350);
+  checkDepletion(p); io.view({ type: 'board' }); await wait(350);
   if (!G.over && p.spirits.includes(inst)) await fireFx(p, 'SUMMONED', inst);
   return true;
 }
@@ -3184,7 +3215,7 @@ Object.assign(FX_ACTIONS, {
       for (const x of top) c.opp.trash.push(x);
       c.ctx.crushed = top;
       log(`${_nmK(c)}: Crush discards ${top.length} card${top.length === 1 ? '' : 's'} from ${poss(c.opp)} Deck (${top.map(x => CARDS[x.id].name).join(', ')}).`);
-      render();
+      io.view({ type: 'board' });
     } },
   /* v0.56 Ultimate Trigger (card reminder text, Fandom Ultimate-Sea-Serpendar / Ultimate-Cu-Sith: "Send a card from the opposing decktop
      to the Trash. If that card's cost is lower than this Ultimate's, it's a hit."). Sets ctx.utHit / ctx.utCost; the "When Ultimate
@@ -3199,7 +3230,7 @@ Object.assign(FX_ACTIONS, {
       const k = CARDS[x.id], hit = k.cost < CARDS[c.src.id].cost;
       c.ctx.utHit = hit; c.ctx.utCost = k.cost; c.ctx.did = hit;
       log(`${_nmK(c)}: Ultimate Trigger sends ${k.name} (cost ${k.cost}) from ${poss(c.opp)} Deck to the Trash - ${hit ? 'hit!' : 'no hit.'}`);
-      render();
+      io.view({ type: 'board' });
     } },
 });
 const _nmK = c => CARDS[c.src.id].name;
@@ -3244,11 +3275,11 @@ async function useAccel(p, inst, idx, plan, timing) {
   log(`${who(p)} ${p.cpu ? 'uses' : 'use'} the Accel effect of ${card.name} (paid ${c}): ${fxDescribe(e)}.`);
   checkDepletion(p);
   const prev = p.limbo; p.limbo = inst;                    // the card is revealed while its effect resolves (in no zone)
-  try { render(); await wait(300); await asResolving(() => runActions({ p, opp, src: inst, ctx: {} }, e, 'ACCEL')); }
+  try { io.view({ type: 'board' }); await wait(300); await asResolving(() => runActions({ p, opp, src: inst, ctx: {} }, e, 'ACCEL')); }
   finally { if (p.limbo === inst) p.limbo = prev; }
   if (G && !p.removed.includes(inst)) { toRemoved(p, inst); log(`${card.name} is put onto the Removed Zone (Accel).`); }
   checkDepletion(p); checkDepletion(opp);
-  render(); await wait(300); await flushBursts();
+  io.view({ type: 'board' }); await wait(300); await flushBursts();
   return true;
 }
 /* Fandom Q5: an Accel Spirit in your Removed Zone can be summoned in your Main Step by paying its cost */
@@ -3597,7 +3628,7 @@ function cpuInvokeOK(p, f, e, timing) {
     log(`${CARDS[c.src.id].name}: ${m} core${m === 1 ? '' : 's'} from ${poss(c.opp)} ${CARDS[t.id].name} go to the Reserve.`);
     checkDepletion(c.opp);
     if (a.drawPerDepleted && !c.opp.spirits.includes(t)) { const k = draw(c.p, 1); log(`${who(c.p)} ${c.p.cpu ? 'draws' : 'draw'} ${k} card${k === 1 ? '' : 's'}.`); handUp(c.p, k); }
-    render();
+    io.view({ type: 'board' });
   };
 })();
 /* v0.78 end of battle and ally battle results (pack bundle 5, docs/mechanics/end-of-battle.md):
@@ -3651,7 +3682,7 @@ async function endOfBattle() {
       log(`${name}: Curse destroys ${CARDS[b.id].name}.`);
       const by = G.fxBy; G.fxBy = q.p.key;
       try { removeSpirit(q.opp, b, 'destroyed', true); } finally { G.fxBy = by; }
-      checkDepletion(q.opp); render(); continue;
+      checkDepletion(q.opp); io.view({ type: 'board' }); continue;
     }
     if (!fieldList(q.p).includes(q.src)) continue;      // the source left the Field: the end-of-battle effect does not resolve
     if (q.brilliance) {
@@ -3661,7 +3692,7 @@ async function endOfBattle() {
       continue;
     }
     await asResolving(() => runActions({ p: q.p, opp: q.opp, src: q.src, ctx: q.ctx }, { actions: q.then }, 'END_BATTLE'));
-    render();
+    io.view({ type: 'board' });
   }
   await flushDerived();
   await flushBursts();
@@ -3912,7 +3943,7 @@ const fmtName = f => (f === 'standard' ? 'STANDARD' : 'ETERNAL');
 function setFormat(f) {
   FORMAT = f === 'standard' ? 'standard' : 'eternal';
   try { localStorage.setItem(FORMAT_KEY, FORMAT); } catch (e) { /* blocked */ }
-  renderLobby(); renderDeckBuilder();
+  io.view({ type: 'decks' });
 }
 const errSummary = v => v.errors.slice(0, 3).join(' ') + (v.errors.length > 3 ? ` (+${v.errors.length - 3} more)` : '');
 const PREBUILT = [
@@ -3975,18 +4006,6 @@ const SPEEDS = { normal: 1, fast: 0.45, instant: 0.08 };
 if (!SPEEDS[SETTINGS.speed]) SETTINGS.speed = 'normal';
 SETTINGS.sound = SETTINGS.sound === true;
 function saveSettings() { try { localStorage.setItem(SET_KEY, JSON.stringify(SETTINGS)); } catch (e) { /* blocked */ } }
-let AUDIO = null;
-function sfx(kind) {                                   // tiny synthesized sounds, no files
-  if (!SETTINGS.sound || SIM) return;
-  try {
-    AUDIO = AUDIO || new (window.AudioContext || window.webkitAudioContext)();
-    const tones = { attack: [330, 0.09, 'square'], hit: [150, 0.14, 'sawtooth'], destroy: [90, 0.2, 'sawtooth'], summon: [520, 0.1, 'triangle'], card: [700, 0.04, 'sine'], win: [880, 0.35, 'triangle'], lose: [110, 0.4, 'sine'] }[kind];
-    if (!tones) return;
-    const o = AUDIO.createOscillator(), g = AUDIO.createGain(); o.type = tones[2]; o.frequency.value = tones[0];
-    g.gain.setValueAtTime(0.06, AUDIO.currentTime); g.gain.exponentialRampToValueAtTime(0.0001, AUDIO.currentTime + tones[1]);
-    o.connect(g); g.connect(AUDIO.destination); o.start(); o.stop(AUDIO.currentTime + tones[1] + 0.02);
-  } catch (e) { /* audio blocked */ }
-}
 let G = null, SESSION = 0, UID = 0, MODAL = null, REPLAY = null;
 const fnv = (h, t) => { let x = h == null ? 2166136261 : h; for (let i = 0; i < t.length; i++) { x ^= t.charCodeAt(i); x = Math.imul(x, 16777619) >>> 0; } return x >>> 0; };   // running hash of the whole log (history keeps only 300 lines)
 /* v0.26 input record: every prompt answer (m), field pick (k:'pick') and board action (a) of the human, in order */
@@ -3995,7 +4014,7 @@ let SIM_DECK_B = null;   // test hook (?sim=1 only): the second CPU deck
 const delay = ms => new Promise(r => setTimeout(r, SIM || (REPLAY && REPLAY.fast) ? 0 : Math.round(ms * (SPEEDS[SETTINGS.speed] || 1))));
 async function wait(ms) { const s = SESSION; await delay(ms); if (s !== SESSION) throw ABORT; }
 function log(t) { if (!G) return; G.last = t; G.history.push(t); G.hh = fnv(G.hh, t); G.hn = (G.hn || 0) + 1;
-  if (SETTINGS.sound) sfx(/attacks with/.test(t) ? 'attack' : /destroyed|depleted/.test(t) ? 'destroy' : /lose[s]? \d+ Life/.test(t) ? 'hit' : /summon|deploy/.test(t) ? 'summon' : /draw/.test(t) ? 'card' : ''); if (G.history.length > 300) G.history.shift(); }
+  io.log(t); if (G.history.length > 300) G.history.shift(); }   // web host: sound per line (13e-host.js)
 
 function mkInst(id) { return { uid: ++UID, id, mirage: false, cores: 0, soul: false, exhausted: false, under: [], summonedTurn: 0, bpMod: 0, inSoulState: false }; }
 function newPlayer(key, name, cpu, counts) {
@@ -4504,7 +4523,8 @@ function returnSoul(p, f) {
 /* ---------------------------------------------------------------------
    TURN FLOW
    --------------------------------------------------------------------- */
-function setStep(i) { G.step = i; render(); }
+const isMainStep = () => !!G && (G.step === 4 || (G.format === 'standard' && G.step === 6));   // moved from 11-human.js (v0.82.0)
+function setStep(i) { G.step = i; io.view({ type: 'board' }); }
 async function beginTurn(key) {
   const p = G.p[key];
   G.active = key; G.turnNo++; p.burstSetThisTurn = false; p.mirageSetThisTurn = false; G.burstQ.length = 0; releaseStandby(true); G.evQ.length = 0;
@@ -4535,9 +4555,9 @@ function win(key, why) {
   G.over = true; G.winner = key; G.busy = true;
   log(`${who(G.p[key])} ${G.p[key].cpu || key === 'opponent' ? 'wins' : 'win'}: ${why}.`);
   if (G.rec) G.rec.final = matchSummary();
-  render();
+  io.view({ type: 'board' });
   if (G.turnResolver) { const r = G.turnResolver; G.turnResolver = null; r(); }
-  if (!SIM) { recordMatch(key); showGameOver(); }
+  io.view({ type: 'matchEnd', winner: key });   // web host: history entry + game-over dialog (not in ?sim=1)
 }
 async function matchLoop() {
   const my = SESSION;
@@ -4546,15 +4566,29 @@ async function matchLoop() {
       const key = G.next, p = G.p[key];
       await beginTurn(key);
       if (G.over) break;
-      if (p.cpu) { G.busy = true; render(); await cpuTurn(p); }
-      else { G.busy = false; render(); await new Promise(r => { G.turnResolver = r; }); G.busy = true; }
+      if (p.cpu) { G.busy = true; io.view({ type: 'board' }); await cpuTurn(p); }
+      else { G.busy = false; io.view({ type: 'board' }); await new Promise(r => { G.turnResolver = r; }); G.busy = true; }
       if (G.over || SESSION !== my) break;
       await endStep(key);
       G.next = other(key);
     }
   } catch (e) { if (e !== ABORT) throw e; }
 }
-
+/* rules invariants (cores, Soul Core, cards) checked by tests and sims; moved from 13-render.js in v0.82.0 */
+function checkInvariants() {
+  for (const k of ['player', 'opponent']) {
+    const p = G.p[k], fc = fieldList(p).reduce((s, i) => s + i.cores, 0);
+    const normal = p.life - (p.lifeSoul ? 1 : 0) + p.reserve.n + p.trashCores.n + p.count + p.void + fc;
+    if (normal !== p.made) throw new Error(`Core mismatch for ${p.name}: ${normal}`);
+    const soul = (p.reserve.soul ? 1 : 0) + (p.lifeSoul ? 1 : 0) + (p.trashCores.soul ? 1 : 0) + fieldList(p).filter(i => i.soul).length;
+    if (soul !== 1) throw new Error(`Soul Core count for ${p.name}: ${soul}`);
+    const cards = p.deck.length + p.hand.length + p.spirits.filter(i => !i.token).length + p.nexus.length + p.soulState.length + p.standby.length + p.trash.length + p.removed.length + (p.burst ? 1 : 0) + (p.mirage ? 1 : 0) + (p.limbo ? 1 : 0) + p.revealed.length + fieldList(p).reduce((s, i) => s + i.under.length + (i.brave ? 1 : 0), 0);
+    if (cards !== p.deckSize) throw new Error(`Card mismatch for ${p.name}: ${cards} vs ${p.deckSize}`);
+    for (const s of p.spirits) if (totalCores(s) < CARDS[s.id].levels[0].cores) throw new Error(`Undepleted spirit ${CARDS[s.id].name}`);
+    if (p.void < 0 || p.count < 0 || p.reserve.n < 0) throw new Error(`Negative core zone for ${p.name}`);
+    for (const x of p.soulState) if (!x.inSoulState) throw new Error(`Soul State flag for ${CARDS[x.id].name}`);
+  }
+}
 /* ---------------------------------------------------------------------
    BATTLE  (declare -> flash -> block -> flash -> resolution)
    --------------------------------------------------------------------- */
@@ -4566,7 +4600,7 @@ async function flashTiming(attKey, att, blk) {
   while (passes < 2 && plays < 8 && !G.over) {
     const p = G.p[order[turn % 2]];
     const ch = p.cpu ? cpuFlashChoice(p, attKey, att, blk) : await humanFlashChoice(p, attKey, att, blk);
-    if (ch && ch.cadv) { passes = 0; plays++; if (p.cpu) await doContractAdvent(p, ch.cadv, ch.target, 'flash'); else await humanContractAdvent(ch.cadv, 'flash'); } else if (ch && ch.manifest) { passes = 0; plays++; if (p.cpu) await doManifest(p, ch.manifest, ch.target, 'flash'); else await humanManifest(ch.manifest, 'flash'); } else if (ch && ch.hs) { passes = 0; plays++; await highSpeedSummon(p, ch.hs); } else if (ch && ch.accel) { passes = 0; plays++; await useAccel(p, ch.accel.inst, ch.accel.idx, ch.accel.plan, 'FLASH'); } else if (ch && ch.act) { passes = 0; plays++; await activateFx(p, ch.act.f, ch.act.idx); } else if (ch) { passes = 0; plays++; await castMagic(p, ch); render(); await wait(650); await flushBursts(); } else passes++;
+    if (ch && ch.cadv) { passes = 0; plays++; if (p.cpu) await doContractAdvent(p, ch.cadv, ch.target, 'flash'); else await humanContractAdvent(ch.cadv, 'flash'); } else if (ch && ch.manifest) { passes = 0; plays++; if (p.cpu) await doManifest(p, ch.manifest, ch.target, 'flash'); else await humanManifest(ch.manifest, 'flash'); } else if (ch && ch.hs) { passes = 0; plays++; await highSpeedSummon(p, ch.hs); } else if (ch && ch.accel) { passes = 0; plays++; await useAccel(p, ch.accel.inst, ch.accel.idx, ch.accel.plan, 'FLASH'); } else if (ch && ch.act) { passes = 0; plays++; await activateFx(p, ch.act.f, ch.act.idx); } else if (ch) { passes = 0; plays++; await castMagic(p, ch); io.view({ type: 'board' }); await wait(650); await flushBursts(); } else passes++;
     turn++;
     att = successor(G.p[attKey], att) || att; if (blk) blk = successor(G.p[other(attKey)], blk) || blk; G.attacker = att; if (blk) G.blocker = blk;
     if (!G.p[attKey].spirits.includes(att) || (blk && !G.p[other(attKey)].spirits.includes(blk))) break;
@@ -4584,17 +4618,17 @@ const attackStepOver = () => !!G && G.attackEnded === G.turnNo;
 async function doBattle(attKey, att) { try { G.eob = []; G.battleMagic = []; G.battleResolved = false; await doBattleInner(attKey, att); if (G && !G.over && G.eob && G.eob.length) await endOfBattle(); } finally { if (G) { G.eob = null; G.battleMagic = null; G.battleResolved = false; battleEndAttack(); G.attacker = null; G.blocker = null; G.noBurst = null; for (const k of ['player', 'opponent']) for (const f of fieldList(G.p[k])) f.symBattle = 0; } } }
 async function doBattleInner(attKey, att) {
   const A = G.p[attKey], D = G.p[other(attKey)];
-  if (!(await payAbTax(A, att, 'attack'))) { render(); return; }   // v0.47 Plutonic Wall
+  if (!(await payAbTax(A, att, 'attack'))) { io.view({ type: 'board' }); return; }   // v0.47 Plutonic Wall
   att.exhausted = true; G.battleNo = (G.battleNo || 0) + 1; G.blocker = null;      // v0.68: battle counter for (Once Per Battle) / "during this battle" (02l)
   log(`${who(A)} ${A.cpu ? 'attacks' : 'attack'} with ${CARDS[att.id].name} (${bpOf(att)} BP).`);
   G.attacker = att;
-  render(); await wait(450);
+  io.view({ type: 'board' }); await wait(450);
   await fireFxMulti([{ owner: A, trigger: 'ATTACKS', src: att, ctx: { attacker: att } }, { owner: A, trigger: 'ALLY_ATTACKS', src: att, ctx: { attacker: att } }, { owner: D, trigger: 'OPP_ATTACKS', src: att, ctx: { attacker: att } }]);   // one simultaneous pool
   if (G.over) { G.attacker = null; return; }
   if (A.spirits.includes(att)) { await maybeBurst(D, 'OPP_ATTACK', { attacker: att }); await flushBursts(); if (G.over) { G.attacker = null; return; } }   // v0.71 Burst "After an opposing Spirit attacks": after the attack's (When Attacks) effects
   att = (await flashTiming(attKey, att, null))[0];
   if (G.over) return;
-  if (!A.spirits.includes(att)) { log('The attack ends: the attacking Spirit left the field.'); render(); return; }
+  if (!A.spirits.includes(att)) { log('The attack ends: the attacking Spirit left the field.'); io.view({ type: 'board' }); return; }
   const blockers = noBlockActive(D) ? [] : D.spirits.filter(s => canBlockState(D, s) && abTaxOK(D, s));
   let blk = null;
   /* v0.58 priority "cannot" > "must" > "do" = "can" (JP 17.0 item 9): Spirits that can't block were removed above; a Spirit unaffected by the
@@ -4607,12 +4641,12 @@ async function doBattleInner(attKey, att) {
   if (blk) {
     blk.exhausted = true; G.blocker = blk;
     log(`${who(D)} ${D.cpu ? 'blocks' : 'block'} with ${CARDS[blk.id].name} (${bpOf(blk)} BP).`);
-    render(); await wait(450);
+    io.view({ type: 'board' }); await wait(450);
     await fireFxMulti([{ owner: A, trigger: 'ALLY_BLOCKED', src: att, ctx: { attacker: att, blocker: blk } }, { owner: D, trigger: 'BLOCKS', src: blk, ctx: { attacker: att, blocker: blk } }]);   // manual p. 30: one pool after the block
     if (G.over) return;
     [att, blk] = await flashTiming(attKey, att, blk);
     if (G.over) return;
-    if (!A.spirits.includes(att) || !D.spirits.includes(blk)) { log('The battle ends: a fighting Spirit left the field.'); render(); return; }
+    if (!A.spirits.includes(att) || !D.spirits.includes(blk)) { log('The battle ends: a fighting Spirit left the field.'); io.view({ type: 'board' }); return; }
     const ab = bpOf(att), bb = bpOf(blk); G.battleResolved = true;      // v0.78 Curse: armed only when the battle reaches the BP comparison
     if (ab > bb) removeSpirit(D, blk, 'destroyed', 'battle');            // v0.73 'battle' = by the opponent, not by an opposing effect
     else if (ab < bb) removeSpirit(A, att, 'destroyed', 'battle');
@@ -4620,19 +4654,19 @@ async function doBattleInner(attKey, att) {
     if (ab >= bb && G.evQ) G.evQ.push({ type: 'DESTROYS', key: A.key, inst: att });
     if (ab !== bb && G.evQ) G.evQ.push(ab > bb ? { type: 'BATTLE_WIN', key: A.key, inst: att, att: true } : { type: 'BATTLE_WIN', key: D.key, inst: blk, att: false });   // v0.55 (When Battles): only the opposing Spirit destroyed (CR 8-1-6-2)
     checkDepletion(A); checkDepletion(D);
-    render();
+    io.view({ type: 'board' });
     await flushBursts();
     return;
   }
   const dmg = Math.min(attackSymbols(att), D.life);
   lifeTake(D, dmg, 'reserve');                    // Life cores go to the Reserve
   log(`${CARDS[att.id].name} is not blocked: ${who(D)} ${D.cpu ? 'loses' : 'lose'} ${dmg} Life.`);
-  render();
+  io.view({ type: 'board' });
   if (D.life <= 0) { win(attKey, `${poss(D)} Life reached 0`); return; }
   if (dmg > 0) { await fireFxMulti([{ owner: A, trigger: 'ALLY_LIFE_HIT', src: null, ctx: { attacker: att } }, { owner: A, trigger: 'MIRAGE_OPP_LIFE', src: null, ctx: {} }, { owner: D, trigger: 'MIRAGE_OWN_LIFE', src: null, ctx: {} }]); if (G.over) return; }
   await maybeBurst(D, 'LIFE_DECREASE', { attacker: att });
   await flushBursts();
-  render();
+  io.view({ type: 'board' });
 }
 /* Burst: a face-down card in the Burst Area flips when its condition happens. All effects are engine actions (card.burst = {when, actions}). */
 async function maybeBurst(owner, trigger, ctx) {
@@ -4653,14 +4687,14 @@ async function maybeBurst(owner, trigger, ctx) {
   if (!use || owner.burst !== b) return false;
   owner.burst = null; owner.limbo = b;                // the card is flipped and leaves the Burst Area while its effect resolves
   log(`${who(owner)} ${owner.cpu ? 'activates' : 'activate'} Burst: ${CARDS[b.id].name}!`);
-  render();
+  io.view({ type: 'board' });
   G.resolving = (G.resolving || 0) + 1;
   try {
     for (const a of def.actions) {
       if (G.over) break;
       if (a.if && !fxIf(owner, opp, a.if)) continue;
       await FX_ACTIONS[a.do].run(c, a);
-      render();
+      io.view({ type: 'board' });
     }
     if (def.thenFlash && !G.over) await burstFlash(owner, b);
     if (def.thenMain && !G.over) await burstFlash(owner, b, 'main');
@@ -4670,7 +4704,7 @@ async function maybeBurst(owner, trigger, ctx) {
     if (!fieldList(owner).includes(b) && !owner.trash.includes(b) && !owner.hand.includes(b)) owner.trash.push(b);   // a used Magic / Spirit that was not summoned goes to the Trash
   }
   checkDepletion(owner); checkDepletion(opp);
-  render();
+  io.view({ type: 'board' });
   await flushDerived();
   return true;
 }
@@ -4688,7 +4722,7 @@ async function burstFlash(p, inst, ctx) {            // v0.47: ctx 'main' = "act
     ch = await prepareHumanMagic(p, inst, ctx); if (!ch) return false;
   }
   log(`${who(p)} ${p.cpu ? 'pays' : 'pay'} the cost to activate the ${lbl} effect of ${card.name}.`);
-  await castMagic(p, ch); render();
+  await castMagic(p, ch); io.view({ type: 'board' });
   return true;
 }
 async function flushBursts() {                         // queued Bursts and events: "your Spirit was destroyed", "the opposing Hand increased", "an ally was lost"
@@ -4823,7 +4857,7 @@ async function cpuCastMain(p) {
       if (sc > 0 && (!best || sc > best.sc)) best = { sc, ch: { inst: h, target, plan: null, ctx: 'main' } };
     }
     if (!best) break;
-    await castMagic(p, best.ch); render(); await wait(600); await flushBursts();
+    await castMagic(p, best.ch); io.view({ type: 'board' }); await wait(600); await flushBursts();
   }
 }
 async function cpuMain(p) {
@@ -4834,30 +4868,30 @@ async function cpuMain(p) {
   await cpuAdvents(p);
   if (!p.mirageSetThisTurn && !p.mirage) {
     const mh = p.hand.find(h => CARDS[h.id].mirage && (CARDS[h.id].effects || []).some(e => e.trigger === 'MIRAGE_OWN_LIFE' || e.trigger === 'MIRAGE_OPP_LIFE') && CARDS[h.id].mirage.cost <= reserveTotal(p) && mirageUsable(p, h));
-    if (mh) { removeFrom(p.hand, mh); payCost(p, CARDS[mh.id].mirage.cost, null); checkDepletion(p); setBurst(p, mh, true); render(); await wait(400); }
+    if (mh) { removeFrom(p.hand, mh); payCost(p, CARDS[mh.id].mirage.cost, null); checkDepletion(p); setBurst(p, mh, true); io.view({ type: 'board' }); await wait(400); }
   }
-  if (!p.burstSetThisTurn && !p.burst) { const b = p.hand.find(h => CARDS[h.id].burst); if (b) { setBurst(p, b); render(); await wait(400); } }
+  if (!p.burstSetThisTurn && !p.burst) { const b = p.hand.find(h => CARDS[h.id].burst); if (b) { setBurst(p, b); io.view({ type: 'board' }); await wait(400); } }
   for (let g = 0; g < 14 && !G.over; g++) {
     const opts = p.hand.filter(h => cpuCanPlay(p, h) && h !== p.burst && (CARDS[h.id].type !== 'Brave' || isSpiritForm(CARDS[h.id]))).concat(removedSummonable(p).filter(h => cpuCanPlay(p, h)));   // v0.50: Accel Spirits from the Removed Zone
     if (!opts.length) break;
     const pick = cpuPlayChoice(p, opts);
     if (!pick) break;
-    summon(p, pick, null); render(); await wait(450);
+    summon(p, pick, null); io.view({ type: 'board' }); await wait(450);
     await fireFx(p, 'SUMMONED', pick);
     await cpuActivate(p);
   }
   await cpuBrave(p);
-  cpuLevelUp(p); render(); await wait(350);
+  cpuLevelUp(p); io.view({ type: 'board' }); await wait(350);
 }
 /* Brave: combine a Brave from the Hand (direct summon) or from the Field with the strongest fitting Spirit (manual p. 34-35) */
 async function cpuBrave(p) {
   for (let g = 0; g < 6 && !G.over; g++) {
     const strongest = L => L.slice().sort((a, b) => bpOf(b) - bpOf(a))[0];
     const fb = p.spirits.find(b => CARDS[b.id].brave && braveTargets(p, b).length);
-    if (fb) { combineBrave(p, fb, strongest(braveTargets(p, fb))); render(); await wait(400); continue; }
+    if (fb) { combineBrave(p, fb, strongest(braveTargets(p, fb))); io.view({ type: 'board' }); await wait(400); continue; }
     const hb = p.hand.find(h => CARDS[h.id].brave && h !== p.burst && braveTargets(p, h).length && cpuCanPlay(p, h));
     if (!hb) break;
-    braveSummon(p, hb, strongest(braveTargets(p, hb)), null); render(); await braveSummonedFx(p, hb); await wait(450);
+    braveSummon(p, hb, strongest(braveTargets(p, hb)), null); io.view({ type: 'board' }); await braveSummonedFx(p, hb); await wait(450);
   }
 }
 async function cpuAttack(p) {
@@ -4869,7 +4903,7 @@ async function cpuAttack(p) {
     if (attackStepOver()) break;
   }
 }
-async function startAttackFx(p) { await fireFx(p, 'START_ATTACK', null, {}); await flushBursts(); if (!G.over) await oppAttackHandFx(G.p[other(p.key)]); checkDepletion(p); checkDepletion(G.p[other(p.key)]); render(); }
+async function startAttackFx(p) { await fireFx(p, 'START_ATTACK', null, {}); await flushBursts(); if (!G.over) await oppAttackHandFx(G.p[other(p.key)]); checkDepletion(p); checkDepletion(G.p[other(p.key)]); io.view({ type: 'board' }); }
 async function cpuTurn(p) {
   await wait(500);
   await cpuMain(p);
@@ -5144,7 +5178,6 @@ async function askPayment(card, c, L) {
 /* ---------------------------------------------------------------------
    HUMAN ACTIONS
    --------------------------------------------------------------------- */
-const isMainStep = () => !!G && (G.step === 4 || (G.format === 'standard' && G.step === 6));
 const humanCan = () => G && !G.over && !G.busy && G.active === 'player' && !G.p.player.cpu;
 
 function legalityHTML(card) {
@@ -5808,20 +5841,6 @@ function histHTML() {
 }
 
 const lifeTxt = p => p.lifeSoul ? `${p.life - 1}+S` : String(p.life);   // v0.48: the Soul Core in Life (Sealed) shows as +S, like the Reserve
-function checkInvariants() {
-  for (const k of ['player', 'opponent']) {
-    const p = G.p[k], fc = fieldList(p).reduce((s, i) => s + i.cores, 0);
-    const normal = p.life - (p.lifeSoul ? 1 : 0) + p.reserve.n + p.trashCores.n + p.count + p.void + fc;
-    if (normal !== p.made) throw new Error(`Core mismatch for ${p.name}: ${normal}`);
-    const soul = (p.reserve.soul ? 1 : 0) + (p.lifeSoul ? 1 : 0) + (p.trashCores.soul ? 1 : 0) + fieldList(p).filter(i => i.soul).length;
-    if (soul !== 1) throw new Error(`Soul Core count for ${p.name}: ${soul}`);
-    const cards = p.deck.length + p.hand.length + p.spirits.filter(i => !i.token).length + p.nexus.length + p.soulState.length + p.standby.length + p.trash.length + p.removed.length + (p.burst ? 1 : 0) + (p.mirage ? 1 : 0) + (p.limbo ? 1 : 0) + p.revealed.length + fieldList(p).reduce((s, i) => s + i.under.length + (i.brave ? 1 : 0), 0);
-    if (cards !== p.deckSize) throw new Error(`Card mismatch for ${p.name}: ${cards} vs ${p.deckSize}`);
-    for (const s of p.spirits) if (totalCores(s) < CARDS[s.id].levels[0].cores) throw new Error(`Undepleted spirit ${CARDS[s.id].name}`);
-    if (p.void < 0 || p.count < 0 || p.reserve.n < 0) throw new Error(`Negative core zone for ${p.name}`);
-    for (const x of p.soulState) if (!x.inSoulState) throw new Error(`Soul State flag for ${CARDS[x.id].name}`);
-  }
-}
 
 /* ---------- lobby / deck builder ---------- */
 function switchView(id) {
@@ -6197,6 +6216,45 @@ function renderSetPage() {
   const im = $('set-imgs'); if (im) { const n = Object.keys(IMG).length; im.textContent = `${n} image${n === 1 ? '' : 's'} loaded. Add or remove them in the Library; they stay on this device.`; }
 }
 /* ---------------------------------------------------------------------
+   WEB HOST (v0.82.0, phase F2 = M2): the browser answers the engine's port (packages/protocol/src/00p-protocol.js).
+   Views redraw the page, log lines play sounds; decisions still go through the prompts in 10-modals.js (M3 moves them here).
+   --------------------------------------------------------------------- */
+document.title = 'Aeterna - Engine v' + VERSION;
+let AUDIO = null;
+function sfx(kind) {                                   // tiny synthesized sounds, no files
+  if (!SETTINGS.sound || SIM) return;
+  try {
+    AUDIO = AUDIO || new (window.AudioContext || window.webkitAudioContext)();
+    const tones = { attack: [330, 0.09, 'square'], hit: [150, 0.14, 'sawtooth'], destroy: [90, 0.2, 'sawtooth'], summon: [520, 0.1, 'triangle'], card: [700, 0.04, 'sine'], win: [880, 0.35, 'triangle'], lose: [110, 0.4, 'sine'] }[kind];
+    if (!tones) return;
+    const o = AUDIO.createOscillator(), g = AUDIO.createGain(); o.type = tones[2]; o.frequency.value = tones[0];
+    g.gain.setValueAtTime(0.06, AUDIO.currentTime); g.gain.exponentialRampToValueAtTime(0.0001, AUDIO.currentTime + tones[1]);
+    o.connect(g); g.connect(AUDIO.destination); o.start(); o.stop(AUDIO.currentTime + tones[1] + 0.02);
+  } catch (e) { /* audio blocked */ }
+}
+function showGameOver() {
+  const youWon = G.winner === 'player', W = !!G.watch;
+  modal({
+    title: W ? '🏁 MATCH OVER' : youWon ? '🏆 VICTORY' : '💀 DEFEAT', html: esc(G.last),
+    buttons: [{ label: W ? 'Watch again' : 'Rematch', cls: 'primary', value: 'again' }, { label: 'Back to Lobby', value: 'lobby' }, { label: 'Close', cls: 'cancel', value: null }]
+  }).then(v => {
+    if (v === 'again') startNewGame(W ? { watch: true } : undefined);
+    else if (v === 'lobby') { SESSION++; clearPick(); G = null; switchView('view-lobby'); }
+  });
+}
+function webView(ev) {
+  switch (ev && ev.type) {
+    case 'board': render(); break;
+    case 'decks': renderLobby(); renderDeckBuilder(); break;
+    case 'screen': switchView(ev.id); break;
+    case 'reset': clearPick(); closeModal(null); break;
+    case 'matchEnd': if (!SIM) { recordMatch(ev.winner); showGameOver(); } break;
+    default: throw new Error('unknown view record: ' + JSON.stringify(ev));
+  }
+}
+const sfxOf = t => (/attacks with/.test(t) ? 'attack' : /destroyed|depleted/.test(t) ? 'destroy' : /lose[s]? \d+ Life/.test(t) ? 'hit' : /summon|deploy/.test(t) ? 'summon' : /draw/.test(t) ? 'card' : '');
+bindHost({ name: 'web', view: webView, log(t) { if (SETTINGS.sound) sfx(sfxOf(t)); } });
+/* ---------------------------------------------------------------------
    CARD IMAGES  (user supplied files kept in IndexedDB, never uploaded)
    --------------------------------------------------------------------- */
 const IMG = {};           // card id -> blob: URL
@@ -6351,24 +6409,14 @@ function libAction(a) {
 /* ---------------------------------------------------------------------
    MATCH START / END
    --------------------------------------------------------------------- */
-function showGameOver() {
-  const youWon = G.winner === 'player', W = !!G.watch;
-  modal({
-    title: W ? '🏁 MATCH OVER' : youWon ? '🏆 VICTORY' : '💀 DEFEAT', html: esc(G.last),
-    buttons: [{ label: W ? 'Watch again' : 'Rematch', cls: 'primary', value: 'again' }, { label: 'Back to Lobby', value: 'lobby' }, { label: 'Close', cls: 'cancel', value: null }]
-  }).then(v => {
-    if (v === 'again') startNewGame(W ? { watch: true } : undefined);
-    else if (v === 'lobby') { SESSION++; clearPick(); G = null; switchView('view-lobby'); }
-  });
-}
 async function startNewGame(opts) {
   opts = opts || {};
-  SESSION++; clearPick(); closeModal(null);
+  SESSION++; io.view({ type: 'reset' });
   const seed = opts.seed != null ? ((opts.seed >>> 0) || 1) : newSeed();
   seedRng(seed); UID = 0;
   const deckA = opts.deckA || (SIM ? PRESET_DECK : PLAYER_DECK);
   const v = validateDeck(deckA);
-  if (!v.ok && !SIM && !opts.deckA) { await info(`Your deck is not legal in ${fmtName(FORMAT)}`, esc(errSummary(v)) + (v.errors.length > 3 ? '<br>Open the Deck Builder to see all issues.' : '')); switchView('view-deckbuilder'); return; }
+  if (!v.ok && !SIM && !opts.deckA) { await info(`Your deck is not legal in ${fmtName(FORMAT)}`, esc(errSummary(v)) + (v.errors.length > 3 ? '<br>Open the Deck Builder to see all issues.' : '')); io.view({ type: 'screen', id: 'view-deckbuilder' }); return; }
   const my = SESSION;
   const deckB = opts.deckB || (SIM ? (SIM_DECK_B || PRESET_DECK) : cpuDeckFor(FORMAT));
   G = newGame(deckA, deckB, FORMAT);
@@ -6376,8 +6424,8 @@ async function startNewGame(opts) {
   if (W) { G.watch = true; G.p.player.cpu = true; G.p.player.name = 'Your deck'; }
   G.rec = { v: 1, build: VERSION, seed, format: FORMAT, sim: SIM, deckA: Object.assign({}, deckA), deckB: Object.assign({}, deckB), inputs: [] };
   if (!SIM && !W && !opts.noHistory) G.meta = { fmt: FORMAT, you: opts.deckA ? 'Replay' : SLOTS[ACTIVE_SLOT].name, cpu: opts.deckB ? 'Replay' : CPU_DECK_NAME, done: false };
-  switchView('view-playmat');
-  render();
+  io.view({ type: 'screen', id: 'view-playmat' });
+  io.view({ type: 'board' });
   try {
     let first;
     if (SIM || W) { first = rng() < 0.5 ? 'player' : 'opponent'; if (W) log('Watching: the CPU plays both sides.'); log(`${G.p[first].name} goes first.`); }
@@ -6388,7 +6436,7 @@ async function startNewGame(opts) {
         first = await ask({ title: `Coin: ${heads ? 'HEADS' : 'TAILS'} — you win!`, html: 'Do you want to go first or second?', buttons: [{ label: 'FIRST', cls: 'primary', value: 'player' }, { label: 'SECOND', cls: 'primary', value: 'opponent' }] });
         log(first === 'player' ? 'You won the coin toss and go first.' : 'You won the coin toss and go second.');
       } else { first = 'opponent'; log(`Coin: ${heads ? 'HEADS' : 'TAILS'}. CPU won the toss and goes first.`); }
-      render();
+      io.view({ type: 'board' });
     }
     // setup: a Contract card may be added to the starting Hand (default: add it; the CPU always does)
     if (!SIM && !W && G.p.player.hand.some(h => CARDS[h.id].contract)) {
@@ -6404,11 +6452,11 @@ async function startNewGame(opts) {
     if (cpuWantsRedraw(G.p.opponent.hand)) { redrawHand(G.p.opponent); log('CPU redrew its starting hand.'); }
     if (SESSION !== my) return;
     G.next = first;
-    render();
+    io.view({ type: 'board' });
     matchLoop();
   } catch (e) { if (e !== ABORT) throw e; }
 }
-
+const matchSummary = () => ({ winner: G.winner, turn: G.turnNo, life: [G.p.player.life, G.p.opponent.life], log: G.hn || 0, hash: (G.hh >>> 0).toString(16) });   // v0.26 final result + hash of the whole log (moved from 16-events.js in v0.82.0)
 /* ---------------------------------------------------------------------
    EVENTS (delegation)
    --------------------------------------------------------------------- */
@@ -6535,7 +6583,6 @@ function gameAct(a, v) {
 }
 
 /* ---- v0.26: replay of an input record, and named test scenarios (ideas from the Aegis study) ---- */
-const matchSummary = () => ({ winner: G.winner, turn: G.turnNo, life: [G.p.player.life, G.p.opponent.life], log: G.hn || 0, hash: (G.hh >>> 0).toString(16) });
 function replayOf(g) { const r = g.rec; return { v: r.v, build: r.build, seed: r.seed, format: r.format, sim: !!r.sim, deckA: r.deckA, deckB: r.deckB, inputs: r.inputs.slice(), lossy: !!r.lossy, final: r.final || null }; }
 function lastReplay() { if (G && G.rec) return replayOf(G); for (let i = HISTORY.length - 1; i >= 0; i--) if (HISTORY[i].replay) return HISTORY[i].replay; return null; }
 /* replays a record: same seed and decks, then every recorded prompt answer / pick / board action in order.

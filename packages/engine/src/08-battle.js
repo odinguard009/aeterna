@@ -9,7 +9,7 @@ async function flashTiming(attKey, att, blk) {
   while (passes < 2 && plays < 8 && !G.over) {
     const p = G.p[order[turn % 2]];
     const ch = p.cpu ? cpuFlashChoice(p, attKey, att, blk) : await humanFlashChoice(p, attKey, att, blk);
-    if (ch && ch.cadv) { passes = 0; plays++; if (p.cpu) await doContractAdvent(p, ch.cadv, ch.target, 'flash'); else await humanContractAdvent(ch.cadv, 'flash'); } else if (ch && ch.manifest) { passes = 0; plays++; if (p.cpu) await doManifest(p, ch.manifest, ch.target, 'flash'); else await humanManifest(ch.manifest, 'flash'); } else if (ch && ch.hs) { passes = 0; plays++; await highSpeedSummon(p, ch.hs); } else if (ch && ch.accel) { passes = 0; plays++; await useAccel(p, ch.accel.inst, ch.accel.idx, ch.accel.plan, 'FLASH'); } else if (ch && ch.act) { passes = 0; plays++; await activateFx(p, ch.act.f, ch.act.idx); } else if (ch) { passes = 0; plays++; await castMagic(p, ch); render(); await wait(650); await flushBursts(); } else passes++;
+    if (ch && ch.cadv) { passes = 0; plays++; if (p.cpu) await doContractAdvent(p, ch.cadv, ch.target, 'flash'); else await humanContractAdvent(ch.cadv, 'flash'); } else if (ch && ch.manifest) { passes = 0; plays++; if (p.cpu) await doManifest(p, ch.manifest, ch.target, 'flash'); else await humanManifest(ch.manifest, 'flash'); } else if (ch && ch.hs) { passes = 0; plays++; await highSpeedSummon(p, ch.hs); } else if (ch && ch.accel) { passes = 0; plays++; await useAccel(p, ch.accel.inst, ch.accel.idx, ch.accel.plan, 'FLASH'); } else if (ch && ch.act) { passes = 0; plays++; await activateFx(p, ch.act.f, ch.act.idx); } else if (ch) { passes = 0; plays++; await castMagic(p, ch); io.view({ type: 'board' }); await wait(650); await flushBursts(); } else passes++;
     turn++;
     att = successor(G.p[attKey], att) || att; if (blk) blk = successor(G.p[other(attKey)], blk) || blk; G.attacker = att; if (blk) G.blocker = blk;
     if (!G.p[attKey].spirits.includes(att) || (blk && !G.p[other(attKey)].spirits.includes(blk))) break;
@@ -27,17 +27,17 @@ const attackStepOver = () => !!G && G.attackEnded === G.turnNo;
 async function doBattle(attKey, att) { try { G.eob = []; G.battleMagic = []; G.battleResolved = false; await doBattleInner(attKey, att); if (G && !G.over && G.eob && G.eob.length) await endOfBattle(); } finally { if (G) { G.eob = null; G.battleMagic = null; G.battleResolved = false; battleEndAttack(); G.attacker = null; G.blocker = null; G.noBurst = null; for (const k of ['player', 'opponent']) for (const f of fieldList(G.p[k])) f.symBattle = 0; } } }
 async function doBattleInner(attKey, att) {
   const A = G.p[attKey], D = G.p[other(attKey)];
-  if (!(await payAbTax(A, att, 'attack'))) { render(); return; }   // v0.47 Plutonic Wall
+  if (!(await payAbTax(A, att, 'attack'))) { io.view({ type: 'board' }); return; }   // v0.47 Plutonic Wall
   att.exhausted = true; G.battleNo = (G.battleNo || 0) + 1; G.blocker = null;      // v0.68: battle counter for (Once Per Battle) / "during this battle" (02l)
   log(`${who(A)} ${A.cpu ? 'attacks' : 'attack'} with ${CARDS[att.id].name} (${bpOf(att)} BP).`);
   G.attacker = att;
-  render(); await wait(450);
+  io.view({ type: 'board' }); await wait(450);
   await fireFxMulti([{ owner: A, trigger: 'ATTACKS', src: att, ctx: { attacker: att } }, { owner: A, trigger: 'ALLY_ATTACKS', src: att, ctx: { attacker: att } }, { owner: D, trigger: 'OPP_ATTACKS', src: att, ctx: { attacker: att } }]);   // one simultaneous pool
   if (G.over) { G.attacker = null; return; }
   if (A.spirits.includes(att)) { await maybeBurst(D, 'OPP_ATTACK', { attacker: att }); await flushBursts(); if (G.over) { G.attacker = null; return; } }   // v0.71 Burst "After an opposing Spirit attacks": after the attack's (When Attacks) effects
   att = (await flashTiming(attKey, att, null))[0];
   if (G.over) return;
-  if (!A.spirits.includes(att)) { log('The attack ends: the attacking Spirit left the field.'); render(); return; }
+  if (!A.spirits.includes(att)) { log('The attack ends: the attacking Spirit left the field.'); io.view({ type: 'board' }); return; }
   const blockers = noBlockActive(D) ? [] : D.spirits.filter(s => canBlockState(D, s) && abTaxOK(D, s));
   let blk = null;
   /* v0.58 priority "cannot" > "must" > "do" = "can" (JP 17.0 item 9): Spirits that can't block were removed above; a Spirit unaffected by the
@@ -50,12 +50,12 @@ async function doBattleInner(attKey, att) {
   if (blk) {
     blk.exhausted = true; G.blocker = blk;
     log(`${who(D)} ${D.cpu ? 'blocks' : 'block'} with ${CARDS[blk.id].name} (${bpOf(blk)} BP).`);
-    render(); await wait(450);
+    io.view({ type: 'board' }); await wait(450);
     await fireFxMulti([{ owner: A, trigger: 'ALLY_BLOCKED', src: att, ctx: { attacker: att, blocker: blk } }, { owner: D, trigger: 'BLOCKS', src: blk, ctx: { attacker: att, blocker: blk } }]);   // manual p. 30: one pool after the block
     if (G.over) return;
     [att, blk] = await flashTiming(attKey, att, blk);
     if (G.over) return;
-    if (!A.spirits.includes(att) || !D.spirits.includes(blk)) { log('The battle ends: a fighting Spirit left the field.'); render(); return; }
+    if (!A.spirits.includes(att) || !D.spirits.includes(blk)) { log('The battle ends: a fighting Spirit left the field.'); io.view({ type: 'board' }); return; }
     const ab = bpOf(att), bb = bpOf(blk); G.battleResolved = true;      // v0.78 Curse: armed only when the battle reaches the BP comparison
     if (ab > bb) removeSpirit(D, blk, 'destroyed', 'battle');            // v0.73 'battle' = by the opponent, not by an opposing effect
     else if (ab < bb) removeSpirit(A, att, 'destroyed', 'battle');
@@ -63,19 +63,19 @@ async function doBattleInner(attKey, att) {
     if (ab >= bb && G.evQ) G.evQ.push({ type: 'DESTROYS', key: A.key, inst: att });
     if (ab !== bb && G.evQ) G.evQ.push(ab > bb ? { type: 'BATTLE_WIN', key: A.key, inst: att, att: true } : { type: 'BATTLE_WIN', key: D.key, inst: blk, att: false });   // v0.55 (When Battles): only the opposing Spirit destroyed (CR 8-1-6-2)
     checkDepletion(A); checkDepletion(D);
-    render();
+    io.view({ type: 'board' });
     await flushBursts();
     return;
   }
   const dmg = Math.min(attackSymbols(att), D.life);
   lifeTake(D, dmg, 'reserve');                    // Life cores go to the Reserve
   log(`${CARDS[att.id].name} is not blocked: ${who(D)} ${D.cpu ? 'loses' : 'lose'} ${dmg} Life.`);
-  render();
+  io.view({ type: 'board' });
   if (D.life <= 0) { win(attKey, `${poss(D)} Life reached 0`); return; }
   if (dmg > 0) { await fireFxMulti([{ owner: A, trigger: 'ALLY_LIFE_HIT', src: null, ctx: { attacker: att } }, { owner: A, trigger: 'MIRAGE_OPP_LIFE', src: null, ctx: {} }, { owner: D, trigger: 'MIRAGE_OWN_LIFE', src: null, ctx: {} }]); if (G.over) return; }
   await maybeBurst(D, 'LIFE_DECREASE', { attacker: att });
   await flushBursts();
-  render();
+  io.view({ type: 'board' });
 }
 /* Burst: a face-down card in the Burst Area flips when its condition happens. All effects are engine actions (card.burst = {when, actions}). */
 async function maybeBurst(owner, trigger, ctx) {
@@ -96,14 +96,14 @@ async function maybeBurst(owner, trigger, ctx) {
   if (!use || owner.burst !== b) return false;
   owner.burst = null; owner.limbo = b;                // the card is flipped and leaves the Burst Area while its effect resolves
   log(`${who(owner)} ${owner.cpu ? 'activates' : 'activate'} Burst: ${CARDS[b.id].name}!`);
-  render();
+  io.view({ type: 'board' });
   G.resolving = (G.resolving || 0) + 1;
   try {
     for (const a of def.actions) {
       if (G.over) break;
       if (a.if && !fxIf(owner, opp, a.if)) continue;
       await FX_ACTIONS[a.do].run(c, a);
-      render();
+      io.view({ type: 'board' });
     }
     if (def.thenFlash && !G.over) await burstFlash(owner, b);
     if (def.thenMain && !G.over) await burstFlash(owner, b, 'main');
@@ -113,7 +113,7 @@ async function maybeBurst(owner, trigger, ctx) {
     if (!fieldList(owner).includes(b) && !owner.trash.includes(b) && !owner.hand.includes(b)) owner.trash.push(b);   // a used Magic / Spirit that was not summoned goes to the Trash
   }
   checkDepletion(owner); checkDepletion(opp);
-  render();
+  io.view({ type: 'board' });
   await flushDerived();
   return true;
 }
@@ -131,7 +131,7 @@ async function burstFlash(p, inst, ctx) {            // v0.47: ctx 'main' = "act
     ch = await prepareHumanMagic(p, inst, ctx); if (!ch) return false;
   }
   log(`${who(p)} ${p.cpu ? 'pays' : 'pay'} the cost to activate the ${lbl} effect of ${card.name}.`);
-  await castMagic(p, ch); render();
+  await castMagic(p, ch); io.view({ type: 'board' });
   return true;
 }
 async function flushBursts() {                         // queued Bursts and events: "your Spirit was destroyed", "the opposing Hand increased", "an ally was lost"

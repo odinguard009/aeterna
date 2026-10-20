@@ -29,7 +29,7 @@ const fmtName = f => (f === 'standard' ? 'STANDARD' : 'ETERNAL');
 function setFormat(f) {
   FORMAT = f === 'standard' ? 'standard' : 'eternal';
   try { localStorage.setItem(FORMAT_KEY, FORMAT); } catch (e) { /* blocked */ }
-  renderLobby(); renderDeckBuilder();
+  io.view({ type: 'decks' });
 }
 const errSummary = v => v.errors.slice(0, 3).join(' ') + (v.errors.length > 3 ? ` (+${v.errors.length - 3} more)` : '');
 const PREBUILT = [

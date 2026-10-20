@@ -36,9 +36,8 @@ export function packBlob(cards) {
   return JSON.stringify(cards).replace(/<\//g, '<\\/');
 }
 
-export function buildParts(opts = {}) {   // opts.cards: build with another card list (load-time test of the full pack)
-  const parts = srcParts(ROOT), files = parts.map(p => p.name);
-  const cards = opts.cards || JSON.parse(rd('data/cards/all-cards.json'));
+// The joined game script of the given parts, with the card pack and the token cards filled in.
+function joinScript(parts, cards) {
   // v0.50: the data-source "note" of each card is for maintainers (data/cards); the game never reads it, so it is not embedded
   const pack = '/*PACK_START*/const BUILTIN_PACK = ' + packExpr(cards.map(({ note, ...c }) => c)) + ';/*PACK_END*/';
   let js = parts.map(p => rd(p.rel)).join('');
@@ -49,6 +48,18 @@ export function buildParts(opts = {}) {   // opts.cards: build with another card
   const tokens = JSON.parse(rd('data/cards/tokens.json'));
   if (js.split('/*TOKENS_START*//*TOKENS_END*/').length !== 2) throw new Error('expected exactly one empty token marker in the script parts');
   js = js.replace('/*TOKENS_START*//*TOKENS_END*/', () => '/*TOKENS_START*/const BUILTIN_TOKENS = ' + packBlob(tokens) + ';/*TOKENS_END*/');
+  return js;
+}
+// v0.82.0 (F2 = M2): the script without the web host (packages/protocol + packages/engine parts only), for the
+// headless Node runner packages/engine/headless.mjs. Same pack and tokens as the game.
+export function engineScript(opts = {}) {
+  const parts = srcParts(ROOT).filter(p => !p.rel.startsWith('apps/'));
+  return joinScript(parts, opts.cards || JSON.parse(rd('data/cards/all-cards.json')));
+}
+export function buildParts(opts = {}) {   // opts.cards: build with another card list (load-time test of the full pack)
+  const parts = srcParts(ROOT), files = parts.map(p => p.name);
+  const cards = opts.cards || JSON.parse(rd('data/cards/all-cards.json'));
+  const js = joinScript(parts, cards);
   const tpl = rd('src/index.template.html');
   for (const m of ['/*@@CSS@@*/\n', '/*@@JS@@*/\n']) if (tpl.split(m).length !== 2) throw new Error('template marker missing: ' + m.trim());
   const html = tpl.replace('/*@@CSS@@*/\n', () => rd('src/styles.css')).replace('/*@@JS@@*/\n', () => js);

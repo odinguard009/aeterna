@@ -2,6 +2,16 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.82.0
+- Lane: U/I
+- **Host port, part 1 (roadmap phase F, item F2 = monorepo step M2): the engine now reaches the page only through a port, and a CPU-vs-CPU match runs in Node without a browser.**
+  - `packages/protocol/src/00p-protocol.js` (new workspace `@aeterna/protocol`): `io.view(record)`, `io.log(text)`, `io.decide(p, d)` (answered from M3 on) and `bindHost(host)`. View records are plain, serializable objects: `board`, `decks`, `screen {id}`, `reset`, `matchEnd {winner}`.
+  - All 68 `render()` calls of the engine, the deck/format refresh, the screen switches, the match reset and the match end now go through `io.view`; every log line goes through `io.log`. The browser answers in `apps/web/src/13e-host.js` (redraw, screens, history entry + game-over dialog, sounds per log line, page title). Moved out of the engine: `12-zones.js` (zone/log/rules dialogs) to `apps/web`, `showGameOver`, `sfx` and `$` to the web parts; moved in: `matchSummary`, `isMainStep`, `checkInvariants` (pure rules code). The engine and protocol parts no longer touch `document` or `window`.
+  - `packages/engine/headless.mjs`: `playHeadless({seed, deckA, deckB})` builds the protocol + engine script (`tools/build.mjs` `engineScript()`, same card pack) and plays it in a `node:vm` context with no DOM, ~0.1-0.5 s per match; `npm run sim:headless -- <seed> <deckA> <deckB>`. Nine human prompts are still called directly on human-only paths (`WEB_GAPS`); F3 routes them through `io.decide`.
+  - Tests `tests/unit/headless82.test.mjs`: H82-01 no DOM in engine/protocol parts, H82-02 the engine uses no web function but `WEB_GAPS` (shrink-only), H82-03 every prebuilt colour plays to the end headless with valid records and invariants, H82-04 headless and browser sims give the same winner, turn and log hash (offline game unchanged), H82-05 the web host is bound and unknown records are rejected.
+- Backup branch `backup/v0.81.1` (state before the port).
+- Revert note: `git revert` of the v0.82.0 commit restores v0.81.1 (engine/web part moves and the port; no card data change).
+
 ## v0.81.1
 - Lane: U/I
 - **Chain mode ("mode rantai", owner 2026-10-20):** a finished session starts the next roadmap session in the same chat while the chain stays under 600,000 tokens; one session over 600,000 tokens turns the mode OFF. Switch like auto mode: chat `rantai on|off|status`, comment `RANTAI ON|OFF` on issue #1, or the Actions workflow "Auto mode" (`rantai-on` / `rantai-off`); default OFF. Sessions now end with `done vX.Y.Z next=… tokens=N [rantai]` and `session_gate.sh rantai next`; the final summary (and `release_docs.sh --end`) shows the `Mode rantai:` line instead of the retired Mode hemat line. Rules: `docs/ai/next-session-prompt.md` "Chain mode". Test G21 in `tests/unit/gate_lanes.test.mjs`.

@@ -15,7 +15,7 @@ Object.assign(FX_ACTIONS, {
       const T = await pickOppSpirits(c, L, a.n, `✨ <b>${esc(_pn(c))}</b><br>Tap the opposing Spirit that can't attack/block for the rest of the game (glowing).`);
       if (!T.length) { c.ctx.did = false; return; }
       for (const t of T) { t.noAB = true; log(`${_pn(c)}: ${poss(c.opp)} ${CARDS[t.id].name} can't attack/block during this game.`); }
-      render();
+      io.view({ type: 'board' });
     } },
   /* draw n cards from the bottom of the Deck (Thunderive) */
   DRAW_BOTTOM: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5, txt: a => `draw ${a.n} card${a.n === 1 ? '' : 's'} from the bottom of the Deck`,
@@ -31,7 +31,7 @@ Object.assign(FX_ACTIONS, {
     run: async c => {
       if (!c.p.hand.length) { c.ctx.did = false; return; }
       const k = c.p.hand.length; for (const h of c.p.hand.splice(0)) c.p.trash.push(h);
-      log(`${_pn(c)}: ${who(c.p)} ${c.p.cpu ? 'discards' : 'discard'} the entire Hand (${k} card${k === 1 ? '' : 's'}).`); render();
+      log(`${_pn(c)}: ${who(c.p)} ${c.p.cpu ? 'discards' : 'discard'} the entire Hand (${k} card${k === 1 ? '' : 's'}).`); io.view({ type: 'board' });
     } },
   /* reveal n cards from the top of your Deck and add up to `add` matching cards to the Hand, discarding the rest (Manevajra: three cards, one "Contractor Indra" or "Thunderive" card;
      with moreIf true (eight counters or more) reveal +1 and add +1) */
@@ -41,7 +41,7 @@ Object.assign(FX_ACTIONS, {
     run: async (c, a) => {
       const nm = _pn(c), more = !!a.moreIf && fxIf(c.p, c.opp, a.moreIf, c.ctx), n = a.n + (more ? 1 : 0), want = a.add + (more ? 1 : 0);
       const top = c.p.deck.splice(0, Math.min(n, c.p.deck.length)); c.p.revealed = top;
-      log(`${nm}: ${who(c.p)} ${c.p.cpu ? 'reveals' : 'reveal'} ${top.map(x => CARDS[x.id].name).join(', ') || 'nothing'}.`); render();
+      log(`${nm}: ${who(c.p)} ${c.p.cpu ? 'reveals' : 'reveal'} ${top.map(x => CARDS[x.id].name).join(', ') || 'nothing'}.`); io.view({ type: 'board' });
       await revealedFx(c.p);
       let got = 0;
       for (let j = 0; j < want; j++) {
@@ -60,14 +60,14 @@ Object.assign(FX_ACTIONS, {
     run: async (c, a) => {
       if (a.lifeLe != null && c.p.life > a.lifeLe) { c.ctx.did = false; return; }
       const m = takeFromVoid(c.p, a.n); if (!m) { c.ctx.did = false; return; }
-      c.p.life += m; log(`${_pn(c)}: ${m} core${m === 1 ? '' : 's'} move from the Void to ${who(c.p)}${c.p.cpu ? "'s" : 'r'} Life.`); render();
+      c.p.life += m; log(`${_pn(c)}: ${m} core${m === 1 ? '' : 's'} move from the Void to ${who(c.p)}${c.p.cpu ? "'s" : 'r'} Life.`); io.view({ type: 'board' });
     } },
   /* send one of your Lives to this Spirit (cost of BY, Vajdra-of-Magan). Not a Life reduction by damage: no Burst. A Life of 1 can't be sent (that would end the game by an own effect). */
   LIFE_TO_SELF: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 2, txt: a => `send ${a.n} of your Life to this Spirit`,
     can: (c, a) => c.p.life > a.n && c.p.spirits.includes(c.src),
     run: async (c, a) => {
       if (c.p.life <= a.n || !c.p.spirits.includes(c.src)) { c.ctx.did = false; return; }
-      lifeTake(c.p, a.n, c.src); log(`${_pn(c)}: ${a.n} Life of ${who(c.p)} moves to ${_pn(c)}.`); render();
+      lifeTake(c.p, a.n, c.src); log(`${_pn(c)}: ${a.n} Life of ${who(c.p)} moves to ${_pn(c)}.`); io.view({ type: 'board' });
     } },
   /* send n cores from your matching Nexus (name) to this Spirit (Vajrawurm Unleash cost) */
   NEXUS_CORES_TO_SELF: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5 && typeof a.name === 'string' && a.name.length > 0, txt: a => `send ${a.n} cores from your "${a.name}" Nexus to this Spirit`,
@@ -76,10 +76,10 @@ Object.assign(FX_ACTIONS, {
     run: async (c, a) => {
       const L = FX_ACTIONS.NEXUS_CORES_TO_SELF.cands(c, a); if (!L.length || !c.p.spirits.includes(c.src)) { c.ctx.did = false; return; }
       const t = L.length === 1 ? L[0] : await fxPickTarget(c, L, `✨ <b>${esc(_pn(c))}</b><br>Tap the Nexus that sends ${a.n} cores to this Spirit (glowing).`);
-      t.cores -= a.n; c.src.cores += a.n; log(`${_pn(c)}: ${a.n} cores move from ${CARDS[t.id].name} to ${_pn(c)}.`); render();
+      t.cores -= a.n; c.src.cores += a.n; log(`${_pn(c)}: ${a.n} cores move from ${CARDS[t.id].name} to ${_pn(c)}.`); io.view({ type: 'board' });
     } },
   /* return this Spirit to the Hand (Togevajdra) */
   SELF_TO_HAND: { chk: () => true, txt: () => 'return this Spirit to your Hand',
     can: c => c.p.spirits.includes(c.src),
-    run: async c => { if (!c.p.spirits.includes(c.src)) { c.ctx.did = false; return; } bounceCard(c.p, c.src, 'hand'); checkDepletion(c.p); handUp(c.p, 1); render(); } },
+    run: async c => { if (!c.p.spirits.includes(c.src)) { c.ctx.did = false; return; } bounceCard(c.p, c.src, 'hand'); checkDepletion(c.p); handUp(c.p, 1); io.view({ type: 'board' }); } },
 });

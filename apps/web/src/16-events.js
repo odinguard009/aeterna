@@ -124,7 +124,6 @@ function gameAct(a, v) {
 }
 
 /* ---- v0.26: replay of an input record, and named test scenarios (ideas from the Aegis study) ---- */
-const matchSummary = () => ({ winner: G.winner, turn: G.turnNo, life: [G.p.player.life, G.p.opponent.life], log: G.hn || 0, hash: (G.hh >>> 0).toString(16) });
 function replayOf(g) { const r = g.rec; return { v: r.v, build: r.build, seed: r.seed, format: r.format, sim: !!r.sim, deckA: r.deckA, deckB: r.deckB, inputs: r.inputs.slice(), lossy: !!r.lossy, final: r.final || null }; }
 function lastReplay() { if (G && G.rec) return replayOf(G); for (let i = HISTORY.length - 1; i >= 0; i--) if (HISTORY[i].replay) return HISTORY[i].replay; return null; }
 /* replays a record: same seed and decks, then every recorded prompt answer / pick / board action in order.

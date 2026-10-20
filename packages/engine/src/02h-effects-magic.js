@@ -22,7 +22,7 @@ Object.assign(FX_ACTIONS, {
       const L = FX_ACTIONS.SYMBOL_PLUS_TURN.cands(c, a); if (!L.length) { c.ctx.did = false; return; }
       const t = c.p.cpu ? (L.find(s => s === G.attacker) || L.slice().sort((x, y) => (x.exhausted - y.exhausted) || bpOf(y) - bpOf(x))[0]) : await chooseCard(c, L, `✨ ${_pn(c)}`, `Choose your Spirit that gets an extra ${cap(a.color)} symbol this turn.`, false);
       if (!t.symTurn || t.symTurn.turn !== G.turnNo) t.symTurn = { turn: G.turnNo, cols: [] };
-      t.symTurn.cols.push(a.color); log(`${_pn(c)}: ${CARDS[t.id].name} gets an extra ${cap(a.color)} symbol this turn.`); render();
+      t.symTurn.cols.push(a.color); log(`${_pn(c)}: ${CARDS[t.id].name} gets an extra ${cap(a.color)} symbol this turn.`); io.view({ type: 'board' });
     } },
   /* v0.44 "Then, you can send your Soul Core to <Grandwalker Nexus>. When you've done so, activate this effect once and only once more" (then = the actions repeated) */
   SOUL_TO_NEXUS_THEN: { chk: a => hasMatch(a.match) && Array.isArray(a.then) && a.then.length >= 1 && a.then.length <= 3 && a.then.every(x => x && FX_ACTIONS[x.do] && x.do !== 'SOUL_TO_NEXUS_THEN' && FX_ACTIONS[x.do].chk(x)),
@@ -58,7 +58,7 @@ Object.assign(FX_ACTIONS, {
       }
       c.ctx.destroyed = [];
       for (const t of picked) if (c.opp.spirits.includes(t)) { removeSpirit(c.opp, t, 'destroyed', true); c.ctx.destroyed.push(t); }
-      checkDepletion(c.opp); c.ctx.did = c.ctx.destroyed.length > 0; render();
+      checkDepletion(c.opp); c.ctx.did = c.ctx.destroyed.length > 0; io.view({ type: 'board' });
     } },
   SYMBOLS_ZERO_OPP: { chk: () => true, txt: () => 'during this turn, the symbol of every opposing Spirit/Ultimate is fixed as zero',
     can: c => c.opp.spirits.length > 0,
@@ -66,7 +66,7 @@ Object.assign(FX_ACTIONS, {
       if (!c.opp.spirits.length) { c.ctx.did = false; return; }
       for (const t of c.opp.spirits) if (!fxImmune(c.opp, t, c)) t.symZeroTurn = G.turnNo;     // v0.58: unaffected Spirits keep their symbols
       c.opp.symZeroAll = G.turnNo; c.opp.symZeroBy = { p: c.p, src: c.src };                      // v0.47: also Spirits/Ultimates that come to the Field later this turn
-      log(`${_pn(c)}: the symbols of ${poss(c.opp)} Spirits are zero until the end of the turn.`); render();
+      log(`${_pn(c)}: the symbols of ${poss(c.opp)} Spirits are zero until the end of the turn.`); io.view({ type: 'board' });
     } }
 });
 
@@ -86,7 +86,7 @@ async function gwCorePlus(c, n, nm) {
   const L = c.p.nexus.filter(isGW); if (!L.length || n <= 0) return 0;
   const t = L.length === 1 || c.p.cpu ? L[0] : await chooseCard(c, L, `✨ ${nm}`, `Choose the Grandwalker Nexus that gets +${n} core.`, false);
   const m = takeFromVoid(c.p, n); t.cores += m;
-  log(`${nm}: +${m} core to ${CARDS[t.id].name}.`); render(); return m;
+  log(`${nm}: +${m} core to ${CARDS[t.id].name}.`); io.view({ type: 'board' }); return m;
 }
 async function sentToTrashFx(c, cards, from) {
   if (!c || !c.src || !CARDS[c.src.id]) return;
@@ -111,7 +111,7 @@ async function payAbTax(p, s, verb) {                 // true = the Spirit may a
   const go = p.cpu ? true : await ask({ title: '🛡 Plutonic Wall', html: `Send a core from ${esc(nm)} to the Trash to ${verb}?`, buttons: [{ label: `Send a core and ${verb}`, cls: 'primary', value: true }, { label: 'Cancel', cls: 'cancel', value: false }] });
   if (!go) return false;
   if (s.cores > 0) { s.cores--; p.trashCores.n++; } else if (s.soul) { s.soul = false; p.trashCores.soul = true; }
-  log(`${who(p)} ${p.cpu ? 'sends' : 'send'} a core from ${nm} to the Trash to ${verb}.`); render(); return true;
+  log(`${who(p)} ${p.cpu ? 'sends' : 'send'} a core from ${nm} to the Trash to ${verb}.`); io.view({ type: 'board' }); return true;
 }
 async function oppAttackHandFx(D) {                    // D = the player whose opponent starts the Attack Step
   const A = G.p[other(D.key)];
@@ -130,12 +130,12 @@ async function oppAttackHandFx(D) {                    // D = the player whose o
     }
     gw[0].cores -= oh.gwToVoid; D.void += oh.gwToVoid;
     log(`${who(D)} ${D.cpu ? 'sends' : 'send'} ${oh.gwToVoid} cores from ${CARDS[gw[0].id].name} to the Void.`);
-    await castMagic(D, ch); render(); await flushBursts();
+    await castMagic(D, ch); io.view({ type: 'board' }); await flushBursts();
   }
 }
 async function braveSummonedFx(p, b) { if (G && !G.over && b) { await maybeBurst(p, 'BRAVE_SUMMONED', { subject: b }); await flushBursts(); } }
 async function braveSummonedEvs(evs) { for (const e of evs) if (e.trigger === 'SUMMONED' && e.src && CARDS[e.src.id] && CARDS[e.src.id].type === 'Brave') await braveSummonedFx(e.owner, e.src); }
 Object.assign(FX_ACTIONS, {
   AB_CORE_TAX_TURN: { chk: () => true, txt: () => 'during this turn, when an opposing Spirit/Ultimate would attack/block, unless the opponent sends a core from it to the Trash, it can\'t attack/block',
-    run: async c => { c.opp.abTax = G.turnNo; log(`${_pn(c)}: this turn ${poss(c.opp)} Spirits must send a core to the Trash to attack/block.`); render(); } }
+    run: async c => { c.opp.abTax = G.turnNo; log(`${_pn(c)}: this turn ${poss(c.opp)} Spirits must send a core to the Trash to attack/block.`); io.view({ type: 'board' }); } }
 });

@@ -8,7 +8,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-export const SRC_DIRS = ['packages/engine/src', 'apps/web/src'];
+export const SRC_DIRS = ['packages/protocol/src', 'packages/engine/src', 'apps/web/src'];
 export const PART_RE = /^\d\d[a-z]?-[\w-]+\.js$/;
 
 // [{ name: '02a-effects-base.js', rel: 'packages/engine/src/02a-effects-base.js' }, ...] in build order

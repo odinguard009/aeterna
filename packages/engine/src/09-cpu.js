@@ -101,7 +101,7 @@ async function cpuCastMain(p) {
       if (sc > 0 && (!best || sc > best.sc)) best = { sc, ch: { inst: h, target, plan: null, ctx: 'main' } };
     }
     if (!best) break;
-    await castMagic(p, best.ch); render(); await wait(600); await flushBursts();
+    await castMagic(p, best.ch); io.view({ type: 'board' }); await wait(600); await flushBursts();
   }
 }
 async function cpuMain(p) {
@@ -112,30 +112,30 @@ async function cpuMain(p) {
   await cpuAdvents(p);
   if (!p.mirageSetThisTurn && !p.mirage) {
     const mh = p.hand.find(h => CARDS[h.id].mirage && (CARDS[h.id].effects || []).some(e => e.trigger === 'MIRAGE_OWN_LIFE' || e.trigger === 'MIRAGE_OPP_LIFE') && CARDS[h.id].mirage.cost <= reserveTotal(p) && mirageUsable(p, h));
-    if (mh) { removeFrom(p.hand, mh); payCost(p, CARDS[mh.id].mirage.cost, null); checkDepletion(p); setBurst(p, mh, true); render(); await wait(400); }
+    if (mh) { removeFrom(p.hand, mh); payCost(p, CARDS[mh.id].mirage.cost, null); checkDepletion(p); setBurst(p, mh, true); io.view({ type: 'board' }); await wait(400); }
   }
-  if (!p.burstSetThisTurn && !p.burst) { const b = p.hand.find(h => CARDS[h.id].burst); if (b) { setBurst(p, b); render(); await wait(400); } }
+  if (!p.burstSetThisTurn && !p.burst) { const b = p.hand.find(h => CARDS[h.id].burst); if (b) { setBurst(p, b); io.view({ type: 'board' }); await wait(400); } }
   for (let g = 0; g < 14 && !G.over; g++) {
     const opts = p.hand.filter(h => cpuCanPlay(p, h) && h !== p.burst && (CARDS[h.id].type !== 'Brave' || isSpiritForm(CARDS[h.id]))).concat(removedSummonable(p).filter(h => cpuCanPlay(p, h)));   // v0.50: Accel Spirits from the Removed Zone
     if (!opts.length) break;
     const pick = cpuPlayChoice(p, opts);
     if (!pick) break;
-    summon(p, pick, null); render(); await wait(450);
+    summon(p, pick, null); io.view({ type: 'board' }); await wait(450);
     await fireFx(p, 'SUMMONED', pick);
     await cpuActivate(p);
   }
   await cpuBrave(p);
-  cpuLevelUp(p); render(); await wait(350);
+  cpuLevelUp(p); io.view({ type: 'board' }); await wait(350);
 }
 /* Brave: combine a Brave from the Hand (direct summon) or from the Field with the strongest fitting Spirit (manual p. 34-35) */
 async function cpuBrave(p) {
   for (let g = 0; g < 6 && !G.over; g++) {
     const strongest = L => L.slice().sort((a, b) => bpOf(b) - bpOf(a))[0];
     const fb = p.spirits.find(b => CARDS[b.id].brave && braveTargets(p, b).length);
-    if (fb) { combineBrave(p, fb, strongest(braveTargets(p, fb))); render(); await wait(400); continue; }
+    if (fb) { combineBrave(p, fb, strongest(braveTargets(p, fb))); io.view({ type: 'board' }); await wait(400); continue; }
     const hb = p.hand.find(h => CARDS[h.id].brave && h !== p.burst && braveTargets(p, h).length && cpuCanPlay(p, h));
     if (!hb) break;
-    braveSummon(p, hb, strongest(braveTargets(p, hb)), null); render(); await braveSummonedFx(p, hb); await wait(450);
+    braveSummon(p, hb, strongest(braveTargets(p, hb)), null); io.view({ type: 'board' }); await braveSummonedFx(p, hb); await wait(450);
   }
 }
 async function cpuAttack(p) {
@@ -147,7 +147,7 @@ async function cpuAttack(p) {
     if (attackStepOver()) break;
   }
 }
-async function startAttackFx(p) { await fireFx(p, 'START_ATTACK', null, {}); await flushBursts(); if (!G.over) await oppAttackHandFx(G.p[other(p.key)]); checkDepletion(p); checkDepletion(G.p[other(p.key)]); render(); }
+async function startAttackFx(p) { await fireFx(p, 'START_ATTACK', null, {}); await flushBursts(); if (!G.over) await oppAttackHandFx(G.p[other(p.key)]); checkDepletion(p); checkDepletion(G.p[other(p.key)]); io.view({ type: 'board' }); }
 async function cpuTurn(p) {
   await wait(500);
   await cpuMain(p);

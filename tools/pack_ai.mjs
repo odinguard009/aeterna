@@ -7,6 +7,7 @@
 import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { SRC_DIRS } from './src_parts.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const full = process.argv.includes('--full'), docsOnly = process.argv.includes('--docs');
@@ -20,7 +21,7 @@ const files = ['CLAUDE.md', 'README.md', 'CHANGELOG.md', ...ls('docs', /\.md$/)]
 for (const f of files) out += fence(f, 'md');
 if (!docsOnly) {
   out += fence('src/index.template.html', 'html') + fence('src/styles.css', 'css');
-  for (const d of ['packages/engine/src', 'apps/web/src']) for (const f of ls(d, /\.js$/)) out += fence(f, 'js');
+  for (const d of SRC_DIRS) for (const f of ls(d, /\.js$/)) out += fence(f, 'js');
   for (const f of ['tools/build.mjs', ...ls('tests/unit', /\.mjs$/)]) out += fence(f, 'js');
 }
 const cards = JSON.parse(rd('data/cards/all-cards.json'));

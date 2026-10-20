@@ -12,7 +12,7 @@ async function summonFree(p, inst, opts) {           // summon/deploy without pa
   } else p.nexus.push(inst);
   log(`${who(p)} ${card.type !== 'Nexus' ? (p.cpu ? 'summons' : 'summon') : (p.cpu ? 'deploys' : 'deploy')} ${card.name} without paying the cost.`);
   checkDepletion(p);
-  render(); await wait(350);
+  io.view({ type: 'board' }); await wait(350);
   if (!G.over && fieldList(p).includes(inst)) {
     const evs = [{ owner: p, trigger: 'SUMMONED', src: inst }];
     if (opts && opts.manifest && !isMainStep()) evs.push({ owner: p, trigger: 'MANIFEST', src: inst });   // official: When Manifests activates together with the summon effects, not in the Main Step
@@ -28,7 +28,7 @@ async function summonPaid(p, inst) {                  // official: "summon/deplo
   let plan = null;
   if (!p.cpu && c > 0 && reserveTotal(p) < c + L) { plan = await askPayment(card, c, L); if (!plan) return false; }
   if (p.limbo === inst) p.limbo = null;
-  summon(p, inst, plan); render(); await wait(350);
+  summon(p, inst, plan); io.view({ type: 'board' }); await wait(350);
   if (!G.over && fieldList(p).includes(inst)) await fireFx(p, 'SUMMONED', inst);
   return true;
 }

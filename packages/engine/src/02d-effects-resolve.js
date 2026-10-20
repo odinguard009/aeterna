@@ -100,7 +100,7 @@ async function resolvePool(pending) {
     log(`${card.name}: [${trigger === 'ADVENT' && trg === 'SUMMONED' ? 'When Advents' : FX_TRIGGER_TEXT[trg]}] ${fxDescribe(e)}.`);
     G.resolving = (G.resolving || 0) + 1;
     try { await runActions(c, e, trigger === 'ADVENT' ? 'SUMMONED' : trg); } finally { G.resolving--; }
-    render(); await wait(350);
+    io.view({ type: 'board' }); await wait(350);
     if (trg === 'SUMMONED' && (trigger === 'SUMMONED' || trigger === 'ADVENT') && !G.over) await maybeBurst(opp, trigger === 'ADVENT' ? 'OPP_ADVENT_FX' : 'OPP_SUMMON_FX', { summoned: f });   // v0.71: an Advent's (When Summoned) effect only answers the "/Advents" condition
     await flushBursts();
     await flushDerived();                                   // effects caused by this one resolve before the ones still pending
@@ -147,7 +147,7 @@ function soulSource(p) {
 async function soulToNexus(p, t) {
   const src = soulSource(p); if (!src || !p.nexus.includes(t) || t.soul || src === t) return false;
   if (src === 'trash') p.trashCores.soul = false; else if (src === 'reserve') p.reserve.soul = false; else src.soul = false;
-  t.soul = true; log(`${poss(p)} Soul Core is sent to ${CARDS[t.id].name}.`); render(); await wait(300);
+  t.soul = true; log(`${poss(p)} Soul Core is sent to ${CARDS[t.id].name}.`); io.view({ type: 'board' }); await wait(300);
   if (!G.over) await fireFx(p, 'SOUL_PLACED', t, { subject: t });
   return true;
 }
@@ -182,7 +182,7 @@ async function doContractAdvent(p, adv, src, where) {
     if (k > 0) { p.reserve.n -= k; adv.cores += k; log(`${CARDS[adv.id].name}: ${k} core${k === 1 ? '' : 's'} from the Reserve.`); }
   }
   checkDepletion(p);
-  render(); await wait(450);
+  io.view({ type: 'board' }); await wait(450);
   if (!G.over && p.spirits.includes(adv)) await fireFx(p, 'ADVENT', adv);
   return true;
 }
@@ -262,7 +262,7 @@ async function revealedFx(p) {
       }
       log(`${card.name}: [${FX_TRIGGER_TEXT.REVEALED}] ${fxDescribe(e)}.`);
       await runActions(c, e, 'REVEALED');
-      render(); await wait(300);
+      io.view({ type: 'board' }); await wait(300);
     }
   }
 }
@@ -305,7 +305,7 @@ async function activateFx(p, f, idx) {
   await asResolving(() => runActions({ p, opp, src: f, ctx: {} }, e, 'ACTIVATE'));
   checkDepletion(p); checkDepletion(opp);
   if (e.silverWheel && !G.over) await fireFx(p, 'SILVER_WHEEL', f);   // v0.50: "when you activate Silver Wheel"
-  render(); await wait(350); await flushBursts();
+  io.view({ type: 'board' }); await wait(350); await flushBursts();
   return true;
 }
 async function cpuActivate(p) {
@@ -331,7 +331,7 @@ async function doRevive(p, inst) {
   log(`${CARDS[inst.id].name}: [Revive] ${who(p)} ${p.cpu ? 'deploys' : 'deploy'} it from Soul State (paying its cost).`);
   const ok = await summonPaid(p, inst);
   if (!ok) { delete p.onceUsed[reviveKey(inst)]; return false; }
-  render(); await wait(300); await flushBursts();
+  io.view({ type: 'board' }); await wait(300); await flushBursts();
   return true;
 }
 async function cpuRevive(p) { for (let g = 0; g < 3 && !G.over; g++) { const t = reviveTargets(p)[0]; if (!t) break; await doRevive(p, t); } }

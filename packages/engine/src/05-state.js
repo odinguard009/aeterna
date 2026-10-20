@@ -8,18 +8,6 @@ const SPEEDS = { normal: 1, fast: 0.45, instant: 0.08 };
 if (!SPEEDS[SETTINGS.speed]) SETTINGS.speed = 'normal';
 SETTINGS.sound = SETTINGS.sound === true;
 function saveSettings() { try { localStorage.setItem(SET_KEY, JSON.stringify(SETTINGS)); } catch (e) { /* blocked */ } }
-let AUDIO = null;
-function sfx(kind) {                                   // tiny synthesized sounds, no files
-  if (!SETTINGS.sound || SIM) return;
-  try {
-    AUDIO = AUDIO || new (window.AudioContext || window.webkitAudioContext)();
-    const tones = { attack: [330, 0.09, 'square'], hit: [150, 0.14, 'sawtooth'], destroy: [90, 0.2, 'sawtooth'], summon: [520, 0.1, 'triangle'], card: [700, 0.04, 'sine'], win: [880, 0.35, 'triangle'], lose: [110, 0.4, 'sine'] }[kind];
-    if (!tones) return;
-    const o = AUDIO.createOscillator(), g = AUDIO.createGain(); o.type = tones[2]; o.frequency.value = tones[0];
-    g.gain.setValueAtTime(0.06, AUDIO.currentTime); g.gain.exponentialRampToValueAtTime(0.0001, AUDIO.currentTime + tones[1]);
-    o.connect(g); g.connect(AUDIO.destination); o.start(); o.stop(AUDIO.currentTime + tones[1] + 0.02);
-  } catch (e) { /* audio blocked */ }
-}
 let G = null, SESSION = 0, UID = 0, MODAL = null, REPLAY = null;
 const fnv = (h, t) => { let x = h == null ? 2166136261 : h; for (let i = 0; i < t.length; i++) { x ^= t.charCodeAt(i); x = Math.imul(x, 16777619) >>> 0; } return x >>> 0; };   // running hash of the whole log (history keeps only 300 lines)
 /* v0.26 input record: every prompt answer (m), field pick (k:'pick') and board action (a) of the human, in order */
@@ -28,7 +16,7 @@ let SIM_DECK_B = null;   // test hook (?sim=1 only): the second CPU deck
 const delay = ms => new Promise(r => setTimeout(r, SIM || (REPLAY && REPLAY.fast) ? 0 : Math.round(ms * (SPEEDS[SETTINGS.speed] || 1))));
 async function wait(ms) { const s = SESSION; await delay(ms); if (s !== SESSION) throw ABORT; }
 function log(t) { if (!G) return; G.last = t; G.history.push(t); G.hh = fnv(G.hh, t); G.hn = (G.hn || 0) + 1;
-  if (SETTINGS.sound) sfx(/attacks with/.test(t) ? 'attack' : /destroyed|depleted/.test(t) ? 'destroy' : /lose[s]? \d+ Life/.test(t) ? 'hit' : /summon|deploy/.test(t) ? 'summon' : /draw/.test(t) ? 'card' : ''); if (G.history.length > 300) G.history.shift(); }
+  io.log(t); if (G.history.length > 300) G.history.shift(); }   // web host: sound per line (13e-host.js)
 
 function mkInst(id) { return { uid: ++UID, id, mirage: false, cores: 0, soul: false, exhausted: false, under: [], summonedTurn: 0, bpMod: 0, inSoulState: false }; }
 function newPlayer(key, name, cpu, counts) {

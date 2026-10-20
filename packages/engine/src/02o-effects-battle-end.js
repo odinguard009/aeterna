@@ -49,7 +49,7 @@ async function endOfBattle() {
       log(`${name}: Curse destroys ${CARDS[b.id].name}.`);
       const by = G.fxBy; G.fxBy = q.p.key;
       try { removeSpirit(q.opp, b, 'destroyed', true); } finally { G.fxBy = by; }
-      checkDepletion(q.opp); render(); continue;
+      checkDepletion(q.opp); io.view({ type: 'board' }); continue;
     }
     if (!fieldList(q.p).includes(q.src)) continue;      // the source left the Field: the end-of-battle effect does not resolve
     if (q.brilliance) {
@@ -59,7 +59,7 @@ async function endOfBattle() {
       continue;
     }
     await asResolving(() => runActions({ p: q.p, opp: q.opp, src: q.src, ctx: q.ctx }, { actions: q.then }, 'END_BATTLE'));
-    render();
+    io.view({ type: 'board' });
   }
   await flushDerived();
   await flushBursts();

@@ -24,7 +24,7 @@ async function highSpeedSummon(p, inst) {
   if (need > 0 && p.reserve.soul) { p.reserve.soul = false; inst.soul = true; need--; }
   p.spirits.push(inst);
   log(`${who(p)} ${p.cpu ? 'summons' : 'summon'} ${card.name} with High Speed (paid ${c} from the Reserve).`);
-  checkDepletion(p); render(); await wait(350);
+  checkDepletion(p); io.view({ type: 'board' }); await wait(350);
   if (!G.over && p.spirits.includes(inst)) await fireFx(p, 'SUMMONED', inst);
   return true;
 }
@@ -48,7 +48,7 @@ Object.assign(FX_ACTIONS, {
       for (const x of top) c.opp.trash.push(x);
       c.ctx.crushed = top;
       log(`${_nmK(c)}: Crush discards ${top.length} card${top.length === 1 ? '' : 's'} from ${poss(c.opp)} Deck (${top.map(x => CARDS[x.id].name).join(', ')}).`);
-      render();
+      io.view({ type: 'board' });
     } },
   /* v0.56 Ultimate Trigger (card reminder text, Fandom Ultimate-Sea-Serpendar / Ultimate-Cu-Sith: "Send a card from the opposing decktop
      to the Trash. If that card's cost is lower than this Ultimate's, it's a hit."). Sets ctx.utHit / ctx.utCost; the "When Ultimate
@@ -63,7 +63,7 @@ Object.assign(FX_ACTIONS, {
       const k = CARDS[x.id], hit = k.cost < CARDS[c.src.id].cost;
       c.ctx.utHit = hit; c.ctx.utCost = k.cost; c.ctx.did = hit;
       log(`${_nmK(c)}: Ultimate Trigger sends ${k.name} (cost ${k.cost}) from ${poss(c.opp)} Deck to the Trash - ${hit ? 'hit!' : 'no hit.'}`);
-      render();
+      io.view({ type: 'board' });
     } },
 });
 const _nmK = c => CARDS[c.src.id].name;

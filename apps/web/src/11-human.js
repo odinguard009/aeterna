@@ -1,7 +1,6 @@
 /* ---------------------------------------------------------------------
    HUMAN ACTIONS
    --------------------------------------------------------------------- */
-const isMainStep = () => !!G && (G.step === 4 || (G.format === 'standard' && G.step === 6));
 const humanCan = () => G && !G.over && !G.busy && G.active === 'player' && !G.p.player.cpu;
 
 function legalityHTML(card) {

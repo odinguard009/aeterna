@@ -31,7 +31,6 @@ function legalityOf(id, format) {            // -> null when legal, else a short
 }
 /* cores are unlimited: new cores enter the game from an infinite supply (p.made counts them); the Soul Core is a separate core */
 const ABORT = { abort: true };
-const $ = id => document.getElementById(id);
 const other = k => (k === 'player' ? 'opponent' : 'player');
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c]));
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);

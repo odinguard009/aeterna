@@ -36,7 +36,7 @@ Object.assign(FX_ACTIONS, {
         log(`${_pn(c)}: ${who(c.p)} ${c.p.cpu ? 'discards' : 'discard'} ${CARDS[d.id].name}.`);
       }
       await sentToTrashFx(c, out, 'hand');               // v0.47 Hades Disaster discarded by Contractor Hades
-      render();
+      io.view({ type: 'board' });
     } },
   /* send cores from opposing Spirits/Ultimates to the opposing Reserve (not a destruction; a Spirit left below its Lv1 cores is depleted).
      {targets:T, each:K}: up to T different Spirits lose up to K cores each; {total:N}: N cores one by one from any Spirits. drawPerDepleted: draw 1 for each Spirit depleted by this (Vaplus). */
@@ -63,7 +63,7 @@ Object.assign(FX_ACTIONS, {
       const gone = [...hit].filter(t => !c.opp.spirits.includes(t)).length;
       if (gone) log(`${_pn(c)}: ${gone} opposing Spirit${gone === 1 ? ' is' : 's are'} depleted.`);
       if (a.drawPerDepleted && gone) { const k = draw(c.p, gone); log(`${_pn(c)}: ${who(c.p)} ${c.p.cpu ? 'draws' : 'draw'} ${k} card${k === 1 ? '' : 's'}.`); handUp(c.p, k); }
-      render();
+      io.view({ type: 'board' });
     } },
   /* "Then, once per turn, your counter +n" (Contractor Hades' Contract Skill): the Count part has its own once-per-turn limit, the rest of the effect does not */
   COUNTER_ONCE: { chk: a => Number.isInteger(a.n) && a.n >= 1 && a.n <= 5, txt: a => `(once per turn) counter +${a.n}`,
