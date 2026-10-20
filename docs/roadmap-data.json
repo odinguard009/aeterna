@@ -4,8 +4,8 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "20 Oct 2026",
-  "updatedAt": "0.81.0",
-  "next": "next: F2 host port part 1 (M2, headless CPU vs CPU through io.view), then F3 io.decide, F4 replays, F5 test waits; plan W card bundles after phase F; playable 6,838 of 8,709, complete 739"
+  "updatedAt": "0.83.0",
+  "next": "next: F3 part 2 (M3: board actions as intents, the CPU answers io.decide), then F4 replays, F5 test waits; plan W card bundles after phase F; playable 6,838 of 8,709, complete 739"
  },
  "phases": [
   {
@@ -576,12 +576,16 @@
      "t": "F1 effect JSON schema + validator (v0.81.0): packages/engine/fx-schema.json v1 generated from the engine (77 actions, 27 triggers, 33 conditions), tools/fx_validate.mjs in loop and CI; shipped cards 0 errors; format changes need a schema version bump"
     },
     {
-     "s": "next",
-     "t": "F2 host port part 1 (M2): render calls through io.view, headless CPU vs CPU game in Node"
+     "s": "done",
+     "t": "F2 host port part 1 (v0.82.0): render calls through io.view, headless CPU vs CPU game in Node (packages/engine/headless.mjs)"
     },
     {
-     "s": "later",
-     "t": "F3 host port part 2 (M3): every human/CPU choice through io.decide"
+     "s": "done",
+     "t": "F3 part 1 (v0.83.0): every human prompt is a serializable decision record through io.decide (05b-decide.js); WEB_GAPS empty; scripted human seat headless"
+    },
+    {
+     "s": "next",
+     "t": "F3 part 2 (M3): human board actions as intent records, the CPU answers io.decide"
     },
     {
      "s": "later",
@@ -1143,9 +1147,17 @@
    "calls": "~70",
    "basis": "estimate (budget counter)",
    "note": "Manual session on Opus: F1 effect JSON schema (generated from the engine source) + validator in loop and CI, format doc, release-title fix for the Lane bullet; auto mode switched ON."
+  },
+  {
+   "ver": "v0.83.0",
+   "date": "20 Oct 2026",
+   "tokens": 190000,
+   "calls": "~45",
+   "basis": "estimate (budget counter, incl. player-view subagent)",
+   "note": "Scheduled auto session on Opus: F3 part 1, human prompts as decision records through io.decide, scripted headless human seat, backup/v0.82.0, player-view pass."
   }
  ],
  "updated": "20 Oct 2026",
- "updatedAt": "0.81.0",
- "next": "next: F2 host port part 1 (M2, headless CPU vs CPU through io.view), then F3 io.decide, F4 replays, F5 test waits; plan W card bundles after phase F; playable 6,838 of 8,709, complete 739"
+ "updatedAt": "0.83.0",
+ "next": "next: F3 part 2 (M3: board actions as intents, the CPU answers io.decide), then F4 replays, F5 test waits; plan W card bundles after phase F; playable 6,838 of 8,709, complete 739"
 }
