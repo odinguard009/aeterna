@@ -1,7 +1,7 @@
 # v0.24: code review / cleanup suite. Every chk() is one numbered test. Needs PYTHONPATH with the fixtures helper for fixture checks only.
 import json as _json_c, os as _os_c  # counts come from the card data, so a new colour needs no edit here
 _CARDS = _json_c.load(open(_os_c.path.join(_os_c.path.dirname(_os_c.path.abspath(__file__)), '..', '..', 'data', 'cards', 'all-cards.json')))
-PACK_N = len(_CARDS); CONTRACTORS = sorted(c['id'] for c in _CARDS if c['type'] == 'Nexus' and '-CX' in c['id'])
+PACK_N = len(_CARDS); CONTRACTORS = sorted(c['id'] for c in _CARDS if c['type'] == 'Nexus' and '-CX' in c['id'] and c.get('levels'))   # BS76/BS77 CX Flagbearers have no levels yet (Flag Contract, open in roadmap-open.md): not Count-level
 from playwright.sync_api import sync_playwright
 import json, sys, re, time
 F = "file:///mnt/user-data/outputs/" + (sys.argv[1] if len(sys.argv) > 1 else "wip.html")
@@ -40,12 +40,14 @@ with sync_playwright() as p:
     chk('B6 every prebuilt deck only references existing cards', ev(pg, "BS.PREBUILT.every(d=>Object.keys(d.cards).every(id=>BS.CARDS[id]))"))
     chk('B7 Mitra and Red prebuilt decks are legal in Eternal', ev(pg, "BS.PREBUILT.filter(d=>d.id!=='train').every(d=>BS.validateDeck(d.cards,'eternal').ok)"), ev(pg, "BS.PREBUILT.map(d=>d.id+':'+BS.validateDeck(d.cards,'eternal').errors.join('|'))"))
     # ---- C. built-in card data audit (all 63 pack cards)
-    chk(f'C1 pack registers {PACK_N} cards (the Brave card too, Standard 26R BS/CB ids), all ids unique', ev(pg, "(()=>{const k=Object.keys(BS.CARDS).filter(i=>/^(\\d\\dR)?(BS|SD|CB)\\d/.test(i)&&!BS.CARDS[i].token);return k.length===%d&&new Set(k).size===%d})()" % (PACK_N, PACK_N)))
-    chk('C2 every pack card id looks like BSxx-yyy / SDxx-yyy / 26RBSxx-yyy / 26RCBxx-yyy', ev(pg, "Object.keys(BS.CARDS).filter(i=>/^(\\d\\dR)?(BS|SD|CB)\\d/.test(i)&&!BS.CARDS[i].token).every(i=>/^(\\d\\dR)?(BS|SD|CB)\\d\\d-[A-Z]{0,2}\\d{2,3}$/.test(i))"))
+    chk(f'C1 pack registers {PACK_N} cards (the Brave card too, Standard 26R BS/CB ids), all ids unique', ev(pg, "(()=>{const k=Object.keys(BS.CARDS).filter(i=>/^(\\d\\dR)?(BSC|BS|SD|CB|DB)\\d/.test(i)&&!BS.CARDS[i].token);return k.length===%d&&new Set(k).size===%d})()" % (PACK_N, PACK_N)))
+    # v0.80.x data intake added the id families 26RDBxx-yyy and BSCxx-yyy and 3-letter promo codes (BS38-RVX01)
+    chk('C2 every pack card id looks like BSxx-yyy / SDxx-yyy / BSCxx-yyy / 26RBSxx-yyy / 26RCBxx-yyy / 26RDBxx-yyy', ev(pg, "Object.keys(BS.CARDS).filter(i=>/^(\\d\\dR)?(BSC|BS|SD|CB|DB)\\d/.test(i)&&!BS.CARDS[i].token).every(i=>/^(\\d\\dR)?(BSC|BS|SD|CB|DB)\\d\\d-[A-Z]{0,4}\\d{2,3}$/.test(i))"))
     chk('C3 colour is one of the six', ev(pg, "Object.values(BS.CARDS).every(c=>['red','purple','green','yellow','blue','white'].includes(c.symbol))"))
     chk('C4 cost within 0..30 and integer', ev(pg, "Object.values(BS.CARDS).every(c=>Number.isInteger(c.cost)&&c.cost>=0&&c.cost<=30)"))
     chk('C5 Spirit levels: cores strictly ascending, BP numeric', ev(pg, "Object.values(BS.CARDS).filter(c=>c.type==='Spirit').every(c=>c.levels.length>=1&&c.levels.every((l,i)=>Number.isInteger(l.cores)&&Number.isInteger(l.bp)&&(i===0||l.cores>c.levels[i-1].cores)))"))
-    chk('C6 Spirit BP never decreases with level', ev(pg, "Object.values(BS.CARDS).filter(c=>c.type==='Spirit').every(c=>c.levels.every((l,i)=>i===0||l.bp>=c.levels[i-1].bp))"))
+    # BS32-036 is the one printed exception: Fandom lists LV1 20000 BP and LV2 10000 BP (checked 2026-10-20), so the data is right
+    chk('C6 Spirit BP never decreases with level (except BS32-036)', ev(pg, "Object.values(BS.CARDS).filter(c=>c.type==='Spirit'&&c.id!=='BS32-036').every(c=>c.levels.every((l,i)=>i===0||l.bp>=c.levels[i-1].bp))"))
     chk('C7 reduction values are non-negative integers, symbols 0..5', ev(pg, "Object.values(BS.CARDS).every(c=>Object.values(c.reduction||{}).every(v=>Number.isInteger(v)&&v>=0&&v<=10)&&Number.isInteger(c.symbols)&&c.symbols>=0&&c.symbols<=5)"))
     chk('C8 Nexus cards carry no BP', ev(pg, "Object.values(BS.CARDS).filter(c=>c.type==='Nexus').every(c=>c.levels.every(l=>l.bp==null))"))
     chk('C9 Magic cards have a magic block or are flagged not implemented', ev(pg, "Object.values(BS.CARDS).filter(c=>c.type==='Magic').every(c=>c.magic||c.implemented===false)"))

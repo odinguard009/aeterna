@@ -7,24 +7,34 @@ def chk(n,c,x=''): res.append(bool(c)); print(('PASS ' if c else 'FAIL ')+f'[{le
 D=_os_repo.path.join(_REPO, 'data/cards/')
 allt=open(D+'all-cards.json').read(); sg={f:open(f).read() for f in sorted(glob.glob(D+'saga-[0-9][0-9].json'))}
 n_all=len(json.loads(allt))     # v0.34: every card imports (the Brave card BS76-060 too)
+# importCards refuses more than 3000 cards per call (v24_tests D10), so the full list goes in chunks of 2500 (as tools/promote_compiled.mjs does)
+CH=[json.dumps(json.loads(allt)[k:k+2500]) for k in range(0,n_all,2500)]
+def import_chunked(pg):
+    tot=0; bad=[]
+    for t in CH:
+        r=pg.evaluate("(t)=>BS.importCards(t)",t); tot+=r['ok']; bad+=r['bad']
+    return tot,bad
 with sync_playwright() as p:
     b=p.chromium.launch()
     for i in range(20):
         pg=b.new_page(); errs=[]; pg.on("pageerror",lambda e:errs.append(str(e)[:200])); pg.goto(F); pg.wait_for_timeout(150)
         mode=i%4
         if mode==0:
-            r=pg.evaluate("(t)=>BS.importCards(t)",allt); ok=r['ok']==n_all and not r['bad']
+            tot,bad=import_chunked(pg); ok=tot==n_all and not bad
         elif mode==1:
             L=list(sg.values()); random.shuffle(L); tot=0; ok=True
             for t in L:
                 r=pg.evaluate("(t)=>BS.importCards(t)",t); tot+=r['ok']; ok&=not r['bad']
             ok&=tot==n_all
         elif mode==2:
-            r=pg.evaluate("(t)=>BS.importCards(t)",allt); L=list(sg.values()); random.shuffle(L)
+            import_chunked(pg); L=list(sg.values()); random.shuffle(L)
             for t in L: r=pg.evaluate("(t)=>BS.importCards(t)",t); ok=not r['bad']
             ok=ok
         else:
-            pg.set_input_files("#in-cards",D+'all-cards.json') if pg.locator('#in-cards').count() else None; pg.wait_for_timeout(300); ok=True
+            if pg.locator('#in-cards').count():       # the file input takes one file at a time: one chunk file per pick
+                for j,t in enumerate(CH):
+                    pg.set_input_files("#in-cards",files=[{"name":f"chunk{j}.json","mimeType":"application/json","buffer":t.encode()}]); pg.wait_for_timeout(400)
+            ok=True
         n=pg.evaluate("Object.values(BS.CARDS).filter(c=>c.imported).length")
         sagas=pg.evaluate("[...new Set(Object.values(BS.CARDS).filter(c=>c.imported).map(c=>c.saga))].sort().join()")
         chk(f'#{i+1} mode {mode}: import ok, {n_all} imported cards, no errors', ok and n==n_all and not errs, [ok,n,sagas,errs])
