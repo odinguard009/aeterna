@@ -2,8 +2,8 @@
 
 Copy of the claude.ai Project instructions of "Aeterna" and of the owner's auto-mode request, in the owner's words (Indonesian). The working rules derived from them are CLAUDE.md, skill `bs-session-runner` and `docs/ai/next-session-prompt.md`; when this record and those files differ, those files win and this record is updated.
 
-## Current Project instructions (claude.ai, project "BS ETERNAL", moved to the odinguard009 account 2026-10-20)
-Description: "Fully automatic web based simulator for Battle Spirits TCG".
+## Current Project instructions (claude.ai Project, moved to the owner's second Claude account 2026-10-20)
+Work moved to the second Claude account on 2026-10-20; the repo, the issue #1 switch and all working rules stayed in this repo. Description: "Game bisa dimainkan offline atau online. Semua kartu bisa dimainkan. Semua rule BS TCG diterapkan secara benar."
 1. Pakai repo odinguard009/aeterna dan roadmap terbaru; ikuti skill bs-session-runner (alur, ukuran sesi, backup, mind map).
 2. Awal sesi "lanjutkan roadmap": tulis "Ver. X.XX" dan "gunakan model …" sesuai ukuran sesi.
 3. Hemat token tanpa menurunkan hasil; pertahankan proses yang teruji. Beri saran efisiensi kapan saja.
@@ -17,7 +17,7 @@ Description: "Fully automatic web based simulator for Battle Spirits TCG".
 
 Style preferences (user preferences, always): "Selalu jujur. Jangan berbohong, jangan berhalusinasi, dan jangan mengarang cerita/jawaban. kurangi pujian-pujian yang tidak perlu."
 
-Notes: instruction 9 (GitHub retry up to 10x, ~30 s apart) is not yet in CLAUDE.md or the session skill; the scheduled prompt and the gate scripts do not retry either. Instruction 10 restores the Sonnet/Opus choice by difficulty that the 2026-10-17 "Model" entry below had set aside; CLAUDE.md "Model" (2026-10-20) is the working rule.
+Notes: instruction 9 (GitHub retry up to 10x, ~30 s apart) is not yet in CLAUDE.md or the session skill; the scheduled prompt and the gate scripts do not retry either. Instruction 10 restores the Sonnet/Opus choice by difficulty that the 2026-10-17 "Model" entry below had set aside; CLAUDE.md "Model" (2026-10-20) is the working rule. Optional wording the owner may adopt for instruction 10 (not applied here): "Model: Sonnet untuk docs/cleanup dan bundel kartu yang hanya menulis JSON efek; Opus untuk engine, protokol, compiler. Tanpa subagent kecuali player-view pass (read-only)."
 
 ## Earlier Project instructions (claude.ai, until 2026-10-20; superseded, kept as a record)
 1. Pakai roadmap terbaru di repo odinguard009/aeterna. Ikuti skill bs-session-runner untuk alur sesi, ukuran sesi, backup, dan mind map.

@@ -34,7 +34,7 @@
 
 ## Installed tasks
 - Changed 2026-10-20 by the owner's request (2 runs per hour). Both use the PROMPT block with MODEL = `opus`, permission mode auto, no local device.
-- `trig_013vitrkPAv2d7dSARodFJuz` "Lanjutkan roadmap otomatis - Opus :00" (every hour at :00 Asia/Jakarta) and `trig_01SNoK2NRwVpqyKWbGiC5yEY` "Lanjutkan roadmap otomatis - Opus :30" (every hour at :30 Asia/Jakarta). `trig_013DKhuCinSGobVJqkUbzVTM` ":40" is disabled and unused. All are disabled until the owner turns them on in the Claude app.
+- Since 2026-10-20 the tasks live in the owner's second Claude account: `trig_012vcB93WXX5MB1gnDwgKdXW` "Lanjutkan roadmap otomatis - Opus :00" and `trig_01HNrzzGPL2kxUXnyMoJkMvS` "Lanjutkan roadmap otomatis - Opus :30" (intended: every hour at :00 and :30 Asia/Jakarta; model `claude-opus-5-5`, permission mode auto). Only one account may have active tasks: the first account's tasks (`trig_013vitrkPAv2d7dSARodFJuz` ":00", `trig_01SNoK2NRwVpqyKWbGiC5yEY` ":30", `trig_013DKhuCinSGobVJqkUbzVTM` ":40", already unused) are to be turned off there by the owner.
 - Retired and disabled: `trig_01NGbA3SCH9Qj5e8UybTpMvv` "Rantai roadmap - pengawas" (watchdog; it created one-shot schedules).
 
 <!-- PROMPT START -->
