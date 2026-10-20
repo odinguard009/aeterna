@@ -212,7 +212,7 @@ async function chooseCard(c, L, title, text, optional) {
   const ids = Array.from(new Set(L.map(x => x.id))).slice(0, 8);
   const buttons = ids.map(i => ({ label: CARDS[i].name, value: i }));
   if (optional) buttons.push({ label: 'Skip', cls: 'cancel', value: null });
-  const id = await ask({ title, peek: true, wide: true, html: text + cardStripHTML(ids), buttons });
+  const id = await ask({ title, peek: true, wide: true, html: text, cards: cardIds(ids), buttons });
   if (id == null) return optional ? null : L[0];
   return L.find(x => x.id === id) || L[0];
 }

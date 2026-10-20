@@ -4,8 +4,8 @@
    Node runner, later the server). Every record passed through the port is a plain, serializable object.
      io.view(ev)            the board or a screen changed; the host draws (web) or ignores it (headless)
      io.log(text)           one game log line was written (G.history keeps the text; hosts may react, e.g. sounds)
-     io.decide(p, d)        M3 (next step): every human/CPU choice; until then the engine still calls the web
-                            prompts directly and only the CPU paths run headless
+     io.decide(seat, d)     v0.83.0 (M3 part 1): every prompt of a human seat, as a decision record (kinds and answers:
+                            packages/engine/src/05b-decide.js); resolves the answer. M3 part 2: the CPU answers it too
    View records (`type`):
      board                  redraw the playmat from G
      decks                  the format or the deck list changed (lobby + deck builder)
@@ -17,7 +17,7 @@ const VIEW_TYPES = ['board', 'decks', 'screen', 'reset', 'matchEnd'];
 /** @typedef {{ type: string, id?: string, winner?: string }} ViewRecord */
 /** @typedef {{ name: string, view: (ev: ViewRecord) => void, log: (text: string) => void, decide: (p: any, d: any) => Promise<any> }} Host */
 /** @type {Host} */
-const HOST_NONE = { name: 'none', view: () => {}, log: () => {}, decide: () => Promise.reject(new Error('io.decide: no host answers decisions yet (M3)')) };
+const HOST_NONE = { name: 'none', view: () => {}, log: () => {}, decide: () => Promise.reject(new Error('io.decide: no host answers decisions (bind one with bindHost)')) };
 const io = {
   host: HOST_NONE,
   view(ev) { this.host.view(ev); },

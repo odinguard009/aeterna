@@ -90,7 +90,7 @@ async function maybeBurst(owner, trigger, ctx) {
   if (def.noUlt && ctx && ctx.attacker && CARDS[ctx.attacker.id].type === 'Ultimate') return false;   // v0.71 "After an opposing Spirit attacks" (not "Spirit/Ultimate")
   if (!def.actions.some(a => !FX_ACTIONS[a.do].can || FX_ACTIONS[a.do].can(c, a))) return false;
   const use = owner.cpu ? true : (await ask({
-    title: '💥 Burst', peek: true, wide: true, html: `${esc(CARDS[b.id].name)} can be activated (${esc(BURST_WHEN[def.when])}): ${esc(fxDescribe(def))}.` + cardStripHTML([b]),
+    title: '💥 Burst', peek: true, wide: true, html: `${esc(CARDS[b.id].name)} can be activated (${esc(BURST_WHEN[def.when])}): ${esc(fxDescribe(def))}.`, cards: cardIds([b]),
     buttons: [{ label: 'Activate Burst', cls: 'primary', value: true }, { label: 'Keep it set', cls: 'cancel', value: false }]
   }));
   if (!use || owner.burst !== b) return false;
@@ -125,7 +125,7 @@ async function burstFlash(p, inst, ctx) {            // v0.47: ctx 'main' = "act
   let ch;
   if (p.cpu) { if (!cpuBurstFlash(p, inst, ctx)) { log(`${who(p)} ${p.cpu ? 'does' : 'do'} not pay for the ${lbl} effect of ${card.name}.`); return false; } ch = { inst, target: null, plan: null, ctx }; }
   else {
-    const go = await ask({ title: `💥 Burst: ${lbl} effect`, peek: true, wide: true, html: `Pay ${effCost(p, card)} to activate the ${lbl} effect of ${esc(card.name)}: ${esc(magicText(card))}` + cardStripHTML([inst]),
+    const go = await ask({ title: `💥 Burst: ${lbl} effect`, peek: true, wide: true, html: `Pay ${effCost(p, card)} to activate the ${lbl} effect of ${esc(card.name)}: ${esc(magicText(card))}`, cards: cardIds([inst]),
       buttons: [{ label: `Pay ${effCost(p, card)}`, cls: 'primary', value: true }, { label: 'Do not pay', cls: 'cancel', value: false }] });
     if (!go) return false;
     ch = await prepareHumanMagic(p, inst, ctx); if (!ch) return false;

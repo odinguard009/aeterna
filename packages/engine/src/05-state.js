@@ -13,6 +13,7 @@ const fnv = (h, t) => { let x = h == null ? 2166136261 : h; for (let i = 0; i < 
 /* v0.26 input record: every prompt answer (m), field pick (k:'pick') and board action (a) of the human, in order */
 function recIn(o) { if (G && G.rec && !G.rec.closed && !G.over) { let x = o; try { x = JSON.parse(JSON.stringify(o)); } catch (e) { G.rec.lossy = true; x = { lossy: true }; } G.rec.inputs.push(x); } }
 let SIM_DECK_B = null;   // test hook (?sim=1 only): the second CPU deck
+let SIM_HUMAN = false;   // test hook (?sim=1 only, v0.83.0): the first seat is a human whose prompts go through io.decide (headless scripted answers)
 const delay = ms => new Promise(r => setTimeout(r, SIM || (REPLAY && REPLAY.fast) ? 0 : Math.round(ms * (SPEEDS[SETTINGS.speed] || 1))));
 async function wait(ms) { const s = SESSION; await delay(ms); if (s !== SESSION) throw ABORT; }
 function log(t) { if (!G) return; G.last = t; G.history.push(t); G.hh = fnv(G.hh, t); G.hn = (G.hn || 0) + 1;
@@ -55,7 +56,7 @@ function newGame(deckA, deckB, format) {
   format = format || FORMAT;
   return {
     format, steps: format === 'standard' ? STEPS_STANDARD : STEPS,
-    p: { player: newPlayer('player', SIM ? 'Sim A' : 'You', SIM, deckA), opponent: newPlayer('opponent', SIM ? 'Sim B' : 'CPU', true, deckB) },
+    p: { player: newPlayer('player', SIM ? 'Sim A' : 'You', SIM && !SIM_HUMAN, deckA), opponent: newPlayer('opponent', SIM ? 'Sim B' : 'CPU', true, deckB) },
     step: 0, turnNo: 0, active: 'player', next: 'player', over: false, winner: null, busy: true,
     last: 'Match started.', history: [], turnResolver: null, burstQ: [], evQ: []
   };

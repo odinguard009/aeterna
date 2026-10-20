@@ -76,7 +76,7 @@ async function payInvokeCost(p, f, c) {
     if (p.cpu) t = L.slice().sort((a, b) => CARDS[a.id].cost - CARDS[b.id].cost)[0];
     else {
       const ids = Array.from(new Set(L.map(x => x.id))).slice(0, 8);
-      const id = await ask({ title: `✨ ${nm}`, peek: true, wide: true, html: 'Choose a card to discard from your Hand (the cost).' + cardStripHTML(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
+      const id = await ask({ title: `✨ ${nm}`, peek: true, wide: true, html: 'Choose a card to discard from your Hand (the cost).', cards: cardIds(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
       t = L.find(x => x.id === id) || L[0];
     }
     removeFrom(p.hand, t); p.trash.push(t); log(`${nm}: ${who(p)} ${p.cpu ? 'discards' : 'discard'} ${CARDS[t.id].name} (cost).`); return true;

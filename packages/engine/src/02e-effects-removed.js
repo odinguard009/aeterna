@@ -80,7 +80,7 @@ Object.assign(FX_ACTIONS, {
         if (c.opp.cpu) t = H().sort((x, y) => CARDS[x.id].cost - CARDS[y.id].cost)[0];
         else {
           const ids = Array.from(new Set(H().map(x => x.id))).slice(0, 8);
-          const id = await ask({ title: `✨ ${_nm(c)}`, peek: true, wide: true, html: 'Choose a card from your Hand to put onto your Removed Zone.' + cardStripHTML(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
+          const id = await ask({ title: `✨ ${_nm(c)}`, peek: true, wide: true, html: 'Choose a card from your Hand to put onto your Removed Zone.', cards: cardIds(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
           t = H().find(x => x.id === id) || H()[0];
         }
         fromHandRemoved(c.opp, t); c.ctx.removedCards.push(t);

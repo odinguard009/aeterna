@@ -68,7 +68,6 @@ function cardStripHTML(list, head) {
   const ids = list.map(x => (typeof x === 'string' ? x : x.id)).filter(id => CARDS[id]);
   return `${head ? `<div class="strip-head">${esc(head)} (${ids.length})</div>` : ''}<div class="card-strip">${ids.map(id => mullCardHTML(CARDS[id])).join('')}</div>`;
 }
-const uniqById = L => { const seen = new Set(); return L.filter(x => (seen.has(x.id) ? false : (seen.add(x.id), true))); };
 function mullCardHTML(card) {
   return `<div class="mull-card" data-a="zoom" data-v="${esc(card.id)}" title="Tap to enlarge">${cardFaceHTML(card, false)}<div class="nm">${esc(card.name)}</div></div>`;
 }
@@ -130,30 +129,6 @@ async function humanMirage(inst) {
     setBurst(p, inst, true); render();
   } catch (e) { if (e !== ABORT) throw e; }
 }
-/* target + payment for a human Magic cast; returns { inst, target, plan } or null when cancelled */
-async function prepareHumanMagic(p, inst, ctx) {
-  ctx = ctx || 'main';
-  const card = CARDS[inst.id], c = effCost(p, card), m = magicFx(card, ctx);
-  let target = null;
-  const tg = magicTargets(p, inst, ctx);
-  if (tg) {
-    const uid = await pickFromField({ text: `✨ <b>${esc(card.name)}</b><br>${esc(MAGIC_FX[m.effect].text(m.value, m))}<br>Tap a glowing Spirit.`, uids: tg.map(t => t.uid), buttons: [{ label: 'Cancel', cls: 'cancel', value: 'none' }] });
-    target = tg.find(t => t.uid === uid) || null;
-    if (!target) return null;
-  }
-  let plan = null, soulMagic = false;
-  if (soulMagicOK(p, card)) {                              // v0.64 Soul Magic: pay the whole cost with the Soul Core, or pay normally
-    if (c > coresAvailable(p)) soulMagic = true;
-    else {
-      const v = await ask({ title: `✨ ${esc(card.name)}: Soul Magic`, html: `Pay the whole cost with just your Soul Core (it goes to the Trash), or pay ${c} core${c === 1 ? '' : 's'} as usual?`,
-        buttons: [{ label: '◆ Pay the Soul Core', cls: 'purple', value: 'soul' }, { label: `Pay ${c}`, cls: 'primary', value: 'normal' }, { label: 'Cancel', cls: 'cancel', value: null }] });
-      if (!v) return null;
-      soulMagic = v === 'soul';
-    }
-  }
-  if (!soulMagic && c > 0 && reserveTotal(p) < c) { plan = await askPayment(card, c, 0); if (!plan) return null; }
-  return { inst, target, plan, ctx, soulMagic };
-}
 async function humanCast(inst) {
   try {
     const p = G.p.player;
@@ -162,30 +137,6 @@ async function humanCast(inst) {
     if (!ch || !humanCan() || !isMainStep() || !p.hand.includes(inst)) return;
     await castMagic(p, ch); render(); await flushBursts();
   } catch (e) { if (e !== ABORT) throw e; }
-}
-async function humanFlashChoice(p, attKey, att, blk) {
-  for (let g = 0; g < 6; g++) {
-    const usable = magicSources(p, 'flash').filter(h => magicUsable(p, h, 'flash'));
-    const acts = []; for (const f of fieldList(p)) for (const x of activatable(p, f, 'FLASH')) acts.push({ f, idx: x.idx, e: x.e });
-    const cadv = cadvSources(p).filter(h => contractAdventTargets(p, h, 'flash').length);
-    const mani = p.hand.filter(h => CARDS[h.id].manifest && manifestTargets(p, h, 'flash').length);
-    const hsp = highSpeedSources(p);                                   // v0.49 High Speed
-    const acc = accelSources(p, 'FLASH');                              // v0.50 Accel
-    if (!usable.length && !acts.length && !cadv.length && !mani.length && !hsp.length && !acc.length) return null;
-    const ctx = `${esc(CARDS[att.id].name)} (${bpOf(att)} BP) is attacking` + (blk ? `, blocked by ${esc(CARDS[blk.id].name)} (${bpOf(blk)} BP)` : '') + '.';
-    const v = await ask({ title: '⚡ Flash Timing', peek: true, wide: true, html: `${ctx}<br>Cast a [Flash] Magic card or use a Flash effect?` + cardStripHTML(uniqById(usable.concat(cadv, mani, hsp, acc.map(x => x.inst))), 'Cards you can use'),
-      buttons: usable.map(h => ({ label: `${CARDS[h.id].name}${p.trash.includes(h) ? ' [from the Trash]' : ''} (Pay ${effCost(p, CARDS[h.id])}) — ${magicText(CARDS[h.id]).replace(/^(\[[^\]]*\])+ /, '')}`, cls: 'purple', value: h.uid })).concat(cadv.map(h => ({ label: `✨ Contract Advent: ${CARDS[h.id].name}`, cls: 'purple', value: 'c:' + h.uid }))).concat(mani.map(h => ({ label: `✨ Manifest: ${CARDS[h.id].name}`, cls: 'purple', value: 'm:' + h.uid }))).concat(hsp.map(h => ({ label: `⚡ High Speed: summon ${CARDS[h.id].name} (Pay ${effCost(p, CARDS[h.id])} from the Reserve)`, cls: 'primary', value: 'h:' + h.uid }))).concat(acc.map(x => ({ label: accelLabel(p, x), cls: 'primary', value: `x:${x.inst.uid}:${x.idx}` }))).concat(acts.map(x => ({ label: `⚡ ${CARDS[x.f.id].name}: ${fxDescribe(x.e)}`.slice(0, 140), cls: 'primary', value: `a:${x.f.uid}:${x.idx}` }))).concat([{ label: 'Pass', cls: 'cancel', value: null }]) });
-    if (v == null) return null;
-    if (typeof v === 'string' && v.startsWith('c:')) { const h = cadv.find(x => x.uid === Number(v.slice(2))); if (h) return { cadv: h }; return null; }
-    if (typeof v === 'string' && v.startsWith('h:')) { const h = hsp.find(x => x.uid === Number(v.slice(2))); if (h) return { hs: h }; return null; }
-    if (typeof v === 'string' && v.startsWith('m:')) { const h = mani.find(x => x.uid === Number(v.slice(2))); if (h) return { manifest: h }; return null; }
-    if (typeof v === 'string' && v.startsWith('x:')) { const [, u, ix] = v.split(':'); const a = acc.find(x => x.inst.uid === Number(u) && x.idx === Number(ix)); const r = a ? await humanAccel(a.inst, a.idx, 'FLASH') : null; if (r) return { accel: r }; continue; }
-    if (typeof v === 'string' && v.startsWith('a:')) { const [, u, ix] = v.split(':'); const a = acts.find(x => x.f.uid === Number(u) && x.idx === Number(ix)); if (a) return { act: { f: a.f, idx: a.idx } }; return null; }
-    const inst = usable.find(h => h.uid === v); if (!inst) return null;
-    const ch = await prepareHumanMagic(p, inst, 'flash');
-    if (ch) return ch;
-  }
-  return null;
 }
 async function showCardDetail(id, ctx, uid) {
   const card = CARDS[id]; if (!card) return;

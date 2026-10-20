@@ -83,7 +83,7 @@ const FX_ACTIONS = {
       if (c.p.cpu) t = L.slice().sort((x, y) => CARDS[y.id].cost - CARDS[x.id].cost)[0];
       else {
         const ids = Array.from(new Set(L.map(x => x.id))).slice(0, 8);
-        const id = await ask({ title: `✨ ${CARDS[c.src.id].name}`, peek: true, wide: true, html: 'Choose a card to return from your Trash to your Hand.' + cardStripHTML(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
+        const id = await ask({ title: `✨ ${CARDS[c.src.id].name}`, peek: true, wide: true, html: 'Choose a card to return from your Trash to your Hand.', cards: cardIds(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
         t = L.find(x => x.id === id) || L[0];
       }
       removeFrom(c.p.trash, t); c.p.hand.push(t); c.ctx.returned = t; handUp(c.p, 1); log(`${CARDS[c.src.id].name}: ${CARDS[t.id].name} returns from the Trash to the Hand.`);
@@ -123,7 +123,7 @@ const FX_ACTIONS = {
       if (a.rest === 'trash') { for (const x of rest) c.p.trash.push(x); if (rest.length) log(`${nm}: ${rest.length} card${rest.length === 1 ? '' : 's'} discarded.`); }
       else {
         let top = a.rest === 'top';      // v0.75: "either the decktop or the deckbottom": the owner chooses (CPU: bottom)
-        if (a.rest === 'either' && rest.length && !c.p.cpu) top = (await ask({ title: `✨ ${nm}`, peek: true, wide: true, html: 'Return the remaining revealed card(s) to the top or the bottom of your Deck?' + cardStripHTML(rest), buttons: [{ label: 'Decktop', cls: 'primary', value: true }, { label: 'Deckbottom', cls: 'blue', value: false }] })) === true;
+        if (a.rest === 'either' && rest.length && !c.p.cpu) top = (await ask({ title: `✨ ${nm}`, peek: true, wide: true, html: 'Return the remaining revealed card(s) to the top or the bottom of your Deck?', cards: cardIds(rest), buttons: [{ label: 'Decktop', cls: 'primary', value: true }, { label: 'Deckbottom', cls: 'blue', value: false }] })) === true;
         if (top) c.p.deck.unshift(...rest); else for (const x of rest) c.p.deck.push(x);
       }
       c.ctx.did = !!t;
@@ -172,7 +172,7 @@ const FX_ACTIONS = {
       if (c.p.cpu) t = L.slice().sort((x, y) => CARDS[y.id].cost - CARDS[x.id].cost)[0];
       else {
         const ids = Array.from(new Set(L.map(x => x.id))).slice(0, 8);
-        const id = await ask({ title: `✨ ${CARDS[c.src.id].name}`, peek: true, wide: true, html: (a.pay ? 'Choose a card to summon/deploy (you pay its cost).' : 'Choose a card to summon/deploy without paying the cost.') + cardStripHTML(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
+        const id = await ask({ title: `✨ ${CARDS[c.src.id].name}`, peek: true, wide: true, html: (a.pay ? 'Choose a card to summon/deploy (you pay its cost).' : 'Choose a card to summon/deploy without paying the cost.'), cards: cardIds(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
         t = L.find(x => x.id === id) || L[0];
       }
       await summonBy(c.p, t, a.pay);
@@ -219,7 +219,7 @@ const FX_ACTIONS = {
       const t = await chooseCard(c, FX_ACTIONS.SOUL_SUMMON.cands(c, a), `✨ ${CARDS[c.src.id].name}`, 'Choose a card in Soul State.', true);
       if (!t) { c.ctx.did = false; return; }
       let summon = canPlaceBy(c.p, t, a.pay);
-      if (summon && a.orReturn && !c.p.cpu) summon = (await ask({ title: `✨ ${CARDS[t.id].name}`, peek: true, wide: true, html: 'Summon/deploy it, or return it to your Hand?' + cardStripHTML([t]), buttons: [{ label: 'Summon / deploy', cls: 'primary', value: true }, { label: 'Return to Hand', cls: 'blue', value: false }] })) !== false;
+      if (summon && a.orReturn && !c.p.cpu) summon = (await ask({ title: `✨ ${CARDS[t.id].name}`, peek: true, wide: true, html: 'Summon/deploy it, or return it to your Hand?', cards: cardIds([t]), buttons: [{ label: 'Summon / deploy', cls: 'primary', value: true }, { label: 'Return to Hand', cls: 'blue', value: false }] })) !== false;
       if (summon) { if (!(await summonBy(c.p, t, a.pay))) { c.ctx.did = false; return; } }
       else { removeFrom(c.p.soulState, t); t.inSoulState = false; c.p.hand.push(t); handUp(c.p, 1); log(`${CARDS[c.src.id].name}: ${CARDS[t.id].name} returns from Soul State to the Hand.`); }
     } },
@@ -415,13 +415,13 @@ const FX_ACTIONS = {
       for (const x of top) { c.p.trash.push(x); if (fxMatch(CARDS[x.id], a.match)) k++; }
       log(`${CARDS[c.src.id].name}: ${top.length} card${top.length === 1 ? '' : 's'} from the Deck go to the Trash.`);
       for (const x of top.filter(y => CARDS[y.id].trashSoul && c.p.trash.includes(y))) {      // e.g. Do: "when sent to the Trash from the Deck by Contractor Mitra, you can let it enter Soul State"
-        const yes = c.p.cpu ? true : (await ask({ title: `✨ ${CARDS[x.id].name}`, peek: true, wide: true, html: 'It was sent to the Trash from your Deck. Let it enter Soul State?' + cardStripHTML([x]), buttons: [{ label: 'Enter Soul State', cls: 'primary', value: true }, { label: 'Keep in Trash', cls: 'cancel', value: false }] }));
+        const yes = c.p.cpu ? true : (await ask({ title: `✨ ${CARDS[x.id].name}`, peek: true, wide: true, html: 'It was sent to the Trash from your Deck. Let it enter Soul State?', cards: cardIds([x]), buttons: [{ label: 'Enter Soul State', cls: 'primary', value: true }, { label: 'Keep in Trash', cls: 'cancel', value: false }] }));
         if (yes) toSoulState(c.p, x);
       }
       const sn = CARDS[c.src.id], gw = sn.type === 'Nexus' && (sn.families || []).includes('Grandwalker');
       for (const x of top.filter(y => CARDS[y.id].trashHand && gw && sn.name.toLowerCase().includes(CARDS[y.id].trashHand.toLowerCase()) && c.p.trash.includes(y))) {   // e.g. Yaj-Veda: "(Once per Turn: Same Name) when sent to the Trash from the deck by your "Brahma" Grandwalker Nexus, you can add it to the Hand"
         const key = 'trashHand:' + CARDS[x.id].name; if (c.p.onceUsed && c.p.onceUsed[key] === G.turnNo) continue;
-        const yes = c.p.cpu ? true : (await ask({ title: `✨ ${CARDS[x.id].name}`, peek: true, wide: true, html: 'It was sent to the Trash from your Deck. Add it to your Hand?' + cardStripHTML([x]), buttons: [{ label: 'Add to Hand', cls: 'primary', value: true }, { label: 'Keep in Trash', cls: 'cancel', value: false }] }));
+        const yes = c.p.cpu ? true : (await ask({ title: `✨ ${CARDS[x.id].name}`, peek: true, wide: true, html: 'It was sent to the Trash from your Deck. Add it to your Hand?', cards: cardIds([x]), buttons: [{ label: 'Add to Hand', cls: 'primary', value: true }, { label: 'Keep in Trash', cls: 'cancel', value: false }] }));
         if (!yes) continue;
         c.p.onceUsed = c.p.onceUsed || {}; c.p.onceUsed[key] = G.turnNo;
         removeFrom(c.p.trash, x); c.p.hand.push(x); log(`${CARDS[x.id].name} is added to the Hand (${who(c.p)}).`); handUp(c.p, 1);

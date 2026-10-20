@@ -48,14 +48,13 @@ function modalPress(i) {
   if (MODAL.cfg.onPress && MODAL.cfg.onPress(b.value, b)) { paintModal(); return; }
   closeModal(b.value);
 }
-async function ask(cfg) { const s = SESSION; const v = await modal(cfg); if (s !== SESSION) throw ABORT; return v; }
 let PICK = null;
 function clearPick() {
   if (!PICK) return;
   const r = PICK.res; PICK = null; document.documentElement.classList.remove('picking'); $('pick-bar').classList.remove('active'); r(null);
 }
-function pickFromField(cfg) {
-  const s = SESSION;
+/* the field pick of a 'pick' decision (05b-decide.js); decide() throws ABORT when the match changed meanwhile */
+function webPick(cfg) {
   clearPick();
   return new Promise(res => {
     PICK = { uids: new Set(cfg.uids), mark: cfg.mark, buttons: cfg.buttons || [], res };
@@ -68,21 +67,12 @@ function pickFromField(cfg) {
     document.documentElement.classList.remove('picking'); $('pick-bar').classList.remove('active');
     PICK = null; if (G) render();
     recIn({ k: 'pick', v: v === undefined ? null : v });
-    if (s !== SESSION) throw ABORT;
     return v;
   });
 }
-function info(title, html) { return modal({ title, html, buttons: [{ label: 'Close', cls: 'cancel', value: null }] }); }
 
-async function askBlock(att, D, blockers, must) {
-  const sym = CARDS[att.id].symbols;
-  const v = await pickFromField({
-    text: `🛡 <b>${must ? 'You must block!' : 'Block?'}</b> ${esc(CARDS[att.id].name)} attacks with ${bpOf(att)} BP (${sym} symbol${sym === 1 ? '' : 's'}). Your Life: ${D.life}.<br>Tap a glowing Spirit to block with it.`,
-    uids: blockers.map(b => b.uid), mark: att.uid, buttons: must ? [] : [{ label: 'Do not block', cls: 'cancel', value: 'none' }]
-  });
-  return blockers.find(b => b.uid === v) || (must ? blockers[0] : null);
-}
-async function askPayment(card, c, L) {
+/* the payment dialog of a 'payment' decision (05b-decide.js): Reserve, field cores and the Soul Core, with View Field taps */
+async function webPayment(card, c, L) {
   const p = G.p.player;
   const src = [{ key: 'reserve', label: 'Reserve', max: p.reserve.n }]
     .concat(fieldList(p).filter(f => freeCores(f) > 0).map(f => ({ key: String(f.uid), label: `${CARDS[f.id].name} (field)`, max: freeCores(f), f })))

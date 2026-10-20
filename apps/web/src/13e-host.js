@@ -1,6 +1,7 @@
 /* ---------------------------------------------------------------------
    WEB HOST (v0.82.0, phase F2 = M2): the browser answers the engine's port (packages/protocol/src/00p-protocol.js).
-   Views redraw the page, log lines play sounds; decisions still go through the prompts in 10-modals.js (M3 moves them here).
+   Views redraw the page, log lines play sounds, decisions (v0.83.0, F3 = M3 part 1; records in packages/engine/src/05b-decide.js)
+   open the modal, the field pick or the payment dialog of 10-modals.js.
    --------------------------------------------------------------------- */
 document.title = 'Aeterna - Engine v' + VERSION;
 let AUDIO = null;
@@ -36,4 +37,18 @@ function webView(ev) {
   }
 }
 const sfxOf = t => (/attacks with/.test(t) ? 'attack' : /destroyed|depleted/.test(t) ? 'destroy' : /lose[s]? \d+ Life/.test(t) ? 'hit' : /summon|deploy/.test(t) ? 'summon' : /draw/.test(t) ? 'card' : '');
-bindHost({ name: 'web', view: webView, log(t) { if (SETTINGS.sound) sfx(sfxOf(t)); } });
+function choiceHTML(d) {
+  if (!d.cards || !d.cards.length) return d.html || '';
+  if (d.cardsStyle === 'mull') return `<div class="mull-list">${d.cards.map(id => mullCardHTML(CARDS[id])).join('')}</div>` + (d.html || '');
+  return (d.html || '') + cardStripHTML(d.cards, d.cardsHead);
+}
+function webDecide(seat, d) {
+  switch (d && d.kind) {
+    case 'choice': return modal({ title: d.title, html: choiceHTML(d), buttons: d.buttons, peek: d.peek, wide: d.wide });
+    case 'pick': return webPick(d);
+    case 'payment': return webPayment(CARDS[d.card], d.cost, d.L);
+    case 'info': return modal({ title: d.title, html: d.html, buttons: [{ label: 'Close', cls: 'cancel', value: null }] });
+    default: return Promise.reject(new Error('unknown decision record: ' + JSON.stringify(d)));
+  }
+}
+bindHost({ name: 'web', view: webView, decide: webDecide, log(t) { if (SETTINGS.sound) sfx(sfxOf(t)); } });

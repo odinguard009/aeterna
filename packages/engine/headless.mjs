@@ -6,17 +6,27 @@
 //   import { playHeadless } from './packages/engine/headless.mjs';
 //   const r = await playHeadless({ seed: 7, deckA: 'red', deckB: 'mitra' });   // { over, winner, turn, hash, views, ... }
 //
-// WEB_GAPS: web prompts the engine still calls directly. They are human-only paths, so a CPU-vs-CPU match never
-// reaches them; here they throw. M3 (phase F3) routes every one through io.decide and empties this list
-// (test H82-02 keeps it shrink-only).
+// WEB_GAPS: web functions the engine still calls directly; empty since v0.83.0 (F3 = M3 part 1: every human prompt
+// is a decision record through io.decide, packages/engine/src/05b-decide.js). Test H82-02 keeps it empty.
+//
+// Human seat (v0.83.0): playHeadless({ human: true, answer }) makes the first seat a human whose decisions are
+// answered by answer(seat, record) (default firstAnswer). It has no board actions yet (M3 part 2), so the CPU plays its
+// own turns (human: 'pass' passes them instead); every prompt the engine gives that seat still goes to answer().
 import vm from 'node:vm';
 import { engineScript } from '../../tools/build.mjs';
 
-export const WEB_GAPS = ['ask', 'askBlock', 'askPayment', 'cardStripHTML', 'humanFlashChoice', 'info', 'mullCardHTML', 'pickFromField', 'prepareHumanMagic'];
+export const WEB_GAPS = [];
+
+/** Scripted answer: the first usable button of a choice, the first glowing card of a pick, no payment plan (cancel). */
+export function firstAnswer(seat, d) {
+  if (d.kind === 'choice') { const b = (d.buttons || []).find(x => !x.hidden && !x.dis); return b ? b.value : null; }
+  if (d.kind === 'pick') return d.uids && d.uids.length ? d.uids[0] : (d.buttons && d.buttons[0] ? d.buttons[0].value : null);
+  return null;
+}
 
 const EXPORTS = `
-;globalThis.__engine = { io, bindHost, VIEW_TYPES, startNewGame, PREBUILT, PRESET_DECK, VERSION, CARDS, matchSummary, checkInvariants,
-  setSimDeckB(d) { SIM_DECK_B = d; }, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, setFuzz(o) { FUZZ = Object.assign({}, o || {}); },
+;globalThis.__engine = { io, bindHost, VIEW_TYPES, DECISION_KINDS, cpuTurn, ABORT, startNewGame, PREBUILT, PRESET_DECK, VERSION, CARDS, matchSummary, checkInvariants,
+  setSimDeckB(d) { SIM_DECK_B = d; }, setSimHuman(v) { SIM_HUMAN = !!v; }, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, setFuzz(o) { FUZZ = Object.assign({}, o || {}); },
   get G() { return G; }, get SIM() { return SIM; } };
 `;
 
@@ -42,8 +52,8 @@ const deckOf = (E, d) => (typeof d === 'string' ? (E.PREBUILT.find(x => x.id ===
 
 /** Plays one CPU-vs-CPU match to the end. deckA/deckB: a prebuilt id ('red', 'mitra', ...) or a {cardId: count} map.
  *  Checks the rules invariants after every board view. Resolves a plain summary; never rejects. */
-export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', timeoutMs = 60000, profiles = null, fuzz = null } = {}) {
-  const E = loadEngine(), views = {}, errors = [];
+export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', timeoutMs = 60000, profiles = null, fuzz = null, human = false, answer = firstAnswer } = {}) {
+  const E = loadEngine(), views = {}, errors = [], decisions = [];
   let logs = 0;
   const A = deckOf(E, deckA), B = deckOf(E, deckB);
   if (!A || !B) return { over: false, errors: ['unknown deck ' + (A ? deckB : deckA)] };
@@ -55,22 +65,37 @@ export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', t
       views[ev.type] = (views[ev.type] || 0) + 1;
       if (ev.type === 'board' && E.G && errors.length < 3) { try { E.checkInvariants(); } catch (e) { errors.push('invariant: ' + e.message); } }
     },
-    log() { logs++; }
+    log() { logs++; },
+    async decide(seat, d) {
+      if (!d || !E.DECISION_KINDS.includes(d.kind)) throw new Error('unknown decision record ' + JSON.stringify(d));
+      const rec = JSON.parse(JSON.stringify(d));        // every record is serializable (M4 replays, M6 server)
+      const v = await answer(seat, rec);
+      if (JSON.stringify(v === undefined ? null : v) === undefined) throw new Error('answer is not serializable');
+      decisions.push({ seat, kind: d.kind, v: v === undefined ? null : v });
+      return v === undefined ? null : v;
+    }
   });
   for (const k of Object.keys(E.PRESET_DECK)) delete E.PRESET_DECK[k];
   Object.assign(E.PRESET_DECK, A);
   E.setSimDeckB(B);
   if (profiles) E.setSimProfiles(profiles);
   if (fuzz) E.setFuzz(fuzz);
+  E.setSimHuman(human);
   const onRej = e => { if (errors.length < 3) errors.push('unhandled: ' + (e && e.stack ? e.stack.split('\n').slice(0, 3).join(' | ') : String(e))); };
   process.on('unhandledRejection', onRej);
   const t0 = Date.now();
   try {
     await E.startNewGame({ seed });
-    while (!(E.G && E.G.over) && !errors.length && Date.now() - t0 < timeoutMs) await new Promise(r => setTimeout(r, 2));
+    while (!(E.G && E.G.over) && !errors.length && Date.now() - t0 < timeoutMs) {
+      await new Promise(r => setTimeout(r, 2));
+      if (human && E.G && E.G.turnResolver && !E.G.over) {      // the human seat's own turn: no board actions (M3 part 2), so the
+        const r = E.G.turnResolver; E.G.turnResolver = null;     // CPU plays its turn; its effect prompts still go to answer()
+        try { if (human === 'pass') r(); else { E.G.busy = true; await E.cpuTurn(E.G.p.player); r(); } } catch (e) { if (e !== E.ABORT) throw e; }
+      }
+    }
   } catch (e) { errors.push('thrown: ' + (e && e.message)); } finally { process.off('unhandledRejection', onRej); }
   const G = E.G, over = !!(G && G.over);
-  return { seed, over, errors, views, logs, ms: Date.now() - t0, build: E.VERSION, ...(over ? E.matchSummary() : {}), lives: G ? [G.p.player.life, G.p.opponent.life] : null };
+  return { seed, over, errors, views, logs, decisions, ms: Date.now() - t0, build: E.VERSION, ...(over ? E.matchSummary() : {}), lives: G ? [G.p.player.life, G.p.opponent.life] : null };
 }
 
 // CLI: node packages/engine/headless.mjs [seed] [deckA] [deckB]

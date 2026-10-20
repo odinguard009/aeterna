@@ -11,7 +11,7 @@ $, ERR_LOG, errReport, errNotice, onGameError
 ## apps/web/src/00c-theme.js (41 lines, ~0.7k tokens) — THEME (v0.63.0, UI/UX overhaul U1; docs/DESIGN.md section 0)
 THEME_KEY, THEME_COLS, THEME, applyTheme, setTheme
 
-## packages/protocol/src/00p-protocol.js (32 lines, ~0.5k tokens) — HOST PORT (v0.82.0, phase F2 = monorepo step M2; docs/ai/monorepo-plan.md "Design" 1)
+## packages/protocol/src/00p-protocol.js (32 lines, ~0.6k tokens) — HOST PORT (v0.82.0, phase F2 = monorepo step M2; docs/ai/monorepo-plan.md "Design" 1)
 VIEW_TYPES, HOST_NONE, io, bindHost
 
 ## packages/engine/src/01-cards.js (32 lines, ~0.6k tokens) — CARD DATABASE (Training cards + the built-in pack is registered further below)
@@ -71,8 +71,11 @@ COLORS, BUILTIN_IDS, CARDS_KEY, IMPORTED, CARDS_VER, parseCard, registerImported
 ## packages/engine/src/04-decks.js (84 lines, ~1.6k tokens) — DECK STORAGE AND VALIDATION
 deckTotal, cleanDeck, validateDeck, fmtName, setFormat, errSummary, PREBUILT, defaultDeck, SLOT_KEY, SLOTS, loadSlots, PLAYER_DECK, saveDeck, switchSlot, loadPrebuilt, CPU_DECK_NAME, cpuDeckFor
 
-## packages/engine/src/05-state.js (63 lines, ~1.2k tokens) — GAME STATE
-SET_KEY, SETTINGS, SPEEDS, saveSettings, G, fnv, recIn, SIM_DECK_B, delay, wait, log, mkInst, newPlayer, contractToDeck, redrawHand, cpuWantsRedraw, newGame
+## packages/engine/src/05-state.js (64 lines, ~1.2k tokens) — GAME STATE
+SET_KEY, SETTINGS, SPEEDS, saveSettings, G, fnv, recIn, SIM_DECK_B, SIM_HUMAN, delay, wait, log, mkInst, newPlayer, contractToDeck, redrawHand, cpuWantsRedraw, newGame
+
+## packages/engine/src/05b-decide.js (81 lines, ~2k tokens) — DECISIONS (v0.83.0, phase F3 = monorepo step M3 part 1; docs/ai/monorepo-plan.md "Design" 1)
+DECISION_KINDS, cardIds, decide, ask, info, pickFromField, askBlock, askPayment, uniqById, prepareHumanMagic, humanFlashChoice
 
 ## packages/engine/src/06-rules.js (461 lines, ~8.5k tokens) — RULES HELPERS
 fieldList, isGW, freeCores, freeTotal, totalCores, reserveTotal, minCores, isSpiritForm, isUlt, lvBase, lvNo, summonOK, spare, coresAvailable, isCountLv, lvIndex, bpOf, ocActive, braveBp, isNexusBrave, braveFits, braveTargets, combineBrave, canSeparate, separateBrave, braveAfford, braveSummon, braveRecheck, shedBrave, TOKEN_SUPPLY, tokenIdsOf, prepareTokens, tokenCoreRoom, canSendToken, sendToken, tokenHome, symTurnCols, symZeroAllOn, attackSymbols, symAttrs, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, noBlockActive, costAltActive, extraReduction, legacyPlan, effCost, legacyPay, canPlayCard, takeCores, payCost, checkDepletion, leaveEvent, removeSpirit, lostHeard, leaveStandby, releaseStandby, poss, who, draw, handUp, summon, setBurst, mirageUsable, magicFx, magicFromTrash, magicFxAt, magicTrashOK, magicSources, magicTargets, soulMagicHolder, soulMagicOK, soulMagicPick, magicUsable, magicText, castMagic, addCore, removeCore, moveSoulTo, moveCore, swapSoul, returnSoul
@@ -89,11 +92,11 @@ cpuCanPlay, cpuLevelUp, cpuBurstFlash, cpuFlashChoice, cpuCastMain, cpuMain, cpu
 ## packages/engine/src/09a-cpu-eval.js (120 lines, ~2k tokens) — CPU EVALUATION POLICY (v0.32, Aegis study point 7)
 CPU_PROFILES, CPU_PROFILE_NAMES, CPU_SIM_PROFILES, cpuProfileName, cpuW, lifeValue, lifeLoss, symOf, unitValue, cpuEval, cpuPlayScore, FUZZ, fuzzPick, cpuPlayChoice, cpuKeepMagicOrPay, cpuLethal, guardNeed, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile
 
-## apps/web/src/10-modals.js (140 lines, ~2.1k tokens) — MODALS (promise based)
-paintModal, modal, PEEK, endPeek, paintPeek, startPeek, peekRefresh, closeModal, modalPress, ask, PICK, clearPick, pickFromField, info, askBlock, askPayment
+## apps/web/src/10-modals.js (130 lines, ~1.9k tokens) — MODALS (promise based)
+paintModal, modal, PEEK, endPeek, paintPeek, startPeek, peekRefresh, closeModal, modalPress, PICK, clearPick, webPick, webPayment
 
-## apps/web/src/11-human.js (334 lines, ~6.9k tokens) — HUMAN ACTIONS
-humanCan, legalityHTML, FX_KW_START, FX_LINE_STOP, effectLines, fxMark, slashBreak, effectTextHTML, cardDetailHTML, residualHTML, cardFaceHTML, cardStripHTML, uniqById, mullCardHTML, openZoom, handButtons, runHandAction, humanMirage, prepareHumanMagic, humanCast, humanFlashChoice, showCardDetail, openHandModal, humanPlay, humanBraveSummon, humanBraveField, openFieldModal, humanAttack, onNext, finishTurn
+## apps/web/src/11-human.js (285 lines, ~5.7k tokens) — HUMAN ACTIONS
+humanCan, legalityHTML, FX_KW_START, FX_LINE_STOP, effectLines, fxMark, slashBreak, effectTextHTML, cardDetailHTML, residualHTML, cardFaceHTML, cardStripHTML, mullCardHTML, openZoom, handButtons, runHandAction, humanMirage, humanCast, showCardDetail, openHandModal, humanPlay, humanBraveSummon, humanBraveField, openFieldModal, humanAttack, onNext, finishTurn
 
 ## apps/web/src/12-zones.js (70 lines, ~1.6k tokens) — ZONES, LOG, RULES COVERAGE
 openZoneModal, openLogModal, showRules
@@ -113,8 +116,8 @@ PLAY_SPEEDS, playChips, renderPlay, playSet
 ## apps/web/src/13d-pages.js (54 lines, ~1k tokens) — SETTINGS, HOW TO PLAY, LIBRARY PAGES (v0.68.0, UI/UX overhaul U4; docs/DESIGN.md section 0, mockup docs/design/mockup-v11.html "Settings")
 MAT_KEY, MAT, matUse, shrinkMat, matSet, matClear, setMsg, setSection, renderSetPage
 
-## apps/web/src/13e-host.js (39 lines, ~0.6k tokens) — WEB HOST (v0.82.0, phase F2 = M2): the browser answers the engine's port (packages/protocol/src/00p-protocol.js).
-AUDIO, sfx, showGameOver, webView, sfxOf
+## apps/web/src/13e-host.js (54 lines, ~0.9k tokens) — WEB HOST (v0.82.0, phase F2 = M2): the browser answers the engine's port (packages/protocol/src/00p-protocol.js).
+AUDIO, sfx, showGameOver, webView, sfxOf, choiceHTML, webDecide
 
 ## apps/web/src/14-images.js (152 lines, ~2.6k tokens) — CARD IMAGES
 IMG, IDB, normKey, idbOpen, idbTx, setImg, loadImages, shrinkImage, stripExt, findCardByFile, findCardByKey, importImages, clearImages, imgCls, imgSty, refreshViews, libMsg, renderLibrary, deckToText, textToDeck, downloadText, readFileText, libAction

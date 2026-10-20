@@ -28,7 +28,7 @@ test('H82-02 the engine calls no web function except the prompts left for M3 (sh
   const used = new Set();
   for (const p of engine) for (const m of strip(p.src).matchAll(/(?<![\w$.])[A-Za-z_$][\w$]*/g)) if (names.has(m[0])) used.add(m[0]);
   assert.deepEqual([...used].sort(), [...WEB_GAPS].sort(), 'update WEB_GAPS in packages/engine/headless.mjs only by removing names');
-  assert.ok(WEB_GAPS.length <= 9, 'WEB_GAPS may only shrink');
+  assert.equal(WEB_GAPS.length, 0, 'v0.83.0 (M3 part 1): the engine calls no web function');
 });
 
 test('H82-03 headless CPU vs CPU: every prebuilt colour plays to the end with valid view records', async () => {
@@ -63,5 +63,5 @@ test('H82-05 the browser binds the web host; the port rejects unknown records; a
   assert.deepEqual(errors, []);
   const E = loadEngine();
   assert.equal(E.io.host.name, 'none');
-  await assert.rejects(E.io.decide('player', { kind: 'x' }), /M3/);
+  await assert.rejects(E.io.decide('player', { kind: 'x' }), /no host answers/);
 });

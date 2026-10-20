@@ -2,6 +2,17 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.83.0
+- Lane: U/I
+- **Host port, part 2a (roadmap phase F, item F3 = monorepo step M3 part 1): every prompt of a human seat is now a decision record through `io.decide`; the engine calls no web function any more.**
+  - `packages/engine/src/05b-decide.js` (new): `decide(seat, record)` and the engine-side `ask`, `info`, `pickFromField`, `askBlock`, `askPayment`; record kinds `choice` (buttons, optional `cards: [id]` strip, `cardsStyle: 'mull'` for the Starting Hand), `pick` (field uids), `payment` (card id, cost) and `info`. Records and answers are plain, serializable values (cards by id, Spirits by uid). `prepareHumanMagic` and `humanFlashChoice` moved here from the web part; the 14 card strips of engine prompts are now `cards` lists the host draws.
+  - Web host `apps/web/src/13e-host.js` `webDecide`: opens the same modal, field pick (`webPick`) and payment dialog (`webPayment`) as before; the input record of v0.26 replays is unchanged.
+  - `packages/engine/headless.mjs`: `WEB_GAPS` is empty; `playHeadless({ human: true, answer })` makes the first seat a human whose prompts are answered by a script (default `firstAnswer`); the CPU still plays that seat's own turns until board actions go through the port (F3 part 2).
+  - Tests `tests/unit/decide83.test.mjs`: H83-01 headless human seat in 4 matches (choices + field picks, serializable records, clean end), H83-02 recorded answers reproduce the match (same hash), another script changes it, H83-03 the web host draws the strip, the Starting Hand list and the info dialog; H82-02/05 updated (no web function left).
+  - Player-view pass (PC 1366x768, phone 412x915 and 915x412): coin toss, Starting Hand, payment dialog + View Field, effect prompts with strips, Flash Timing, block pick, zoom and Game Log unchanged, no console errors.
+- Backup branch `backup/v0.82.0` (state before M3).
+- Revert note: `git revert` of the v0.83.0 commit restores v0.82.0 (prompt routing only; no card data or rules change).
+
 ## v0.82.0
 - Lane: U/I
 - **Host port, part 1 (roadmap phase F, item F2 = monorepo step M2): the engine now reaches the page only through a port, and a CPU-vs-CPU match runs in Node without a browser.**

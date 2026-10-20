@@ -94,7 +94,7 @@ async function sentToTrashFx(c, cards, from) {
     const card = CARDS[x.id], tt = card.trashTrigger;
     if (!tt || !tt.from.includes(from) || !c.p.trash.includes(x) || !fxMatch(CARDS[c.src.id], tt.by) || G.over) continue;
     if (tt.add) {
-      const yes = c.p.cpu ? true : await ask({ title: `✨ ${card.name}`, peek: true, wide: true, html: `It was sent to the Trash from your ${from === 'deck' ? 'Deck' : 'Hand'}. Add it to your Hand${tt.gwCore ? ' (then +' + tt.gwCore + ' core to a Grandwalker Nexus)' : ''}?` + cardStripHTML([x]),
+      const yes = c.p.cpu ? true : await ask({ title: `✨ ${card.name}`, peek: true, wide: true, html: `It was sent to the Trash from your ${from === 'deck' ? 'Deck' : 'Hand'}. Add it to your Hand${tt.gwCore ? ' (then +' + tt.gwCore + ' core to a Grandwalker Nexus)' : ''}?`, cards: cardIds([x]),
         buttons: [{ label: 'Add to Hand', cls: 'primary', value: true }, { label: 'Keep in Trash', cls: 'cancel', value: false }] });
       if (!yes) continue;
       removeFrom(c.p.trash, x); c.p.hand.push(x); log(`${card.name} is added to the Hand (${who(c.p)}).`); handUp(c.p, 1);
@@ -123,7 +123,7 @@ async function oppAttackHandFx(D) {                    // D = the player whose o
     let ch;
     if (D.cpu) { if (!A.spirits.some(s => !s.exhausted && !s.noAB)) continue; ch = { inst: h, target: null, plan: null, ctx: 'flash' }; }
     else {
-      const go = await ask({ title: `⚡ ${esc(card.name)}`, peek: true, wide: true, html: `The opposing Attack Step starts. Send ${oh.gwToVoid} cores from ${esc(CARDS[gw[0].id].name)} to the Void and pay ${effCost(D, card)} to use ${esc(card.name)} from your Hand?` + cardStripHTML([h]),
+      const go = await ask({ title: `⚡ ${esc(card.name)}`, peek: true, wide: true, html: `The opposing Attack Step starts. Send ${oh.gwToVoid} cores from ${esc(CARDS[gw[0].id].name)} to the Void and pay ${effCost(D, card)} to use ${esc(card.name)} from your Hand?`, cards: cardIds([h]),
         buttons: [{ label: 'Use it', cls: 'primary', value: true }, { label: 'No', cls: 'cancel', value: false }] });
       if (!go) continue;
       ch = await prepareHumanMagic(D, h, 'flash'); if (!ch) continue;

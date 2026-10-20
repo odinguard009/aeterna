@@ -1249,8 +1249,8 @@ applyTheme();
    Node runner, later the server). Every record passed through the port is a plain, serializable object.
      io.view(ev)            the board or a screen changed; the host draws (web) or ignores it (headless)
      io.log(text)           one game log line was written (G.history keeps the text; hosts may react, e.g. sounds)
-     io.decide(p, d)        M3 (next step): every human/CPU choice; until then the engine still calls the web
-                            prompts directly and only the CPU paths run headless
+     io.decide(seat, d)     v0.83.0 (M3 part 1): every prompt of a human seat, as a decision record (kinds and answers:
+                            packages/engine/src/05b-decide.js); resolves the answer. M3 part 2: the CPU answers it too
    View records (`type`):
      board                  redraw the playmat from G
      decks                  the format or the deck list changed (lobby + deck builder)
@@ -1262,7 +1262,7 @@ const VIEW_TYPES = ['board', 'decks', 'screen', 'reset', 'matchEnd'];
 /** @typedef {{ type: string, id?: string, winner?: string }} ViewRecord */
 /** @typedef {{ name: string, view: (ev: ViewRecord) => void, log: (text: string) => void, decide: (p: any, d: any) => Promise<any> }} Host */
 /** @type {Host} */
-const HOST_NONE = { name: 'none', view: () => {}, log: () => {}, decide: () => Promise.reject(new Error('io.decide: no host answers decisions yet (M3)')) };
+const HOST_NONE = { name: 'none', view: () => {}, log: () => {}, decide: () => Promise.reject(new Error('io.decide: no host answers decisions (bind one with bindHost)')) };
 const io = {
   host: HOST_NONE,
   view(ev) { this.host.view(ev); },
@@ -1280,7 +1280,7 @@ function bindHost(h) {
    type: 'Spirit' | 'Nexus' | 'Magic'      symbol: card color     symbols: number of symbols
    reduction: {color: n}         levels: [{cores, bp}]  (Nexus levels have no bp)
    --------------------------------------------------------------------- */
-const VERSION = '0.82.0';
+const VERSION = '0.83.0';
 const CARDS = {};
 function defCard(o) {
   CARDS[o.id] = Object.assign({ type: 'Spirit', reduction: {}, symbols: 1, families: [], keywords: [], implemented: true, desc: 'Vanilla test card (no effect).', block: 'A' }, o);
@@ -1687,7 +1687,7 @@ async function chooseCard(c, L, title, text, optional) {
   const ids = Array.from(new Set(L.map(x => x.id))).slice(0, 8);
   const buttons = ids.map(i => ({ label: CARDS[i].name, value: i }));
   if (optional) buttons.push({ label: 'Skip', cls: 'cancel', value: null });
-  const id = await ask({ title, peek: true, wide: true, html: text + cardStripHTML(ids), buttons });
+  const id = await ask({ title, peek: true, wide: true, html: text, cards: cardIds(ids), buttons });
   if (id == null) return optional ? null : L[0];
   return L.find(x => x.id === id) || L[0];
 }
@@ -1791,7 +1791,7 @@ const FX_ACTIONS = {
       if (c.p.cpu) t = L.slice().sort((x, y) => CARDS[y.id].cost - CARDS[x.id].cost)[0];
       else {
         const ids = Array.from(new Set(L.map(x => x.id))).slice(0, 8);
-        const id = await ask({ title: `✨ ${CARDS[c.src.id].name}`, peek: true, wide: true, html: 'Choose a card to return from your Trash to your Hand.' + cardStripHTML(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
+        const id = await ask({ title: `✨ ${CARDS[c.src.id].name}`, peek: true, wide: true, html: 'Choose a card to return from your Trash to your Hand.', cards: cardIds(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
         t = L.find(x => x.id === id) || L[0];
       }
       removeFrom(c.p.trash, t); c.p.hand.push(t); c.ctx.returned = t; handUp(c.p, 1); log(`${CARDS[c.src.id].name}: ${CARDS[t.id].name} returns from the Trash to the Hand.`);
@@ -1831,7 +1831,7 @@ const FX_ACTIONS = {
       if (a.rest === 'trash') { for (const x of rest) c.p.trash.push(x); if (rest.length) log(`${nm}: ${rest.length} card${rest.length === 1 ? '' : 's'} discarded.`); }
       else {
         let top = a.rest === 'top';      // v0.75: "either the decktop or the deckbottom": the owner chooses (CPU: bottom)
-        if (a.rest === 'either' && rest.length && !c.p.cpu) top = (await ask({ title: `✨ ${nm}`, peek: true, wide: true, html: 'Return the remaining revealed card(s) to the top or the bottom of your Deck?' + cardStripHTML(rest), buttons: [{ label: 'Decktop', cls: 'primary', value: true }, { label: 'Deckbottom', cls: 'blue', value: false }] })) === true;
+        if (a.rest === 'either' && rest.length && !c.p.cpu) top = (await ask({ title: `✨ ${nm}`, peek: true, wide: true, html: 'Return the remaining revealed card(s) to the top or the bottom of your Deck?', cards: cardIds(rest), buttons: [{ label: 'Decktop', cls: 'primary', value: true }, { label: 'Deckbottom', cls: 'blue', value: false }] })) === true;
         if (top) c.p.deck.unshift(...rest); else for (const x of rest) c.p.deck.push(x);
       }
       c.ctx.did = !!t;
@@ -1880,7 +1880,7 @@ const FX_ACTIONS = {
       if (c.p.cpu) t = L.slice().sort((x, y) => CARDS[y.id].cost - CARDS[x.id].cost)[0];
       else {
         const ids = Array.from(new Set(L.map(x => x.id))).slice(0, 8);
-        const id = await ask({ title: `✨ ${CARDS[c.src.id].name}`, peek: true, wide: true, html: (a.pay ? 'Choose a card to summon/deploy (you pay its cost).' : 'Choose a card to summon/deploy without paying the cost.') + cardStripHTML(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
+        const id = await ask({ title: `✨ ${CARDS[c.src.id].name}`, peek: true, wide: true, html: (a.pay ? 'Choose a card to summon/deploy (you pay its cost).' : 'Choose a card to summon/deploy without paying the cost.'), cards: cardIds(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
         t = L.find(x => x.id === id) || L[0];
       }
       await summonBy(c.p, t, a.pay);
@@ -1927,7 +1927,7 @@ const FX_ACTIONS = {
       const t = await chooseCard(c, FX_ACTIONS.SOUL_SUMMON.cands(c, a), `✨ ${CARDS[c.src.id].name}`, 'Choose a card in Soul State.', true);
       if (!t) { c.ctx.did = false; return; }
       let summon = canPlaceBy(c.p, t, a.pay);
-      if (summon && a.orReturn && !c.p.cpu) summon = (await ask({ title: `✨ ${CARDS[t.id].name}`, peek: true, wide: true, html: 'Summon/deploy it, or return it to your Hand?' + cardStripHTML([t]), buttons: [{ label: 'Summon / deploy', cls: 'primary', value: true }, { label: 'Return to Hand', cls: 'blue', value: false }] })) !== false;
+      if (summon && a.orReturn && !c.p.cpu) summon = (await ask({ title: `✨ ${CARDS[t.id].name}`, peek: true, wide: true, html: 'Summon/deploy it, or return it to your Hand?', cards: cardIds([t]), buttons: [{ label: 'Summon / deploy', cls: 'primary', value: true }, { label: 'Return to Hand', cls: 'blue', value: false }] })) !== false;
       if (summon) { if (!(await summonBy(c.p, t, a.pay))) { c.ctx.did = false; return; } }
       else { removeFrom(c.p.soulState, t); t.inSoulState = false; c.p.hand.push(t); handUp(c.p, 1); log(`${CARDS[c.src.id].name}: ${CARDS[t.id].name} returns from Soul State to the Hand.`); }
     } },
@@ -2123,13 +2123,13 @@ const FX_ACTIONS = {
       for (const x of top) { c.p.trash.push(x); if (fxMatch(CARDS[x.id], a.match)) k++; }
       log(`${CARDS[c.src.id].name}: ${top.length} card${top.length === 1 ? '' : 's'} from the Deck go to the Trash.`);
       for (const x of top.filter(y => CARDS[y.id].trashSoul && c.p.trash.includes(y))) {      // e.g. Do: "when sent to the Trash from the Deck by Contractor Mitra, you can let it enter Soul State"
-        const yes = c.p.cpu ? true : (await ask({ title: `✨ ${CARDS[x.id].name}`, peek: true, wide: true, html: 'It was sent to the Trash from your Deck. Let it enter Soul State?' + cardStripHTML([x]), buttons: [{ label: 'Enter Soul State', cls: 'primary', value: true }, { label: 'Keep in Trash', cls: 'cancel', value: false }] }));
+        const yes = c.p.cpu ? true : (await ask({ title: `✨ ${CARDS[x.id].name}`, peek: true, wide: true, html: 'It was sent to the Trash from your Deck. Let it enter Soul State?', cards: cardIds([x]), buttons: [{ label: 'Enter Soul State', cls: 'primary', value: true }, { label: 'Keep in Trash', cls: 'cancel', value: false }] }));
         if (yes) toSoulState(c.p, x);
       }
       const sn = CARDS[c.src.id], gw = sn.type === 'Nexus' && (sn.families || []).includes('Grandwalker');
       for (const x of top.filter(y => CARDS[y.id].trashHand && gw && sn.name.toLowerCase().includes(CARDS[y.id].trashHand.toLowerCase()) && c.p.trash.includes(y))) {   // e.g. Yaj-Veda: "(Once per Turn: Same Name) when sent to the Trash from the deck by your "Brahma" Grandwalker Nexus, you can add it to the Hand"
         const key = 'trashHand:' + CARDS[x.id].name; if (c.p.onceUsed && c.p.onceUsed[key] === G.turnNo) continue;
-        const yes = c.p.cpu ? true : (await ask({ title: `✨ ${CARDS[x.id].name}`, peek: true, wide: true, html: 'It was sent to the Trash from your Deck. Add it to your Hand?' + cardStripHTML([x]), buttons: [{ label: 'Add to Hand', cls: 'primary', value: true }, { label: 'Keep in Trash', cls: 'cancel', value: false }] }));
+        const yes = c.p.cpu ? true : (await ask({ title: `✨ ${CARDS[x.id].name}`, peek: true, wide: true, html: 'It was sent to the Trash from your Deck. Add it to your Hand?', cards: cardIds([x]), buttons: [{ label: 'Add to Hand', cls: 'primary', value: true }, { label: 'Keep in Trash', cls: 'cancel', value: false }] }));
         if (!yes) continue;
         c.p.onceUsed = c.p.onceUsed || {}; c.p.onceUsed[key] = G.turnNo;
         removeFrom(c.p.trash, x); c.p.hand.push(x); log(`${CARDS[x.id].name} is added to the Hand (${who(c.p)}).`); handUp(c.p, 1);
@@ -2798,7 +2798,7 @@ Object.assign(FX_ACTIONS, {
         if (c.opp.cpu) t = H().sort((x, y) => CARDS[x.id].cost - CARDS[y.id].cost)[0];
         else {
           const ids = Array.from(new Set(H().map(x => x.id))).slice(0, 8);
-          const id = await ask({ title: `✨ ${_nm(c)}`, peek: true, wide: true, html: 'Choose a card from your Hand to put onto your Removed Zone.' + cardStripHTML(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
+          const id = await ask({ title: `✨ ${_nm(c)}`, peek: true, wide: true, html: 'Choose a card from your Hand to put onto your Removed Zone.', cards: cardIds(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
           t = H().find(x => x.id === id) || H()[0];
         }
         fromHandRemoved(c.opp, t); c.ctx.removedCards.push(t);
@@ -3120,7 +3120,7 @@ async function sentToTrashFx(c, cards, from) {
     const card = CARDS[x.id], tt = card.trashTrigger;
     if (!tt || !tt.from.includes(from) || !c.p.trash.includes(x) || !fxMatch(CARDS[c.src.id], tt.by) || G.over) continue;
     if (tt.add) {
-      const yes = c.p.cpu ? true : await ask({ title: `✨ ${card.name}`, peek: true, wide: true, html: `It was sent to the Trash from your ${from === 'deck' ? 'Deck' : 'Hand'}. Add it to your Hand${tt.gwCore ? ' (then +' + tt.gwCore + ' core to a Grandwalker Nexus)' : ''}?` + cardStripHTML([x]),
+      const yes = c.p.cpu ? true : await ask({ title: `✨ ${card.name}`, peek: true, wide: true, html: `It was sent to the Trash from your ${from === 'deck' ? 'Deck' : 'Hand'}. Add it to your Hand${tt.gwCore ? ' (then +' + tt.gwCore + ' core to a Grandwalker Nexus)' : ''}?`, cards: cardIds([x]),
         buttons: [{ label: 'Add to Hand', cls: 'primary', value: true }, { label: 'Keep in Trash', cls: 'cancel', value: false }] });
       if (!yes) continue;
       removeFrom(c.p.trash, x); c.p.hand.push(x); log(`${card.name} is added to the Hand (${who(c.p)}).`); handUp(c.p, 1);
@@ -3149,7 +3149,7 @@ async function oppAttackHandFx(D) {                    // D = the player whose o
     let ch;
     if (D.cpu) { if (!A.spirits.some(s => !s.exhausted && !s.noAB)) continue; ch = { inst: h, target: null, plan: null, ctx: 'flash' }; }
     else {
-      const go = await ask({ title: `⚡ ${esc(card.name)}`, peek: true, wide: true, html: `The opposing Attack Step starts. Send ${oh.gwToVoid} cores from ${esc(CARDS[gw[0].id].name)} to the Void and pay ${effCost(D, card)} to use ${esc(card.name)} from your Hand?` + cardStripHTML([h]),
+      const go = await ask({ title: `⚡ ${esc(card.name)}`, peek: true, wide: true, html: `The opposing Attack Step starts. Send ${oh.gwToVoid} cores from ${esc(CARDS[gw[0].id].name)} to the Void and pay ${effCost(D, card)} to use ${esc(card.name)} from your Hand?`, cards: cardIds([h]),
         buttons: [{ label: 'Use it', cls: 'primary', value: true }, { label: 'No', cls: 'cancel', value: false }] });
       if (!go) continue;
       ch = await prepareHumanMagic(D, h, 'flash'); if (!ch) continue;
@@ -3442,7 +3442,7 @@ async function payInvokeCost(p, f, c) {
     if (p.cpu) t = L.slice().sort((a, b) => CARDS[a.id].cost - CARDS[b.id].cost)[0];
     else {
       const ids = Array.from(new Set(L.map(x => x.id))).slice(0, 8);
-      const id = await ask({ title: `✨ ${nm}`, peek: true, wide: true, html: 'Choose a card to discard from your Hand (the cost).' + cardStripHTML(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
+      const id = await ask({ title: `✨ ${nm}`, peek: true, wide: true, html: 'Choose a card to discard from your Hand (the cost).', cards: cardIds(ids), buttons: ids.map(i => ({ label: CARDS[i].name, value: i })) });
       t = L.find(x => x.id === id) || L[0];
     }
     removeFrom(p.hand, t); p.trash.push(t); log(`${nm}: ${who(p)} ${p.cpu ? 'discards' : 'discard'} ${CARDS[t.id].name} (cost).`); return true;
@@ -4011,6 +4011,7 @@ const fnv = (h, t) => { let x = h == null ? 2166136261 : h; for (let i = 0; i < 
 /* v0.26 input record: every prompt answer (m), field pick (k:'pick') and board action (a) of the human, in order */
 function recIn(o) { if (G && G.rec && !G.rec.closed && !G.over) { let x = o; try { x = JSON.parse(JSON.stringify(o)); } catch (e) { G.rec.lossy = true; x = { lossy: true }; } G.rec.inputs.push(x); } }
 let SIM_DECK_B = null;   // test hook (?sim=1 only): the second CPU deck
+let SIM_HUMAN = false;   // test hook (?sim=1 only, v0.83.0): the first seat is a human whose prompts go through io.decide (headless scripted answers)
 const delay = ms => new Promise(r => setTimeout(r, SIM || (REPLAY && REPLAY.fast) ? 0 : Math.round(ms * (SPEEDS[SETTINGS.speed] || 1))));
 async function wait(ms) { const s = SESSION; await delay(ms); if (s !== SESSION) throw ABORT; }
 function log(t) { if (!G) return; G.last = t; G.history.push(t); G.hh = fnv(G.hh, t); G.hn = (G.hn || 0) + 1;
@@ -4053,12 +4054,93 @@ function newGame(deckA, deckB, format) {
   format = format || FORMAT;
   return {
     format, steps: format === 'standard' ? STEPS_STANDARD : STEPS,
-    p: { player: newPlayer('player', SIM ? 'Sim A' : 'You', SIM, deckA), opponent: newPlayer('opponent', SIM ? 'Sim B' : 'CPU', true, deckB) },
+    p: { player: newPlayer('player', SIM ? 'Sim A' : 'You', SIM && !SIM_HUMAN, deckA), opponent: newPlayer('opponent', SIM ? 'Sim B' : 'CPU', true, deckB) },
     step: 0, turnNo: 0, active: 'player', next: 'player', over: false, winner: null, busy: true,
     last: 'Match started.', history: [], turnResolver: null, burstQ: [], evQ: []
   };
 }
 
+/* ---------------------------------------------------------------------
+   DECISIONS (v0.83.0, phase F3 = monorepo step M3 part 1; docs/ai/monorepo-plan.md "Design" 1)
+   Every prompt of a human seat goes through the port: decide(seat, record) -> io.decide -> the host answers.
+   A decision record is a plain, serializable object (no functions, no instances; cards and Spirits by id / uid):
+     choice  {title, html, buttons:[{label, value, cls?, dis?, hidden?}], peek?, wide?, cards?:[id], cardsHead?, cardsStyle?:'mull'}
+             -> the value of the pressed button (null = closed)
+     pick    {text, uids:[uid], mark?: uid, buttons?:[{label, value, cls?}]} -> a uid from uids or a button value
+     payment {card: id, cost, L} -> {reserve, by:{uid: n}, rsoul?, fsoul?: uid} or null (cancelled)
+     info    {title, html} -> null
+   Web host: apps/web/src/13e-host.js (modals, field picks, the payment dialog). Headless host: packages/engine/headless.mjs
+   (scripted answers). A match that changed while a decision was open (SESSION moved on) throws ABORT, as the web prompts did.
+   The CPU still decides in 09-cpu.js without the port (M3 part 2: the CPU becomes a port answerer).
+   --------------------------------------------------------------------- */
+const DECISION_KINDS = ['choice', 'pick', 'payment', 'info'];
+const cardIds = L => (L || []).map(x => (typeof x === 'string' ? x : x.id)).filter(id => CARDS[id]);
+async function decide(seat, d) { const s = SESSION; const v = await io.decide(seat, d); if (s !== SESSION) throw ABORT; return v; }
+/** A choice between buttons (the old web ask()); the human seat unless another seat is named. */
+function ask(cfg, seat) { return decide(seat || 'player', Object.assign({ kind: 'choice' }, cfg)); }
+/** A message with one Close button; never throws ABORT (as before M3). */
+function info(title, html, seat) { return io.decide(seat || 'player', { kind: 'info', title, html }); }
+/** Tap a glowing card on the field: {text, uids, mark?, buttons?}. */
+function pickFromField(cfg, seat) { return decide(seat || 'player', Object.assign({ kind: 'pick' }, cfg, { uids: Array.from(cfg.uids || []) })); }
+async function askBlock(att, D, blockers, must) {
+  const sym = CARDS[att.id].symbols;
+  const v = await pickFromField({
+    text: `🛡 <b>${must ? 'You must block!' : 'Block?'}</b> ${esc(CARDS[att.id].name)} attacks with ${bpOf(att)} BP (${sym} symbol${sym === 1 ? '' : 's'}). Your Life: ${D.life}.<br>Tap a glowing Spirit to block with it.`,
+    uids: blockers.map(b => b.uid), mark: att.uid, buttons: must ? [] : [{ label: 'Do not block', cls: 'cancel', value: 'none' }]
+  }, D.key || 'player');
+  return blockers.find(b => b.uid === v) || (must ? blockers[0] : null);
+}
+/** Which cores pay a cost the Reserve cannot cover: the host lets the player choose (web: the payment dialog). */
+function askPayment(card, c, L) { return decide('player', { kind: 'payment', card: card.id, cost: c, L: L || 0 }); }
+const uniqById = L => { const seen = new Set(); return L.filter(x => (seen.has(x.id) ? false : (seen.add(x.id), true))); };
+/* target + payment for a human Magic cast; returns { inst, target, plan } or null when cancelled */
+async function prepareHumanMagic(p, inst, ctx) {
+  ctx = ctx || 'main';
+  const card = CARDS[inst.id], c = effCost(p, card), m = magicFx(card, ctx);
+  let target = null;
+  const tg = magicTargets(p, inst, ctx);
+  if (tg) {
+    const uid = await pickFromField({ text: `✨ <b>${esc(card.name)}</b><br>${esc(MAGIC_FX[m.effect].text(m.value, m))}<br>Tap a glowing Spirit.`, uids: tg.map(t => t.uid), buttons: [{ label: 'Cancel', cls: 'cancel', value: 'none' }] });
+    target = tg.find(t => t.uid === uid) || null;
+    if (!target) return null;
+  }
+  let plan = null, soulMagic = false;
+  if (soulMagicOK(p, card)) {                              // v0.64 Soul Magic: pay the whole cost with the Soul Core, or pay normally
+    if (c > coresAvailable(p)) soulMagic = true;
+    else {
+      const v = await ask({ title: `✨ ${esc(card.name)}: Soul Magic`, html: `Pay the whole cost with just your Soul Core (it goes to the Trash), or pay ${c} core${c === 1 ? '' : 's'} as usual?`,
+        buttons: [{ label: '◆ Pay the Soul Core', cls: 'purple', value: 'soul' }, { label: `Pay ${c}`, cls: 'primary', value: 'normal' }, { label: 'Cancel', cls: 'cancel', value: null }] });
+      if (!v) return null;
+      soulMagic = v === 'soul';
+    }
+  }
+  if (!soulMagic && c > 0 && reserveTotal(p) < c) { plan = await askPayment(card, c, 0); if (!plan) return null; }
+  return { inst, target, plan, ctx, soulMagic };
+}
+async function humanFlashChoice(p, attKey, att, blk) {
+  for (let g = 0; g < 6; g++) {
+    const usable = magicSources(p, 'flash').filter(h => magicUsable(p, h, 'flash'));
+    const acts = []; for (const f of fieldList(p)) for (const x of activatable(p, f, 'FLASH')) acts.push({ f, idx: x.idx, e: x.e });
+    const cadv = cadvSources(p).filter(h => contractAdventTargets(p, h, 'flash').length);
+    const mani = p.hand.filter(h => CARDS[h.id].manifest && manifestTargets(p, h, 'flash').length);
+    const hsp = highSpeedSources(p);                                   // v0.49 High Speed
+    const acc = accelSources(p, 'FLASH');                              // v0.50 Accel
+    if (!usable.length && !acts.length && !cadv.length && !mani.length && !hsp.length && !acc.length) return null;
+    const ctx = `${esc(CARDS[att.id].name)} (${bpOf(att)} BP) is attacking` + (blk ? `, blocked by ${esc(CARDS[blk.id].name)} (${bpOf(blk)} BP)` : '') + '.';
+    const v = await ask({ title: '⚡ Flash Timing', peek: true, wide: true, html: `${ctx}<br>Cast a [Flash] Magic card or use a Flash effect?`, cards: cardIds(uniqById(usable.concat(cadv, mani, hsp, acc.map(x => x.inst)))), cardsHead: 'Cards you can use',
+      buttons: usable.map(h => ({ label: `${CARDS[h.id].name}${p.trash.includes(h) ? ' [from the Trash]' : ''} (Pay ${effCost(p, CARDS[h.id])}) — ${magicText(CARDS[h.id]).replace(/^(\[[^\]]*\])+ /, '')}`, cls: 'purple', value: h.uid })).concat(cadv.map(h => ({ label: `✨ Contract Advent: ${CARDS[h.id].name}`, cls: 'purple', value: 'c:' + h.uid }))).concat(mani.map(h => ({ label: `✨ Manifest: ${CARDS[h.id].name}`, cls: 'purple', value: 'm:' + h.uid }))).concat(hsp.map(h => ({ label: `⚡ High Speed: summon ${CARDS[h.id].name} (Pay ${effCost(p, CARDS[h.id])} from the Reserve)`, cls: 'primary', value: 'h:' + h.uid }))).concat(acc.map(x => ({ label: accelLabel(p, x), cls: 'primary', value: `x:${x.inst.uid}:${x.idx}` }))).concat(acts.map(x => ({ label: `⚡ ${CARDS[x.f.id].name}: ${fxDescribe(x.e)}`.slice(0, 140), cls: 'primary', value: `a:${x.f.uid}:${x.idx}` }))).concat([{ label: 'Pass', cls: 'cancel', value: null }]) });
+    if (v == null) return null;
+    if (typeof v === 'string' && v.startsWith('c:')) { const h = cadv.find(x => x.uid === Number(v.slice(2))); if (h) return { cadv: h }; return null; }
+    if (typeof v === 'string' && v.startsWith('h:')) { const h = hsp.find(x => x.uid === Number(v.slice(2))); if (h) return { hs: h }; return null; }
+    if (typeof v === 'string' && v.startsWith('m:')) { const h = mani.find(x => x.uid === Number(v.slice(2))); if (h) return { manifest: h }; return null; }
+    if (typeof v === 'string' && v.startsWith('x:')) { const [, u, ix] = v.split(':'); const a = acc.find(x => x.inst.uid === Number(u) && x.idx === Number(ix)); const r = a ? await humanAccel(a.inst, a.idx, 'FLASH') : null; if (r) return { accel: r }; continue; }
+    if (typeof v === 'string' && v.startsWith('a:')) { const [, u, ix] = v.split(':'); const a = acts.find(x => x.f.uid === Number(u) && x.idx === Number(ix)); if (a) return { act: { f: a.f, idx: a.idx } }; return null; }
+    const inst = usable.find(h => h.uid === v); if (!inst) return null;
+    const ch = await prepareHumanMagic(p, inst, 'flash');
+    if (ch) return ch;
+  }
+  return null;
+}
 /* ---------------------------------------------------------------------
    RULES HELPERS
    --------------------------------------------------------------------- */
@@ -4681,7 +4763,7 @@ async function maybeBurst(owner, trigger, ctx) {
   if (def.noUlt && ctx && ctx.attacker && CARDS[ctx.attacker.id].type === 'Ultimate') return false;   // v0.71 "After an opposing Spirit attacks" (not "Spirit/Ultimate")
   if (!def.actions.some(a => !FX_ACTIONS[a.do].can || FX_ACTIONS[a.do].can(c, a))) return false;
   const use = owner.cpu ? true : (await ask({
-    title: '💥 Burst', peek: true, wide: true, html: `${esc(CARDS[b.id].name)} can be activated (${esc(BURST_WHEN[def.when])}): ${esc(fxDescribe(def))}.` + cardStripHTML([b]),
+    title: '💥 Burst', peek: true, wide: true, html: `${esc(CARDS[b.id].name)} can be activated (${esc(BURST_WHEN[def.when])}): ${esc(fxDescribe(def))}.`, cards: cardIds([b]),
     buttons: [{ label: 'Activate Burst', cls: 'primary', value: true }, { label: 'Keep it set', cls: 'cancel', value: false }]
   }));
   if (!use || owner.burst !== b) return false;
@@ -4716,7 +4798,7 @@ async function burstFlash(p, inst, ctx) {            // v0.47: ctx 'main' = "act
   let ch;
   if (p.cpu) { if (!cpuBurstFlash(p, inst, ctx)) { log(`${who(p)} ${p.cpu ? 'does' : 'do'} not pay for the ${lbl} effect of ${card.name}.`); return false; } ch = { inst, target: null, plan: null, ctx }; }
   else {
-    const go = await ask({ title: `💥 Burst: ${lbl} effect`, peek: true, wide: true, html: `Pay ${effCost(p, card)} to activate the ${lbl} effect of ${esc(card.name)}: ${esc(magicText(card))}` + cardStripHTML([inst]),
+    const go = await ask({ title: `💥 Burst: ${lbl} effect`, peek: true, wide: true, html: `Pay ${effCost(p, card)} to activate the ${lbl} effect of ${esc(card.name)}: ${esc(magicText(card))}`, cards: cardIds([inst]),
       buttons: [{ label: `Pay ${effCost(p, card)}`, cls: 'primary', value: true }, { label: 'Do not pay', cls: 'cancel', value: false }] });
     if (!go) return false;
     ch = await prepareHumanMagic(p, inst, ctx); if (!ch) return false;
@@ -5085,14 +5167,13 @@ function modalPress(i) {
   if (MODAL.cfg.onPress && MODAL.cfg.onPress(b.value, b)) { paintModal(); return; }
   closeModal(b.value);
 }
-async function ask(cfg) { const s = SESSION; const v = await modal(cfg); if (s !== SESSION) throw ABORT; return v; }
 let PICK = null;
 function clearPick() {
   if (!PICK) return;
   const r = PICK.res; PICK = null; document.documentElement.classList.remove('picking'); $('pick-bar').classList.remove('active'); r(null);
 }
-function pickFromField(cfg) {
-  const s = SESSION;
+/* the field pick of a 'pick' decision (05b-decide.js); decide() throws ABORT when the match changed meanwhile */
+function webPick(cfg) {
   clearPick();
   return new Promise(res => {
     PICK = { uids: new Set(cfg.uids), mark: cfg.mark, buttons: cfg.buttons || [], res };
@@ -5105,21 +5186,12 @@ function pickFromField(cfg) {
     document.documentElement.classList.remove('picking'); $('pick-bar').classList.remove('active');
     PICK = null; if (G) render();
     recIn({ k: 'pick', v: v === undefined ? null : v });
-    if (s !== SESSION) throw ABORT;
     return v;
   });
 }
-function info(title, html) { return modal({ title, html, buttons: [{ label: 'Close', cls: 'cancel', value: null }] }); }
 
-async function askBlock(att, D, blockers, must) {
-  const sym = CARDS[att.id].symbols;
-  const v = await pickFromField({
-    text: `🛡 <b>${must ? 'You must block!' : 'Block?'}</b> ${esc(CARDS[att.id].name)} attacks with ${bpOf(att)} BP (${sym} symbol${sym === 1 ? '' : 's'}). Your Life: ${D.life}.<br>Tap a glowing Spirit to block with it.`,
-    uids: blockers.map(b => b.uid), mark: att.uid, buttons: must ? [] : [{ label: 'Do not block', cls: 'cancel', value: 'none' }]
-  });
-  return blockers.find(b => b.uid === v) || (must ? blockers[0] : null);
-}
-async function askPayment(card, c, L) {
+/* the payment dialog of a 'payment' decision (05b-decide.js): Reserve, field cores and the Soul Core, with View Field taps */
+async function webPayment(card, c, L) {
   const p = G.p.player;
   const src = [{ key: 'reserve', label: 'Reserve', max: p.reserve.n }]
     .concat(fieldList(p).filter(f => freeCores(f) > 0).map(f => ({ key: String(f.uid), label: `${CARDS[f.id].name} (field)`, max: freeCores(f), f })))
@@ -5245,7 +5317,6 @@ function cardStripHTML(list, head) {
   const ids = list.map(x => (typeof x === 'string' ? x : x.id)).filter(id => CARDS[id]);
   return `${head ? `<div class="strip-head">${esc(head)} (${ids.length})</div>` : ''}<div class="card-strip">${ids.map(id => mullCardHTML(CARDS[id])).join('')}</div>`;
 }
-const uniqById = L => { const seen = new Set(); return L.filter(x => (seen.has(x.id) ? false : (seen.add(x.id), true))); };
 function mullCardHTML(card) {
   return `<div class="mull-card" data-a="zoom" data-v="${esc(card.id)}" title="Tap to enlarge">${cardFaceHTML(card, false)}<div class="nm">${esc(card.name)}</div></div>`;
 }
@@ -5307,30 +5378,6 @@ async function humanMirage(inst) {
     setBurst(p, inst, true); render();
   } catch (e) { if (e !== ABORT) throw e; }
 }
-/* target + payment for a human Magic cast; returns { inst, target, plan } or null when cancelled */
-async function prepareHumanMagic(p, inst, ctx) {
-  ctx = ctx || 'main';
-  const card = CARDS[inst.id], c = effCost(p, card), m = magicFx(card, ctx);
-  let target = null;
-  const tg = magicTargets(p, inst, ctx);
-  if (tg) {
-    const uid = await pickFromField({ text: `✨ <b>${esc(card.name)}</b><br>${esc(MAGIC_FX[m.effect].text(m.value, m))}<br>Tap a glowing Spirit.`, uids: tg.map(t => t.uid), buttons: [{ label: 'Cancel', cls: 'cancel', value: 'none' }] });
-    target = tg.find(t => t.uid === uid) || null;
-    if (!target) return null;
-  }
-  let plan = null, soulMagic = false;
-  if (soulMagicOK(p, card)) {                              // v0.64 Soul Magic: pay the whole cost with the Soul Core, or pay normally
-    if (c > coresAvailable(p)) soulMagic = true;
-    else {
-      const v = await ask({ title: `✨ ${esc(card.name)}: Soul Magic`, html: `Pay the whole cost with just your Soul Core (it goes to the Trash), or pay ${c} core${c === 1 ? '' : 's'} as usual?`,
-        buttons: [{ label: '◆ Pay the Soul Core', cls: 'purple', value: 'soul' }, { label: `Pay ${c}`, cls: 'primary', value: 'normal' }, { label: 'Cancel', cls: 'cancel', value: null }] });
-      if (!v) return null;
-      soulMagic = v === 'soul';
-    }
-  }
-  if (!soulMagic && c > 0 && reserveTotal(p) < c) { plan = await askPayment(card, c, 0); if (!plan) return null; }
-  return { inst, target, plan, ctx, soulMagic };
-}
 async function humanCast(inst) {
   try {
     const p = G.p.player;
@@ -5339,30 +5386,6 @@ async function humanCast(inst) {
     if (!ch || !humanCan() || !isMainStep() || !p.hand.includes(inst)) return;
     await castMagic(p, ch); render(); await flushBursts();
   } catch (e) { if (e !== ABORT) throw e; }
-}
-async function humanFlashChoice(p, attKey, att, blk) {
-  for (let g = 0; g < 6; g++) {
-    const usable = magicSources(p, 'flash').filter(h => magicUsable(p, h, 'flash'));
-    const acts = []; for (const f of fieldList(p)) for (const x of activatable(p, f, 'FLASH')) acts.push({ f, idx: x.idx, e: x.e });
-    const cadv = cadvSources(p).filter(h => contractAdventTargets(p, h, 'flash').length);
-    const mani = p.hand.filter(h => CARDS[h.id].manifest && manifestTargets(p, h, 'flash').length);
-    const hsp = highSpeedSources(p);                                   // v0.49 High Speed
-    const acc = accelSources(p, 'FLASH');                              // v0.50 Accel
-    if (!usable.length && !acts.length && !cadv.length && !mani.length && !hsp.length && !acc.length) return null;
-    const ctx = `${esc(CARDS[att.id].name)} (${bpOf(att)} BP) is attacking` + (blk ? `, blocked by ${esc(CARDS[blk.id].name)} (${bpOf(blk)} BP)` : '') + '.';
-    const v = await ask({ title: '⚡ Flash Timing', peek: true, wide: true, html: `${ctx}<br>Cast a [Flash] Magic card or use a Flash effect?` + cardStripHTML(uniqById(usable.concat(cadv, mani, hsp, acc.map(x => x.inst))), 'Cards you can use'),
-      buttons: usable.map(h => ({ label: `${CARDS[h.id].name}${p.trash.includes(h) ? ' [from the Trash]' : ''} (Pay ${effCost(p, CARDS[h.id])}) — ${magicText(CARDS[h.id]).replace(/^(\[[^\]]*\])+ /, '')}`, cls: 'purple', value: h.uid })).concat(cadv.map(h => ({ label: `✨ Contract Advent: ${CARDS[h.id].name}`, cls: 'purple', value: 'c:' + h.uid }))).concat(mani.map(h => ({ label: `✨ Manifest: ${CARDS[h.id].name}`, cls: 'purple', value: 'm:' + h.uid }))).concat(hsp.map(h => ({ label: `⚡ High Speed: summon ${CARDS[h.id].name} (Pay ${effCost(p, CARDS[h.id])} from the Reserve)`, cls: 'primary', value: 'h:' + h.uid }))).concat(acc.map(x => ({ label: accelLabel(p, x), cls: 'primary', value: `x:${x.inst.uid}:${x.idx}` }))).concat(acts.map(x => ({ label: `⚡ ${CARDS[x.f.id].name}: ${fxDescribe(x.e)}`.slice(0, 140), cls: 'primary', value: `a:${x.f.uid}:${x.idx}` }))).concat([{ label: 'Pass', cls: 'cancel', value: null }]) });
-    if (v == null) return null;
-    if (typeof v === 'string' && v.startsWith('c:')) { const h = cadv.find(x => x.uid === Number(v.slice(2))); if (h) return { cadv: h }; return null; }
-    if (typeof v === 'string' && v.startsWith('h:')) { const h = hsp.find(x => x.uid === Number(v.slice(2))); if (h) return { hs: h }; return null; }
-    if (typeof v === 'string' && v.startsWith('m:')) { const h = mani.find(x => x.uid === Number(v.slice(2))); if (h) return { manifest: h }; return null; }
-    if (typeof v === 'string' && v.startsWith('x:')) { const [, u, ix] = v.split(':'); const a = acc.find(x => x.inst.uid === Number(u) && x.idx === Number(ix)); const r = a ? await humanAccel(a.inst, a.idx, 'FLASH') : null; if (r) return { accel: r }; continue; }
-    if (typeof v === 'string' && v.startsWith('a:')) { const [, u, ix] = v.split(':'); const a = acts.find(x => x.f.uid === Number(u) && x.idx === Number(ix)); if (a) return { act: { f: a.f, idx: a.idx } }; return null; }
-    const inst = usable.find(h => h.uid === v); if (!inst) return null;
-    const ch = await prepareHumanMagic(p, inst, 'flash');
-    if (ch) return ch;
-  }
-  return null;
 }
 async function showCardDetail(id, ctx, uid) {
   const card = CARDS[id]; if (!card) return;
@@ -6217,7 +6240,8 @@ function renderSetPage() {
 }
 /* ---------------------------------------------------------------------
    WEB HOST (v0.82.0, phase F2 = M2): the browser answers the engine's port (packages/protocol/src/00p-protocol.js).
-   Views redraw the page, log lines play sounds; decisions still go through the prompts in 10-modals.js (M3 moves them here).
+   Views redraw the page, log lines play sounds, decisions (v0.83.0, F3 = M3 part 1; records in packages/engine/src/05b-decide.js)
+   open the modal, the field pick or the payment dialog of 10-modals.js.
    --------------------------------------------------------------------- */
 document.title = 'Aeterna - Engine v' + VERSION;
 let AUDIO = null;
@@ -6253,7 +6277,21 @@ function webView(ev) {
   }
 }
 const sfxOf = t => (/attacks with/.test(t) ? 'attack' : /destroyed|depleted/.test(t) ? 'destroy' : /lose[s]? \d+ Life/.test(t) ? 'hit' : /summon|deploy/.test(t) ? 'summon' : /draw/.test(t) ? 'card' : '');
-bindHost({ name: 'web', view: webView, log(t) { if (SETTINGS.sound) sfx(sfxOf(t)); } });
+function choiceHTML(d) {
+  if (!d.cards || !d.cards.length) return d.html || '';
+  if (d.cardsStyle === 'mull') return `<div class="mull-list">${d.cards.map(id => mullCardHTML(CARDS[id])).join('')}</div>` + (d.html || '');
+  return (d.html || '') + cardStripHTML(d.cards, d.cardsHead);
+}
+function webDecide(seat, d) {
+  switch (d && d.kind) {
+    case 'choice': return modal({ title: d.title, html: choiceHTML(d), buttons: d.buttons, peek: d.peek, wide: d.wide });
+    case 'pick': return webPick(d);
+    case 'payment': return webPayment(CARDS[d.card], d.cost, d.L);
+    case 'info': return modal({ title: d.title, html: d.html, buttons: [{ label: 'Close', cls: 'cancel', value: null }] });
+    default: return Promise.reject(new Error('unknown decision record: ' + JSON.stringify(d)));
+  }
+}
+bindHost({ name: 'web', view: webView, decide: webDecide, log(t) { if (SETTINGS.sound) sfx(sfxOf(t)); } });
 /* ---------------------------------------------------------------------
    CARD IMAGES  (user supplied files kept in IndexedDB, never uploaded)
    --------------------------------------------------------------------- */
@@ -6446,7 +6484,7 @@ async function startNewGame(opts) {
     // starting hand: each player may redraw once
     if (W) { if (cpuWantsRedraw(G.p.player.hand)) { redrawHand(G.p.player); log('Your deck (CPU) redrew its starting hand.'); } }
     else if (!SIM) {
-            const r = await ask({ title: '🎴 Starting Hand', html: `<div class="mull-list">${G.p.player.hand.map(h => mullCardHTML(CARDS[h.id])).join('')}</div><div style="margin-top:8px">Redraw your 4 cards? You can only do this once.</div>${G.p.player.hand.some(h => CARDS[h.id].contract) ? '<div class="mull-note">📜 A redraw returns your Contract card to the Deck too, and it cannot be added to your Hand again this game (official rules).</div>' : ''}`, wide: true, peek: true, buttons: [{ label: 'Redraw all cards', cls: 'primary', value: true }, { label: 'Keep hand', cls: 'cancel', value: false }] });
+            const r = await ask({ title: '🎴 Starting Hand', cards: cardIds(G.p.player.hand), cardsStyle: 'mull', html: `<div style="margin-top:8px">Redraw your 4 cards? You can only do this once.</div>${G.p.player.hand.some(h => CARDS[h.id].contract) ? '<div class="mull-note">📜 A redraw returns your Contract card to the Deck too, and it cannot be added to your Hand again this game (official rules).</div>' : ''}`, wide: true, peek: true, buttons: [{ label: 'Redraw all cards', cls: 'primary', value: true }, { label: 'Keep hand', cls: 'cancel', value: false }] });
       if (r) { redrawHand(G.p.player); log('You redrew your starting hand.'); }
     }
     if (cpuWantsRedraw(G.p.opponent.hand)) { redrawHand(G.p.opponent); log('CPU redrew its starting hand.'); }
