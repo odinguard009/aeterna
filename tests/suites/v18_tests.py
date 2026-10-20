@@ -54,14 +54,18 @@ with sync_playwright() as p:
         chk('PC: Space (no human turn now, no crash)', not errs, (n,can))
     pg.keyboard.press('Enter'); pg.keyboard.press('Space'); settle(pg)
     chk('PC: keys do not raise errors', not errs, errs)
-    # history
+    # history (v0.87.1: on a fresh match, so a game the CPU already won while Space/Enter were pressed above
+    # cannot leave its own entry in memory; CI Regression run 39511643318 failed that way)
+    ctx.close()
+    ctx,pg,errs=start(b,1280,800)
     pg.evaluate("localStorage.removeItem('bse.history.v1')")
+    chk('history: the fresh match is still running', not pg.evaluate("BS.G.over") and pg.evaluate("BS.HISTORY().length")==0, pg.evaluate("[BS.G.over, BS.HISTORY().length]"))
     pg.evaluate("BS.win('player','test')"); settle(pg)
     hs=pg.evaluate("BS.HISTORY()")
     chk('history: win recorded once with fields', len(hs)==1 and hs[0]['won']==True and bool(hs[0]['fmt']), hs)
     pg.evaluate("BS.recordMatch('player')")
     chk('history: recordMatch is idempotent per game', pg.evaluate("BS.HISTORY().length")==1)
-    chk('history: persisted to localStorage', pg.evaluate("JSON.parse(localStorage.getItem('bse.history.v1')).length")==1)
+    chk('history: persisted to localStorage', pg.evaluate("(JSON.parse(localStorage.getItem('bse.history.v1'))||[]).length")==1)
     ctx.close()
     # settings page, history render/clear
     ctx=b.new_context(viewport={'width':1280,'height':800}); pg=ctx.new_page(); errs=[]

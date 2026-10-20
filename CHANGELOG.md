@@ -2,6 +2,10 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.88.0
+- Lane: K
+- Regression fix (run 39511643318 on v0.87.0, part 2, `v18_tests` check 12 + crash): the match-history checks ran on the match that the Space/Enter checks had been advancing, and on a slow runner the CPU could win it first, so `BS.win` was ignored and the CPU's entry stayed in memory; the next check then crashed on the cleared storage. The history checks now open a fresh match and check that it is still running; the storage read is null-safe. Test only, no game change.
+
 ## v0.87.0
 - Lane: U/I
 - **Test waits (roadmap phase F, item F5 = Q2; phase F is complete): the browser suites wait on a visible state instead of fixed times.**
