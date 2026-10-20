@@ -1,5 +1,7 @@
 # Parallel lanes (P1, v0.63.1)
 
+> Not used since 2026-10-20 (owner): one main session per item, no team sessions or agents (CLAUDE.md "Session form"). The tooling stays for later use.
+
 Two sessions at the same time: a **ui** lane and a **card** lane, each on its own branch, then one merge + release on `main`.
 Opt-in: without a lane everything works as before (one session on `main`). Goal: shorter wall-clock time; total tokens do not drop.
 

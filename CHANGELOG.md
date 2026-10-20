@@ -2,6 +2,12 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.80.1
+- **Process reset and foundation-first plan (owner, 2026-10-20 17:00-17:08):** one main session per roadmap item, no subagents except the read-only player-view pass; Mode hemat, team sessions and card-author agents retired (A2 measured ~1 complete card per 100k tokens with agents against ~8-11 for main-session bundles); push after every commit; long runs go to GitHub Actions; no per-session size limit; Opus for engine work, Sonnet for docs and JSON-only card bundles; auto runs at :00 and :30. CLAUDE.md shortened (15.6 KB -> 7.3 KB), skill `bs-session-runner` rewritten without the team steps, `docs/ai/token-economy.md`, `next-session-prompt.md`, `release.md` and `lanes/README.md` updated; owner's words in `docs/ai/owner-instructions.md`.
+- **Roadmap phase F** (`docs/ai/roadmap-open.md`): F1 effect JSON schema + validator, F2/F3 host port (M2/M3), F4 replays (M4), F5 test waits (Q2) come before more card bundles, so the effect format is frozen before thousands of cards use it; UI U5-U8 after the card rate is steady; languages, server, database and card images last.
+- **Fixes:** Escape now closes the deck builder card detail (A1 follow-up (e)); the Library counts no longer include the built-in Training cards. Test `tests/unit/fix801.test.mjs` (FX801-01/02).
+- Revert note: `git revert` of the v0.80.1 commits restores v0.80.0 (docs and two UI lines only, no data change).
+
 ## v0.80.0
 - **A2 card-author pilot on 26RBS01 (roadmap item A2): +6 complete cards; verdict "not better", plan W resumes** (ledger `docs/audits/26RBS01.md`):
   - Three card-author agents (Opus, existing engine actions only, scratch files) wrote effect JSON for the 146 residual clauses of the 101 partial 26RBS01 cards; main validated every changed card (parseCard + smoke, printed text vs JSON, full quick set). Complete now: 26RBS01-010, -043, -047, -071, -085, -097; more clauses run on -038, -041, -048, -051, -060, -073, -080, -092, -101, -X13. One agent error caught: -041's {{Current}} head was not modelled, so it stays partial.

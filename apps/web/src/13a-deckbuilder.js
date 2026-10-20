@@ -193,7 +193,11 @@ document.addEventListener('contextmenu', e => {
   if (c) { e.preventDefault(); showCardDetail(c.dataset.v, 'deck'); }
 });
 document.addEventListener('keydown', e => {
-  if (!$('view-deckbuilder').classList.contains('active') || $('action-modal').classList.contains('active')) return;
+  if (!$('view-deckbuilder').classList.contains('active')) return;
+  if ($('action-modal').classList.contains('active')) { // Escape closes a modal that offers Close / Cancel (card detail)
+    if (e.key === 'Escape' && MODAL && (MODAL.cfg.buttons || []).some(b => b.value === null && !b.dis)) { e.preventDefault(); closeModal(null); }
+    return;
+  }
   const t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT');
   if (e.key === '/' && !typing) { e.preventDefault(); $('db-search').focus(); }
   else if (e.key === 'Escape' && t && t.id === 'db-search') { t.value = ''; renderDeckBuilder(); }

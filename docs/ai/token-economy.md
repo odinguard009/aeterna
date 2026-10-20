@@ -29,7 +29,8 @@ Goal: the same quality per release with far fewer tokens. Each rule says who doe
 
 ## 5. Scope (user + Claude)
 - Scope per session is decided by Claude (see CLAUDE.md "Session scope"): small tasks bundled, a heavy task alone; start each session with one complete instruction, e.g. "Kerjakan issue #1" (CLAUDE.md is loaded automatically; saying "Baca CLAUDE.md" only triggers a wasted read). Extra instructions mid-task and "stop" cause rework: send them before starting when possible.
-- Model choice (owner, 2026-10-17): Opus for every session and subagent (replaces the earlier Sonnet/Opus split); save tokens through scope and tooling, not the model.
+- Model choice (owner, 2026-10-20; replaces "Opus for everything" of 2026-10-17): Opus for engine, protocol and compiler work; Sonnet for docs/cleanup and card bundles that only write effect JSON with existing actions.
+- No subagents (owner, 2026-10-20) except the read-only player-view pass: the A2 pilot measured ~1 complete card per 100k tokens with card-author agents against ~8-11 for main-session bundles (v0.78.0), and team sessions spent most of their tokens in agents.
 - Brainstorming chat: upload `build/aeterna-docs-pack.md` (`node tools/pack_ai.mjs --docs`, ~17k tokens), not the full code pack (~86k).
 
 ## 6. Settings (user)
@@ -47,7 +48,7 @@ Goal: the same quality per release with far fewer tokens. Each rule says who doe
 Condensed in v0.69.3 (P0 B8); the full measurements stay in git history (this file before v0.69.3).
 - Fixed context dominates: ~44% of a session is the system prompt, tool list and skill/plugin descriptions re-sent on every call, ~34% the growing conversation history, ~4% the work itself (v0.34 measurement, ~6.2M effective tokens in 167 calls). So: fewer calls, batched commands, one script per step, short CLAUDE.md (it is re-sent on every call; history lives in `CHANGELOG.md`).
 - After the release, stop: Q&A and research in the same session cost twice the release (v0.34.0: 2.1M release, 4M afterwards). Ask several things in one message.
-- A minor release costs ~1-2M effective tokens in ~60-70 calls; past ~80 calls push, leave a handoff comment on issue #3 (done / next / failing seed / tokens so far) and continue in a new session.
+- A minor release costs ~1-2M effective tokens in ~60-70 calls. No call or token limit per session (owner, 2026-10-20); every commit is pushed at once, so a cut session loses at most one task. Long sessions still cost more per step (the history grows), so batch commands and keep outputs short.
 - Never read `index.html` (~80k tokens) or a whole card JSON; grep + offset in the source parts, one-line `python3 -c` queries on card data (the Fandom JSON alone is ~2M tokens and once pushed the Project over its limit: card data lives only in the repo).
 - Big listings are expensive: never list a laptop folder recursively; use the image index `data/index/saga_card_index.json` first. Images: contact sheets of ~20 cropped corners, one colour at a time, only unverified fields; every image is re-sent on every later call.
 - Cheap guards beat repeated Regression runs: `tools/check_renames.py` in the pre-push hook catches removed names / labels still used in tests (v0.31 lost a second Regression to that); for a single-word UI text change run the suites that grep the old word.

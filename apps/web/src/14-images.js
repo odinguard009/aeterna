@@ -73,7 +73,7 @@ function refreshViews() {
 /* ---------- library page ---------- */
 function libMsg(t, bad) { const m = $('lib-msg'); m.textContent = t; m.className = 'lib-msg' + (bad ? ' bad' : ''); }
 function renderLibrary() {
-  const ids = Object.keys(CARDS).filter(id => !CARDS[id].token), part = ids.filter(id => fxMarked(CARDS[id])).length;      // v0.79.0 (A1): two counts
+  const ids = Object.keys(CARDS).filter(id => !CARDS[id].token && !id.startsWith('TRAIN-')), part = ids.filter(id => fxMarked(CARDS[id])).length;      // v0.79.0 (A1): two counts; v0.80.1: built-in Training cards are not counted
   $('lib-imgcount').textContent = `${Object.keys(IMG).length} image(s) loaded · ${ids.length.toLocaleString('en-US')} card(s) known: ${(ids.length - part).toLocaleString('en-US')} complete, ${part.toLocaleString('en-US')} marked "!" (effect not fully implemented)`;
 }
 function deckToText() {
