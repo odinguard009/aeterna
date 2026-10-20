@@ -56,19 +56,20 @@ export function buildParts(opts = {}) {   // opts.cards: build with another card
 }
 
 
-// v0.62.0: card total (playable + staged) from the unlock report line (tools/unlock_report.py); the build never reads the
-// staging files themselves (test B07). 8,041 until Standard block A was imported.
-function cardTotal() {
-  const m = rd('docs/reports/unlock-report.md').match(/playable [\d,]+ \/ ([\d,]+) cards/);
-  return m ? Number(m[1].replace(/,/g, '')) : 8041;
+// v0.80.0 (A2 prep c): card counts come from docs/reports/card-counts.json (written by tools/unlock_report.py); the build
+// never reads the staging files (test B07) and never falls back to an old total: a missing or out-of-date file fails the build.
+function cardCounts() {
+  let j; try { j = JSON.parse(rd('docs/reports/card-counts.json')); } catch { throw new Error('docs/reports/card-counts.json missing or invalid: run python3 tools/unlock_report.py'); }
+  const n = JSON.parse(rd('data/cards/all-cards.json')).length;
+  if (!(j.total > 0) || !(j.complete >= 0) || j.playable !== n) throw new Error(`docs/reports/card-counts.json is out of date (playable ${j.playable}, data/cards has ${n}): run python3 tools/unlock_report.py`);
+  return j;
 }
 // README "Current build" line follows packages/engine/src/01-cards.js VERSION and the playable card count (it went stale at v0.41.5).
 const README_RE = /^Current build: \*\*v[^*]+\*\*.*$/m;
 function readmeLine() {
   const v = rd('packages/engine/src/01-cards.js').match(/const VERSION = '([^']+)'/)[1];
-  const n = JSON.parse(rd('data/cards/all-cards.json')).length;
-  const k = (rd('docs/reports/unlock-report.md').match(/, complete ([\d,]+) \(/) || [, null])[1];      // v0.79.0 (A1): complete = every effect runs
-  return `Current build: **v${v}** (${n.toLocaleString('en-US')} of ${cardTotal().toLocaleString('en-US')} cards playable${k ? ', ' + k + ' complete' : ''}). Download \`aeterna-v${v}.html\` from the [latest release](https://github.com/odinguard009/aeterna/releases/latest) and open it in Chrome or Edge; release notes are in [CHANGELOG.md](CHANGELOG.md).`;
+  const { playable: n, total, complete: k } = cardCounts();      // v0.79.0 (A1): complete = every effect runs
+  return `Current build: **v${v}** (${n.toLocaleString('en-US')} of ${total.toLocaleString('en-US')} cards playable, ${k.toLocaleString('en-US')} complete). Download \`aeterna-v${v}.html\` from the [latest release](https://github.com/odinguard009/aeterna/releases/latest) and open it in Chrome or Edge; release notes are in [CHANGELOG.md](CHANGELOG.md).`;
 }
 // v0.59.7 (C5): release notes live in CHANGELOG.md; its newest "## vX.Y.Z" heading must be the current VERSION.
 const changelogHead = () => (rd('CHANGELOG.md').match(/^## (v\d[\d.]*)\s*$/m) || [, null])[1];

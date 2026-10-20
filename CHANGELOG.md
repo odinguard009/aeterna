@@ -2,6 +2,9 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.80.0
+- (in progress)
+
 ## v0.79.0
 - **Partial promotion (roadmap item A1, owner 2026-10-20): 5,978 staged cards enter the library with part of their effect missing** (UI change; backup `backup/v0.78.0`):
   - Compiler: `tools/compile_v2.py --partial` builds each card paragraph by paragraph: a paragraph is compiled in full or left out, never half (a sentence that does not compile sends its whole paragraph to `residual`). The card keeps its full printed text, `fxComplete: false` and the `residual` list. Card-level gaps still keep a card staged (no level data, Brave without combine data, two text versions, Ultimate without its summon block, Magic with no compiled timing).

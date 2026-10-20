@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Unlock report (audit 2026-10-16): how many staged cards each piece of work would make playable.
-  python3 tools/unlock_report.py          -> writes docs/reports/unlock-report.md and prints one summary line
+  python3 tools/unlock_report.py          -> writes docs/reports/unlock-report.md + card-counts.json, prints one summary line
   python3 tools/unlock_report.py --line   -> prints the summary line only (used by tools/session_start.sh)
 It runs the glossary patterns (data/glossary/effects.json) over the English text of every staged card in
 data/import and sorts the cards into classes. The patterns are hints, not a parser, so "ready" is an
@@ -63,4 +63,7 @@ L += ['', '## Per Saga (staged cards)', '', '| Saga | ' + ' | '.join(CLASSES) + 
 for s in sorted(per_saga, key=lambda x: int(x) if x.isdigit() else 99):
     L.append(f'| {s} | ' + ' | '.join(str(per_saga[s][k]) for k in CLASSES) + ' |')
 open(os.path.join(root, 'docs/reports/unlock-report.md'), 'w', encoding='utf8').write('\n'.join(L) + '\n')
+# v0.80.0 (A2 prep c): machine-readable counts for tools/build.mjs (README line), so the build never parses Markdown
+json.dump({'playable': len(playable), 'total': total, 'complete': complete_n, 'staged': len(staged)},
+          open(os.path.join(root, 'docs/reports/card-counts.json'), 'w', encoding='utf8'), indent=1)
 print(line, '->', 'docs/reports/unlock-report.md')
