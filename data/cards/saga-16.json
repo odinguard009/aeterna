@@ -1831,7 +1831,14 @@
   },
   "icons_verified": "cost disk red, 1 red reduction hex, 1 red gem",
   "name_jp": "武芸の契約神ルー",
-  "text_verified_web": true
+  "text_verified_web": true,
+  "residual": [
+   "[Neo-Core Charge: Martial/Devotee/Concluser & Cost 3 or more (Saga Brave)] When your target Spirit/Brave is summoned, you can +1 core to this Nexus.",
+   "(Once per Turn: Same Name) When this Nexus is deployed, you can send three cards from your deck to the Trash. For each target card among them, +1 core to this Nexus.",
+   "Revive [Main](Once per Turn: Same Name) You can deploy this card from Soul State.",
+   "[LV1][LV2] Contract Skill: 2 [Your Main Step] (Once per Turn) Send two cores from this Nexus to the Void; your counters +2. Then reveal three cards from your decktop. Among them, you can pay one cost to summon a \"Devotee\"/\"Martial\" family Saga Brave card. Return any remaining cards to either the decktop or deckbottom.",
+   "[LV2] Contract Field: This Nexus can brave with up to two Braves. Also, all your \"Martial\" family Spirits are treated as During Brave, and gain all the During Spirit Brave effects of all \"Devotee\"/\"Martial\" family Braves that are braved to this Nexus."
+  ]
  },
  {
   "id": "BS72-X01",
@@ -4272,7 +4279,10 @@
     ]
    }
   ],
-  "trashSoul": true
+  "trashSoul": true,
+  "residual": [
+   "[LV1][LV2][LV3] When your \"Awakened Dragon\" family Spirit/Ultimate is depleted/destroyed by the opponent, send up to three cores, besides the Soul Core, from your Trash to your Reserve and any of your \"Awakened Dragon\" family Spirits/Ultimates/Nexuses, besides the target."
+  ]
  },
  {
   "id": "BS74-041",
@@ -4407,7 +4417,10 @@
    "family": "Awakened Dragon",
    "counterGe": 2,
    "turn": "EITHER"
-  }
+  },
+  "residual": [
+   "[LV2] (Once per Turn: Same Name) You can let an \"Awakened Dragon\" family card, or a \"Contractor Mitra\" revealed from deck by this Spirit's effect enter Soul State."
+  ]
  },
  {
   "id": "BS74-043",
@@ -4549,7 +4562,10 @@
    }
   ],
   "fxComplete": false,
-  "note": "Wired: the LV2-3 attack effect. Not wired: Heavy Armor."
+  "note": "Wired: the LV2-3 attack effect. Not wired: Heavy Armor.",
+  "residual": [
+   "[LV1][LV2][LV3] Give all your \"Awakened Dragon\" family Spirits/Ultimates: \"Heavy Armor: Purple/White/Blue\" This Spirit/Ultimate is unaffected by opposing Purple/White/Blue Spirit/Brave/Nexus/Magic effects."
+  ]
  },
  {
   "id": "BS74-046",
@@ -4627,7 +4643,12 @@
    "cost": 2
   },
   "fxComplete": false,
-  "note": "Data only: Mirage can be set (cost 2) but its During Set effect and the Soul State effects are not wired."
+  "note": "Data only: Mirage can be set (cost 2) but its During Set effect and the Soul State effects are not wired.",
+  "residual": [
+   "During your Main Step, you can set this card from Soul State.",
+   "During Set: When your \"Contractor Mitra\" enters Soul State, you can pay one cost to summon this Mirage. Also, while you control only one \"Contractor Mitra\" Grandwalker Nexus, that target can not be destroyed nor have its cores moved by opposing effects.",
+   "[LV1][LV2] (When Summoned) You can pay one cost to summon/deploy one of your \"Awakened Dragon\"/\"Hindida\" family cards from Soul State."
+  ]
  },
  {
   "id": "BS74-048",
@@ -4728,7 +4749,10 @@
    "family": "Awakened Dragon",
    "counterGe": 3,
    "turn": "EITHER"
-  }
+  },
+  "residual": [
+   "[LV1][LV2][LV3] (When Advents/Attacks) You can send all cores from an opposing Grandwalker Nexus to the Void. Then, if you have three or more cards in Soul State, you can return an opposing Spirit/Nexus to the deckbottom."
+  ]
  },
  {
   "id": "BS74-049",
@@ -4797,6 +4821,9 @@
      }
     ]
    }
+  ],
+  "residual": [
+   "[LV1][LV2] (When Summoned) (Once per Turn: Same Name) Including being in Soul State, if you control any \"Contractor Mitra\", for every two cards in the opposing Hand, you can put a core from the Void to your Spirits. When two or more cores are put via this effect, you can return an opposing Spirit/Nexus to the deckbottom."
   ]
  },
  {
@@ -5506,6 +5533,10 @@
      }
     ]
    }
+  ],
+  "residual": [
+   "(Can't Stack) When this card enters Soul State, you can deploy it.",
+   "[LV2] The effects of opposing Spirits/Ultimates returned to the Hand/Deck via your \"Awakened Dragon\" family \"Hand/Deck Returning\" effects can't activate."
   ]
  },
  {
@@ -5789,7 +5820,12 @@
   ],
   "fxComplete": false,
   "note": "Wired: Neo-Core Charge (both parts), Contract Field up to the counter +2, Contract Skill 3. Not wired: Revive, Contract Advent onto Soul State cards, Flash timing outside battles for the Contract Field. Contract Skill can only be used in Flash windows during an attack (human only; the CPU does not use Flash effects yet). Colour: white symbol (cost icon is the Contract ring). Revive wired (Soul State zone button, once per turn). Contract Field: the Soul State Contract Advent part is wired (only Reserve cores are put onto the advent card; Field cores are not offered).",
-  "revive": true
+  "revive": true,
+  "residual": [
+   "[Neo-Core Charge: Awakened Dragon/Devotee/Concluser & Cost 3 or more / Devotee/Concluser & Ultimate] When your target Spirit/Ultimate is summoned, you can +1 core to this Nexus.",
+   "[LV1][LV2] Contract Field [Flash] (Once per Turn: Same Name) You can let a \"Contractor Mitra\", or an \"Awakened Dragon\" family card, from your Hand/Trash, enter Soul State. When you have done so, your counter +2 (max 10 counters).",
+   "Then, during this turn, you can Contract Advent onto your \"Awakened Dragon\" family cards in Soul State. When you do, put any number of cores from your Field/Reserve onto the adventing card."
+  ]
  },
  {
   "id": "BS74-RV001",
@@ -6546,7 +6582,10 @@
   ],
   "fxComplete": false,
   "saga": 16,
-  "note": "Wired: draw two when a Wurm is blocked; LV2 opposing Spirits must block a Crimson/Wurm attacker (Red-only limit on the draw is not checked). Issue #5 (2026-10-16): set to Fandom export (owner priority)."
+  "note": "Wired: draw two when a Wurm is blocked; LV2 opposing Spirits must block a Crimson/Wurm attacker (Red-only limit on the draw is not checked). Issue #5 (2026-10-16): set to Fandom export (owner priority).",
+  "residual": [
+   "[LV1][LV2](Your Attack Step) When your Red \"Wurm\" is blocked, you can draw two cards."
+  ]
  },
  {
   "id": "BS75-002",
@@ -6822,7 +6861,10 @@
    }
   ],
   "fxComplete": false,
-  "saga": 16
+  "saga": 16,
+  "residual": [
+   "[LV1][LV2][LV3](Can't Stack) When your Life, or the opposing Life is reduced, if you control any \"Siegwurm\" (incl. Soul State/pre-advent), you can +2 counter."
+  ]
  },
  {
   "id": "BS75-006",
@@ -6947,7 +6989,10 @@
   ],
   "fxComplete": false,
   "saga": 16,
-  "note": "Wired in v0.33: the reveal-three effect (one shared Once per Turn) and the LV2 BP effect. Siegwurm under another card (pre-advent) is not checked."
+  "note": "Wired in v0.33: the reveal-three effect (one shared Once per Turn) and the LV2 BP effect. Siegwurm under another card (pre-advent) is not checked.",
+  "residual": [
+   "[LV1][LV2](When Summoned/Attacks) (Once per Turn: Same Name) Including being in Soul State/pre-advent condition, if you control any \"Siegwurm\", you can reveal three cards from your decktop. Among them, add a \"Crimson\"/\"Wurm\"/\"Kushina\" to the Hand. Discard any remaining cards. When any card is added to Hand via this effect, your counter +1."
+  ]
  },
  {
   "id": "BS75-007",
@@ -7025,7 +7070,10 @@
    }
   ],
   "note": "Mirage During Set wired (counter +1, then destroy a Spirit; +10000 limit at Life 3 or less). 'Opposing Ultimate' is not wired.",
-  "fxComplete": false
+  "fxComplete": false,
+  "residual": [
+   "During Set: When your Life is reduced, if you control any \"Siegwurm\" (incl. Soul State/pre-advent), your counter +1. When you've done so, you can destroy an opposing 5000 BP or less Spirit/Ultimate, and when it destroys, draw a card. If your Life is three or less, increase the limit of this \"BP Destruction effect\" by +10000."
+  ]
  },
  {
   "id": "BS75-008",
@@ -7119,7 +7167,10 @@
    }
   ],
   "note": "Wired: Awaken (Flash, human only; the CPU does not use it), draw once per turn when your effects send cores to it, LV2-3 return a Crimson from the Trash. Flash with no step restriction can also be used in the Main Step (official rule).",
-  "fxComplete": false
+  "fxComplete": false,
+  "residual": [
+   "[LV1][LV2][LV3](Either Attack Step) (Once per Turn: Same Name) When cores are sent to this Spirit via your effects, you can draw a card."
+  ]
  },
  {
   "id": "BS75-009",
@@ -8104,7 +8155,11 @@
    }
   ],
   "fxComplete": false,
-  "note": "Wired: the Soul State entry and the +1 core. Not wired: the \"unaffected\" parts. Used from the field (the card text allows the Trash too)."
+  "note": "Wired: the Soul State entry and the +1 core. Not wired: the \"unaffected\" parts. Used from the field (the card text allows the Trash too).",
+  "residual": [
+   "This card in Trash is unaffected by opposing effects, and (Once per Turn: Same Name) during your Main Step, if you control any \"Contractor Mitra\", you can let this card enter Soul State.",
+   "When you have done so, by +1 core to one of your \"Contractor Mitra\" Grandwalker Nexuses, during this turn, all your \"Awakened Dragon\" family cards in the Trash are unaffected by opposing effects. This \"unaffected by effects\" effect can not be prevented by opposing effects."
+  ]
  },
  {
   "id": "BS75-029",
@@ -8244,7 +8299,11 @@
    "family": "Awakened Dragon",
    "counterGe": 0,
    "turn": "YOURS"
-  }
+  },
+  "residual": [
+   "[LV1][LV2][LV3] (When Summoned/Advents) (Once per Turn: Same Name) By +1 core to one of your \"Contractor Mitra\" Grandwalker Nexuses, summon or return to the Hand one of your \"Awakened Dragon\" family cards in Soul State.",
+   "[LV2][LV3] (When Attacks) You can let an \"Awakened Dragon\" family card from your Trash or this Spirit's pre-advent cards enter Soul State."
+  ]
  },
  {
   "id": "BS75-031",
@@ -8517,7 +8576,10 @@
    }
   ],
   "fxComplete": false,
-  "note": "Wired: both LV1-2 effects. Not wired: the LV2 \"unaffected\" line."
+  "note": "Wired: both LV1-2 effects. Not wired: the LV2 \"unaffected\" line.",
+  "residual": [
+   "[LV2] All your \"Awakened Dragon\" family Spirits/Ultimates are unaffected by opposing Spirit/Ultimate effects with a cost equal or inferior to your number of counters."
+  ]
  },
  {
   "id": "BS75-036",
@@ -8627,7 +8689,10 @@
    "family": "Awakened Dragon",
    "counterGe": 4,
    "turn": "EITHER"
-  }
+  },
+  "residual": [
+   "(Once per Turn: Same Name) If you have seven or more counters, you can Contract Advent this card from the Hand, treating your Soul Core as being sent to the Trash."
+  ]
  },
  {
   "id": "BS75-038",
@@ -8811,6 +8876,9 @@
      }
     ]
    }
+  ],
+  "residual": [
+   "[LV2][LV3] This Spirit is unaffected by opposing effects with a cost equal or inferior to this Spirit's."
   ]
  },
  {
@@ -9133,6 +9201,9 @@
      }
     ]
    }
+  ],
+  "residual": [
+   "[LV2][LV3] (Your Attack Step) When your \"Thunderive\" family Spirit attacks, you can send three cores from any opposing Grandwalker Nexuses to the Void."
   ]
  },
  {
@@ -9869,7 +9940,10 @@
   ],
   "fxComplete": false,
   "saga": 16,
-  "note": " Deploy when revealed from the deck: wired in v0.33. Not wired: the LV2 Main Step summon."
+  "note": " Deploy when revealed from the deck: wired in v0.33. Not wired: the LV2 Main Step summon.",
+  "residual": [
+   "[LV2](Your Main Step) Once per turn, you can pay one cost to summon one of your \"Siegwurm\" Contract cards in the Hand/Soul State/pre-advent condition."
+  ]
  },
  {
   "id": "BS75-062",
@@ -9949,7 +10023,11 @@
    }
   ],
   "fxComplete": false,
-  "note": "Wired: the LV2 Attack Step lock while a Wurm attacks (v0.43). Not yet: the deploy-from-Hand clause and the LV1/LV2 'effects of destroyed Spirits can't activate' clause. Issue #5 (2026-10-16): set to Fandom export (owner priority)."
+  "note": "Wired: the LV2 Attack Step lock while a Wurm attacks (v0.43). Not yet: the deploy-from-Hand clause and the LV1/LV2 'effects of destroyed Spirits can't activate' clause. Issue #5 (2026-10-16): set to Fandom export (owner priority).",
+  "residual": [
+   "When your \"Crimson Contract\" family Spirit enters, you can pay one cost to deploy this card from the Hand.",
+   "[LV1][LV2] Effects of opposing Spirits/Ultimates destroyed by your \"Crimson\"/\"Wurm\" effects can't activate."
+  ]
  },
  {
   "id": "BS75-064",
@@ -11506,7 +11584,10 @@
   "manifest": {
    "name": "Contractor Mitra",
    "counterGe": 6
-  }
+  },
+  "residual": [
+   "[LV1][LV2][LV3] (When Summoned) (Once per Turn: Same Name) For each of your differently-named cards in Soul State, you can put a core from the Void to any of your Spirits. When three or more cores are put via this effect, and it is summoned via an effect, you can send your Soul Core to the Trash."
+  ]
  },
  {
   "id": "BS75-X09",

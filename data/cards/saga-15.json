@@ -12218,7 +12218,7 @@
     }
    }
   },
-  "fxComplete": true,
+  "fxComplete": false,
   "note": "v0.41: Main and the cost destruction of the Burst are wired (Burst timing uses \"your Spirit is destroyed\"; depleted is not covered). Not yet: paying the cost to use the Main effect after the Burst, and activating this set card when a Scalostle Brave is summoned.",
   "residual": [
    "Burst timing \"depleted\": only a destruction by the opponent activates it (the engine does not track who caused a depletion)"
@@ -12320,7 +12320,14 @@
   },
   "icons_verified": "cost disk red, 1 red reduction hex, 1 red gem",
   "name_jp": "雷霆の契約神ゼウス",
-  "text_verified_web": true
+  "text_verified_web": true,
+  "residual": [
+   "[Neo-Core Charge: Emperor Beast/Devotee/Concluser & Cost 3 or more, \"Zeus\" & Nexus] When your target Spirit/Nexus is summoned/deployed, you can +1 core to this Nexus.",
+   "(Once per Turn: Same Name) When this Nexus is deployed, you can send three cards from your deck to the Trash. For each target card among them, +1 core to this Nexus.",
+   "Revive [Main](Once per Turn: Same Name) You can deploy this card from Soul State.",
+   "[LV1][LV2] Contract Skill: 2/3/5 [Flash][Either Attack Step] (Once per Turn) Send two/three/five cores from this Nexus to the Void; your counters +2. Then, if you sent three, draw a card. If you sent five, destroy an opposing Spirit with one symbol.",
+   "[LV2] Contract Field (Either Attack Step) (Once per Turn: Same Name) When you would send any \"Z\" if all your Nexuses are \"Zeus\", you can treat it as being sent to the Trash."
+  ]
  },
  {
   "id": "BS71-CX03",

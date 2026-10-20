@@ -24,7 +24,7 @@ export async function smoke(cards) {
     const parsed = await page.evaluate(cs => cs.map(c => { const r = BS.parseCard(c); return r.card ? null : r.errors.join('; '); }), cards);
     const ok = cards.filter((c, i) => !parsed[i]), res = cards.map((c, i) => ({ id: c.id, err: parsed[i] ? 'parseCard: ' + parsed[i] : null }));
     for (let i = 0; i < ok.length; i += 2500) await page.evaluate(cs => BS.importCards(JSON.stringify(cs)), ok.slice(i, i + 2500));      // v0.79.0: importCards takes at most 3000 cards per call
-    const filler = await page.evaluate(() => { const d = BS.PREBUILT.find(x => x.id !== 'train'); return Object.keys(d.cards).filter(x => BS.CARDS[x].type === 'Spirit' && !BS.CARDS[x].effects).slice(0, 2); });
+    const filler = await page.evaluate(() => { const d = BS.PREBUILT.find(x => x.id !== 'train'); return Object.keys(d.cards).filter(x => BS.CARDS[x] && BS.CARDS[x].type === 'Spirit' && !BS.CARDS[x].effects).slice(0, 2); });
     for (const r of res) {
       if (r.err) continue;
       const before = errors.length;

@@ -170,7 +170,11 @@
    }
   ],
   "note": "Wired: protection from opposing return effects (Spirit/Nexus effects that use the engine's return action); LV2 two Trash cores to the attacker. The Can't Stack limit is not tracked.",
-  "fxComplete": false
+  "fxComplete": false,
+  "residual": [
+   "[LV1-2] All your \"Crimson\"/\"Wurm\"/\"Kushina\" can't be returned from Field to Hand/Deck by opposing Spirit/Nexus/Magic effects.",
+   "[LV2](Your Attack Step) (Can't Stack) When your \"Crimson\"/\"Wurm\"/\"Kushina\" attacks, you can send two cores, besides Soul Core, from your Trash to that target."
+  ]
  },
  {
   "id": "BS76-004",
@@ -220,7 +224,11 @@
    }
   ],
   "fxComplete": false,
-  "saga": 17
+  "saga": 17,
+  "residual": [
+   "[LV1-2](When Attacks) You can draw a card. Also, when this Spirit's attack would reduce the opposing Life, if you control any \"Contractor Zeus\", you can draw a card instead of reducing the opposing Life.",
+   "[LV2](Your Attack Step) When your \"Z\"/\"GodKing\" attacks, you can +1 core to one of your \"Contractor Zeus\" Grandwalker Nexuses."
+  ]
  },
  {
   "id": "BS76-005",
@@ -486,7 +494,12 @@
    }
   ],
   "note": "Wired: Burst, Nexus destroy, summon a Siegwurm from Soul State. Not yet: LV2-3 cores from opposing Grandwalker Nexuses to the Void.",
-  "fxComplete": false
+  "fxComplete": false,
+  "residual": [
+   "Burst: After an opposing Spirit/Ultimate's (When Summoned) effect activates, your counter +1. Then, destroy an opposing Spirit/Ultimate with the same family as a card in the opposing Trash. After this effect resolves, summon this card without paying the cost.",
+   "[LV1-2-3](When Attacks) You can destroy an opposing Nexus. Then, (Once per Turn: Same Name) you can summon one of your \"Siegwurm\" in Soul State/pre-advent condition.",
+   "[LV2-3](When Attacks) You can send four cores from any opposing Grandwalker Nexuses to the Void."
+  ]
  },
  {
   "id": "BS76-008",
@@ -591,7 +604,11 @@
    }
   ],
   "fxComplete": false,
-  "saga": 17
+  "saga": 17,
+  "residual": [
+   "When your \"Creation\" family Spirits would leave the Field due to the opponent, you can summon this card from the Hand, treating all reduction symbols as fulfilled (Once per turn).",
+   "[LV2-3](When Attacks) You can send all cores from an opposing Grandwalker Nexus to the Void."
+  ]
  },
  {
   "id": "BS76-010",
@@ -2222,6 +2239,9 @@
      }
     ]
    }
+  ],
+  "residual": [
+   "[LV1-2-3] (When Summoned) You can return an opposing LV1 Spirit to the deckbottom. Then, if there is any opposing Spirit under \"can't attack/block\" effects, you can return an opposing LV2 Spirit to the deckbottom."
   ]
  },
  {
@@ -2795,7 +2815,11 @@
   ],
   "fxComplete": false,
   "saga": 17,
-  "note": "Wired in v0.33: deploy from the Hand when your Crimson/Wurm/Kushina is blocked, LV1-2 BP, LV2 draw when your attacker destroys the blocker in battle. Not wired: Can't Stack, the draw for destructions by effects."
+  "note": "Wired in v0.33: deploy from the Hand when your Crimson/Wurm/Kushina is blocked, LV1-2 BP, LV2 draw when your attacker destroys the blocker in battle. Not wired: Can't Stack, the draw for destructions by effects.",
+  "residual": [
+   "[Can't Stack] When your \"Crimson\"/\"Wurm\"/\"Kushina\" is blocked, you can deploy this card from the Hand, without paying the cost.",
+   "[LV2](Your Attack Step) (Once per Turn: Same Name) When any opposing Spirit/Ultimate is destroyed by your \"Crimson\"/\"Wurm\"/\"Kushina\", you can draw a card."
+  ]
  },
  {
   "id": "BS76-070",
