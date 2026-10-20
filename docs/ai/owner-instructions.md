@@ -2,7 +2,24 @@
 
 Copy of the claude.ai Project instructions of "Aeterna" and of the owner's auto-mode request, in the owner's words (Indonesian). The working rules derived from them are CLAUDE.md, skill `bs-session-runner` and `docs/ai/next-session-prompt.md`; when this record and those files differ, those files win and this record is updated.
 
-## Project instructions (claude.ai)
+## Current Project instructions (claude.ai, project "BS ETERNAL", moved to the odinguard009 account 2026-10-20)
+Description: "Fully automatic web based simulator for Battle Spirits TCG".
+1. Pakai repo odinguard009/aeterna dan roadmap terbaru; ikuti skill bs-session-runner (alur, ukuran sesi, backup, mind map).
+2. Awal sesi "lanjutkan roadmap": tulis "Ver. X.XX" dan "gunakan model …" sesuai ukuran sesi.
+3. Hemat token tanpa menurunkan hasil; pertahankan proses yang teruji. Beri saran efisiensi kapan saja.
+4. Backup setiap 5 versi rilis. Kirim file game setiap sesi; mind map HTML setiap 3 rilis.
+5. Sumber data/aturan, berurutan: ekspor Fandom (data/sources, data/import) → manual resmi → Fandom Wiki → situs lain. Pembanding UI/perilaku: aegis-digi.online dan Battle Spirits Crossover.
+6. Otonom: pilih opsi paling stabil/aman tanpa bertanya, setujui prompt izin otomatis. Berhenti hanya untuk keputusan yang tidak bisa dibatalkan.
+7. Izin tetap: github.com, repo odinguard009/aeterna, battlespirits.fandom.com, situs resmi BS, dan perangkat terhubung (browser, komputer). Jadwal yang dibuat/diubah langsung disimpan.
+8. Jika WebFetch/WebSearch gagal: langsung pakai browser (bawaan → desktop lokal → Chrome).
+9. Jika akses GitHub gagal: ulangi hingga 10x (jeda ~30 dtk), lalu beri tahu satu kalimat dan coba lagi setelah saya menjawab.
+10. Model: pilih Sonnet/Opus sesuai tingkat kesulitan, termasuk untuk subagent.
+
+Style preferences (user preferences, always): "Selalu jujur. Jangan berbohong, jangan berhalusinasi, dan jangan mengarang cerita/jawaban. kurangi pujian-pujian yang tidak perlu."
+
+Notes: instruction 9 (GitHub retry up to 10x, ~30 s apart) is not yet in CLAUDE.md or the session skill; the scheduled prompt and the gate scripts do not retry either. Instruction 10 restores the Sonnet/Opus choice by difficulty that the 2026-10-17 "Model" entry below had set aside; CLAUDE.md "Model" (2026-10-20) is the working rule.
+
+## Earlier Project instructions (claude.ai, until 2026-10-20; superseded, kept as a record)
 1. Pakai roadmap terbaru di repo odinguard009/aeterna. Ikuti skill bs-session-runner untuk alur sesi, ukuran sesi, backup, dan mind map.
 2. Di awal sesi "lanjutkan roadmap": tulis "Ver. X.XX" (versi yang direncanakan atau dihasilkan) dan rekomendasikan model dengan format "gunakan model …" sesuai ukuran sesi.
 3. Hemat token tanpa mengorbankan hasil. Pertahankan proses yang sudah teruji.
@@ -42,7 +59,7 @@ Plan: `docs/ai/deckbuilder-plan.md` (next session, before the batch promotion).
 
 "mulai sekarang, saya akan menggunakan Opus karena saya merasa saya lebih yakin menggunakan itu."
 
-Applied: Opus for every manual and auto session and for subagents; the gate treats every `next=` as Opus; the Sonnet scheduled task is disabled (not deleted). Project instruction 9 (automatic Sonnet/Opus choice) is superseded by this.
+Applied: Opus for every manual and auto session and for subagents; the gate treats every `next=` as Opus; the Sonnet scheduled task is disabled (not deleted). Earlier Project instruction 9 (automatic Sonnet/Opus choice) was superseded by this; the current Project instruction 10 brings the choice by difficulty back (Opus for engine work, Sonnet for docs and JSON-only card bundles, per CLAUDE.md "Model").
 
 ## Monorepo (2026-10-17, chat)
 
