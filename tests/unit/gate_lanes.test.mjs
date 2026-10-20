@@ -100,3 +100,22 @@ test('G20 hemat switch: default ON, newest HEMAT comment wins, ON/OFF auto comme
   assert.equal(gate(['hemat', 'status'], [[60, 'HEMAT OFF'], [30, 'hemat on'], [10, 'DONE v0.69.0']]).out, 'Mode hemat: ON');
   assert.equal(gate(['hemat', 'maybe'], [ON]).code, 2);
 });
+
+// 2026-10-20 (owner): chain mode "rantai"; default OFF; a chain = the newest DONE plus the DONEs it continues ("rantai" tag);
+// GO while the chain is under the budget; one session over the budget turns the switch OFF (fixture budget 600000).
+test('G21 rantai: default OFF, chain sum, budget reached, single session over the budget', () => {
+  const RON = [300, 'RANTAI ON'];
+  assert.equal(gate(['rantai'], [ON]).out, 'Mode rantai: OFF | rantai terakhir: 0 / 600.000 token (0 sesi)');
+  assert.match(gate(['rantai', 'next'], [ON, [10, 'DONE v0.81.1 next=Opus tokens=100000']]).out, /^STOP Mode rantai: OFF/);
+  const c = [RON, [200, 'DONE v0.81.1 next=Opus tokens=250000'], [100, 'DONE v0.81.2 next=Opus tokens=200000 rantai']];
+  assert.equal(gate(['rantai', 'next'], c).out, 'GO Mode rantai: ON | rantai terakhir: 450.000 / 600.000 token (2 sesi)');
+  assert.match(gate(['rantai', 'next'], [...c, [50, 'DONE v0.81.3 next=Opus tokens=160000 rantai']]).out, /^STOP chain budget reached .*610\.000 .*\(3 sesi\)/);
+  // a DONE without the tag starts a new chain
+  assert.match(gate(['rantai', 'next'], [...c, [50, 'DONE v0.81.3 next=Opus tokens=160000']]).out, /^GO .*160\.000 .*\(1 sesi\)/);
+  assert.match(gate(['rantai', 'next'], [RON, [50, 'DONE v0.81.3 next=Opus']]).out, /^STOP no tokens=/);
+  assert.match(gate(['rantai', 'status'], [RON, [100, 'RANTAI OFF auto: x'], [50, 'rantai on']]).out, /^Mode rantai: ON .* 0 \/ /);
+  assert.equal(gate(['rantai', 'maybe'], [ON]).code, 2);
+  // over the budget: posts "RANTAI OFF auto" (needs gh), so only the evaluator verdict is checked through a failing post
+  const r = gate(['rantai', 'next'], [RON, [50, 'DONE v0.81.3 next=Opus tokens=650000']], [], { PATH: '/nonexistent-for-gh:/usr/bin:/bin' });
+  assert.match(r.out, /STOP session v0\.81\.3 used 650000 tokens \(> 600000\) \(Mode rantai: OFF\)/);
+});

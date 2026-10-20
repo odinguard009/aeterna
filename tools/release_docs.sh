@@ -8,7 +8,7 @@
 # v0.80.0 (A2 prep a, docs/ai/token-economy.md section 10 "one end script"): `bash tools/release_docs.sh --end` runs every
 # step AFTER the push in one call: waits for CI on the pushed commit, dispatches Regression when tools/regression_due.sh
 # says DUE (not waited for), pushes backup/vX.Y.Z when 5+ releases followed the newest backup, copies index.html to the
-# outputs folder, runs tools/session_end_check.mjs and prints the counts, auto-mode and Mode hemat lines for the final message.
+# outputs folder, runs tools/session_end_check.mjs and prints the counts, auto-mode and chain-mode lines for the final message.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 if [ "${1:-}" = "--end" ]; then
@@ -37,7 +37,7 @@ if [ "${1:-}" = "--end" ]; then
   # 5. Lines for the final message
   python3 tools/unlock_report.py --line
   echo "Mode otomatis: $(bash tools/session_gate.sh switch 2>/dev/null | tail -1)"
-  bash tools/session_gate.sh hemat 2>/dev/null | tail -1
+  bash tools/session_gate.sh rantai status 2>/dev/null | tail -1
   exit 0
 fi
 python3 tools/unlock_report.py > /dev/null && echo "unlock report ok"

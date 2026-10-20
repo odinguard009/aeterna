@@ -2,6 +2,11 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.81.1
+- Lane: U/I
+- **Chain mode ("mode rantai", owner 2026-10-20):** a finished session starts the next roadmap session in the same chat while the chain stays under 600,000 tokens; one session over 600,000 tokens turns the mode OFF. Switch like auto mode: chat `rantai on|off|status`, comment `RANTAI ON|OFF` on issue #1, or the Actions workflow "Auto mode" (`rantai-on` / `rantai-off`); default OFF. Sessions now end with `done vX.Y.Z next=… tokens=N [rantai]` and `session_gate.sh rantai next`; the final summary (and `release_docs.sh --end`) shows the `Mode rantai:` line instead of the retired Mode hemat line. Rules: `docs/ai/next-session-prompt.md` "Chain mode". Test G21 in `tests/unit/gate_lanes.test.mjs`.
+- Revert note: `git revert` of the v0.81.1 commit restores v0.81.0 (gate script, workflow, docs; no engine or card data change).
+
 ## v0.81.0
 - Lane: U/I
 - **Effect JSON schema + validator (roadmap phase F, item F1): the card effect format is now fixed and checked** (`docs/ai/effect-format.md`):

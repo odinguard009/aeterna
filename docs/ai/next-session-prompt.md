@@ -17,9 +17,19 @@
 - Hard stop (fallback, no runs at all): disable the scheduled task in the Claude app.
 - Default without any switch comment: OFF.
 
+## Chain mode (owner, 2026-10-20)
+- Switch: chat `rantai on`, `rantai off`, `rantai status` (Claude runs the same gate one-liner with `rantai on|off|status`, no clone), or a comment `RANTAI ON` / `RANTAI OFF` on issue #1, or the Actions workflow "Auto mode" (mode `rantai-on` / `rantai-off`). Default without a switch comment: OFF. Independent of auto mode: it chains manual and scheduled sessions alike.
+- Every session ends with `done vX.Y.Z next=Opus|Sonnet tokens=N` (N = "Token terpakai", the budget-counter difference incl. cache re-reads, so it is an estimate) and adds the word `rantai` when it was a chain continuation. Then `rantai next`:
+  - `GO`: the chain (the newest DONE plus the DONEs it continues) is under 600,000 tokens: start the next roadmap session in the same chat at once (skill `bs-session-runner` End step 6).
+  - `STOP chain budget reached`: the chain total is 600,000 or more; the mode stays ON for the next chain.
+  - A single session over 600,000 tokens: the gate posts `RANTAI OFF auto: ...`, the mode is OFF for every next session until the owner turns it on again.
+  - `STOP` for any other reason (mode OFF, no `tokens=` on the last DONE, gate error): end as usual.
+- A chained session in the same chat carries the earlier sessions' context, so its token count grows faster than a fresh run's; the limit is `RANTAI_MAX` in `tools/session_gate.sh`.
+- The final summary of every session shows the `Mode rantai: ON|OFF | rantai terakhir: X / 600.000 token (k sesi)` line.
+
 ## Rules for sessions
 - Lane order (owner, 2026-10-20, 2 card sessions : 1 UI/infra): every session, manual or scheduled, takes the item of the lane that `session_start.sh` prints as `LANE K|U/I` (`tools/lane_next.mjs`, from the `- Lane:` bullet of the CHANGELOG sections; rules and queue: item L in `docs/ai/roadmap-open.md`). The lane is never stored in the gate or in schedules, so two scheduled runs cannot disagree about it.
-- Manual sessions: after `session_start.sh`, `bash tools/session_gate.sh manual` (exit 3 = an auto session is running: stop and tell the owner); at the end `bash tools/session_gate.sh done vX.Y.Z next=Opus|Sonnet` after the files are sent; on an early stop `unlock`.
+- Manual sessions: after `session_start.sh`, `bash tools/session_gate.sh manual` (exit 3 = an auto session is running: stop and tell the owner); at the end `bash tools/session_gate.sh done vX.Y.Z next=Opus|Sonnet tokens=N` after the files are sent, then `rantai next` (chain mode above); on an early stop `unlock`.
 - Auto (scheduled) sessions: gate `check opus|sonnet` before the clone (from the prompt), `lock` after `session_start.sh`, `switch` between tasks (OFF = finish the current commit, push, then end as usual), `done vX.Y.Z next=Opus|Sonnet` at the end, `unlock` on any early stop or error.
 - Sessions never create, change or delete schedules (the app asks the owner to approve schedule changes, and the loop must not wait for the owner). Only the owner installs or removes the task.
 - Roadmap empty or every item blocked: commit `docs/ai/chain-stop.md` (reason). Delete it only after the owner has answered.

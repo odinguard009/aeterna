@@ -7,6 +7,8 @@
 #   DONE vX.Y.Z         a session (manual or auto) finished and sent the game file; ends every session, lanes included
 #   UNLOCK [lane]       a session stopped early (error, quota, ~80 calls); with a lane it ends only that lane
 #   LANEDONE lane branch  a lane session finished its branch (no release yet; the merge step ends with DONE)
+#   RANTAI ON / RANTAI OFF [reason]  chain-mode switch (owner, 2026-10-20); newest one wins; none yet = OFF
+#   DONE ... tokens=N [rantai]  tokens = the session's budget-counter difference; "rantai" = it was a chain continuation
 #   HEMAT ON / HEMAT OFF  token-saving switch (owner, 2026-10-19); newest one wins; none yet = ON. ON = the pre-v0.68 session
 #                       (single main session, read-only subagents only as CLAUDE.md "Mode hemat" says); OFF = team session (v0.68)
 # Lanes (P1, v0.63.1; opt-in): LOCK/MANUAL/UNLOCK may carry a lane as second word (ui | card). A start with a lane
@@ -27,6 +29,9 @@
 #   hemat [on|off|status]  token-saving switch ("hemat on" / "hemat off" / "hemat status" in chat); prints "Mode hemat: ON|OFF";
 #                    every session reads it at the start (team or not) and prints it in the final summary
 #   status           one-line summary for the owner ("otomatis status")
+#   rantai [on|off|status|next]  chain mode ("rantai on" / "rantai off" / "rantai status" in chat). next = end of every
+#                    session, after done: prints "GO ..." (start the next session in the same chat; its DONE carries "rantai")
+#                    or "STOP <reason>"; one session over RANTAI_MAX tokens turns the switch OFF (comment "RANTAI OFF auto: ...")
 #   busy [lane]      exit 3 when a LOCK or MANUAL session is active (in that lane; used by session_start.sh)
 # Offline test: GATE_FIXTURE=1 with COMMENTS / COMMITS (tab-separated "time<TAB>first line") and GATE_NOW skips gh
 #   for the evaluator (tests/unit/gate_lanes.test.mjs); posting commands still need gh.
@@ -37,6 +42,7 @@ IDLE_MIN=0       # min idle minutes since the last session/owner activity; 0 = n
 STALE_H=5        # a LOCK older than this is a crashed auto session
 MANUAL_H=3       # a MANUAL older than this is a crashed manual session
 NOPROG=0         # auto sessions without a new v* commit before the switch goes OFF by itself; 0 = never (owner, 2026-10-20, was 3)
+RANTAI_MAX=${GATE_RANTAI_MAX:-600000}  # chain budget and single-session ceiling in tokens (owner, 2026-10-20)
 MAX_AUTO_24H=${GATE_MAX_AUTO_24H:-0}   # max auto sessions (LOCK) in 24 hours; 0 = unlimited (owner, 2026-10-20); GATE_MAX_AUTO_24H only lets the test exercise the cap
 post() { gh api -X POST "repos/$R/issues/$L/comments" -f body="$1" --jq .created_at >/dev/null; }
 pages() { # gh --paginate follows Link headers to repositories/<id>/..., which the session proxy refuses: walk ?page=N on repos/ paths instead
@@ -127,6 +133,35 @@ hemat_state() { # newest "HEMAT ON|OFF" comment on issue #1 (whole history: the 
   else rows=$(pages "repos/$R/issues/$L/comments?per_page=100" '.[] | .body | split("\n")[0]') || return 1; fi
   printf '%s\n' "$rows" | grep -iE '^HEMAT[[:space:]]+(ON|OFF)\b' | tail -1 | awk '{v=toupper($2)} END {print (v=="OFF" ? "OFF" : "ON")}'
 }
+rantai_eval() { # chain mode; $1 = status|next; prints one line (next: GO|STOP|AUTOOFF ...)
+  local rows
+  if [ "${GATE_FIXTURE:-}" = 1 ]; then rows="${COMMENTS:-}"
+  else rows=$(pages "repos/$R/issues/$L/comments?per_page=100" '.[] | [.created_at, (.body | split("\n")[0])] | @tsv') || return 1; fi
+  MODE="$1" MAXT=$RANTAI_MAX ROWS="$rows" python3 - <<'PY'
+import os, re
+E = os.environ; MAXT = int(E["MAXT"])
+rows = sorted(tuple(l.split("\t", 1)) for l in E["ROWS"].splitlines() if "\t" in l)
+sw, chain, stop = "OFF", [], False
+for ts, b in rows:  # chain = the newest DONE plus the DONEs it continues ("rantai" tag), back to its head
+    p = b.split(); w = p[0].upper() if p else ""
+    if w == "RANTAI" and len(p) > 1 and p[1].upper() in ("ON", "OFF"): sw = p[1].upper(); chain = []
+    elif w == "DONE":
+        m = re.search(r"tokens=(\d+)", b); n = int(m.group(1)) if m else None
+        cont = any(x.lower() == "rantai" for x in p[2:])
+        ver = p[1] if len(p) > 1 else "?"
+        chain = (chain if cont else []) + [(ver, n)]
+total = sum(n or 0 for _, n in chain); k = len(chain)
+line = f"Mode rantai: {sw} | rantai terakhir: {total:,} / {MAXT:,} token ({k} sesi)".replace(",", ".")
+if E["MODE"] == "status": print(line)
+else:
+    last = chain[-1] if chain else None
+    if sw == "OFF": print("STOP " + line)
+    elif not last or last[1] is None: print("STOP no tokens= on the last DONE | " + line)
+    elif last[1] > MAXT: print(f"AUTOOFF session {last[0]} used {last[1]} tokens (> {MAXT})")
+    elif total >= MAXT: print("STOP chain budget reached | " + line)
+    else: print("GO " + line)
+PY
+}
 cmd=${1:-check}; shift || true
 case "$cmd" in
   check)
@@ -149,7 +184,17 @@ case "$cmd" in
             status)  v=$(hemat_state) || { echo "gate error (gh api failed)"; exit 1; }; echo "Mode hemat: $v" ;;
             *) echo "usage: $0 hemat on|off|status"; exit 2 ;;
           esac ;;
+  rantai) case "${1:-status}" in
+            on|ON)   post "RANTAI ON ${*:2}" && echo "Mode rantai: ON" ;;
+            off|OFF) post "RANTAI OFF ${*:2}" && echo "Mode rantai: OFF" ;;
+            status|next) v=$(rantai_eval "${1:-status}") || { echo "STOP gate error (gh api failed)"; exit 1; }
+                     case "$v" in
+                       AUTOOFF*) post "RANTAI OFF auto: ${v#AUTOOFF }" ; echo "STOP ${v#AUTOOFF } (Mode rantai: OFF)" ;;
+                       *) echo "$v" ;;
+                     esac ;;
+            *) echo "usage: $0 rantai on|off|status|next"; exit 2 ;;
+          esac ;;
   switch|status) evaluate "$cmd" || { echo "gate error (gh api failed)"; exit 1; } ;;
   busy)   lane_ok "${1:-}" || exit 2; v=$(evaluate busy "" "${1:-}") || exit 1; echo "$v"; [ "${v%% *}" = BUSY ] && exit 3; exit 0 ;;
-  *) echo "usage: $0 check opus [lane]|lock [lane]|manual [lane]|done vX.Y.Z next=Opus|lanedone <lane> <branch>|unlock [lane]|on|off [why]|hemat on|off|status|switch|status|busy [lane]  (lanes: $LANES)"; exit 2 ;;
+  *) echo "usage: $0 check opus [lane]|lock [lane]|manual [lane]|done vX.Y.Z next=Opus|lanedone <lane> <branch>|unlock [lane]|on|off [why]|hemat on|off|status|rantai on|off|status|next|switch|status|busy [lane]  (lanes: $LANES)"; exit 2 ;;
 esac
