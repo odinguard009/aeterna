@@ -1,3 +1,4 @@
+from waits import settle, ready  # v0.87.0 (F5): state waits instead of fixed times
 # v0.21: Burst + Mirage in the same area (official rule), replaced Mirage returns to the Hand, Flash includes Main, CPU sets Mirage, glossary consistency.
 import json as _json_c, os as _os_c  # counts come from the card data, so a new colour needs no edit here
 _CARDS = _json_c.load(open(_os_c.path.join(_os_c.path.dirname(_os_c.path.abspath(__file__)), '..', '..', 'data', 'cards', 'all-cards.json')))
@@ -8,7 +9,7 @@ import json
 src = open('/tmp/claude-0/t4/mitra_tests.py').read()
 exec(src.split("MITRA_FX =")[0])
 def run(pg, js, ms=700):
-    pg.evaluate("(()=>{(async()=>{" + js + "})().catch(e=>console.error(e));return 1})()"); pg.wait_for_timeout(ms)
+    pg.evaluate("(()=>{window.pr=(async()=>{" + js + "})().catch(e=>console.error(e));return 1})()"); settle(pg)
 S = "window.P=BS.G.p.player;window.O=BS.G.p.opponent;BS.G.active='player';BS.G.step=4;"
 with sync_playwright() as p:
     b = p.chromium.launch()

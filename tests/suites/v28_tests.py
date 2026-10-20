@@ -4,6 +4,7 @@
 import os as _os_repo
 _REPO = _os_repo.path.abspath(_os_repo.path.join(_os_repo.path.dirname(_os_repo.path.abspath(__file__)), '..', '..'))
 from playwright.sync_api import sync_playwright
+from waits import settle, ready
 import json, sys, time
 OUT = "file:///mnt/user-data/outputs/" + (sys.argv[1] if len(sys.argv) > 1 else "wip.html")
 res = []; ALLERR = []
@@ -13,14 +14,14 @@ def ev(pg, js, *a): return pg.evaluate(js, *a) if a else pg.evaluate(js)
 def is_open(pg): return ev(pg, "document.getElementById('action-modal').classList.contains('active')")
 def title(pg): return pg.inner_text("#modal-card-title") if is_open(pg) else ''
 def btns(pg): return pg.locator("#modal-actions .modal-btn").all_inner_texts() if is_open(pg) else []
-def press(pg, t): pg.locator("#modal-actions .modal-btn", has_text=t).first.click(); pg.wait_for_timeout(250)
+def press(pg, t): pg.locator("#modal-actions .modal-btn", has_text=t).first.click(); settle(pg)
 def wait_modal(pg, ms=2500):
     t0 = time.time()
     while time.time() - t0 < ms / 1000:
         if is_open(pg): return True
-        pg.wait_for_timeout(50)
+        settle(pg)
     return False
-def run(pg, js, ms=1200): ev(pg, "(()=>{(async()=>{" + js + "})().catch(e=>console.error('RUNERR '+e.message));return 1})()"); pg.wait_for_timeout(ms)
+def run(pg, js, ms=1200): ev(pg, "(()=>{window.pr=(async()=>{" + js + "})().catch(e=>console.error('RUNERR '+e.message));return 1})()"); settle(pg)
 # test-only cards: their effects log in a recognisable order
 ZT = r"""(()=>{const fx=a=>{const r=BS.parseEffects(a);if(r.error)throw new Error(r.error);return r.effects};
 const L=[[1,2000],[2,3000]].map(([c,b])=>({cores:c,bp:b}));
@@ -37,7 +38,7 @@ def page(b, extra=''):
     pg = b.new_page(viewport={'width': 1280, 'height': 800}); errs = []; ALLERR.append(errs)
     pg.on("pageerror", lambda e: errs.append(str(e)[:300])); pg.on("dialog", lambda d: (errs.append('DIALOG'), d.dismiss()))
     pg.on("console", lambda m: errs.append('CONSOLE:' + m.text[:200]) if m.type == 'error' else None)
-    pg.goto(OUT); pg.wait_for_timeout(250); ev(pg, ZT); return pg
+    pg.goto(OUT); ready(pg); ev(pg, ZT); return pg
 def scen(pg, spec): r = ev(pg, "(s)=>BS.loadScenario(s)", spec); assert r.get('ok'), r; return r
 H = "BS.G.history"
 def idx(pg, needle): return ev(pg, f"BS.G.history.findIndex(t=>t.includes({json.dumps(needle)}))")
@@ -89,9 +90,9 @@ with sync_playwright() as p:
         if not wait_modal(pg, 1500): break
         if 'Do It' in ' '.join(btns(pg)): break
         bt = [x for x in btns(pg) if 'Skip' not in x and 'View Field' not in x]
-        press(pg, bt[0] if bt else 'Done'); pg.wait_for_timeout(300)
+        press(pg, bt[0] if bt else 'Done'); settle(pg)
     chk('14 human: the optional "By sending your Soul Core ..., banish" asks "Do it / Skip"', 'Do It' in ' '.join(btns(pg)), [title(pg), btns(pg)])
-    press(pg, 'Skip'); pg.wait_for_timeout(500)
+    press(pg, 'Skip'); settle(pg)
     chk('15 ... Skip: nothing is paid and nothing banished', ev(pg, "BS.G.p.player.trashCores.soul&&BS.G.p.opponent.removed.length===0&&" + inv + "==='ok'"))
     # ---- C. trigger loop
     pg = page(b); scen(pg, {"players": {"player": {"reserve": 6, "void": 3, "deck": ["BS75-001", "BS75-002"], "hand": [{"id": "ZT-2", "as": "t2"}], "spirits": [{"id": "ZT-1", "cores": 1, "as": "t1"}, {"id": "ZT-3", "cores": 1, "as": "t3"}]}, "opponent": {}}})
@@ -106,7 +107,7 @@ with sync_playwright() as p:
     pg = page(b); scen(pg, {"players": {"player": {"cpu": False, "reserve": 4, "deck": ["BS75-001", "BS75-002"], "spirits": [{"id": "ZT-4", "cores": 1, "as": "st"}, {"id": "ZT-5", "cores": 1, "as": "ch"}]}, "opponent": {}}})
     run(pg, "await BS.fireFxMulti([{owner:BS.G.p.player,trigger:'ATTACKS',src:SC.st,ctx:{attacker:SC.st}},{owner:BS.G.p.player,trigger:'ALLY_ATTACKS',src:SC.st,ctx:{attacker:SC.st}}]);", 600)
     chk('20 When Attacks and an ally "when attacks" trigger together: the human orders them', 'Order' in title(pg) and len([x for x in btns(pg) if 'ZT' in x]) == 2, [title(pg), btns(pg)])
-    press(pg, 'ZT Cheer'); pg.wait_for_timeout(900)
+    press(pg, 'ZT Cheer'); settle(pg)
     chk('21 ... the chosen one resolves first', 0 <= idx(pg, 'ZT Cheer: [') < idx(pg, 'ZT Striker: ['), ev(pg, H + ".slice(-5)"))
     def lifepool(human_turn):
         pg = page(b)
@@ -118,9 +119,9 @@ with sync_playwright() as p:
         return pg
     pg = lifepool(True)
     chk('22 Life reduced: the human turn player orders his and the CPU\'s effects in one prompt', 'Order' in title(pg) and any(x.startswith('CPU') and 'ZT Mirage' in x for x in btns(pg)) and any('ZT Striker' in x and not x.startswith('CPU') for x in btns(pg)), btns(pg))
-    press(pg, 'ZT Mirage'); pg.wait_for_timeout(900)
+    press(pg, 'ZT Mirage'); settle(pg)
     chk('23 ... the CPU Mirage resolved first because the turn player chose it', 0 <= idx(pg, 'ZT Mirage: [') < idx(pg, 'ZT Striker: ['), ev(pg, H + ".slice(-5)"))
-    pg = b.new_page(); errs = []; ALLERR.append(errs); pg.on("pageerror", lambda e: errs.append(str(e)[:300])); pg.goto(OUT); pg.wait_for_timeout(250); ev(pg, ZT)
+    pg = b.new_page(); errs = []; ALLERR.append(errs); pg.on("pageerror", lambda e: errs.append(str(e)[:300])); pg.goto(OUT); ready(pg); ev(pg, ZT)
     scen(pg, {"turn": 4, "active": "opponent", "step": 5, "players": {"player": {"cpu": False, "reserve": 4, "deck": ["BS75-001", "BS75-002"]}, "opponent": {"reserve": 4, "deck": ["BS75-001", "BS75-002"], "spirits": [{"id": "ZT-4", "cores": 1, "as": "st"}]}}})
     ev(pg, "(()=>{const P=BS.G.p.player;const m=BS.mkInst('ZT-6');m.mirage=true;P.mirage=m;P.deckSize++;return 1})()")
     run(pg, "const A=BS.G.p.opponent,D=BS.G.p.player;await BS.fireFxMulti([{owner:A,trigger:'ALLY_LIFE_HIT',src:null,ctx:{attacker:SC.st}},{owner:D,trigger:'MIRAGE_OWN_LIFE',src:null,ctx:{}}]);", 1200)

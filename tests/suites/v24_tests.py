@@ -3,6 +3,7 @@ import json as _json_c, os as _os_c  # counts come from the card data, so a new 
 _CARDS = _json_c.load(open(_os_c.path.join(_os_c.path.dirname(_os_c.path.abspath(__file__)), '..', '..', 'data', 'cards', 'all-cards.json')))
 PACK_N = len(_CARDS); CONTRACTORS = sorted(c['id'] for c in _CARDS if c['type'] == 'Nexus' and '-CX' in c['id'] and c.get('levels'))   # BS76/BS77 CX Flagbearers have no levels yet (Flag Contract, open in roadmap-open.md): not Count-level
 from playwright.sync_api import sync_playwright
+from waits import settle, ready
 import json, sys, re, time
 F = "file:///mnt/user-data/outputs/" + (sys.argv[1] if len(sys.argv) > 1 else "wip.html")
 res = []
@@ -14,7 +15,7 @@ def newp(b, w=1280, h=800, fixtures=False):
     pg.on("pageerror", lambda e: errs.append(str(e)[:300])); pg.on("dialog", lambda d: (errs.append('DIALOG'), d.dismiss()))
     pg.on("console", lambda m: errs.append('CONSOLE:' + m.text[:200]) if m.type == 'error' else None)
     pg.on("request", lambda r: reqs.append(r.url))
-    pg.goto(F); pg.wait_for_timeout(250); return pg, errs, reqs
+    pg.goto(F); ready(pg); return pg, errs, reqs
 SETUP = """(()=>{BS.testSetup(); const G=BS.G;
 window.mk=(k,id,cores,o)=>{const p=G.p[k]; const i=BS.mkInst(id); i.cores=cores; if(BS.CARDS[id].type==='Spirit') p.spirits.push(i); else p.nexus.push(i); p.reserve.n-=cores; p.deckSize++; return i;};
 window.inv=()=>{try{BS.checkInvariants();return 'ok'}catch(e){return e.message}};
@@ -65,19 +66,19 @@ with sync_playwright() as p:
     xss = [{"id": "XSS-1", "name": "<img src=x onerror=window.__x=1>", "type": "Spirit", "color": "red", "cost": 1, "levels": [{"cores": 1, "bp": 1000}], "text": "<script>window.__x=1</script>", "families": ["<b>x</b>"]}]
     ev(pg, "BS.importCards(%s)" % json.dumps(json.dumps(xss)))
     ev(pg, SETUP); ev(pg, "BS.G.p.player.hand.push(BS.mkInst('XSS-1'));BS.render()")
-    pg.wait_for_timeout(200)
+    settle(pg)
     chk('D4 hostile card name/text never executes (hand render)', ev(pg, "window.__x===undefined"))
-    ev(pg, "BS.showCardDetail&&0"); pg.wait_for_timeout(50)
+    ev(pg, "BS.showCardDetail&&0"); settle(pg)
     chk('D5 hostile name is shown as text in the card-style effect text', ev(pg, "(()=>{const h=BS.effectTextHTML(BS.CARDS['XSS-1'],true);return !h.includes('<img src=x')})()"))
     chk('D6 no page errors after hostile import', not errs, errs)
     ev(pg, "BS.clearImported()")
     pg2, e2, _ = newp(b)
     pg2.evaluate("localStorage.setItem('bse.cards.v4','{not json');localStorage.setItem('bse.slots.v1','[1,2');localStorage.setItem('bse.settings.v1','xx');localStorage.setItem('bse.history.v1','{{')")
-    pg2.reload(); pg2.wait_for_timeout(300)
+    pg2.reload(); ready(pg2)
     chk('D7 corrupt localStorage does not break the page', ev(pg2, "typeof BS==='object'&&Object.keys(BS.CARDS).length>60") and not [e for e in e2 if 'CONSOLE' not in e], e2)
     chk('D8 corrupt storage still yields a valid default deck', ev(pg2, "BS.validateDeck(BS.PLAYER_DECK,'eternal').ok"))
     pg3 = b.new_context().new_page(); pg3.add_init_script("Object.defineProperty(window,'localStorage',{get(){throw new Error('blocked')}})"); e3 = []
-    pg3.on("pageerror", lambda e: e3.append(str(e)[:200])); pg3.goto(F); pg3.wait_for_timeout(300)
+    pg3.on("pageerror", lambda e: e3.append(str(e)[:200])); pg3.goto(F); ready(pg3)
     chk('D9 blocked localStorage does not break the page', ev(pg3, "typeof BS==='object'") and not e3, e3)
     big = json.dumps([{"id": "Z%d" % i, "name": "z", "type": "Spirit", "color": "red", "cost": 1, "levels": [{"cores": 1, "bp": 1000}]} for i in range(3001)])
     r = ev(pg2, "BS.importCards(%s)" % json.dumps(big))
@@ -99,11 +100,11 @@ with sync_playwright() as p:
     for (w, h, nm) in [(1280, 800, 'PC'), (390, 844, 'phone')]:
         pg, errs, _ = newp(b, w, h)
         ev(pg, "BS.loadPrebuilt('mitra');BS.setFormat('eternal');BS.startNewGame();1")
-        pg.wait_for_timeout(900)
+        settle(pg)
         for _ in range(5):
             if ev(pg, "document.getElementById('action-modal').classList.contains('active')"):
-                pg.evaluate("(document.querySelector('#modal-actions .modal-btn')||{click(){}}).click()"); pg.wait_for_timeout(450)
-        pg.wait_for_timeout(900)
+                pg.evaluate("(document.querySelector('#modal-actions .modal-btn')||{click(){}}).click()"); settle(pg)
+        settle(pg)
         chk(f'F {nm}: a game starts from the lobby without errors', ev(pg, "BS.G!=null&&BS.G.p.player.hand.length>=4") and not errs, errs)
         chk(f'F {nm}: no horizontal page overflow', ev(pg, "document.documentElement.scrollWidth<=window.innerWidth+1"), ev(pg, "[document.documentElement.scrollWidth,window.innerWidth]"))
     # ---- G. short CPU-vs-CPU sims on the cleaned game: invariants hold, no errors
@@ -111,7 +112,7 @@ with sync_playwright() as p:
         pg, errs, _ = newp(b)
         ok = pg.evaluate("""async(f)=>{BS.setFormat(f);BS.SETTINGS.cpuDeck='red';BS.loadPrebuilt(f==='standard'?'train':'red');const bad=[];
           BS.startNewGame();await new Promise(r=>setTimeout(r,300));return 1}""", fmt)
-        pg.wait_for_timeout(300)
+        settle(pg)
         r = pg.evaluate("""async()=>{const G=BS.G;let n=0;try{for(let k=0;k<5&&!G.over;k++){BS.checkInvariants();await new Promise(r=>setTimeout(r,200));n++}}catch(e){return 'ERR '+e.message}return 'ok'}""")
         chk(f'G{i+1} {fmt} game stays consistent for several ticks', r == 'ok' and not errs, [r, errs])
     print('TOTAL %d/%d' % (sum(res), len(res)))

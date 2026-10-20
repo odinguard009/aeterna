@@ -1,3 +1,4 @@
+from waits import settle, ready  # v0.87.0 (F5): state waits instead of fixed times
 # v0.25: Grandwalker core effects (Erimakilizard, Magmatodon, Cladoselache, Sphinott-Hauser, Ometeotl Soul Core, Pachyrhachis, Magmazosia),
 # Soul Core rules from the official Eternal manual, Manifest timing, card "residual" lists. Every chk() is one numbered test.
 # Run: python3 tests/make_fixtures.py && PYTHONPATH=tests python3 tests/suites/v25_tests.py
@@ -6,9 +7,9 @@ exec(src.split("MITRA_FX =")[0])
 def new_page(b, w=1280, h=800):
     ctx = b.new_context(viewport={'width': w, 'height': h}); pg = ctx.new_page(); errs = []
     pg.on("pageerror", lambda e: errs.append(str(e)[:300])); pg.on("dialog", lambda d: (errs.append('DIALOG'), d.dismiss()))
-    pg.goto(F); pg.wait_for_timeout(200); pg.evaluate(SETUP); return pg, errs
+    pg.goto(F); ready(pg); pg.evaluate(SETUP); return pg, errs
 def run(pg, js, ms=900):
-    pg.evaluate("(()=>{(async()=>{" + js + "})().catch(e=>console.error('RUNERR '+e.message));return 1})()"); pg.wait_for_timeout(ms)
+    pg.evaluate("(()=>{window.pr=(async()=>{" + js + "})().catch(e=>console.error('RUNERR '+e.message));return 1})()"); settle(pg)
 S = "window.P=BS.G.p.player;window.O=BS.G.p.opponent;BS.G.active='player';BS.G.step=4;window.OM={name:['Contractor Ometeotl']};"
 def life(k, n): return f"BS.G.p.{k}.reserve.n+=BS.G.p.{k}.life-{n};BS.G.p.{k}.life={n};"
 def count(k, n): return f"BS.G.p.{k}.reserve.n-={n};BS.G.p.{k}.count+={n};"
@@ -130,13 +131,13 @@ with sync_playwright() as p:
     pg, errs = fresh("P.cpu=false;window.om=mk('player','BS74-CX01',0);window.x=mk('player','BS75-001',1);")
     run(pg, "await BS.runActions({p:P,opp:O,src:x,ctx:{}},{actions:[{do:'SOUL_TO_NEXUS',match:OM,ask:true}]},'ATTACKS');", 500)
     chk('44 human: "you can send your Soul Core" asks first', modal_open(pg) and 'Send the Soul Core' in pg.inner_text('#modal-actions'), modal_title(pg))
-    press(pg, 'Skip'); pg.wait_for_timeout(300)
+    press(pg, 'Skip'); settle(pg)
     chk('45 ... Skip keeps the Soul Core in the Reserve', ev(pg, "P.reserve.soul&&!om.soul&&inv()==='ok'"))
     pg, errs = fresh("P.cpu=false;window.m1=mk('opponent','BS74-CX03',4);window.er=mk('player','BS75-003',1);" + life('player', 2))
     run(pg, "await BS.fireFx(P,'ALLY_ATTACKS',er,{attacker:er});", 500)
-    press(pg, 'Use Effect'); pg.wait_for_timeout(400)
+    press(pg, 'Use Effect'); settle(pg)
     chk('46 human at Life 2: chooses between 2 cores and all cores of one Nexus', modal_open(pg) and 'All Cores from One Nexus' in pg.inner_text('#modal-actions'), pg.inner_text('#modal-actions') if modal_open(pg) else '')
-    press(pg, 'All Cores'); pg.wait_for_timeout(500)
+    press(pg, 'All Cores'); settle(pg)
     chk('47 ... all 4 cores of the only target go to the Void', ev(pg, "m1.cores===0&&inv()==='ok'"), ev(pg, "m1.cores"))
     chk('48 no page errors in this suite', not any(ALLERR), [e for e in ALLERR if e])
     print(f'TOTAL {sum(res)}/{len(res)}')

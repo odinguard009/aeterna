@@ -1,10 +1,11 @@
+from waits import settle, ready  # v0.87.0 (F5): state waits instead of fixed times
 # Contract Field (Soul State Contract Advent), Advent keeps the battle going, CPU Flash use. Every chk() is one numbered test.
 import sys, random
 src = open('/tmp/claude-0/t4/mitra_tests.py').read()
 exec(src.split("MITRA_FX =")[0])
 random.seed(7)
 def run(pg, js, ms=700):
-    pg.evaluate("(()=>{(async()=>{" + js + "})().catch(e=>console.error(e));return 1})()"); pg.wait_for_timeout(ms)
+    pg.evaluate("(()=>{window.pr=(async()=>{" + js + "})().catch(e=>console.error(e));return 1})()"); settle(pg)
 with sync_playwright() as p:
     b = p.chromium.launch()
     pg, errs, r = new_page(b)
@@ -39,14 +40,14 @@ with sync_playwright() as p:
     pg, errs = fresh("window.tnS=put('player','soulState','BS74-041');P.csAdventTurn=BS.G.turnNo;P.cpu=false;BS.G.busy=false;BS.render();")
     run(pg, "openZoneModal('player','soulstate');", 300)
     chk('UI: Soul State modal offers Contract Advent', modal_open(pg) and pg.locator("#modal-actions .modal-btn", has_text='Contract Advent').count() == 1, modal_title(pg))
-    press(pg, 'Contract Advent'); pg.wait_for_timeout(400)
+    press(pg, 'Contract Advent'); settle(pg)
     chk('UI: target picker opens', modal_open(pg))
-    press(pg, 'Paanch'); pg.wait_for_timeout(600)
+    press(pg, 'Paanch'); settle(pg)
     chk('UI: Reserve cores question appears', modal_open(pg) and 'Reserve' in pg.inner_text('#modal-card-desc'), pg.inner_text('#modal-card-desc') if modal_open(pg) else '')
-    press(pg, '3'); pg.wait_for_timeout(500)
+    press(pg, '3'); settle(pg)
     for _ in range(3):
         if modal_open(pg):
-            tx = pg.locator("#modal-actions .modal-btn").all_inner_texts(); press(pg, ([x for x in tx if 'Use' in x] or [x for x in tx if 'Skip' in x] or tx)[0]); pg.wait_for_timeout(400)
+            tx = pg.locator("#modal-actions .modal-btn").all_inner_texts(); press(pg, ([x for x in tx if 'Use' in x] or [x for x in tx if 'Skip' in x] or tx)[0]); settle(pg)
     chk('UI: the card advented with 3 Reserve cores (2 stack + 3)', ev(pg, "P.spirits.includes(tnS)&&tnS.cores===5&&inv()==='ok'"), ev(pg, "[tnS.cores,inv()]"))
     chk('CF2: no page errors', not errs, errs)
     # loop: Contract Field with random Reserve sizes

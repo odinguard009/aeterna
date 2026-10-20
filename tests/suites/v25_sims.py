@@ -1,6 +1,7 @@
 # v0.25 CPU-vs-CPU sims: the Red prebuilt deck (Crimson / Lava Fish with Ometeotl) against the white Mitra deck or itself.
 # Usage: python3 tests/make_fixtures.py && python3 tests/suites/v25_sims.py 10 tagA white   (or: ... 10 tagB mirror)
 from playwright.sync_api import sync_playwright
+from waits import settle, ready
 import sys, time, json
 N = int(sys.argv[1]); TAG = sys.argv[2]; MODE = sys.argv[3] if len(sys.argv) > 3 else 'white'
 F = "file:///mnt/user-data/outputs/wip.html"
@@ -12,7 +13,7 @@ with sync_playwright() as p:
         pg = b.new_page(); errs = []
         pg.on("pageerror", lambda e: errs.append(str(e)[:300])); pg.on("dialog", lambda d: (errs.append('DIALOG'), d.dismiss()))
         pg.on("console", lambda m: errs.append('CONSOLE:' + m.text[:200]) if m.type == 'error' else None)
-        pg.goto(F + '?sim=1'); pg.wait_for_timeout(300)
+        pg.goto(F + '?sim=1'); ready(pg)
         pg.evaluate("(()=>{const r=BS.PREBUILT.find(x=>x.id==='red').cards;const D=BS.PRESET_DECK;for(const k of Object.keys(D)) delete D[k];Object.assign(D,r);return 1})()")
         if MODE == 'mirror': pg.evaluate("BS.setSimDeckB(BS.PREBUILT.find(x=>x.id==='red').cards)")
         else: pg.evaluate("(d)=>BS.setSimDeckB(d)", WHITE)

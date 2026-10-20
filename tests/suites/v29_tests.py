@@ -2,6 +2,7 @@
 # deck-out rules (docs/manual-notes.md). Every label starts with the obligation id from data/kb/rule-obligations.json.
 # Run: python3 tests/make_fixtures.py && python3 tests/suites/v29_tests.py      (no fixtures needed)
 from playwright.sync_api import sync_playwright
+from waits import settle, ready
 import json, os, subprocess, sys, time
 OUT = "file:///mnt/user-data/outputs/" + (sys.argv[1] if len(sys.argv) > 1 else "wip.html")
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -11,19 +12,19 @@ def chk(n, c, x=''):
 def ev(pg, js, *a): return pg.evaluate(js, *a) if a else pg.evaluate(js)
 def is_open(pg): return ev(pg, "document.getElementById('action-modal').classList.contains('active')")
 def btns(pg): return pg.locator("#modal-actions .modal-btn").all_inner_texts() if is_open(pg) else []
-def press(pg, t): pg.locator("#modal-actions .modal-btn", has_text=t).first.click(); pg.wait_for_timeout(250)
+def press(pg, t): pg.locator("#modal-actions .modal-btn", has_text=t).first.click(); settle(pg)
 def wait_btn(pg, t, ms=4000):
     t0 = time.time()
     while time.time() - t0 < ms / 1000:
         if any(t in x for x in btns(pg)): return True
-        pg.wait_for_timeout(60)
+        settle(pg)
     return False
-def run(pg, js, ms=1200): ev(pg, "(()=>{(async()=>{" + js + "})().catch(e=>console.error('RUNERR '+e.message));return 1})()"); pg.wait_for_timeout(ms)
+def run(pg, js, ms=1200): ev(pg, "(()=>{window.pr=(async()=>{" + js + "})().catch(e=>console.error('RUNERR '+e.message));return 1})()"); settle(pg)
 def page(b):
     pg = b.new_page(viewport={'width': 1280, 'height': 800}); errs = []; ALLERR.append(errs)
     pg.on("pageerror", lambda e: errs.append(str(e)[:300])); pg.on("dialog", lambda d: (errs.append('DIALOG'), d.dismiss()))
     pg.on("console", lambda m: errs.append('CONSOLE:' + m.text[:200]) if m.type == 'error' else None)
-    pg.goto(OUT); pg.wait_for_timeout(250); return pg
+    pg.goto(OUT); ready(pg); return pg
 def scen(pg, spec):
     r = ev(pg, "(s)=>BS.loadScenario(s)", spec); assert r.get('ok'), r
     ev(pg, "window.P=BS.G.p.player;window.O=BS.G.p.opponent;0")
@@ -57,19 +58,19 @@ with sync_playwright() as p:
         return pg
     pg = start(7, CONTRACT_DECK)
     before = ev(pg, "BS.G.p.player.hand.map(h=>h.uid).join()")
-    press(pg, 'Redraw All Cards'); pg.wait_for_timeout(150)
+    press(pg, 'Redraw All Cards'); settle(pg)
     s = ev(pg, "(()=>{const q=BS.G.p.player,all=q.hand.concat(q.deck);return [all.length,all.filter(h=>h.id==='BS74-CX03').length,BS.G.history.some(t=>t.includes('You redrew'))]})()")
     chk('5 [SETUP-REDRAW] redraw: the whole Hand (Contract card too) goes back, 40 cards stay in Hand + Deck, the Contract card exists once', s == [40, 1, True], s)
     s = ev(pg, "BS.G.p.player.hand.map(h=>h.uid).join()")
     chk('6 [SETUP-REDRAW] the redrawn Hand is a new draw (not the same 4 cards in the same order)', s != before, [before, s])
-    pg.wait_for_timeout(400)
+    settle(pg)
     chk('7 [SETUP-REDRAW] only one redraw: the starting-hand prompt does not come back', not any('Redraw All Cards' in x for x in btns(pg)), btns(pg))
     pg2 = start(11, CONTRACT_DECK, contract='Keep in Deck')
     s = ev(pg2, "(()=>{const q=BS.G.p.player;return [q.hand.length,q.hand.filter(h=>h.id==='BS74-CX03').length,q.deck.filter(h=>h.id==='BS74-CX03').length]})()")
     chk('8 [SETUP-CONTRACT-CHOICE] Keep in Deck: 4 cards in Hand without the Contract card, the Contract card is in the Deck (v0.40.2)', s == [4, 0, 1], s)
     pg = start(8)
     before = ev(pg, "BS.G.p.player.hand.map(h=>h.uid).join()")
-    press(pg, 'Keep Hand'); pg.wait_for_timeout(150)
+    press(pg, 'Keep Hand'); settle(pg)
     chk('8 [SETUP-REDRAW] "Keep Hand" keeps the same 4 cards', ev(pg, "BS.G.p.player.hand.slice(0,4).map(h=>h.uid).join()") == before)
     # coin toss: try seeds until both outcomes are seen
     won = lost = None
@@ -78,8 +79,8 @@ with sync_playwright() as p:
         wait_btn(pg, 'HEADS'); press(pg, 'HEADS')
         if wait_btn(pg, 'FIRST', 1200):
             if won is None:
-                won = 'SECOND' in ' '.join(btns(pg)); press(pg, 'SECOND'); (wait_btn(pg, 'Add to Hand', 800) and press(pg, 'Add to Hand')); wait_btn(pg, 'Keep Hand'); press(pg, 'Keep Hand'); pg.wait_for_timeout(200)
-                won = won and ev(pg, "BS.G.next==='opponent'||BS.G.active==='opponent'")
+                won = 'SECOND' in ' '.join(btns(pg)); press(pg, 'SECOND'); (wait_btn(pg, 'Add to Hand', 800) and press(pg, 'Add to Hand')); wait_btn(pg, 'Keep Hand'); press(pg, 'Keep Hand'); settle(pg)
+                won = won and ev(pg, "BS.G.history.some(t=>t.includes('Turn 1: CPU'))")   # v0.87.0: settle() waits past the CPU's whole first turn
         elif lost is None:
             lost = ev(pg, "BS.G.history.some(t=>t.includes('CPU won the toss and goes first'))")
         if won is not None and lost is not None: break

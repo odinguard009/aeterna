@@ -2,6 +2,16 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.87.0
+- Lane: U/I
+- **Test waits (roadmap phase F, item F5 = Q2; phase F is complete): the browser suites wait on a visible state instead of fixed times.**
+  - `tests/suites/waits.py` (new): `ready(pg)` (the page script is loaded, after `goto` / `reload`) and `settle(pg)` (a prompt or field pick is open, or the promise in `window.pr` has settled and no engine pause runs). All 177 fixed `wait_for_timeout` calls of `tests/suites` use them now; the one left is the polling loop of `mitra_tests.py` `wait_for`. The `run(pg, js)` helpers of the suites keep their async step in `window.pr`.
+  - Engine: `engineIdle()` (`packages/engine/src/05-state.js`) counts the running engine pauses (`delay`); exposed as `BS.engineIdle`.
+  - Three checks read a state in the middle of an effect chain that the fixed wait happened to catch (Contract Skill of Mitra, Pachhattar in `mitra_tests.py` and `advent_tests.py`): they now check the state after the chain (the summoned Soul State card charges Mitra once more); `v29_tests.py` check 9 reads "who started turn 1" from the log. `tests/run_all.py` skips the helper file.
+  - Tests `tests/unit/waits87.test.mjs`: W87-01 shrink-only ratchet on fixed waits in `tests/suites` (1 left, was 178), W87-02 every suite that uses the waits imports them. All 3 suite parts and 3 sims pass locally.
+- Phase F is done (F1-F5, v0.81.0-v0.87.0). The owner asked to pause after phase F for a roadmap update: `docs/ai/chain-stop.md` stops auto and chain runs until the owner answers.
+- Revert note: `git revert` of the v0.87.0 commit restores v0.86.0 (test waits and the idle counter; no card data or rules change).
+
 ## v0.86.0
 - Lane: U/I
 - **Replays, part 2 (roadmap phase F, item F4 = monorepo step M4 rest; F4 done): a replay viewer in the match history.**

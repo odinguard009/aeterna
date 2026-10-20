@@ -1,3 +1,4 @@
+from waits import settle, ready  # v0.87.0 (F5): state waits instead of fixed times
 # Contract Advent / Manifest tests (v0.14.0). Every chk() is one numbered test.
 import sys, re
 sys.argv = [sys.argv[0]] + sys.argv[1:]
@@ -27,7 +28,7 @@ with sync_playwright() as p:
     pg, errs = fresh()
     chk('Teen (no counter needed): the Awakened Dragon Spirit is a target, Mitra (a Nexus) is not', ev(pg, "BS.contractAdventTargets(BS.G.p.player,tn,'main').map(x=>x.id).join()==='BS74-043'"))
     chk('a non-Awakened Spirit is not a target', ev(pg, "(()=>{mk('player','TRAIN-02',2);return BS.contractAdventTargets(BS.G.p.player,tn,'main').length===1})()"))
-    ev(pg, "window.hp=BS.G.p.player.hand.length;window.pr=BS.doContractAdvent(BS.G.p.player,tn,pa,'main');0"); pg.wait_for_timeout(500)
+    ev(pg, "window.hp=BS.G.p.player.hand.length;window.pr=BS.doContractAdvent(BS.G.p.player,tn,pa,'main');0"); settle(pg)
     chk('Contract Advent: Teen now stands on the field in Paanch place, Paanch is stacked under it', ev(pg, "BS.G.p.player.spirits.includes(tn)&&!BS.G.p.player.spirits.includes(pa)&&tn.under.includes(pa)&&BS.G.p.player.hand.length===hp-1"))
     chk('Contract Advent: cores stay on the stack (2)', ev(pg, "tn.cores===2"), ev(pg, "tn.cores"))
     chk('Contract Advent: the Soul Core went to the Trash (not to Teen)', ev(pg, "BS.G.p.player.trashCores.soul===true&&BS.G.p.player.reserve.soul===false&&tn.soul===false"))
@@ -40,17 +41,17 @@ with sync_playwright() as p:
     chk('Iktis needs 2 counters: 0 -> no target', ev(pg, "BS.contractAdventTargets(BS.G.p.player,ik,'main').length===0"))
     ev(pg, "BS.G.p.player.count=2;BS.G.p.player.made+=2")
     chk('Iktis with 2 counters: target available', ev(pg, "BS.contractAdventTargets(BS.G.p.player,ik,'main').length===1"))
-    ev(pg, "const P=BS.G.p.player;P.deck=[BS.mkInst('TRAIN-01'),BS.mkInst('BS74-050'),BS.mkInst('TRAIN-02')];P.deckSize+=3;window.pr=BS.doContractAdvent(P,ik,pa,'main');0"); pg.wait_for_timeout(600)
+    ev(pg, "const P=BS.G.p.player;P.deck=[BS.mkInst('TRAIN-01'),BS.mkInst('BS74-050'),BS.mkInst('TRAIN-02')];P.deckSize+=3;window.pr=BS.doContractAdvent(P,ik,pa,'main');0"); settle(pg)
     chk('Iktis "When Summoned/Advents" fires on Advent: Awakened Dragon enters Soul State, rest discarded', ev(pg, "BS.G.p.player.soulState.some(x=>x.id==='BS74-050')&&BS.G.p.player.trash.length>=2&&inv()==='ok'"), ev(pg, "[BS.G.p.player.soulState.map(x=>x.id),BS.G.p.player.trash.length,inv()]"))
     chk('log says "When Advents"', ev(pg, "BS.G.history.some(x=>x.includes('When Advents'))"))
 
     pg, errs = fresh("window.aa=put('player','hand','BS74-048');BS.G.p.player.count=3;BS.G.p.player.made+=3;window.og=mk('opponent','BS74-CX03',3);")
-    ev(pg, "window.pr=BS.doContractAdvent(BS.G.p.player,aa,pa,'main');0"); pg.wait_for_timeout(600)
+    ev(pg, "window.pr=BS.doContractAdvent(BS.G.p.player,aa,pa,'main');0"); settle(pg)
     chk('Aath "When Advents": the opposing Grandwalker Nexus cores go to the opposing Void', ev(pg, "og.cores===0&&BS.G.p.opponent.void===3&&inv()==='ok'"), ev(pg, "[og.cores,BS.G.p.opponent.void,inv()]"))
 
     pg, errs = fresh("window.pc=put('player','hand','BS75-030');const P=BS.G.p.player;const x=BS.mkInst('BS74-040');x.inSoulState=true;P.soulState.push(x);P.deckSize++;")
-    ev(pg, "window.pr=BS.doContractAdvent(BS.G.p.player,pc,pa,'main');0"); pg.wait_for_timeout(600)
-    chk('Pachhattar "When Summoned/Advents": +1 core to Mitra and a Soul State card is summoned', ev(pg, "mi.cores===3&&BS.G.p.player.spirits.some(x=>x.id==='BS74-040')&&inv()==='ok'"), ev(pg, "[mi.cores,BS.G.p.player.spirits.map(x=>x.id),inv()]"))
+    ev(pg, "window.pr=BS.doContractAdvent(BS.G.p.player,pc,pa,'main');0"); settle(pg)
+    chk('Pachhattar "When Summoned/Advents": +1 core to Mitra and a Soul State card is summoned (v0.87.0 state wait: it charges Mitra once more)', ev(pg, "mi.cores===4&&BS.G.p.player.spirits.some(x=>x.id==='BS74-040')&&inv()==='ok'"), ev(pg, "[mi.cores,BS.G.p.player.spirits.map(x=>x.id),inv()]"))
 
     pg, errs = fresh()
     ev(pg, "BS.G.active='opponent';BS.G.p.player.cpu=true")
@@ -63,7 +64,7 @@ with sync_playwright() as p:
     pg, errs = fresh()
     ev(pg, "const P=BS.G.p.player;P.reserve.soul=false;pa.soul=true;")
     chk('Soul Core on the target itself: Advent allowed when enough cores remain (Teen Lv1 needs 1)', ev(pg, "BS.contractAdventTargets(BS.G.p.player,tn,'main').length===1"))
-    ev(pg, "window.pr=BS.doContractAdvent(BS.G.p.player,tn,pa,'main');0"); pg.wait_for_timeout(500)
+    ev(pg, "window.pr=BS.doContractAdvent(BS.G.p.player,tn,pa,'main');0"); settle(pg)
     chk('that Soul Core was sent to the Trash and invariants hold', ev(pg, "BS.G.p.player.trashCores.soul&&!tn.soul&&inv()==='ok'"), inv(pg))
     pg, errs = fresh()
     ev(pg, "const P=BS.G.p.player;P.reserve.soul=false;const o=mk('player','TRAIN-02',0);o.soul=true;")      # holder has 1 core + Soul Core: spare 0
@@ -74,7 +75,7 @@ with sync_playwright() as p:
     chk('Manifest needs 6 counters: 0 -> no target', ev(pg, "BS.manifestTargets(BS.G.p.player,bv).length===0"))
     ev(pg, "BS.G.p.player.count=6;BS.G.p.player.made+=6")
     chk('Manifest with 6 counters: Mitra is the target', ev(pg, "BS.manifestTargets(BS.G.p.player,bv).map(x=>x.id).join()==='BS74-CX03'"))
-    ev(pg, "window.mc=mi.cores;window.pr=BS.doManifest(BS.G.p.player,bv,mi);0"); pg.wait_for_timeout(600)
+    ev(pg, "window.mc=mi.cores;window.pr=BS.doManifest(BS.G.p.player,bv,mi);0"); settle(pg)
     chk('Manifest: Banve is summoned, Mitra paid one core (and Neo-Core Charge gave one back for the cost-9 Spirit), Soul Core in the Trash', ev(pg, "BS.G.p.player.spirits.includes(bv)&&mi.cores===mc&&BS.G.history.some(x=>x.includes('paid to the Trash for the Manifest'))&&BS.G.p.player.trashCores.soul===true&&BS.G.p.player.trashCores.n>=1"), ev(pg, "[mi.cores,mc]"))
     chk('invariants after Manifest', inv(pg) == 'ok', inv(pg))
     pg, errs = fresh("window.bv=put('player','hand','BS75-041');BS.G.p.player.count=6;BS.G.p.player.made+=6;mi.cores=0;")
@@ -82,21 +83,21 @@ with sync_playwright() as p:
     pg, errs = fresh("window.bv=put('player','hand','BS75-041');BS.G.p.player.count=6;BS.G.p.player.made+=6;BS.G.p.player.nexus.length=0;")
     chk('Manifest: no Contractor Mitra on the field -> not possible', ev(pg, "BS.manifestTargets(BS.G.p.player,bv).length===0"))
     pg, errs = fresh("window.hz=put('player','hand','BS75-X08');BS.G.p.player.count=6;BS.G.p.player.made+=6;BS.G.p.soulState=BS.G.p.player.soulState;const q=BS.mkInst('BS74-040');q.inSoulState=true;BS.G.p.player.soulState.push(q);BS.G.p.player.deckSize++;tovoid('player',2);")
-    ev(pg, "window.pr=BS.doManifest(BS.G.p.player,hz,mi);0"); pg.wait_for_timeout(600)
+    ev(pg, "window.pr=BS.doManifest(BS.G.p.player,hz,mi);0"); settle(pg)
     chk('Hazaar Manifest summons and its When Summoned (Void cores) resolves', ev(pg, "BS.G.p.player.spirits.includes(hz)&&BS.G.p.player.void===1&&inv()==='ok'"), ev(pg, "[BS.G.p.player.void,inv()]"))
 
     # human UI
     pg, errs, _ = new_page(b)
     ev(pg, "BS.G.p.player.cpu=false;BS.G.active='player';BS.G.step=4;BS.G.busy=false;window.pa=mk('player','BS74-043',2);window.tn=put('player','hand','BS74-041');BS.render()")
     pg.locator("[data-a='hand'][data-v='%d']" % ev(pg, "tn.uid")).first.click(force=True) if pg.locator("[data-a='hand']").count() else None
-    pg.wait_for_timeout(300)
+    settle(pg)
     if not modal_open(pg):
-        pg.locator(".hand-area .tcg-card, .hand-area [data-a]").first.click(force=True); pg.wait_for_timeout(300)
+        pg.locator(".hand-area .tcg-card, .hand-area [data-a]").first.click(force=True); settle(pg)
     btns = pg.locator("#modal-actions .modal-btn").all_inner_texts()
     chk('hand modal shows the Contract Advent button', any('Contract Advent' in x for x in btns), btns)
     press(pg, 'Contract Advent'); wait_for(pg, "document.getElementById('action-modal').classList.contains('active')")
     chk('target prompt lists Paanch', 'Paanch' in ' '.join(pg.locator("#modal-actions .modal-btn").all_inner_texts()))
-    press(pg, 'Paanch'); pg.wait_for_timeout(600)
+    press(pg, 'Paanch'); settle(pg)
     chk('human Contract Advent resolved', ev(pg, "BS.G.p.player.spirits.includes(tn)&&BS.G.p.player.trashCores.soul&&inv()==='ok'"), inv(pg))
     # human flash window offer
     pg, errs, _ = new_page(b)
@@ -105,11 +106,11 @@ with sync_playwright() as p:
     wait_for(pg, "document.getElementById('action-modal').classList.contains('active')")
     btns = pg.locator("#modal-actions .modal-btn").all_inner_texts()
     chk('Flash window offers Contract Advent for the hand card', any('Contract Advent' in x and 'Iktis' in x for x in btns), btns)
-    press(pg, 'Contract Advent'); wait_for(pg, "document.getElementById('action-modal').classList.contains('active')"); press(pg, 'Paanch'); pg.wait_for_timeout(700)
+    press(pg, 'Contract Advent'); wait_for(pg, "document.getElementById('action-modal').classList.contains('active')"); press(pg, 'Paanch'); settle(pg)
     for _ in range(4):
         if modal_open(pg):
             txt = pg.locator("#modal-actions .modal-btn").all_inner_texts(); pick = [x for x in txt if 'Use Effect' in x] or [x for x in txt if 'Pass' in x or 'Skip' in x]
-            press(pg, (pick or txt)[0]); pg.wait_for_timeout(500)
+            press(pg, (pick or txt)[0]); settle(pg)
     chk('Advent in the Flash window replaced the attacker', ev(pg, "BS.G.p.player.spirits.includes(ik)&&inv()==='ok'"), inv(pg))
     chk('human paths: no page errors', not errs, errs)
     b.close()

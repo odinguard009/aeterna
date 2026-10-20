@@ -71,8 +71,8 @@ COLORS, BUILTIN_IDS, CARDS_KEY, IMPORTED, CARDS_VER, parseCard, registerImported
 ## packages/engine/src/04-decks.js (84 lines, ~1.6k tokens) — DECK STORAGE AND VALIDATION
 deckTotal, cleanDeck, validateDeck, fmtName, setFormat, errSummary, PREBUILT, defaultDeck, SLOT_KEY, SLOTS, loadSlots, PLAYER_DECK, saveDeck, switchSlot, loadPrebuilt, CPU_DECK_NAME, cpuDeckFor
 
-## packages/engine/src/05-state.js (64 lines, ~1.2k tokens) — GAME STATE
-SET_KEY, SETTINGS, SPEEDS, saveSettings, G, fnv, recIn, SIM_DECK_B, SIM_HUMAN, delay, wait, log, mkInst, newPlayer, contractToDeck, redrawHand, cpuWantsRedraw, newGame
+## packages/engine/src/05-state.js (67 lines, ~1.3k tokens) — GAME STATE
+SET_KEY, SETTINGS, SPEEDS, saveSettings, G, fnv, recIn, SIM_DECK_B, SIM_HUMAN, DELAYS, delay, engineIdle, wait, log, mkInst, newPlayer, contractToDeck, redrawHand, cpuWantsRedraw, newGame
 
 ## packages/engine/src/05b-decide.js (91 lines, ~2.2k tokens) — DECISIONS (v0.83.0, phase F3 = monorepo step M3 part 1; docs/ai/monorepo-plan.md "Design" 1)
 DECISION_KINDS, cardIds, portAsk, decide, ask, info, pickFromField, askBlock, askPayment, uniqById, prepareHumanMagic, humanFlashChoice

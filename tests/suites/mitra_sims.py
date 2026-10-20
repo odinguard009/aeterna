@@ -1,4 +1,5 @@
 from playwright.sync_api import sync_playwright
+from waits import settle, ready
 import sys, time, json
 N = int(sys.argv[1]); TAG = sys.argv[2]; MODE = sys.argv[3] if len(sys.argv) > 3 else 'mirror'
 F = "file:///mnt/user-data/outputs/wip.html"
@@ -11,7 +12,7 @@ with sync_playwright() as p:
     for g in range(N):
         pg = b.new_page(); errs = []
         pg.on("pageerror", lambda e: errs.append(str(e)[:300])); pg.on("dialog", lambda d: (errs.append('DIALOG'), d.dismiss()))
-        pg.goto(F + '?sim=1'); pg.wait_for_timeout(300)
+        pg.goto(F + '?sim=1'); ready(pg)
         r = pg.evaluate("(t)=>BS.importCards(t)", WH); assert r['ok'] == 18 and not r['bad'], r
         pg.evaluate("(t)=>BS.importCards(t)", RED)
         pg.evaluate("(d)=>{const D=BS.PRESET_DECK; for(const k of Object.keys(D)) delete D[k]; for(const [id,c] of Object.entries(d)) D[id]=c;}", DECK)

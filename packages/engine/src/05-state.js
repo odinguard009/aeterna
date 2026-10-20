@@ -14,7 +14,10 @@ const fnv = (h, t) => { let x = h == null ? 2166136261 : h; for (let i = 0; i < 
 function recIn(o) { if (G && G.rec && !G.rec.closed && !G.over) { let x = o; try { x = JSON.parse(JSON.stringify(o)); } catch (e) { G.rec.lossy = true; x = { lossy: true }; } G.rec.inputs.push(x); } }
 let SIM_DECK_B = null;   // test hook (?sim=1 only): the second CPU deck
 let SIM_HUMAN = false;   // test hook (?sim=1 only, v0.83.0): the first seat is a human whose prompts go through io.decide (headless scripted answers)
-const delay = ms => new Promise(r => setTimeout(r, SIM || (REPLAY && REPLAY.fast) ? 0 : Math.round(ms * (SPEEDS[SETTINGS.speed] || 1))));
+let DELAYS = 0;          // v0.87.0 (F5): engine pauses still running; engineIdle() lets tests wait on the state instead of a fixed time
+const delay = ms => new Promise(r => { DELAYS++; setTimeout(() => { DELAYS--; r(); }, SIM || (REPLAY && REPLAY.fast) ? 0 : Math.round(ms * (SPEEDS[SETTINGS.speed] || 1))); });
+/** The engine waits for nobody but a host: a prompt is open, or no engine pause is running. */
+const engineIdle = () => !!MODAL || DELAYS === 0;
 async function wait(ms) { const s = SESSION; await delay(ms); if (s !== SESSION) throw ABORT; }
 function log(t) { if (!G) return; G.last = t; G.history.push(t); G.hh = fnv(G.hh, t); G.hn = (G.hn || 0) + 1;
   io.log(t); if (G.history.length > 300) G.history.shift(); }   // web host: sound per line (13e-host.js)

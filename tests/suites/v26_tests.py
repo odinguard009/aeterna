@@ -1,6 +1,7 @@
 # v0.26: seeded randomness, match input record + replay, named scenarios (ideas from the Aegis study). Every chk() is one numbered test.
 # Run: python3 tests/make_fixtures.py && python3 tests/suites/v26_tests.py      (no fixtures needed)
 from playwright.sync_api import sync_playwright
+from waits import settle, ready
 import json, sys, time, os, glob
 OUT = "file:///mnt/user-data/outputs/" + (sys.argv[1] if len(sys.argv) > 1 else "wip.html")
 SCEN = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'scenarios')
@@ -10,7 +11,7 @@ def chk(n, c, x=''):
 def page(b, sim=False):
     pg = b.new_page(viewport={'width': 1280, 'height': 800}); errs = []; ALLERR.append(errs)
     pg.on("pageerror", lambda e: errs.append(str(e)[:300])); pg.on("dialog", lambda d: (errs.append('DIALOG'), d.dismiss()))
-    pg.goto(OUT + ('?sim=1' if sim else '')); pg.wait_for_timeout(250); return pg
+    pg.goto(OUT + ('?sim=1' if sim else '')); ready(pg); return pg
 def ev(pg, js, *a): return pg.evaluate(js, *a) if a else pg.evaluate(js)
 def wait_over(pg, s=60):
     t0 = time.time()
@@ -28,10 +29,10 @@ def human_game(b, seed, turns=10):
         if ev(pg, "document.getElementById('action-modal').classList.contains('active')"):
             bt = pg.locator("#modal-actions .modal-btn:not([disabled])")
             if bt.count(): bt.first.click()
-            pg.wait_for_timeout(40); continue
+            settle(pg); continue
         if ev(pg, "document.documentElement.classList.contains('picking')"):
             c = pg.locator(".tcg-card.pickable")
-            (c.first if c.count() else pg.locator("#pick-btns .modal-btn").first).click(); pg.wait_for_timeout(40); continue
+            (c.first if c.count() else pg.locator("#pick-btns .modal-btn").first).click(); settle(pg); continue
         if ev(pg, "BS.humanCan()"):
             key = ev(pg, "BS.G.turnNo+':'+BS.G.step")
             if ev(pg, "BS.G.step===4&&BS.G.p.player.hand.length>0") and tried.get(key, 0) < 2:
@@ -39,7 +40,7 @@ def human_game(b, seed, turns=10):
             else:
                 nb = pg.locator(".inline-next-btn")
                 if nb.count() and nb.first.is_enabled(): nb.first.click()
-        pg.wait_for_timeout(40)
+        settle(pg)
     return pg
 def replay(b, rec, sim=False):
     pg = page(b, sim); return pg, ev(pg, "(r)=>BS.runReplay(r,{idleMs:2500})", rec)
@@ -99,17 +100,17 @@ with sync_playwright() as p:
     def scen(name):
         pg = page(b); r = ev(pg, "(s)=>BS.loadScenario(s)", json.load(open(os.path.join(SCEN, name + '.json')))); return pg, r
     pg, r = scen('erimakilizard-life3-takes-all-cores')
-    ev(pg, "(async()=>{await BS.fireFx(BS.G.p.player,'ALLY_ATTACKS',SC.attacker,{attacker:SC.attacker})})();1"); pg.wait_for_timeout(900)
+    ev(pg, "(async()=>{await BS.fireFx(BS.G.p.player,'ALLY_ATTACKS',SC.attacker,{attacker:SC.attacker})})();1"); settle(pg)
     chk('28 scenario erimakilizard-life3: all 4 cores of one Nexus go to the Void', ev(pg, "SC.mitra.cores===0&&SC.zeus.cores===1"), ev(pg, "[SC.mitra.cores,SC.zeus.cores]"))
     pg, r = scen('ometeotl-soul-unaffected')
-    ev(pg, "(async()=>{await BS.fireFx(BS.G.p.player,'ALLY_ATTACKS',SC.erimaki,{attacker:SC.erimaki})})();1"); pg.wait_for_timeout(900)
+    ev(pg, "(async()=>{await BS.fireFx(BS.G.p.player,'ALLY_ATTACKS',SC.erimaki,{attacker:SC.erimaki})})();1"); settle(pg)
     chk('29 scenario ometeotl-soul-unaffected: Ometeotl untouched, Mitra loses its core', ev(pg, "SC.ometeotl.cores===3&&SC.mitra.cores===0"), ev(pg, "[SC.ometeotl.cores,SC.mitra.cores]"))
     pg, r = scen('sphinott-manifest-either-attack-step')
     chk('30 scenario sphinott: Manifest offered in the opposing Attack Step', ev(pg, "BS.manifestTargets(BS.G.p.player,SC.sphinott,'flash').includes(SC.ometeotl)"))
-    ev(pg, "(async()=>{await BS.doManifest(BS.G.p.player,SC.sphinott,SC.ometeotl,'flash')})();1"); pg.wait_for_timeout(2200)
+    ev(pg, "(async()=>{await BS.doManifest(BS.G.p.player,SC.sphinott,SC.ometeotl,'flash')})();1"); settle(pg)
     chk('31 ... When Manifests destroys up to 20000 BP and banishes one', ev(pg, "(()=>{const O=BS.G.p.opponent;const gone=[SC.big,SC.mid,SC.small].filter(x=>!O.spirits.includes(x));return gone.length>=1&&O.removed.length===1})()"), ev(pg, "BS.G.history.slice(-6)"))
     pg, r = scen('magmatodon-reveal-deploys-ometeotl')
-    ev(pg, "(async()=>{await BS.fireFx(BS.G.p.player,'SUMMONED',SC.magmatodon)})();1"); pg.wait_for_timeout(1800)
+    ev(pg, "(async()=>{await BS.fireFx(BS.G.p.player,'SUMMONED',SC.magmatodon)})();1"); settle(pg)
     chk('32 scenario magmatodon: Ometeotl deployed, Lava Fish added, opposing Spirit destroyed', ev(pg, "(()=>{const P=BS.G.p.player;return P.nexus.some(n=>n.id==='BS74-CX01'&&n.soul)&&P.hand.some(h=>h.id==='BS75-012')&&!BS.G.p.opponent.spirits.includes(SC.victim)})()"), ev(pg, "BS.G.history.slice(-6)"))
     chk('33 no page errors in this suite', not any(ALLERR), [e for e in ALLERR if e])
     print(f'TOTAL {sum(res)}/{len(res)}')

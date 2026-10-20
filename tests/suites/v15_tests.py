@@ -1,10 +1,11 @@
+from waits import settle, ready  # v0.87.0 (F5): state waits instead of fixed times
 # v0.15.0 tests: opposing Hand increase (Temple, Nao Burst), Life-hit (Banve), ally lost (Do), Revive. Every chk() is one numbered test.
 import sys, random
 src = open('/tmp/claude-0/t4/mitra_tests.py').read()
 exec(src.split("MITRA_FX =")[0])
 random.seed(15)
 def run(pg, js, ms=700):
-    pg.evaluate("(()=>{(async()=>{" + js + "})().catch(e=>console.error(e));return 1})()"); pg.wait_for_timeout(ms)
+    pg.evaluate("(()=>{window.pr=(async()=>{" + js + "})().catch(e=>console.error(e));return 1})()"); settle(pg)
 with sync_playwright() as p:
     b = p.chromium.launch()
     pg, errs, r = new_page(b)
@@ -65,10 +66,10 @@ with sync_playwright() as p:
     run(pg, "await BS.FX_ACTIONS.DRAW.run({p:P,opp:O,src:tp,ctx:{}},{n:1});P.hand.length;await BS.flushBursts();")
     chk('Nao Burst: the owner\'s own draw does not trigger it', ev(pg, "P.burst===nao&&!P.spirits.includes(nao)"))
     pg, errs = fresh(NB + "O.cpu=true;P.cpu=false;")
-    ev(pg, "window.__q=1"); pg.wait_for_timeout(50)
+    ev(pg, "window.__q=1"); settle(pg)
     run(pg, "const pr=BS.FX_ACTIONS.DRAW.run({p:O,opp:P,src:src,ctx:{}},{n:1});await pr;const f=BS.flushBursts();window.__f=f;", 600)
     chk('Nao Burst (human owner): a prompt asks to activate', modal_open(pg) and 'Burst' in modal_title(pg), modal_title(pg))
-    press(pg, 'Keep It Set'); pg.wait_for_timeout(400)
+    press(pg, 'Keep It Set'); settle(pg)
     chk('Nao Burst: "Keep It Set" leaves it face down', ev(pg, "P.burst===nao"))
     chk('H1: no page errors', not errs, errs)
     # randomized loop: Temple
@@ -165,9 +166,9 @@ with sync_playwright() as p:
     pg, errs, _ = new_page(b)
     ev(pg, "window.P=BS.G.p.player;BS.G.active='player';P.cpu=false;window.mi=mk('player','BS74-CX03',2);P.deck=[BS.mkInst('BS74-040'),BS.mkInst('TRAIN-01'),BS.mkInst('TRAIN-02')];P.deckSize+=3;")
     run(pg, "await BS.fireFx(BS.G.p.player,'SUMMONED',mi);", 500)
-    if modal_open(pg) and 'Mitra' in modal_title(pg) or modal_open(pg): press(pg, 'Use Effect'); pg.wait_for_timeout(500)
+    if modal_open(pg) and 'Mitra' in modal_title(pg) or modal_open(pg): press(pg, 'Use Effect'); settle(pg)
     chk('Do (human): a prompt asks whether it enters Soul State', modal_open(pg) and 'Do' in modal_title(pg), modal_title(pg))
-    press(pg, 'Keep in Trash'); pg.wait_for_timeout(400)
+    press(pg, 'Keep in Trash'); settle(pg)
     chk('Do (human): Keep in Trash leaves it in the Trash', ev(pg, "P.trash.some(x=>x.id==='BS74-040')&&!P.soulState.length"))
     chk('L2: no page errors', not errs, errs)
 
@@ -192,10 +193,10 @@ with sync_playwright() as p:
     pg, errs, _ = new_page(b); ev(pg, RS + "window.tp2=put('player','soulState','BS74-038');")
     chk('Revive: only cards with Revive are offered (not an Awakened Dragon Spirit)', ev(pg, "BS.reviveTargets(P).every(x=>x.id==='BS74-CX03')"))
     # human UI
-    pg, errs, _ = new_page(b); ev(pg, RS + "P.cpu=false;BS.G.busy=false;BS.render();"); pg.wait_for_timeout(200)
+    pg, errs, _ = new_page(b); ev(pg, RS + "P.cpu=false;BS.G.busy=false;BS.render();"); settle(pg)
     run(pg, "openZoneModal('player','soulstate');", 300)
     chk('Revive UI: the Soul State modal shows a Revive button', modal_open(pg) and pg.locator("#modal-actions .modal-btn", has_text='Revive').count() == 1, modal_title(pg))
-    press(pg, 'Revive'); pg.wait_for_timeout(900)
+    press(pg, 'Revive'); settle(pg)
     chk('Revive UI: pressing it deploys Mitra', ev(pg, "P.nexus.some(x=>x.id==='BS74-CX03')&&P.soulState.length===0"))
     run(pg, "openZoneModal('player','soulstate');", 300)
     chk('Revive UI: with an empty Soul State the modal has no Revive button', pg.locator("#modal-actions .modal-btn", has_text='Revive').count() == 0)
@@ -212,7 +213,7 @@ with sync_playwright() as p:
     # ================= full CPU games =================
     for i in range(10):
         pg, errs, _ = new_page(b)
-        pg.goto(F + "?sim=1"); pg.wait_for_timeout(300)
+        pg.goto(F + "?sim=1"); ready(pg)
         pg.evaluate("(t)=>BS.importCards(t)", WH)
         ok = pg.evaluate("(()=>{try{BS.setSimDeckB(null)}catch(e){};return true})()")
         chk(f'sim page #{i+1} loads with no errors', not errs, errs)

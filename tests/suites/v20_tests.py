@@ -1,8 +1,9 @@
+from waits import settle, ready  # v0.87.0 (F5): state waits instead of fixed times
 # v0.20 Magic with separate Main / Flash effects, alternative cost (Wurm Draw). Every chk() is one numbered test.
 src = open('/tmp/claude-0/t4/mitra_tests.py').read()
 exec(src.split("MITRA_FX =")[0])
 def run(pg, js, ms=700):
-    pg.evaluate("(()=>{(async()=>{" + js + "})().catch(e=>console.error(e));return 1})()"); pg.wait_for_timeout(ms)
+    pg.evaluate("(()=>{window.pr=(async()=>{" + js + "})().catch(e=>console.error(e));return 1})()"); settle(pg)
 S = "window.P=BS.G.p.player;window.O=BS.G.p.opponent;BS.G.active='player';BS.G.step=4;window.wd=put('player','hand','BS75-074');"
 with sync_playwright() as p:
     b = p.chromium.launch()

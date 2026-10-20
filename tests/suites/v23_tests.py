@@ -1,12 +1,13 @@
+from waits import settle, ready  # v0.87.0 (F5): state waits instead of fixed times
 # v0.23: Grandwalker Nexus cores go to the Void; Revival and "summon/deploy" effects pay the cost (official Eternal rules).
 src = open('/tmp/claude-0/t4/mitra_tests.py').read()
 exec(src.split("MITRA_FX =")[0])
 def new_page(b, w=1280, h=800):
     ctx = b.new_context(viewport={'width': w, 'height': h}); pg = ctx.new_page(); errs = []
     pg.on("pageerror", lambda e: errs.append(str(e)[:300])); pg.on("dialog", lambda d: (errs.append('DIALOG'), d.dismiss()))
-    pg.goto(F); pg.wait_for_timeout(200); pg.evaluate(SETUP); return pg, errs, None
+    pg.goto(F); ready(pg); pg.evaluate(SETUP); return pg, errs, None
 def run(pg, js, ms=700):
-    pg.evaluate("(()=>{(async()=>{" + js + "})().catch(e=>console.error(e));return 1})()"); pg.wait_for_timeout(ms)
+    pg.evaluate("(()=>{window.pr=(async()=>{" + js + "})().catch(e=>console.error(e));return 1})()"); settle(pg)
 S = "window.P=BS.G.p.player;window.O=BS.G.p.opponent;BS.G.active='player';BS.G.step=4;"
 def setres(n): return "P.void+=P.reserve.n-%d;P.reserve.n=%d;" % (n, n)
 with sync_playwright() as p:

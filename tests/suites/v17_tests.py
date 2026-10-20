@@ -5,6 +5,7 @@ PACK_N = len(_CARDS); CONTRACTORS = sorted(c['id'] for c in _CARDS if c['type'] 
 import os as _os_repo
 _REPO = _os_repo.path.abspath(_os_repo.path.join(_os_repo.path.dirname(_os_repo.path.abspath(__file__)), '..', '..'))
 from playwright.sync_api import sync_playwright
+from waits import settle, ready
 import json, time, random
 F = "file:///mnt/user-data/outputs/wip.html"
 ALL = open(_os_repo.path.join(_REPO, 'data/cards/all-cards.json')).read()
@@ -18,7 +19,7 @@ def page(b, w=1280, h=800, init=None):
     if init: ctx.add_init_script(init)
     pg = ctx.new_page(); errs = []
     pg.on("pageerror", lambda e: errs.append(str(e)[:300])); pg.on("dialog", lambda d: (errs.append('DIALOG'), d.dismiss()))
-    pg.goto(F); pg.wait_for_timeout(250); return pg, errs, ctx
+    pg.goto(F); ready(pg); return pg, errs, ctx
 ev = lambda pg, js: pg.evaluate(js)
 with sync_playwright() as p:
     b = p.chromium.launch()
@@ -36,7 +37,7 @@ with sync_playwright() as p:
     chk(f'import all-cards.json over the pack: {PACK_N} ok, none rejected', r['ok'] == PACK_N and not r['bad'], r)
     ev(pg, "BS.clearImported()")
     chk('Remove imported cards keeps the pack', ev(pg, "!!BS.CARDS['BS74-CX03']&&Object.values(BS.CARDS).filter(c=>c.pack).length")== PACK_N)
-    pg.reload(); pg.wait_for_timeout(250)
+    pg.reload(); ready(pg)
     chk('pack survives a reload and removal of imports', ev(pg, "Object.values(BS.CARDS).filter(c=>c.pack).length") == PACK_N and not errs, errs)
     ev(pg, "BS.importCards(JSON.stringify([{id:'BS74-CX03',name:'Override Mitra',type:'Nexus',color:'white',cost:2,levels:[{cores:0},{cores:2}]}]))")
     chk('an import with the same ID overrides the pack card', ev(pg, "BS.CARDS['BS74-CX03'].name")=='Override Mitra')
@@ -59,7 +60,7 @@ with sync_playwright() as p:
     chk('loading a ready-made deck fills the slot and renames the default name', ev(pg, "Object.values(BS.PLAYER_DECK).reduce((a,b)=>a+b,0)")==40 and 'White' in ev(pg, "BS.SLOTS()[2].name"))
     ev(pg, "BS.switchSlot(0)")
     chk('slot 1 is unchanged after editing slot 3', ev(pg, "Object.values(BS.PLAYER_DECK).reduce((a,b)=>a+b,0)")==40 and ev(pg, "!!BS.PLAYER_DECK['BS74-CX03']"))
-    pg.reload(); pg.wait_for_timeout(250)
+    pg.reload(); ready(pg)
     chk('slots persist across reload (slot 3 still the Mitra deck, active slot 1)', ev(pg, "BS.ACTIVE_SLOT")==0 and ev(pg, "(BS.switchSlot(2),!!BS.PLAYER_DECK['BS74-CX03'])"))
     chk('invalid switchSlot is refused', ev(pg, "BS.switchSlot(99)")==False and ev(pg, "BS.switchSlot(-1)")==False and ev(pg, "BS.switchSlot('x')")==False)
     ctx.close()
@@ -69,20 +70,20 @@ with sync_playwright() as p:
     # ---------- D. UI: deck builder ----------
     for (w, h, lab) in [(1280, 800, 'PC'), (390, 844, 'phone')]:
         pg, errs, ctx = page(b, w, h)
-        pg.click('[data-a=go-deck]'); pg.wait_for_timeout(200)
-        if lab == 'phone': pg.click('.db-menu-btn'); pg.wait_for_timeout(150)   # v0.53.0: phone tools sit in the deck builder menu
+        pg.click('[data-a=go-deck]'); settle(pg)
+        if lab == 'phone': pg.click('.db-menu-btn'); settle(pg)   # v0.53.0: phone tools sit in the deck builder menu
         chk(f'{lab} builder: slot select has 8 options and the name field shows the slot name', pg.locator('#db-slot option').count()==8 and pg.input_value('#db-name')=='Deck 1')
-        pg.select_option('#db-slot', '3'); pg.wait_for_timeout(150)
+        pg.select_option('#db-slot', '3'); settle(pg)
         chk(f'{lab} builder: choosing slot 4 shows an empty deck', 'Needs at least 40' in pg.text_content('#db-status') and ev(pg, "BS.ACTIVE_SLOT")==3)
-        pg.fill('#db-name', 'My Red Test'); pg.press('#db-name', 'Enter'); pg.locator('#db-name').blur(); pg.wait_for_timeout(200)
+        pg.fill('#db-name', 'My Red Test'); pg.press('#db-name', 'Enter'); pg.locator('#db-name').blur(); settle(pg)
         chk(f'{lab} builder: renaming the slot works and appears in the list', ev(pg, "BS.SLOTS()[3].name")=='My Red Test' and 'My Red Test' in pg.locator('#db-slot option:checked').inner_text())
-        pg.select_option('#db-preset', 'red'); pg.wait_for_timeout(300)
+        pg.select_option('#db-preset', 'red'); settle(pg)
         chk(f'{lab} builder: loading a ready-made deck into an empty slot needs no confirmation', ev(pg, "Object.values(BS.PLAYER_DECK).reduce((a,b)=>a+b,0)")==40, ev(pg, "Object.values(BS.PLAYER_DECK).reduce((a,b)=>a+b,0)"))
-        pg.select_option('#db-preset', 'mitra'); pg.wait_for_timeout(300)
+        pg.select_option('#db-preset', 'mitra'); settle(pg)
         chk(f'{lab} builder: loading over a filled slot asks first', pg.evaluate("document.getElementById('action-modal').classList.contains('active')"))
-        pg.locator('#modal-actions .modal-btn', has_text='Cancel').click(); pg.wait_for_timeout(200)
+        pg.locator('#modal-actions .modal-btn', has_text='Cancel').click(); settle(pg)
         chk(f'{lab} builder: Cancel keeps the red deck', ev(pg, "!!BS.PLAYER_DECK['BS75-011']&&!BS.PLAYER_DECK['BS74-CX03']"))
-        pg.select_option('#db-preset', 'mitra'); pg.wait_for_timeout(300); pg.locator('#modal-actions .modal-btn', has_text='Replace').click(); pg.wait_for_timeout(300)
+        pg.select_option('#db-preset', 'mitra'); settle(pg); pg.locator('#modal-actions .modal-btn', has_text='Replace').click(); settle(pg)
         chk(f'{lab} builder: Replace swaps in the Mitra deck', ev(pg, "!!BS.PLAYER_DECK['BS74-CX03']&&!BS.PLAYER_DECK['BS75-011']"))
         chk(f'{lab} builder: the Mitra deck is legal in Eternal (status text)', 'legal' in pg.text_content('#db-status') and 'Needs' not in pg.text_content('#db-status'), pg.text_content('#db-status'))
         ov = ev(pg, "document.documentElement.scrollWidth<=window.innerWidth+1")
@@ -95,25 +96,25 @@ with sync_playwright() as p:
     # ---------- E. UI: PLAY page + settings ----------
     for (w, h, lab) in [(1280, 800, 'PC'), (390, 844, 'phone')]:
         pg, errs, ctx = page(b, w, h)
-        pg.click('[data-a=go-play]'); pg.wait_for_timeout(150)
+        pg.click('[data-a=go-play]'); settle(pg)
         chk(f'{lab} PLAY: deck + CPU selects, format button and start button visible', all(pg.locator(s).is_visible() for s in ['#play-deck', '#play-cpu', '#format-btn', '#view-play [data-a=start]']))
         chk(f'{lab} PLAY: CPU list has every ready-made deck + random + mirror', pg.locator('#play-cpu option').count()==ev(pg, 'BS.PREBUILT.length')+2)
-        pg.select_option('#play-cpu', 'mitra'); pg.wait_for_timeout(100)
+        pg.select_option('#play-cpu', 'mitra'); settle(pg)
         chk(f'{lab} PLAY: the CPU deck choice is saved', ev(pg, "BS.SETTINGS.cpuDeck")=='mitra' and 'mitra' in ev(pg, "localStorage.getItem('bse.settings.v1')"))
-        pg.reload(); pg.wait_for_timeout(250); pg.click('[data-a=go-play]')
+        pg.reload(); ready(pg); pg.click('[data-a=go-play]')
         chk(f'{lab} PLAY: the choice survives a reload', pg.input_value('#play-cpu')=='mitra')
-        pg.click('#format-btn'); pg.wait_for_timeout(100)
+        pg.click('#format-btn'); settle(pg)
         chk(f'{lab} PLAY: in Standard the Mitra option says it will be replaced', 'not legal in STANDARD' in pg.locator('#play-cpu option[value=mitra]').inner_text())
         pg.click('#format-btn')
         ov = ev(pg, "document.documentElement.scrollWidth<=window.innerWidth+1")
         chk(f'{lab} PLAY: fits the screen', ov and pg.locator('#view-play .menu-btn.primary').bounding_box()['y'] + 40 < h, ov)
         pg.screenshot(path=f'/tmp/claude-0/t4/v17_play_{lab}.png')
-        pg.click('#view-play [data-a=go-lobby]'); pg.click('[data-a=go-settings]'); pg.wait_for_timeout(150)
+        pg.click('#view-play [data-a=go-lobby]'); pg.click('[data-a=go-settings]'); settle(pg)
         chk(f'{lab} Settings: opens with speed Normal and sound Off', pg.input_value('#set-speed')=='normal' and pg.input_value('#set-sound')=='off')
-        pg.select_option('#set-speed', 'fast'); pg.select_option('#set-sound', 'on'); pg.wait_for_timeout(100)
+        pg.select_option('#set-speed', 'fast'); pg.select_option('#set-sound', 'on'); settle(pg)
         chk(f'{lab} Settings: choices saved', ev(pg, "BS.SETTINGS.speed")=='fast' and ev(pg, "BS.SETTINGS.sound")==True)
         pg.screenshot(path=f'/tmp/claude-0/t4/v17_settings_{lab}.png')
-        pg.reload(); pg.wait_for_timeout(250); pg.click('[data-a=go-settings]')
+        pg.reload(); ready(pg); pg.click('[data-a=go-settings]')
         chk(f'{lab} Settings: persisted after reload', pg.input_value('#set-speed')=='fast' and pg.input_value('#set-sound')=='on')
         pg.click('[data-a=set-reset]'); chk(f'{lab} Settings: reset', pg.input_value('#set-speed')=='normal' and pg.input_value('#set-sound')=='off')
         chk(f'{lab} no page errors', not errs, errs); ctx.close()
@@ -134,7 +135,7 @@ with sync_playwright() as p:
         pg, errs, ctx = page(b)
         ev(pg, f"BS.setFormat('{fmt}');BS.SETTINGS.cpuDeck='{cpu}';BS.switchSlot(0)")
         ev(pg, "BS.loadPrebuilt('mitra')" if (fmt == 'eternal' and i % 2 == 1) else "BS.loadPrebuilt('train')")
-        pg.evaluate("(()=>{BS.startNewGame();return 1})()"); pg.wait_for_timeout(300)
+        pg.evaluate("(()=>{BS.startNewGame();return 1})()"); settle(pg)
         mine = ev(pg, "Object.keys(BS.PLAYER_DECK)"); 
         got = ev(pg, "(()=>{const g=BS.G;const ids=p=>new Set(p.deck.concat(p.hand,p.spirits,p.nexus,p.soulState,p.trash).map(x=>x.id));return {p:[...ids(g.p.player)],o:[...ids(g.p.opponent)],pn:g.p.player.deckSize,on:g.p.opponent.deckSize}})()")
         legal_cpu = {'train': True, 'mitra': fmt == 'eternal', 'red': fmt == 'eternal', 'random': True, 'mine': True}[cpu]
@@ -148,7 +149,7 @@ with sync_playwright() as p:
         ctx.close()
     # ---------- H. illegal own deck ----------
     pg, errs, ctx = page(b)
-    ev(pg, "BS.switchSlot(5)"); pg.click('[data-a=go-play]'); pg.click('#view-play [data-a=start]'); pg.wait_for_timeout(400)
+    ev(pg, "BS.switchSlot(5)"); pg.click('[data-a=go-play]'); pg.click('#view-play [data-a=start]'); settle(pg)
     chk('an empty/illegal deck cannot start a match: a notice appears and the builder opens', pg.evaluate("document.getElementById('action-modal').classList.contains('active')") and ev(pg, "!BS.G"), errs)
     ctx.close()
     b.close()

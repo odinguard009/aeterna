@@ -1,6 +1,7 @@
 import os as _os_repo
 _REPO = _os_repo.path.abspath(_os_repo.path.join(_os_repo.path.dirname(_os_repo.path.abspath(__file__)), '..', '..'))
 from playwright.sync_api import sync_playwright
+from waits import settle, ready
 import random, json, glob
 F="file:///mnt/user-data/outputs/wip.html"; res=[]
 def chk(n,c,x=''): res.append(bool(c)); print(('PASS ' if c else 'FAIL ')+f'[{len(res)}] '+n, x if not c else '')
@@ -17,7 +18,7 @@ def import_chunked(pg):
 with sync_playwright() as p:
     b=p.chromium.launch()
     for i in range(20):
-        pg=b.new_page(); errs=[]; pg.on("pageerror",lambda e:errs.append(str(e)[:200])); pg.goto(F); pg.wait_for_timeout(150)
+        pg=b.new_page(); errs=[]; pg.on("pageerror",lambda e:errs.append(str(e)[:200])); pg.goto(F); ready(pg)
         mode=i%4
         if mode==0:
             tot,bad=import_chunked(pg); ok=tot==n_all and not bad
@@ -33,7 +34,7 @@ with sync_playwright() as p:
         else:
             if pg.locator('#in-cards').count():       # the file input takes one file at a time: one chunk file per pick
                 for j,t in enumerate(CH):
-                    pg.set_input_files("#in-cards",files=[{"name":f"chunk{j}.json","mimeType":"application/json","buffer":t.encode()}]); pg.wait_for_timeout(400)
+                    pg.set_input_files("#in-cards",files=[{"name":f"chunk{j}.json","mimeType":"application/json","buffer":t.encode()}]); settle(pg)
             ok=True
         n=pg.evaluate("Object.values(BS.CARDS).filter(c=>c.imported).length")
         sagas=pg.evaluate("[...new Set(Object.values(BS.CARDS).filter(c=>c.imported).map(c=>c.saga))].sort().join()")
