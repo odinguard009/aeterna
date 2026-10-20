@@ -200,7 +200,8 @@ def main():
     by_set, by_name = build_image_index()
     braves = brave_table()
     nexus_lv, uts = nexus_table(), ut_table()
-    have = {c['id'] for f in glob.glob(os.path.join(ROOT, 'data/cards/saga-[0-9][0-9].json')) for c in json.load(open(f))}
+    have = {c['id'] for f in glob.glob(os.path.join(ROOT, 'data/cards/saga-[0-9][0-9].json')) for c in json.load(open(f))
+            if not (c.get('residual') and 'Partial card (v0.79.0' in (c.get('note') or ''))}      # v0.79.0 (A1): partial cards keep their staging record
     rep = collections.defaultdict(list)
     groups = collections.OrderedDict()
     for r in rows:

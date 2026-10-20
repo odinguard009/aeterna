@@ -59,8 +59,9 @@ test('P08 the built page embeds the compressed pack on one line and it decodes t
 });
 test('P09 full projected pack (all cards: 8,041 Eternal + Standard block A since v0.62.0): round trip exact, compressed under 1.6 MB', { skip: !staged && 'light clone without data/import' }, () => {
   const cards = projectedCards();
-  const total = JSON.parse(readFileSync(join(ROOT, 'data/cards/all-cards.json'), 'utf8')).length + readdirSync(join(ROOT, 'data/import'))
-    .filter(f => /^saga-\d\d\.json$/.test(f)).reduce((n, f) => n + JSON.parse(readFileSync(join(ROOT, 'data/import', f), 'utf8')).length, 0);
+  const ids = new Set(JSON.parse(readFileSync(join(ROOT, 'data/cards/all-cards.json'), 'utf8')).map(c => c.id));      // v0.79.0: A1 partial cards are in both
+  for (const f of readdirSync(join(ROOT, 'data/import')).filter(f => /^saga-\d\d\.json$/.test(f))) for (const c of JSON.parse(readFileSync(join(ROOT, 'data/import', f), 'utf8'))) ids.add(c.id);
+  const total = ids.size;
   assert.equal(cards.length, total);
   assert.ok(total >= 8041 + 600, String(total));
   const m = measure(cards);

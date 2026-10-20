@@ -73,7 +73,8 @@ function refreshViews() {
 /* ---------- library page ---------- */
 function libMsg(t, bad) { const m = $('lib-msg'); m.textContent = t; m.className = 'lib-msg' + (bad ? ' bad' : ''); }
 function renderLibrary() {
-  $('lib-imgcount').textContent = `${Object.keys(IMG).length} image(s) loaded · ${Object.keys(CARDS).length} card(s) known`;
+  const ids = Object.keys(CARDS).filter(id => !CARDS[id].token), part = ids.filter(id => fxMarked(CARDS[id])).length;      // v0.79.0 (A1): two counts
+  $('lib-imgcount').textContent = `${Object.keys(IMG).length} image(s) loaded · ${ids.length.toLocaleString('en-US')} card(s) known: ${(ids.length - part).toLocaleString('en-US')} complete, ${part.toLocaleString('en-US')} marked "!" (effect not fully implemented)`;
 }
 function deckToText() {
   return Object.keys(PLAYER_DECK).map(id => `${PLAYER_DECK[id]} ${id}   # ${CARDS[id].name}`).join('\n');
@@ -111,6 +112,7 @@ document.addEventListener('change', async e => {
     t.value = ''; refreshViews();
   } else if (t.id === 'db-only') renderDeckBuilder();
   else if (t.id === 'db-legal') { DBF.legal = t.checked; renderDeckBuilder(); }
+  else if (t.id === 'db-complete') { DBF.complete = t.checked; renderDeckBuilder(); }
   else if (t.id === 'db-set') { DBF.set = t.value; renderDeckBuilder(); }
   else if (t.id === 'db-sort') { DBF.sort = t.value; $('db-card-list').scrollTop = 0; renderDeckBuilder(); }
   else if (t.id === 'play-deck') { switchSlot(Number(t.value)); renderLobby(); }

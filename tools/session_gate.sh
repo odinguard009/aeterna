@@ -39,13 +39,22 @@ MANUAL_H=3       # a MANUAL older than this is a crashed manual session
 NOPROG=0         # auto sessions without a new v* commit before the switch goes OFF by itself; 0 = never (owner, 2026-10-20, was 3)
 MAX_AUTO_24H=${GATE_MAX_AUTO_24H:-0}   # max auto sessions (LOCK) in 24 hours; 0 = unlimited (owner, 2026-10-20); GATE_MAX_AUTO_24H only lets the test exercise the cap
 post() { gh api -X POST "repos/$R/issues/$L/comments" -f body="$1" --jq .created_at >/dev/null; }
+pages() { # gh --paginate follows Link headers to repositories/<id>/..., which the session proxy refuses: walk ?page=N on repos/ paths instead
+  local url="$1" jq="$2" n=1 out cnt
+  while :; do
+    out=$(gh api "$url&page=$n" --jq "$jq") || return 1
+    [ -n "$out" ] && printf '%s\n' "$out"
+    cnt=$(gh api "$url&page=$n" --jq 'length') || return 1
+    [ "$cnt" -lt 100 ] && break; n=$((n+1)); [ $n -gt 50 ] && break
+  done
+}
 evaluate() { # prints one line: <verdict> <reason...>; verdicts GO, STOP, AUTOOFF, plus state for status/busy
   local since comments commits stop_file
   if [ "${GATE_FIXTURE:-}" = 1 ]; then
     comments="${COMMENTS:-}"; commits="${COMMITS:-}"; stop_file="${STOP_FILE:-0}"
   else
     since=$(date -u -d '-7 days' +%Y-%m-%dT%H:%M:%SZ)
-    comments=$(gh api --paginate "repos/$R/issues/$L/comments?per_page=100&since=$since" --jq '.[] | [.created_at, (.body | split("\n")[0])] | @tsv') || return 1
+    comments=$(pages "repos/$R/issues/$L/comments?per_page=100&since=$since" '.[] | [.created_at, (.body | split("\n")[0])] | @tsv') || return 1
     commits=$(gh api "repos/$R/commits?per_page=100&since=$since" --jq '.[] | [.commit.committer.date, (.commit.message | split("\n")[0])] | @tsv') || return 1
     stop_file=0; gh api "repos/$R/contents/docs/ai/chain-stop.md" >/dev/null 2>&1 && stop_file=1
   fi
@@ -115,7 +124,7 @@ PY
 hemat_state() { # newest "HEMAT ON|OFF" comment on issue #1 (whole history: the switch can be older than 7 days); none = ON
   local rows
   if [ "${GATE_FIXTURE:-}" = 1 ]; then rows=$(printf '%s\n' "${COMMENTS:-}" | cut -f2-)
-  else rows=$(gh api --paginate "repos/$R/issues/$L/comments?per_page=100" --jq '.[] | .body | split("\n")[0]') || return 1; fi
+  else rows=$(pages "repos/$R/issues/$L/comments?per_page=100" '.[] | .body | split("\n")[0]') || return 1; fi
   printf '%s\n' "$rows" | grep -iE '^HEMAT[[:space:]]+(ON|OFF)\b' | tail -1 | awk '{v=toupper($2)} END {print (v=="OFF" ? "OFF" : "ON")}'
 }
 cmd=${1:-check}; shift || true

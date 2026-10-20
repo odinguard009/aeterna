@@ -13,6 +13,7 @@ const bySaga = Object.fromEntries(files.map(f => [Number(f.match(/\d+/)[0]), js(
 const all = Object.values(bySaga).flat();
 const report = js('data/import/report.json');
 const curated = new Set(readdirSync(join(ROOT, 'data/cards')).filter(f => /^saga-\d+\.json$/.test(f)).flatMap(f => js('data/cards/' + f).map(c => c.id)));
+const a1 = new Set(readdirSync(join(ROOT, 'data/cards')).filter(f => /^saga-\d+\.json$/.test(f)).flatMap(f => js('data/cards/' + f)).filter(c => (c.residual || []).length && /Partial card \(v0\.79\.0/.test(c.note || '')).map(c => c.id));      // v0.79.0 (A1)
 const COLORS = new Set(['red', 'purple', 'green', 'white', 'yellow', 'blue']);
 const TYPES = new Set(['Spirit', 'Nexus', 'Magic', 'Brave', 'Ultimate']);
 const SAGA_END = [[9, 1], [13, 2], [18, 3], [23, 4], [30, 5], [34, 6], [39, 7], [43, 8], [47, 9], [51, 10], [55, 11], [59, 12], [63, 13], [67, 14], [71, 15], [75, 16], [77, 17]];
@@ -84,7 +85,7 @@ test('I17 most Eternal cards are matched to an image (>= 93%, at most 460 staged
   assert.ok(withImg / eternal.length >= 0.93 && eternal.length - withImg <= 460, `${withImg}/${eternal.length}`);
 });
 test('I18 cards of data/cards (hand-verified) are not duplicated in staging', () => {
-  for (const c of all) assert.ok(!curated.has(c.id), c.id);
+  for (const c of all) assert.ok(!curated.has(c.id) || a1.has(c.id), c.id);      // v0.79.0 (A1): partial cards keep their staging record
   assert.equal(report.skipped_curated.length, report.stats.skipped_curated);
   for (const id of report.skipped_curated) assert.ok(curated.has(id), id);
 });

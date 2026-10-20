@@ -67,7 +67,8 @@ const README_RE = /^Current build: \*\*v[^*]+\*\*.*$/m;
 function readmeLine() {
   const v = rd('packages/engine/src/01-cards.js').match(/const VERSION = '([^']+)'/)[1];
   const n = JSON.parse(rd('data/cards/all-cards.json')).length;
-  return `Current build: **v${v}** (${n.toLocaleString('en-US')} of ${cardTotal().toLocaleString('en-US')} cards playable). Download \`aeterna-v${v}.html\` from the [latest release](https://github.com/odinguard009/aeterna/releases/latest) and open it in Chrome or Edge; release notes are in [CHANGELOG.md](CHANGELOG.md).`;
+  const k = (rd('docs/reports/unlock-report.md').match(/, complete ([\d,]+) \(/) || [, null])[1];      // v0.79.0 (A1): complete = every effect runs
+  return `Current build: **v${v}** (${n.toLocaleString('en-US')} of ${cardTotal().toLocaleString('en-US')} cards playable${k ? ', ' + k + ' complete' : ''}). Download \`aeterna-v${v}.html\` from the [latest release](https://github.com/odinguard009/aeterna/releases/latest) and open it in Chrome or Edge; release notes are in [CHANGELOG.md](CHANGELOG.md).`;
 }
 // v0.59.7 (C5): release notes live in CHANGELOG.md; its newest "## vX.Y.Z" heading must be the current VERSION.
 const changelogHead = () => (rd('CHANGELOG.md').match(/^## (v\d[\d.]*)\s*$/m) || [, null])[1];

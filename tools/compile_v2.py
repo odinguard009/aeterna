@@ -681,12 +681,84 @@ def uninstall():
     v1.action_of, v1.sentences, v1.clean = _V1_ACTION_OF, _V1_SENTENCES, _V1_CLEAN
 
 
-def run(cards):
+def units(t):
+    """v0.79 (A1): the raw text split like v1.paragraphs (blank lines, a new [LVn] line inside a block), but each unit keeps
+    its line breaks, so the per-card preprocessing (Burst block, Legacy / True Release heads, Ultimate summon block) still
+    sees what it expects when a subset is recompiled."""
+    out = []
+    for block in re.split(r'\n\s*\n', (t or '').replace('\r', '').strip()):
+        cur = []
+        for line in block.split('\n'):
+            if cur and re.match(r'^\s*\[LV\d', line) and any(x.strip() for x in cur): out.append('\n'.join(cur)); cur = []
+            cur.append(line)
+        if any(x.strip() for x in cur): out.append('\n'.join(cur).strip())
+    return out
+
+
+def residual_text(u):
+    x = re.sub(r'\s+', ' ', u).strip()
+    return x if len(x) <= 400 else x[:398].rstrip() + ' …'
+
+
+_GATE = None
+def a1_gate():
+    """data/glossary/a1-gate.json: staged cards held back from the partial promotion for a data reason (v0.79.0)"""
+    global _GATE
+    if _GATE is None:
+        try: _GATE = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data/glossary/a1-gate.json'), encoding='utf8'))['cards']
+        except FileNotFoundError: _GATE = {}
+    return _GATE
+
+
+def compile_partial(c):
+    """v0.79 (A1, owner 2026-10-20): a card may enter the library with part of its effect missing. Each paragraph is either
+    compiled in full or left out (a sentence that does not compile drops its whole paragraph to `residual`: a half paragraph
+    could misplay, e.g. a cost paid with no effect). Paragraphs are added in printed order and kept only when the card still
+    compiles with them. Card-level problems (no level data, Brave without combine data, two text versions, an Ultimate
+    without its summon block, a Magic with no compiled timing) still raise Review: those cards stay staged.
+    Returns (card, residual list); [] = complete."""
+    try:
+        return compile_card(c), []
+    except Review as e:
+        first = e
+    why = a1_gate().get(c['id'])
+    if why: raise Review('A1 data gate: ' + why)
+    us = units(c.get('text'))
+    keep, rest = [], []
+    for u in us:
+        try:
+            compile_card(dict(c, text='\n\n'.join(keep + [u]))); keep.append(u)
+        except Review:
+            rest.append(u)
+    if rest and keep:      # a dropped paragraph may compile once a later one is in (rare); one more pass
+        for u in list(rest):
+            trial = [x for x in us if x in keep or x == u]
+            try:
+                compile_card(dict(c, text='\n\n'.join(trial))); keep = trial; rest.remove(u)
+            except Review:
+                pass
+    if not rest: raise first          # every paragraph compiles alone but not together: leave it to review
+    try:
+        n = compile_card(dict(c, text='\n\n'.join(keep)))
+    except Review:
+        raise first
+    if c['type'] == 'Magic' and not (n.get('magic') or {}).get('timing'): raise first
+    if len(rest) > 12: raise Review('more than 12 residual paragraphs')
+    n['text'] = c.get('text')
+    if c['type'] == 'Ultimate':
+        try: n['text'] = v1.ultimate_text(c, c.get('text'))[2]
+        except Review: pass
+    n['fxComplete'] = False
+    n['residual'] = [residual_text(u) for u in rest]
+    return n, n['residual']
+
+
+def run(cards, partial=False):
     install()
     try:
         ok, rev = [], []
         for c in cards:
-            try: ok.append(compile_card(c))
+            try: ok.append(compile_partial(c)[0] if partial else compile_card(c))
             except Review as e: rev.append((c['id'], c['name'], str(e), c.get('saga')))
         return ok, rev
     finally:
@@ -738,8 +810,10 @@ def main(argv):
     if '--saga' in argv: s = int(argv[argv.index('--saga') + 1]); sel = lambda c, s=s: c.get('saga') == s
     if '--ids' in argv: ids = set(argv[argv.index('--ids') + 1].split(',')); sel = lambda c, ids=ids: c['id'] in ids
     pool = [c for c in v1.staged() if sel(c)]
-    ok, rev = run(pool)
+    part = '--partial' in argv       # v0.79 (A1): also emit partial cards (fxComplete false + residual)
+    ok, rev = run(pool, part)
     reasons = collections.Counter(reason_key(r[2]) for r in rev)
+    if part: print(f'partial mode: complete {sum(1 for c in ok if not c.get("residual"))}, partial {sum(1 for c in ok if c.get("residual"))}')
     print(f'v2 compiled {len(ok)}, review {len(rev)}  ' + ', '.join(f'{k} {v}' for k, v in reasons.most_common(6)))
     if '--out' in argv:
         json.dump(ok, open(argv[argv.index('--out') + 1], 'w'), indent=1, ensure_ascii=False)

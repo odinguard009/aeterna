@@ -16,7 +16,10 @@ playable = {c['id'] for c in J('data/cards/all-cards.json')}
 staged = [c for f in sorted(glob.glob(os.path.join(root, 'data/import/saga-[0-9][0-9].json')))
           for c in json.load(open(f, encoding='utf8')) if c['id'] not in playable]
 total = len(playable) + len(staged)
-line = f'playable {len(playable)} / {total:,} cards ({len(staged):,} staged in data/import)'
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from card_counts import counts      # v0.79.0 (A1): two counts, playable (in the library) and complete (every effect runs)
+complete_n = counts(J('data/cards/all-cards.json'))[1]
+line = f'playable {len(playable)} / {total:,} cards, complete {complete_n:,} ({len(staged):,} staged in data/import)'
 if '--line' in sys.argv: print(line); sys.exit(0)
 
 CLASSES = ['vanilla', 'ready', 'partly tagged', 'blocked', 'unknown text']

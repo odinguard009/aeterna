@@ -87,7 +87,7 @@ for (const screen of ['pc', 'phone']) {
       document.querySelector('[data-a="db-chip"][data-v="types:Magic"]').click(); const mag = shown().every(id => BS.CARDS[id].type === 'Magic' && !BS.CARDS[id].contract);
       document.querySelector('[data-a="db-chip"][data-v="types:Magic"]').click();
       ch('db-sort', 'cost'); const costs = shown().map(id => BS.CARDS[id].cost); const byCost = costs.every((c, i) => !i || costs[i - 1] <= c);
-      ch('db-sort', 'name'); const names = shown().map(id => BS.CARDS[id].name.toLowerCase()); const byName = names[0] <= names[names.length - 1];
+      ch('db-sort', 'name'); const names = shown().map(id => BS.CARDS[id].name); const coll = new Intl.Collator('en', { numeric: true, sensitivity: 'base' }); const byName = names.every((n, i) => !i || coll.compare(names[i - 1], n) <= 0);      // v0.79.0: same collation as the deck builder (names starting with punctuation)
       ch('db-sort', 'default');
       return { set, fam, legal, mag, byCost, byName };
     });

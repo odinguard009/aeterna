@@ -819,8 +819,18 @@ def compile_card(c):
     return n
 
 
+A1_NOTE = 'Partial card (v0.79.0'     # v0.79.0 (A1): set by tools/promote_compiled.mjs on bulk-promoted partial cards
+
+
+def a1_partial(c):
+    """a card in data/cards that the A1 bulk promotion put there with part of its effect missing"""
+    return bool(c.get('residual')) and A1_NOTE in (c.get('note') or '')
+
+
 def staged():
-    have = {c['id'] for f in glob.glob(os.path.join(ROOT, 'data/cards/saga-[0-9][0-9].json')) for c in json.load(open(f, encoding='utf8'))}
+    """the compile pool: cards in data/import that are not in data/cards, plus (v0.79.0, A1) the bulk-promoted partial cards,
+    whose staging record stays in data/import so every later compiler change can make them complete (promotion replaces them)"""
+    have = {c['id'] for f in glob.glob(os.path.join(ROOT, 'data/cards/saga-[0-9][0-9].json')) for c in json.load(open(f, encoding='utf8')) if not a1_partial(c)}
     for f in sorted(glob.glob(os.path.join(ROOT, 'data/import/saga-[0-9][0-9].json'))):
         for c in json.load(open(f, encoding='utf8')):
             if c['id'] not in have: yield c

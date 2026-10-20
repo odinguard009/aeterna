@@ -4,8 +4,8 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "20 Oct 2026",
-  "updatedAt": "0.78.0",
-  "next": "next: A1 partial promotion (staged cards enter the library with the missing clauses listed, \"!\" mark in Library and deck builder, \"Complete only\" filter; two counts: playable = in the library, complete = every effect runs), then A2 card-author agent pilot on one Standard block A set (measure cards per 100k tokens against v0.78.0 +23); plan W bundles wait behind A; 859 of 8,709 cards playable"
+  "updatedAt": "0.79.0",
+  "next": "next: A2 card-author agent pilot on one Standard block A set (agents write effect JSON for the residual clauses of the new partial cards with existing actions; measure complete cards per 100k tokens against v0.78.0 +23); plan W bundles wait behind A; playable 6,838 of 8,709, complete 733"
  },
  "phases": [
   {
@@ -648,7 +648,7 @@
     },
     {
      "s": "next",
-     "t": "Owner, 2026-10-20: partial promotion with a \"!\" mark in Library and deck builder (A1), then a card-author agent pilot on one block A set (A2), modelled on Aegis's one-module-per-card route"
+     "t": "Owner, 2026-10-20: partial promotion with a \"!\" mark in Library and deck builder (A1, done in v0.79.0: 5,978 cards, two counts), then a card-author agent pilot on one block A set (A2), modelled on Aegis's one-module-per-card route"
     },
     {
      "s": "later",
@@ -1084,6 +1084,14 @@
    "calls": "~80",
    "basis": "estimate",
    "note": "Scheduled auto HEMAT ON card session on Opus: fifth measured bundle: end of battle (Curse, Brilliance, \"At the end of battle, X\", Destroy this Spirit), ally battle results \"with your X Spirit\" by step side (+23 cards)."
+  },
+  {
+   "ver": "v0.79.0",
+   "date": "20 Oct 2026",
+   "tokens": 400000,
+   "calls": "~95",
+   "basis": "estimate",
+   "note": "Manual HEMAT ON session on Opus: A1 partial promotion: compiler partial mode (whole paragraphs to residual), 5,978 cards into the library with a \"!\" mark and a \"Complete effects only\" filter, data gate for 745 cards, two counts (playable 6,838, complete 733); gate pagination fix."
   }
  ]
 }

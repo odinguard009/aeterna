@@ -62,7 +62,7 @@ INVOKE_WHEN, INVOKE_COSTS, invokeMatchOK, invokeParse, invokeWhenOK, exhaustOwnC
 ## packages/engine/src/02o-effects-battle-end.js (66 lines, ~1.3k tokens)
 endOfBattle
 
-## packages/engine/src/03-imported-cards.js (214 lines, ~5.6k tokens) — IMPORTED CARD DATA
+## packages/engine/src/03-imported-cards.js (215 lines, ~5.6k tokens) — IMPORTED CARD DATA
 COLORS, BUILTIN_IDS, CARDS_KEY, IMPORTED, CARDS_VER, parseCard, registerImported, saveImported, importCards, clearImported, PACK_IDS, registerPack, TOKEN_IDS, registerTokens
 
 ## packages/engine/src/04-decks.js (84 lines, ~1.6k tokens) — DECK STORAGE AND VALIDATION
@@ -98,8 +98,8 @@ openZoneModal, openLogModal, showRules
 ## apps/web/src/13-render.js (305 lines, ~6.6k tokens) — RENDERING
 nameHTML, isPC, applyLayout, _rz, colorVar, cardColors, isMulti, colorSty, symSlices, symCount, isUltimate, cardCls, rebMark, symBadgeHTML, handCardHTML, gemsHTML, fieldCardHTML, rowHTML, burstAreaHTML, soulAreaHTML, fieldAreaHTML, zoneBox, pv, pileHTML, lifePlate, resPlate, STEP_WARN, stepTargets, stepWarn, stepClick, renderBoard, render, LOG_OPEN, updateLogDrawer, toggleLog, magBtnHTML, liveStatusHTML, HIST_KEY, HISTORY, recordMatch, histHTML, lifeTxt, checkInvariants, switchView, renderSettings, renderLobby
 
-## apps/web/src/13a-deckbuilder.js (200 lines, ~4k tokens) — DECK BUILDER (v0.53.0 redesign; list performance from v0.52.1)
-DB_COLORS, DB_TYPES, DB_COSTS, DBF, DB_UNDO, DB_IO, dbArr, dbTypeOf, dbSetOf, dbFilterOK, DBV, DB_GAP, DB_COLL, dbIndex, dbSets, dbActiveCount, DB_SORTS, dbFilter, dbCardHTML, dbWindow, dbScroll, dbSearchInput, dbChip, renderDbRail, dbToggle, dbResetFilters, dbSnap, dbCanAdd, dbChange, dbReplace, dbUndo, dbTap, dbImport, dbExport, dbStatsHTML, dbRowsHTML, renderDbDeck, dbSheet, renderDeckBuilder
+## apps/web/src/13a-deckbuilder.js (205 lines, ~4.2k tokens) — DECK BUILDER (v0.53.0 redesign; list performance from v0.52.1)
+DB_COLORS, DB_TYPES, DB_COSTS, DBF, DB_UNDO, DB_IO, dbArr, dbTypeOf, dbSetOf, dbFilterOK, DBV, DB_GAP, DB_COLL, dbIndex, dbSets, dbActiveCount, DB_SORTS, dbFilter, fxMarked, FX_MARK_LBL, fxMarkHTML, dbCardHTML, dbWindow, dbScroll, dbSearchInput, dbChip, renderDbRail, dbToggle, dbResetFilters, dbSnap, dbCanAdd, dbChange, dbReplace, dbUndo, dbTap, dbImport, dbExport, dbStatsHTML, dbRowsHTML, renderDbDeck, dbSheet, renderDeckBuilder
 
 ## apps/web/src/13b-nav.js (60 lines, ~1.1k tokens) — APP NAVIGATION + HOME (v0.65.0, UI/UX overhaul U2; docs/DESIGN.md section 0, mockup docs/design/mockup-v11.html)
 NAV_HIDDEN, navSync, navTools, themePop, navTheme, navSound, navHistory, fmtTitle, renderHome
@@ -110,7 +110,7 @@ PLAY_SPEEDS, playChips, renderPlay, playSet
 ## apps/web/src/13d-pages.js (54 lines, ~1k tokens) — SETTINGS, HOW TO PLAY, LIBRARY PAGES (v0.68.0, UI/UX overhaul U4; docs/DESIGN.md section 0, mockup docs/design/mockup-v11.html "Settings")
 MAT_KEY, MAT, matUse, shrinkMat, matSet, matClear, setMsg, setSection, renderSetPage
 
-## apps/web/src/14-images.js (150 lines, ~2.5k tokens) — CARD IMAGES
+## apps/web/src/14-images.js (152 lines, ~2.6k tokens) — CARD IMAGES
 IMG, IDB, normKey, idbOpen, idbTx, setImg, loadImages, shrinkImage, stripExt, findCardByFile, findCardByKey, importImages, clearImages, imgCls, imgSty, refreshViews, libMsg, renderLibrary, deckToText, textToDeck, downloadText, readFileText, libAction
 
 ## packages/engine/src/15-match.js (61 lines, ~1.2k tokens) — MATCH START / END

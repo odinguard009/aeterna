@@ -6,7 +6,8 @@
 // Cards that fail stay staged and are listed. Passing cards go to data/cards via tools/build_cards.py --update.
 //   node tools/promote_compiled.mjs build/compiled.json          -> check + promote
 //   node tools/promote_compiled.mjs build/compiled.json --dry    -> check only
-//   add --v2 when the file comes from tools/compile_v2.py (v0.61.0; the note names it)
+//   add --v2 when the file comes from tools/compile_v2.py (v0.61.0; the note names it); v0.79.0: --partial output
+//   (fxComplete false + residual) is promoted the same way, with a note naming the residual
 // Then: python3 tools/tag_effects.py && npm run -s loop
 import { readFileSync, writeFileSync, unlinkSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -22,7 +23,7 @@ export async function smoke(cards) {
   try {
     const parsed = await page.evaluate(cs => cs.map(c => { const r = BS.parseCard(c); return r.card ? null : r.errors.join('; '); }), cards);
     const ok = cards.filter((c, i) => !parsed[i]), res = cards.map((c, i) => ({ id: c.id, err: parsed[i] ? 'parseCard: ' + parsed[i] : null }));
-    await page.evaluate(cs => BS.importCards(JSON.stringify(cs)), ok);
+    for (let i = 0; i < ok.length; i += 2500) await page.evaluate(cs => BS.importCards(JSON.stringify(cs)), ok.slice(i, i + 2500));      // v0.79.0: importCards takes at most 3000 cards per call
     const filler = await page.evaluate(() => { const d = BS.PREBUILT.find(x => x.id !== 'train'); return Object.keys(d.cards).filter(x => BS.CARDS[x].type === 'Spirit' && !BS.CARDS[x].effects).slice(0, 2); });
     for (const r of res) {
       if (r.err) continue;
@@ -72,7 +73,8 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   if (process.argv.includes('--dry')) process.exit(bad.length ? 1 : 0);
   const keep = new Set(res.filter(r => !r.err).map(r => r.id));
   const note = process.argv.includes('--v2') ? NOTE.replace('(v0.52.0)', '(v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0)') : NOTE;      // v0.61.0
-  const out = cards.filter(c => keep.has(c.id)).map(c => Object.assign({}, c, { note }));
+  const PART = ' Partial card (v0.79.0, roadmap item A1): the printed paragraphs in "residual" do not run yet; the card shows a "!" mark in the Library and the deck builder.';
+  const out = cards.filter(c => keep.has(c.id)).map(c => Object.assign({}, c, { note: (c.residual || []).length ? note + PART : note }));      // v0.79.0: partial cards from compile_v2.py --partial
   const tmp = join(ROOT, 'build_promote.tmp.json'); writeFileSync(tmp, JSON.stringify(out));
   try { execFileSync('python3', [join(ROOT, 'tools/build_cards.py'), '--update', tmp], { stdio: 'inherit' }); } finally { unlinkSync(tmp); }
   console.log(`promoted ${out.length}`);

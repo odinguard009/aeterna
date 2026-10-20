@@ -7,7 +7,7 @@
 const DB_COLORS = ['red', 'purple', 'green', 'white', 'yellow', 'blue'];
 const DB_TYPES = ['Spirit', 'Ultimate', 'Brave', 'Nexus', 'Magic', 'Contract'];
 const DB_COSTS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-const DBF = { colors: new Set(), costs: new Set(), types: new Set(), set: '', family: '', legal: false, sort: 'default' };
+const DBF = { colors: new Set(), costs: new Set(), types: new Set(), set: '', family: '', legal: false, complete: false, sort: 'default' };
 const DB_UNDO = [];
 let DB_IO = '';
 const dbArr = v => v == null || v === '' ? [] : Array.isArray(v) ? v : v instanceof Set ? [...v] : [String(v)];
@@ -34,7 +34,7 @@ function dbIndex() {
   return DBV.idx;
 }
 function dbSets() { return [...new Set(dbIndex().map(e => dbSetOf(e.id)))].sort(DB_COLL.compare); }
-function dbActiveCount() { return DBF.colors.size + DBF.costs.size + DBF.types.size + (DBF.set ? 1 : 0) + (DBF.family ? 1 : 0) + (DBF.legal ? 1 : 0) + ($('db-only').checked ? 1 : 0); }
+function dbActiveCount() { return DBF.colors.size + DBF.costs.size + DBF.types.size + (DBF.set ? 1 : 0) + (DBF.family ? 1 : 0) + (DBF.legal ? 1 : 0) + (DBF.complete ? 1 : 0) + ($('db-only').checked ? 1 : 0); }
 const DB_SORTS = {
   cost: (a, b) => CARDS[a.id].cost - CARDS[b.id].cost || DB_COLL.compare(a.id, b.id),
   name: (a, b) => DB_COLL.compare(CARDS[a.id].name, CARDS[b.id].name) || DB_COLL.compare(a.id, b.id),
@@ -43,20 +43,25 @@ const DB_SORTS = {
 };
 function dbFilter() {
   const q = ($('db-search').value || '').trim().toLowerCase(), only = $('db-only').checked, fam = DBF.family.trim().toLowerCase();
-  const idx = dbIndex(), key = [CARDS_VER, q, only ? Object.keys(PLAYER_DECK).filter(id => PLAYER_DECK[id]).sort().join(',') : '', [...DBF.colors].join(), [...DBF.costs].join(), [...DBF.types].join(), DBF.set, fam, DBF.legal, DBF.sort, FORMAT].join('|');
+  const idx = dbIndex(), key = [CARDS_VER, q, only ? Object.keys(PLAYER_DECK).filter(id => PLAYER_DECK[id]).sort().join(',') : '', [...DBF.colors].join(), [...DBF.costs].join(), [...DBF.types].join(), DBF.set, fam, DBF.legal, DBF.complete, DBF.sort, FORMAT].join('|');
   if (key === DBV.key) return DBV.list;
   DBV.key = key;
-  let l = idx.filter(e => (!only || PLAYER_DECK[e.id]) && (!q || e.s.includes(q)) && (!fam || e.f.includes(fam)) && (!DBF.set || dbSetOf(e.id) === DBF.set) && dbFilterOK(CARDS[e.id], DBF.colors, DBF.costs, DBF.types) && (!DBF.legal || !legalityOf(e.id, FORMAT)));
+  let l = idx.filter(e => (!only || PLAYER_DECK[e.id]) && (!q || e.s.includes(q)) && (!fam || e.f.includes(fam)) && (!DBF.set || dbSetOf(e.id) === DBF.set) && dbFilterOK(CARDS[e.id], DBF.colors, DBF.costs, DBF.types) && (!DBF.legal || !legalityOf(e.id, FORMAT)) && (!DBF.complete || !fxMarked(CARDS[e.id])));
   if (DB_SORTS[DBF.sort]) l = l.slice().sort(DB_SORTS[DBF.sort]);
   DBV.list = l.map(e => e.id);
   $('db-count').textContent = `${DBV.list.length} card(s) shown`;
   return DBV.list;
 }
+// v0.79.0 (A1, owner 2026-10-20): a card whose printed effect is not fully implemented carries a "!" mark in the deck builder
+// grid and deck rows (and the Library counts); the missing clauses simply do not happen (no manual mode). Built-in training cards count as complete; older hand-wired cards with fxComplete false show the mark too.
+const fxMarked = c => !!c && c.implemented === false;
+const FX_MARK_LBL = 'Effect not fully implemented';
+const fxMarkHTML = c => fxMarked(c) ? `<span class="fx-mark" role="img" aria-label="${FX_MARK_LBL}" title="${FX_MARK_LBL}">!</span>` : '';
 function dbCardHTML(id) {
   const c = CARDS[id], n = PLAYER_DECK[id] || 0, bp = c.levels[0] && c.levels[0].bp != null ? c.levels[0].bp : c.brave ? '+' + c.brave.bp : '-';
-  return `<div class="tcg-card ${n ? '' : 'dim'}${cardCls(c)}${imgCls(id)}${DBV.pulse === id ? ' db-pulse' : ''}" style="${colorSty(c)}${imgSty(id)}" data-a="dbcard" data-v="${id}" title="${esc(c.name)} (${id}): tap to add">
+  return `<div class="tcg-card ${n ? '' : 'dim'}${cardCls(c)}${imgCls(id)}${DBV.pulse === id ? ' db-pulse' : ''}" style="${colorSty(c)}${imgSty(id)}" data-a="dbcard" data-v="${id}" title="${esc(c.name)} (${id})${fxMarked(c) ? ' - ' + FX_MARK_LBL : ''}: tap to add">
       <div class="cost">${c.cost}</div><div class="type-badge">${c.contract ? 'CON' : c.type.substring(0, 3).toUpperCase()}${rebMark(c)}</div>
-      <div class="name">${nameHTML(c.name)}</div><div class="bp">${bp}</div>${symBadgeHTML(id)}${n ? `<div class="qty-badge">×${n}</div>` : ''}${legalityOf(id, FORMAT) ? '<div class="ban-badge" title="Not legal in this format">🚫</div>' : banStatus(id) === 'limit1' ? '<div class="ban-badge lim">1</div>' : ''}<button class="db-info" data-a="dbinfo" data-v="${id}" aria-label="Card detail" title="Card detail">i</button></div>`;
+      <div class="name">${nameHTML(c.name)}</div><div class="bp">${bp}</div>${fxMarkHTML(c)}${symBadgeHTML(id)}${n ? `<div class="qty-badge">×${n}</div>` : ''}${legalityOf(id, FORMAT) ? '<div class="ban-badge" title="Not legal in this format">🚫</div>' : banStatus(id) === 'limit1' ? '<div class="ban-badge lim">1</div>' : ''}<button class="db-info" data-a="dbinfo" data-v="${id}" aria-label="Card detail" title="Card detail">i</button></div>`;
 }
 function dbWindow(force) {             // renders the rows around the visible part of the grid
   const el = $('db-card-list'), list = DBV.list, n = list.length;
@@ -84,13 +89,13 @@ function renderDbRail() {
   $('db-f-types').innerHTML = DB_TYPES.map(t => dbChip('types', t, t, DBF.types.has(t))).join('');
   const st = $('db-set'), sets = dbSets(), sig = sets.join();
   if (st.dataset.sig !== sig) { st.innerHTML = '<option value="">All sets</option>' + sets.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join(''); st.dataset.sig = sig; }
-  st.value = DBF.set; $('db-sort').value = DBF.sort; $('db-legal').checked = DBF.legal;
+  st.value = DBF.set; $('db-sort').value = DBF.sort; $('db-legal').checked = DBF.legal; $('db-complete').checked = DBF.complete;
   if (document.activeElement !== $('db-family')) $('db-family').value = DBF.family;
   const n = dbActiveCount(); $('db-filter-btn').textContent = n ? `Filters (${n})` : 'Filters';
 }
 function dbToggle(group, v) { const s = DBF[group]; if (s.has(v)) s.delete(v); else s.add(v); renderDeckBuilder(); }
 function dbResetFilters() {
-  DBF.colors.clear(); DBF.costs.clear(); DBF.types.clear(); DBF.set = ''; DBF.family = ''; DBF.legal = false; DBF.sort = 'default';
+  DBF.colors.clear(); DBF.costs.clear(); DBF.types.clear(); DBF.set = ''; DBF.family = ''; DBF.legal = false; DBF.complete = false; DBF.sort = 'default';
   $('db-only').checked = false; $('db-search').value = ''; $('db-card-list').scrollTop = 0; renderDeckBuilder();
 }
 
@@ -148,7 +153,7 @@ function dbRowsHTML() {
     const tot = g.reduce((s, id) => s + PLAYER_DECK[id], 0);
     return `<div class="db-grp"><div class="db-grp-h">${t} <span>${tot}</span></div>` + g.map(id => {
       const c = CARDS[id], n = PLAYER_DECK[id], bad = legalityOf(id, FORMAT);
-      return `<div class="db-row${bad ? ' bad' : ''}" style="${colorSty(c)}"><span class="db-row-cost">${c.cost}</span><button class="db-row-name" data-a="dbinfo" data-v="${id}" title="${esc(id)}">${esc(c.name)}${bad ? ' 🚫' : ''}</button>
+      return `<div class="db-row${bad ? ' bad' : ''}" style="${colorSty(c)}"><span class="db-row-cost">${c.cost}</span><button class="db-row-name" data-a="dbinfo" data-v="${id}" title="${esc(id)}">${esc(c.name)}${fxMarkHTML(c)}${bad ? ' 🚫' : ''}</button>
         <button class="db-row-btn" data-a="db-row" data-v="${id}:-1" aria-label="Remove one ${esc(c.name)}">−</button><span class="db-row-n">${n}</span><button class="db-row-btn" data-a="db-row" data-v="${id}:1" aria-label="Add one ${esc(c.name)}"${dbCanAdd(id) ? '' : ' disabled'}>+</button></div>`;
     }).join('') + '</div>';
   }).join('');

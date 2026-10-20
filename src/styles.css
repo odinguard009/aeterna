@@ -68,6 +68,9 @@
   .db-grid .tcg-card { --card-w: 70px; width: 70px; }
   .ban-badge { position: absolute; top: 14%; right: 2px; font-size: 14px; z-index: 2; filter: drop-shadow(0 0 2px #000); }
   .ban-badge.lim { background: #e5a93c; color: #000; border-radius: 50%; width: 16px; height: 16px; display: grid; place-items: center; font-size: 10px; font-weight: bold; }
+  .fx-mark{display:inline-grid;place-items:center;width:15px;height:15px;border-radius:50%;background:#f2994a;color:#000;font:800 10px/1 sans-serif;box-shadow:0 0 0 1px #0008}
+  .tcg-card .fx-mark{position:absolute;left:2px;top:calc(21cqw + 6px);z-index:3}.db-row .fx-mark{width:13px;height:13px;font-size:9px;margin-left:4px}
+  .db-legend{display:flex;align-items:center;gap:6px;font-size:11px;margin-top:4px}
   .qty-badge { position: absolute; bottom: 2px; right: 2px; background: var(--accent); color: #000; font-size: 8px; font-weight: bold; padding: 0 4px; border-radius: 3px; }
 
   /* 3. PLAYMAT VIEW */
