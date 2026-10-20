@@ -119,9 +119,9 @@ async function dbImport() {
   const v = await modal({ title: 'Import deck list', html: '<div class="db-io-hint">One card per line: <b>3 BS44-001</b> or <b>3x Card Name</b>. The current cards in this slot are replaced (Undo brings them back).</div><textarea id="db-io" class="lib-area" spellcheck="false"></textarea>', buttons: [{ label: 'Import', cls: 'primary', value: 'ok' }, { label: 'Cancel', cls: 'cancel', value: null }] });
   if (v !== 'ok') return;
   const r = textToDeck(DB_IO);
-  if (!deckTotal(r.deck)) { info('Nothing imported', 'No cards recognised.' + (r.bad.length ? '<br>' + r.bad.slice(0, 8).map(esc).join('<br>') : '')); return; }
+  if (!deckTotal(r.deck)) { uiInfo('Nothing imported', 'No cards recognised.' + (r.bad.length ? '<br>' + r.bad.slice(0, 8).map(esc).join('<br>') : '')); return; }
   dbReplace(r.deck);
-  if (r.bad.length) info('Imported with skipped lines', esc(r.bad.slice(0, 8).join('\n')).replace(/\n/g, '<br>'));
+  if (r.bad.length) uiInfo('Imported with skipped lines', esc(r.bad.slice(0, 8).join('\n')).replace(/\n/g, '<br>'));
 }
 async function dbExport() {
   const txt = deckToText();

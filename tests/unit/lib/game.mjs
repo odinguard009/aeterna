@@ -59,7 +59,7 @@ export async function simMatch(seed, { mode = 'white', timeoutMs = 60000, pollMs
     const s = await page.evaluate(() => {
       const G = BS.G, f = (G.rec && G.rec.final) || {};
       return { turn: G.turnNo, winner: G.winner, hist: G.history.length, hash: f.hash || null, log: f.log || null, seed: G.rec && G.rec.seed,
-        replay: BS.lastReplay(), firstPlayer: (G.history.find(x => / goes first\.$/.test(x)) || '').replace(' goes first.', ''), lives: [G.p.player.life, G.p.opponent.life], decks: [G.p.player.deck.length, G.p.opponent.deck.length] };
+        replay: BS.lastReplay(), port: BS.portRecord(), firstPlayer: (G.history.find(x => / goes first\.$/.test(x)) || '').replace(' goes first.', ''), lives: [G.p.player.life, G.p.opponent.life], decks: [G.p.player.deck.length, G.p.opponent.deck.length] };
     });
     const out = { seed, mode, over, inv, errors: errors.slice(0, 3), ...s };
     if (keepPage) out.page = page; else await page.close();

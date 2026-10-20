@@ -15,11 +15,19 @@
    --------------------------------------------------------------------- */
 const DECISION_KINDS = ['choice', 'pick', 'payment', 'info', 'action'];
 const cardIds = L => (L || []).map(x => (typeof x === 'string' ? x : x.id)).filter(id => CARDS[id]);
-async function decide(seat, d) { const s = SESSION; const v = await io.decide(seat, d); if (s !== SESSION) throw ABORT; return v; }
+/* v0.85.0 (F4 = M4 part 1): every answer is kept in the port input record G.prec (15b-replay.js), in the order asked */
+async function portAsk(seat, d) {
+  const g = G, r = g && g.prec && g.prec.s === SESSION && !g.over ? g.prec : null;
+  if (r) r.wait = { s: seat, k: d.kind };
+  const v = await io.decide(seat, d);
+  if (r && G === g && r.s === SESSION) { r.wait = null; r.answers.push({ s: seat, k: d.kind, v: v === undefined ? null : JSON.parse(JSON.stringify(v)) }); }
+  return v;
+}
+async function decide(seat, d) { const s = SESSION; const v = await portAsk(seat, d); if (s !== SESSION) throw ABORT; return v; }
 /** A choice between buttons (the old web ask()); the human seat unless another seat is named. */
 function ask(cfg, seat) { return decide(seat || 'player', Object.assign({ kind: 'choice' }, cfg)); }
 /** A message with one Close button; never throws ABORT (as before M3). */
-function info(title, html, seat) { return io.decide(seat || 'player', { kind: 'info', title, html }); }
+function info(title, html, seat) { return portAsk(seat || 'player', { kind: 'info', title, html }); }
 /** Tap a glowing card on the field: {text, uids, mark?, buttons?}. */
 function pickFromField(cfg, seat) { return decide(seat || 'player', Object.assign({ kind: 'pick' }, cfg, { uids: Array.from(cfg.uids || []) })); }
 async function askBlock(att, D, blockers, must) {

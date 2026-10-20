@@ -46,10 +46,10 @@ function openZoneModal(key, zone) {
 }
 function openLogModal() {
   if (!G) return;
-  info('Game Log', `<div class="log-list">${G.history.slice(-60).reverse().map(t => `<div>${esc(t)}</div>`).join('')}</div>`);
+  uiInfo('Game Log', `<div class="log-list">${G.history.slice(-60).reverse().map(t => `<div>${esc(t)}</div>`).join('')}</div>`);
 }
 function showRules() {
-  info('Rules coverage (Eternal Ver.17.1 / Standard Ver.1.1)', `
+  uiInfo('Rules coverage (Eternal Ver.17.1 / Standard Ver.1.1)', `
     <div style="text-align:left"><b>Implemented</b>
     <ul class="rule-list"><li>40+ card decks, max 3 per name, one Contract type; Contract card added to the starting Hand</li>
     <li>Setup: 5 Life, 3 Reserve cores + Soul Core, 4-card hand (3 cards + your Contract card if you add it), coin toss winner picks the turn order, one redraw (the whole hand goes back, Contract card too; draw 4; the Contract card cannot be added again)</li>

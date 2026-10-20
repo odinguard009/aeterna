@@ -2,6 +2,17 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.85.0
+- Lane: U/I
+- **Replays, part 1 (roadmap phase F, item F4 = monorepo step M4 part 1): every match keeps a host-independent input record of its port answers, and Node re-runs it without a browser.**
+  - `packages/engine/src/15b-replay.js` (new): port input record v2 in `G.prec` (seed, format, decks, human seats, CPU profiles + fuzz setting in sims, every answer `{s, k, v}` in the order asked: choices, picks, payments, info and the action intents of v0.84.0; `final` at the match end). `portRecord()` copies it and adds `cut` (log count + hash) when a decision is open, so the record of an unfinished match is checked up to that moment. `boardSnapshot()`: one plain board frame (the CPU Hand and Burst only as count / "set").
+  - Answers are recorded in `05b-decide.js` (`portAsk`); page messages of the web UI (Game Log, rules coverage, glossary, deck import notes) now use `uiInfo` and stay out of the record.
+  - `packages/engine/headless.mjs`: `replayPort(record)` answers every decision from the record (same seat and kind, else "diverged at answer N"), reports `same` (final result and log hash) or `sameCut`; `viewerReplay(record)` exports the viewer replay v1 (`kind: 'aeterna-viewer'`, deduplicated board frames); `loadEngine({ sim: false })` runs the rules of a real web match (coin toss, Starting Hand prompts) without delays; CLI `node packages/engine/headless.mjs --replay <file>`; `playHeadless` results carry `port`.
+  - Fuzz cases (`tools/fuzz.mjs`) now save the port record as `port`, so a failing fuzz game is reproduced in Node without re-running the browser sim.
+  - Tests `tests/unit/replay85.test.mjs`: R85-01 headless human matches replay to the same hash, R85-02 fuzzed sims (headless and browser) replay headless from the record alone, R85-03 viewer frames (no repeats, CPU Hand hidden, last frame = result), R85-04 divergence index, refused files and a shortened record, R85-05 a real browser match cut while the human is asked replays headless to the same log, and a page message adds no answer.
+  - Not in this part (F4 part 2): the playback screen in `apps/web` and saving failing Regression sims as records.
+- Revert note: `git revert` of the v0.85.0 commit restores v0.84.0 (records and replay tools only; no card data or rules change).
+
 ## v0.84.0
 - Lane: U/I
 - **Host port, part 2b (roadmap phase F, item F3 part 2 = monorepo step M3 rest): the human seat's board actions are intent records through `io.decide`; the CPU can answer any decision through the port.**

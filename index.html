@@ -1281,7 +1281,7 @@ function bindHost(h) {
    type: 'Spirit' | 'Nexus' | 'Magic'      symbol: card color     symbols: number of symbols
    reduction: {color: n}         levels: [{cores, bp}]  (Nexus levels have no bp)
    --------------------------------------------------------------------- */
-const VERSION = '0.84.0';
+const VERSION = '0.85.0';
 const CARDS = {};
 function defCard(o) {
   CARDS[o.id] = Object.assign({ type: 'Spirit', reduction: {}, symbols: 1, families: [], keywords: [], implemented: true, desc: 'Vanilla test card (no effect).', block: 'A' }, o);
@@ -4078,11 +4078,19 @@ function newGame(deckA, deckB, format) {
    --------------------------------------------------------------------- */
 const DECISION_KINDS = ['choice', 'pick', 'payment', 'info', 'action'];
 const cardIds = L => (L || []).map(x => (typeof x === 'string' ? x : x.id)).filter(id => CARDS[id]);
-async function decide(seat, d) { const s = SESSION; const v = await io.decide(seat, d); if (s !== SESSION) throw ABORT; return v; }
+/* v0.85.0 (F4 = M4 part 1): every answer is kept in the port input record G.prec (15b-replay.js), in the order asked */
+async function portAsk(seat, d) {
+  const g = G, r = g && g.prec && g.prec.s === SESSION && !g.over ? g.prec : null;
+  if (r) r.wait = { s: seat, k: d.kind };
+  const v = await io.decide(seat, d);
+  if (r && G === g && r.s === SESSION) { r.wait = null; r.answers.push({ s: seat, k: d.kind, v: v === undefined ? null : JSON.parse(JSON.stringify(v)) }); }
+  return v;
+}
+async function decide(seat, d) { const s = SESSION; const v = await portAsk(seat, d); if (s !== SESSION) throw ABORT; return v; }
 /** A choice between buttons (the old web ask()); the human seat unless another seat is named. */
 function ask(cfg, seat) { return decide(seat || 'player', Object.assign({ kind: 'choice' }, cfg)); }
 /** A message with one Close button; never throws ABORT (as before M3). */
-function info(title, html, seat) { return io.decide(seat || 'player', { kind: 'info', title, html }); }
+function info(title, html, seat) { return portAsk(seat || 'player', { kind: 'info', title, html }); }
 /** Tap a glowing card on the field: {text, uids, mark?, buttons?}. */
 function pickFromField(cfg, seat) { return decide(seat || 'player', Object.assign({ kind: 'pick' }, cfg, { uids: Array.from(cfg.uids || []) })); }
 async function askBlock(att, D, blockers, must) {
@@ -4885,6 +4893,7 @@ function win(key, why) {
   G.over = true; G.winner = key; G.busy = true;
   log(`${who(G.p[key])} ${G.p[key].cpu || key === 'opponent' ? 'wins' : 'win'}: ${why}.`);
   if (G.rec) G.rec.final = matchSummary();
+  if (G.prec) G.prec.final = matchSummary();
   io.view({ type: 'board' });
   if (G.turnResolver) { const r = G.turnResolver; G.turnResolver = null; r(); }
   io.view({ type: 'matchEnd', winner: key });   // web host: history entry + game-over dialog (not in ?sim=1)
@@ -5377,6 +5386,8 @@ function paintModal() {
     `<button class="modal-btn ${b.cls || ''}" ${b.dis ? 'disabled' : ''} data-mi="${i}">${esc(titleCase(b.label))}</button>`).join('')
     + (c.peek && G ? '<button class="modal-btn blue" data-peek="1">🔍 View Field</button>' : '');
 }
+/* a message of the page itself (log, glossary, import notes): a plain modal, not an engine decision, so it is not part of the port record */
+function uiInfo(title, html) { return modal({ title, html, buttons: [{ label: 'Close', cls: 'cancel', value: null }] }); }
 function modal(cfg) {
   return new Promise(resolve => {
     if (MODAL && MODAL.resolve) { const r = MODAL.resolve; MODAL = null; r(null); }
@@ -5745,10 +5756,10 @@ function openZoneModal(key, zone) {
 }
 function openLogModal() {
   if (!G) return;
-  info('Game Log', `<div class="log-list">${G.history.slice(-60).reverse().map(t => `<div>${esc(t)}</div>`).join('')}</div>`);
+  uiInfo('Game Log', `<div class="log-list">${G.history.slice(-60).reverse().map(t => `<div>${esc(t)}</div>`).join('')}</div>`);
 }
 function showRules() {
-  info('Rules coverage (Eternal Ver.17.1 / Standard Ver.1.1)', `
+  uiInfo('Rules coverage (Eternal Ver.17.1 / Standard Ver.1.1)', `
     <div style="text-align:left"><b>Implemented</b>
     <ul class="rule-list"><li>40+ card decks, max 3 per name, one Contract type; Contract card added to the starting Hand</li>
     <li>Setup: 5 Life, 3 Reserve cores + Soul Core, 4-card hand (3 cards + your Contract card if you add it), coin toss winner picks the turn order, one redraw (the whole hand goes back, Contract card too; draw 4; the Contract card cannot be added again)</li>
@@ -6179,9 +6190,9 @@ async function dbImport() {
   const v = await modal({ title: 'Import deck list', html: '<div class="db-io-hint">One card per line: <b>3 BS44-001</b> or <b>3x Card Name</b>. The current cards in this slot are replaced (Undo brings them back).</div><textarea id="db-io" class="lib-area" spellcheck="false"></textarea>', buttons: [{ label: 'Import', cls: 'primary', value: 'ok' }, { label: 'Cancel', cls: 'cancel', value: null }] });
   if (v !== 'ok') return;
   const r = textToDeck(DB_IO);
-  if (!deckTotal(r.deck)) { info('Nothing imported', 'No cards recognised.' + (r.bad.length ? '<br>' + r.bad.slice(0, 8).map(esc).join('<br>') : '')); return; }
+  if (!deckTotal(r.deck)) { uiInfo('Nothing imported', 'No cards recognised.' + (r.bad.length ? '<br>' + r.bad.slice(0, 8).map(esc).join('<br>') : '')); return; }
   dbReplace(r.deck);
-  if (r.bad.length) info('Imported with skipped lines', esc(r.bad.slice(0, 8).join('\n')).replace(/\n/g, '<br>'));
+  if (r.bad.length) uiInfo('Imported with skipped lines', esc(r.bad.slice(0, 8).join('\n')).replace(/\n/g, '<br>'));
 }
 async function dbExport() {
   const txt = deckToText();
@@ -6604,7 +6615,7 @@ document.addEventListener('change', async e => {
   else if (t.id === 'play-cpu') { SETTINGS.cpuDeck = t.value; saveSettings(); renderLobby(); }
   else if (t.id === 'db-slot') { switchSlot(Number(t.value)); DB_UNDO.length = 0; renderDeckBuilder(); }
   else if (t.id === 'db-name') { SLOTS[ACTIVE_SLOT].name = (t.value.trim() || 'Deck ' + (ACTIVE_SLOT + 1)).slice(0, 24); saveDeck(); renderDeckBuilder(); }
-  else if (t.id === 'db-preset') { const id = t.value; t.value = ''; if (id) { if (deckTotal(PLAYER_DECK) > 0) { const ok = await ask({ title: 'Replace this deck?', html: `Load "${esc((PREBUILT.find(d => d.id === id) || {}).name || id)}" into slot ${ACTIVE_SLOT + 1}? The current cards in the slot are replaced.`, buttons: [{ label: 'Replace', cls: 'primary', value: true }, { label: 'Cancel', cls: 'cancel', value: false }] }); if (!ok) return; } dbSnap(); loadPrebuilt(id); renderDeckBuilder(); } }
+  else if (t.id === 'db-preset') { const id = t.value; t.value = ''; if (id) { if (deckTotal(PLAYER_DECK) > 0) { const ok = await modal({ title: 'Replace this deck?', html: `Load "${esc((PREBUILT.find(d => d.id === id) || {}).name || id)}" into slot ${ACTIVE_SLOT + 1}? The current cards in the slot are replaced.`, buttons: [{ label: 'Replace', cls: 'primary', value: true }, { label: 'Cancel', cls: 'cancel', value: false }] }); if (!ok) return; } dbSnap(); loadPrebuilt(id); renderDeckBuilder(); } }
   else if (t.id === 'set-mat' && t.files && t.files[0]) { const f = t.files[0]; t.value = ''; await matSet(f); }
   else if (t.id === 'set-speed') { SETTINGS.speed = SPEEDS[t.value] ? t.value : 'normal'; saveSettings(); }
   else if (t.id === 'set-cpu') setCpuProfile(t.value);
@@ -6652,6 +6663,7 @@ async function startNewGame(opts) {
   const W = !SIM && !!opts.watch;   // U3 "Watch CPU vs CPU": the CPU plays your deck too, at the chosen speed, no history entry
   if (W) { G.watch = true; G.p.player.cpu = true; G.p.player.name = 'Your deck'; }
   G.rec = { v: 1, build: VERSION, seed, format: FORMAT, sim: SIM, deckA: Object.assign({}, deckA), deckB: Object.assign({}, deckB), inputs: [] };
+  G.prec = newPortRecord(seed, deckA, deckB, W);         // v0.85.0 (F4 = M4): the host-independent input record, 15b-replay.js
   if (!SIM && !W && !opts.noHistory) G.meta = { fmt: FORMAT, you: opts.deckA ? 'Replay' : SLOTS[ACTIVE_SLOT].name, cpu: opts.deckB ? 'Replay' : CPU_DECK_NAME, done: false };
   io.view({ type: 'screen', id: 'view-playmat' });
   io.view({ type: 'board' });
@@ -6686,6 +6698,42 @@ async function startNewGame(opts) {
   } catch (e) { if (e !== ABORT) throw e; }
 }
 const matchSummary = () => ({ winner: G.winner, turn: G.turnNo, life: [G.p.player.life, G.p.opponent.life], log: G.hn || 0, hash: (G.hh >>> 0).toString(16) });   // v0.26 final result + hash of the whole log (moved from 16-events.js in v0.82.0)
+/* ---------------------------------------------------------------------
+   REPLAY RECORDS (v0.85.0, phase F4 = monorepo step M4 part 1; docs/ai/monorepo-plan.md "Design" 2)
+   Port input record (v 2): what a host answered through io.decide, so any host re-runs the match: the web game, the
+   headless runner (packages/engine/headless.mjs replayPort) and later the server. Kept in G.prec by every match:
+     {v: 2, build, seed, format, sim, watch, deckA, deckB, human: [seat], cpu: {profiles, fuzz} | null,
+      answers: [{s: seat, k: kind, v: answer}], wait: {s, k} | null (a decision is open), final: matchSummary() | absent}
+   Answers come from 05b-decide.js (portAsk): choices, picks, payments, info, and the action intents of 05c-intent.js.
+   The CPU seat decides inline and needs no answers. portRecord() adds `cut` {log, hash} (the log count and hash at a
+   moment a decision is open), so a record of an unfinished match is checked up to that moment. The record depends on the
+   engine version (`build`); the v1 record of v0.26 (G.rec, web clicks) stays for the browser replay.
+   Viewer replay (v 1): {v: 1, kind: 'aeterna-viewer', build, seed, frames: [boardSnapshot()]}: plain board frames that
+   play back without the engine; exported from a port record by headless viewerReplay().
+   --------------------------------------------------------------------- */
+function newPortRecord(seed, deckA, deckB, watch) {
+  const human = ['player', 'opponent'].filter(k => G.p[k] && !G.p[k].cpu);
+  return { v: 2, build: VERSION, s: SESSION, seed, format: FORMAT, sim: SIM, watch: !!watch, deckA: Object.assign({}, deckA), deckB: Object.assign({}, deckB), human,
+    cpu: SIM ? { profiles: Object.assign({}, CPU_SIM_PROFILES), fuzz: Object.assign({}, FUZZ) } : null, answers: [], wait: null };
+}
+/** A copy of the current match's port record; `cut` when a decision is open now (the match waits for a host). */
+function portRecord() {
+  if (!G || !G.prec) return null;
+  const r = JSON.parse(JSON.stringify(G.prec)); delete r.s;
+  if (G.prec.wait && !G.over) r.cut = { log: G.hn || 0, hash: (G.hh >>> 0).toString(16) };
+  delete r.wait;
+  return r;
+}
+/** One viewer-replay frame: the visible board as plain data (the CPU seat's Hand and Burst only as counts / "set"). */
+function boardSnapshot() {
+  const fc = f => ({ id: f.id, uid: f.uid, c: f.cores, s: f.soul ? 1 : 0, x: f.exhausted ? 1 : 0, lv: lvNo(f), u: f.under.length ? f.under.map(x => x.id) : undefined, b: f.brave ? f.brave.id : undefined });
+  const side = p => ({
+    name: p.name, life: p.life, ls: p.lifeSoul ? 1 : 0, res: p.reserve.n, rs: p.reserve.soul ? 1 : 0, tc: p.trashCores.n, ts: p.trashCores.soul ? 1 : 0, count: p.count, deck: p.deck.length,
+    hand: p.cpu ? p.hand.length : p.hand.map(h => h.id), spirits: p.spirits.map(fc), nexus: p.nexus.map(fc), trash: p.trash.map(x => x.id), soulState: p.soulState.map(x => x.id),
+    removed: p.removed.map(x => x.id), burst: p.burst ? (p.cpu ? 'set' : p.burst.id) : null, mirage: p.mirage ? p.mirage.id : null
+  });
+  return { t: G.turnNo, st: G.step, a: G.active, n: G.hn || 0, last: G.history.length ? G.history[G.history.length - 1] : '', over: !!G.over, w: G.winner || null, p: { player: side(G.p.player), opponent: side(G.p.opponent) } };
+}
 /* ---------------------------------------------------------------------
    EVENTS (delegation)
    --------------------------------------------------------------------- */
@@ -6790,7 +6838,7 @@ document.addEventListener('click', e => {
   else if (a === 'zoom') openZoom(v);
   else if (a === 'zoominfo') return;
   else if (a === 'zoomclose') $('zoom-overlay').classList.remove('active');
-  else if (a === 'gloss') info(`GLOSSARY: ${v}`, esc(KEYWORD_GLOSSARY[v] || ''));
+  else if (a === 'gloss') uiInfo(`GLOSSARY: ${v}`, esc(KEYWORD_GLOSSARY[v] || ''));
   else if (!G) return;
   else if (a === 'field' && PICK) { const u = Number(v.split(':')[2]); if (PICK.uids.has(u)) PICK.res(u); }
   else if (a === 'log') openLogModal();
@@ -6895,7 +6943,7 @@ function testSetup() {            // dev hook: a quiet board with no match loop 
   switchView('view-playmat'); render(); return G;
 }
 const defBuiltin = o => { defCard(o); BUILTIN_IDS.add(o.id); };      // test fixtures register through this so their ids stay reserved
-window.BS = { endOfBattle, MAT, matUse, setSection, navSync, renderHome, themePop, soulMagicOK, soulMagicHolder, soulMagicPick, THEME, THEME_COLS, setTheme, stepClick, stepTargets, get FX_STRICT() { return FX_STRICT; }, setFxStrict(v) { FX_STRICT = !!v; }, FX_WARNED, collectFx, setFuzz(o) { FUZZ = Object.assign({}, o || {}); }, get FUZZ() { return FUZZ; }, fuzzPick, ERR_LOG, errReport, onGameError, releaseStandby, leaveStandby, renderDeckBuilder, dbChange, dbUndo, dbSheet, DBF, get DB_UNDO() { return DB_UNDO.length; }, accelList, accelCost, accelOK, accelSources, useAccel, removedSummonable, summonFromRemoved, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel, highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, isSealed, soulToLife, lifeTake, braveSummonedFx, abTaxOK, payAbTax, oppAttackHandFx, sentToTrashFx, magicFxAt, summonOK, lvNo, isUlt, noBlockActive, burstFlash, cpuBurstFlash, humanAttack, cpuAttack, attackStepOver, endAttackLocked, battleEndAttack, isGW, freeCores, moveCore, swapSoul, payCost, cpuCanPlay, coresAvailable, addCore, cpuKeepMagicOrPay, nameHTML, switchView, SET_KEY, dbFilterOK, cardColors, contractToDeck, redrawHand, cpuWantsRedraw, setHeavy, refreshOne, toRemoved, fxIf, costDestroyBonus, sendToken, canSendToken, tokenHome, attackSymbols, TOKEN_SUPPLY, isSpiritForm, ocActive, braveFits, braveTargets, combineBrave, braveSummon, separateBrave, canSeparate, braveRecheck, braveAfford, cpuBrave, handButtons, minCores, openFieldModal, cpuMain, VERSION, defBuiltin, beginTurn, endStep, newGame, takeFromVoid, checkDepletion, removeSpirit, lvIndex, mirageUsable, cpuCastMain, magicFx, magicText, costAltActive, flagActive, coresSent, startAttackFx, win, recordMatch, HISTORY: () => HISTORY, toggleLog, effectTextHTML, effectLines, titleCase, liveStatusHTML, openZoom, modal, closeModal, startPeek, SETTINGS, SLOTS: () => SLOTS, get ACTIVE_SLOT() { return ACTIVE_SLOT; }, switchSlot, loadPrebuilt, PREBUILT, cpuDeckFor, saveSettings, PACK_IDS, registerPack, clearImported, summonPaid, reviveTargets, doRevive, handUp, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, soulCoreHolder, rng, seedRng, newSeed, runReplay, lastReplay, fireFxMulti, asResolving, replayOf, loadScenario, gameAct, matchSummary, get REPLAY() { return REPLAY; }, soulSource, soulToNexus, fxImmune, residualHTML, cardDetailHTML, setSimDeckB(d) { SIM_DECK_B = d; }, activatable, activateFx, cpuActivate, toSoulState, bounceCard, runActions, maybeBurst, flushBursts, summonFree, parseBurst, parseActionList, BURST_WHEN, fireFx, parseEffects, staticBp, FX_ACTIONS, removeNexus, magicUsable, magicTargets, castMagic, flashTiming, cpuFlashChoice, setFormat, validateDeck, legalityOf, banStatus, get FORMAT() { return FORMAT; }, isPC, applyLayout, testSetup, mkInst, render, takeCores, IMG, importCards, importImages, textToDeck, deckToText, parseCard, loadImages, get PLAYER_DECK() { return PLAYER_DECK; }, get G() { return G; }, startNewGame, checkInvariants, CARDS, PRESET_DECK, humanCan, onNext, sendIntent, applyIntent, seatLoopOpen, cpuAnswer, INTENT_TYPES, cpuTurn, doBattle, summon, effCost, legacyPlan, legacyPay, canBlockState, canPlayCard, setBurst, fieldList, bpOf, get SESSION() { return SESSION; }, CPU_PROFILES, cpuProfileName, cpuEval, cpuPlayScore, cpuPlayChoice, cpuLethal, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, lifeValue, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, extraReduction };
+window.BS = { endOfBattle, MAT, matUse, setSection, navSync, renderHome, themePop, soulMagicOK, soulMagicHolder, soulMagicPick, THEME, THEME_COLS, setTheme, stepClick, stepTargets, get FX_STRICT() { return FX_STRICT; }, setFxStrict(v) { FX_STRICT = !!v; }, FX_WARNED, collectFx, setFuzz(o) { FUZZ = Object.assign({}, o || {}); }, get FUZZ() { return FUZZ; }, fuzzPick, ERR_LOG, errReport, onGameError, releaseStandby, leaveStandby, renderDeckBuilder, dbChange, dbUndo, dbSheet, DBF, get DB_UNDO() { return DB_UNDO.length; }, accelList, accelCost, accelOK, accelSources, useAccel, removedSummonable, summonFromRemoved, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel, highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, isSealed, soulToLife, lifeTake, braveSummonedFx, abTaxOK, payAbTax, oppAttackHandFx, sentToTrashFx, magicFxAt, summonOK, lvNo, isUlt, noBlockActive, burstFlash, cpuBurstFlash, humanAttack, cpuAttack, attackStepOver, endAttackLocked, battleEndAttack, isGW, freeCores, moveCore, swapSoul, payCost, cpuCanPlay, coresAvailable, addCore, cpuKeepMagicOrPay, nameHTML, switchView, SET_KEY, dbFilterOK, cardColors, contractToDeck, redrawHand, cpuWantsRedraw, setHeavy, refreshOne, toRemoved, fxIf, costDestroyBonus, sendToken, canSendToken, tokenHome, attackSymbols, TOKEN_SUPPLY, isSpiritForm, ocActive, braveFits, braveTargets, combineBrave, braveSummon, separateBrave, canSeparate, braveRecheck, braveAfford, cpuBrave, handButtons, minCores, openFieldModal, cpuMain, VERSION, defBuiltin, beginTurn, endStep, newGame, takeFromVoid, checkDepletion, removeSpirit, lvIndex, mirageUsable, cpuCastMain, magicFx, magicText, costAltActive, flagActive, coresSent, startAttackFx, win, recordMatch, HISTORY: () => HISTORY, toggleLog, effectTextHTML, effectLines, titleCase, liveStatusHTML, openZoom, modal, closeModal, startPeek, SETTINGS, SLOTS: () => SLOTS, get ACTIVE_SLOT() { return ACTIVE_SLOT; }, switchSlot, loadPrebuilt, PREBUILT, cpuDeckFor, saveSettings, PACK_IDS, registerPack, clearImported, summonPaid, reviveTargets, doRevive, handUp, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, soulCoreHolder, rng, seedRng, newSeed, runReplay, lastReplay, fireFxMulti, asResolving, replayOf, loadScenario, gameAct, matchSummary, get REPLAY() { return REPLAY; }, soulSource, soulToNexus, fxImmune, residualHTML, cardDetailHTML, setSimDeckB(d) { SIM_DECK_B = d; }, activatable, activateFx, cpuActivate, toSoulState, bounceCard, runActions, maybeBurst, flushBursts, summonFree, parseBurst, parseActionList, BURST_WHEN, fireFx, parseEffects, staticBp, FX_ACTIONS, removeNexus, magicUsable, magicTargets, castMagic, flashTiming, cpuFlashChoice, setFormat, validateDeck, legalityOf, banStatus, get FORMAT() { return FORMAT; }, isPC, applyLayout, testSetup, mkInst, render, takeCores, IMG, importCards, importImages, textToDeck, deckToText, parseCard, loadImages, get PLAYER_DECK() { return PLAYER_DECK; }, get G() { return G; }, startNewGame, checkInvariants, CARDS, PRESET_DECK, humanCan, onNext, portRecord, boardSnapshot, sendIntent, applyIntent, seatLoopOpen, cpuAnswer, INTENT_TYPES, cpuTurn, doBattle, summon, effCost, legacyPlan, legacyPay, canBlockState, canPlayCard, setBurst, fieldList, bpOf, get SESSION() { return SESSION; }, CPU_PROFILES, cpuProfileName, cpuEval, cpuPlayScore, cpuPlayChoice, cpuLethal, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, lifeValue, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, extraReduction };
 navSync();
 renderLobby();
 loadImages();

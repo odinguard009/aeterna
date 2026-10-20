@@ -15,6 +15,7 @@ async function startNewGame(opts) {
   const W = !SIM && !!opts.watch;   // U3 "Watch CPU vs CPU": the CPU plays your deck too, at the chosen speed, no history entry
   if (W) { G.watch = true; G.p.player.cpu = true; G.p.player.name = 'Your deck'; }
   G.rec = { v: 1, build: VERSION, seed, format: FORMAT, sim: SIM, deckA: Object.assign({}, deckA), deckB: Object.assign({}, deckB), inputs: [] };
+  G.prec = newPortRecord(seed, deckA, deckB, W);         // v0.85.0 (F4 = M4): the host-independent input record, 15b-replay.js
   if (!SIM && !W && !opts.noHistory) G.meta = { fmt: FORMAT, you: opts.deckA ? 'Replay' : SLOTS[ACTIVE_SLOT].name, cpu: opts.deckB ? 'Replay' : CPU_DECK_NAME, done: false };
   io.view({ type: 'screen', id: 'view-playmat' });
   io.view({ type: 'board' });

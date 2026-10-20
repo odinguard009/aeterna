@@ -33,6 +33,7 @@ function win(key, why) {
   G.over = true; G.winner = key; G.busy = true;
   log(`${who(G.p[key])} ${G.p[key].cpu || key === 'opponent' ? 'wins' : 'win'}: ${why}.`);
   if (G.rec) G.rec.final = matchSummary();
+  if (G.prec) G.prec.final = matchSummary();
   io.view({ type: 'board' });
   if (G.turnResolver) { const r = G.turnResolver; G.turnResolver = null; r(); }
   io.view({ type: 'matchEnd', winner: key });   // web host: history entry + game-over dialog (not in ?sim=1)

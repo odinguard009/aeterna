@@ -10,6 +10,8 @@ function paintModal() {
     `<button class="modal-btn ${b.cls || ''}" ${b.dis ? 'disabled' : ''} data-mi="${i}">${esc(titleCase(b.label))}</button>`).join('')
     + (c.peek && G ? '<button class="modal-btn blue" data-peek="1">🔍 View Field</button>' : '');
 }
+/* a message of the page itself (log, glossary, import notes): a plain modal, not an engine decision, so it is not part of the port record */
+function uiInfo(title, html) { return modal({ title, html, buttons: [{ label: 'Close', cls: 'cancel', value: null }] }); }
 function modal(cfg) {
   return new Promise(resolve => {
     if (MODAL && MODAL.resolve) { const r = MODAL.resolve; MODAL = null; r(null); }

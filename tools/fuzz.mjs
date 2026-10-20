@@ -1,7 +1,7 @@
 // v0.59.6 match fuzzer (Q1 quality bundle, Aegis idea): CPU-vs-CPU matches where both CPUs pick random legal options
 // (BS.setFuzz, packages/engine/src/09a-cpu-eval.js), many seeds, headless Playwright. Any crash (page error, console error, error notice),
 // invariant break or match that does not end in time is saved as a regression case in tests/fuzz-cases/<mode>-<seed>.json
-// (seed + mode + fuzz setting replay it exactly); tests/unit/fuzz596.test.mjs replays every saved case.
+// (seed + mode + fuzz setting replay it exactly; v0.85.0: `port` = the port record, `node packages/engine/headless.mjs --replay <case>` re-runs it without a browser); tests/unit/fuzz596.test.mjs replays every saved case.
 //   node tools/fuzz.mjs [--runs 20] [--seed 1] [--timeout 90000] [--modes white,mirror,...] [--no-save]
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -34,7 +34,7 @@ async function main() {
       if (save) {
         mkdirSync(join(ROOT, 'tests/fuzz-cases'), { recursive: true });
         const f = join(ROOT, 'tests/fuzz-cases', `${mode}-${seed}.json`);
-        writeFileSync(f, JSON.stringify({ found: new Date().toISOString().slice(0, 10), version: v, seed, mode, fuzz: FUZZ_BOTH, reason, turn: r.turn, replay: r.replay || null }, null, 1) + '\n');
+        writeFileSync(f, JSON.stringify({ found: new Date().toISOString().slice(0, 10), version: v, seed, mode, fuzz: FUZZ_BOTH, reason, turn: r.turn, replay: r.replay || null, port: r.port || null }, null, 1) + '\n');
         console.log('[fuzz] saved ' + f);
       }
     }
