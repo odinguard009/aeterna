@@ -5,7 +5,7 @@
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "20 Oct 2026",
   "updatedAt": "0.87.0",
-  "next": "next: S1 Standard Magic (58 cards), the whole U/I queue (languages deferred), then cards with Standard first; phase F done in v0.87.0; playable 6,838 of 8,709, complete 739"
+  "next": "next: X1 field width lock (first task of the next session), S1 Standard Magic (58 cards), the whole U/I queue (U5 popups in the mockup style, U5b light animations; languages deferred), then cards with Standard first; phase F done in v0.87.0; playable 6,838 of 8,709, complete 739"
  },
  "phases": [
   {
@@ -1191,5 +1191,5 @@
  ],
  "updated": "20 Oct 2026",
  "updatedAt": "0.87.0",
- "next": "next: S1 Standard Magic (58 cards), the whole U/I queue (languages deferred), then cards with Standard first; phase F done in v0.87.0; playable 6,838 of 8,709, complete 739"
+ "next": "next: X1 field width lock (first task of the next session), S1 Standard Magic (58 cards), the whole U/I queue (U5 popups in the mockup style, U5b light animations; languages deferred), then cards with Standard first; phase F done in v0.87.0; playable 6,838 of 8,709, complete 739"
 }
