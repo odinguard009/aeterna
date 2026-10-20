@@ -4,8 +4,8 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "20 Oct 2026",
-  "updatedAt": "0.86.0",
-  "next": "next: F5 test waits (Q2), the last item of phase F; then plan W card bundles in the K, K, U/I lane cycle; playable 6,838 of 8,709, complete 739"
+  "updatedAt": "0.87.0",
+  "next": "next: phase F done (v0.87.0); paused for the owner's roadmap update of 2026-10-21 (chain-stop.md); playable 6,838 of 8,709, complete 739"
  },
  "phases": [
   {
@@ -592,8 +592,8 @@
      "t": "F4 replays (v0.85.0-v0.86.0): port input records (15b-replay.js), headless replayPort / viewerReplay, fuzz cases carry the record, replay viewer in the match history"
     },
     {
-     "s": "next",
-     "t": "F5 test waits (Q2): fixed waits in tests/suites replaced by state waits"
+     "s": "done",
+     "t": "F5 test waits (v0.87.0): tests/suites wait on a visible state (waits.py ready / settle, BS.engineIdle); 177 of 178 fixed waits replaced, shrink-only ratchet"
     },
     {
      "s": "later",
@@ -1179,9 +1179,17 @@
    "calls": "~30",
    "basis": "estimate (budget counter)",
    "note": "Chain session on Opus: F4 part 2, replay viewer in the match history (Watch / Save / Open file), stylesheet shipped without comments, backup/v0.85.0."
+  },
+  {
+   "ver": "v0.87.0",
+   "date": "20 Oct 2026",
+   "tokens": 46000,
+   "calls": "~45",
+   "basis": "estimate (budget counter)",
+   "note": "Chain session on Opus: F5 state waits in the browser suites; phase F complete; paused for the owner's roadmap update (chain-stop.md)."
   }
  ],
  "updated": "20 Oct 2026",
- "updatedAt": "0.86.0",
- "next": "next: F5 test waits (Q2), the last item of phase F; then plan W card bundles in the K, K, U/I lane cycle; playable 6,838 of 8,709, complete 739"
+ "updatedAt": "0.87.0",
+ "next": "next: phase F done (v0.87.0); paused for the owner's roadmap update of 2026-10-21 (chain-stop.md); playable 6,838 of 8,709, complete 739"
 }
