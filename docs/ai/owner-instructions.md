@@ -108,3 +108,7 @@ Agreed plan: phase F (effect schema + validator, host port M2/M3, replays M4, te
 ## UI details, field lock, light animations (2026-10-21, chat)
 
 "Saya ingatkan lagi untuk UI, pikirkan juga perintilan seperti design pop up window, design tombol di bagian card detail, dan lain-lain, sesuaikan dengan design tema yang sudah kita buat di mock up. Lalu terakhir kemarin saya mencoba main, lebar field masih sering berubah tergantung posisi kartu, saat kartu vertikal field melebar, saat kartu horizontal field mengecil, saya ingin anda perbaiki itu agar terkunci. Pikirkan juga menambahkan animasi kecil yang tidak memberatkan seperti tanda panah saat menyerang, core pecah saat life berkurang, dan lain-lain agar UX lebih bagus." Applied: item X1 (field lock, first task of the next session) and item U "Details and animations" (mockup style for every popup and the card detail buttons; U5b light animations in the U/I queue) in `docs/ai/roadmap-open.md`.
+
+## Time efficiency (2026-10-21, chat)
+- The owner asked why v0.89.0 took so long (about 69 minutes from the v0.88.0 release to the v0.89.0 release for 9 cards) and whether it can be made faster. Suggestions given: mechanic sessions separate from card sessions, group cards by shared mechanic, rank by cards unlocked, write docs while CI runs, add a time line per release.
+- Owner: "oke, saya menerima saran anda asal tidak ada kompromi pada hasil". Recorded as item T in `docs/ai/roadmap-open.md` (rules live there).
