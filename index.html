@@ -170,8 +170,8 @@ html.layout-pc .inline-next-btn { width: 54px; height: 54px; }
 .field-row .tcg-card { height: 90%; width: auto; aspect-ratio: 63 / 88; }
 .tcg-card.exhausted { transform: rotate(90deg); opacity: 0.85; filter: grayscale(20%); }
 .tcg-card.exhausted.heavy { transform: rotate(180deg); opacity: 0.8; filter: grayscale(35%); } 
-.field-row .slot { flex: none; height: min(92%, calc(var(--card-w) * 1.38 + 6px)); aspect-ratio: 63 / 88; display: grid; place-items: center; scroll-snap-align: center; }
-.field-row .slot.ex { aspect-ratio: 1 / 1; }
+.field-row .slot { flex: none; height: min(92%, calc(var(--card-w) * 1.38 + 6px)); aspect-ratio: 1 / 1; display: grid; place-items: center; scroll-snap-align: center; }
+.field-row:has(> .slot) { gap: 0; }
 .field-row .slot .tcg-card { height: 100%; width: auto; margin: 0; }
 .tcg-card.has-soul-core { border: 2px solid #e6e6e6 !important; box-shadow: 0 0 8px #ff2a2a, inset 0 0 6px #c0c0c0, 0 0 12px rgba(255, 42, 42, 0.8) !important; animation: soulPulse 2s infinite alternate; }
 @keyframes soulPulse { 0% { box-shadow: 0 0 6px #ff2a2a, inset 0 0 4px #e6e6e6; } 100% { box-shadow: 0 0 12px #ff4d4d, inset 0 0 8px #ffffff; } }

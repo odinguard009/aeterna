@@ -4,6 +4,9 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 
 ## v0.88.0
 - Lane: K
+- **Field width lock (roadmap X1, owner 2026-10-21): turning a card no longer moves anything on the board.** Every field slot keeps one square footprint (its side is the card height) whether the card is refreshed, exhausted or heavy exhausted, and the card turns inside it; before, a refreshed slot was 63:88 and an exhausted one 1:1, so every exhaust or refresh shifted all cards of the row (phone, 6 Spirits: row scroll width 538 -> 732 px). Field rows with slots have no extra gap now (the square slot already leaves room beside an upright card). The board containers (fields, side columns, hand) were measured stable for 0-12 cards a side on both layouts.
+  - Test `tests/unit/x1field88.test.mjs`: on PC 1366x768 and phone 412x915 with 1, 3, 6 and 9 Spirits plus 3 Nexuses a side, the boxes of every board part and every slot stay equal within 1 px through all exhausted, half, heavy and refreshed states; each row has one square slot size that holds the card either way up. The player-view pass (real matches, CPU-vs-CPU sims, a stress board with Brave, an Ultimate and many cores) found no box that moves.
+  - Backup `backup/v0.87.0` holds the state before the change. Revert note: `git revert` of the X1 commit restores the old slot shapes (CSS only, `src/styles.css`).
 - Regression fix (run 39511643318 on v0.87.0, part 2, `v18_tests` check 12 + crash): the match-history checks ran on the match that the Space/Enter checks had been advancing, and on a slow runner the CPU could win it first, so `BS.win` was ignored and the CPU's entry stayed in memory; the next check then crashed on the cleared storage. The history checks now open a fresh match and check that it is still running; the storage read is null-safe. Test only, no game change.
 
 ## v0.87.0
