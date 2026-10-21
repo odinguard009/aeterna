@@ -22,6 +22,15 @@ const files = readdirSync('tests/unit')
 // restores the serial run (use it if a test turns flaky under load).
 const conc = Number(process.env.BS_TEST_CONC) || (FULL ? Math.max(1, availableParallelism() - 1) : Math.max(3, availableParallelism() - 1));
 const env = FULL ? { ...process.env } : { ...process.env, BS_QUICK: '1' };   // v0.60.2: timing tests skip themselves
-const r = spawnSync(process.execPath, ['--test', `--test-concurrency=${conc}`, ...files], { stdio: 'inherit', env });
-const t = spawnSync(process.execPath, ['--test', '--test-concurrency=1', ...[...TIMING].sort().map((f) => `tests/unit/${f}`)], { stdio: 'inherit', env });
+// v0.101.0: output is piped and re-printed, and every failing test is repeated at the very end (name + error lines), so the
+// tail of a CI log names the failures (the full log of ~9,000 lines is too long to read through the tools).
+const run = (args) => { const x = spawnSync(process.execPath, args, { env, encoding: 'utf8', maxBuffer: 512 * 1024 * 1024 }); process.stdout.write(x.stdout || ''); process.stderr.write(x.stderr || ''); return x; };
+const r = run(['--test', `--test-concurrency=${conc}`, ...files]);
+const t = run(['--test', '--test-concurrency=1', ...[...TIMING].sort().map((f) => `tests/unit/${f}`)]);
+const failed = [];
+for (const out of [r.stdout || '', t.stdout || '']) {
+  const L = out.split('\n');
+  L.forEach((l, i) => { if (/^\s*not ok \d+ - /.test(l) && !/# SKIP/.test(l)) failed.push([l.trim(), ...L.slice(i + 1, i + 16).filter((x) => /error|expected|actual|location|^\s+[+-] /.test(x)).map((x) => '    ' + x.trim().slice(0, 300))].join('\n')); });
+}
+if (failed.length) console.log(`\n[quick-tests] ${failed.length} failing test(s):\n` + failed.join('\n'));
 process.exit((r.status ?? 1) || (t.status ?? 1));
