@@ -4,6 +4,7 @@
 // House reading (owner rule "most stable option"): Legacy is applied automatically, with the fewest banished cards that give
 // the lowest cost (a Field symbol that can pay a reduction symbol saves an EX card). Never with a fixed cost (costAlt).
 // Card data: text head "(Legacy)" -> field legacy: true; the export's ex_symbols -> exSymbols (an EX symbol = one Trash card).
+// rules: SJP:inherit@de8f4527
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';

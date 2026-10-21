@@ -4,6 +4,7 @@
 // The level-up by the Soul Core is a rule, not an effect. Text head "[LV2] (True Release)" -> card field trueRelease: true.
 // Also (During Attack) heads (manual "Examples on Activation Timings": active as long as the Spirit is attacking):
 // "This Spirit gains +N BP" -> STATIC bp attackingOnly; Clash "Opposing Spirits must block if possible" -> MUST_BLOCK.
+// rules: STD:12-2-1-1@cc53242a, SJP:true-release@55609a47
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';

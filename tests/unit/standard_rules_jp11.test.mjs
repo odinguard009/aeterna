@@ -1,6 +1,7 @@
 // v0.98.0 Standard rules (JP Standard Rule Manual Ver.1.1, 2026-10-02; kb chunk SJP:setup): differences from the engine found in the
 // comparison with the EN Comprehensive Rules 1.0 (docs/rules/standard-jp-1.1.md). Setup step 7: the players decide on the one redraw
 // in turn order, the first player first, so the second player knows the first player's choice.
+// rules: SJP:setup@3415b763
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { getBrowser, closeBrowser, GAME_URL } from './lib/game.mjs';

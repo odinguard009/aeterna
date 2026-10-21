@@ -4,6 +4,13 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 
 Older releases (v0.80.0 and earlier): [CHANGELOG-archive.md](CHANGELOG-archive.md).
 
+## v0.100.0
+- Lane: U/I
+- **Q3 part 2 + Q4: tests cite rule chunks, one-card verify skill.**
+  - Tests cite rules knowledge base chunks as `<id>@<pin>` (pin = first 8 hex digits of the section fingerprint): `// rules:` comments in 15 Node test files and a `rules` array in 6 scenario boards (40 citations of 25 chunks). `python3 tools/rules_kb.py --list-tests` reports `UNKNOWN` ids and `STALE` pins (the section changed after a manual refresh); `--pin-tests` re-pins them once the tests were re-checked; `--query` prints the line to copy. Tests K08-K09 (`rules_kb.test.mjs`).
+  - New skill `bs-card-verify` (evidence -> trace -> test -> verdict for one "card X is wrong" report) with `tools/card_verify.py <id>`: the card as the game has it, the Fandom export row and every differing field, rule chunks for its keywords (with pins) and the tests that name it. Tests CV1-CV3.
+  - Docs: `docs/rules/README.md` (test citations, refresh step 4). Standard CR 12-2-1-3 (Legacy) stays a known gap; Legacy tests cite `SJP:inherit`.
+
 ## v0.99.0
 - Lane: U/I
 - Time: ~75 min (session start to release, incl. a ~20 min tool outage), Opus 5.5, tokens in the DONE mark on issue #1 (player-view pass: 140,837).

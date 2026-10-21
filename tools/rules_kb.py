@@ -13,8 +13,12 @@ the source text is fetched into a local cache outside the repo. Schema and refre
   python3 tools/rules_kb.py --check             recompute fingerprints from the cache; exit 1 on a changed/missing chunk,
                                                  0 with a note when no source is cached (--strict: exit 2 then)
   python3 tools/rules_kb.py --build             write recomputed fingerprints into the KB (after reviewing --check)
+  python3 tools/rules_kb.py --list-tests        test citations (`ETR:seal@1a2b3c4d`, Q3 part 2) in tests/: exit 1 when a
+                                                 cited id is unknown or its pinned fingerprint is STALE  [--json]
+  python3 tools/rules_kb.py --pin-tests         re-pin STALE test citations to the current fingerprints (after the
+                                                 cited test was re-checked against the changed section)
 Options: --kb FILE (default docs/rules/kb.json), --src-dir DIR (cache; default $AETERNA_RULES_CACHE or
-~/.cache/aeterna-rules), --engine DIR (default packages/engine/src). Python stdlib + pdftotext (poppler) for --fetch."""
+~/.cache/aeterna-rules), --engine DIR (default packages/engine/src), --tests DIR (default tests). Python stdlib + pdftotext (poppler) for --fetch."""
 import hashlib, json, os, re, shutil, subprocess, sys, unicodedata, urllib.request
 from html.parser import HTMLParser
 
@@ -22,6 +26,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ID_RE = re.compile(r'^(ETR|STD|SJP):[a-z0-9][a-z0-9.-]*$')
 SHA_RE = re.compile(r'^[0-9a-f]{64}$')
 FOOTER = re.compile(r'^\S+ \S+ TCG Manual$')            # page footer of the Eternal manual (dropped before hashing)
+TEST_CITE = re.compile(r'\b((?:ETR|STD|SJP):[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?)@([0-9a-f]{8})\b')   # test citation: id@pin
+TEST_EXT = ('.mjs', '.js', '.json', '.py')
+TEST_SKIP = {'fixtures', 'fuzz-cases', 'node_modules', '__pycache__'}
 RULE_LINE = re.compile(r'^(\d+(?:-\d+)+)\s|^(\d+)\s+[A-Z]')
 
 
@@ -247,6 +254,36 @@ def cited_report(kb, engine_dir):
     return rows
 
 
+def pin(c):
+    """The 8-hex fingerprint prefix a test pins next to a chunk id (`ETR:seal@1a2b3c4d`)."""
+    return c['sha256'][:8]
+
+
+def test_files(tests_dir):
+    for d, subs, files in os.walk(tests_dir):
+        subs[:] = sorted(x for x in subs if x not in TEST_SKIP)
+        for fn in sorted(files):
+            if fn.endswith(TEST_EXT):
+                yield os.path.join(d, fn)
+
+
+def test_citations(kb, tests_dir):
+    """[{id, pin, file, line, status}] for every `id@pin` in the tests: ok, UNKNOWN (no such chunk) or STALE (the
+    section's fingerprint changed since the test was written: re-check the test, then --pin-tests)."""
+    by_id = {c['id']: c for c in kb['chunks']}
+    rows = []
+    for fp in test_files(tests_dir):
+        rel = os.path.relpath(fp, ROOT) if fp.startswith(ROOT) else fp
+        with open(fp, encoding='utf-8') as f:
+            for n, ln in enumerate(f, 1):
+                for m in TEST_CITE.finditer(ln):
+                    c = by_id.get(m.group(1))
+                    st = 'UNKNOWN' if not c else ('ok' if pin(c) == m.group(2) else 'STALE')
+                    rows.append({'id': m.group(1), 'pin': m.group(2), 'file': rel, 'line': n, 'status': st,
+                                 'current': pin(c) if c else None})
+    return rows
+
+
 # ---------- commands ----------
 def cmd_query(kb, q):
     ql = q.lower()
@@ -257,6 +294,7 @@ def cmd_query(kb, q):
         pg = f"p. {c['page']}" + (f"-{c['page_end']}" if c.get('page_end') else '')
         print(f"{c['id']}  [{man['title']} {man['version']}, {pg}{', ' + c['cr'] if c.get('cr') else ''}] {c['title']}")
         print(f"    {c['paraphrase']}")
+        print(f"    cite in a test: {c['id']}@{pin(c)}")
     if not hits:
         print(f'[rules-kb] no chunk matches "{q}"')
     return 0 if hits else 1
@@ -275,6 +313,36 @@ def cmd_list_cited(kb, engine_dir, as_json):
         print(f"[rules-kb] {len(rows)} engine citations: {res} resolved, {sum(r['known_gap'] for r in rows)} known gaps, "
               f"{len(missing)} missing, {sum(1 for r in rows if r['note'])} via aliases")
     return 1 if missing else 0
+
+
+def cmd_list_tests(kb, tests_dir, as_json):
+    rows = test_citations(kb, tests_dir)
+    bad = [r for r in rows if r['status'] != 'ok']
+    if as_json:
+        print(json.dumps({'citations': rows}, indent=1))
+    else:
+        for r in bad:
+            why = 'no such chunk' if r['status'] == 'UNKNOWN' else f"section changed, now @{r['current']}: re-check the test, then --pin-tests"
+            print(f"{r['status']} {r['id']}@{r['pin']} {r['file']}:{r['line']} ({why})")
+        print(f"[rules-kb] {len(rows)} test citations of {len({r['id'] for r in rows})} chunks in "
+              f"{len({r['file'] for r in rows})} files: {len(bad)} unknown or stale")
+    return 1 if bad else 0
+
+
+def cmd_pin_tests(kb, tests_dir):
+    stale = [r for r in test_citations(kb, tests_dir) if r['status'] == 'STALE']
+    for fp in sorted({r['file'] for r in stale}):
+        full = fp if os.path.isabs(fp) else os.path.join(ROOT, fp)
+        with open(full, encoding='utf-8') as f:
+            text = f.read()
+        for r in stale:
+            if r['file'] == fp:
+                text = text.replace(f"{r['id']}@{r['pin']}", f"{r['id']}@{r['current']}")
+        with open(full, 'w', encoding='utf-8') as f:
+            f.write(text)
+        print(f'[rules-kb] re-pinned {fp}')
+    print(f'[rules-kb] {len(stale)} stale test citations re-pinned')
+    return 0
 
 
 def cmd_check(kb, base, strict):
@@ -352,6 +420,9 @@ def main():
         return cmd_query(kb, arg('--query', ''))
     if '--list-cited' in a:
         return cmd_list_cited(kb, arg('--engine', os.path.join(ROOT, 'packages/engine/src')), '--json' in a)
+    if '--list-tests' in a or '--pin-tests' in a:
+        td = arg('--tests', os.path.join(ROOT, 'tests'))
+        return cmd_pin_tests(kb, td) if '--pin-tests' in a else cmd_list_tests(kb, td, '--json' in a)
     if '--fetch' in a:
         return cmd_fetch(kb, src_dir())
     if '--import-html' in a:

@@ -1,6 +1,7 @@
 // v0.48.0 Seal (Eternal manual p.49): a Seal effect moves your Soul Core to your Life; while it is there you are Sealed and
 // [During Seal] effects work. The Soul Core in Life counts as a Life core; when Life is reduced the player chooses which core leaves
 // (engine default: the Soul Core stays while a normal core can go). Seal Manifest (BS76-X02): the Soul Core goes from the Field/Reserve to the Life.
+// rules: ETR:seal@f7999858
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { openGame, closeBrowser } from './lib/game.mjs';

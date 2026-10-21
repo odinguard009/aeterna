@@ -1,6 +1,7 @@
 // v0.55.2 Burst resolution order (JP 17.0 revision notice item 6, docs/manual-notes.md): a Burst declared for an event
 // resolves after every non-Burst triggered effect of that event; several Bursts resolve in declaration order, the
 // non-turn player's first. flushBursts() runs the queued events (When Destroyed, ally lost, opposing Hand increased) first.
+// rules: ETR:burst@0f4eac30
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';

@@ -1,6 +1,7 @@
 {
   "name": "burst-after-when-destroyed",
   "about": "v0.55.2: JP 17.0 revision notice item 6, a declared Burst resolves after all non-Burst triggered effects of the event. The player's The Witch Naja (BS01-047, 3000 BP) attacks; the opponent blocks with BS11-009 (1000 BP, (When Destroyed) draw a card), destroyed by BP comparison. Its (When Destroyed) draw resolves first, then the opponent's set Burst BS71-083 (after your Spirit is destroyed by the opponent).",
+  "rules": ["ETR:burst@0f4eac30", "STD:12-2-1-12@caad612c"],
   "turn": 3,
   "active": "player",
   "step": 5,

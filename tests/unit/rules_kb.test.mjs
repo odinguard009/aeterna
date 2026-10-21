@@ -1,8 +1,8 @@
-// Q3 part 1 (rules knowledge base): docs/rules/kb.json schema, engine citations resolve to chunks, and the
+// Q3 parts 1-2 (rules knowledge base): docs/rules/kb.json schema, engine and test citations resolve to chunks, and the
 // fingerprint checker flags a changed section. Offline: the checker runs on a small invented fixture, never the manuals.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { readFileSync, readdirSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -119,5 +119,41 @@ test('K07 web manual: --import-html drops ruby readings, anchor_n skips the page
     run('--import-html', 'SJP'); assert.equal(run('--check').status, 0);
     writeFileSync(join(html, 'page02.html'), page('かんじ').replace('説明', '解説'));
     run('--import-html', 'SJP'); const r = run('--check'); assert.equal(r.status, 1); assert.match(r.stdout, /CHANGED SJP:alpha/);
+  } finally { rmSync(d, { recursive: true, force: true }); }
+});
+
+// Q3 part 2: tests cite chunks as `<id>@<first 8 hex of the fingerprint>` (comments in tests/unit, a `rules` array in
+// tests/scenarios). A changed section makes the pin STALE until the test is re-checked and re-pinned with --pin-tests.
+test('K08 test citations resolve and their pins match the current fingerprints', { skip: !hasPy && 'python3 missing' }, () => {
+  const { citations } = JSON.parse(execFileSync('python3', ['tools/rules_kb.py', '--list-tests', '--json'], { encoding: 'utf8' }));
+  assert.ok(citations.length >= 30, `found ${citations.length} test citations`);
+  assert.deepEqual(citations.filter((r) => r.status !== 'ok').map((r) => `${r.status} ${r.id}@${r.pin} ${r.file}:${r.line}`), []);
+  assert.ok(citations.some((r) => r.file.startsWith('tests/scenarios/')) && citations.some((r) => r.file.startsWith('tests/unit/')));
+  for (const f of readdirSync('tests/scenarios')) {
+    const s = JSON.parse(readFileSync(join('tests/scenarios', f), 'utf8'));
+    if (s.rules) for (const c of s.rules) assert.match(c, /^(ETR|STD|SJP):[a-z0-9.-]+@[0-9a-f]{8}$/, `${f}: rules entry`);
+  }
+});
+
+test('K09 --list-tests flags STALE and UNKNOWN pins, --pin-tests re-pins only the stale ones', { skip: !hasPy && 'python3 missing' }, () => {
+  const d = mkdtempSync(join(tmpdir(), 'rules-kb-'));
+  try {
+    const kbp = join(d, 'kb.json'), td = join(d, 'tests');
+    mkdirSync(join(td, 'unit'), { recursive: true }); mkdirSync(join(td, 'fixtures'), { recursive: true });
+    const sha = 'ab12cd34' + 'e'.repeat(56), at = (id, p) => id + '@' + p;        // built at run time: this file cites nothing itself
+    writeFileSync(kbp, JSON.stringify({ schema: 1, manuals: {}, chunks: [{ id: 'ETR:alpha', manual: 'ETR', page: 1, title: 'A', paraphrase: 'x.', sha256: sha }], aliases: [], known_gaps: [], named: [] }));
+    const fresh = at('ETR:alpha', 'ab12cd34'), old = at('ETR:alpha', '00000000'), none = at('ETR:nope', 'ab12cd34');
+    writeFileSync(join(td, 'unit', 'a.test.mjs'), `// rules: ${fresh}\n// rules: ${old}\n`);
+    writeFileSync(join(td, 'unit', 'b.json'), JSON.stringify({ rules: [none] }));
+    writeFileSync(join(td, 'fixtures', 'skip.js'), `// ${old}\n`);                                  // fixtures are not scanned
+    const run = (...a) => py(['--kb', kbp, '--tests', td, ...a]);
+    let r = run('--list-tests');
+    assert.equal(r.status, 1);
+    assert.match(r.stdout, /STALE ETR:alpha[@]00000000 .*a\.test\.mjs:2/); assert.match(r.stdout, /UNKNOWN ETR:nope[@]ab12cd34/);
+    assert.match(r.stdout, /3 test citations .* 2 unknown or stale/);
+    assert.equal(run('--pin-tests').status, 0);
+    assert.equal(readFileSync(join(td, 'unit', 'a.test.mjs'), 'utf8'), `// rules: ${fresh}\n// rules: ${fresh}\n`);
+    assert.equal(readFileSync(join(td, 'fixtures', 'skip.js'), 'utf8'), `// ${old}\n`);
+    r = run('--list-tests'); assert.equal(r.status, 1); assert.doesNotMatch(r.stdout, /STALE/); assert.match(r.stdout, /UNKNOWN/);
   } finally { rmSync(d, { recursive: true, force: true }); }
 });

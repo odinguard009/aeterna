@@ -1,6 +1,7 @@
 // v0.33 missing mechanics (issue #4): (When Blocks), (When Destroyed), "When your X destroys" in battle,
 // effects from the Hand when your Spirit is blocked, and "When this card is revealed from the deck".
 // Eternal rule manual VER.17.0: p. 30 (When Blocking activates after the block is declared), p. 31 (When Destroyed). Quiet boards only.
+// rules: ETR:battle.block@d20adf64, ETR:battle.destruction@698b8d5e
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { openGame, closeBrowser } from './lib/game.mjs';

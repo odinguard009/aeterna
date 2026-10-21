@@ -162,6 +162,7 @@ test('S21 Ultimate card: gold frame ring and a cost circle split between its col
     return [el.classList.contains('ult'), s.boxShadow, c.backgroundImage]; });
   assert.equal(r[0], true); assert.match(r[1], /rgb\(212, 175, 55\)/); assert.match(r[2], /conic-gradient/); assert.match(r[2], /rgb\(212, 175, 55\)/);
 });
+// rules: ETR:ultimate.basics@ad2b8a6d
 test('S22 Ultimate card: its symbols are Ultimate symbols (gold), as the rule manual says (p. 39)', async () => {
   const r = await ev(() => { const b = [...document.querySelectorAll('[data-a="hand"]')].pop().querySelector('.sym-badge'); return [b.style.background, b.title]; });
   assert.match(r[0], /--color-ultimate/); assert.match(r[1], /ultimate/);

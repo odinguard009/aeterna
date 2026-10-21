@@ -1,5 +1,6 @@
 // v0.42.1 Grandwalker Nexus cores (Eternal manual pp. 22, 26, 42): they cannot pay costs, cannot be moved by the player (nor moved onto a Grandwalker Nexus)
 // and are not counted as cores on the Field. Effects still put cores on / take them off (addCore / direct changes in actions). Quiet boards.
+// rules: ETR:main.moving-cores@c47b46af, ETR:cost.paying@06d788b2, ETR:gw.nexus@8bea6dad
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { openGame, closeBrowser } from './lib/game.mjs';

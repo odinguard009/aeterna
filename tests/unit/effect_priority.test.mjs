@@ -3,6 +3,7 @@
 // ("cannot" > "must" > "may"; immunity order "cannot be prevented" > "unaffected" > "cannot activate");
 // printed keyword text (Fandom export): Armor = "unaffected by opposing <colour> Spirit/Nexus/Magic effects",
 // Heavy Armor = "... Spirit/Brave/Nexus/Magic effects", Ultra Armor = "... Spirit/Ultimate/Nexus/Magic effects".
+// rules: ETR:faq.effects-q3@a8b10c85
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -115,6 +116,7 @@ test('A58-09 Magic: an armored Spirit is no target of an opposing Purple Magic (
     await BS.castMagic(P, { inst: m, plan: null, ctx: 'main' }); return [usable, O.spirits.map(x => x.id)];`);
   assert.deepEqual(r, [false, ['T58-HA']]);
 });
+// rules: ETR:faq.effects-q4@dd096f71
 test('A58-10 priority "cannot be prevented" > "unaffected": ignoreImmune reaches the armored Spirit (FAQ Q3)', async () => {
   const r = await ev(`sp('T58-HA', O); const f = BS.mkInst('T58-PFORCE'); f.cores = 1; P.spirits.push(f); await BS.fireFx(P, 'SUMMONED', f, {}); return O.spirits.length;`);
   assert.equal(r, 0);

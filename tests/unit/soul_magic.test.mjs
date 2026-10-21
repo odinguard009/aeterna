@@ -2,6 +2,7 @@
 // "[Soul Magic: <colour>] If you control any <colour> symbol, you can use it with just the Soul Core."
 // The whole cost is paid with the one Soul Core, which must be where costs are normally paid from (Field or Reserve, not the Life, Q&A 31160);
 // the Soul Core may come from the only Spirit that shows the symbol (Q&A 31161). The Soul Core goes to the Trash like any paid core.
+// rules: STD:12-2-1-2@fb11fb06, SJP:soul-magic@6d441653
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';

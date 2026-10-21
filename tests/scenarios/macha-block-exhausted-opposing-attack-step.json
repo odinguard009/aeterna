@@ -1,6 +1,7 @@
 {
   "name": "macha-block-exhausted-opposing-attack-step",
   "about": "Opponent's Attack Step. The CrimsonGoddess Macha (BS21-030) at LV1 is exhausted: '(Opposing Attack Step) This Spirit can block while exhausted.' (step window, STATIC BLOCK_EXHAUSTED, v0.70.0), so it may still block the attacker.",
+  "rules": ["ETR:battle.block@d20adf64"],
   "turn": 4, "active": "opponent", "step": 5,
   "players": {
     "player": { "reserve": 3, "spirits": [ { "id": "BS21-030", "cores": 1, "exhausted": true, "as": "macha" } ] },

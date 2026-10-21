@@ -1,7 +1,7 @@
 # Rules knowledge base (Q3)
 
 `kb.json` lists official rule sections as **chunks** with stable ids, page numbers and SHA-256 fingerprints, so a citation
-in the engine (and, from Q3 part 2, in tests) points at one section, and a new manual version shows which sections changed.
+in the engine or in a test points at one section, and a new manual version shows which sections changed.
 Tool: `tools/rules_kb.py`. Test: `tests/unit/rules_kb.test.mjs` (offline).
 
 **Copyright:** the repo keeps ids, pages, headings, a one-sentence paraphrase in our own words and the fingerprint. It never keeps
@@ -42,6 +42,15 @@ PDF; it is not chunked yet (sources table: `docs/manual-notes.md`).
 `ETR p.70 Q1`, `STD 12-2-1-1` (`CR 12-2-1-1`, `Comprehensive Rules 4-8-1/4-8-2`), `ETR FAQ-effects Q5` (`FAQ Q5`), and the
 `named` keys. A page key resolves to every chunk whose page range covers it; a rule number to its rule or a parent rule.
 
+### Test citations (Q3 part 2)
+Tests cite a chunk as `<id>@<pin>`, where the pin is the first 8 hex digits of the chunk's `sha256` (`--query` prints the
+line to copy): a `// rules: ETR:seal@f7999858` comment above the test (or under a file's header comment) in `tests/unit`,
+and a `"rules": [...]` array right after `about` in a `tests/scenarios` board. `--list-tests` scans `tests/` (not
+`fixtures/` or `fuzz-cases/`) and reports `UNKNOWN` (no such chunk) and `STALE` (the section changed since the test was
+written). After a manual refresh and `--build`, `K08` in `tests/unit/rules_kb.test.mjs` fails on every stale pin: re-read
+the changed section, fix the test if the rule changed, then `--pin-tests` re-pins them. Cite a chunk only when the test
+checks that rule; a Standard rule with no chunk yet (`known_gaps`) is cited in prose until it is chunked.
+
 ## Commands
 ```
 python3 tools/rules_kb.py --query seal            # by id or text (id, title, paraphrase, rule number)
@@ -49,6 +58,8 @@ python3 tools/rules_kb.py --list-cited [--json]   # engine citations -> chunks; 
 python3 tools/rules_kb.py --fetch                 # download both PDFs into the cache, one text file per page (needs pdftotext)
 python3 tools/rules_kb.py --check [--strict]      # recompute fingerprints; exit 1 on CHANGED/MISSING; no cache: note, exit 0 (2 with --strict)
 python3 tools/rules_kb.py --build                 # write recomputed fingerprints into kb.json
+python3 tools/rules_kb.py --list-tests [--json]   # test citations (id@pin): exit 1 on UNKNOWN or STALE
+python3 tools/rules_kb.py --pin-tests             # re-pin STALE test citations (after re-checking those tests)
 ```
 
 ## Refresh (a new manual version)
@@ -56,7 +67,8 @@ python3 tools/rules_kb.py --build                 # write recomputed fingerprint
 2. `--fetch`, then `--check`. `--fetch` says whether the PDF hash differs from `pdf_sha256`.
 3. For each `CHANGED` chunk: read the section in the cache, update `page`/`page_end`/`anchor`/`until` and the paraphrase if the
    rule changed, and note the engine areas it touches. For `MISSING`: the heading moved or was renamed; fix `anchor`/`until`.
-4. `--build`, set `pdf_sha256` and `read`, run `--list-cited` and `node --test tests/unit/rules_kb.test.mjs`.
+4. `--build`, set `pdf_sha256` and `read`, run `--list-cited`, `--list-tests` (re-check each STALE test, then `--pin-tests`)
+   and `node --test tests/unit/rules_kb.test.mjs`.
 5. A new engine citation that `--list-cited` reports as missing: add a chunk, an alias or (no official text) a known gap.
 
 The extractor is `pdftotext` (poppler 24.02, `-enc UTF-8`, one page per call); another extractor may give other text and so other

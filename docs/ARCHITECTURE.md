@@ -106,7 +106,7 @@ Match fuzzer (v0.59.6): `node tools/fuzz.mjs [--runs N] [--seed S]` plays CPU-vs
 - `tools/session_end_check.mjs`: game file, embedded version, release test, fresh mind map, backup branch.
 - Mind map: `docs/roadmap-data.json` -> `node tools/gen_roadmap.mjs` -> `docs/roadmap.html`; `docs/progress.html` from the CLAUDE.md Roadmap, `docs/ai/roadmap-open.md` and `CHANGELOG.md`.
 - `node tools/pack_ai.mjs [--docs|--full]`: packs the project into one Markdown file for another AI chat. `node tools/screens.mjs`: the README screenshots in `docs/images/` (removed from the README until v1.0, owner 2026-10-17).
-- Skills in `.claude/skills/` (session runner, effect mechanic adder, Playwright tester, card data check, card image reader, doc convention).
+- Skills in `.claude/skills/` (session runner, effect mechanic adder, Playwright tester, card data check, card verify, card image reader, doc convention).
 
 ## 8. Brand layer
 Until v1.0 the public name is the neutral codename. `tools/brand_guard.mjs` (loop, hooks) blocks original names in public text; `python3 tools/brand.py --neutral|--restore|--check` switches whole strings using the mapping kept in the owner's private vault (not in this repo). Card names, card data, mechanic terms and source URLs are never changed.

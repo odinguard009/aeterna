@@ -29,6 +29,7 @@ const PRE = `BS.testSetup(); const G = BS.G, P = G.p.player, O = G.p.opponent; P
   const cost = id => BS.effCost(P, BS.CARDS[id]);`;
 const ev = body => g.page.evaluate(`(() => { ${PRE}\n${body} })()`);
 
+// rules: ETR:cost.paying@06d788b2
 test('R01 manual p. 22 example: 2 red reduction symbols, 3 red + 1 off-colour symbol on the Field -> cost 5 - 2 = 3', async () => {
   assert.equal(await ev(`sp('BS75-X02'); sp('BS75-X01'); sp('BS75-CX01'); sp('BS74-047'); return cost('R-PAY');`), 3);
 });

@@ -71,6 +71,7 @@ test('V09 a Brave summoned in Spirit form is a Spirit on the Field with its own 
   const r = await ev(`const b = hd('B-SW'); BS.summon(P, b, null); return [P.spirits.includes(b), b.cores, BS.bpOf(b), BS.lvIndex(b), BS.isSpiritForm(BS.CARDS['B-SW']), BS.isSpiritForm(BS.CARDS['B-SW0'])];`);
   assert.deepEqual(r, [true, 1, 3000, 0, true, false]);
 });
+// rules: ETR:brave.combine@0d0e7d3a
 test('V10 combining from the Field moves the Brave cores onto the Spirit (manual p. 35)', async () => {
   const r = await ev(`const d = sp('B-DRG'), b = sp('B-SW', P, 2); BS.combineBrave(P, b, d); return [P.spirits.length, d.cores, d.brave === b, b.cores, BS.bpOf(d)];`);
   assert.deepEqual(r, [1, 3, true, 0, 9000]);
@@ -92,6 +93,7 @@ test('V14 a Brave without level data cannot separate', async () => {
   const r = await ev(`const d = sp('B-DRG'), b = hd('B-SW0'); BS.braveSummon(P, b, d, null); return BS.canSeparate(P, d);`);
   assert.equal(r, false);
 });
+// rules: ETR:brave.leave@6a4612ac
 test('V15 the combined Spirit destroyed: Spirit and Brave both go to the Trash (manual p. 36)', async () => {
   const r = await ev(`const d = sp('B-DRG'), b = hd('B-SW0'); BS.braveSummon(P, b, d, null); BS.removeSpirit(P, d, 'destroyed', true);
     return [P.trash.includes(d), P.trash.includes(b), d.brave, P.spirits.length];`);
@@ -134,6 +136,7 @@ test('V24 CPU: combines a Brave in Spirit form on the Field', async () => {
   const r = await ev(`const d = sp('B-DRG'), b = sp('B-SW'); await BS.cpuBrave(P); return [d.brave === b, P.spirits.length];`);
   assert.deepEqual(r, [true, 1]);
 });
+// rules: ETR:over-count@4d2dd197
 test('V25 Over Count: BP+ only while the Count meets the condition, whatever the Lv (manual p. 61)', async () => {
   const r = await ev(`const w = sp('B-OC'); const a = BS.bpOf(w), a1 = BS.ocActive(w); P.count = 4; return [a, a1, BS.bpOf(w), BS.ocActive(w)];`);
   assert.deepEqual(r, [5000, false, 10000, true]);
@@ -156,6 +159,7 @@ test('V29 Yaj-Veda (card image: LV1 1 core, 2000 BP) summoned in Spirit form: co
     return [P.spirits.includes(y), BS.bpOf(y), P.count, O.nexus.length];`);
   assert.deepEqual(r, [true, 2000, 1, 0]);
 });
+// rules: ETR:brave.summon@380cd6ee
 test('V30 a Brave summon is not a Spirit summon: "when your Spirit is summoned" effects do not fire (manual p. 35)', async () => {
   const r = await ev(`const n = BS.mkInst('B-ALLY'); P.nexus.push(n); const b = hd('B-SW'); BS.summon(P, b, null); await BS.fireFx(P, 'SUMMONED', b);
     const c1 = P.count; const s = hd('B-OTH'); BS.summon(P, s, null); await BS.fireFx(P, 'SUMMONED', s); return [c1, P.count];`);

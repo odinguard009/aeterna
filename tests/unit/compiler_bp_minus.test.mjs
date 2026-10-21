@@ -1,6 +1,7 @@
 // v0.55.0 engine levers + compiler patterns: BP minus (no BP-0 destruction rule: Eternal manual FAQ p. 68),
 // (When Destroyed by the Opponent) (Standard CR 12-2-1-12-1), (When Battles) "when only the opposing Spirit is destroyed
 // by comparing BP" (Standard CR 8-1-6-2) and Rush {{Rush|Colour}} ("while you have a X symbol, the following effect activates next").
+// rules: ETR:faq.bp@134528fb, STD:12-2-1-12@caad612c, STD:8-1-6@d5ccb2aa
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -68,6 +69,7 @@ test('C55-05 parse: BATTLE_WIN trigger, BP_MINUS action, byOpp and hasSymbol con
     return [x.error || null, x.effects.map(e => e.trigger), bad.map(b => !!b)];`);
   assert.deepEqual(r, [null, ['BATTLE_WIN', 'DESTROYED'], [true, true, true]]);
 });
+// rules: ETR:faq.bp@134528fb
 test('C55-06 BP minus lowers BP until the end of the turn, never below 0, and does not destroy by itself (FAQ p. 68)', async () => {
   const r = await ev(`const t = sp('T55-ATK', O); const m = BS.mkInst('T55-MINUS'); m.cores = 1; P.spirits.push(m);
     await BS.fireFx(P, 'SUMMONED', m, {}); return [BS.bpOf(t), O.spirits.includes(t), t.bpMod];`);
@@ -117,6 +119,7 @@ test('C55-14 BP minus ends with the turn (bpMod is cleared in beginTurn)', async
     for (const k of ['player', 'opponent']) for (const f of BS.fieldList(G.p[k])) f.bpMod = 0; return [a, BS.bpOf(t)];`);
   assert.deepEqual(r, [0, 3000]);
 });
+// rules: ETR:faq.bp@134528fb
 test('C55-15 BP plus and minus add up in order on the current level BP (FAQ p. 68 Q1)', async () => {
   const r = await ev(`const t = sp('T55-ATK', O); t.bpMod = -5000; const a = BS.bpOf(t); t.bpMod += 3000; return [a, BS.bpOf(t)];`);
   assert.deepEqual(r, [0, 1000]);

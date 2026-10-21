@@ -2,6 +2,7 @@
 // Rules: Eternal rule manual VER.17.0 p. 56-57 (Tokens), p. 38-39 (Saga Brave) and the official "How to Use Token Cards" page
 // (battlespirits.com/product/special/tokencard/): not in the Deck, placed only by "send out" effects with Lv1 cores and no cost,
 // a Spirit while on the Field, back to the Token supply when it leaves (so "after destroyed" Bursts cannot activate). Quiet boards only.
+// rules: ETR:tokens@06480141, ETR:brave.saga@9bf96f20
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { openGame, closeBrowser } from './lib/game.mjs';
@@ -107,6 +108,7 @@ test('K16 Rig Avatar Dragon attacks: +1 core to Contractor Brahma and +1 symbol 
     const during = BS.attackSymbols(t); G.attacker = null; t.symBattle = 0; return [br.cores, during, BS.attackSymbols(t)];`);
   assert.deepEqual(r, [1, 1, 0]);
 });
+// rules: ETR:brave.combine@0d0e7d3a
 test('K17 attack symbols: a combined Brave adds its symbol (manual p. 34)', async () => {
   const r = await ev(`const d = sp('K-LOW'), b = sp('K-SW'); const s0 = BS.attackSymbols(d); BS.CARDS['K-LOW'].families = ['Creation']; BS.combineBrave(P, b, d); BS.CARDS['K-LOW'].families = ['Ancient Dragon']; return [s0, BS.attackSymbols(d)];`);
   assert.deepEqual(r, [1, 2]);
@@ -189,6 +191,7 @@ test('K31 Yaj-Veda fits a "Brahma" Grandwalker Nexus, not another Grandwalker Ne
   const r = await ev(`const br = nx('SD69-CX01'), mi = nx('BS74-CX03'), y = hd('BS76-060'); return [BS.braveFits(y, br), BS.braveFits(y, mi), BS.braveTargets(P, y).map(x => x.id)];`);
   assert.deepEqual(r, [true, false, ['SD69-CX01']]);
 });
+// rules: ETR:brave.saga@9bf96f20
 test('K32 combining onto the Nexus: the Brave cores go back to the Reserve first (manual p. 38)', async () => {
   const r = await ev(`const br = nx('SD69-CX01', P, 2), y = sp('BS76-060', P, 2); const r0 = P.reserve.n; BS.combineBrave(P, y, br);
     return [br.brave === y, br.cores, P.reserve.n - r0, P.spirits.length];`);
