@@ -4,7 +4,7 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 
 ## v0.92.0
 - Lane: U/I
-- Time: TIME_LINE
+- Time: about 65 min (session start to release), Opus, tokens in the DONE mark (chain session 2; player-view pass about 24 min of it).
 - **Light battle animations (roadmap U5b): an attack beam from the attacker to its blocker or the defender's Life, the Life cores shatter when Life is lost, and short cues for summon / deploy, destroy, BP changes, level-up and draws.**
   - Settings, Speed: new row "Animations: Full / Reduced / Off" (saved per device; Reset sets it back). Reduced keeps only short fades (no shards, no travel); the system "reduce motion" setting turns Full into Reduced. Off by default under test automation; CPU-vs-CPU sims (`?sim=1`) never draw them.
   - Every cue lives in the U5 overlay layer (`#ae-fx`), animates only transform and opacity for 0.3-0.65 s, removes itself and never takes a tap; the engine and the CPU never wait for it (code `apps/web/src/13g-anim.js`: the board is compared with the last one after each render).
