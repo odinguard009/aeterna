@@ -1,6 +1,6 @@
 # Roadmap archive (superseded or finished sections of `docs/ai/roadmap-open.md`)
 
-Moved here in v0.69.3 (P0 item B2 of `docs/ai/process-plan.md`) so the session start reads less. Not read at session start. Open leftovers below are long-tail: take one only when `docs/reports/pack-plan.md`, the unlock report or a card session needs it, then move the line back to `roadmap-open.md`. `tools/gen_roadmap.mjs` reads "Index by mechanic" and "Items" from here for `docs/progress.html`.
+Moved here in v0.69.3 (P0 item B2 of the process plan, archived below) so the session start reads less. Not read at session start. Open leftovers below are long-tail: take one only when `docs/reports/pack-plan.md`, the unlock report or a card session needs it, then move the line back to `roadmap-open.md`. `tools/gen_roadmap.mjs` reads "Index by mechanic" and "Items" from here for `docs/progress.html`.
 
 
 ## Phase F: foundation first (done v0.81.0-v0.87.0; moved in v0.87.0)
@@ -31,7 +31,7 @@ Moved here in v0.69.3 (P0 item B2 of `docs/ai/process-plan.md`) so the session s
 Goal: every card playable (152 of 8,041 on 2026-10-16). Order work by **cards unlocked per token across all Sagas**, using `docs/reports/unlock-report.md` (`python3 tools/unlock_report.py`). Its "ready" count is an upper bound: read every card before promoting it.
 
 2. **Done in v0.51.2 + v0.52.0:** staged cards load (7,875 / 7,889; 14 source-data gaps in `tools/check_staged.mjs`); compiler `tools/compile_effects.py` + checker/promoter `tools/promote_compiled.mjs`; 347 cards promoted (301 vanilla + 46 Saga 1). Open from it:
-   - Deck builder: **done** in v0.52.1 + v0.53.0. Leftovers (small Sonnet bundle): Saga select, symbol split in the deck panel, family chips (`docs/ai/deckbuilder-plan.md`).
+   - Deck builder: **done** in v0.52.1 + v0.53.0. Leftovers (small Sonnet bundle): Saga select, symbol split in the deck panel, family chips (plan archived below).
    - Nexus level thresholds (760 cards load at LV1 only) and Brave combine data (458 Braves) are missing from the export: find them (official list first, images last) before promoting those cards.
 3. **Batch sessions (Sonnet, filler): promotion per Saga** (v0.54.0 done: +62 cards, 561 / 8,041; a greedy cover over all missing patterns gives ~2 cards per new pattern, so plain patterns are filler now), 150-300 cards each: add compiler patterns for the biggest buckets of the review list (`python3 tools/compile_effects.py --saga N --review docs/reports/compile-review.md`; each pattern needs a C52-style test and an existing engine action), run `node tools/promote_compiled.mjs`, read every promoted card's text/JSON pair once; one Regression per session. These also fill the small sessions between heavy ones.
 3b. **Done in v0.55.0:** BP minus (one opposing Spirit; no BP-0 destruction rule, Eternal manual FAQ p. 68), (When Destroyed by the Opponent), (When Battles) battle win, Rush; +12 cards (573 / 8,041). Measured unlocks: each lever 2-5 cards, so tag counts in the unlock report are far above real compiles; measure with `tools/lever_report.py` + a scratch recompile before building. Left from it: "every / two opposing Spirits -N BP" (lasts for later summons, FAQ Q3) and "Then, if its BP is 0, destroy it"; (When Depleted/Destroyed by the Opponent); other (When Battles) texts; Rush on Magic and optional Rush effects; more Burst conditions ("depleted/destroyed" 19, "opposing Spirit/Ultimate attacks" 20).
@@ -81,3 +81,9 @@ Evidence: Fandom export BS68-BS77 (992 cards) vs `docs/rules-coverage.md` / `doc
 - Section of `docs/ai/next-session-prompt.md` that described them: session marks with a lane word (`LOCK ui`, `MANUAL card`, `UNLOCK ui`, `LANEDONE <lane> <branch>`), `session_start.sh --lane`, file ownership by `tools/lanes.mjs` (pre-commit hook), merge step `tools/lane_merge.sh`, notes in `docs/ai/lanes/<lane>.md`; flow in the deleted `docs/ai/lanes/README.md` (git history before v0.96.0).
 - **P1 done in v0.63.1** (opt-in lanes `ui` / `card`; flow, file ownership, merge step and limits: `docs/ai/lanes/README.md`).
 - **Limit Claude cannot lift:** sessions never create or change schedules, so auto mode stays one session at a time until the owner adds a second scheduled task for the second lane. Manual lanes (two chats, "Lanjutkan roadmap ui" / "Lanjutkan roadmap card") work now.
+
+
+## Archived plans (moved in v0.96.0; full text in git history before that commit)
+- **Repo cleanup plan (2026-10-17):** goal was one home per kind of file, one architecture document and short agent instructions, after comparing with the Aegis repo. C1/C2 (architecture doc, doc index, doc-convention skill, docs tidy) shipped in v0.59.2-v0.59.3; C3/C4 were replaced by the monorepo phases M1+ (`docs/ai/monorepo-plan.md`); the later cleanup landed in v0.96.0.
+- **Process plan (2026-10-19):** which session steps run less often or were dropped. Part A (loop = smoke + changed tests, full set only in the pre-push hook) applied 2026-10-19; Part B (B1-B10) done in v0.69.3. B9 kept every legacy suite because no exact Node twin exists.
+- **Deck builder plan (2026-10-16):** list performance in v0.52.1, three-column redesign in v0.53.0 (budgets: open <= 300 ms PC, <= 1.2 s phone-like; the tests keep them). Leftovers (Saga select, symbol split in the deck panel, family chips) are in U8a.

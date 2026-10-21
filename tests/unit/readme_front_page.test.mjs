@@ -17,7 +17,7 @@ test('C597-01 README is a short front page (under 120 lines) with no release not
   assert.doesNotMatch(r, /^## v\d/m, 'release notes belong in CHANGELOG.md');
 });
 test('C597-02 every local link and image in README and CHANGELOG exists', () => {
-  for (const f of ['README.md', 'CHANGELOG.md']) {
+  for (const f of ['README.md', 'CHANGELOG.md', 'CHANGELOG-archive.md']) {
     for (const u of localLinks(rd(f))) assert.ok(existsSync(join(ROOT, u)), `${f}: ${u} does not exist`);
   }
 });
@@ -45,7 +45,7 @@ test('C597-07 make_releases.sh dry run plans the HEAD commit version with its CH
   // the version of the committed HEAD (before the version commit exists, that is the previous release)
   const VERSION = JSON.parse(execFileSync('git', ['show', 'HEAD:package.json'], { cwd: ROOT, encoding: 'utf8' })).version;
   const out = execFileSync('bash', ['tools/make_releases.sh', 'HEAD', VERSION, '0.50.0', 'x;y'], { cwd: ROOT, env: { ...process.env, DRY_RUN: '1' }, encoding: 'utf8' });
-  const title = rd('CHANGELOG.md').split(`## v${VERSION}`)[1].split('\n').find(l => l.startsWith('- ') && !l.startsWith('- Lane:')).replace(/^- /, '').replace(/\*\*|`/g, '').replace(/[(:].*$/, '').replace(/[ .,;]+$/, '').slice(0, 70);
+  const title = (rd('CHANGELOG.md') + rd('CHANGELOG-archive.md')).split(`## v${VERSION}`)[1].split('\n').find(l => l.startsWith('- ') && !l.startsWith('- Lane:')).replace(/^- /, '').replace(/\*\*|`/g, '').replace(/[(:].*$/, '').replace(/[ .,;]+$/, '').slice(0, 70);
   assert.match(out, new RegExp(`would release v${VERSION.replace(/\./g, '\\.')} at [0-9a-f]{7}: v${VERSION.replace(/\./g, '\\.')} - `));
   assert.ok(out.includes(`- ${title} (`), 'title from the first CHANGELOG bullet after the Lane bullet: ' + title);
   assert.doesNotMatch(out, /v0\.50\.0/, 'versions before v0.57.1 stay in the archive');

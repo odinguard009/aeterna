@@ -1,5 +1,5 @@
 // v0.52.1 deck builder list performance, with every staged card imported (8,042 cards).
-// Budgets from docs/ai/deckbuilder-plan.md: open <= 300 ms PC and <= 1.2 s phone-like (CPU x4); a search keystroke
+// Budgets from docs/ai/roadmap-archive.md (Archived plans): open <= 300 ms PC and <= 1.2 s phone-like (CPU x4); a search keystroke
 // <= 100 ms PC; the grid is windowed (only the rows near the visible area are in the DOM).
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';

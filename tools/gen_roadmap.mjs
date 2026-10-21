@@ -110,7 +110,7 @@ export function roadmapPage(commits = []) {
   const rm = topBullets(section(rd('CLAUDE.md'), /^## Roadmap/));
   const idx = topBullets(section(rd('docs/ai/roadmap-archive.md'), /^## Index/));
   const items = topBullets(section(rd('docs/ai/roadmap-archive.md'), /^## Items/));
-  const rels = releases(rd('CHANGELOG.md'));
+  const rels = releases(rd('CHANGELOG.md') + '\n' + rd('CHANGELOG-archive.md'));
 
   const status = rm.map(b => {
     const cls = /^\*\*Done/.test(b) ? 'done' : /^\*\*Next/.test(b) ? 'next' : 'note';

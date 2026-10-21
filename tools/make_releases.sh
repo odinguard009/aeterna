@@ -14,7 +14,7 @@ FLOOR="0.57.1"
 ver_ge() { [ "$(printf '%s\n%s\n' "$2" "$1" | sort -V | head -1)" = "$2" ]; }   # $1 >= $2
 
 if [ "$#" -gt 0 ]; then versions=("$@"); else
-  mapfile -t versions < <(grep -oE '^## v[0-9][0-9.]*\s*$' CHANGELOG.md | sed -E 's/^## v//; s/\s+$//')
+  mapfile -t versions < <(grep -hoE '^## v[0-9][0-9.]*\s*$' CHANGELOG.md CHANGELOG-archive.md | sed -E 's/^## v//; s/\s+$//')
 fi
 # oldest first, so the newest version is created last and stays "Latest" on the Releases page
 mapfile -t versions < <(printf '%s\n' "${versions[@]#v}" | sort -V)
@@ -36,7 +36,7 @@ for v in "${versions[@]}"; do
   if [ -z "$c" ]; then echo "::warning::v$v: no main commit carries this version; skipped"; continue; fi
   if [ -z "${DRY_RUN:-}" ] && gh release view "v$v" >/dev/null 2>&1; then skipped=$((skipped + 1)); continue; fi
   notes="$out/v$v.md"
-  awk -v h="## v$v" '$0 == h {f = 1; next} f && /^## / {exit} f' CHANGELOG.md | sed -e '/./,$!d' > "$out/body.md"
+  awk -v h="## v$v" '$0 == h {f = 1; next} f && /^## / {exit} f' CHANGELOG.md CHANGELOG-archive.md | sed -e '/./,$!d' > "$out/body.md"
   title=$(grep -v '^- Lane:' "$out/body.md" | grep -m1 '^- ' | sed -E 's/^- //; s/\*\*//g; s/`//g; s/[(:].*$//; s/[ .,;]+$//' | cut -c1-70)
   # v0.96.0: data/cards/all-cards.json left git; cardsAtRev reads the old file at older commits and joins the Saga files at newer ones
   n=$(node -e "import('./tools/all_cards.mjs').then(m => console.log(m.cardsAtRev(process.argv[1]).length.toLocaleString('en-US')))" "$c")

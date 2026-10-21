@@ -1,4 +1,4 @@
-# Aeterna — Rules Coverage Audit (as of 2026-10-14, engine v0.29.0)
+# Aeterna — Rules Coverage Audit (rule sources read 2026-10-14; status rows updated per release up to engine v0.95.0; the "vX additions" sections below are a history log)
 
 v0.13 adds: Void zone (cores sent to the Void by effects; replaces the earlier "no Void zone" decision because Contract cards need it), Soul State Area, 10 new actions (SOUL_ENTER, SOUL_RETURN, SOUL_SUMMON, VOID_TO_RESERVE, VOID_TO_CARD, CORE_TO_NEXUS, BOUNCE_OPP, DISCARD_OPP_BURST, NEXUS_CORES_TO_VOID, DECK_TO_TRASH_CORES), triggers ALLY_SUMMONED and ACTIVATE, conditions soulGe / oppHandGe / voidGe / controlName / prev.
 

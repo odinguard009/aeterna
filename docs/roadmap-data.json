@@ -1062,7 +1062,7 @@
    "tokens": 280000,
    "calls": "~55",
    "basis": "measured",
-   "note": "Manual HEMAT ON session on Opus: P0 process cleanup B1-B10 (docs/ai/process-plan.md). No game change."
+   "note": "Manual HEMAT ON session on Opus: P0 process cleanup B1-B10 (process plan, archived). No game change."
   },
   {
    "ver": "v0.70.0",

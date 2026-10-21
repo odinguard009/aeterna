@@ -10,7 +10,7 @@ import { readFileSync } from 'node:fs';
 const EVERY = 3;
 const ver = JSON.parse(readFileSync('package.json', 'utf8')).version;
 const at = JSON.parse(readFileSync('docs/roadmap-data.json', 'utf8')).root.updatedAt;
-const heads = [...readFileSync('CHANGELOG.md', 'utf8').matchAll(/^## v(\d+\.\d+\.\d+)\s*$/gm)].map(m => m[1]);
+const heads = [...(readFileSync('CHANGELOG.md', 'utf8') + readFileSync('CHANGELOG-archive.md', 'utf8')).matchAll(/^## v(\d+\.\d+\.\d+)\s*$/gm)].map(m => m[1]);
 const i = at ? heads.indexOf(at) : -1;
 if (at === ver) console.log(`MINDMAP updated this release (updatedAt ${at}): send docs/roadmap.html`);
 else if (i < 0) console.log(`MINDMAP due (updatedAt ${at || 'missing'} not found in CHANGELOG.md): update roadmap-data.json, set root.updatedAt = ${ver}, send docs/roadmap.html`);

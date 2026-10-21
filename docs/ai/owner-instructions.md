@@ -49,7 +49,7 @@ Implementation and its limits (scheduled runs cannot see chats; the real delay i
 
 "Saya ingin juga anda memikirkan UI dan UX untuk deck builder. Saya ingin UI yang user friendly, fungsional, namun tetap stylish waktu digunakan untuk versi PC atau HP. Rencanakan pekerjaan ini di roadmap dan sesi berikutnya."
 
-Plan: `docs/ai/deckbuilder-plan.md` (next session, before the batch promotion).
+Plan: archived in `docs/ai/roadmap-archive.md` (next session, before the batch promotion).
 
 ## Details (2026-10-16, chat)
 
@@ -67,7 +67,7 @@ Applied: Opus for every manual and auto session and for subagents; the gate trea
 
 ## Repo cleanup (2026-10-17, chat)
 
-"oke, rencanakan untuk merapikan repo aeterna." Plan: `docs/ai/repo-cleanup-plan.md`.
+"oke, rencanakan untuk merapikan repo aeterna." Plan: archived in `docs/ai/roadmap-archive.md`.
 
 ## Roadmap order and Thai UI (2026-10-17, chat)
 

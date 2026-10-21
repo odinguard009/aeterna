@@ -1,4 +1,4 @@
-// v0.53.0 deck builder redesign (docs/ai/deckbuilder-plan.md): PC three columns (filter rail, grid, deck panel),
+// v0.53.0 deck builder redesign (docs/ai/roadmap-archive.md (Archived plans)): PC three columns (filter rail, grid, deck panel),
 // phone (< 900 px) filter sheet + deck bottom bar / sheet + menu. Tap = +1, (i) or right-click = detail, undo, import/export.
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';

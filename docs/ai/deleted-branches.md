@@ -15,3 +15,12 @@ The rows from before 2026-10-17 belonged to the owner's private vault repo (its 
 | backup/v0.63.0 | 44abfea6b09ace960cb1848704ced4560c5174ca |
 | backup/v0.64.0 | c27d6b8911b5a8f698f6c60a6c39b100e935d63f |
 | backup/v0.66.0 | 17f3e9d15500658af802272e04dc81a948c029fb |
+
+## Still to delete (2026-10-21, v0.96.0)
+- Every `backup/v*` branch except the newest 3 (23 existed on 2026-10-21; list them with `gh api repos/odinguard009/aeterna/branches --paginate -q '.[].name' | grep '^backup/' | sort -V`).
+- `wip/v0.80.0` (merged in v0.80.0).
+- `tooling/dev-tools` (optional tool guide, unused).
+
+Keep `experiment-omniroute` (PC labels without abbreviations) until the deferred layout work.
+
+Also on claude.ai: delete the three old account skills `bs-card-image-reader`, `bs-effect-mechanic-adder`, `bs-playwright-tester` (named "BS Eternal"); the copies in `.claude/skills` are current.
