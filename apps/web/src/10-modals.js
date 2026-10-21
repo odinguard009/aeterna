@@ -126,7 +126,7 @@ async function webPayment(card, c, L) {
     },
     onPress: v => {
     if (typeof v !== 'string' || v === 'ok') return false;
-    const [op, key] = v.split(':'); const s = src.find(x => x.key === key);
+    const i = v.indexOf(':'), op = v.slice(0, i), key = v.slice(i + 1), s = src.find(x => x.key === key); if (!s) return true;   // keys like 'fsoul:12' hold a colon (v0.91.0 fix)
     if (op === 'inc' && sel[key] < s.max && total() < c) sel[key]++;
     if (op === 'dec' && sel[key] > 0) sel[key]--;
     Object.assign(MODAL.cfg, build());

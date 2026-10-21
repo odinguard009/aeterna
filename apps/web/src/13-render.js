@@ -236,9 +236,9 @@ function aeStrip(text) {
 function fxCues() {
   if (SIM || !G) return;
   const fresh = CUE.g !== G, turn = G.turnNo, step = G.step, act = G.active;
-  const prev = CUE; CUE = { g: G, turn, step, act, ban: fresh ? turn <= 1 : prev.ban };
+  const prev = CUE; CUE = { g: G, turn, step, act, ban: fresh ? turn === 0 : prev.ban };
   if (G.over) return;
-  if (CUE.ban) { if (!MODAL) { CUE.ban = false; aeRibbon('GATE OPEN, RELEASE!', { banner: true, eyebrow: 'MATCH START' }); } return; }   // after coin toss and starting hand
+  if (CUE.ban) { if (turn >= 1 && !MODAL) { CUE.ban = false; aeRibbon('GATE OPEN, RELEASE!', { banner: true, eyebrow: 'MATCH START' }); } return; }   // turn 1 starts: coin toss and starting hand are done
   if (fresh) return;
   if (turn !== prev.turn || act !== prev.act) return aeRibbon(`${act === 'player' ? 'PLAYER' : 'OPPONENT'} TURN ${turn}`, { cpu: act !== 'player' });
   if (step !== prev.step && /^(MAIN|ATTACK)/.test(G.steps[step] || '')) aeRibbon(`${G.steps[step]} STEP`, { cpu: act !== 'player' });

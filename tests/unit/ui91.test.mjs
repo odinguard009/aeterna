@@ -62,7 +62,11 @@ for (const screen of ['pc', 'phone']) {
     const { page, errors } = await open(screen);
     await page.evaluate(() => { BS.testSetup(); return 1; });
     assert.deepEqual(await ribbons(page), [], 'a board first drawn after turn 1 shows nothing');
-    await page.evaluate(() => { BS.G.turnNo = 1; BS.fxCueReset(); BS.render(); return 1; });
+    await page.evaluate(() => { BS.G.turnNo = 0; BS.fxCueReset(); BS.render(); return 1; });
+    assert.deepEqual(await ribbons(page), [], 'no banner during the coin toss and starting hand (turn 0)');
+    await page.evaluate(() => { BS.G.turnNo = 1; BS.modal({ title: '🎴 Starting Hand', html: 'x', buttons: [{ label: 'Keep hand', cls: 'cancel', value: 0 }] }); BS.render(); return 1; });
+    assert.deepEqual(await ribbons(page), [], 'never under a dialog');
+    await page.evaluate(() => { BS.closeModal(null); BS.render(); return 1; });
     const ban = await ribbons(page);
     assert.equal(ban.length, 1); assert.match(ban[0], /GATE OPEN, RELEASE!/);
     await page.evaluate(() => { BS.G.turnNo = 2; BS.G.active = 'opponent'; BS.G.step = 0; BS.render(); return 1; });
@@ -95,7 +99,25 @@ test('U91-5 sims (?sim=1) never draw ribbons; reduced motion stops the ribbon an
   await page.waitForFunction(() => BS.G && BS.G.turnNo >= 3, null, { timeout: 30000 });
   assert.equal(await page.evaluate(() => document.querySelectorAll('#ae-fx .ae-rib').length), 0);
   const m = await open('pc', '', { reducedMotion: 'reduce' });
-  await m.page.evaluate(() => { BS.testSetup(); BS.G.turnNo = 1; BS.fxCueReset(); BS.render(); return 1; });
+  await m.page.evaluate(() => { BS.testSetup(); BS.G.turnNo = 0; BS.fxCueReset(); BS.render(); BS.G.turnNo = 1; BS.render(); return 1; });
   assert.equal(await m.page.evaluate(() => getComputedStyle(document.querySelector('#ae-fx .ae-rib')).animationName), 'none');
   assert.deepEqual(errors.concat(m.errors), []);
+});
+
+test('U91-6 payment: + on the "Soul Core on <Spirit>" row works (its key holds a colon; it threw "reading max" before v0.91.0)', async () => {
+  const { page, errors } = await open('pc');
+  const r = await page.evaluate(async () => {
+    const G = BS.testSetup(), p = G.p.player, id = Object.keys(BS.CARDS).find(i => BS.CARDS[i].type === 'Spirit' && BS.isSpiritForm(BS.CARDS[i]));
+    const f = BS.mkInst(id); f.cores = 1; f.soul = true; p.spirits.push(f); p.reserve.n = 0; p.reserve.soul = false; BS.render();
+    let plan; const done = webPayment(BS.CARDS[id], 1, 0).then(v => { plan = v; });
+    const rows = [...document.querySelectorAll('#modal-card-desc .pay-row')].map(e => e.textContent);
+    const k = rows.findIndex(t => /Soul Core on/.test(t));
+    document.querySelector(`#modal-card-desc .pay-btn[data-mi="${2 * k + 1}"]`).click();
+    const sel = document.querySelectorAll('#modal-card-desc .pay-row b')[k].textContent;
+    document.querySelector('#modal-actions .modal-btn.primary').click(); await done;
+    return { k, sel, plan };
+  });
+  assert.ok(r.k >= 0); assert.equal(r.sel, '1');
+  assert.ok(r.plan && r.plan.fsoul != null, JSON.stringify(r.plan));
+  assert.deepEqual(errors, []);
 });
