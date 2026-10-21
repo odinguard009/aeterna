@@ -30,7 +30,7 @@ test('C52-03 Nexus LV2+ text stays staged without level data; Magic with two tim
   assert.deepEqual(m.magic, { timing: ['MAIN', 'FLASH'], effect: null, value: 0, by: { MAIN: { effect: 'DRAW', value: 2 }, FLASH: { effect: 'BP_PLUS', value: 2000 } } });
 });
 test('C52-04 promoted cards are marked compiled, and none of them is also staged', () => {
-  const pack = JSON.parse(readFileSync(join(ROOT, 'data/cards/all-cards.json'), 'utf8'));
+  const pack = JSON.parse(readFileSync(join(ROOT, 'build/all-cards.json'), 'utf8'));
   const comp = pack.filter(c => /compile_effects/.test(c.note || '') && !/Partial card \(v0\.79\.0/.test(c.note || ''));      // v0.79.0: A1 partial cards are checked in partial79
   assert.ok(comp.length >= 340, String(comp.length));
   assert.ok(comp.every(c => c.fxComplete === true && !(c.residual || []).length));

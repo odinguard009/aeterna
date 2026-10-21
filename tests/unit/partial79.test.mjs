@@ -11,7 +11,7 @@ import { getBrowser, closeBrowser, GAME_URL, ROOT } from './lib/game.mjs';
 
 after(closeBrowser);
 const py = code => execFileSync('python3', ['-c', code], { cwd: ROOT, encoding: 'utf8' }).trim();
-const DATA = JSON.parse(readFileSync(join(ROOT, 'data/cards/all-cards.json'), 'utf8'));
+const DATA = JSON.parse(readFileSync(join(ROOT, 'build/all-cards.json'), 'utf8'));
 
 async function open(viewport) {
   const ctx = await (await getBrowser()).newContext({ viewport }), page = await ctx.newPage(), errors = [];

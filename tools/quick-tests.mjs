@@ -3,6 +3,9 @@
 import { readdirSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { availableParallelism } from 'node:os';
+import { ensureAllCards } from './all_cards.mjs';
+
+ensureAllCards();                                         // build/all-cards.json (generated, not in git) must exist before the test files read it
 
 const FULL = process.argv.includes('--full');           // v0.95.0: npm test (CI) = every file, no BS_QUICK, timing files alone too
 const SLOW = new Set(FULL ? [] : ['props.test.mjs', 'fuzz596.test.mjs']);      // v0.59.6: the fuzz replays run in CI (npm test)

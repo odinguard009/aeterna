@@ -10,6 +10,7 @@ Inside a tier the goal is decks, not totals: every colour should reach DECK_TARG
 It also lists effect texts shared by several staged cards (one implementation unlocks the group) and the
 name suffixes (XV, LT, RV, X) that mark NEW cards, not reprints: they have their own name and text."""
 import collections, glob, json, os, re, sys
+import allcards      # build/all-cards.json is generated (not in git): allcards.load() writes it when missing or stale
 
 root = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 J = lambda p: json.load(open(os.path.join(root, p), encoding='utf8'))
@@ -24,7 +25,7 @@ STANDARD_SETS = [
     ('26RSD08', '2026-09-26', 16, 'starter'), ('26RSD09-10', '2026-10-10', 33, 'anime starters'),
     ('26RBS03', '2026-10-17', 117, 'The Ruler of Zekkai')]
 
-playable = {c['id'] for c in J('data/cards/all-cards.json')}
+playable = {c['id'] for c in allcards.load()}
 cards = {}
 for f in sorted(glob.glob(os.path.join(root, 'data/import/saga-[0-9][0-9].json'))) + \
         sorted(glob.glob(os.path.join(root, 'data/cards/saga-[0-9][0-9].json'))):

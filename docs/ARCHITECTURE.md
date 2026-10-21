@@ -11,7 +11,7 @@ src/styles.css            all CSS
 packages/engine/src/NN-*.js  engine parts: config, card pack codec, effects, state, rules, turn, battle, CPU, zones, match
 apps/web/src/NN-*.js         UI parts: error catcher, modals, human input, render, deck builder, images, events
                           both folders are joined in file-name order as ONE classic script (tools/src_parts.mjs)
-data/cards/all-cards.json built-in card pack, compressed and embedded between /*PACK_START*/ and /*PACK_END*/
+build/all-cards.json built-in card pack, compressed and embedded between /*PACK_START*/ and /*PACK_END*/
         |
         v  node tools/build.mjs   (--check: CI guard that index.html is the build of src/)
 index.html                + build/game.js (joined script for ESLint)
@@ -72,7 +72,7 @@ data/import/saga-NN.json                   staging: every card (loads in the gam
 data/cards/saga-NN.json                    playable cards (the only card JSON edited by hand)
         |  python3 tools/build_cards.py
         v
-data/cards/all-cards.json                  generated copy of the Saga files
+build/all-cards.json                       generated copy of the Saga files (not in git; tools/all_cards.mjs / tools/allcards.py write it when missing or stale)
         |  python3 tools/tag_effects.py -> data/glossary/card-tags.json, docs/reports/effect-coverage.md
         |  node tools/build.mjs
         v
@@ -81,7 +81,7 @@ pack embedded in index.html                (codec: packages/engine/src/01a-card-
 Staging keeps every card; playable is the promoted subset, so the stages are not duplicates. Card data order of trust: the Fandom export in the repo, then the official list, then other sites, images last (`docs/ai/cards-and-rules.md`). Prebuilt decks: `data/decks/*.txt`. Card images are never shipped: players import their own (Library; matched by the `image` field, card ID or name, kept in IndexedDB). Saga placement (e.g. BS75 in Saga 16): `docs/saga-map.md`. New card: run `python3 tools/tag_effects.py`, wire the missing glossary pieces once in the engine, then express the card as data. Rule obligations (page, status, proving test): `data/kb/rule-obligations.json`.
 
 ## 5. Effect compiler
-`python3 tools/compile_effects.py [--saga N] --review docs/reports/compile-review.md --out build/compiled.json` turns staged card text into effect entries by pattern; cards with any unmatched unit are listed in the review file with the reason. Compiler v2 (v0.61.0): `python3 tools/compile_v2.py [--saga N] --out build/compiled.json --report docs/reports/compile-v2-report.md` runs v1 first sentence by sentence (identical output, test C61-01), then a clause grammar (one selector noun phrase shared by destroy / exhaust / return / remove / BP minus / send cores, "Target X. Destroy it." pairs, `[LV1-2-3]` heads); its report lists the engine levers (filters the grammar reads but no action supports) and the cards whose only blocker is each reason; promote its output with `--v2`. `node tools/promote_compiled.mjs build/compiled.json` checks and promotes the compiled cards into `data/cards`. Progress: `python3 tools/unlock_report.py` -> `docs/reports/unlock-report.md` (`playable X / 8,041`); real unlocks of one lever: `python3 tools/lever_report.py` + a scratch recompile (tag counts are upper bounds).
+`python3 tools/compile_effects.py [--saga N] --review build/compile-review.md --out build/compiled.json` turns staged card text into effect entries by pattern; cards with any unmatched unit are listed in the review file with the reason. Compiler v2 (v0.61.0): `python3 tools/compile_v2.py [--saga N] --out build/compiled.json --report docs/reports/compile-v2-report.md` runs v1 first sentence by sentence (identical output, test C61-01), then a clause grammar (one selector noun phrase shared by destroy / exhaust / return / remove / BP minus / send cores, "Target X. Destroy it." pairs, `[LV1-2-3]` heads); its report lists the engine levers (filters the grammar reads but no action supports) and the cards whose only blocker is each reason; promote its output with `--v2`. `node tools/promote_compiled.mjs build/compiled.json` checks and promotes the compiled cards into `data/cards`. Progress: `python3 tools/unlock_report.py` -> `docs/reports/unlock-report.md` (`playable X / 8,041`); real unlocks of one lever: `python3 tools/lever_report.py` + a scratch recompile (tag counts are upper bounds).
 
 What to build next (v0.69.1): `python3 tools/pack_plan.py` orders the compile_v2 blockers greedily by cards completed (`docs/reports/pack-plan.md`, upper bounds); `python3 tools/wiki_rules.py` caches the Fandom keyword and Comprehensive Rules pages in `build/` and maps blockers to their rule sections (`data/glossary/wiki-rules-map.json`, `docs/reports/wiki-rules-index.md`; skill `bs-wiki-rules`).
 

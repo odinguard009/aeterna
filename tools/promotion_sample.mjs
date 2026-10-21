@@ -7,13 +7,13 @@
 // A wrong card found in the sample = read the whole batch.
 //   node tools/promotion_sample.mjs [--base origin/main] [--seed N] [--json]
 import { readFileSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
+import { ensureAllCards, cardsAtRev } from './all_cards.mjs';
 import { caseFor } from '../tests/unit/lib/fx-props.mjs';
 
 const args = process.argv.slice(2), opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
 const base = opt('--base', 'origin/main'), seed = Number(opt('--seed', Date.now() % 100000));
-const now = JSON.parse(readFileSync('data/cards/all-cards.json', 'utf8'));
-const old = JSON.parse(execFileSync('git', ['show', `${base}:data/cards/all-cards.json`], { encoding: 'utf8', maxBuffer: 1 << 28 }));
+const now = JSON.parse(readFileSync(ensureAllCards(), 'utf8'));
+const old = cardsAtRev(base);      // the base commit may still carry data/cards/all-cards.json (before v0.96.0) or only the Saga files
 const oldById = new Map(old.map(c => [c.id, c]));
 const J = v => JSON.stringify(v ?? null);
 const vocab = cards => {

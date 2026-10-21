@@ -117,7 +117,7 @@ test('I24 Contract/Burst variants keep the base type and a flag', () => {
   assert.ok(all.some(c => c.flags.includes('contract')) && all.some(c => c.flags.includes('burst')));
 });
 test('I25 the typo type "Spirt" was corrected', () => {
-  const pack = js('data/cards/all-cards.json');      // v0.52.0: promoted cards leave staging, so look in both
+  const pack = js('build/all-cards.json');      // v0.52.0: promoted cards leave staging, so look in both
   for (const id of ['BS13-009', 'BS14-009']) assert.equal((all.find(c => c.id === id) || pack.find(c => c.id === id)).type, 'Spirit');
 });
 test('I26b wiki "gold" is mapped to the ultimate reduction symbol (v0.41.5); the wiki "god" icon is still dropped and reported', () => {
@@ -151,7 +151,7 @@ test('I30 the importer is repeatable: --check gives the same totals as the commi
   assert.deepEqual(stats, report.stats);
 });
 test('I31 staging data is not part of the game pack', () => {
-  const pack = js('data/cards/all-cards.json');
+  const pack = js('build/all-cards.json');
   assert.ok(pack.every(c => !('status' in c) && !('stats_verified' in c) && !('source' in c)));     // v0.52.0: promotion copies only the kept fields (the pack grows with promotions)
   assert.ok(existsSync(join(ROOT, 'data/import/report.json')));
 });

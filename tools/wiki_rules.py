@@ -18,6 +18,7 @@ The public repo keeps page names, section names, counts and links only, never wi
   python3 tools/wiki_rules.py --for "<blocker>"           rule sources for a compiler blocker (data/glossary/wiki-rules-map.json)
 Python stdlib only; network only for --fetch."""
 import collections, glob, json, os, re, sys, time, urllib.parse, urllib.request
+import allcards      # build/all-cards.json is generated (not in git): allcards.load() writes it when missing or stale
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 P = lambda *a: os.path.join(ROOT, *a)
@@ -87,7 +88,7 @@ def bare(title):
 
 def cards():
     staged = [c for f in sorted(glob.glob(P('data/import/saga-[0-9][0-9].json'))) for c in json.load(open(f, encoding='utf8'))]
-    play = json.load(open(P('data/cards/all-cards.json'), encoding='utf8'))
+    play = allcards.load()
     ids = {c['id'] for c in play}
     return [c for c in staged if c['id'] not in ids], play
 

@@ -1,6 +1,6 @@
 # Effect format (schema v4; v1 = F1 in v0.81.0)
 
-Card effects are data. A card in `data/cards/saga-*.json` (built into `data/cards/all-cards.json`) carries its effects in JSON that the engine reads through `parseCard` (`packages/engine/src/03-imported-cards.js`), `parseEffects` / `parseBurst` / `parseActionList` (`02c-effects-parse.js`) and the action table `FX_ACTIONS` (`02b`-`02o`). This file is the human description; the machine-readable list is **`packages/engine/fx-schema.json`**, generated from the engine source by `tools/fx_schema.mjs` (never edit it by hand).
+Card effects are data. A card in `data/cards/saga-*.json` (built into `build/all-cards.json`) carries its effects in JSON that the engine reads through `parseCard` (`packages/engine/src/03-imported-cards.js`), `parseEffects` / `parseBurst` / `parseActionList` (`02c-effects-parse.js`) and the action table `FX_ACTIONS` (`02b`-`02o`). This file is the human description; the machine-readable list is **`packages/engine/fx-schema.json`**, generated from the engine source by `tools/fx_schema.mjs` (never edit it by hand).
 
 ## Shape
 ```

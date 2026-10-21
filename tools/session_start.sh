@@ -36,7 +36,7 @@ elif [ -d "$DEST/.git" ]; then
 else
   echo "[session_start] cloning (light, sparse) into $DEST"
   git clone --depth 1 --filter=blob:none --sparse "$REPO_URL" "$DEST"
-  git -C "$DEST" sparse-checkout set --no-cone '/*' '!/data/sources/' '!/docs/reports/red-cards-check-table.html'
+  git -C "$DEST" sparse-checkout set --no-cone '/*' '!/data/sources/'
   ROOT="$(cd "$DEST" && pwd)"
 fi
 

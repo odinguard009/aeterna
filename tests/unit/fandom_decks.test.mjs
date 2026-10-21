@@ -5,7 +5,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from './lib/game.mjs';
 
-const cards = JSON.parse(readFileSync(join(ROOT, 'data/cards/all-cards.json'), 'utf8'));
+const cards = JSON.parse(readFileSync(join(ROOT, 'build/all-cards.json'), 'utf8'));
 const by = id => cards.find(c => c.id === id);
 const SRC = join(ROOT, 'data/sources/fandom-cards-bs01-bs77.json');
 const have = existsSync(SRC);

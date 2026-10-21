@@ -1,6 +1,6 @@
 # v0.24: code review / cleanup suite. Every chk() is one numbered test. Needs PYTHONPATH with the fixtures helper for fixture checks only.
 import json as _json_c, os as _os_c  # counts come from the card data, so a new colour needs no edit here
-_CARDS = _json_c.load(open(_os_c.path.join(_os_c.path.dirname(_os_c.path.abspath(__file__)), '..', '..', 'data', 'cards', 'all-cards.json')))
+_CARDS = _json_c.load(open(_os_c.path.join(_os_c.path.dirname(_os_c.path.abspath(__file__)), '..', '..', 'build', 'all-cards.json')))
 PACK_N = len(_CARDS); CONTRACTORS = sorted(c['id'] for c in _CARDS if c['type'] == 'Nexus' and '-CX' in c['id'] and c.get('levels'))   # BS76/BS77 CX Flagbearers have no levels yet (Flag Contract, open in roadmap-open.md): not Count-level
 from playwright.sync_api import sync_playwright
 from waits import settle, ready

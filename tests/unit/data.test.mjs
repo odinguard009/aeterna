@@ -7,7 +7,7 @@ import { join } from 'node:path';
 import { ROOT } from './lib/game.mjs';
 
 const js = p => JSON.parse(readFileSync(join(ROOT, p), 'utf8'));
-const cards = js('data/cards/all-cards.json');
+const cards = js('build/all-cards.json');
 const COLORS = new Set(['red', 'purple', 'green', 'white', 'yellow', 'blue']);
 const TYPES = new Set(['Spirit', 'Nexus', 'Magic', 'Brave', 'Ultimate']);
 
@@ -45,7 +45,7 @@ test('D07 Saga placement: BS75 -> Saga 16, BS76 -> Saga 17 (user rule)', () => {
     if (c.id.startsWith('BS76')) assert.equal(Number(c.saga), 17, c.id);
   }
 });
-test('D08 the Saga files together are exactly all-cards.json', () => {
+test('D08 the Saga files together are exactly build/all-cards.json', () => {
   const files = readdirSync(join(ROOT, 'data/cards')).filter(f => /^saga-\d+\.json$/.test(f));
   const ids = files.flatMap(f => js('data/cards/' + f).map(c => { assert.equal(Number(c.saga), Number(f.match(/\d+/)[0]), `${c.id} in ${f}`); return c.id; }));
   assert.deepEqual(ids.slice().sort(), cards.map(c => c.id).sort());

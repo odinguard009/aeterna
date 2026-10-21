@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 
-const cards = JSON.parse(readFileSync('data/cards/all-cards.json', 'utf8'));
+const cards = JSON.parse(readFileSync('build/all-cards.json', 'utf8'));
 // Cards allowed to be partial without a residual list, each with a reason. Keep this empty: a partial card must name the
 // printed clauses that do not run (the card detail lists them, roadmap item A1 follow-up d).
 const ALLOW = {};

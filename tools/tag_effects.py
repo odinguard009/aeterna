@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """Effect glossary tagger (each entry also carries the official rule it follows in "rule").
   python3 tools/tag_effects.py              -> writes data/glossary/card-tags.json and docs/reports/effect-coverage.md
-Scans the English card text of data/cards/all-cards.json with the patterns of data/glossary/effects.json.
+Scans the English card text of build/all-cards.json with the patterns of data/glossary/effects.json.
 Each card gets the tags it uses; the report shows, per tag, how many cards use it and whether the engine can do it,
 and lists the cards that still need a missing/partial piece (sorted by how many tags are missing).
 Patterns are hints for a human/Claude, not a parser: always read the card text before wiring."""
 import json, re, os, collections
+import allcards      # build/all-cards.json is generated (not in git): allcards.load() writes it when missing or stale
 root = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 gl = json.load(open(os.path.join(root, 'data/glossary/effects.json')))
-cards = json.load(open(os.path.join(root, 'data/cards/all-cards.json')))
+cards = allcards.load()
 rx = [(g, re.compile(g['pattern'])) for g in gl]
 tags = {}; use = collections.defaultdict(list)
 for c in cards:

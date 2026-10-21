@@ -81,7 +81,7 @@ test('DA72-04 engine: STATIC per counts matching cards on your Field; attackingO
 
 test('DA72-05 promoted cards carry the read effects (13 cards, v0.72.0)', async () => {
   const { readFileSync } = await import('node:fs');
-  const all = JSON.parse(readFileSync(new URL('../../data/cards/all-cards.json', import.meta.url), 'utf8'));
+  const all = JSON.parse(readFileSync(new URL('../../build/all-cards.json', import.meta.url), 'utf8'));
   const by = Object.fromEntries((Array.isArray(all) ? all : Object.values(all)).map(c => [c.id, c]));
   const ids = ['BS01-021', 'BS10-030', 'BS12-001', 'BS13-017', 'BS18-004', 'BS18-030', 'BS20-034', 'BS34-031', 'BS60-061', '26RBS01-036', '26RBS01-086', '26RCB01-034', '26RSD03-008'];
   for (const id of ids) assert.ok(by[id] && by[id].effects && by[id].effects.length, id);

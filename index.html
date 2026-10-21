@@ -1325,7 +1325,7 @@ const PRESET_DECK = {            // 40 generic Training cards
 
 /* ---------------------------------------------------------------------
    CARD PACK CODEC (v0.51.0; this part must load before 03-imported-cards.js: its consts are used at load): compact, synchronous format of the built-in card pack
-   The build (tools/build.mjs) calls packCards() on data/cards/all-cards.json and embeds it compressed;
+   The build (tools/build.mjs) calls packCards() on build/all-cards.json and embeds it compressed;
    the game calls loadPack() once at load, before parseCard() (03-imported-cards.js).
    Format: { v: 1, f: [field names, most frequent first], b: [boolean fields], e: { field: [values] }, d: [rows] }
      row[i] = value of f[i]; null = field absent; trailing nulls are trimmed

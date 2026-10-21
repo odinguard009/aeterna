@@ -5,7 +5,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from './lib/game.mjs';
 
-const cards = JSON.parse(readFileSync(join(ROOT, 'data/cards/all-cards.json'), 'utf8'));
+const cards = JSON.parse(readFileSync(join(ROOT, 'build/all-cards.json'), 'utf8'));
 const by = id => cards.find(c => c.id === id);
 const GOD = { 'BS74-043': { white: 2 }, 'BS74-045': { white: 2 }, 'BS74-047': { white: 1 }, 'BS75-004': { red: 1 }, 'BS75-009': { red: 2 }, 'BS75-010': { red: 2 },
   'BS75-012': { red: 3 }, 'BS75-013': { red: 3 }, 'BS75-X02': { red: 3 }, 'BS76-006': { red: 2 }, 'BS76-009': { red: 4 }, 'BS76-060': { red: 1 } };

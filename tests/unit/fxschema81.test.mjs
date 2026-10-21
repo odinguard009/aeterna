@@ -38,7 +38,7 @@ test('FS03 every shipped card passes the schema and the engine parser (zero erro
 });
 
 test('FS04 the validator catches each kind of format error (mutation check)', () => {
-  const base = JSON.parse(readFileSync(join(ROOT, 'data/cards/all-cards.json'), 'utf8')).find((c) => c.id === 'BS01-108');
+  const base = JSON.parse(readFileSync(join(ROOT, 'build/all-cards.json'), 'utf8')).find((c) => c.id === 'BS01-108');
   assert.ok(base && base.effects, 'fixture card BS01-108');
   assert.deepEqual(cardErrors(base, S), []);
   const cases = [

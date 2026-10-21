@@ -8,6 +8,7 @@ import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from 
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SRC_DIRS } from './src_parts.mjs';
+import { ensureAllCards } from './all_cards.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const full = process.argv.includes('--full'), docsOnly = process.argv.includes('--docs');
@@ -24,9 +25,10 @@ if (!docsOnly) {
   for (const d of SRC_DIRS) for (const f of ls(d, /\.js$/)) out += fence(f, 'js');
   for (const f of ['tools/build.mjs', ...ls('tests/unit', /\.mjs$/)]) out += fence(f, 'js');
 }
-const cards = JSON.parse(rd('data/cards/all-cards.json'));
-if (full) out += fence('data/cards/all-cards.json', 'json');
-else out += '\n## Card list (summary of data/cards/all-cards.json)\n\n| id | name | type | colour | cost | Saga |\n|---|---|---|---|---|---|\n' +
+ensureAllCards(ROOT);
+const cards = JSON.parse(rd('build/all-cards.json'));
+if (full) out += fence('build/all-cards.json', 'json');
+else out += '\n## Card list (summary of build/all-cards.json)\n\n| id | name | type | colour | cost | Saga |\n|---|---|---|---|---|---|\n' +
   cards.map(c => `| ${c.id} | ${c.name} | ${c.type} | ${c.color} | ${c.cost} | ${c.saga} |`).join('\n') + '\n';
 
 mkdirSync(join(ROOT, 'build'), { recursive: true });

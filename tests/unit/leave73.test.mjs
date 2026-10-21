@@ -94,7 +94,7 @@ test('LV73-04 compiler: "Then, B." = B with if.prev; "A, and B." = both actions 
 
 test('LV73-05 promoted cards carry the read effects (12 cards, v0.73.0)', async () => {
   const { readFileSync } = await import('node:fs');
-  const all = JSON.parse(readFileSync(new URL('../../data/cards/all-cards.json', import.meta.url), 'utf8'));
+  const all = JSON.parse(readFileSync(new URL('../../build/all-cards.json', import.meta.url), 'utf8'));
   const by = Object.fromEntries((Array.isArray(all) ? all : Object.values(all)).map(c => [c.id, c]));
   const ids = ['BS14-100', 'BS19-067', 'BS21-047', 'BS41-003', 'BS43-028', 'BS47-053', 'BS55-046', 'BS60-025', 'BS60-050', 'BS67-027', 'BS67-065', 'BS67-066'];
   for (const id of ids) assert.ok(by[id] && (by[id].effects || by[id].magic), id);

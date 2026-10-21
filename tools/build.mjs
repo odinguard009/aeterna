@@ -7,18 +7,20 @@
 // packages/engine/src/NN-name.js + apps/web/src/NN-name.js : the game script, joined in file-name order
 //                           across both folders as ONE classic script (tools/src_parts.mjs)
 //                           (top-level functions stay global: inline handlers, window.BS and tests rely on that)
-// The built-in card pack comes from data/cards/all-cards.json (between /*PACK_START*/ and /*PACK_END*/).
+// The built-in card pack comes from build/all-cards.json (the Saga files joined; tools/all_cards.mjs writes it) (between /*PACK_START*/ and /*PACK_END*/).
 import { readFileSync, writeFileSync, readdirSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { deflateRawSync } from 'node:zlib';
 import { codeMap } from './code_map.mjs';
 import { srcParts } from './src_parts.mjs';
+import { ensureAllCards } from './all_cards.mjs';
 import { roadmapStale, writeRoadmap } from './gen_roadmap.mjs';
 import { mindmapStale, writeMindmap } from './gen_mindmap.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const rd = p => readFileSync(join(ROOT, p), 'utf8');
+const allCards = () => JSON.parse(readFileSync(ensureAllCards(ROOT), 'utf8'));   // build/all-cards.json, written here when missing or stale
 
 // v0.51.0: the pack codec lives in packages/engine/src/01a-card-pack.js and is shared with the game (one implementation)
 export function codec() {
@@ -54,11 +56,11 @@ function joinScript(parts, cards) {
 // headless Node runner packages/engine/headless.mjs. Same pack and tokens as the game.
 export function engineScript(opts = {}) {
   const parts = srcParts(ROOT).filter(p => !p.rel.startsWith('apps/'));
-  return joinScript(parts, opts.cards || JSON.parse(rd('data/cards/all-cards.json')));
+  return joinScript(parts, opts.cards || allCards());
 }
 export function buildParts(opts = {}) {   // opts.cards: build with another card list (load-time test of the full pack)
   const parts = srcParts(ROOT), files = parts.map(p => p.name);
-  const cards = opts.cards || JSON.parse(rd('data/cards/all-cards.json'));
+  const cards = opts.cards || allCards();
   const js = joinScript(parts, cards);
   const tpl = rd('src/index.template.html');
   for (const m of ['/*@@CSS@@*/\n', '/*@@JS@@*/\n']) if (tpl.split(m).length !== 2) throw new Error('template marker missing: ' + m.trim());
@@ -73,7 +75,7 @@ export function buildParts(opts = {}) {   // opts.cards: build with another card
 // never reads the staging files (test B07) and never falls back to an old total: a missing or out-of-date file fails the build.
 function cardCounts() {
   let j; try { j = JSON.parse(rd('docs/reports/card-counts.json')); } catch { throw new Error('docs/reports/card-counts.json missing or invalid: run python3 tools/unlock_report.py'); }
-  const n = JSON.parse(rd('data/cards/all-cards.json')).length;
+  const n = allCards().length;
   if (!(j.total > 0) || !(j.complete >= 0) || j.playable !== n) throw new Error(`docs/reports/card-counts.json is out of date (playable ${j.playable}, data/cards has ${n}): run python3 tools/unlock_report.py`);
   return j;
 }
@@ -93,7 +95,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const { html, js, files, cards } = buildParts();
   if (process.argv.includes('--check')) {
     const cur = rd('index.html'), strip = h => h.replace(PACK_RE, '/*PACK*/'), m = cur.match(PACK_RE);
-    const packOk = m && new TextDecoder().decode(codec().inflateRaw(Buffer.from(m[1], 'base64'))) === packJson(JSON.parse(rd('data/cards/all-cards.json')).map(({ note, ...c }) => c));
+    const packOk = m && new TextDecoder().decode(codec().inflateRaw(Buffer.from(m[1], 'base64'))) === packJson(allCards().map(({ note, ...c }) => c));
     if (strip(cur) !== strip(html) || !packOk) { console.error('index.html is out of date: run  node tools/build.mjs'); process.exit(1); }
     if (rd('docs/ai/code-map.md') !== codeMap()) { console.error('docs/ai/code-map.md is out of date: run  node tools/build.mjs'); process.exit(1); }
     if (mindmapStale()) { console.error('docs/roadmap.html is out of date: run  node tools/build.mjs (edit docs/roadmap-data.json, not the HTML)'); process.exit(1); }

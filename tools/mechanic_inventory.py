@@ -10,9 +10,10 @@ The hand-kept list is data/glossary/mechanics.json (status, prep, glossary tags,
   python3 tools/mechanic_inventory.py          -> writes docs/reports/mechanic-inventory.md
   python3 tools/mechanic_inventory.py --seed   -> adds an entry for every keyword / kind not in mechanics.json yet (keeps existing fields)
   python3 tools/mechanic_inventory.py --check  -> exit 1 when a keyword or kind used by any staged card has no entry, or an entry lacks a status
-Counts: "waiting" = staged cards (data/import, not playable yet) that use it; "playable" = shipped cards (data/cards/all-cards.json) that use it
+Counts: "waiting" = staged cards (data/import, not playable yet) that use it; "playable" = shipped cards (build/all-cards.json) that use it
 (shipped cards carry no keyword field: their keywords are matched in the card text, so that column is approximate)."""
 import json, glob, os, re, sys, collections
+import allcards      # build/all-cards.json is generated (not in git): allcards.load() writes it when missing or stale
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 P = lambda *a: os.path.join(ROOT, *a)
@@ -102,7 +103,7 @@ def check():
 
 def report():
     cards = load_cards(); use, names = usage(cards); mech = load_mech()
-    shipped = json.load(open(P('data/cards/all-cards.json'), encoding='utf8')); suse, _ = usage(shipped)
+    shipped = allcards.load(); suse, _ = usage(shipped)
     rows = [(m, len(use.get(m['id'], ())), len(suse.get(m['id'], ()))) for m in mech]
     rows.sort(key=lambda r: (r[0]['status'] == 'done', -r[1], r[0]['name']))
     cnt = collections.Counter(r[0]['status'] for r in rows)

@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Creates the files the older suites expect outside the repo, from the card data in data/cards/all-cards.json.
+"""Creates the files the older suites expect outside the repo, from the card data in build/all-cards.json.
 Run once per machine/session before the regression:  python3 tests/make_fixtures.py
   /mnt/user-data/outputs/wip.html                          fresh copy of index.html
   /tmp/claude-0/fixtures/white_mitra_awakened_dragon.json  the 18 white BS74/BS75 cards
   /tmp/claude-0/fixtures/red_cards_BS75_BS76.json          the red BS75/BS76 cards plus the red Grandwalker Nexuses
   /tmp/claude-0/t4/mitra_tests.py                          helper source that advent/v15/v15b/v23 suites exec()"""
-import json, os, shutil
+import json, os, shutil, sys
 root = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
-cards = json.load(open(os.path.join(root, 'data', 'cards', 'all-cards.json')))
+sys.path.insert(0, os.path.join(root, 'tools'))
+import allcards
+cards = allcards.load(root)      # build/all-cards.json, generated (not in git)
 for d in ['/mnt/user-data/outputs', '/tmp/claude-0/fixtures', '/tmp/claude-0/t4', '/tmp/claude-0/t']:
     os.makedirs(d, exist_ok=True)
 shutil.copy(os.path.join(root, 'index.html'), '/mnt/user-data/outputs/wip.html')

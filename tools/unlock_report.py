@@ -7,18 +7,19 @@ data/import and sorts the cards into classes. The patterns are hints, not a pars
 upper bound: it means "no new engine mechanic seems needed", not "can be promoted without reading".
 Use it to order the roadmap by cards unlocked per token, never as proof that a card works."""
 import collections, glob, json, os, re, sys
+import allcards      # build/all-cards.json is generated (not in git): allcards.load() writes it when missing or stale
 
 root = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 J = lambda p: json.load(open(os.path.join(root, p), encoding='utf8'))
 gl = J('data/glossary/effects.json')
 rx = [(g, re.compile(g['pattern'])) for g in gl]
-playable = {c['id'] for c in J('data/cards/all-cards.json')}
+playable = {c['id'] for c in allcards.load()}
 staged = [c for f in sorted(glob.glob(os.path.join(root, 'data/import/saga-[0-9][0-9].json')))
           for c in json.load(open(f, encoding='utf8')) if c['id'] not in playable]
 total = len(playable) + len(staged)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from card_counts import counts      # v0.79.0 (A1): two counts, playable (in the library) and complete (every effect runs)
-complete_n = counts(J('data/cards/all-cards.json'))[1]
+complete_n = counts(allcards.load())[1]
 line = f'playable {len(playable)} / {total:,} cards, complete {complete_n:,} ({len(staged):,} staged in data/import)'
 if '--line' in sys.argv: print(line); sys.exit(0)
 

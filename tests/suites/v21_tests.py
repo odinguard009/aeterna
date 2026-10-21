@@ -1,7 +1,7 @@
 from waits import settle, ready  # v0.87.0 (F5): state waits instead of fixed times
 # v0.21: Burst + Mirage in the same area (official rule), replaced Mirage returns to the Hand, Flash includes Main, CPU sets Mirage, glossary consistency.
 import json as _json_c, os as _os_c  # counts come from the card data, so a new colour needs no edit here
-_CARDS = _json_c.load(open(_os_c.path.join(_os_c.path.dirname(_os_c.path.abspath(__file__)), '..', '..', 'data', 'cards', 'all-cards.json')))
+_CARDS = _json_c.load(open(_os_c.path.join(_os_c.path.dirname(_os_c.path.abspath(__file__)), '..', '..', 'build', 'all-cards.json')))
 PACK_N = len(_CARDS); CONTRACTORS = sorted(c['id'] for c in _CARDS if c['type'] == 'Nexus' and '-CX' in c['id'])
 import os as _os_repo
 _REPO = _os_repo.path.abspath(_os_repo.path.join(_os_repo.path.dirname(_os_repo.path.abspath(__file__)), '..', '..'))

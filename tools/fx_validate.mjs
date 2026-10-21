@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // F1 (v0.81.0): validates every shipped and staged card effect against packages/engine/fx-schema.json and the engine's own parser.
-//   node tools/fx_validate.mjs            -> shipped cards (data/cards/all-cards.json + tokens.json): schema + engine parse; exit 1 on any error
+//   node tools/fx_validate.mjs            -> shipped cards (build/all-cards.json + tokens.json): schema + engine parse; exit 1 on any error
 //   node tools/fx_validate.mjs --staged   -> also compiles the staged pool (tools/compile_v2.py --partial) and writes docs/reports/fx-validate.md
 //   node tools/fx_validate.mjs --static   -> schema checks only (no browser)
 //   node tools/fx_validate.mjs --json     -> machine-readable result
@@ -13,6 +13,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { buildSchema, schemaText, SCHEMA_PATH } from './fx_schema.mjs';
+import { ensureAllCards } from './all_cards.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const RESIDUAL_MAX = 400, RESIDUAL_N = 12;
@@ -86,7 +87,7 @@ export async function validate({ staged = false, engine = true } = {}) {
   const res = { schemaStale: false, shipped: {}, staged: null };
   const S = buildSchema();
   try { res.schemaStale = readFileSync(SCHEMA_PATH, 'utf8') !== schemaText(S); } catch { res.schemaStale = true; }
-  const shipped = [...JSON.parse(readFileSync(join(ROOT, 'data/cards/all-cards.json'), 'utf8')), ...JSON.parse(readFileSync(join(ROOT, 'data/cards/tokens.json'), 'utf8'))];
+  const shipped = [...JSON.parse(readFileSync(ensureAllCards(ROOT), 'utf8')), ...JSON.parse(readFileSync(join(ROOT, 'data/cards/tokens.json'), 'utf8'))];
   for (const c of shipped) { const e = cardErrors(c, S); if (e.length) res.shipped[c.id] = e; }
   res.shippedN = shipped.length;
   let pool = [];

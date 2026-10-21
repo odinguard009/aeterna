@@ -5,6 +5,7 @@
              packages/engine/src/03-imported-cards.js); test PA05 keeps the two in step.
 Progress, pack measurements ("+N cards") and the v1.0 target use complete."""
 import json, os, re
+import allcards      # build/all-cards.json is generated (not in git): allcards.load() writes it when missing or stale
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 LEGACY = re.compile(r'(?m)^[ \t]*\(Legacy\)[ \t]*(?:\n|$)')
@@ -22,7 +23,7 @@ def complete(c):
 
 
 def counts(cards=None):
-    if cards is None: cards = json.load(open(os.path.join(ROOT, 'data/cards/all-cards.json'), encoding='utf8'))
+    if cards is None: cards = allcards.load()
     return len(cards), sum(1 for c in cards if complete(c))
 
 

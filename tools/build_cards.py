@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Card data tool.
 Source of truth: data/cards/saga-NN.json (one file per Saga, sorted by ID).
-  python3 tools/build_cards.py                  -> rebuilds data/cards/all-cards.json (the single file to import)
+  python3 tools/build_cards.py                  -> rewrites the Saga files sorted and rebuilds build/all-cards.json (generated, not in git)
   python3 tools/build_cards.py --update F.json  -> merges the cards of F.json into the Saga files (by ID, using each card's "saga"), then rebuilds
 Checks: duplicate IDs, missing "saga", ID/block mismatch."""
 import json, glob, os, sys, collections
@@ -24,5 +24,6 @@ for s, cards in sorted(data.items()):
     json.dump(L, open(os.path.join(root, f'saga-{s:02d}.json'), 'w'), indent=1, ensure_ascii=False); allc += L
 ids = collections.Counter(c['id'] for c in allc)
 assert not [i for i, n in ids.items() if n > 1], 'duplicate IDs'
-json.dump(allc, open(os.path.join(root, 'all-cards.json'), 'w'), indent=1, ensure_ascii=False)
-print(len(allc), 'cards in', len(data), 'Saga files ->', 'data/cards/all-cards.json')
+os.makedirs(os.path.join(root, '..', 'build'), exist_ok=True)
+json.dump(allc, open(os.path.join(root, '..', 'build', 'all-cards.json'), 'w'), indent=1, ensure_ascii=False)
+print(len(allc), 'cards in', len(data), 'Saga files ->', 'build/all-cards.json')

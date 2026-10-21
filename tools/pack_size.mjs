@@ -10,11 +10,12 @@ import { gzipSync } from 'node:zlib';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { codec, packBlob, packExpr } from './build.mjs';
+import { ensureAllCards } from './all_cards.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const KEEP = ['id', 'name', 'name_jp', 'type', 'color', 'cost', 'reduction', 'symbols', 'levels', 'families', 'text', 'image', 'block', 'saga'];
 export function projectedCards() {
-  const live = JSON.parse(readFileSync(join(ROOT, 'data/cards/all-cards.json'), 'utf8')).map(({ note, ...c }) => c);
+  const live = JSON.parse(readFileSync(ensureAllCards(ROOT), 'utf8')).map(({ note, ...c }) => c);
   const have = new Set(live.map(c => c.id)), dir = join(ROOT, 'data/import');
   // the promoted card whose effects JSON is closest to the mean size stands in for the compiler's output
   const withFx = live.filter(c => c.effects), len = c => JSON.stringify(c.effects).length;

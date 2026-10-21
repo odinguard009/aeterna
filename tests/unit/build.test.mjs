@@ -49,8 +49,8 @@ test('B09 packBlob escapes "</" so card text cannot close the script tag', () =>
   const b = packBlob([{ text: 'a</script><b>' }]);
   assert.ok(!b.includes('</')); assert.deepEqual(JSON.parse(b.replace(/<\\\//g, '</')), [{ text: 'a</script><b>' }]);
 });
-test('B10 the embedded pack holds every card of data/cards/all-cards.json', () => {
-  const cards = JSON.parse(rd('data/cards/all-cards.json'));
+test('B10 the embedded pack holds every card of build/all-cards.json', () => {
+  const cards = JSON.parse(rd('build/all-cards.json'));
   const h = buildParts().html, m = h.match(PACK_RE);
   assert.ok(m); assert.equal(codec().loadPack(m[1]).length, cards.length);
 });

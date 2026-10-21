@@ -11,7 +11,7 @@ import { projectedCards, measure } from '../../tools/pack_size.mjs';
 import { ROOT } from './lib/game.mjs';
 
 const C = codec();
-const live = JSON.parse(readFileSync(join(ROOT, 'data/cards/all-cards.json'), 'utf8')).map(({ note, ...c }) => c);
+const live = JSON.parse(readFileSync(join(ROOT, 'build/all-cards.json'), 'utf8')).map(({ note, ...c }) => c);
 const norm = L => L.map(c => Object.fromEntries(Object.keys(c).filter(k => c[k] != null).sort().map(k => [k, c[k]])));
 const fromExpr = e => C.loadPack(e.match(/^loadPack\("([A-Za-z0-9+/=]*)"\)$/)[1]);
 const staged = existsSync(join(ROOT, 'data/import/saga-01.json'));
@@ -59,7 +59,7 @@ test('P08 the built page embeds the compressed pack on one line and it decodes t
 });
 test('P09 full projected pack (all cards: 8,041 Eternal + Standard block A since v0.62.0): round trip exact, compressed under 1.6 MB', { skip: !staged && 'light clone without data/import' }, () => {
   const cards = projectedCards();
-  const ids = new Set(JSON.parse(readFileSync(join(ROOT, 'data/cards/all-cards.json'), 'utf8')).map(c => c.id));      // v0.79.0: A1 partial cards are in both
+  const ids = new Set(JSON.parse(readFileSync(join(ROOT, 'build/all-cards.json'), 'utf8')).map(c => c.id));      // v0.79.0: A1 partial cards are in both
   for (const f of readdirSync(join(ROOT, 'data/import')).filter(f => /^saga-\d\d\.json$/.test(f))) for (const c of JSON.parse(readFileSync(join(ROOT, 'data/import', f), 'utf8'))) ids.add(c.id);
   const total = ids.size;
   assert.equal(cards.length, total);

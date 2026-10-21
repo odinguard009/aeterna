@@ -93,7 +93,7 @@ test('VD74-05 compiler: sentences for existing actions (discard, counters plural
 
 test('VD74-06 promoted cards carry the read effects (13 cards, v0.74.0)', async () => {
   const { readFileSync } = await import('node:fs');
-  const all = JSON.parse(readFileSync(new URL('../../data/cards/all-cards.json', import.meta.url), 'utf8'));
+  const all = JSON.parse(readFileSync(new URL('../../build/all-cards.json', import.meta.url), 'utf8'));
   const by = Object.fromEntries((Array.isArray(all) ? all : Object.values(all)).map(c => [c.id, c]));
   const ids = ['BS03-126', 'BS05-020', 'BS06-029', 'BS09-020', 'BS12-060', 'BS14-069', 'BS16-023', 'BS21-060', 'BS24-081', 'BS28-022', 'BS30-025', 'BS51-071', 'BS59-039'];
   for (const id of ids) assert.ok(by[id] && (by[id].effects || by[id].magic), id);

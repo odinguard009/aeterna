@@ -19,7 +19,7 @@ Distilled from v0.37 blue, v0.38 green, v0.39 purple. Follow it instead of redis
 
 ## 4. Tests and checks
 - `tests/unit/<colour><minor>.test.mjs`, 20+ tests (template: `purple39.test.mjs`); `npm run -s loop` while working.
-- Legacy suites (v17, v21, v22, v24) read card and Contractor counts from `data/cards/all-cards.json` (since v0.39.1): no edit needed for a new deck.
+- Legacy suites (v17, v21, v22, v24) read card and Contractor counts from `build/all-cards.json` (since v0.39.1): no edit needed for a new deck.
 - Sims: through the Regression workflow (dispatch in `release.md`), plus a few seeded games of the new deck vs red / white / the previous colour. Report wins honestly ("untuned").
 
 ## 5. Release notes template (bullets)

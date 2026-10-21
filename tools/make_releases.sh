@@ -38,7 +38,8 @@ for v in "${versions[@]}"; do
   notes="$out/v$v.md"
   awk -v h="## v$v" '$0 == h {f = 1; next} f && /^## / {exit} f' CHANGELOG.md | sed -e '/./,$!d' > "$out/body.md"
   title=$(grep -v '^- Lane:' "$out/body.md" | grep -m1 '^- ' | sed -E 's/^- //; s/\*\*//g; s/`//g; s/[(:].*$//; s/[ .,;]+$//' | cut -c1-70)
-  n=$(git show "$c:data/cards/all-cards.json" | python3 -c 'import json,sys; print(f"{len(json.load(sys.stdin)):,}")')
+  # v0.96.0: data/cards/all-cards.json left git; cardsAtRev reads the old file at older commits and joins the Saga files at newer ones
+  n=$(node -e "import('./tools/all_cards.mjs').then(m => console.log(m.cardsAtRev(process.argv[1]).length.toLocaleString('en-US')))" "$c")
   {
     cat "$out/body.md"
     echo
