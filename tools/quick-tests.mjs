@@ -1,6 +1,6 @@
 // Quick Node test run: every tests/unit/*.test.mjs except the slow ones listed in SLOW.
 // New test files are picked up automatically, so package.json never needs editing per version.
-import { readdirSync } from 'node:fs';
+import { readdirSync, writeSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { availableParallelism } from 'node:os';
 import { ensureAllCards } from './all_cards.mjs';
@@ -24,13 +24,15 @@ const conc = Number(process.env.BS_TEST_CONC) || (FULL ? Math.max(1, availablePa
 const env = FULL ? { ...process.env } : { ...process.env, BS_QUICK: '1' };   // v0.60.2: timing tests skip themselves
 // v0.101.0: output is piped and re-printed, and every failing test is repeated at the very end (name + error lines), so the
 // tail of a CI log names the failures (the full log of ~9,000 lines is too long to read through the tools).
-const run = (args) => { const x = spawnSync(process.execPath, args, { env, encoding: 'utf8', maxBuffer: 512 * 1024 * 1024 }); process.stdout.write(x.stdout || ''); process.stderr.write(x.stderr || ''); return x; };
+// writeSync: process.exit() below would cut an asynchronous write to a pipe (CI) short
+const out = (fd, text) => { const b = Buffer.from(text || ''); for (let o = 0; o < b.length;) { try { o += writeSync(fd, b, o); } catch (e) { if (e.code !== 'EAGAIN') throw e; } } };
+const run = (args) => { const x = spawnSync(process.execPath, args, { env, encoding: 'utf8', maxBuffer: 512 * 1024 * 1024 }); out(1, x.stdout); out(2, x.stderr); return x; };
 const r = run(['--test', `--test-concurrency=${conc}`, ...files]);
 const t = run(['--test', '--test-concurrency=1', ...[...TIMING].sort().map((f) => `tests/unit/${f}`)]);
 const failed = [];
-for (const out of [r.stdout || '', t.stdout || '']) {
-  const L = out.split('\n');
+for (const txt of [r.stdout || '', t.stdout || '']) {
+  const L = txt.split('\n');
   L.forEach((l, i) => { if (/^\s*not ok \d+ - /.test(l) && !/# SKIP/.test(l)) failed.push([l.trim(), ...L.slice(i + 1, i + 16).filter((x) => /error|expected|actual|location|^\s+[+-] /.test(x)).map((x) => '    ' + x.trim().slice(0, 300))].join('\n')); });
 }
-if (failed.length) console.log(`\n[quick-tests] ${failed.length} failing test(s):\n` + failed.join('\n'));
+if (failed.length) out(1, `\n[quick-tests] ${failed.length} failing test(s):\n` + failed.join('\n') + '\n');
 process.exit((r.status ?? 1) || (t.status ?? 1));
