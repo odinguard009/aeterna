@@ -131,7 +131,7 @@
 
 <div id="view-deckbuilder" class="app-view">
   <div class="db-header">
-    <h2>Deck Builder</h2><span id="db-topcount" class="db-topcount"></span>
+    <button class="db-back ae-ghost" data-a="go-decks" aria-label="Back to My decks">‹ MY DECKS</button><h2>Deck Builder</h2><span id="db-topcount" class="db-topcount"></span>
     <button class="db-menu-btn btn-nav-small" data-a="db-sheet" data-v="menu" aria-label="Deck menu">⋯ Menu</button>
     <div class="db-tools">
       <button class="btn-nav-small" data-a="format" id="db-format" title="Switch format">ETERNAL</button>
@@ -160,14 +160,17 @@
     </aside>
     <section class="db-pool">
       <div class="db-filters"><input id="db-search" class="db-search" type="search" placeholder="Search name, ID or text  ( / )" autocomplete="off">
-        <button id="db-filter-btn" class="btn-nav-small db-filter-btn" data-a="db-sheet" data-v="filters">Filters</button><span id="db-count"></span></div>
+        <button id="db-filter-btn" class="btn-nav-small db-filter-btn" data-a="db-sheet" data-v="filters" aria-controls="db-rail" aria-expanded="true">FILTERS</button><span id="db-count"></span></div>
+      <div class="db-achips" id="db-achips" aria-label="Active filters"></div>
       <div class="db-grid" id="db-card-list"></div>
     </section>
-    <aside class="db-deck" id="db-deck" aria-label="Deck">
+    <aside class="db-deck tab-list" id="db-deck" aria-label="Deck">
       <div class="db-sheet-head"><b>Deck</b><button class="btn-nav-small" data-a="db-sheet" data-v="">Close</button></div>
       <div class="db-dk-head"><div class="db-counter" id="db-counter"></div><div class="db-status" id="db-status"></div></div>
-      <div class="db-dk-list" id="db-dk-list"></div>
-      <div class="db-dk-stats" id="db-dk-stats"></div>
+      <div class="db-tabs" role="tablist" aria-label="Deck panel"><button role="tab" data-a="db-tab" data-v="list" aria-selected="true">DECK LIST</button><button role="tab" data-a="db-tab" data-v="curve" aria-selected="false">CURVE AND CHECK</button><button role="tab" data-a="db-tab" data-v="look" aria-selected="false">DECK LOOK</button></div>
+      <div class="db-dk-list" id="db-dk-list" data-pane="list" role="tabpanel"></div>
+      <div class="db-pane" data-pane="curve" role="tabpanel"><ul class="db-check" id="db-check"></ul><div class="db-dk-stats" id="db-dk-stats"></div></div>
+      <div class="db-pane" data-pane="look" role="tabpanel"><div id="db-look" class="db-look"></div></div>
       <div class="db-dk-actions"><button class="btn-nav-small" id="db-undo" data-a="db-undo">↶ Undo</button><button class="btn-nav-small" data-a="db-import">Import text</button><button class="btn-nav-small" data-a="db-export">Export text</button></div>
     </aside>
   </div>

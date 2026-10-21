@@ -29,7 +29,7 @@ const visible = sel => { const e = document.querySelector(sel); if (!e) return f
 for (const screen of ['pc', 'phone']) {
   test(`D01-${screen} layout: PC shows rail + grid + deck panel; phone shows search, Filters button and the deck bar`, async () => {
     const r = await ev(screen, v => { const vis = new Function('return ' + v)(); return ['#db-rail', '#db-card-list', '#db-deck', '#db-search', '#db-filter-btn', '#db-deckbar', '.db-menu-btn'].map(vis); }, visible.toString());
-    assert.deepEqual(r, screen === 'pc' ? [true, true, true, true, false, false, false] : [false, true, false, true, true, true, true]);
+    assert.deepEqual(r, screen === 'pc' ? [true, true, true, true, true, false, false] : [false, true, false, true, true, true, true]);
     await (await open(screen)).page.screenshot({ path: join(SHOTS, `v053-deckbuilder-${screen}.png`) });
   });
   test(`D02-${screen} tapping a card adds one copy; the deck panel row's − removes it; Undo restores`, async () => {
@@ -75,7 +75,7 @@ for (const screen of ['pc', 'phone']) {
       document.querySelector('[data-a="db-freset"]').click();
       return { more: both > red, okAll, btn, on, after: document.querySelectorAll('.db-chip.on').length, reset: document.getElementById('db-filter-btn').textContent };
     });
-    assert.deepEqual(r, { more: true, okAll: true, btn: 'Filters (3)', on: 3, after: 0, reset: 'Filters' });
+    assert.deepEqual(r, { more: true, okAll: true, btn: 'FILTERS 3', on: 3, after: 0, reset: 'FILTERS' });   // v0.94.0 U7 label
   });
   test(`D05-${screen} set, family, legal-in-format and type filters; sort by cost and name`, async () => {
     const r = await ev(screen, () => {

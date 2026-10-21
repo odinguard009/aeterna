@@ -68,6 +68,9 @@ document.addEventListener('click', e => {
   else if (a === 'play-style') playSet('style', v);
   else if (a === 'play-speed') playSet('speed', v);
   else if (a === 'go-deck') switchView('view-deckbuilder');
+  else if (a === 'db-unchip') dbUnchip(v);
+  else if (a === 'db-tab') dbTab(v);
+  else if (a === 'db-look') dbLook(v);
   else if (a === 'go-decks') { DK_MENU = -1; switchView('view-decks'); }
   else if (a.startsWith('dk-')) { if (a !== 'dk-more' && $('dk-msg')) $('dk-msg').textContent = ''; dkAct(a, v); }
   else if (a === 'go-lobby') switchView('view-lobby');

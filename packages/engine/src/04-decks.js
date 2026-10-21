@@ -48,7 +48,7 @@ function loadSlots() {
   try {
     const o = JSON.parse(localStorage.getItem(SLOT_KEY));
     if (o && Array.isArray(o.slots) && o.slots.length === SLOT_COUNT) {
-      SLOTS = o.slots.map((x, i) => Object.assign({ name: String(x && x.name || 'Deck ' + (i + 1)).slice(0, 24), cards: cleanDeck(x && x.cards) }, x && x.used ? { used: true } : {}));   // used: listed on My decks (v0.93.0)
+      SLOTS = o.slots.map((x, i) => Object.assign({ name: String(x && x.name || 'Deck ' + (i + 1)).slice(0, 24), cards: cleanDeck(x && x.cards) }, x && x.used ? { used: true } : {}, x && x.look && typeof x.look === 'object' ? { look: x.look } : {}));   // used: listed on My decks (v0.93.0); look: Deck look (v0.94.0)
       ACTIVE_SLOT = Number.isInteger(o.active) && o.active >= 0 && o.active < SLOT_COUNT ? o.active : 0; return;
     }
   } catch (e) { /* ignore */ }

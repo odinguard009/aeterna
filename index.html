@@ -53,9 +53,9 @@ box-shadow: 0 2px 8px rgba(0,0,0,0.5);
 .sel option { background: #101e2c; color: #fff; }
 .db-tools { flex-wrap: wrap; }
 .lobby-deck.bad { color: #eb5757; }
-#view-deckbuilder { padding: 10px; gap: 8px; background: var(--bg-main); }
-.db-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-line); padding-bottom: 6px; gap: 6px; flex-wrap: wrap; }
-.db-header h2 { font-size: 14px; color: var(--accent); }
+#view-deckbuilder { padding: 10px; gap: 8px; }
+.db-header { display: flex; justify-content: space-between; align-items: center; gap: 6px; flex-wrap: wrap; background: var(--ae-head); margin: -10px -10px 0; padding: 8px 10px; box-shadow: inset 0 -1px 0 var(--ae-line2); }
+.db-header h2 { font-size: 16px; font-weight: 900; font-style: italic; letter-spacing: .06em; }
 .db-tools { display: flex; gap: 6px; align-items: center; }
 .db-status { flex: none; font-size: 10px; color: var(--text-muted); }
 .db-status.ok { color: #6fcf97; }
@@ -331,19 +331,19 @@ html.layout-pc .phase-steps { padding: 0; }
 .db-body { flex: 1; min-height: 0; display: flex; gap: 10px; }
 .db-pool { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: 6px; }
 .db-search { flex: 1 1 160px; max-width: 320px; }
-.db-rail, .db-deck { background: var(--bg-panel); border: 1px solid var(--border-line); border-radius: 6px; padding: 8px; overflow-y: auto; min-height: 0; }
+.db-rail, .db-deck { background: linear-gradient(180deg,var(--ae-panel1),var(--ae-panel2)); box-shadow: inset 0 0 0 1px var(--ae-line); padding: 8px; overflow-y: auto; min-height: 0; }
 .db-rail { width: 220px; flex: none; display: flex; flex-direction: column; gap: 5px; font-size: 11px; }
 .db-deck { width: 300px; flex: none; display: flex; flex-direction: column; gap: 8px; }
 .db-fh { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-top: 4px; }
 .db-chips { display: flex; flex-wrap: wrap; gap: 4px; }
 .db-chip { --chip: var(--text-muted); min-height: 26px; padding: 2px 9px; border-radius: 13px; border: 1px solid var(--border-line); background: rgba(255,255,255,.05); color: var(--text-main); font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
 .db-chip[style]::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--chip); }
-.db-chip.on { background: var(--accent); border-color: var(--accent); color: #111; font-weight: 700; }
+.db-chip.on { background: var(--you); border-color: var(--you); color: var(--you-ink); font-weight: 700; }
 .db-chip:focus-visible, .db-row-btn:focus-visible, .db-info:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .db-tog { display: flex; align-items: center; gap: 6px; color: var(--text-main); margin-top: 3px; }
 .db-rail .sel { width: 100%; }
 .db-freset { margin-top: 6px; }
-.db-filter-btn, .db-sheet-head, .db-deckbar, .db-backdrop { display: none; }
+.db-sheet-head, .db-deckbar, .db-backdrop { display: none; }
 .db-grid .tcg-card { position: relative; cursor: pointer; }
 .db-grid .tcg-card .db-info { position: absolute; top: 17px; right: 2px; width: 16px; height: 16px; min-height: 0; padding: 0; border-radius: 50%; border: 1px solid rgba(0,0,0,.35); background: rgba(16,26,36,.85); color: #fff; font: italic 700 10px/1 Georgia, serif; cursor: pointer; z-index: 2; opacity: .85; }
 .db-grid .tcg-card .db-info::after { content: ''; position: absolute; inset: -8px; }
@@ -454,8 +454,8 @@ html.layout-mobile .ae-step { display: none; }
 .gems.sm .g-core { width: 8px; height: 8px; } .gems.sm .g-soul { width: 10px; height: 10px; }
 .g-more { font-style: normal; font-size: 9px; font-weight: 800; color: var(--ae-text2); }
 .sleeve { position: relative; display: inline-block; width: 18px; height: 25px; flex: none; border-radius: 2px; background: #0b0b0b; box-shadow: 2px -2px 0 -0.5px var(--ae-panel2), 2px -2px 0 0 var(--ae-line2), 4px -4px 0 -0.5px var(--ae-panel2), 4px -4px 0 0 var(--ae-line2); }
-.sleeve::before { content: ""; position: absolute; inset: 2px; border: 1px solid #cfcfcf; border-radius: 1px; background: repeating-linear-gradient(60deg, transparent 0 5px, #ffffff18 5px 6px), repeating-linear-gradient(-60deg, transparent 0 5px, #ffffff18 5px 6px); }
-.sleeve::after { content: ""; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; transform: translate(-50%, -50%) rotate(45deg); border: 1px solid #cfcfcf; background: #000; }
+.sleeve::before { content: ""; position: absolute; inset: 2px; border: 1px solid var(--sl-tint, #cfcfcf); border-radius: 1px; background: repeating-linear-gradient(60deg, transparent 0 5px, #ffffff18 5px 6px), repeating-linear-gradient(-60deg, transparent 0 5px, #ffffff18 5px 6px); }
+.sleeve::after { content: ""; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; transform: translate(-50%, -50%) rotate(45deg); border: 1px solid var(--sl-tint, #cfcfcf); background: #000; }
 .sleeve.cpu-sleeve::before, .sleeve.cpu-sleeve::after { border-color: #e7a0aa; }
 .sleeve.mini { width: 10px; height: 14px; box-shadow: none; margin-right: 2px; } .sleeve.mini::after { width: 3px; height: 3px; }
 .sleeve.fill { position: absolute; inset: 0; width: auto; height: auto; box-shadow: none; } .sleeve.fill::after { width: 30%; height: auto; aspect-ratio: 1; }
@@ -567,6 +567,24 @@ html.layout-mobile #view-playmat .ba-card.set-burst .btag { left: 0; right: 0; f
 #action-modal .modal-btns { position: sticky; bottom: -16px; z-index: 2; margin: 0 -18px -16px; padding: 10px 18px 16px; background: var(--ae-panel2); }
 html.layout-mobile .modal-overlay { align-items: flex-end; }
 html.layout-mobile .modal-box { width: 100%; max-width: none; max-height: 86vh; padding-bottom: max(16px, env(safe-area-inset-bottom)); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%); }
+#view-deckbuilder{--bg-main:var(--ae-board2);--bg-panel:var(--ae-panel1);--accent:var(--you);--text-main:var(--ae-text);--text-muted:var(--ae-text2);--border-line:var(--ae-line2);color:var(--ae-text);background:linear-gradient(180deg,var(--ae-board1),var(--ae-board2))}
+.db-back.ae-ghost{min-height:34px;padding:0 12px;flex:none}
+.db-filter-btn{display:inline-flex;align-items:center;gap:6px;font-weight:900;letter-spacing:.12em}
+.db-filter-btn .badge{font-style:normal;min-width:18px;padding:0 5px;background:var(--you);color:var(--you-ink);font-size:11px;text-align:center}
+#view-deckbuilder.db-rail-off .db-rail{display:none}
+.db-achips{display:flex;flex-wrap:wrap;gap:6px}.db-achips:empty{display:none}
+.db-achip,.db-aclear{min-height:28px;padding:0 10px;border:0;background:var(--ae-chip);color:var(--ae-text);box-shadow:inset 0 0 0 1px var(--ae-line2);font:inherit;font-size:12px;cursor:pointer;touch-action:manipulation}
+.db-achip b{color:var(--ae-text2);margin-left:2px}.db-aclear{background:none;box-shadow:none;color:var(--you);font-weight:800}
+.db-tabs{display:flex;gap:2px;flex:none}
+.db-tabs button{flex:1;min-height:34px;border:0;background:var(--ae-chip);color:var(--ae-text2);font:inherit;font-size:11px;font-weight:900;letter-spacing:.08em;cursor:pointer}
+.db-tabs button[aria-selected="true"]{background:var(--you);color:var(--you-ink)}
+.db-deck:not(.tab-list) [data-pane="list"],.db-deck:not(.tab-curve) [data-pane="curve"],.db-deck:not(.tab-look) [data-pane="look"]{display:none}
+.db-pane{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.db-check{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:12px}
+.db-check li::before{content:"✓ ";color:var(--you);font-weight:900}.db-check li.bad::before{content:"✕ ";color:var(--cpu)}
+.db-lk{display:flex;flex-direction:column;gap:6px}.db-lkg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.db-lkb{display:flex;align-items:center;gap:8px;min-height:40px;padding:4px 8px;border:0;background:var(--ae-chip);color:var(--ae-text);font:inherit;font-size:12px;cursor:pointer;box-shadow:inset 0 0 0 1px var(--ae-line)}
+.db-lkb[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--you)}.db-lkb .g-core{width:16px;height:16px}.db-lkb .g-soul{width:18px;height:18px}
 .dk-msg:empty{display:none}.ae-phead .dk-msg{color:var(--you);font-size:13px}
 .dk-hacts{display:flex;gap:8px;flex-wrap:wrap}
 .dk-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:10px}
@@ -965,7 +983,7 @@ html.layout-pc .doc-card { padding: 18px 24px 20px; }
 
 <div id="view-deckbuilder" class="app-view">
   <div class="db-header">
-    <h2>Deck Builder</h2><span id="db-topcount" class="db-topcount"></span>
+    <button class="db-back ae-ghost" data-a="go-decks" aria-label="Back to My decks">‹ MY DECKS</button><h2>Deck Builder</h2><span id="db-topcount" class="db-topcount"></span>
     <button class="db-menu-btn btn-nav-small" data-a="db-sheet" data-v="menu" aria-label="Deck menu">⋯ Menu</button>
     <div class="db-tools">
       <button class="btn-nav-small" data-a="format" id="db-format" title="Switch format">ETERNAL</button>
@@ -994,14 +1012,17 @@ html.layout-pc .doc-card { padding: 18px 24px 20px; }
     </aside>
     <section class="db-pool">
       <div class="db-filters"><input id="db-search" class="db-search" type="search" placeholder="Search name, ID or text  ( / )" autocomplete="off">
-        <button id="db-filter-btn" class="btn-nav-small db-filter-btn" data-a="db-sheet" data-v="filters">Filters</button><span id="db-count"></span></div>
+        <button id="db-filter-btn" class="btn-nav-small db-filter-btn" data-a="db-sheet" data-v="filters" aria-controls="db-rail" aria-expanded="true">FILTERS</button><span id="db-count"></span></div>
+      <div class="db-achips" id="db-achips" aria-label="Active filters"></div>
       <div class="db-grid" id="db-card-list"></div>
     </section>
-    <aside class="db-deck" id="db-deck" aria-label="Deck">
+    <aside class="db-deck tab-list" id="db-deck" aria-label="Deck">
       <div class="db-sheet-head"><b>Deck</b><button class="btn-nav-small" data-a="db-sheet" data-v="">Close</button></div>
       <div class="db-dk-head"><div class="db-counter" id="db-counter"></div><div class="db-status" id="db-status"></div></div>
-      <div class="db-dk-list" id="db-dk-list"></div>
-      <div class="db-dk-stats" id="db-dk-stats"></div>
+      <div class="db-tabs" role="tablist" aria-label="Deck panel"><button role="tab" data-a="db-tab" data-v="list" aria-selected="true">DECK LIST</button><button role="tab" data-a="db-tab" data-v="curve" aria-selected="false">CURVE AND CHECK</button><button role="tab" data-a="db-tab" data-v="look" aria-selected="false">DECK LOOK</button></div>
+      <div class="db-dk-list" id="db-dk-list" data-pane="list" role="tabpanel"></div>
+      <div class="db-pane" data-pane="curve" role="tabpanel"><ul class="db-check" id="db-check"></ul><div class="db-dk-stats" id="db-dk-stats"></div></div>
+      <div class="db-pane" data-pane="look" role="tabpanel"><div id="db-look" class="db-look"></div></div>
       <div class="db-dk-actions"><button class="btn-nav-small" id="db-undo" data-a="db-undo">↶ Undo</button><button class="btn-nav-small" data-a="db-import">Import text</button><button class="btn-nav-small" data-a="db-export">Export text</button></div>
     </aside>
   </div>
@@ -1275,7 +1296,7 @@ function bindHost(h) {
    type: 'Spirit' | 'Nexus' | 'Magic'      symbol: card color     symbols: number of symbols
    reduction: {color: n}         levels: [{cores, bp}]  (Nexus levels have no bp)
    --------------------------------------------------------------------- */
-const VERSION = '0.93.0';
+const VERSION = '0.94.0';
 const CARDS = {};
 function defCard(o) {
   CARDS[o.id] = Object.assign({ type: 'Spirit', reduction: {}, symbols: 1, families: [], keywords: [], implemented: true, desc: 'Vanilla test card (no effect).', block: 'A' }, o);
@@ -4153,7 +4174,7 @@ function loadSlots() {
   try {
     const o = JSON.parse(localStorage.getItem(SLOT_KEY));
     if (o && Array.isArray(o.slots) && o.slots.length === SLOT_COUNT) {
-      SLOTS = o.slots.map((x, i) => Object.assign({ name: String(x && x.name || 'Deck ' + (i + 1)).slice(0, 24), cards: cleanDeck(x && x.cards) }, x && x.used ? { used: true } : {}));   // used: listed on My decks (v0.93.0)
+      SLOTS = o.slots.map((x, i) => Object.assign({ name: String(x && x.name || 'Deck ' + (i + 1)).slice(0, 24), cards: cleanDeck(x && x.cards) }, x && x.used ? { used: true } : {}, x && x.look && typeof x.look === 'object' ? { look: x.look } : {}));   // used: listed on My decks (v0.93.0); look: Deck look (v0.94.0)
       ACTIVE_SLOT = Number.isInteger(o.active) && o.active >= 0 && o.active < SLOT_COUNT ? o.active : 0; return;
     }
   } catch (e) { /* ignore */ }
@@ -6140,8 +6161,23 @@ function stepClick(i) {
   };
   setTimeout(go, 120);
 }
+/* v0.94.0 U7 Deck look (DESIGN.md section 0, 18:30 / 17:59): built-in sleeve tints and core / Soul Core colours per deck slot */
+const SLEEVE_TINTS = { silver: '#cfcfcf', crimson: '#ff6b7d', azure: '#7fb4ff', jade: '#6fe0b8', gold: '#e9c46a', violet: '#c39bff' };
+const CORE_LOOKS = { blue: ['#cfe8ff', '#3a8cf0', '#0b3f8a'], red: ['#ffd0d0', '#e5484d', '#7a0f16'], purple: ['#eadcff', '#9b6bff', '#3d1a7a'], green: ['#d3f7e0', '#2fbf71', '#0d5530'],
+  white: ['#ffffff', '#d9dee6', '#7d8696'], yellow: ['#fff6c2', '#ffe14a', '#8a6d00'], gold: ['#ffe9b0', '#c9952a', '#6b4a0c'], silver: ['#ffffff', '#b8c0cc', '#5d6676'], onyx: ['#8a93a3', '#2a303b', '#05070a'] };
+function deckLook(i) {
+  const l = (SLOTS[i] && SLOTS[i].look) || {};
+  return { sleeve: SLEEVE_TINTS[l.sleeve] ? l.sleeve : 'silver', core: CORE_LOOKS[l.core] ? l.core : 'blue', soul: CORE_LOOKS[l.soul] ? l.soul : 'red' };
+}
+const coreVars = (k, n) => CORE_LOOKS[n].map((c, j) => `--ae-${k}${j + 1}:${c}`).join(';');
+function applyLook() {                                // your side of the board (and the hand row) takes the active deck's look; the CPU keeps the default
+  const L = deckLook(ACTIVE_SLOT), css = `#view-playmat .side-you{--sl-tint:${SLEEVE_TINTS[L.sleeve]};${coreVars('core', L.core)};${coreVars('soul', L.soul)}}`;
+  let s = $('ae-look'); if (!s) { s = document.createElement('style'); s.id = 'ae-look'; document.head.appendChild(s); }
+  if (s.textContent !== css) s.textContent = css;
+}
 function renderBoard() {
   const app = $('app'); if (!app || !G) return;
+  applyLook();
   const keep = {};
   document.querySelectorAll('[data-scroll]').forEach(e => { keep[e.dataset.scroll] = e.scrollLeft; });
   const P = G.p.player, O = G.p.opponent, stepName = G.steps[G.step];
@@ -6403,7 +6439,40 @@ function renderDbRail() {
   if (st.dataset.sig !== sig) { st.innerHTML = '<option value="">All sets</option>' + sets.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join(''); st.dataset.sig = sig; }
   st.value = DBF.set; $('db-sort').value = DBF.sort; $('db-legal').checked = DBF.legal; $('db-complete').checked = DBF.complete;
   if (document.activeElement !== $('db-family')) $('db-family').value = DBF.family;
-  const n = dbActiveCount(); $('db-filter-btn').textContent = n ? `Filters (${n})` : 'Filters';
+  const n = dbActiveCount(); $('db-filter-btn').innerHTML = n ? `FILTERS <em class="badge">${n}</em>` : 'FILTERS';
+  renderDbChips();
+}
+/* v0.94.0 U7: the active filters as removable chips under the search, with Clear all (mockup v11 deck builder) */
+function renderDbChips() {
+  const c = [], chip = (g, v, l) => c.push(`<button class="db-achip" data-a="db-unchip" data-v="${g}:${esc(v)}" aria-label="Remove filter ${esc(l)}">${esc(l)} <b aria-hidden="true">×</b></button>`);
+  DBF.colors.forEach(v => chip('colors', v, cap(v))); DBF.costs.forEach(v => chip('costs', v, 'Cost ' + (v === '10' ? '10+' : v))); DBF.types.forEach(v => chip('types', v, v));
+  if (DBF.set) chip('set', DBF.set, 'Set ' + DBF.set); if (DBF.family) chip('family', DBF.family, 'Family: ' + DBF.family);
+  if (DBF.legal) chip('legal', 1, 'Legal in format'); if (DBF.complete) chip('complete', 1, 'Complete effects'); if ($('db-only').checked) chip('only', 1, 'In deck only');
+  $('db-achips').innerHTML = c.length ? c.join('') + '<button class="db-aclear" data-a="db-freset">Clear all</button>' : '';
+}
+function dbUnchip(v) {
+  const i = v.indexOf(':'), g = v.slice(0, i), x = v.slice(i + 1);
+  if (DBF[g] instanceof Set) DBF[g].delete(x); else if (g === 'set' || g === 'family') DBF[g] = ''; else if (g === 'only') $('db-only').checked = false; else DBF[g] = false;
+  renderDeckBuilder();
+}
+/* v0.94.0 U7: deck panel tabs and the Deck look (sleeve tint, core and Soul Core colours; saved per deck slot, used on the board) */
+let DB_TAB = 'list';
+function dbTab(v) {
+  DB_TAB = ['list', 'curve', 'look'].includes(v) ? v : 'list';
+  const d = $('db-deck'); ['list', 'curve', 'look'].forEach(k => d.classList.toggle('tab-' + k, k === DB_TAB));
+  d.querySelectorAll('[data-a="db-tab"]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.v === DB_TAB)));
+  if (DB_TAB === 'look') renderDbLook();
+}
+function renderDbLook() {
+  const L = deckLook(ACTIVE_SLOT), grid = (k, list, sw) => `<div class="db-lk"><div class="db-stat-h">${k === 'soul' ? 'Soul Core' : k === 'core' ? 'Core' : 'Sleeve'}</div><div class="db-lkg">${Object.keys(list).map(n =>
+    `<button class="db-lkb" data-a="db-look" data-v="${k}:${n}" aria-pressed="${L[k] === n}" title="${cap(n)}">${sw(n)}<span>${cap(n)}</span></button>`).join('')}</div></div>`;
+  $('db-look').innerHTML = grid('sleeve', SLEEVE_TINTS, n => `<span class="sleeve" style="--sl-tint:${SLEEVE_TINTS[n]}" aria-hidden="true"></span>`)
+    + grid('core', CORE_LOOKS, n => `<i class="g-core" style="${coreVars('core', n)}" aria-hidden="true"></i>`)
+    + grid('soul', CORE_LOOKS, n => `<i class="g-soul" style="${coreVars('soul', n)}" aria-hidden="true"></i>`);
+}
+function dbLook(v) {
+  const [k, n] = v.split(':'); if (!['sleeve', 'core', 'soul'].includes(k) || !(k === 'sleeve' ? SLEEVE_TINTS : CORE_LOOKS)[n]) return;
+  SLOTS[ACTIVE_SLOT].look = Object.assign(deckLook(ACTIVE_SLOT), { [k]: n }); saveDeck(); applyLook(); renderDbLook();
 }
 function dbToggle(group, v) { const s = DBF[group]; if (s.has(v)) s.delete(v); else s.add(v); renderDeckBuilder(); }
 function dbResetFilters() {
@@ -6476,13 +6545,17 @@ function renderDbDeck(v) {
   const st = $('db-status'); st.className = 'db-status ' + (ok ? 'ok' : 'bad'); st.textContent = `${fmtName(FORMAT)} · ${v.total} cards · ${ok ? 'legal' : errSummary(v)}`;
   $('db-dk-list').innerHTML = dbRowsHTML();
   $('db-dk-stats').innerHTML = dbStatsHTML(v);
+  const chk = [[v.total >= 40, `${v.total} cards (40 or more)`]].concat(v.errors.filter(e => !/^Needs at least/.test(e)).slice(0, 6).map(e => [false, e]));
+  if (v.ok) chk.push([true, `Legal in ${fmtName(FORMAT)}`]);
+  $('db-check').innerHTML = chk.map(([ok, t]) => `<li class="${ok ? 'ok' : 'bad'}">${esc(t)}</li>`).join('');
   $('db-undo').disabled = !DB_UNDO.length;
   $('db-deckbar').innerHTML = `<span>Deck <b>${v.total}</b>/40</span><span class="${ok ? 'ok' : 'bad'}">${ok ? 'legal' : 'not legal'}</span><span class="db-deckbar-up">▲</span>`;
   $('db-deckbar').className = 'db-deckbar ' + (ok ? 'ok' : 'bad'); $('db-deckbar').title = txt;
   $('db-topcount').textContent = `${v.total}/40`; $('db-topcount').className = 'db-topcount ' + (ok ? 'ok' : 'bad');
 }
-function dbSheet(which) {             // phone: open 'filters', 'deck' or 'menu'; '' closes all
+function dbSheet(which) {             // phone: open 'filters', 'deck' or 'menu'; '' closes all (PC: FILTERS shows / hides the filter column)
   const vw = $('view-deckbuilder');
+  if (which === 'filters' && isPC()) { const off = vw.classList.toggle('db-rail-off'); $('db-filter-btn').setAttribute('aria-expanded', String(!off)); return; }
   vw.classList.toggle('db-open-filters', which === 'filters');
   vw.classList.toggle('db-open-deck', which === 'deck');
   vw.classList.toggle('db-open-menu', which === 'menu');
@@ -6497,7 +6570,7 @@ function renderDeckBuilder() {
     if (document.activeElement !== $('db-name')) $('db-name').value = SLOTS[ACTIVE_SLOT].name;
     $('db-preset').innerHTML = '<option value="">Load ready-made…</option>' + PREBUILT.map(d => `<option value="${d.id}">${esc(d.name)}</option>`).join('');
   }
-  renderDbRail(); renderDbDeck(v);
+  renderDbRail(); renderDbDeck(v); dbTab(DB_TAB);
   dbFilter(); dbWindow(true);
 }
 document.addEventListener('contextmenu', e => {
@@ -6895,7 +6968,7 @@ function dkTile(i, name, cards, starter) {
   const menu = open ? `<div class="dk-menu" role="menu" aria-label="${nm}"><div class="dk-mh">${nm}</div>${item('dk-edit', 'Edit cards')}${item('dk-play', 'Play with this deck')}${act ? '' : item('dk-active', 'Set active')}${item('dk-rename', 'Rename…')}${item('dk-dup', 'Duplicate')}${item('dk-look', 'Deck look')}${item('dk-code', 'Copy deck code')}${item('dk-del', 'Delete…', 'del')}<button class="dk-x" data-a="dk-more" data-v="-1">Cancel</button></div>` : '';
   const btns = starter ? `<button class="ae-ghost primary" data-a="dk-copy" data-v="${i}" aria-label="Copy ${nm} to my decks">COPY</button>`
     : `<button class="ae-ghost" data-a="dk-edit" data-v="${i}" aria-label="Edit ${nm}">EDIT</button><button class="ae-ghost primary" data-a="dk-play" data-v="${i}" aria-label="Play with ${nm}"${st.ok ? '' : ' disabled'}>PLAY</button><button class="dk-more" data-a="dk-more" data-v="${i}" aria-label="More actions for ${nm}" aria-haspopup="menu" aria-expanded="${open}">⋯</button>`;
-  return `<article class="dk-tile${act ? ' on' : ''}${open ? ' open' : ''}" data-v="${i}"><span class="sleeve dk-sl" aria-hidden="true"></span><div class="dk-main"><div class="dk-top"><b class="dk-name">${nm}</b>${act ? '<span class="dk-act">ACTIVE</span>' : ''}</div><div class="dk-dots">${dots}</div><div class="dk-st ${st.ok ? 'ok' : 'bad'}">${esc(st.txt)}</div></div><div class="dk-btns">${btns}</div>${menu}</article>`;
+  return `<article class="dk-tile${act ? ' on' : ''}${open ? ' open' : ''}" data-v="${i}"><span class="sleeve dk-sl" style="--sl-tint:${SLEEVE_TINTS[starter ? 'silver' : deckLook(i).sleeve]}" aria-hidden="true"></span><div class="dk-main"><div class="dk-top"><b class="dk-name">${nm}</b>${act ? '<span class="dk-act">ACTIVE</span>' : ''}</div><div class="dk-dots">${dots}</div><div class="dk-st ${st.ok ? 'ok' : 'bad'}">${esc(st.txt)}</div></div><div class="dk-btns">${btns}</div>${menu}</article>`;
 }
 function renderDecks() {
   if (!$('dk-list')) return;
@@ -7323,6 +7396,9 @@ document.addEventListener('click', e => {
   else if (a === 'play-style') playSet('style', v);
   else if (a === 'play-speed') playSet('speed', v);
   else if (a === 'go-deck') switchView('view-deckbuilder');
+  else if (a === 'db-unchip') dbUnchip(v);
+  else if (a === 'db-tab') dbTab(v);
+  else if (a === 'db-look') dbLook(v);
   else if (a === 'go-decks') { DK_MENU = -1; switchView('view-decks'); }
   else if (a.startsWith('dk-')) { if (a !== 'dk-more' && $('dk-msg')) $('dk-msg').textContent = ''; dkAct(a, v); }
   else if (a === 'go-lobby') switchView('view-lobby');

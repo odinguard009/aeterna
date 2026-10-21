@@ -2,6 +2,16 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.94.0
+- Lane: U/I
+- Time: TIME_LINE
+- **Deck builder in the new style (roadmap U7, part 1): back to My decks, a FILTERS button with the number of active filters, removable filter chips with Clear all, deck panel tabs (Deck list / Curve and check / Deck look), and a Deck look per deck: sleeve tint, core colour and Soul Core colour, shown on your side of the battle board.**
+  - The builder now uses the graphite theme and your player colour (old orange accents gone). On PC, FILTERS shows or hides the filter column; on the phone it opens the filter sheet as before. "‹ My decks" in the header goes back to the decks page.
+  - Curve and check: cost curve, colours, types and a check list (card count, every legality problem, "Legal in Eternal"). Deck look: six built-in sleeve tints (Silver, Crimson, Azure, Jade, Gold, Violet) and nine core / Soul Core colours (Blue, Red, Purple, Green, White, Yellow, Gold, Silver, Onyx); saved with the deck slot (old slots: Silver / Blue / Red). Your Life, Reserve, field cores and deck sleeve take them; the CPU keeps the default look. My decks shows each deck's sleeve tint.
+  - Not in this part (U7 part 2): uploading your own sleeve picture (tinted), and the phone panel that minimizes to one row with a mini preview.
+  - Stylesheet: old deck-builder rules replaced instead of overridden, so B04 stays under 96 KB (close to the limit: U8 trims first).
+  - Test `tests/unit/db94.test.mjs` (U94-1..U94-3, PC and phone); `deckbuilder53` follows the new FILTERS label and the PC FILTERS button. Backup `backup/v0.93.0`. Revert note: `git revert` of the U7 commit.
+
 ## v0.93.0
 - Lane: U/I
 - Time: about 70 min (session start to release), Opus, tokens in the DONE mark incl. the player-view subagent (chain session 3).

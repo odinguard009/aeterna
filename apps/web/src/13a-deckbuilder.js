@@ -91,7 +91,40 @@ function renderDbRail() {
   if (st.dataset.sig !== sig) { st.innerHTML = '<option value="">All sets</option>' + sets.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join(''); st.dataset.sig = sig; }
   st.value = DBF.set; $('db-sort').value = DBF.sort; $('db-legal').checked = DBF.legal; $('db-complete').checked = DBF.complete;
   if (document.activeElement !== $('db-family')) $('db-family').value = DBF.family;
-  const n = dbActiveCount(); $('db-filter-btn').textContent = n ? `Filters (${n})` : 'Filters';
+  const n = dbActiveCount(); $('db-filter-btn').innerHTML = n ? `FILTERS <em class="badge">${n}</em>` : 'FILTERS';
+  renderDbChips();
+}
+/* v0.94.0 U7: the active filters as removable chips under the search, with Clear all (mockup v11 deck builder) */
+function renderDbChips() {
+  const c = [], chip = (g, v, l) => c.push(`<button class="db-achip" data-a="db-unchip" data-v="${g}:${esc(v)}" aria-label="Remove filter ${esc(l)}">${esc(l)} <b aria-hidden="true">×</b></button>`);
+  DBF.colors.forEach(v => chip('colors', v, cap(v))); DBF.costs.forEach(v => chip('costs', v, 'Cost ' + (v === '10' ? '10+' : v))); DBF.types.forEach(v => chip('types', v, v));
+  if (DBF.set) chip('set', DBF.set, 'Set ' + DBF.set); if (DBF.family) chip('family', DBF.family, 'Family: ' + DBF.family);
+  if (DBF.legal) chip('legal', 1, 'Legal in format'); if (DBF.complete) chip('complete', 1, 'Complete effects'); if ($('db-only').checked) chip('only', 1, 'In deck only');
+  $('db-achips').innerHTML = c.length ? c.join('') + '<button class="db-aclear" data-a="db-freset">Clear all</button>' : '';
+}
+function dbUnchip(v) {
+  const i = v.indexOf(':'), g = v.slice(0, i), x = v.slice(i + 1);
+  if (DBF[g] instanceof Set) DBF[g].delete(x); else if (g === 'set' || g === 'family') DBF[g] = ''; else if (g === 'only') $('db-only').checked = false; else DBF[g] = false;
+  renderDeckBuilder();
+}
+/* v0.94.0 U7: deck panel tabs and the Deck look (sleeve tint, core and Soul Core colours; saved per deck slot, used on the board) */
+let DB_TAB = 'list';
+function dbTab(v) {
+  DB_TAB = ['list', 'curve', 'look'].includes(v) ? v : 'list';
+  const d = $('db-deck'); ['list', 'curve', 'look'].forEach(k => d.classList.toggle('tab-' + k, k === DB_TAB));
+  d.querySelectorAll('[data-a="db-tab"]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.v === DB_TAB)));
+  if (DB_TAB === 'look') renderDbLook();
+}
+function renderDbLook() {
+  const L = deckLook(ACTIVE_SLOT), grid = (k, list, sw) => `<div class="db-lk"><div class="db-stat-h">${k === 'soul' ? 'Soul Core' : k === 'core' ? 'Core' : 'Sleeve'}</div><div class="db-lkg">${Object.keys(list).map(n =>
+    `<button class="db-lkb" data-a="db-look" data-v="${k}:${n}" aria-pressed="${L[k] === n}" title="${cap(n)}">${sw(n)}<span>${cap(n)}</span></button>`).join('')}</div></div>`;
+  $('db-look').innerHTML = grid('sleeve', SLEEVE_TINTS, n => `<span class="sleeve" style="--sl-tint:${SLEEVE_TINTS[n]}" aria-hidden="true"></span>`)
+    + grid('core', CORE_LOOKS, n => `<i class="g-core" style="${coreVars('core', n)}" aria-hidden="true"></i>`)
+    + grid('soul', CORE_LOOKS, n => `<i class="g-soul" style="${coreVars('soul', n)}" aria-hidden="true"></i>`);
+}
+function dbLook(v) {
+  const [k, n] = v.split(':'); if (!['sleeve', 'core', 'soul'].includes(k) || !(k === 'sleeve' ? SLEEVE_TINTS : CORE_LOOKS)[n]) return;
+  SLOTS[ACTIVE_SLOT].look = Object.assign(deckLook(ACTIVE_SLOT), { [k]: n }); saveDeck(); applyLook(); renderDbLook();
 }
 function dbToggle(group, v) { const s = DBF[group]; if (s.has(v)) s.delete(v); else s.add(v); renderDeckBuilder(); }
 function dbResetFilters() {
@@ -164,13 +197,17 @@ function renderDbDeck(v) {
   const st = $('db-status'); st.className = 'db-status ' + (ok ? 'ok' : 'bad'); st.textContent = `${fmtName(FORMAT)} · ${v.total} cards · ${ok ? 'legal' : errSummary(v)}`;
   $('db-dk-list').innerHTML = dbRowsHTML();
   $('db-dk-stats').innerHTML = dbStatsHTML(v);
+  const chk = [[v.total >= 40, `${v.total} cards (40 or more)`]].concat(v.errors.filter(e => !/^Needs at least/.test(e)).slice(0, 6).map(e => [false, e]));
+  if (v.ok) chk.push([true, `Legal in ${fmtName(FORMAT)}`]);
+  $('db-check').innerHTML = chk.map(([ok, t]) => `<li class="${ok ? 'ok' : 'bad'}">${esc(t)}</li>`).join('');
   $('db-undo').disabled = !DB_UNDO.length;
   $('db-deckbar').innerHTML = `<span>Deck <b>${v.total}</b>/40</span><span class="${ok ? 'ok' : 'bad'}">${ok ? 'legal' : 'not legal'}</span><span class="db-deckbar-up">▲</span>`;
   $('db-deckbar').className = 'db-deckbar ' + (ok ? 'ok' : 'bad'); $('db-deckbar').title = txt;
   $('db-topcount').textContent = `${v.total}/40`; $('db-topcount').className = 'db-topcount ' + (ok ? 'ok' : 'bad');
 }
-function dbSheet(which) {             // phone: open 'filters', 'deck' or 'menu'; '' closes all
+function dbSheet(which) {             // phone: open 'filters', 'deck' or 'menu'; '' closes all (PC: FILTERS shows / hides the filter column)
   const vw = $('view-deckbuilder');
+  if (which === 'filters' && isPC()) { const off = vw.classList.toggle('db-rail-off'); $('db-filter-btn').setAttribute('aria-expanded', String(!off)); return; }
   vw.classList.toggle('db-open-filters', which === 'filters');
   vw.classList.toggle('db-open-deck', which === 'deck');
   vw.classList.toggle('db-open-menu', which === 'menu');
@@ -185,7 +222,7 @@ function renderDeckBuilder() {
     if (document.activeElement !== $('db-name')) $('db-name').value = SLOTS[ACTIVE_SLOT].name;
     $('db-preset').innerHTML = '<option value="">Load ready-made…</option>' + PREBUILT.map(d => `<option value="${d.id}">${esc(d.name)}</option>`).join('');
   }
-  renderDbRail(); renderDbDeck(v);
+  renderDbRail(); renderDbDeck(v); dbTab(DB_TAB);
   dbFilter(); dbWindow(true);
 }
 document.addEventListener('contextmenu', e => {

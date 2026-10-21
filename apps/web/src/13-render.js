@@ -151,8 +151,23 @@ function stepClick(i) {
   };
   setTimeout(go, 120);
 }
+/* v0.94.0 U7 Deck look (DESIGN.md section 0, 18:30 / 17:59): built-in sleeve tints and core / Soul Core colours per deck slot */
+const SLEEVE_TINTS = { silver: '#cfcfcf', crimson: '#ff6b7d', azure: '#7fb4ff', jade: '#6fe0b8', gold: '#e9c46a', violet: '#c39bff' };
+const CORE_LOOKS = { blue: ['#cfe8ff', '#3a8cf0', '#0b3f8a'], red: ['#ffd0d0', '#e5484d', '#7a0f16'], purple: ['#eadcff', '#9b6bff', '#3d1a7a'], green: ['#d3f7e0', '#2fbf71', '#0d5530'],
+  white: ['#ffffff', '#d9dee6', '#7d8696'], yellow: ['#fff6c2', '#ffe14a', '#8a6d00'], gold: ['#ffe9b0', '#c9952a', '#6b4a0c'], silver: ['#ffffff', '#b8c0cc', '#5d6676'], onyx: ['#8a93a3', '#2a303b', '#05070a'] };
+function deckLook(i) {
+  const l = (SLOTS[i] && SLOTS[i].look) || {};
+  return { sleeve: SLEEVE_TINTS[l.sleeve] ? l.sleeve : 'silver', core: CORE_LOOKS[l.core] ? l.core : 'blue', soul: CORE_LOOKS[l.soul] ? l.soul : 'red' };
+}
+const coreVars = (k, n) => CORE_LOOKS[n].map((c, j) => `--ae-${k}${j + 1}:${c}`).join(';');
+function applyLook() {                                // your side of the board (and the hand row) takes the active deck's look; the CPU keeps the default
+  const L = deckLook(ACTIVE_SLOT), css = `#view-playmat .side-you{--sl-tint:${SLEEVE_TINTS[L.sleeve]};${coreVars('core', L.core)};${coreVars('soul', L.soul)}}`;
+  let s = $('ae-look'); if (!s) { s = document.createElement('style'); s.id = 'ae-look'; document.head.appendChild(s); }
+  if (s.textContent !== css) s.textContent = css;
+}
 function renderBoard() {
   const app = $('app'); if (!app || !G) return;
+  applyLook();
   const keep = {};
   document.querySelectorAll('[data-scroll]').forEach(e => { keep[e.dataset.scroll] = e.scrollLeft; });
   const P = G.p.player, O = G.p.opponent, stepName = G.steps[G.step];
