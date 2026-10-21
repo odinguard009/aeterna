@@ -119,3 +119,26 @@ test('G21 rantai: default OFF, chain sum, budget reached, single session over th
   const r = gate(['rantai', 'next'], [RON, [50, 'DONE v0.81.3 next=Opus tokens=650000']], [], { PATH: '/nonexistent-for-gh:/usr/bin:/bin' });
   assert.match(r.out, /STOP session v0\.81\.3 used 650000 tokens \(> 600000\) \(Mode rantai: OFF\)/);
 });
+
+test('G-T1 item T: budget= on LOCK/MANUAL and done lets the gate post tokens= (no mental arithmetic)', () => {
+  const P = { GATE_PRINT: '1' };
+  const c = [ON, [60, 'LOCK budget=15000000']];
+  assert.equal(gate(['busy'], c).code, 3, 'a LOCK with budget= still blocks');
+  assert.equal(gate(['busy', 'ui'], [ON, [60, 'LOCK ui budget=9']]).code, 3, 'the lane word stays the lane');
+  assert.equal(gate(['busy', 'card'], [ON, [60, 'LOCK ui budget=9']]).out, 'FREE');
+  assert.match(gate(['lock', 'budget=123'], [ON], [], P).out, /^POST LOCK budget=123$/m);
+  assert.match(gate(['manual', 'ui', 'budget=9'], [ON], [], P).out, /^POST MANUAL ui budget=9$/m);
+  assert.match(gate(['lock'], [ON], [], P).out, /^POST LOCK$/m, 'no budget: the old marker');
+  assert.match(gate(['done', 'v0.90.0', 'next=Opus', 'budget=14750000', 'rantai'], c, [], P).out, /^POST DONE v0\.90\.0 next=Opus rantai tokens=250000$/m);
+  assert.match(gate(['done', 'v0.90.0', 'next=Opus', 'tokens=5', 'budget=1'], c, [], P).out, /^POST DONE v0\.90\.0 next=Opus tokens=5$/m, 'explicit tokens= wins');
+  const old = gate(['done', 'v0.90.0', 'next=Opus', 'budget=1'], [ON, [60, 'LOCK']], [], P);
+  assert.match(old.out, /^POST DONE v0\.90\.0 next=Opus$/m); assert.match(old.err, /^WARN no usable budget=/);
+  assert.match(gate(['done', 'v0.90.0', 'next=Opus', 'budget=15000001'], c, [], P).err, /^WARN/, 'a counter that went up gives no tokens=');
+  assert.match(gate(['rantai', 'next'], [[300, 'RANTAI ON'], [60, 'LOCK budget=15000000'], [10, 'DONE v0.90.0 next=Opus rantai tokens=250000']]).out, /^GO .*250\.000/);
+});
+
+test('G-T2 item T: start= on the done line is used when the marker has no budget= (scheduled prompt runs a plain lock)', () => {
+  const P = { GATE_PRINT: '1' };
+  assert.match(gate(['done', 'v0.90.0', 'next=Opus', 'start=15000000', 'budget=14900000'], [ON, [60, 'LOCK']], [], P).out, /^POST DONE v0\.90\.0 next=Opus tokens=100000$/m);
+  assert.match(gate(['done', 'v0.90.0', 'next=Opus', 'start=15000000', 'budget=14900000', 'rantai'], [ON, [60, 'LOCK budget=1']], [], P).out, /tokens=100000$/m, 'start= on the line wins over the marker');
+});

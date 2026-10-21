@@ -55,7 +55,7 @@ Condensed in v0.69.3 (P0 B8); the full measurements stay in git history (this fi
 - `add_repo` first, then one light sparse clone without `data/sources` and the big report table; never two git operations at once.
 - Gates count only `v*` release commits (OVERLAP guard, backup due every 5 releases), so chore/docs commits block nothing. Idle auto-mode runs end at the gate `check` (one `gh api` call, a few thousand tokens).
 - Shared mechanics once: build a mechanic several decks need in one version, not piecemeal per deck.
-- Every roadmap session shows `Token awal` at the start and `Token terpakai` (budget-counter difference, not the billed figure) at the end and in a handoff.
+- Every roadmap session shows `Token awal` at the start and `Token terpakai` (budget-counter difference, not the billed figure) at the end and in a handoff; the DONE line passes `start=<Token awal> budget=<now>` and the gate computes it (item T, 2026-10-21).
 - Owner-side savings: turn off unused connectors, skills and plugins in the Project (settings apply to new sessions only); keep the Project instructions short and let CLAUDE.md hold the rules (copies drift); Claude Code desktop/terminal sessions carry a smaller system prompt than the claude.ai chat.
 
 ## 9. Test cleanup (owner, 2026-10-19: "too many tests")

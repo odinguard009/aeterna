@@ -62,22 +62,22 @@ test('R85-05 browser: a real match record (cut while the human is asked) replays
     /* eslint-disable no-undef */
     const sleep = ms => new Promise(res => setTimeout(res, ms));
     BS.startNewGame({ seed: 11 });
-    const t0 = Date.now(); let n0 = -1, n1 = -1;
+    const t0 = Date.now(); let n0 = -1, n1 = -1, last = null; const skip = new Set();   // item T: a summon whose payment was cancelled is not tried again
     while (Date.now() - t0 < 60000 && BS.G && !BS.G.over && BS.G.turnNo < 4) {
       await sleep(30);
-      if (MODAL) { const b = (MODAL.cfg.buttons || []).find(x => !x.dis && !x.hidden); closeModal(b ? b.value : null); continue; }
+      if (MODAL) { const b = (MODAL.cfg.buttons || []).find(x => !x.dis && !x.hidden); if (last && !(b && b.value)) skip.add(last); last = null; closeModal(b ? b.value : null); continue; }
       if (PICK) { PICK.res([...PICK.uids][0]); continue; }
       if (!BS.seatLoopOpen('player') || !BS.humanCan()) continue;
       if (n0 < 0) { n0 = BS.portRecord().answers.length; uiInfo('Glossary', 'a page message'); await sleep(30); closeModal(null); await sleep(30); n1 = BS.portRecord().answers.length; }
-      const g = BS.G, p = g.p.player, c = (g.step === 4 || g.step === 6) && p.hand.find(x => CARDS[x.id].type === 'Spirit' && BS.canPlayCard(p, x));
-      BS.sendIntent(c ? { type: 'summon', uid: c.uid } : { type: 'next' }); await sleep(300);
+      const g = BS.G, p = g.p.player, c = (g.step === 4 || g.step === 6) && p.hand.find(x => !skip.has(x.uid) && CARDS[x.id].type === 'Spirit' && BS.canPlayCard(p, x));
+      last = c ? c.uid : null; BS.sendIntent(c ? { type: 'summon', uid: c.uid } : { type: 'next' }); await sleep(300);
     }
     for (let k = 0; k < 400 && !(BS.seatLoopOpen('player') && BS.humanCan() && !MODAL && !PICK); k++) {
       await sleep(30);
       if (MODAL) { const b = (MODAL.cfg.buttons || []).find(x => !x.dis && !x.hidden); closeModal(b ? b.value : null); }
       else if (PICK) PICK.res([...PICK.uids][0]);
     }
-    const r = BS.portRecord(); r.n0 = n0; r.n1 = n1;
+    const r = BS.portRecord(); r.n0 = n0; r.n1 = n1; r.turn = BS.G && BS.G.turnNo; r.over = !!(BS.G && BS.G.over);
     return r;
     /* eslint-enable no-undef */
   });
@@ -89,4 +89,5 @@ test('R85-05 browser: a real match record (cut while the human is asked) replays
   const x = await replayPort(rec);
   assert.ok(x.ok, x.reason); assert.ok(x.sameCut, 'same log up to the cut: ' + JSON.stringify([x.cut, rec.cut]));
   assert.equal(x.at, rec.answers.length);
+  assert.ok(rec.turn >= 4 || rec.over, `the match reaches turn 4 (stopped at turn ${rec.turn}; a driver loop that retries a cancelled summon ran into the 60 s cap before)`);
 });

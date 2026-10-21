@@ -149,12 +149,15 @@ test('E22 every card renders its detail panel and card-style effect text without
     return out; });
   assert.deepEqual(bad, []);
 });
+// Item T (owner, 2026-10-21): with ~6,000 playable Spirits/Nexuses this took 73 s and ran in every `npm run loop` (smoke set). In the
+// quick loop (BS_QUICK) it takes every 20th card in id order (fixed sample, still > 250 cards); CI (`npm test`) keeps every card.
+const E23_STEP = process.env.BS_QUICK ? 20 : 1;
 test('E23 a field with every Spirit and Nexus of the pack renders and keeps the invariants', async () => {
-  const r = await ev(() => { const p = BS.G.p.player; let added = 0;
-    for (const [id, c] of Object.entries(BS.CARDS)) { if (c.type !== 'Spirit' && c.type !== 'Nexus') continue; if (id.startsWith('TRAIN') || id.startsWith('TST')) continue;
+  const r = await ev((step) => { const p = BS.G.p.player; let added = 0, seen = 0;
+    for (const [id, c] of Object.entries(BS.CARDS)) { if (c.type !== 'Spirit' && c.type !== 'Nexus') continue; if (id.startsWith('TRAIN') || id.startsWith('TST')) continue; if (seen++ % step) continue;
       const i = BS.mkInst(id); const need = c.type === 'Spirit' && !c.countLv ? c.levels[0].cores : 0; i.cores = need; BS.takeFromVoid(p, need);
       (c.type === 'Spirit' ? p.spirits : p.nexus).push(i); p.deckSize++; added++; }
-    let e = null; try { BS.render(); BS.checkInvariants(); } catch (x) { e = x.message; } return { added, e }; });
-  assert.ok(r.added > 20); assert.equal(r.e, null);
+    let e = null; try { BS.render(); BS.checkInvariants(); } catch (x) { e = x.message; } return { added, e }; }, E23_STEP);
+  assert.ok(r.added > (E23_STEP > 1 ? 250 : 20), `${r.added} cards on the field`); assert.equal(r.e, null);
 });
 test('E24 no page errors were raised by the engine tests', () => { assert.deepEqual(errors, []); });

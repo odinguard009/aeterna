@@ -9,6 +9,7 @@
 #   LANEDONE lane branch  a lane session finished its branch (no release yet; the merge step ends with DONE)
 #   RANTAI ON / RANTAI OFF [reason]  chain-mode switch (owner, 2026-10-20); newest one wins; none yet = OFF
 #   DONE ... tokens=N [rantai]  tokens = the session's budget-counter difference; "rantai" = it was a chain continuation
+#                       (item T: "lock|manual ... budget=<start>" + "done ... budget=<end>" lets the gate compute tokens=; explicit tokens= still wins)
 #   HEMAT ON / HEMAT OFF  token-saving switch (owner, 2026-10-19); newest one wins; none yet = ON. ON = the pre-v0.68 session
 #                       (single main session, read-only subagents only as CLAUDE.md "Mode hemat" says); OFF = team session (v0.68)
 # Lanes (P1, v0.63.1; opt-in): LOCK/MANUAL/UNLOCK may carry a lane as second word (ui | card). A start with a lane
@@ -44,7 +45,19 @@ MANUAL_H=3       # a MANUAL older than this is a crashed manual session
 NOPROG=0         # auto sessions without a new v* commit before the switch goes OFF by itself; 0 = never (owner, 2026-10-20, was 3)
 RANTAI_MAX=${GATE_RANTAI_MAX:-600000}  # chain budget and single-session ceiling in tokens (owner, 2026-10-20)
 MAX_AUTO_24H=${GATE_MAX_AUTO_24H:-0}   # max auto sessions (LOCK) in 24 hours; 0 = unlimited (owner, 2026-10-20); GATE_MAX_AUTO_24H only lets the test exercise the cap
-post() { gh api -X POST "repos/$R/issues/$L/comments" -f body="$1" --jq .created_at >/dev/null; }
+post() { if [ "${GATE_PRINT:-}" = 1 ]; then echo "POST $1"; return 0; fi; gh api -X POST "repos/$R/issues/$L/comments" -f body="$1" --jq .created_at >/dev/null; }   # GATE_PRINT=1: tests see the body
+# Item T (owner, 2026-10-21): the session writes the budget counter it sees at the start ("lock|manual [lane] budget=N") and at the end
+# ("done ... budget=N"; or "done ... start=<Token awal> budget=<now>" when the marker has none, e.g. the scheduled prompt's plain "lock");
+# the gate subtracts and posts tokens=, so no mental arithmetic (v0.89.0 reported 38,460 for a ~1,400-line session).
+start_budget() { # budget=N of the newest LOCK / MANUAL marker; empty when that marker has none
+  local c
+  if [ "${GATE_FIXTURE:-}" = 1 ]; then c="${COMMENTS:-}"
+  else c=$(pages "repos/$R/issues/$L/comments?per_page=100&since=$(date -u -d '-2 days' +%Y-%m-%dT%H:%M:%SZ)" '.[] | [.created_at, (.body | split("\n")[0])] | @tsv') || return 1; fi
+  printf '%s\n' "$c" | sort | awk -F'\t' '$2 ~ /^(LOCK|MANUAL)( |$)/ { b = ""; if (match($2, /budget=[0-9]+/)) b = substr($2, RSTART + 7, RLENGTH - 7); last = b } END { print last }'
+}
+split_budget() { # $1 = args; prints "<args without budget=/start=>|<budget N>|<start N>"; a lane word stays
+  local a="" b="" st="" w; for w in $1; do case "$w" in budget=*) b="${w#budget=}" ;; start=*) st="${w#start=}" ;; *) a="${a:+$a }$w" ;; esac; done; printf '%s|%s|%s\n' "$a" "$b" "$st"
+}
 pages() { # gh --paginate follows Link headers to repositories/<id>/..., which the session proxy refuses: walk ?page=N on repos/ paths instead
   local url="$1" jq="$2" n=1 out cnt
   while :; do
@@ -171,9 +184,17 @@ case "$cmd" in
       AUTOOFF*) post "OFF auto: ${v#AUTOOFF }. Owner: fix the cause, then 'otomatis on'." ; echo "STOP ${v#AUTOOFF } (switch set to OFF)" ;;
       *) echo "$v" ;;
     esac ;;
-  lock)   lane_ok "${1:-}" || exit 2; v=$(evaluate busy "" "${1:-}") || exit 1; [ "${v%% *}" = BUSY ] && { echo "STOP ${v#BUSY }"; exit 3; }; post "LOCK${1:+ $1}" && echo "locked${1:+ ($1 lane)}" ;;
-  manual) lane_ok "${1:-}" || exit 2; v=$(evaluate busy "" "${1:-}") || exit 1; case "$v" in BUSY\ auto*) echo "STOP ${v#BUSY }"; exit 3 ;; esac; post "MANUAL${1:+ $1}" && echo "manual session marked${1:+ ($1 lane)}" ;;
-  done)   post "DONE ${*:-}" && echo done ;;
+  lock)   IFS='|' read -r a b sb <<< "$(split_budget "$*")"; set -- $a
+          lane_ok "${1:-}" || exit 2; v=$(evaluate busy "" "${1:-}") || exit 1; [ "${v%% *}" = BUSY ] && { echo "STOP ${v#BUSY }"; exit 3; }; post "LOCK${1:+ $1}${b:+ budget=$b}" && echo "locked${1:+ ($1 lane)}" ;;
+  manual) IFS='|' read -r a b sb <<< "$(split_budget "$*")"; set -- $a
+          lane_ok "${1:-}" || exit 2; v=$(evaluate busy "" "${1:-}") || exit 1; case "$v" in BUSY\ auto*) echo "STOP ${v#BUSY }"; exit 3 ;; esac; post "MANUAL${1:+ $1}${b:+ budget=$b}" && echo "manual session marked${1:+ ($1 lane)}" ;;
+  done)   IFS='|' read -r a b sb <<< "$(split_budget "$*")"
+          if [ -n "$b" ] && [[ " $a " != *" tokens="* ]]; then
+            st=$sb; [ -n "$st" ] || st=$(start_budget) || st=""   # start=<Token awal> on the done line, else budget= of the LOCK/MANUAL
+            if [ -n "$st" ] && [ "$st" -ge "$b" ]; then a="$a tokens=$((st - b))"
+            else echo "WARN no usable budget= on the session's LOCK/MANUAL (start '${st}', end $b): DONE posted without tokens= (chain mode stops)" >&2; fi
+          fi
+          post "DONE $a" && echo "done $a" ;;
   lanedone) lane_ok "${1:-}" && [ -n "${1:-}" ] || { echo "usage: $0 lanedone <lane> <branch>"; exit 2; }; post "LANEDONE $1 ${2:-lane/$1}" && echo "lane $1 done" ;;
   unlock) lane_ok "${1:-}" || exit 2; post "UNLOCK${1:+ $1}" && echo "unlocked${1:+ ($1 lane)}" ;;
   on)     post "ON ${*:-}" && echo "Mode otomatis: ON" ;;
