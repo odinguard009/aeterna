@@ -4,10 +4,10 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 
 ## v0.95.0
 - Lane: U/I
-- Time: TIME_LINE
+- Time: about 35 min (session start to release), Opus, tokens in the DONE mark incl. the player-view subagent (chain session 5).
 - **Your own sleeve picture (roadmap U7, part 2): Deck look has UPLOAD SLEEVE; the picture stays on this device per deck slot, is tinted by the chosen sleeve colour (Silver keeps it as it is) and shows on your deck pile in battle, in the deck builder and on My decks. On the phone the deck bar shows a mini preview of the deck look.**
   - Stored like the playmat (the card-image store, key `~sleeve:<slot>`, longest side 600 px); REMOVE takes it out; clearing the card images keeps it.
-  - Not done: the format default (Standard first, Eternal as "Preview", owner 2026-10-21): only the training deck is legal in Standard, so the default deck and every starter deck would be unplayable on a first start. It needs a Standard starter deck first (noted in `docs/ai/roadmap-open.md`).
+  - Not done: the format default (Standard first, Eternal as "Preview", owner 2026-10-21): only the training deck is legal in Standard, so the default deck and every starter deck would be unplayable on a first start. It goes with the "Standard decks" item (the official starter recipes were added to the data the same day; noted in `docs/ai/roadmap-open.md`).
   - Test `tests/unit/db95.test.mjs` (U95-1, U95-2). Backup `backup/v0.94.0`. Revert note: `git revert` of the U7 part 2 commit.
 
 ## v0.94.0
