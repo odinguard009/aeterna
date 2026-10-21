@@ -22,7 +22,7 @@ def sim_game(b, seed):
     pg = page(b, True); ev(pg, RED); ev(pg, f"BS.startNewGame({{seed:{seed}}});1"); wait_over(pg); return pg
 def human_game(b, seed, turns=10):
     """scripted human through the real UI: answers each prompt with its first enabled button, taps a pickable card, tries two hand cards per Main Step, else Next"""
-    pg = page(b); ev(pg, "BS.SETTINGS.speed='instant';1"); ev(pg, f"BS.startNewGame({{seed:{seed}}});1")
+    pg = page(b); ev(pg, "BS.SETTINGS.speed='instant';1"); ev(pg, f"BS.startNewGame({{deckA:BS.PREBUILT.find(x=>x.id==='mitra').cards,deckB:BS.PREBUILT.find(x=>x.id==='train').cards,seed:{seed}}});1")
     t0 = time.time(); tried = {}
     while time.time() - t0 < 90:
         if ev(pg, f"!BS.G||BS.G.over||BS.G.turnNo>{turns}"): break

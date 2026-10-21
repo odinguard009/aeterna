@@ -92,7 +92,7 @@ with sync_playwright() as p:
         if is_open(pg5): pg5.locator("#modal-actions .modal-btn:not([disabled])").first.click(); settle(pg5)
     chk('25 the starting-hand screen keeps its 4-card grid', ev(pg5, "document.querySelectorAll('#action-modal.active .mull-list .mull-card').length") == 4)
     # replay still works with the new dialogs
-    pg6 = page(b); ev(pg6, "BS.SETTINGS.speed='instant';BS.startNewGame({seed:2024});1")
+    pg6 = page(b); ev(pg6, "BS.SETTINGS.speed='instant';BS.startNewGame({deckA:BS.PREBUILT.find(x=>x.id==='mitra').cards,deckB:BS.PREBUILT.find(x=>x.id==='train').cards,seed:2024});1")
     t0 = time.time(); tried = {}
     while time.time() - t0 < 60 and not ev(pg6, "!BS.G||BS.G.over||BS.G.turnNo>6"):
         if is_open(pg6):

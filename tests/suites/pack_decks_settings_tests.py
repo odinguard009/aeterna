@@ -46,7 +46,7 @@ with sync_playwright() as p:
     ctx.close()
     # ---------- B. prebuilt decks ----------
     pg, errs, ctx = page(b)
-    info = ev(pg, "BS.PREBUILT.map(d=>({id:d.id,n:Object.values(d.cards).reduce((a,b)=>a+b,0),e:BS.validateDeck(d.cards,'eternal').ok,s:BS.validateDeck(d.cards,'standard').ok,miss:Object.keys(d.cards).filter(i=>!BS.CARDS[i])}))")
+    info = ev(pg, "BS.PREBUILT.filter(d=>!d.format).map(d=>({id:d.id,n:Object.values(d.cards).reduce((a,b)=>a+b,0),e:BS.validateDeck(d.cards,'eternal').ok,s:BS.validateDeck(d.cards,'standard').ok,miss:Object.keys(d.cards).filter(i=>!BS.CARDS[i])}))")
     for d in info:
         chk(f'prebuilt {d["id"]}: 40 cards, all cards exist, legal in Eternal', d['n'] == 40 and not d['miss'] and d['e'], d)
     chk('prebuilt train is legal in Standard, Mitra/red are not (no letter block)', info[0]['s'] and not info[1]['s'] and not info[2]['s'])
@@ -59,7 +59,7 @@ with sync_playwright() as p:
     ev(pg, "BS.loadPrebuilt('mitra')")
     chk('loading a ready-made deck fills the slot and renames the default name', ev(pg, "Object.values(BS.PLAYER_DECK).reduce((a,b)=>a+b,0)")==40 and 'White' in ev(pg, "BS.SLOTS()[2].name"))
     ev(pg, "BS.switchSlot(0)")
-    chk('slot 1 is unchanged after editing slot 3', ev(pg, "Object.values(BS.PLAYER_DECK).reduce((a,b)=>a+b,0)")==40 and ev(pg, "!!BS.PLAYER_DECK['BS74-CX03']"))
+    chk('slot 1 is unchanged after editing slot 3', ev(pg, "Object.values(BS.PLAYER_DECK).reduce((a,b)=>a+b,0)")==40 and ev(pg, "Object.keys(BS.PLAYER_DECK).some(k=>k.startsWith('26RSD02-'))"))     # v0.97.0: the default deck is the Standard starter 26RSD02
     pg.reload(); ready(pg)
     chk('slots persist across reload (slot 3 still the Mitra deck, active slot 1)', ev(pg, "BS.ACTIVE_SLOT")==0 and ev(pg, "(BS.switchSlot(2),!!BS.PLAYER_DECK['BS74-CX03'])"))
     chk('invalid switchSlot is refused', ev(pg, "BS.switchSlot(99)")==False and ev(pg, "BS.switchSlot(-1)")==False and ev(pg, "BS.switchSlot('x')")==False)
@@ -140,11 +140,11 @@ with sync_playwright() as p:
         got = ev(pg, "(()=>{const g=BS.G;const ids=p=>new Set(p.deck.concat(p.hand,p.spirits,p.nexus,p.soulState,p.trash).map(x=>x.id));return {p:[...ids(g.p.player)],o:[...ids(g.p.opponent)],pn:g.p.player.deckSize,on:g.p.opponent.deckSize}})()")
         legal_cpu = {'train': True, 'mitra': fmt == 'eternal', 'red': fmt == 'eternal', 'random': True, 'mine': True}[cpu]
         if fmt == 'standard':   # slot 1 is the legal training deck in Standard
-            exp_o = {'train': 'TRAIN-01', 'mitra': 'TRAIN-01', 'red': 'TRAIN-01', 'random': 'TRAIN-01', 'mine': 'TRAIN-01'}[cpu]
+            exp_o = {'train': 'TRAIN-01', 'mitra': '26RSD', 'red': '26RSD', 'random': '26RSD', 'mine': 'TRAIN-01'}[cpu]     # v0.97.0: an illegal choice or random gives a complete Standard starter, not the training deck
         else:
             exp_o = {'train': 'TRAIN-01', 'mitra': 'BS74-CX03', 'red': 'BS75-011', 'random': None, 'mine': ('BS74-CX03' if i % 2 == 1 else 'TRAIN-01')}[cpu]
         okp = set(got['p']) <= set(mine) and got['pn'] == 40
-        oko = got['on'] == 40 and (exp_o is None or exp_o in got['o'])
+        oko = got['on'] == 40 and (exp_o is None or (any(x.startswith('26RSD') for x in got['o']) if exp_o == '26RSD' else exp_o in got['o']))
         chk(f'match #{i+1} {fmt}/CPU deck {cpu}: both decks built from the chosen lists (40 cards each)', okp and oko and not errs, [got, mine[:3], errs])
         ctx.close()
     # ---------- H. illegal own deck ----------
