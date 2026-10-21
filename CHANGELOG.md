@@ -2,6 +2,13 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.89.0
+- Lane: K
+- **Standard Magic, part 2 (roadmap S1): 9 more Standard Magic cards in the library, 8 complete: Meteor Crash, Unmask, Rapid Ripper, Portal Hack, Evil Hazard, Guard Vent, Strike Vent, Defensive Gate, and Flame Summoning (partial: its Nexus rider).** Playable 6,877 -> 6,886, complete 762 -> 770; Standard block A 664 of 674 playable.
+  - Effect format schema v3 (`docs/ai/effect-format.md`, code `packages/engine/src/02p-effects-standard.js`): condition `ctrlFamily` ("If you control any X/Y family Spirit", or none of them); `BP_TARGET.perExhausted` ("for each exhausted Spirit you control"); `DESTROY_PICKED` inside `END_BATTLE` ("When this battle ends, destroy it"; a Magic card's delayed end-of-battle effect now resolves from the Trash, `02o`); `BP_MINUS.other` (the second of "two opposing Spirits" is another one); `EXHAUST_OPP.oppChooses` ("The opponent targets a refreshed Spirit they control": a CPU opponent gives up its weakest, a human taps one); `SOUL_HOLDER_CORE` (a core from the Spirit with the Soul Core; the opponent keeps the Soul Core while another core is there); `BOUNCE_OPP.bpLeOwnLv1` (BP up to the original LV1 BP of one of your matching Spirits); `LIFE_SHIELD` ("During this turn, your Life can't be reduced by its attack", checked in `08-battle.js`); `BLOCK_EXHAUSTED_OPP` ("During this battle, it can block even while exhausted").
+  - Still out of the library (10): Vermillion Roar, Awakening, Guard Effect, Thunder Shutter, Sacrifice Strike, Boost Energy, Furious Anger, Massive Grow, Howling Song, Twilight Fantasia Song (Clash, summoning from the Trash, Magic immunity, Magirrate, Rumble, Nexus as a Spirit, symbol changes, granted effects).
+  - Tests `tests/unit/s1magic89.test.mjs` (S89-01..S89-08). Revert note: `git revert` of the S1 part 2 commit removes the 9 cards and the schema v3 pieces (no earlier card changes).
+
 ## v0.88.0
 - Lane: K
 - **Standard Magic, part 1 (roadmap S1, owner 2026-10-21 "agar game playable"): 39 of the 58 Standard (block A) Magic cards that had no runnable paragraph are in the library (23 complete, 16 partial "!" cards that list the clause that does not run).** Playable 6,838 -> 6,877, complete 739 -> 762.

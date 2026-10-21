@@ -1,6 +1,6 @@
 {
  "stats": {
-  "cards": 7804,
+  "cards": 7795,
   "per_saga": {
    "1": 787,
    "2": 333,
@@ -19,23 +19,23 @@
    "15": 357,
    "16": 334,
    "17": 110,
-   "50": 502
+   "50": 493
   },
   "tokens": 3,
   "missing_page": 3,
-  "skipped_curated": 902,
+  "skipped_curated": 911,
   "number_conflicts": 5,
   "nexus_levels_added": 716,
   "nexus_levels_missing": 43,
   "level_problems": 3,
-  "image_problems": 569,
+  "image_problems": 566,
   "merged": 110,
   "brave_unparsed": 171,
   "ut_lines_added": 119,
   "odd_reduction": 809,
   "brave_no_data": 2,
   "ut_lines_missing": 1,
-  "without_image": 567
+  "without_image": 564
  },
  "tokens": [
   "BS73-T001",
@@ -809,6 +809,7 @@
   "26RSD04-005",
   "26RSD04-008",
   "26RSD04-013",
+  "26RSD04-014",
   "26RSD05-001",
   "26RSD05-002",
   "26RSD05-003",
@@ -855,6 +856,7 @@
   "26RBS01-086",
   "26RBS01-090",
   "26RBS01-097",
+  "26RBS01-109",
   "26RBS01-110",
   "26RBS01-112",
   "26RBS01-114",
@@ -889,6 +891,8 @@
   "26RCB01-061",
   "26RCB01-062",
   "26RCB01-063",
+  "26RCB01-065",
+  "26RCB01-066",
   "26RCB01-067",
   "26RCB01-068",
   "26RCB01-069",
@@ -911,6 +915,10 @@
   "26RBS02-051",
   "26RBS02-058",
   "26RBS02-064",
+  "26RBS02-087",
+  "26RBS02-088",
+  "26RBS02-089",
+  "26RBS02-091",
   "26RDB01-056",
   "26RDB01-059",
   "26RDB01-062",
@@ -944,6 +952,7 @@
   "26RBS03-072",
   "26RBS03-074",
   "26RBS03-087",
+  "26RBS03-088",
   "26RBS03-089",
   "26RBS03-090",
   "26RBS03-091",
@@ -4181,16 +4190,6 @@
    "problem": "ambiguous name (2 files, none in set 26RCB01)"
   },
   {
-   "id": "26RCB01-065",
-   "name": "Guard Vent",
-   "problem": "ambiguous name (2 files, none in set 26RCB01)"
-  },
-  {
-   "id": "26RCB01-066",
-   "name": "Strike Vent",
-   "problem": "ambiguous name (2 files, none in set 26RCB01)"
-  },
-  {
    "id": "26RCB01-X02",
    "name": "Kamen Rider Gaim Kiwami Arms",
    "problem": "ambiguous name (2 files, none in set 26RCB01)"
@@ -4568,11 +4567,6 @@
   {
    "id": "26RBS03-086",
    "name": "Burn Out",
-   "problem": "no image"
-  },
-  {
-   "id": "26RBS03-088",
-   "name": "Evil Hazard",
    "problem": "no image"
   },
   {

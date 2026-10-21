@@ -51,7 +51,7 @@ async function endOfBattle() {
       try { removeSpirit(q.opp, b, 'destroyed', true); } finally { G.fxBy = by; }
       checkDepletion(q.opp); io.view({ type: 'board' }); continue;
     }
-    if (!fieldList(q.p).includes(q.src)) continue;      // the source left the Field: the end-of-battle effect does not resolve
+    if (CARDS[q.src.id].type !== 'Magic' && !fieldList(q.p).includes(q.src)) continue;      // the source left the Field: the end-of-battle effect does not resolve (v0.89: a Magic card's delayed effect resolves from the Trash)
     if (q.brilliance) {
       const back = (G.battleMagic || []).filter(m => m.key === q.p.key && q.p.trash.includes(m.inst)).map(m => m.inst);
       for (const m of back) { removeFrom(q.p.trash, m); q.p.hand.push(m); }

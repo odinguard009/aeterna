@@ -106,6 +106,7 @@ Object.assign(FX_ACTIONS, {
         t = c.p.cpu && fight ? fight : await fxPickTarget(c, L, `✨ <b>${esc(CARDS[c.src.id].name)}</b><br>Tap one of your Spirits to get +${a.n} BP (glowing).`);
         if (!t) { c.ctx.did = false; return; }
       } else if (!c.p.spirits.includes(t)) { c.ctx.did = false; return; }
+      c.ctx.picked = t;      // v0.88 S1: "When this battle ends, destroy it" (DESTROY_PICKED, 02p)
       if (a.battle) addBattleBp(t, a.n); else t.bpMod = (t.bpMod || 0) + a.n;
       log(`${CARDS[t.id].name} gets +${a.n} BP during this ${a.battle ? 'battle' : 'turn'}.`);
     } },

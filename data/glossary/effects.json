@@ -1323,5 +1323,45 @@
     "status": "partial",
     "example": "{\"do\":\"DESTROY\",\"bpLe\":5000,\"if\":{\"allHave\":{\"family\":\"GAIM\"}}}",
     "rule": "Engine house reading of the Standard card texts (rules audit, 2026-10-21): every card on your Field of the named kind must match; with no such card the condition is not met (an empty Field has nothing that 'has' the family). Team = the card's printed [Team: X] attribute, like a family."
+  },
+  {
+    "id": "S1_DESTROY_OWN",
+    "kind": "action",
+    "meaning": "Target one of your X Spirits. Destroy it. If you've done so, ...",
+    "pattern": "Target (one of your|a .+ you control).*Destroy it\\. If you've done so",
+    "engine": "DESTROY_OWN {match} (v0.88, 02p)",
+    "status": "wired",
+    "example": "{\"do\":\"DESTROY_OWN\",\"match\":{\"family\":[\"Dark Puce\"]}}",
+    "rule": "Engine reading of the Standard card texts: own destruction by your own effect; 'If you've done so' = the next action has if {prev: true}."
+  },
+  {
+    "id": "S1_LIFE_SHIELD",
+    "kind": "action",
+    "meaning": "During this turn, your Life can't be reduced by its attack.",
+    "pattern": "your Life can't be reduced by its attack",
+    "engine": "LIFE_SHIELD {n} (v0.89, 02p; 08-battle)",
+    "status": "wired",
+    "example": "{\"do\":\"LIFE_SHIELD\",\"n\":1}",
+    "rule": "Engine reading of the Standard card texts: the targeted Spirit's unblocked attacks take no Life from you until the end of the turn; its other effects still apply."
+  },
+  {
+    "id": "S1_BLOCK_EXHAUSTED_OPP",
+    "kind": "action",
+    "meaning": "Target an opposing Spirit. During this battle, it can block even while exhausted.",
+    "pattern": "can block even while exhausted",
+    "engine": "BLOCK_EXHAUSTED_OPP (v0.89, 02p; canBlockState)",
+    "status": "wired",
+    "example": "{\"do\":\"BLOCK_EXHAUSTED_OPP\"}",
+    "rule": "Engine reading of the Standard card text (Meteor Crash): as printed, during this battle only."
+  },
+  {
+    "id": "S1_DESTROY_PICKED",
+    "kind": "action",
+    "meaning": "When this battle ends, destroy it.",
+    "pattern": "When this battle ends, destroy (it|the summoned)",
+    "engine": "END_BATTLE {then: [DESTROY_PICKED]} (v0.89, 02p / 02o)",
+    "status": "wired",
+    "example": "{\"do\":\"END_BATTLE\",\"then\":[{\"do\":\"DESTROY_PICKED\"}]}",
+    "rule": "Engine reading of the Standard card texts: a delayed effect of a used Magic card; it resolves at the end of the battle even though the card is in the Trash."
   }
 ]
