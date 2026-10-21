@@ -85,3 +85,18 @@ for (const screen of ['pc', 'phone']) {
     assert.deepEqual(errors, []);
   });
 }
+
+test('U93-4 pc: the menu of the last tile stays on screen; Enter saves a rename, Escape closes the dialog', async () => {
+  const { page, errors } = await open('pc');
+  await page.evaluate(() => { for (let i = 1; i < 8; i++) BS.SLOTS()[i].name = 'Deck number ' + (i + 1); BS.switchView('view-decks'); scrollTo(0, 0); return 1; });
+  await page.click('#dk-list .dk-tile[data-v="7"] [data-a="dk-more"]');
+  const r = await page.evaluate(() => { const m = document.querySelector('#dk-list .dk-menu').getBoundingClientRect(); return m.bottom <= innerHeight + 1 && m.top >= 0; });
+  assert.equal(r, true);
+  await page.click('[data-a="dk-rename"][data-v="7"]');
+  await page.fill('#dk-name-in', 'Enter Name'); await page.press('#dk-name-in', 'Enter');
+  assert.equal(await page.evaluate(() => BS.SLOTS()[7].name), 'Enter Name');
+  await page.click('#dk-list .dk-tile[data-v="7"] [data-a="dk-more"]'); await page.click('[data-a="dk-del"][data-v="7"]');
+  await page.keyboard.press('Escape');
+  assert.deepEqual(await page.evaluate(() => [document.getElementById('action-modal').classList.contains('active'), BS.SLOTS()[7].name]), [false, 'Enter Name']);
+  assert.deepEqual(errors, []);
+});

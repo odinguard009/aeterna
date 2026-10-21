@@ -25,7 +25,7 @@ function dkTile(i, name, cards, starter) {
   const st = dkStatus(cards), act = !starter && i === ACTIVE_SLOT, open = !starter && DK_MENU === i, nm = esc(name);
   const dots = dkColors(cards).map(c => `<i class="dk-dot" style="--c:${colorVar(c)}" title="${cap(c)}"></i>`).join('');
   const item = (a, l, cls) => `<button class="${cls || ''}" role="menuitem" data-a="${a}" data-v="${i}">${l}</button>`;
-  const menu = open ? `<div class="dk-menu" role="menu" aria-label="${nm}"><div class="dk-mh">${nm}</div>${item('dk-edit', 'Edit cards')}${item('dk-play', 'Play with this deck')}${act ? '' : item('dk-active', 'Set active')}${item('dk-rename', 'Rename…')}${item('dk-dup', 'Duplicate')}${item('dk-look', 'Deck look')}${item('dk-code', 'Copy deck code')}${item('dk-del', 'Delete… (asks first)', 'del')}<button class="dk-x" data-a="dk-more" data-v="-1">Cancel</button></div>` : '';
+  const menu = open ? `<div class="dk-menu" role="menu" aria-label="${nm}"><div class="dk-mh">${nm}</div>${item('dk-edit', 'Edit cards')}${item('dk-play', 'Play with this deck')}${act ? '' : item('dk-active', 'Set active')}${item('dk-rename', 'Rename…')}${item('dk-dup', 'Duplicate')}${item('dk-look', 'Deck look')}${item('dk-code', 'Copy deck code')}${item('dk-del', 'Delete…', 'del')}<button class="dk-x" data-a="dk-more" data-v="-1">Cancel</button></div>` : '';
   const btns = starter ? `<button class="ae-ghost primary" data-a="dk-copy" data-v="${i}" aria-label="Copy ${nm} to my decks">COPY</button>`
     : `<button class="ae-ghost" data-a="dk-edit" data-v="${i}" aria-label="Edit ${nm}">EDIT</button><button class="ae-ghost primary" data-a="dk-play" data-v="${i}" aria-label="Play with ${nm}"${st.ok ? '' : ' disabled'}>PLAY</button><button class="dk-more" data-a="dk-more" data-v="${i}" aria-label="More actions for ${nm}" aria-haspopup="menu" aria-expanded="${open}">⋯</button>`;
   return `<article class="dk-tile${act ? ' on' : ''}${open ? ' open' : ''}" data-v="${i}"><span class="sleeve dk-sl" aria-hidden="true"></span><div class="dk-main"><div class="dk-top"><b class="dk-name">${nm}</b>${act ? '<span class="dk-act">ACTIVE</span>' : ''}</div><div class="dk-dots">${dots}</div><div class="dk-st ${st.ok ? 'ok' : 'bad'}">${esc(st.txt)}</div></div><div class="dk-btns">${btns}</div>${menu}</article>`;
@@ -38,7 +38,12 @@ function renderDecks() {
   $('dk-starters').innerHTML = PREBUILT.map((d, i) => dkTile(i, d.name, d.cards, true)).join('');
   $('dk-fmt').textContent = fmtTitle();
 }
-function dkMenu(i) { DK_MENU = DK_MENU === i ? -1 : i; renderDecks(); const f = document.querySelector('#dk-list .dk-menu button'); if (f) f.focus(); }
+function dkMenu(i) {
+  DK_MENU = DK_MENU === i ? -1 : i; renderDecks();
+  const m = document.querySelector('#dk-list .dk-menu'); if (!m) return;
+  if (m.scrollIntoView && getComputedStyle(m).position !== 'fixed') m.scrollIntoView({ block: 'nearest' });   // PC: the last tile's menu stays on screen
+  const f = m.querySelector('button'); if (f) f.focus({ preventScroll: true });
+}
 function dkNewSlot(name, cards, keep) {             // the first free slot (made active unless keep); false when all 8 are in use
   const i = dkFree();
   if (i < 0) { uiInfo('No free deck slot', `All ${SLOTS.length} deck slots are in use. Delete a deck first.`); return false; }
@@ -81,6 +86,9 @@ async function dkAct(a, v) {
   }
 }
 if (typeof document !== 'undefined') {
+  document.addEventListener('keydown', e => {   // Rename: Enter saves; Escape closes the Rename / Delete dialogs (not engine decisions)
+    if (MODAL && /^(Rename deck|Delete this deck\?)$/.test(MODAL.cfg.title)) { if (e.key === 'Escape') closeModal(null); else if (e.key === 'Enter' && e.target.id === 'dk-name-in') modalPress(0); }
+  });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && DK_MENU >= 0) { const i = DK_MENU; DK_MENU = -1; renderDecks(); const b = document.querySelector(`#dk-list [data-a="dk-more"][data-v="${i}"]`); if (b) b.focus(); } });
   document.addEventListener('click', e => { if (DK_MENU >= 0 && !e.target.closest('.dk-menu, [data-a="dk-more"]')) { DK_MENU = -1; renderDecks(); } });
 }
