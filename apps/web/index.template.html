@@ -54,7 +54,7 @@
           <div class="srow"><div class="tx"><b>CPU colour</b><span>Crimson; blue when your colour is red, so the two sides never match.</span></div><span class="set-val" id="set-cpucol">Crimson</span></div>
         </section>
         <section class="set-card" id="set-s-speed" aria-labelledby="set-h-speed"><h2 id="set-h-speed">Game speed</h2>
-          <div class="srow"><div class="tx"><b>Speed</b><span>Animation and CPU pause length.</span></div><select id="set-speed" class="sel" aria-label="Game speed"><option value="normal">Normal</option><option value="fast">Fast</option><option value="instant">Instant</option></select></div><div class="srow"><div class="tx"><b>Animations</b><span>Attack beam, Life shatter and other short battle cues. Reduced keeps only fades.</span></div><select id="set-anim" class="sel" aria-label="Animations"><option value="full">Full</option><option value="reduced">Reduced</option><option value="off">Off</option></select></div></section>
+          <div class="srow"><div class="tx"><b>Speed</b><span>Animation and CPU pause length.</span></div><select id="set-speed" class="sel" aria-label="Game speed"><option value="normal">Normal</option><option value="fast">Fast</option><option value="instant">Instant</option></select></div><div class="srow"><div class="tx"><b>Animations</b><span>Attack beam, Life shatter and other short battle cues. Reduced keeps only fades. Auto follows the device's reduced-motion setting.</span></div><select id="set-anim" class="sel" aria-label="Animations"><option value="auto">Auto (device)</option><option value="full">Full</option><option value="reduced">Reduced</option><option value="off">Off</option></select></div></section>
         <section class="set-card" id="set-s-sound" aria-labelledby="set-h-sound"><h2 id="set-h-sound">Sound</h2>
           <div class="srow"><div class="tx"><b>Sound effects</b><span>Short synthesized sounds for attacks, hits, summons and draws (no audio files).</span></div><select id="set-sound" class="sel" aria-label="Sound"><option value="off">Off</option><option value="on">On</option></select></div></section>
         <section class="set-card" id="set-s-cpu" aria-labelledby="set-h-cpu"><h2 id="set-h-cpu">CPU style</h2>
@@ -165,7 +165,7 @@
       <div class="db-grid" id="db-card-list"></div>
     </section>
     <aside class="db-deck tab-list" id="db-deck" aria-label="Deck">
-      <div class="db-sheet-head"><b>Deck</b><button class="btn-nav-small" data-a="db-sheet" data-v="">Close</button></div>
+      <div class="db-sheet-head"><b>Deck</b><button class="btn-nav-small db-sheet-back" data-a="go-decks" aria-label="Back to My decks">‹ My decks</button><button class="btn-nav-small" data-a="db-sheet" data-v="">Close</button></div>
       <div class="db-dk-head"><div class="db-counter" id="db-counter"></div><div class="db-status" id="db-status"></div></div>
       <div class="db-tabs" role="tablist" aria-label="Deck panel"><button role="tab" data-a="db-tab" data-v="list" aria-selected="true">DECK LIST</button><button role="tab" data-a="db-tab" data-v="curve" aria-selected="false">CURVE AND CHECK</button><button role="tab" data-a="db-tab" data-v="look" aria-selected="false">DECK LOOK</button></div>
       <div class="db-dk-list" id="db-dk-list" data-pane="list" role="tabpanel"></div>

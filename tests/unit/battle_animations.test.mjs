@@ -30,7 +30,7 @@ const count = (page, sel) => page.evaluate(s => document.querySelectorAll(s).len
 test('U92-1 Settings has Animations Full / Reduced / Off; automation defaults to Off; the choice is saved', async () => {
   const { page, errors } = await open('pc');
   const r = await page.evaluate(() => ({ def: BS.SETTINGS.anim || null, eff: BS.animMode(), opts: [...document.querySelectorAll('#set-anim option')].map(o => o.value) }));
-  assert.deepEqual(r, { def: null, eff: 'off', opts: ['full', 'reduced', 'off'] });
+  assert.deepEqual(r, { def: null, eff: 'off', opts: ['auto', 'full', 'reduced', 'off'] });
   await page.click('#app-nav [data-a="go-settings"]');
   await page.selectOption('#set-anim', 'reduced');
   assert.equal(await page.evaluate(() => [BS.SETTINGS.anim, BS.animMode(), JSON.parse(localStorage.getItem(BS.SET_KEY)).anim].join()), 'reduced,reduced,reduced');
@@ -66,8 +66,9 @@ for (const screen of ['pc', 'phone']) {
   });
 }
 
-test('U92-3 Reduced (and reduced motion with Full) keeps fades only: no shards, a still beam', async () => {
-  for (const [mode, extra] of [['reduced', {}], ['full', { reducedMotion: 'reduce' }]]) {
+// v0.99.0 U8a: an explicit Full now wins over the device's reduced motion (owner); that case moved to u8a.test.mjs U8A-1
+test('U92-3 Reduced keeps fades only: no shards, a still beam', async () => {
+  for (const [mode, extra] of [['reduced', {}]]) {
     const { page, errors } = await open('pc', '', extra);
     await board(page);
     await page.evaluate(m => { BS.SETTINGS.anim = m; BS.fxCueReset(); BS.render(); const G = BS.G; G.p.player.life -= 1; G.attacker = G.p.opponent.spirits[0]; BS.render(); return 1; }, mode);

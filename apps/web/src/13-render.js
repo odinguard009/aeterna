@@ -251,6 +251,9 @@ function aeRibbon(text, opt) {
 function aeStrip(text) {
   const L = $('ae-fx'), s = L && L.querySelector('.ae-strip'); if (!s) return;
   s.hidden = !text; s.textContent = text || ''; $('pick-bar').classList.toggle('blk', !!text);
+  s.style.top = '';                                // v0.99 U8a: sit just above the step band's log line instead of covering it
+  const lg = text && visEl('#view-playmat .control-log-row'), r = lg && lg.getBoundingClientRect();
+  if (r && r.height) s.style.top = Math.max(0, r.top - s.offsetHeight - 6) + 'px';
 }
 function fxCues() {
   if (SIM || !G) return;
@@ -322,7 +325,7 @@ function switchView(id) {
   if (id === 'view-decks') renderDecks();
   if (id === 'view-settings') renderSettings();
 }
-function renderSettings() { $('set-hist').innerHTML = histHTML(); $('set-cpu').innerHTML = CPU_PROFILE_NAMES.map(n => `<option value="${n}">${cap(n)}</option>`).join(''); $('set-cpu').value = cpuProfileName(null); $('set-speed').value = SETTINGS.speed; $('set-sound').value = SETTINGS.sound ? 'on' : 'off'; $('set-anim').value = SETTINGS.anim || animMode();
+function renderSettings() { $('set-hist').innerHTML = histHTML(); $('set-cpu').innerHTML = CPU_PROFILE_NAMES.map(n => `<option value="${n}">${cap(n)}</option>`).join(''); $('set-cpu').value = cpuProfileName(null); $('set-speed').value = SETTINGS.speed; $('set-sound').value = SETTINGS.sound ? 'on' : 'off'; $('set-anim').value = SETTINGS.anim || 'auto';
   renderSetPage(); }   // v0.68.0 U4: colour grid, Dark/Light, playmat and CPU colour rows (13d-pages.js)
 function renderLobby() {
   renderHome();

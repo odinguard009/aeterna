@@ -7,9 +7,10 @@
    them, so the engine and the CPU never slow down. Settings "Animations": Full / Reduced (fades only, no travel) / Off;
    reduced motion turns Full into Reduced; the default is Off under automation (tests) and nothing plays in sims (?sim=1).
    --------------------------------------------------------------------- */
-function animMode() {
-  const m = SETTINGS.anim || (navigator.webdriver ? 'off' : 'full');
-  if (m === 'off' || m === 'reduced') return m;
+function animMode() {                              // v0.99 U8a: an explicit choice wins; only Auto (no choice) follows the device's reduced motion
+  const m = SETTINGS.anim;
+  if (m === 'full' || m === 'reduced' || m === 'off') return m;
+  if (navigator.webdriver) return 'off';
   return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches ? 'reduced' : 'full';
 }
 let ANIM = null;                                   // last board: { g, cards: Map uid -> {k, bp, lv, r}, hand: Set, life: {player, opponent}, att, blk }

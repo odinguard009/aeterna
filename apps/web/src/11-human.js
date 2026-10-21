@@ -46,11 +46,11 @@ function cardDetailHTML(card, noArt) {
   const lv = card.type === 'Magic' ? `Timing: ${(card.magic ? card.magic.timing : ['MAIN']).map(x => x === 'MAIN' ? 'Main' : 'Flash').join(' / ')}` : card.levels.map((L, i) => card.countLv ? `LV${i + 1}: Count ${L.cores}` : `LV${i + lvBase(card)}: ${L.cores} core${L.cores === 1 ? '' : 's'}${L.bp != null ? ' / ' + L.bp + ' BP' : ''}`).join('<br>');
   const red = Object.entries(card.reduction || {}).map(([k, n]) => `${cap(k)} ×${n}`).join(', ') || 'none';
   const art = noArt ? '' : `<div class="art-thumb" data-a="zoom" data-v="${esc(card.id)}" title="Tap to enlarge">${cardFaceHTML(card, false).replace('class="cface', 'class="cface in')}<span class="zoom-ic">🔍</span></div>`;
-  return `${art}<div style="border:2px solid ${col};border-radius:6px;padding:8px;background:rgba(0,0,0,.5);text-align:left;margin-bottom:8px;">
+  return `${art}<div class="cd-info" style="border:2px solid ${col};border-radius:6px;padding:8px;text-align:left;margin-bottom:8px;">
       <div style="display:flex;justify-content:space-between;align-items:center;"><b>${esc(card.name)}</b>
-        <span style="font-size:9px;background:${col};color:#fff;padding:1px 4px;border-radius:2px;">Cost ${card.cost}</span></div>
+        <span class="cd-cost" style="background:${col};color:${['yellow', 'white'].includes(card.symbol) ? '#141922' : '#fff'};">Cost ${card.cost}</span></div>
       <div style="font-size:8.5px;color:var(--text-muted);margin-top:3px;">${esc(card.token ? 'Token Spirit' : card.type)} · ${esc(cap(card.symbol))} · ${card.symbols} symbol${card.symbols === 1 ? '' : 's'} · Reduction: ${esc(red)}</div>
-      <div style="font-size:8.5px;color:var(--accent);margin-top:3px;">${lv}</div>
+      <div class="cd-lv" style="font-size:8.5px;margin-top:3px;">${lv}</div>
       ${noArt ? '' : legalityHTML(card)}
       ${pills ? `<div style="margin-top:4px;">${pills}</div>` : ''}</div>
     <div style="font-size:9.5px;text-align:left;background:rgba(255,255,255,.05);padding:6px;border-radius:4px;border:1px solid var(--border-line);">

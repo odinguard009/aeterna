@@ -74,10 +74,10 @@ function webPick(cfg) {
   return new Promise(res => {
     PICK = { uids: new Set(cfg.uids), mark: cfg.mark, buttons: cfg.buttons || [], res };
     $('pick-text').innerHTML = cfg.text;
-    aeStrip(/\bblock\b/i.test(cfg.text || '') && /attacks/.test(cfg.text || '') ? 'BLOCK?' : null);
     $('pick-btns').innerHTML = PICK.buttons.map((b, i) => `<button class="modal-btn ${b.cls || ''}" data-pk="${i}">${esc(titleCase(b.label))}</button>`).join('');
     document.documentElement.classList.add('picking'); $('pick-bar').classList.add('active');
     render();
+    aeStrip(/\bblock\b/i.test(cfg.text || '') && /attacks/.test(cfg.text || '') ? 'BLOCK?' : null);   // after render: placed above the step band's log line
     setTimeout(() => { const e = document.querySelector('.tcg-card.pickable'); if (e) e.scrollIntoView({ inline: 'center', block: 'nearest' }); }, 60);
   }).then(v => {
     document.documentElement.classList.remove('picking'); $('pick-bar').classList.remove('active'); aeStrip(null);

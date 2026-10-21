@@ -22,6 +22,12 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const rd = p => readFileSync(join(ROOT, p), 'utf8');
 const allCards = () => JSON.parse(readFileSync(ensureAllCards(ROOT), 'utf8'));   // build/all-cards.json, written here when missing or stale
 
+// v0.99.0 (U8a, stylesheet budget B04): drop the spaces next to { } ; and after : and , outside strings; descendant-selector
+// spaces and the spaces inside values (calc, font shorthands) stay, so the rules mean the same
+function cssShrink(css) {
+  return css.split(/("[^"\n]*"|'[^'\n]*')/).map((p, i) => i % 2 ? p : p.replace(/[ \t]*([{};])[ \t]*/g, '$1').replace(/([:,])[ \t]+/g, '$1')).join('');
+}
+
 // v0.51.0: the pack codec lives in packages/engine/src/01a-card-pack.js and is shared with the game (one implementation)
 export function codec() {
   return new Function(rd('packages/engine/src/01a-card-pack.js') + '\nreturn { packCards, unpackCards, packBlockOf, inflateRaw, packBytes, loadPack };')();
@@ -65,7 +71,7 @@ export function buildParts(opts = {}) {   // opts.cards: build with another card
   const tpl = rd('apps/web/index.template.html');
   for (const m of ['/*@@CSS@@*/\n', '/*@@JS@@*/\n']) if (tpl.split(m).length !== 2) throw new Error('template marker missing: ' + m.trim());
   // v0.86.0: the page carries the stylesheet without comments and indentation (apps/web/styles.css keeps both; budget B04)
-  const css = rd('apps/web/styles.css').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]+/gm, '').replace(/\n{2,}/g, '\n');
+  const css = cssShrink(rd('apps/web/styles.css').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]+/gm, '').replace(/\n{2,}/g, '\n'));
   const html = tpl.replace('/*@@CSS@@*/\n', () => css).replace('/*@@JS@@*/\n', () => js);
   return { html, js, files, cards: cards.length };
 }

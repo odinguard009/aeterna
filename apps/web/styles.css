@@ -33,11 +33,6 @@
   .app-view.active { display: flex; flex-direction: column; }
 
   /* 1. LOBBY VIEW */
-  #view-play {
-    justify-content: center; align-items: center; padding: 20px;
-    background: radial-gradient(circle at center, #101e2c 0%, #060b0f 100%);
-    text-align: center; gap: 20px;
-  }
   .menu-btn {
     background: rgba(255,255,255,0.06); color: var(--text-main);
     border: 1px solid var(--accent); padding: 12px; border-radius: 6px;
@@ -101,7 +96,6 @@
   .fc-body.mir .soul-area { grid-column: 1; align-self: end; }
   .fc-main { display: flex; flex-direction: column; gap: 2px; min-height: 0; min-width: 0; }
   :root { --ba-w: clamp(34px, 9.5vw, 46px); }
-  html.layout-pc { --ba-w: clamp(46px, 4.4vw, 64px); }
   .burst-area { align-self: start; width: var(--ba-w); display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; font-size: 6px; }
   .ba-title { font-size: 1em; font-weight: bold; color: var(--accent); white-space: nowrap; letter-spacing: .3px; line-height: 1; }
   .ba-card { width: 100%; aspect-ratio: 63 / 88; border-radius: 4px; border: 2px dashed var(--border-line); background: rgba(0,0,0,.25); overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
@@ -298,8 +292,12 @@
   .legality { display: flex; flex-direction: column; gap: 1px; margin-top: 4px; font-size: 9px; }
   .legality .ok { color: #6fcf97; }
   .legality .no { color: #eb5757; }
+  .cd-info { background: rgba(0,0,0,.5); } .cd-lv { color: var(--accent); } .cd-cost { font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 2px; }
+  :root[data-mode="light"] .cd-info { background: var(--ae-panel2); } :root[data-mode="light"] .cd-lv { color: var(--ae-text); }   /* v0.99 U8a: light-mode Card Detail */
+  :root[data-mode="light"] .legality .ok { color: #1d7a45; } :root[data-mode="light"] .legality .no { color: #b3261e; }
   .art-thumb { position: relative; width: 120px; aspect-ratio: 63/88; margin: 0 auto 8px; border-radius: 6px; border: 1px solid var(--border-line); overflow: hidden; cursor: zoom-in; background: rgba(255,255,255,.04); }
   .art-thumb .cface { height: 100%; border: 0; border-radius: 0; font-size: 7px; }
+  .art-thumb .cface.ph .ph-bp { text-align: left; }   /* v0.99 U8a: the zoom icon keeps the bottom-right corner, BP moves clear of it */
   .art-thumb .zoom-ic { position: absolute; right: 4px; bottom: 4px; background: rgba(0,0,0,.7); border-radius: 50%; width: 24px; height: 24px; display: grid; place-items: center; font-size: 12px; }
   .art-thumb.empty { cursor: default; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border-style: dashed; color: var(--text-muted); font-size: 26px; }
   .art-thumb.empty small { font-size: 8px; text-align: center; line-height: 1.3; }
@@ -420,6 +418,7 @@
     .db-deck { top: 0; border-radius: 0; }
     .db-open-filters .db-rail, .db-open-deck .db-deck { transform: none; visibility: visible; }
     .db-sheet-head { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--accent); }
+    .db-sheet-head .db-sheet-back { margin-left: auto; margin-right: 6px; }
     .db-backdrop { position: absolute; inset: 0; z-index: 30; background: rgba(0,0,0,.55); }
     .db-open-filters .db-backdrop, .db-open-deck .db-backdrop, .db-open-menu .db-backdrop { display: block; }
     .db-open-menu .db-header { position: relative; z-index: 45; }
@@ -489,7 +488,6 @@
   .ae-turnno { font-size: 11px; font-weight: 800; letter-spacing: .1em; padding-left: 8px; border-left: 1px solid currentColor; }
   .ae-step { height: 100%; display: flex; align-items: center; padding: 0 26px 0 24px; margin-left: -12px; background: var(--ae-chip); color: var(--ae-text); clip-path: polygon(16px 0, 100% 0, calc(100% - 16px) 100%, 0 100%); font-size: 12px; font-weight: 800; letter-spacing: .16em; white-space: nowrap; }
   .ae-fill { flex: 1; }
-  .ae-tools { display: flex; gap: 8px; }
   #view-playmat .ae-btn { transform: skewX(-18deg); background: var(--ae-chip); color: var(--ae-text); border: 0; border-radius: 0; box-shadow: inset 0 0 0 1px var(--ae-line2); font-weight: 700; letter-spacing: .08em; padding: 5px 12px; }
   #view-playmat .ae-btn > span { display: inline-block; transform: skewX(18deg); }
   #view-playmat .ae-btn:hover, #view-playmat .ae-btn:focus-visible { box-shadow: inset 0 0 0 1px var(--you); outline: none; }
@@ -683,7 +681,7 @@
   .dk-in{width:100%;height:40px;padding:0 10px;background:var(--ae-chip);color:var(--ae-text);border:0;box-shadow:inset 0 0 0 1px var(--ae-line2);font:inherit;font-size:15px}
   .modal-btn.danger{background:var(--cpu);color:var(--cpu-ink)}
   html.layout-mobile .dk-list{grid-template-columns:minmax(0,1fr)}
-  html.layout-mobile .dk-tile{padding:10px;gap:10px}html.layout-mobile .dk-top{flex-direction:column;align-items:flex-start;gap:2px}html.layout-mobile .dk-name{max-width:100%}
+  html.layout-mobile .dk-tile{padding:10px;gap:10px;flex-wrap:wrap}html.layout-mobile .dk-btns{flex-basis:100%;justify-content:flex-end}html.layout-mobile .dk-top{flex-direction:column;align-items:flex-start;gap:2px}html.layout-mobile .dk-name{max-width:100%;white-space:normal;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
   html.layout-mobile .dk-tile.open{z-index:70}html.layout-mobile #view-decks .ae-phead{flex-wrap:wrap}html.layout-mobile .dk-hacts{width:100%}html.layout-mobile .dk-hacts .ae-ghost{flex:1}
   html.layout-mobile .dk-menu{position:fixed;left:0;right:0;top:auto;bottom:0;z-index:60;padding:12px 10px max(18px,env(safe-area-inset-bottom));min-width:0}
   html.layout-mobile .dk-mh{display:block;padding:4px 14px 8px;font-size:11px;font-weight:900;letter-spacing:.16em;color:var(--ae-text2)}
@@ -712,8 +710,7 @@
      Header on every menu screen (hidden on the battle screen and in the deck builder: body:not(.has-nav)).
      PC: one 64px top bar. Phone: 58px header + 64px bottom tab bar. Tokens from the U1 block above.
      ===================================================================== */
-  #app-nav, #view-lobby { color-scheme: dark; }
-  :root[data-mode="light"] #app-nav, :root[data-mode="light"] #view-lobby { color-scheme: light; }
+  :root { color-scheme: dark; } :root[data-mode="light"] { color-scheme: light; }   /* v0.99 U8a: form controls and scrollbars follow the mode everywhere (was per view) */
   #app-nav { display: none; }
   #app-nav button, .ae-tile, .home-foot button { -webkit-tap-highlight-color: transparent; }
   body.has-nav #app-nav { display: flex; }
@@ -805,9 +802,7 @@
      v0.67.0 U3: Play setup page (docs/DESIGN.md section 0: header card, deck chip, mode cards, setup chips).
      Same tokens and shapes as the U2 Home; ids and data-a actions of the old page are kept.
      ===================================================================== */
-  #view-play, .ae-view { color-scheme: dark; justify-content: flex-start; align-items: stretch; padding: 0; gap: 0; text-align: left; background: linear-gradient(180deg, var(--ae-board1), var(--ae-board2)); color: var(--ae-text); overflow-y: auto; overflow-x: hidden; }
-:root[data-mode="light"] #view-play, :root[data-mode="light"] .ae-view { color-scheme: light; }
-  #view-play::before, .ae-view::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(60deg, var(--ae-lattice) 0 1px, transparent 1px 46px), repeating-linear-gradient(-60deg, var(--ae-lattice) 0 1px, transparent 1px 46px); }
+  #view-play, .ae-view { justify-content: flex-start; align-items: stretch; padding: 0; gap: 0; text-align: left; background: linear-gradient(180deg, var(--ae-board1), var(--ae-board2)); color: var(--ae-text); overflow-y: auto; overflow-x: hidden; }  #view-play::before, .ae-view::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(60deg, var(--ae-lattice) 0 1px, transparent 1px 46px), repeating-linear-gradient(-60deg, var(--ae-lattice) 0 1px, transparent 1px 46px); }
   .ae-page { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 16px 16px 20px; width: 100%; max-width: 1040px; margin: 0 auto; }
   .ae-phead { display: flex; justify-content: flex-start; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 0; border-radius: 0; background: linear-gradient(180deg, var(--ae-panel1), var(--ae-panel2)); clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px); box-shadow: inset 0 0 0 1px var(--ae-line), inset 4px 0 0 var(--you); }
   .ae-phead .tx { flex: 1; min-width: 0; }

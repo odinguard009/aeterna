@@ -6,10 +6,10 @@
    --------------------------------------------------------------------- */
 const THEME_KEY = 'aeterna.theme.v1';
 const THEME_COLS = [
-  { id: 'teal', name: 'Teal (default)', d: '#17b897', l: '#0f8f74', ink: '#04211b' },
+  { id: 'teal', name: 'Teal (default)', d: '#17b897', l: '#0f8f74', ink: '#04211b', lk: '#000000' },
   { id: 'red', name: 'Red', d: '#e5484d', l: '#c8303a', ink: '#ffffff' },
   { id: 'purple', name: 'Purple', d: '#a06cf0', l: '#7b45cf', ink: '#ffffff' },
-  { id: 'green', name: 'Green', d: '#2fb36a', l: '#1f8f50', ink: '#06210f' },
+  { id: 'green', name: 'Green', d: '#2fb36a', l: '#1f8f50', ink: '#06210f', lk: '#000000' },
   { id: 'white', name: 'White', d: '#eef1f5', l: '#ffffff', ink: '#141922' },
   { id: 'yellow', name: 'Yellow', d: '#ffe14a', l: '#f0cf00', ink: '#2a2400' },
   { id: 'blue', name: 'Blue', d: '#3a8cf0', l: '#1f6fd9', ink: '#ffffff' },
@@ -26,7 +26,7 @@ function applyTheme() {
   const c = THEME_COLS.find(x => x.id === THEME.color) || THEME_COLS[0], light = THEME.mode === 'light', v = light ? c.l : c.d, r = document.documentElement;
   r.setAttribute('data-mode', THEME.mode);
   r.style.setProperty('--you', v);
-  r.style.setProperty('--you-ink', c.ink);
+  r.style.setProperty('--you-ink', light && c.lk ? c.lk : c.ink);   // v0.99 U8a lk: light-mode ink that reaches 4.5:1 on the darker light colour
   r.style.setProperty('--you-soft', c.id === 'white' && light ? '#0b1a3022' : v + '40');
   r.style.setProperty('--cpu', c.id === 'red' ? (light ? '#1f6fd9' : '#3a8cf0') : (light ? '#c42b40' : '#d8344b'));
   r.style.setProperty('--cpu-ink', '#ffffff');

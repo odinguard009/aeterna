@@ -49,7 +49,8 @@ function dbFilter() {
   let l = idx.filter(e => (!only || PLAYER_DECK[e.id]) && (!q || e.s.includes(q)) && (!fam || e.f.includes(fam)) && (!DBF.set || dbSetOf(e.id) === DBF.set) && dbFilterOK(CARDS[e.id], DBF.colors, DBF.costs, DBF.types) && (!DBF.legal || !legalityOf(e.id, FORMAT)) && (!DBF.complete || !fxMarked(CARDS[e.id])));
   if (DB_SORTS[DBF.sort]) l = l.slice().sort(DB_SORTS[DBF.sort]);
   DBV.list = l.map(e => e.id);
-  $('db-count').textContent = `${DBV.list.length} card(s) shown`;
+  const tr = DBV.list.filter(id => id.startsWith('TRAIN-')).length;      // v0.99 U8a: Home counts real cards only; say which extra cards the builder shows
+  $('db-count').textContent = `${DBV.list.length} card(s) shown` + (tr ? ` (${tr} Training)` : '');
   return DBV.list;
 }
 // v0.79.0 (A1, owner 2026-10-20): a card whose printed effect is not fully implemented carries a "!" mark in the deck builder
@@ -157,6 +158,11 @@ function dbChange(id, d) {
   return true;
 }
 function dbReplace(deck) { dbSnap(); PLAYER_DECK = deck; saveDeck(); renderDeckBuilder(); }
+async function dbClear() {                       // v0.99 U8a: Clear asks first (Undo still brings the deck back)
+  const n = Object.values(PLAYER_DECK).reduce((t, x) => t + x, 0);
+  if (n && !(await modal({ title: 'Clear the deck?', html: `All ${n} cards leave this deck. Undo brings them back.`, buttons: [{ label: 'Clear deck', cls: 'danger', value: 1 }, { label: 'Cancel', cls: 'cancel', value: 0 }] }))) return;
+  dbSheet(''); dbReplace({});
+}
 function dbUndo() { if (!DB_UNDO.length) return; PLAYER_DECK = JSON.parse(DB_UNDO.pop()); saveDeck(); renderDeckBuilder(); }
 function dbTap(id) { if (!dbChange(id, 1)) showCardDetail(id, 'deck'); }   // illegal or at max: the detail says why
 async function dbImport() {

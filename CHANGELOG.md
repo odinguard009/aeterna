@@ -4,6 +4,20 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 
 Older releases (v0.80.0 and earlier): [CHANGELOG-archive.md](CHANGELOG-archive.md).
 
+## v0.99.0
+- Lane: U/I
+- Time: ~75 min (session start to release, incl. a ~20 min tool outage), Opus 5.5, tokens in the DONE mark on issue #1 (player-view pass: 140,837).
+- **U8a: UI fixes from the player-view passes and the 2026-10-21 UI audit (no animation or layout redesign).**
+  - **Animations on the phone:** an explicit "Animations: Full" now wins over the phone's reduced-motion / battery-saver setting. New first option "Auto (device)" (the default) follows the device as before. Tests U8A-1/2 (U92-3 changed accordingly).
+  - Light mode: the Card Detail panel is light with dark text (was grey with ~1.8:1 text), legality lines darker; the "Cost N" badge uses dark text on yellow and white cards; primary buttons in teal and green use black text (all side colours now reach 4.5:1, was ~4.2). Test U8A-11.
+  - The BLOCK? strip now sits just above the step band's log line instead of covering it (U8A-9, PC and phone). The Card Detail zoom icon no longer covers the BP (U8A-10).
+  - Deck builder: Clear asks first (Undo still works) (U8A-3); the card count says which extra cards it shows ("6904 card(s) shown (14 Training)", Home counts real cards only) (U8A-5); phone deck sheet has "‹ My decks" (the header button was under the sheet's backdrop) (U8A-6).
+  - My decks: Rename has `autocomplete="off"` (U8A-4); phone rows put EDIT / PLAY below the name, so long names show in full (two lines at most) (U8A-7).
+  - `color-scheme` is set on the whole page per mode (form controls and scrollbars in the deck builder, battle screen and popups follow dark / light) (U8A-8).
+  - Stylesheet budget: three rules that later rules fully replaced were removed, and the build now drops the spaces around `{ } ; : ,` outside strings (95.9 KB -> 88.2 KB, same rules).
+  - Checked and not a bug: the DECKS tab is not highlighted on Settings after the deck builder (player-view pass). Kept for later (roadmap "U8a leftovers"): deck builder Saga select, symbol split, family chips; Escape on the generic confirm modals.
+  - Backup `backup/v0.98.0`. Revert note: `git revert` of the v0.99.0 commit.
+
 ## v0.98.0
 - Lane: U/I
 - Time: ~35 min (session start to release), Opus 5.5, tokens in the DONE mark on issue #1.
