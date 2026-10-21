@@ -137,6 +137,11 @@ test('G-T1 item T: budget= on LOCK/MANUAL and done lets the gate post tokens= (n
   assert.match(gate(['rantai', 'next'], [[300, 'RANTAI ON'], [60, 'LOCK budget=15000000'], [10, 'DONE v0.90.0 next=Opus rantai tokens=250000']]).out, /^GO .*250\.000/);
 });
 
+test('G-T3 owner 2026-10-21: sub=N (subagent tokens) is added to tokens= and kept on the DONE line', () => {
+  const P = { GATE_PRINT: '1' };
+  assert.match(gate(['done', 'v0.93.0', 'next=Opus', 'start=15000000', 'sub=80000', 'budget=14900000', 'rantai'], [ON, [60, 'LOCK']], [], P).out, /^POST DONE v0\.93\.0 next=Opus rantai tokens=180000 sub=80000$/m);
+  assert.match(gate(['done', 'v0.93.0', 'next=Opus', 'start=15000000', 'budget=14900000'], [ON, [60, 'LOCK']], [], P).out, /tokens=100000$/m, 'no sub= = as before');
+});
 test('G-T2 item T: start= on the done line is used when the marker has no budget= (scheduled prompt runs a plain lock)', () => {
   const P = { GATE_PRINT: '1' };
   assert.match(gate(['done', 'v0.90.0', 'next=Opus', 'start=15000000', 'budget=14900000'], [ON, [60, 'LOCK']], [], P).out, /^POST DONE v0\.90\.0 next=Opus tokens=100000$/m);

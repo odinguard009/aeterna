@@ -8,8 +8,12 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 - **My decks page (roadmap U6): the Decks tab now opens a list of your decks with sleeve, colours, status and an ACTIVE badge; Edit, Play and a more menu with Set active, Rename, Duplicate, Deck look, Copy deck code and Delete (asks first); Import code and New deck; the prebuilt decks are read-only starter decks with Copy.**
   - Built on the existing 8 deck slots (nothing migrates): a slot is listed when it has cards, its own name, was made by New / Import / Copy / Duplicate, or is the active deck. Play is disabled while a deck is not ready (the status says why, e.g. "37 / 40 · add 3 cards"). On the phone the rows open an action sheet instead of the menu.
   - "Build a deck" on Home and "Edit deck" on Play still open the deck builder directly; Deck look opens the builder until U7 adds its Look tab. Copy deck code puts the card list on the clipboard (Import code reads the same text).
+  - Player-view fixes: the more menu of the last tile scrolls into view on PC; Enter saves a rename and Escape closes the Rename / Delete dialogs; on the phone the ACTIVE badge sits under the name. Test U93-4.
   - Stylesheet budget (test B04) raised on purpose from 90 to 96 KB for U6-U8 (unused rules were trimmed first in v0.92.0).
   - Test `tests/unit/decks93.test.mjs` (U93-1..U93-3, PC and phone); `ui65` follows the new Decks tab. Backup `backup/v0.92.0` holds the state before the change. Revert note: `git revert` of the U6 commit (removes `apps/web/src/13h-decks.js`, the `view-decks` page and the CSS block "v0.93.0 U6"; the Decks tab goes back to the deck builder).
+
+- **Process (owner, 2026-10-21): subagent tokens count.** `session_gate.sh done ... sub=<subagent tokens>` adds the subagents' token use to `tokens=` (and so to the chain budget) and keeps `sub=` on the DONE line; test G-T3. This session's DONE carries its player-view pass.
+- Quick tests (pre-push): the wall-clock budget files (`budget`, `deckbuilder52`) run alone after the parallel batch; B15 measured 355 ms against its 300 ms limit with 3 files in parallel (100-200 ms alone). No check dropped.
 
 ## v0.92.0
 - Lane: U/I

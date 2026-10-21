@@ -8,7 +8,8 @@
 #   UNLOCK [lane]       a session stopped early (error, quota, ~80 calls); with a lane it ends only that lane
 #   LANEDONE lane branch  a lane session finished its branch (no release yet; the merge step ends with DONE)
 #   RANTAI ON / RANTAI OFF [reason]  chain-mode switch (owner, 2026-10-20); newest one wins; none yet = OFF
-#   DONE ... tokens=N [rantai]  tokens = the session's budget-counter difference; "rantai" = it was a chain continuation
+#   DONE ... tokens=N [sub=M] [rantai]  tokens = the session's budget-counter difference plus its subagents' tokens (sub=, owner
+#                       2026-10-21); "rantai" = it was a chain continuation
 #                       (item T: "lock|manual ... budget=<start>" + "done ... budget=<end>" lets the gate compute tokens=; explicit tokens= still wins)
 #   HEMAT ON / HEMAT OFF  token-saving switch (owner, 2026-10-19); newest one wins; none yet = ON. ON = the pre-v0.68 session
 #                       (single main session, read-only subagents only as CLAUDE.md "Mode hemat" says); OFF = team session (v0.68)
@@ -189,9 +190,11 @@ case "$cmd" in
   manual) IFS='|' read -r a b sb <<< "$(split_budget "$*")"; set -- $a
           lane_ok "${1:-}" || exit 2; v=$(evaluate busy "" "${1:-}") || exit 1; case "$v" in BUSY\ auto*) echo "STOP ${v#BUSY }"; exit 3 ;; esac; post "MANUAL${1:+ $1}${b:+ budget=$b}" && echo "manual session marked${1:+ ($1 lane)}" ;;
   done)   IFS='|' read -r a b sb <<< "$(split_budget "$*")"
+          # owner 2026-10-21: "sub=N" = tokens the session's subagents used (their hand-back usage); added to the computed tokens= and kept on the line
+          su=0; a2=""; for w in $a; do case "$w" in sub=*) su="${w#sub=}"; [[ "$su" =~ ^[0-9]+$ ]] || su=0 ;; *) a2="${a2:+$a2 }$w" ;; esac; done; a=$a2
           if [ -n "$b" ] && [[ " $a " != *" tokens="* ]]; then
             st=$sb; [ -n "$st" ] || st=$(start_budget) || st=""   # start=<Token awal> on the done line, else budget= of the LOCK/MANUAL
-            if [ -n "$st" ] && [ "$st" -ge "$b" ]; then a="$a tokens=$((st - b))"
+            if [ -n "$st" ] && [ "$st" -ge "$b" ]; then a="$a tokens=$((st - b + su))${su:+$([ "$su" -gt 0 ] && echo " sub=$su")}"
             else echo "WARN no usable budget= on the session's LOCK/MANUAL (start '${st}', end $b): DONE posted without tokens= (chain mode stops)" >&2; fi
           fi
           post "DONE $a" && echo "done $a" ;;
