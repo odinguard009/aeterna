@@ -2,8 +2,8 @@
 
 Top-level names per source part. Find the part here, then `grep -n "<name>" <part path>` and read only that range.
 
-## packages/engine/src/00-config.js (90 lines, ~2.6k tokens)
-SIM, STEPS, STEPS_STANDARD, FORMAT_KEY, FORMAT, STANDARD_BLOCKS, BAN_LIST_INFO, BANNED, LIMITED1, normCardNo, banStatus, maxCopies, standardLegal, legalityOf, ABORT, other, esc, cap, TC_MINOR, titleCase, RNG_STATE, seedRng, rng, newSeed, shuffle, removeFrom, KEYWORD_GLOSSARY, MAGIC_FX, MAGIC_TIMINGS, SYMBOL_KINDS
+## packages/engine/src/00-config.js (92 lines, ~2.8k tokens)
+SIM, STEPS, STEPS_STANDARD, FORMAT_KEY, FORMAT, STANDARD_BLOCKS, BAN_LIST_INFO, BANNED, LIMITED1, normCardNo, BAN_LISTS, banStatus, maxCopies, standardLegal, legalityOf, ABORT, other, esc, cap, TC_MINOR, titleCase, RNG_STATE, seedRng, rng, newSeed, shuffle, removeFrom, KEYWORD_GLOSSARY, MAGIC_FX, MAGIC_TIMINGS, SYMBOL_KINDS
 
 ## apps/web/src/00b-errors.js (49 lines, ~0.9k tokens) — IN-GAME ERROR CATCHER (v0.59.5, Q1 quality bundle, Aegis idea)
 $, ERR_LOG, errReport, errNotice, onGameError
@@ -71,8 +71,8 @@ cardTeams, allHaveShapeOK, allHaveOK
 ## packages/engine/src/03-imported-cards.js (215 lines, ~5.6k tokens) — IMPORTED CARD DATA
 COLORS, BUILTIN_IDS, CARDS_KEY, IMPORTED, CARDS_VER, parseCard, registerImported, saveImported, importCards, clearImported, PACK_IDS, registerPack, TOKEN_IDS, registerTokens
 
-## packages/engine/src/04-decks.js (84 lines, ~1.7k tokens) — DECK STORAGE AND VALIDATION
-deckTotal, cleanDeck, validateDeck, fmtName, setFormat, errSummary, PREBUILT, defaultDeck, SLOT_KEY, SLOTS, loadSlots, PLAYER_DECK, saveDeck, switchSlot, loadPrebuilt, CPU_DECK_NAME, cpuDeckFor
+## packages/engine/src/04-decks.js (105 lines, ~2.9k tokens) — DECK STORAGE AND VALIDATION
+deckTotal, cleanDeck, validateDeck, fmtName, fmtButton, setFormat, errSummary, stdDeck, prebuiltFmt, prebuiltOrder, prebuiltLabel, PREBUILT, defaultDeck, SLOT_KEY, SLOTS, loadSlots, PLAYER_DECK, saveDeck, switchSlot, loadPrebuilt, CPU_DECK_NAME, cpuDeckFor
 
 ## packages/engine/src/05-state.js (67 lines, ~1.3k tokens) — GAME STATE
 SET_KEY, SETTINGS, SPEEDS, saveSettings, G, fnv, recIn, SIM_DECK_B, SIM_HUMAN, DELAYS, delay, engineIdle, wait, log, mkInst, newPlayer, contractToDeck, redrawHand, cpuWantsRedraw, newGame

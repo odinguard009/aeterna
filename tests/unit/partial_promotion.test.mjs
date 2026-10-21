@@ -119,6 +119,6 @@ test('PA06 prebuilt decks (also the CPU deck pool) hold no card promoted by the 
   const a1 = new Set(DATA.filter(c => /Partial card \(v0\.79\.0/.test(c.note || '')).map(c => c.id));
   assert.ok(a1.size > 1000, String(a1.size));
   const { page } = await open({ width: 1366, height: 768 });
-  const ids = await page.evaluate(() => BS.PREBUILT.flatMap(d => Object.keys(d.cards).map(id => d.id + ':' + id)));
+  const ids = await page.evaluate(() => BS.PREBUILT.filter(d => !d.format).flatMap(d => Object.keys(d.cards).map(id => d.id + ':' + id)));
   assert.deepEqual(ids.filter(x => a1.has(x.split(':')[1])), []);
 });

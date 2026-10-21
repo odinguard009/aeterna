@@ -73,6 +73,8 @@ python3 tools/priority_report.py --line 2>/dev/null | sed 's/^/[session_start] /
 python3 tools/rules_audit.py --line 2>/dev/null | sed 's/^/[session_start] /' || true
 RC=$(python3 -c "import json;print(json.load(open('docs/rules-audit-verdicts.json'))['checked'])" 2>/dev/null || echo 2000-01-01)
 [ $(( ( $(date +%s) - $(date -d "$RC" +%s) ) / 86400 )) -gt 30 ] && echo "[session_start] WARNING rules checked $RC (>30 days): repeat Rules audit R1 (docs/manual-notes.md sources table)" || true
+BL=$(grep -o "BAN_LIST_INFO = { effective: '[0-9-]*', checked: '[0-9-]*'" packages/engine/src/00-config.js | grep -o "[0-9]\{4\}-[0-9-]*" | tail -1 || echo 2000-01-01)
+[ $(( ( $(date +%s) - $(date -d "$BL" +%s) ) / 86400 )) -gt 30 ] && echo "[session_start] WARNING ban list last checked $BL (>30 days): check https://asia-en.battlespirits.com/rule/limited.php for a newer list and for a Standard list, then update BAN_LIST_INFO (effective, checked) and BAN_LISTS (00-config.js)" || true
 if command -v gh >/dev/null 2>&1; then
   gh api "repos/odinguard009/aeterna/issues?state=open" --jq '.[] | "[session_start] issue #\(.number) \(.title)"' 2>/dev/null || echo "[session_start] open issues: use list_issues (gh failed)"
 else echo "[session_start] open issues: gh not available here, use the GitHub tools (list_issues)"; fi

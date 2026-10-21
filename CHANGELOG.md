@@ -4,6 +4,18 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 
 Older releases (v0.80.0 and earlier): [CHANGELOG-archive.md](CHANGELOG-archive.md).
 
+## v0.97.0
+- Lane: U/I
+- Time: one chain session, Opus (roadmap items "format default" + "Standard decks").
+- **Standard is the default format, and the ten official Standard starter decks are in the game (26RSD01-26RSD10: Entry Decks in red, purple, green, white, yellow and blue, starters in purple and yellow, anime starters in red and green).**
+  - A new player starts in Standard (a saved choice still wins). The format button reads "FORMAT: STANDARD" or "FORMAT: ETERNAL (PREVIEW)" (most Eternal cards are still partial); the same in the deck builder. The deck lists (Play, Decks, ready-made) show the decks of the chosen format first.
+  - The first-run deck is the Standard starter 26RSD02 (27 of its 40 cards are complete today, the most of the ten); the CPU default is 26RSD03. Training Red stays selectable but is no longer part of the random CPU pick. Deck names no longer carry developer notes ("v0.37", "draft", "for testing").
+  - Each starter keeps its full official 40-card recipe (`data/decks/standard-26rsd*.txt`). A card that is not playable yet is skipped when the deck loads and the deck is labelled "incomplete, N missing" and never chosen as the CPU deck: only 26RSD08 (Twilight Fantasia Song 26RSD08-013 and its copies, 3 cards) is affected today.
+  - Ban lists are per format. The official page has one list (effective 2026-09-01, for the Eternal qualifiers) and no Standard list (checked 2026-10-21), so Standard has an empty list; `session_start.sh` warns when the check is older than 30 days.
+  - Token check: the Swordish token `26RSD10-T001` is not defined yet; the 7 cards that send it out stay partial (recorded in `docs/ai/roadmap-open.md`, K queue).
+  - Tests: `tests/unit/std_decks97.test.mjs` (S97-1..S97-7). The shared test copies (Node `GAME_URL`, Python `wip.html` and the legacy copy) set the default format back to Eternal, because most suites were written for Eternal rules; the real default is tested in S97 only.
+  - Backup `backup/v0.96.0`. Revert note: `git revert` of the v0.97.0 commit(s) (the format default is one line in `00-config.js`, the starters one block in `04-decks.js`).
+
 ## v0.96.0
 - Lane: U/I
 - Time: one chain session, Opus (repo cleanup, roadmap item L; no game change).

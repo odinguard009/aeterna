@@ -6,7 +6,7 @@ A fan-made, single-file web simulator for a trading card game. You play against 
 - Play a full match against the CPU on PC (playmat layout) or phone (stacked layout), from one HTML file with no install and no network.
 - Card pool: all 8,709 cards (Saga 1-17 and Standard block A) load from a compact built-in pack; the cards whose effects are wired and tested are playable (count below).
 - Deck builder with filters, cost curve, ready-made decks and format legality.
-- Eternal and Standard formats with the ban list; the rules follow the official manuals, with sources and open points tracked in `docs/manual-notes.md`.
+- Standard (the default) and Eternal (preview: most Eternal cards are still partial) formats with the ban list, and the ten official Standard starter decks; the rules follow the official manuals, with sources and open points tracked in `docs/manual-notes.md`.
 - Data-driven rules engine: card effects are data (triggers, actions, conditions), compiled from card text and checked by tests.
 - Seeded matches and replays: any match can be replayed from its seed and inputs; a CPU-vs-CPU fuzzer hunts rare bugs.
 

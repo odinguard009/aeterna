@@ -3,9 +3,23 @@
 import { loadPlaywright } from './pw.mjs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { join, dirname } from 'node:path';
+import { readFileSync, writeFileSync, renameSync, existsSync, statSync, mkdirSync } from 'node:fs';
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
-export const GAME_URL = pathToFileURL(join(ROOT, 'index.html')).href;
+/** The real product (default format Standard since v0.97.0). */
+export const PRODUCT_URL = pathToFileURL(join(ROOT, 'index.html')).href;
+/** Test copy of the game with the default format back to Eternal: most tests were written for Eternal rules. A test of the real default uses PRODUCT_URL / openGame(query, true). */
+function eternalCopy() {
+  const src = join(ROOT, 'index.html'), dst = join(ROOT, 'build', 'index-eternal.html');
+  if (!existsSync(dst) || statSync(dst).mtimeMs < statSync(src).mtimeMs) {
+    const s = readFileSync(src, 'utf8'), t = s.replace("let FORMAT = 'standard';", "let FORMAT = 'eternal';");
+    if (t === s) throw new Error('default-format line not found in index.html');
+    mkdirSync(join(ROOT, 'build'), { recursive: true });
+    const tmp = dst + '.' + process.pid; writeFileSync(tmp, t); renameSync(tmp, dst);      // atomic: parallel test files share the copy
+  }
+  return pathToFileURL(dst).href;
+}
+export const GAME_URL = eternalCopy();
 export const WHITE = { 'BS74-CX03': 3, 'BS74-072': 3, 'BS74-038': 3, 'BS74-040': 2, 'BS74-041': 3, 'BS74-042': 3, 'BS74-043': 2, 'BS74-045': 2, 'BS74-047': 2, 'BS74-048': 2, 'BS74-049': 2, 'BS74-050': 2, 'BS75-028': 3, 'BS75-030': 2, 'BS75-035': 3, 'BS75-037': 1, 'BS75-041': 1, 'BS75-X08': 1 };
 
 let browser = null;
@@ -16,19 +30,19 @@ export async function getBrowser() {
 export async function closeBrowser() { if (browser) { await browser.close(); browser = null; } }
 
 /** Opens the game. query: '' (normal) or '?sim=1' (CPU plays both sides). Returns { page, errors }. */
-export async function openGame(query = '') {
+export async function openGame(query = '', product = false) {
   const b = await getBrowser(), page = await b.newPage(), errors = [];
   page.on('pageerror', e => errors.push('pageerror: ' + e.message.slice(0, 300)));
   page.on('console', m => { if (m.type() === 'error') errors.push('console: ' + m.text().slice(0, 200)); });
   page.on('dialog', d => { errors.push('dialog: ' + d.message().slice(0, 100)); d.dismiss(); });
-  await page.goto(GAME_URL + query);
+  await page.goto((product ? PRODUCT_URL : GAME_URL) + query);
   await page.waitForFunction(() => !!window.BS);
   return { page, errors };
 }
 
 /** A quiet board (no match loop): BS.testSetup(). */
-export async function quietBoard() {
-  const g = await openGame('');
+export async function quietBoard(product = false) {
+  const g = await openGame('', product);
   await g.page.evaluate(() => { BS.testSetup(); return 1; });
   return g;
 }

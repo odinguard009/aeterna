@@ -5,7 +5,7 @@
 const humanCan = () => seatCan('player');
 
 function legalityHTML(card) {
-  const row = (name, f) => { const r = legalityOf(card.id, f), lim = banStatus(card.id) === 'limit1';
+  const row = (name, f) => { const r = legalityOf(card.id, f), lim = banStatus(card.id, f) === 'limit1';
     return `<span class="lg ${r ? 'no' : 'ok'}">${name}: ${r ? '🚫 ' + esc(r) : lim ? '⚠ limited to 1' : '✓ legal'}</span>`; };
   return `<div class="legality">${row('Eternal', 'eternal')}${row('Standard', 'standard')}</div>`;
 }
@@ -120,7 +120,7 @@ async function showCardDetail(id, ctx, uid) {
   let buttons = [], inst = null;
   if (ctx === 'deck') {
     const n = PLAYER_DECK[id] || 0;
-    const mx = maxCopies(id), bad = legalityOf(id, FORMAT);
+    const mx = maxCopies(id, FORMAT), bad = legalityOf(id, FORMAT);
     buttons.push({ label: bad ? `🚫 Not legal in ${fmtName(FORMAT)}` : `＋ Add to deck (${n}/${mx})`, cls: 'primary', value: 'add', dis: !!bad || n >= mx });
     buttons.push({ label: '－ Remove from deck', cls: 'blue', value: 'sub', dis: n <= 0 });
   } else if (ctx === 'hand' && G) {

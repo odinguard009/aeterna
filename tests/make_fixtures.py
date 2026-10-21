@@ -12,7 +12,13 @@ import allcards
 cards = allcards.load(root)      # build/all-cards.json, generated (not in git)
 for d in ['/mnt/user-data/outputs', '/tmp/claude-0/fixtures', '/tmp/claude-0/t4', '/tmp/claude-0/t']:
     os.makedirs(d, exist_ok=True)
-shutil.copy(os.path.join(root, 'index.html'), '/mnt/user-data/outputs/wip.html')
+def eternal_copy(src, dst):
+    """Test copy of the game with the default format set back to Eternal (the product default is Standard since v0.97.0); the suites were written for Eternal rules. A test of the real default uses the Node test std_decks97."""
+    s = open(src, encoding='utf-8').read()
+    t = s.replace("let FORMAT = 'standard';", "let FORMAT = 'eternal';", 1)
+    assert t != s, "default-format line not found in the build"
+    open(dst, 'w', encoding='utf-8').write(t)
+eternal_copy(os.path.join(root, 'index.html'), '/mnt/user-data/outputs/wip.html')
 _deck = {l.split('#')[0].split()[-1] for l in open(os.path.join(root, 'data/decks/white-mitra-awakened-dragon.txt')) if l.split('#')[0].split()}
 white = [c for c in cards if c['id'] in _deck]      # the white deck's 18 cards (v0.50: taken from the deck file, since the pack now holds more white cards)
 red = [c for c in cards if c['color'] == 'red' and (c['id'][:4] in ('BS75', 'BS76') or c['type'] == 'Nexus')]

@@ -42,7 +42,7 @@ function navHistory() {
   switchView('view-settings');
   const h = $('set-hist'); if (h && h.scrollIntoView) h.scrollIntoView({ block: 'start' });
 }
-const fmtTitle = () => cap(String(fmtName(FORMAT)).toLowerCase());
+const fmtTitle = () => cap(String(fmtButton(FORMAT)).toLowerCase());
 // Home: playable count, last deck line, version
 function renderHome() {
   if (typeof document === 'undefined' || !$('home-sub')) return;

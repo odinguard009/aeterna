@@ -973,7 +973,7 @@ html.layout-pc .doc-card { padding: 18px 24px 20px; }
     </div>
     <h2 class="ae-sec"><span>SETUP</span></h2>
     <div class="pl-setup">
-      <div class="pl-row"><span class="lab">Format</span><button class="ae-chipbtn" data-a="format" id="format-btn">FORMAT: ETERNAL</button></div>
+      <div class="pl-row"><span class="lab">Format</span><button class="ae-chipbtn" data-a="format" id="format-btn">FORMAT: STANDARD</button></div>
       <label class="pl-row"><span class="lab">CPU deck</span><select id="play-cpu" class="sel"></select></label>
       <div class="pl-row"><span class="lab" id="pl-style-l">CPU style</span><div class="ae-chips" id="pl-style" role="group" aria-labelledby="pl-style-l"></div></div>
       <div class="pl-row"><span class="lab" id="pl-speed-l">Speed</span><div class="ae-chips" id="pl-speed" role="group" aria-labelledby="pl-speed-l"></div></div>
@@ -986,7 +986,7 @@ html.layout-pc .doc-card { padding: 18px 24px 20px; }
     <button class="db-back ae-ghost" data-a="go-decks" aria-label="Back to My decks">‹ MY DECKS</button><h2>Deck Builder</h2><span id="db-topcount" class="db-topcount"></span>
     <button class="db-menu-btn btn-nav-small" data-a="db-sheet" data-v="menu" aria-label="Deck menu">⋯ Menu</button>
     <div class="db-tools">
-      <button class="btn-nav-small" data-a="format" id="db-format" title="Switch format">ETERNAL</button>
+      <button class="btn-nav-small" data-a="format" id="db-format" title="Switch format">STANDARD</button>
       <select id="db-slot" class="sel" title="Deck slot"></select>
       <input id="db-name" class="sel" maxlength="24" size="10" title="Deck name" autocomplete="off">
       <select id="db-preset" class="sel" title="Load a ready-made deck into this slot"></select>
@@ -1032,7 +1032,7 @@ html.layout-pc .doc-card { padding: 18px 24px 20px; }
 
 <div id="view-decks" class="app-view ae-view">
   <main class="ae-page dk-page">
-    <header class="ae-phead"><div class="tx"><span class="ae-eyebrow">DECKS · <span id="dk-fmt">Eternal</span></span><h1>MY DECKS</h1><p>Your decks stay on this device. <b id="dk-count">0 / 8</b> slots in use.</p><p id="dk-msg" class="dk-msg" role="status" aria-live="polite"></p></div>
+    <header class="ae-phead"><div class="tx"><span class="ae-eyebrow">DECKS · <span id="dk-fmt">Standard</span></span><h1>MY DECKS</h1><p>Your decks stay on this device. <b id="dk-count">0 / 8</b> slots in use.</p><p id="dk-msg" class="dk-msg" role="status" aria-live="polite"></p></div>
       <div class="dk-hacts"><button class="ae-ghost" data-a="dk-import">IMPORT CODE</button><button class="ae-ghost primary" data-a="dk-new">+ NEW DECK</button></div></header>
     <section class="dk-list" id="dk-list" aria-label="My decks"></section>
     <h2 class="dk-h">STARTER DECKS <span>read-only · Copy to edit</span></h2>
@@ -1093,18 +1093,20 @@ const STEPS_STANDARD = ['START', 'CORE', 'DRAW', 'REFRESH', 'MAIN', 'ATTACK', 'M
 /* Formats (official): Eternal = every card except the banned list; Standard = only cards with a letter block icon
    (Apr 2026 - Mar 2027: block "A" only) and it adds the Second Main Step. */
 const FORMAT_KEY = 'bse.format';
-let FORMAT = 'eternal';
+let FORMAT = 'standard';      // default format (owner, 2026-10-21); a saved choice below wins
 try { const v = localStorage.getItem(FORMAT_KEY); if (v === 'standard' || v === 'eternal') FORMAT = v; } catch (e) { /* blocked */ }
 const STANDARD_BLOCKS = ['A'];
-const BAN_LIST_INFO = { effective: '2026-09-01', source: 'battlespirits.com banned/restricted list (announced 2026-08-21)' };
+const BAN_LIST_INFO = { effective: '2026-09-01', checked: '2026-10-21', source: 'battlespirits.com banned/restricted list (announced 2026-08-21)', standard: 'no Standard list exists on the official page (checked 2026-10-21): the one list is for the Eternal qualifiers' };      // session_start.sh warns when `effective` is older than 30 days
 const BANNED = new Set(["BS01-124", "BS01-132", "BS02-063", "BS02-085", "BS02-097", "BS02-099", "BS03-030", "BS04-088", "BS04-089", "BS04-096", "BS04-105", "BS10-006", "BS10-108", "BS10-111", "BS11-X02", "BS12-039", "BS12-X02", "BS13-059", "BS13-071", "BS16-X03", "BS26-016", "BS28-082", "BS32-011", "BS32-074", "BS38-RV003", "BS38-RVX02", "BS39-049", "BS39-051", "BS39-052", "BS39-055", "BS39-057", "BS39-059", "BS40-X06", "BS41-063", "BS43-X04", "BS44-10THX01", "BS45-024", "BS45-090", "BS48-X06", "BS52-017", "BS52-019", "BS52-058", "BS52-CP08", "BS52-RV002", "BS52-X01", "BS52-X06", "BS53-XX02", "BS54-X03", "BS55-075", "BS56-021", "BS56-072", "BS56-075", "BS56-RV006", "BS57-011", "BS57-078", "BS57-083", "BS59-X07", "BS60-051", "BS61-062", "BS64-X02", "BS66-068", "BS70-078", "BS72-019", "BSC22-CP01", "BSC22-CP02", "BSC32-031", "BSC48-015", "BSC50-031", "CB05-055", "EX017", "P043", "SD02-014", "SD27-001", "SD41-RVX01", "SD54-015", "SD68-007"]);
 const LIMITED1 = new Set(["BS02-093", "BS02-X08", "BS03-148", "BS03-X11", "BS04-082", "BS06-084", "BS08-066", "BS08-X32", "BS11-082", "BS12-052", "BS13-062", "BS13-063", "BS15-063", "BS21-X07", "BS26-075", "BS30-035", "BS31-017", "BS31-112", "BS32-048", "BS33-019", "BS35-005", "BS35-X04", "BS37-X05", "BS38-RV028", "BS39-036", "BS39-039", "BS39-054", "BS41-XX01", "BS42-007", "BS42-069", "BS43-RVX06", "BS45-X01", "BS46-056", "BS46-X05", "BS48-019", "BS48-025", "BS50-015", "BS50-X03", "BS51-042", "BS51-10THX01", "BS51-CP04", "BS52-010", "BS52-032", "BS52-TX01", "BS52-X09", "BS55-TX04", "BS55-X02", "BS56-022", "BS56-025", "BS57-X07", "BS58-TCP02", "BS60-063", "BS60-064", "BS60-083", "BS64-059", "BS70-013", "BS72-023", "BS73-TCP01", "BS75-054", "BSC05-018", "BSC29-007", "BSC49-075", "BSC50-033", "CB05-XX01", "CB08-X02", "CB13-X05", "LM17-01", "LM19-02", "P073", "SD03-001", "SD03-012", "SD10-009", "SD39-X01", "SD43-RV001", "SD51-004", "SD51-005", "SD51-X02", "SD53-014", "SD55-011", "SD55-TX01", "SD57-006"]);
 const normCardNo = id => String(id || '').trim().toUpperCase();
-const banStatus = id => (BANNED.has(normCardNo(id)) ? 'banned' : LIMITED1.has(normCardNo(id)) ? 'limit1' : null);
-const maxCopies = id => (banStatus(id) === 'banned' ? 0 : banStatus(id) === 'limit1' ? 1 : 3);
+/* Ban lists per format: the official list is the Eternal one; Standard has none yet (BAN_LIST_INFO.standard), so it is empty and a later Standard list is added to this table. */
+const BAN_LISTS = { eternal: { banned: BANNED, limit1: LIMITED1 }, standard: { banned: new Set(), limit1: new Set() } };
+const banStatus = (id, format) => { const L = BAN_LISTS[format === 'standard' ? 'standard' : 'eternal'], k = normCardNo(id); return L.banned.has(k) ? 'banned' : L.limit1.has(k) ? 'limit1' : null; };      // no format = Eternal list
+const maxCopies = (id, format) => (banStatus(id, format) === 'banned' ? 0 : banStatus(id, format) === 'limit1' ? 1 : 3);
 function standardLegal(id) { const b = CARDS[id] && CARDS[id].block; return !!b && STANDARD_BLOCKS.includes(String(b).toUpperCase()); }
 function legalityOf(id, format) {            // -> null when legal, else a short reason
-  const st = banStatus(id);
+  const st = banStatus(id, format);
   if (st === 'banned') return 'banned';
   if (format === 'standard' && !standardLegal(id)) return `not Standard-legal (block ${(CARDS[id] && CARDS[id].block) || 'unknown'})`;
   return null;
@@ -4146,28 +4148,48 @@ function validateDeck(d, format) {
     const c = CARDS[id], bad = legalityOf(id, format);
     byName[c.name] = (byName[c.name] || 0) + n;
     if (bad) errors.push(`${c.name} (${id}): ${bad}.`);
-    else if (banStatus(id) === 'limit1' && n > 1) errors.push(`${c.name} (${id}): limited to 1 copy.`);
+    else if (banStatus(id, format) === 'limit1' && n > 1) errors.push(`${c.name} (${id}): limited to 1 copy.`);
   }
   for (const [nm, n] of Object.entries(byName)) if (n > 3) errors.push(`${nm}: max 3 copies with the same name (has ${n}).`);
   return { total, errors, ok: errors.length === 0, format };
 }
 const fmtName = f => (f === 'standard' ? 'STANDARD' : 'ETERNAL');
+const fmtButton = f => (f === 'standard' ? 'STANDARD' : 'ETERNAL (PREVIEW)');      // button text: Eternal is a preview while most Eternal cards are partial (owner, 2026-10-21)
 function setFormat(f) {
   FORMAT = f === 'standard' ? 'standard' : 'eternal';
   try { localStorage.setItem(FORMAT_KEY, FORMAT); } catch (e) { /* blocked */ }
   io.view({ type: 'decks' });
 }
 const errSummary = v => v.errors.slice(0, 3).join(' ') + (v.errors.length > 3 ? ` (+${v.errors.length - 3} more)` : '');
+/* Standard starters: the full official recipe is kept in `recipe`; `cards` holds only the cards that are playable in the library (so a deck fills in as card sessions add cards) and `missing` counts the rest. Recipes: data/decks/standard-26rsd*.txt */
+const stdDeck = (id, name, recipe) => ({
+  id, name, format: 'standard', recipe,
+  get cards() { const o = {}; for (const [k, n] of Object.entries(recipe)) if (CARDS[k]) o[k] = n; return o; },
+  get missing() { let m = 0; for (const [k, n] of Object.entries(recipe)) if (!CARDS[k]) m += n; return m; },
+});
+const prebuiltFmt = d => d.format || 'eternal';
+const prebuiltOrder = format => PREBUILT.map((d, i) => ({ d, i })).sort((a, b) => (prebuiltFmt(b.d) === format) - (prebuiltFmt(a.d) === format) || a.i - b.i);      // decks of the chosen format first, index kept for COPY
+const prebuiltLabel = d => d.name + (d.missing ? ` (incomplete, ${d.missing} missing)` : '');
 const PREBUILT = [
-  { id: 'train', name: 'Training Red (generic vanilla cards, for testing)', cards: PRESET_DECK },
+  { id: 'train', name: 'Training Red (generic vanilla cards)', cards: PRESET_DECK },
+  stdDeck('std01', 'Red: Windfang (Entry Deck 26RSD01)', { '26RSD01-001': 3, '26RSD01-002': 3, '26RSD01-003': 2, '26RSD01-004': 3, '26RSD01-005': 3, '26RSD01-006': 2, '26RSD01-007': 2, '26RSD01-008': 2, '26RSD01-009': 2, '26RSD01-010': 3, '26RSD01-011': 3, '26RSD01-012': 3, '26RSD01-013': 3, '26RSD01-014': 2, '26RSD01-X01': 2, '26RSD01-X02': 2 }),
+  stdDeck('std02', 'Purple: Bloodrouse (Entry Deck 26RSD02)', { '26RSD02-001': 3, '26RSD02-002': 3, '26RSD02-003': 3, '26RSD02-004': 2, '26RSD02-005': 3, '26RSD02-006': 2, '26RSD02-007': 2, '26RSD02-008': 3, '26RSD02-009': 3, '26RSD02-010': 3, '26RSD02-011': 3, '26RSD02-012': 2, '26RSD02-013': 2, '26RSD02-014': 2, '26RSD02-X01': 2, '26RSD02-X02': 2 }),
+  stdDeck('std03', 'Green: Armored Fish (Entry Deck 26RSD03)', { '26RSD03-001': 2, '26RSD03-002': 3, '26RSD03-003': 2, '26RSD03-004': 3, '26RSD03-005': 3, '26RSD03-006': 2, '26RSD03-007': 2, '26RSD03-008': 3, '26RSD03-009': 2, '26RSD03-010': 3, '26RSD03-011': 3, '26RSD03-012': 3, '26RSD03-013': 3, '26RSD03-014': 2, '26RSD03-X01': 2, '26RSD03-X02': 2 }),
+  stdDeck('std04', 'White: Mineroid (Entry Deck 26RSD04)', { '26RSD04-001': 3, '26RSD04-002': 3, '26RSD04-003': 3, '26RSD04-004': 2, '26RSD04-005': 3, '26RSD04-006': 2, '26RSD04-007': 2, '26RSD04-008': 2, '26RSD04-009': 3, '26RSD04-010': 3, '26RSD04-011': 2, '26RSD04-012': 3, '26RSD04-013': 3, '26RSD04-014': 2, '26RSD04-X01': 2, '26RSD04-X02': 2 }),
+  stdDeck('std05', 'Yellow: Thunder Dragon (Entry Deck 26RSD05)', { '26RSD05-001': 3, '26RSD05-002': 3, '26RSD05-003': 2, '26RSD05-004': 3, '26RSD05-005': 3, '26RSD05-006': 2, '26RSD05-007': 2, '26RSD05-008': 2, '26RSD05-009': 3, '26RSD05-010': 3, '26RSD05-011': 3, '26RSD05-012': 3, '26RSD05-013': 2, '26RSD05-014': 2, '26RSD05-X01': 2, '26RSD05-X02': 2 }),
+  stdDeck('std06', 'Blue: Ferobeast (Entry Deck 26RSD06)', { '26RSD06-001': 3, '26RSD06-002': 3, '26RSD06-003': 2, '26RSD06-004': 2, '26RSD06-005': 3, '26RSD06-006': 2, '26RSD06-007': 3, '26RSD06-008': 2, '26RSD06-009': 3, '26RSD06-010': 3, '26RSD06-011': 3, '26RSD06-012': 3, '26RSD06-013': 2, '26RSD06-014': 2, '26RSD06-X01': 2, '26RSD06-X02': 2 }),
+  stdDeck('std07', 'Purple: Kamen Rider Zeztz (Starter 26RSD07)', { '26RSD07-001': 2, '26RSD07-002': 2, '26RSD07-003': 3, '26RSD07-004': 3, '26RSD07-005': 3, '26RSD07-006': 3, '26RSD07-007': 3, '26RSD07-008': 3, '26RSD07-009': 2, '26RSD07-010': 2, '26RSD07-011': 2, '26RSD07-012': 3, '26RSD07-013': 2, '26RSD07-014': 3, '26RSD07-X01': 2, '26RSD07-X02': 2 }),
+  stdDeck('std08', 'Yellow: Diva (Starter 26RSD08)', { '26RSD08-001': 3, '26RSD08-002': 2, '26RSD08-003': 3, '26RSD08-004': 3, '26RSD08-005': 3, '26RSD08-006': 2, '26RSD08-007': 2, '26RSD08-008': 2, '26RSD08-009': 2, '26RSD08-010': 3, '26RSD08-011': 3, '26RSD08-012': 3, '26RSD08-013': 3, '26RSD08-014': 2, '26RSD08-X01': 2, '26RSD08-X02': 2 }),
+  stdDeck('std09', 'Red: Purgatory Phoenix (Anime Starter 26RSD09)', { '26RSD09-001': 3, '26RSD09-002': 3, '26RSD09-003': 3, '26RSD09-004': 2, '26RSD09-005': 3, '26RSD09-006': 3, '26RSD09-007': 2, '26RSD09-008': 2, '26RSD09-009': 2, '26RSD09-010': 3, '26RSD09-011': 3, '26RSD09-012': 2, '26RSD09-013': 3, '26RSD01-014': 2, '26RSD09-X01': 2, '26RSD09-X02': 2 }),
+  stdDeck('std10', 'Green: Aberrant Whale (Anime Starter 26RSD10)', { '26RSD10-001': 3, '26RSD10-002': 3, '26RSD10-003': 2, '26RSD10-004': 3, '26RSD10-005': 3, '26RSD10-006': 3, '26RSD10-007': 2, '26RSD10-008': 2, '26RSD10-009': 2, '26RSD10-010': 3, '26RSD10-011': 3, '26RSD10-012': 2, '26RSD10-013': 3, '26RSD03-014': 2, '26RSD10-X01': 2, '26RSD10-X02': 2 }),
   { id: 'mitra', name: 'White: Mitra / Awakened Dragon (Contract)', cards: { 'BS74-CX03': 3, 'BS74-072': 3, 'BS74-038': 3, 'BS74-040': 2, 'BS74-041': 3, 'BS74-042': 3, 'BS74-043': 2, 'BS74-045': 2, 'BS74-047': 2, 'BS74-048': 2, 'BS74-049': 2, 'BS74-050': 2, 'BS75-028': 3, 'BS75-030': 2, 'BS75-035': 3, 'BS75-037': 1, 'BS75-041': 1, 'BS75-X08': 1 } },
-  { id: 'red', name: 'Red: BS75 Crimson Dragon / Lava Fish (draft)', cards: { 'BS74-CX01': 3, 'BS75-001': 3, 'BS75-002': 3, 'BS75-003': 3, 'BS75-004': 3, 'BS75-006': 3, 'BS75-007': 3, 'BS75-008': 3, 'BS75-010': 3, 'BS75-011': 3, 'BS75-012': 3, 'BS75-013': 2, 'BS75-073': 3, 'BS75-076': 2 } },
-  { id: 'blue', name: 'Blue: Nuadha / Scalostle Dana (Contract, v0.37)', cards: { 'BS71-CX03': 3, 'BS71-072': 1, 'BS71-053': 3, 'BS71-054': 2, 'BS71-056': 3, 'BS71-057': 3, 'BS72-049': 2, 'BS72-050': 3, 'BS72-051': 2, 'BS71-058': 3, 'BS72-054': 2, 'BS71-060': 2, 'BS71-061': 2, 'BS71-X09': 1, 'BS71-063': 2, 'BS71-064': 2, 'BS72-068': 2, 'BS74-067': 2 } },
-  { id: 'green', name: 'Green: Hermes / Lionheart Blade Beast (Contract, v0.38)', cards: { 'BS69-CX02': 3, 'BS69-071': 2, 'BS70-072': 2, 'BS69-023': 3, 'BS69-024': 2, 'BS69-025': 3, 'BS69-026': 3, 'BS70-028': 3, 'BS69-028': 2, 'BS69-029': 3, 'BS70-031': 2, 'BS70-034': 2, 'BS69-030': 2, 'BS70-035': 2, 'BS69-031': 3, 'BS70-X03': 1, 'BS69-033': 2 } },
-  { id: 'purple', name: 'Purple: Hades / Sorcerer Infernal Lord (Contract, v0.39)', cards: { 'BS68-CX01': 3, 'BS68-070': 3, 'BS68-012': 3, 'BS68-014': 3, 'BS68-015': 3, 'BS68-016': 3, 'BS68-017': 3, 'BS68-018': 3, 'BS68-019': 3, 'BS68-020': 3, 'BS68-022': 3, 'BS68-023': 3, 'BS68-NX01': 2, 'BS68-021': 2 } },
-  { id: 'yellow', name: 'Yellow: Indra / Thunderive (Contract, v0.40)', cards: { 'BS75-CX03': 3, 'BS75-068': 3, 'BS75-042': 3, 'BS75-043': 3, 'BS75-044': 3, 'BS75-045': 3, 'BS75-046': 2, 'BS75-047': 3, 'BS75-048': 3, 'BS75-049': 3, 'BS75-050': 2, 'BS75-X10': 3, 'BS76-047': 3, 'BS76-048': 3 } },
+  { id: 'red', name: 'Red: BS75 Crimson Dragon / Lava Fish', cards: { 'BS74-CX01': 3, 'BS75-001': 3, 'BS75-002': 3, 'BS75-003': 3, 'BS75-004': 3, 'BS75-006': 3, 'BS75-007': 3, 'BS75-008': 3, 'BS75-010': 3, 'BS75-011': 3, 'BS75-012': 3, 'BS75-013': 2, 'BS75-073': 3, 'BS75-076': 2 } },
+  { id: 'blue', name: 'Blue: Nuadha / Scalostle Dana (Contract)', cards: { 'BS71-CX03': 3, 'BS71-072': 1, 'BS71-053': 3, 'BS71-054': 2, 'BS71-056': 3, 'BS71-057': 3, 'BS72-049': 2, 'BS72-050': 3, 'BS72-051': 2, 'BS71-058': 3, 'BS72-054': 2, 'BS71-060': 2, 'BS71-061': 2, 'BS71-X09': 1, 'BS71-063': 2, 'BS71-064': 2, 'BS72-068': 2, 'BS74-067': 2 } },
+  { id: 'green', name: 'Green: Hermes / Lionheart Blade Beast (Contract)', cards: { 'BS69-CX02': 3, 'BS69-071': 2, 'BS70-072': 2, 'BS69-023': 3, 'BS69-024': 2, 'BS69-025': 3, 'BS69-026': 3, 'BS70-028': 3, 'BS69-028': 2, 'BS69-029': 3, 'BS70-031': 2, 'BS70-034': 2, 'BS69-030': 2, 'BS70-035': 2, 'BS69-031': 3, 'BS70-X03': 1, 'BS69-033': 2 } },
+  { id: 'purple', name: 'Purple: Hades / Sorcerer Infernal Lord (Contract)', cards: { 'BS68-CX01': 3, 'BS68-070': 3, 'BS68-012': 3, 'BS68-014': 3, 'BS68-015': 3, 'BS68-016': 3, 'BS68-017': 3, 'BS68-018': 3, 'BS68-019': 3, 'BS68-020': 3, 'BS68-022': 3, 'BS68-023': 3, 'BS68-NX01': 2, 'BS68-021': 2 } },
+  { id: 'yellow', name: 'Yellow: Indra / Thunderive (Contract)', cards: { 'BS75-CX03': 3, 'BS75-068': 3, 'BS75-042': 3, 'BS75-043': 3, 'BS75-044': 3, 'BS75-045': 3, 'BS75-046': 2, 'BS75-047': 3, 'BS75-048': 3, 'BS75-049': 3, 'BS75-050': 2, 'BS75-X10': 3, 'BS76-047': 3, 'BS76-048': 3 } },
 ];
-const defaultDeck = () => Object.assign({}, PREBUILT.find(d => d.id === 'mitra').cards);     // first-run and "Default" deck: a real-card deck
+const defaultDeck = () => Object.assign({}, PREBUILT.find(d => d.id === 'std02').cards);     // first-run and "Default" deck: the Standard starter 26RSD02 (most complete cards of the ten, 27 of 40 on 2026-10-21)
 const SLOT_KEY = 'bse.slots.v1', SLOT_COUNT = 8;
 let SLOTS = null, ACTIVE_SLOT = 0;
 function loadSlots() {
@@ -4201,9 +4223,10 @@ let CPU_DECK_NAME = '';
 function cpuDeckFor(format) {                          // the CPU deck: the chosen one when legal in this format, else a random legal prebuilt deck
   const sel = SETTINGS.cpuDeck;
   if (sel === 'mine') { CPU_DECK_NAME = 'Mirror of ' + SLOTS[ACTIVE_SLOT].name; return Object.assign({}, PLAYER_DECK); }
+  const usable = d => !d.missing && (format === 'standard' || prebuiltFmt(d) !== 'standard') && validateDeck(d.cards, format).ok;      // an incomplete starter is never picked for the CPU
   const pick = PREBUILT.find(d => d.id === sel);
-  if (pick && validateDeck(pick.cards, format).ok) { CPU_DECK_NAME = pick.name; return pick.cards; }
-  const legal = PREBUILT.filter(d => validateDeck(d.cards, format).ok);
+  if (pick && usable(pick)) { CPU_DECK_NAME = pick.name; return pick.cards; }
+  const legal = PREBUILT.filter(d => usable(d) && d.id !== 'train');      // the random pick never takes the training deck (it stays selectable by name)
   const d = legal.length ? legal[Math.floor(rng() * legal.length)] : PREBUILT[0];
   CPU_DECK_NAME = d.name; return d.cards;
 }
@@ -4213,7 +4236,7 @@ function cpuDeckFor(format) {                          // the CPU deck: the chos
    --------------------------------------------------------------------- */
 /* ---- settings (saved in this browser) ---- */
 const SET_KEY = 'bse.settings.v1';
-const SETTINGS = Object.assign({ speed: 'normal', sound: false, cpuDeck: 'train' }, (() => { try { const o = JSON.parse(localStorage.getItem(SET_KEY)); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } })());
+const SETTINGS = Object.assign({ speed: 'normal', sound: false, cpuDeck: 'std03' }, (() => { try { const o = JSON.parse(localStorage.getItem(SET_KEY)); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } })());
 const SPEEDS = { normal: 1, fast: 0.45, instant: 0.08 };
 if (!SPEEDS[SETTINGS.speed]) SETTINGS.speed = 'normal';
 SETTINGS.sound = SETTINGS.sound === true;
@@ -5742,7 +5765,7 @@ async function webPayment(card, c, L) {
 const humanCan = () => seatCan('player');
 
 function legalityHTML(card) {
-  const row = (name, f) => { const r = legalityOf(card.id, f), lim = banStatus(card.id) === 'limit1';
+  const row = (name, f) => { const r = legalityOf(card.id, f), lim = banStatus(card.id, f) === 'limit1';
     return `<span class="lg ${r ? 'no' : 'ok'}">${name}: ${r ? '🚫 ' + esc(r) : lim ? '⚠ limited to 1' : '✓ legal'}</span>`; };
   return `<div class="legality">${row('Eternal', 'eternal')}${row('Standard', 'standard')}</div>`;
 }
@@ -5857,7 +5880,7 @@ async function showCardDetail(id, ctx, uid) {
   let buttons = [], inst = null;
   if (ctx === 'deck') {
     const n = PLAYER_DECK[id] || 0;
-    const mx = maxCopies(id), bad = legalityOf(id, FORMAT);
+    const mx = maxCopies(id, FORMAT), bad = legalityOf(id, FORMAT);
     buttons.push({ label: bad ? `🚫 Not legal in ${fmtName(FORMAT)}` : `＋ Add to deck (${n}/${mx})`, cls: 'primary', value: 'add', dis: !!bad || n >= mx });
     buttons.push({ label: '－ Remove from deck', cls: 'blue', value: 'sub', dis: n <= 0 });
   } else if (ctx === 'hand' && G) {
@@ -6334,11 +6357,11 @@ function renderLobby() {
   const v = validateDeck(PLAYER_DECK), el = $('lobby-deck');
   el.className = 'lobby-deck' + (v.ok ? '' : ' bad');
   el.textContent = v.ok ? `Your deck: ${v.total} cards · legal in ${fmtName(FORMAT)}` : `Your deck is not legal in ${fmtName(FORMAT)}: ${errSummary(v)}`;
-  const fb = $('format-btn'); if (fb) fb.textContent = `FORMAT: ${fmtName(FORMAT)}`;
+  const fb = $('format-btn'); if (fb) fb.textContent = `FORMAT: ${fmtButton(FORMAT)}`;
   const pd = $('play-deck');
   if (pd) {
     pd.innerHTML = SLOTS.map((sl, i) => { const t = deckTotal(sl.cards), ok = t && validateDeck(sl.cards, FORMAT).ok; return `<option value="${i}"${i === ACTIVE_SLOT ? ' selected' : ''}>${esc(sl.name)} · ${t} cards${t ? (ok ? ' ✓' : ' ✗') : ''}</option>`; }).join('');
-    $('play-cpu').innerHTML = [...PREBUILT.map(d => `<option value="${d.id}">${esc(d.name)}${validateDeck(d.cards, FORMAT).ok ? '' : ' (not legal in ' + fmtName(FORMAT) + ': random instead)'}</option>`), '<option value="random">Random legal deck</option>', '<option value="mine">Mirror: copy of your deck</option>'].join('');
+    $('play-cpu').innerHTML = [...prebuiltOrder(FORMAT).map(({ d }) => `<option value="${d.id}">${esc(prebuiltLabel(d))}${validateDeck(d.cards, FORMAT).ok ? (d.missing ? ' (random instead)' : '') : ' (not legal in ' + fmtName(FORMAT) + ': random instead)'}</option>`), '<option value="random">Random legal deck</option>', '<option value="mine">Mirror: copy of your deck</option>'].join('');
     $('play-cpu').value = SETTINGS.cpuDeck;
   }
   renderPlay();
@@ -6408,7 +6431,7 @@ function dbCardHTML(id) {
   const c = CARDS[id], n = PLAYER_DECK[id] || 0, bp = c.levels[0] && c.levels[0].bp != null ? c.levels[0].bp : c.brave ? '+' + c.brave.bp : '-';
   return `<div class="tcg-card ${n ? '' : 'dim'}${cardCls(c)}${imgCls(id)}${DBV.pulse === id ? ' db-pulse' : ''}" style="${colorSty(c)}${imgSty(id)}" data-a="dbcard" data-v="${id}" title="${esc(c.name)} (${id})${fxMarked(c) ? ' - ' + FX_MARK_LBL : ''}: tap to add">
       <div class="cost">${c.cost}</div><div class="type-badge">${c.contract ? 'CON' : c.type.substring(0, 3).toUpperCase()}${rebMark(c)}</div>
-      <div class="name">${nameHTML(c.name)}</div><div class="bp">${bp}</div>${fxMarkHTML(c)}${symBadgeHTML(id)}${n ? `<div class="qty-badge">×${n}</div>` : ''}${legalityOf(id, FORMAT) ? '<div class="ban-badge" title="Not legal in this format">🚫</div>' : banStatus(id) === 'limit1' ? '<div class="ban-badge lim">1</div>' : ''}<button class="db-info" data-a="dbinfo" data-v="${id}" aria-label="Card detail" title="Card detail">i</button></div>`;
+      <div class="name">${nameHTML(c.name)}</div><div class="bp">${bp}</div>${fxMarkHTML(c)}${symBadgeHTML(id)}${n ? `<div class="qty-badge">×${n}</div>` : ''}${legalityOf(id, FORMAT) ? '<div class="ban-badge" title="Not legal in this format">🚫</div>' : banStatus(id, FORMAT) === 'limit1' ? '<div class="ban-badge lim">1</div>' : ''}<button class="db-info" data-a="dbinfo" data-v="${id}" aria-label="Card detail" title="Card detail">i</button></div>`;
 }
 function dbWindow(force) {             // renders the rows around the visible part of the grid
   const el = $('db-card-list'), list = DBV.list, n = list.length;
@@ -6493,7 +6516,7 @@ function dbResetFilters() {
 
 /* ---------- deck changes (with undo) ---------- */
 function dbSnap() { DB_UNDO.push(JSON.stringify(PLAYER_DECK)); if (DB_UNDO.length > 30) DB_UNDO.shift(); }
-function dbCanAdd(id) { const n = PLAYER_DECK[id] || 0; return !legalityOf(id, FORMAT) && n < maxCopies(id); }
+function dbCanAdd(id) { const n = PLAYER_DECK[id] || 0; return !legalityOf(id, FORMAT) && n < maxCopies(id, FORMAT); }
 function dbChange(id, d) {
   const n = PLAYER_DECK[id] || 0;
   if (d > 0 && !dbCanAdd(id)) return false;
@@ -6576,12 +6599,12 @@ function dbSheet(which) {             // phone: open 'filters', 'deck' or 'menu'
 
 function renderDeckBuilder() {
   const v = validateDeck(PLAYER_DECK);
-  const fb = $('db-format'); if (fb) fb.textContent = fmtName(FORMAT);
+  const fb = $('db-format'); if (fb) fb.textContent = fmtButton(FORMAT);
   const ds = $('db-slot');
   if (ds) {
     ds.innerHTML = SLOTS.map((sl, i) => `<option value="${i}"${i === ACTIVE_SLOT ? ' selected' : ''}>${i + 1}. ${esc(sl.name)} (${deckTotal(i === ACTIVE_SLOT ? PLAYER_DECK : sl.cards)})</option>`).join('');
     if (document.activeElement !== $('db-name')) $('db-name').value = SLOTS[ACTIVE_SLOT].name;
-    $('db-preset').innerHTML = '<option value="">Load ready-made…</option>' + PREBUILT.map(d => `<option value="${d.id}">${esc(d.name)}</option>`).join('');
+    $('db-preset').innerHTML = '<option value="">Load ready-made…</option>' + prebuiltOrder(FORMAT).map(({ d }) => `<option value="${d.id}">${esc(prebuiltLabel(d))}</option>`).join('');
   }
   renderDbRail(); renderDbDeck(v); dbTab(DB_TAB);
   dbFilter(); dbWindow(true);
@@ -6649,7 +6672,7 @@ function navHistory() {
   switchView('view-settings');
   const h = $('set-hist'); if (h && h.scrollIntoView) h.scrollIntoView({ block: 'start' });
 }
-const fmtTitle = () => cap(String(fmtName(FORMAT)).toLowerCase());
+const fmtTitle = () => cap(String(fmtButton(FORMAT)).toLowerCase());
 // Home: playable count, last deck line, version
 function renderHome() {
   if (typeof document === 'undefined' || !$('home-sub')) return;
@@ -6989,7 +7012,7 @@ function renderDecks() {
   const used = SLOTS.map((s, i) => i).filter(dkUsed);
   $('dk-count').textContent = `${used.length} / ${SLOTS.length}`;
   $('dk-list').innerHTML = used.map(i => dkTile(i, SLOTS[i].name, dkCards(i))).join('');
-  $('dk-starters').innerHTML = PREBUILT.map((d, i) => dkTile(i, d.name, d.cards, true)).join('');
+  $('dk-starters').innerHTML = prebuiltOrder(FORMAT).map(({ d, i }) => dkTile(i, prebuiltLabel(d), d.cards, true)).join('');
   $('dk-fmt').textContent = fmtTitle();
 }
 function dkMenu(i) {
@@ -7425,7 +7448,7 @@ document.addEventListener('click', e => {
   else if (a === 'rv-watch') replayWatch(Number(v));
   else if (a === 'rv-save') replaySave(Number(v));
   else if (a === 'hist-clear') { HISTORY = []; try { localStorage.removeItem(HIST_KEY); } catch (e) { /* blocked */ } renderSettings(); }
-  else if (a === 'set-reset') { SETTINGS.speed = 'normal'; SETTINGS.sound = false; delete SETTINGS.anim; SETTINGS.cpuDeck = 'train'; SETTINGS.cpuProfile = 'balanced'; saveSettings(); renderSettings(); $('set-msg').textContent = 'Settings reset.'; }
+  else if (a === 'set-reset') { SETTINGS.speed = 'normal'; SETTINGS.sound = false; delete SETTINGS.anim; SETTINGS.cpuDeck = 'std03'; SETTINGS.cpuProfile = 'balanced'; saveSettings(); renderSettings(); $('set-msg').textContent = 'Settings reset.'; }
   else if (a === 'go-lib') switchView('view-library');
   else if (a === 'set-sec') setSection(v);
   else if (a === 'set-mat-clear') matClear();
@@ -7551,7 +7574,7 @@ function testSetup() {            // dev hook: a quiet board with no match loop 
   switchView('view-playmat'); render(); return G;
 }
 const defBuiltin = o => { defCard(o); BUILTIN_IDS.add(o.id); };      // test fixtures register through this so their ids stay reserved
-window.BS = { SLEEVE_IMG, renderDecks, animMode, fxCueReset, aeRibbon, endOfBattle, MAT, matUse, setSection, navSync, renderHome, themePop, soulMagicOK, soulMagicHolder, soulMagicPick, THEME, THEME_COLS, setTheme, stepClick, stepTargets, get FX_STRICT() { return FX_STRICT; }, setFxStrict(v) { FX_STRICT = !!v; }, FX_WARNED, collectFx, setFuzz(o) { FUZZ = Object.assign({}, o || {}); }, get FUZZ() { return FUZZ; }, fuzzPick, ERR_LOG, errReport, onGameError, releaseStandby, leaveStandby, renderDeckBuilder, dbChange, dbUndo, dbSheet, DBF, get DB_UNDO() { return DB_UNDO.length; }, accelList, accelCost, accelOK, accelSources, useAccel, removedSummonable, summonFromRemoved, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel, highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, isSealed, soulToLife, lifeTake, braveSummonedFx, abTaxOK, payAbTax, oppAttackHandFx, sentToTrashFx, magicFxAt, summonOK, lvNo, isUlt, noBlockActive, burstFlash, cpuBurstFlash, humanAttack, cpuAttack, attackStepOver, endAttackLocked, battleEndAttack, isGW, freeCores, moveCore, swapSoul, payCost, cpuCanPlay, coresAvailable, addCore, cpuKeepMagicOrPay, nameHTML, switchView, SET_KEY, dbFilterOK, cardColors, contractToDeck, redrawHand, cpuWantsRedraw, setHeavy, refreshOne, toRemoved, fxIf, costDestroyBonus, sendToken, canSendToken, tokenHome, attackSymbols, TOKEN_SUPPLY, isSpiritForm, ocActive, braveFits, braveTargets, combineBrave, braveSummon, separateBrave, canSeparate, braveRecheck, braveAfford, cpuBrave, handButtons, minCores, openFieldModal, cpuMain, VERSION, defBuiltin, beginTurn, endStep, newGame, takeFromVoid, checkDepletion, removeSpirit, lvIndex, mirageUsable, cpuCastMain, magicFx, magicText, costAltActive, flagActive, coresSent, startAttackFx, win, recordMatch, HISTORY: () => HISTORY, toggleLog, effectTextHTML, effectLines, titleCase, liveStatusHTML, openZoom, modal, closeModal, startPeek, SETTINGS, SLOTS: () => SLOTS, get ACTIVE_SLOT() { return ACTIVE_SLOT; }, switchSlot, loadPrebuilt, PREBUILT, cpuDeckFor, saveSettings, PACK_IDS, registerPack, clearImported, summonPaid, reviveTargets, doRevive, handUp, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, soulCoreHolder, rng, seedRng, newSeed, runReplay, lastReplay, fireFxMulti, asResolving, replayOf, loadScenario, gameAct, matchSummary, get REPLAY() { return REPLAY; }, soulSource, soulToNexus, fxImmune, residualHTML, cardDetailHTML, setSimDeckB(d) { SIM_DECK_B = d; }, activatable, activateFx, cpuActivate, toSoulState, bounceCard, runActions, maybeBurst, flushBursts, summonFree, parseBurst, parseActionList, BURST_WHEN, fireFx, parseEffects, staticBp, FX_ACTIONS, removeNexus, magicUsable, magicTargets, castMagic, flashTiming, cpuFlashChoice, setFormat, validateDeck, legalityOf, banStatus, get FORMAT() { return FORMAT; }, isPC, applyLayout, testSetup, mkInst, render, takeCores, IMG, importCards, importImages, textToDeck, deckToText, parseCard, loadImages, get PLAYER_DECK() { return PLAYER_DECK; }, get G() { return G; }, startNewGame, checkInvariants, CARDS, PRESET_DECK, humanCan, onNext, engineIdle, runPortRecord, viewerReplayOf, openViewer, replayFromRecord, portRecord, boardSnapshot, sendIntent, applyIntent, seatLoopOpen, cpuAnswer, INTENT_TYPES, cpuTurn, doBattle, summon, effCost, legacyPlan, legacyPay, canBlockState, canPlayCard, setBurst, fieldList, bpOf, get SESSION() { return SESSION; }, CPU_PROFILES, cpuProfileName, cpuEval, cpuPlayScore, cpuPlayChoice, cpuLethal, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, lifeValue, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, extraReduction };
+window.BS = { BAN_LIST_INFO, maxCopies, prebuiltLabel, fmtButton, defaultDeck, get CPU_DECK_NAME() { return CPU_DECK_NAME; }, SLEEVE_IMG, renderDecks, animMode, fxCueReset, aeRibbon, endOfBattle, MAT, matUse, setSection, navSync, renderHome, themePop, soulMagicOK, soulMagicHolder, soulMagicPick, THEME, THEME_COLS, setTheme, stepClick, stepTargets, get FX_STRICT() { return FX_STRICT; }, setFxStrict(v) { FX_STRICT = !!v; }, FX_WARNED, collectFx, setFuzz(o) { FUZZ = Object.assign({}, o || {}); }, get FUZZ() { return FUZZ; }, fuzzPick, ERR_LOG, errReport, onGameError, releaseStandby, leaveStandby, renderDeckBuilder, dbChange, dbUndo, dbSheet, DBF, get DB_UNDO() { return DB_UNDO.length; }, accelList, accelCost, accelOK, accelSources, useAccel, removedSummonable, summonFromRemoved, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel, highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, isSealed, soulToLife, lifeTake, braveSummonedFx, abTaxOK, payAbTax, oppAttackHandFx, sentToTrashFx, magicFxAt, summonOK, lvNo, isUlt, noBlockActive, burstFlash, cpuBurstFlash, humanAttack, cpuAttack, attackStepOver, endAttackLocked, battleEndAttack, isGW, freeCores, moveCore, swapSoul, payCost, cpuCanPlay, coresAvailable, addCore, cpuKeepMagicOrPay, nameHTML, switchView, SET_KEY, dbFilterOK, cardColors, contractToDeck, redrawHand, cpuWantsRedraw, setHeavy, refreshOne, toRemoved, fxIf, costDestroyBonus, sendToken, canSendToken, tokenHome, attackSymbols, TOKEN_SUPPLY, isSpiritForm, ocActive, braveFits, braveTargets, combineBrave, braveSummon, separateBrave, canSeparate, braveRecheck, braveAfford, cpuBrave, handButtons, minCores, openFieldModal, cpuMain, VERSION, defBuiltin, beginTurn, endStep, newGame, takeFromVoid, checkDepletion, removeSpirit, lvIndex, mirageUsable, cpuCastMain, magicFx, magicText, costAltActive, flagActive, coresSent, startAttackFx, win, recordMatch, HISTORY: () => HISTORY, toggleLog, effectTextHTML, effectLines, titleCase, liveStatusHTML, openZoom, modal, closeModal, startPeek, SETTINGS, SLOTS: () => SLOTS, get ACTIVE_SLOT() { return ACTIVE_SLOT; }, switchSlot, loadPrebuilt, PREBUILT, cpuDeckFor, saveSettings, PACK_IDS, registerPack, clearImported, summonPaid, reviveTargets, doRevive, handUp, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, soulCoreHolder, rng, seedRng, newSeed, runReplay, lastReplay, fireFxMulti, asResolving, replayOf, loadScenario, gameAct, matchSummary, get REPLAY() { return REPLAY; }, soulSource, soulToNexus, fxImmune, residualHTML, cardDetailHTML, setSimDeckB(d) { SIM_DECK_B = d; }, activatable, activateFx, cpuActivate, toSoulState, bounceCard, runActions, maybeBurst, flushBursts, summonFree, parseBurst, parseActionList, BURST_WHEN, fireFx, parseEffects, staticBp, FX_ACTIONS, removeNexus, magicUsable, magicTargets, castMagic, flashTiming, cpuFlashChoice, setFormat, validateDeck, legalityOf, banStatus, get FORMAT() { return FORMAT; }, isPC, applyLayout, testSetup, mkInst, render, takeCores, IMG, importCards, importImages, textToDeck, deckToText, parseCard, loadImages, get PLAYER_DECK() { return PLAYER_DECK; }, get G() { return G; }, startNewGame, checkInvariants, CARDS, PRESET_DECK, humanCan, onNext, engineIdle, runPortRecord, viewerReplayOf, openViewer, replayFromRecord, portRecord, boardSnapshot, sendIntent, applyIntent, seatLoopOpen, cpuAnswer, INTENT_TYPES, cpuTurn, doBattle, summon, effCost, legacyPlan, legacyPay, canBlockState, canPlayCard, setBurst, fieldList, bpOf, get SESSION() { return SESSION; }, CPU_PROFILES, cpuProfileName, cpuEval, cpuPlayScore, cpuPlayChoice, cpuLethal, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, lifeValue, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, extraReduction };
 navSync();
 renderLobby();
 loadImages();

@@ -45,7 +45,9 @@ def main():
         flag = 'ok ' if not r['fails'] else 'BAD'; bad |= bool(r['fails'])
         print(f"{flag} {n}: {r['passed']}/{r['total']} ({s}s)"); [print('    ' + f) for f in r['fails'][:8]]
     if do_legacy:
-        shutil.copy(os.path.join(ROOT, 'index.html'), '/mnt/user-data/outputs/aeterna-v0.11.1.html')
+        s = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()          # test copy with the default format Eternal (product default: Standard since v0.97.0)
+        t = s.replace("let FORMAT = 'standard';", "let FORMAT = 'eternal';", 1); assert t != s
+        open('/mnt/user-data/outputs/aeterna-v0.11.1.html', 'w', encoding='utf-8').write(t)
         for n in LEGACY:
             out, s = run([sys.executable, os.path.join(ROOT, 'tests', 'legacy', n + '.py')], True)
             r = summarize('legacy/' + n, out); r['sec'] = s; report['legacy/' + n] = r; bad |= bool(r['fails'])

@@ -24,8 +24,8 @@ test('E03 seeded RNG: different seeds give different sequences', async () => {
   const [a, b] = await ev(() => { const s = n => { BS.seedRng(n); return Array.from({ length: 10 }, () => BS.rng()); }; return [s(1), s(2)]; });
   assert.notDeepEqual(a, b);
 });
-test('E04 every prebuilt deck is legal in Eternal', async () => {
-  const r = await ev(() => BS.PREBUILT.map(d => [d.id, BS.validateDeck(d.cards, 'eternal')]));
+test('E04 every Eternal prebuilt deck is legal in Eternal (the Standard starters are tested in std_decks97)', async () => {
+  const r = await ev(() => BS.PREBUILT.filter(d => !d.format).map(d => [d.id, BS.validateDeck(d.cards, 'eternal')]));
   for (const [id, v] of r) assert.ok(v.ok, `${id}: ${v.errors.join(' / ')}`);
 });
 test('E05 a 39-card deck is rejected (manual: 40 or more cards)', async () => {

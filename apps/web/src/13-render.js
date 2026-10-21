@@ -329,11 +329,11 @@ function renderLobby() {
   const v = validateDeck(PLAYER_DECK), el = $('lobby-deck');
   el.className = 'lobby-deck' + (v.ok ? '' : ' bad');
   el.textContent = v.ok ? `Your deck: ${v.total} cards · legal in ${fmtName(FORMAT)}` : `Your deck is not legal in ${fmtName(FORMAT)}: ${errSummary(v)}`;
-  const fb = $('format-btn'); if (fb) fb.textContent = `FORMAT: ${fmtName(FORMAT)}`;
+  const fb = $('format-btn'); if (fb) fb.textContent = `FORMAT: ${fmtButton(FORMAT)}`;
   const pd = $('play-deck');
   if (pd) {
     pd.innerHTML = SLOTS.map((sl, i) => { const t = deckTotal(sl.cards), ok = t && validateDeck(sl.cards, FORMAT).ok; return `<option value="${i}"${i === ACTIVE_SLOT ? ' selected' : ''}>${esc(sl.name)} · ${t} cards${t ? (ok ? ' ✓' : ' ✗') : ''}</option>`; }).join('');
-    $('play-cpu').innerHTML = [...PREBUILT.map(d => `<option value="${d.id}">${esc(d.name)}${validateDeck(d.cards, FORMAT).ok ? '' : ' (not legal in ' + fmtName(FORMAT) + ': random instead)'}</option>`), '<option value="random">Random legal deck</option>', '<option value="mine">Mirror: copy of your deck</option>'].join('');
+    $('play-cpu').innerHTML = [...prebuiltOrder(FORMAT).map(({ d }) => `<option value="${d.id}">${esc(prebuiltLabel(d))}${validateDeck(d.cards, FORMAT).ok ? (d.missing ? ' (random instead)' : '') : ' (not legal in ' + fmtName(FORMAT) + ': random instead)'}</option>`), '<option value="random">Random legal deck</option>', '<option value="mine">Mirror: copy of your deck</option>'].join('');
     $('play-cpu').value = SETTINGS.cpuDeck;
   }
   renderPlay();

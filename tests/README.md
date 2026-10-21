@@ -11,7 +11,7 @@ Playwright (Python) tests that drive the single-file game through `window.BS`.
 - Replays: `BS.lastReplay()` gives the record of the current/last match, `BS.runReplay(record)` replays it (`seed_replay_tests.py` drives a scripted human through the real UI and replays it).
 - `legacy/` the first-generation regression suites (`effect_scenarios`, `scenario_prompts`, `magic_flow`, `burst_layout`, `hscroll_layout`, `standard_steps`, `deck_formats`, `modal_pick_flow`; named by topic since v0.96.0).
 - `fixtures/prototype_cards.js` test-only stand-in cards (TST-*) that older suites use. They are **not** part of the shipped game. `sitecustomize.py` injects them after every `page.goto()`; run with `PYTHONPATH=tests` (copy the fixture next to it, see below). `cleanup_review_tests.py` must run **without** the fixtures because it asserts the shipped game contains no TST cards.
-- Tests expect the game file at `/mnt/user-data/outputs/wip.html` (a fresh copy of `index.html`) and some suites read JSON fixtures from `/tmp/claude-0/fixtures`; adjust the paths at the top of each file for your machine.
+- Tests expect the game file at `/mnt/user-data/outputs/wip.html` (a fresh copy of `index.html` with the default format set back to Eternal: the product default is Standard since v0.97.0, and the suites were written for Eternal rules; Node tests do the same through `GAME_URL` in `tests/unit/lib/game.mjs`, and `PRODUCT_URL` / `quietBoard(true)` opens the real default) and some suites read JSON fixtures from `/tmp/claude-0/fixtures`; adjust the paths at the top of each file for your machine.
 
 Usage example:
 

@@ -3,7 +3,7 @@
    --------------------------------------------------------------------- */
 /* ---- settings (saved in this browser) ---- */
 const SET_KEY = 'bse.settings.v1';
-const SETTINGS = Object.assign({ speed: 'normal', sound: false, cpuDeck: 'train' }, (() => { try { const o = JSON.parse(localStorage.getItem(SET_KEY)); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } })());
+const SETTINGS = Object.assign({ speed: 'normal', sound: false, cpuDeck: 'std03' }, (() => { try { const o = JSON.parse(localStorage.getItem(SET_KEY)); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } })());
 const SPEEDS = { normal: 1, fast: 0.45, instant: 0.08 };
 if (!SPEEDS[SETTINGS.speed]) SETTINGS.speed = 'normal';
 SETTINGS.sound = SETTINGS.sound === true;

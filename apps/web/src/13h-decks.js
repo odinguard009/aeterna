@@ -36,7 +36,7 @@ function renderDecks() {
   const used = SLOTS.map((s, i) => i).filter(dkUsed);
   $('dk-count').textContent = `${used.length} / ${SLOTS.length}`;
   $('dk-list').innerHTML = used.map(i => dkTile(i, SLOTS[i].name, dkCards(i))).join('');
-  $('dk-starters').innerHTML = PREBUILT.map((d, i) => dkTile(i, d.name, d.cards, true)).join('');
+  $('dk-starters').innerHTML = prebuiltOrder(FORMAT).map(({ d, i }) => dkTile(i, prebuiltLabel(d), d.cards, true)).join('');
   $('dk-fmt').textContent = fmtTitle();
 }
 function dkMenu(i) {

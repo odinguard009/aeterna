@@ -61,7 +61,7 @@ function dbCardHTML(id) {
   const c = CARDS[id], n = PLAYER_DECK[id] || 0, bp = c.levels[0] && c.levels[0].bp != null ? c.levels[0].bp : c.brave ? '+' + c.brave.bp : '-';
   return `<div class="tcg-card ${n ? '' : 'dim'}${cardCls(c)}${imgCls(id)}${DBV.pulse === id ? ' db-pulse' : ''}" style="${colorSty(c)}${imgSty(id)}" data-a="dbcard" data-v="${id}" title="${esc(c.name)} (${id})${fxMarked(c) ? ' - ' + FX_MARK_LBL : ''}: tap to add">
       <div class="cost">${c.cost}</div><div class="type-badge">${c.contract ? 'CON' : c.type.substring(0, 3).toUpperCase()}${rebMark(c)}</div>
-      <div class="name">${nameHTML(c.name)}</div><div class="bp">${bp}</div>${fxMarkHTML(c)}${symBadgeHTML(id)}${n ? `<div class="qty-badge">×${n}</div>` : ''}${legalityOf(id, FORMAT) ? '<div class="ban-badge" title="Not legal in this format">🚫</div>' : banStatus(id) === 'limit1' ? '<div class="ban-badge lim">1</div>' : ''}<button class="db-info" data-a="dbinfo" data-v="${id}" aria-label="Card detail" title="Card detail">i</button></div>`;
+      <div class="name">${nameHTML(c.name)}</div><div class="bp">${bp}</div>${fxMarkHTML(c)}${symBadgeHTML(id)}${n ? `<div class="qty-badge">×${n}</div>` : ''}${legalityOf(id, FORMAT) ? '<div class="ban-badge" title="Not legal in this format">🚫</div>' : banStatus(id, FORMAT) === 'limit1' ? '<div class="ban-badge lim">1</div>' : ''}<button class="db-info" data-a="dbinfo" data-v="${id}" aria-label="Card detail" title="Card detail">i</button></div>`;
 }
 function dbWindow(force) {             // renders the rows around the visible part of the grid
   const el = $('db-card-list'), list = DBV.list, n = list.length;
@@ -146,7 +146,7 @@ function dbResetFilters() {
 
 /* ---------- deck changes (with undo) ---------- */
 function dbSnap() { DB_UNDO.push(JSON.stringify(PLAYER_DECK)); if (DB_UNDO.length > 30) DB_UNDO.shift(); }
-function dbCanAdd(id) { const n = PLAYER_DECK[id] || 0; return !legalityOf(id, FORMAT) && n < maxCopies(id); }
+function dbCanAdd(id) { const n = PLAYER_DECK[id] || 0; return !legalityOf(id, FORMAT) && n < maxCopies(id, FORMAT); }
 function dbChange(id, d) {
   const n = PLAYER_DECK[id] || 0;
   if (d > 0 && !dbCanAdd(id)) return false;
@@ -229,12 +229,12 @@ function dbSheet(which) {             // phone: open 'filters', 'deck' or 'menu'
 
 function renderDeckBuilder() {
   const v = validateDeck(PLAYER_DECK);
-  const fb = $('db-format'); if (fb) fb.textContent = fmtName(FORMAT);
+  const fb = $('db-format'); if (fb) fb.textContent = fmtButton(FORMAT);
   const ds = $('db-slot');
   if (ds) {
     ds.innerHTML = SLOTS.map((sl, i) => `<option value="${i}"${i === ACTIVE_SLOT ? ' selected' : ''}>${i + 1}. ${esc(sl.name)} (${deckTotal(i === ACTIVE_SLOT ? PLAYER_DECK : sl.cards)})</option>`).join('');
     if (document.activeElement !== $('db-name')) $('db-name').value = SLOTS[ACTIVE_SLOT].name;
-    $('db-preset').innerHTML = '<option value="">Load ready-made…</option>' + PREBUILT.map(d => `<option value="${d.id}">${esc(d.name)}</option>`).join('');
+    $('db-preset').innerHTML = '<option value="">Load ready-made…</option>' + prebuiltOrder(FORMAT).map(({ d }) => `<option value="${d.id}">${esc(prebuiltLabel(d))}</option>`).join('');
   }
   renderDbRail(); renderDbDeck(v); dbTab(DB_TAB);
   dbFilter(); dbWindow(true);

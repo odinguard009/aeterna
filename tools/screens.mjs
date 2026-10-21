@@ -1,7 +1,7 @@
 // README screenshots (C5, v0.59.7): four views of the built game, no card art (images are never shipped), neutral name only.
 //   node tools/screens.mjs [outDir]   -> docs/images/{match-pc,match-phone,deckbuilder,lobby}.jpg
 // Seeded CPU-vs-CPU match, so the shots only change when the UI or the CPU does. Fails on any page error.
-import { getBrowser, closeBrowser, GAME_URL } from '../tests/unit/lib/game.mjs';
+import { getBrowser, closeBrowser, PRODUCT_URL as GAME_URL } from '../tests/unit/lib/game.mjs';
 import { mkdirSync } from 'node:fs';
 
 const out = process.argv[2] || 'docs/images';
