@@ -3,9 +3,9 @@
   "title": "Aeterna",
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
-  "updated": "20 Oct 2026",
-  "updatedAt": "0.87.0",
-  "next": "next: X1 field width lock (first task of the next session), S1 Standard Magic (58 cards), the whole U/I queue (U5 popups in the mockup style, U5b light animations; languages deferred), then cards with Standard first; phase F done in v0.87.0; playable 6,838 of 8,709, complete 739"
+  "updated": "21 Oct 2026",
+  "updatedAt": "0.90.0",
+  "next": "next: the U/I queue (U5 popups in the mockup style first, then U5b light animations, U6-U8), then cards with Standard first; X1 done in v0.88.0, S1 Standard Magic 52 of 58 in v0.88.0-v0.90.0; playable 6,890 of 8,709, complete 771"
  },
  "phases": [
   {
@@ -596,8 +596,16 @@
      "t": "F5 test waits (v0.87.0): tests/suites wait on a visible state (waits.py ready / settle, BS.engineIdle); 177 of 178 fixed waits replaced, shrink-only ratchet"
     },
     {
-     "s": "later",
-     "t": "Then (owner 2026-10-21): S1 Standard Magic (58 cards not yet playable), the whole U/I queue (U5-U8, rules base, M5-M8, card images), then card packs with Standard first; L1 languages deferred"
+     "s": "done",
+     "t": "X1 field width lock (v0.88.0): every field slot keeps one square footprint, the card turns inside it; nothing on the board moves (PC + phone test)"
+    },
+    {
+     "s": "done",
+     "t": "S1 Standard Magic (v0.88.0-v0.90.0): 52 of the 58 Magic cards in the library (schema v2-v4: lifeReduced, allHave/Team, LIFE_SHIELD, DESTROY_PICKED, ...); the 6-card tail moved to the K queue (item T.2)"
+    },
+    {
+     "s": "next",
+     "t": "Then (owner 2026-10-21): the whole U/I queue (U5 popups in the mockup style, U5b light animations, U6-U8, rules base, M5-M8, card images), then card packs with Standard first; L1 languages deferred; time rules (item T): mechanic sessions first, then card sessions"
     }
    ]
   },
@@ -1189,7 +1197,7 @@
    "note": "Chain session on Opus: F5 state waits in the browser suites; phase F complete; paused for the owner's roadmap update (chain-stop.md)."
   }
  ],
- "updated": "20 Oct 2026",
- "updatedAt": "0.87.0",
- "next": "next: X1 field width lock (first task of the next session), S1 Standard Magic (58 cards), the whole U/I queue (U5 popups in the mockup style, U5b light animations; languages deferred), then cards with Standard first; phase F done in v0.87.0; playable 6,838 of 8,709, complete 739"
+ "updated": "21 Oct 2026",
+ "updatedAt": "0.90.0",
+ "next": "next: the U/I queue (U5 popups in the mockup style first, then U5b light animations, U6-U8), then cards with Standard first; X1 done in v0.88.0, S1 Standard Magic 52 of 58 in v0.88.0-v0.90.0; playable 6,890 of 8,709, complete 771"
 }
