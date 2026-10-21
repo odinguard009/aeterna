@@ -2,6 +2,13 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.90.0
+- Lane: K
+- **Standard Magic, part 3 (roadmap S1): 4 more Standard Magic cards in the library: Awakening (complete), Vermillion Roar, Thunder Shutter and Massive Grow (partial).** Playable 6,886 -> 6,890, complete 770 -> 771; Standard block A 668 of 674 playable.
+  - Effect format schema v4 (`docs/ai/effect-format.md`, `packages/engine/src/02p-effects-standard.js`): match fields `keyword` ("a Spirit with Clash": the card prints the keyword head "Clash (...)", a card that only mentions it does not count) and `noText` ("with no printed effects"); `SUMMON_HAND` also takes a colour / `noText` match and marks the summoned card for `DESTROY_PICKED` ("When this battle ends, destroy the summoned"); action `OWN_CORE_TO_LIFE` ("Send a core, besides [Soul Core], from it to your Life").
+  - Still out of the library (6): Guard Effect (can't be targeted by opposing Magic), Sacrifice Strike (Rumble number), Boost Energy (a Nexus treated as a Spirit), Furious Anger (loses a symbol), Howling Song and Twilight Fantasia Song (granted effects).
+  - Tests `tests/unit/s1magic90.test.mjs` (S90-01..S90-04). Revert note: `git revert` of the S1 part 3 commit removes the 4 cards and the schema v4 pieces.
+
 ## v0.89.0
 - Lane: K
 - **Standard Magic, part 2 (roadmap S1): 9 more Standard Magic cards in the library, 8 complete: Meteor Crash, Unmask, Rapid Ripper, Portal Hack, Evil Hazard, Guard Vent, Strike Vent, Defensive Gate, and Flame Summoning (partial: its Nexus rider).** Playable 6,877 -> 6,886, complete 762 -> 770; Standard block A 664 of 674 playable.

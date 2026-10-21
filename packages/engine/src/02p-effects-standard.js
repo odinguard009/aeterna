@@ -29,6 +29,12 @@
      LIFE_SHIELD {n}                        "Target (n) opposing Spirit(s). During this turn, your Life can't be reduced by
                                             its attack." (08-battle: the unblocked attack takes no Life)
      BLOCK_EXHAUSTED_OPP                    "Target an opposing Spirit. During this battle, it can block even while exhausted."
+   v0.90.0 S1 part 3:
+     match keyword: 'Clash'                 "a Spirit with Clash" (the card prints the keyword head "Clash (...)")
+     match noText                           "with no printed effects" (the card has no effect text)
+     SUMMON_HAND match by colour / noText   "Target a Purple Spirit card with no printed effects in your Trash. Summon it";
+                                            the summoned card becomes ctx.picked (for "When this battle ends, destroy the summoned")
+     OWN_CORE_TO_LIFE {match}               "Target one of your X Spirits. Send a core, besides [Soul Core], from it to your Life."
    A team is printed as the card's head line "[Team: X]" / "[Teams: X/Y]"; cardTeams reads it from the card text. */
 function cardTeams(k) { const m = /\[Teams?:\s*([^\]]+)\]/.exec((k && (k.desc || k.text)) || ''); return m ? m[1].split('/').map(x => x.trim()).filter(Boolean) : []; }
 function allHaveShapeOK(q) { return !!q && typeof q === 'object' && (q.family != null || q.team != null || q.costIn != null)
@@ -157,4 +163,25 @@ Object.assign(FX_ACTIONS, {
       const t = await fxPickTarget(c, L, `✨ <b>${esc(CARDS[c.src.id].name)}</b><br>Tap the opposing Spirit that can block while exhausted this battle (glowing).`);
       if (!t) { c.ctx.did = false; return; }
       t.blockExB = G.battleNo; log(`${CARDS[c.src.id].name}: ${poss(c.opp)} ${CARDS[t.id].name} can block even while exhausted during this battle.`);
+    } } });
+(() => {
+  const S = FX_ACTIONS.SUMMON_HAND, sChk = S.chk, sRun = S.run;
+  S.chk = a => sChk(a) || (!!a.match && (a.match.color != null || a.match.noText === true) && sChk(Object.assign({}, a, { match: Object.assign({}, a.match, { name: ['-'] }) })));
+  S.run = async (c, a) => {
+    const before = new Set(fieldList(c.p)); await sRun(c, a);
+    const t = fieldList(c.p).find(x => !before.has(x)); if (t) c.ctx.picked = t; else c.ctx.did = false;
+  };
+})();
+Object.assign(FX_ACTIONS, {
+  OWN_CORE_TO_LIFE: { chk: a => hasMatch(a.match), txt: () => 'send a core (not the Soul Core) from one of your matching Spirits to your Life',
+    cands: (c, a) => c.p.spirits.filter(s => s.cores > 0 && fxMatch(CARDS[s.id], a.match)),
+    can: (c, a) => FX_ACTIONS.OWN_CORE_TO_LIFE.cands(c, a).length > 0,
+    run: async (c, a) => {
+      const L = FX_ACTIONS.OWN_CORE_TO_LIFE.cands(c, a); if (!L.length) { c.ctx.did = false; return; }
+      // the CPU takes the core from the Spirit that keeps its level best (most spare cores)
+      const t = c.p.cpu ? L.slice().sort((x, y) => (spare(y) - spare(x)) || (y.cores - x.cores))[0]
+        : await fxPickTarget(c, L, `✨ <b>${esc(CARDS[c.src.id].name)}</b><br>Tap one of your Spirits to send a core to your Life (glowing).`);
+      if (!t) { c.ctx.did = false; return; }
+      t.cores -= 1; c.p.life += 1; log(`${CARDS[c.src.id].name}: a core from ${CARDS[t.id].name} goes to ${poss(c.p)} Life.`);
+      checkDepletion(c.p); io.view({ type: 'board' });
     } } });

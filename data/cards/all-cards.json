@@ -263856,6 +263856,53 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RBS01-111",
+  "name": "Vermillion Roar",
+  "name_jp": "ヴァーミリオンロアー",
+  "type": "Magic",
+  "color": "red",
+  "cost": 6,
+  "reduction": {
+   "red": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Red Cloud"
+  ],
+  "text": "{{Soul Magic|r}}\nFlash\nTarget a Spirit with Clash you control. During this turn, give it +3000 BP. Then, during this turn, when only the opposing Spirit is destroyed by comparing BP with it, if it's your Attack Step, send a core from the opposing Life to the Reserve.",
+  "image": "26RBS01-111.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "soulMagic": "red",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BP_TARGET",
+     "n": 3000,
+     "to": "pick",
+     "match": {
+      "keyword": "Clash"
+     }
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "Then, during this turn, when only the opposing Spirit is destroyed by comparing BP with it, if it's your Attack Step, send a core from the opposing Life to the Reserve."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0-v0.89.0); not yet checked against the card image."
+ },
+ {
   "id": "26RBS01-112",
   "name": "Skull Blast",
   "name_jp": "スカルブラスト",
@@ -263901,6 +263948,63 @@
   },
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-113",
+  "name": "Awakening",
+  "name_jp": "アウェイクニング",
+  "type": "Magic",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Dark Puce"
+  ],
+  "text": "{{Soul Magic|p}}\nYou can't use this card during Main Step.\n\nFlash\nTarget a Purple Spirit card with no printed effects in your Trash. Summon it without paying the cost. When this battle ends, destroy the summoned.",
+  "image": "26RBS01-113.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "soulMagic": "purple",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "SUMMON_HAND",
+     "from": "trash",
+     "match": {
+      "color": "purple",
+      "noText": true,
+      "type": "Spirit"
+     }
+    },
+    {
+     "do": "END_BATTLE",
+     "then": [
+      {
+       "do": "DESTROY_PICKED"
+      }
+     ],
+     "if": {
+      "prev": true
+     }
+    }
+   ],
+   "noMain": true
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0-v0.89.0); not yet checked against the card image."
  },
  {
   "id": "26RBS01-114",
@@ -264280,6 +264384,50 @@
   },
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-123",
+  "name": "Thunder Shutter",
+  "name_jp": "サンダーシャッター",
+  "type": "Magic",
+  "color": "yellow",
+  "cost": 6,
+  "reduction": {
+   "yellow": 2
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Topaz",
+   "Echochant"
+  ],
+  "text": "Flash\nTarget one of your \"Topaz\" family Spirits. Send a core, besides , from it to your Life. Then, if this card was used via Magirrate, target one of your Spirits with Magirrate. Refresh it.",
+  "image": "26RBS01-123.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "OWN_CORE_TO_LIFE",
+     "match": {
+      "family": [
+       "Topaz"
+      ]
+     }
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "Then, if this card was used via Magirrate, target one of your Spirits with Magirrate. Refresh it."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0-v0.89.0); not yet checked against the card image."
  },
  {
   "id": "26RBS01-124",
@@ -273399,6 +273547,53 @@
   },
   "fxComplete": true,
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-098",
+  "name": "Massive Grow",
+  "name_jp": "マッシブグロウ",
+  "type": "Magic",
+  "color": "blue",
+  "cost": 6,
+  "reduction": {
+   "blue": 4
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Cyantree"
+  ],
+  "text": "(Legacy)\n\nFlash\nDuring this turn, all your Blue Spirits with no printed effects gain +2000 BP. Then, target one of your Cost 6 or more Blue Spirits with no printed effects. During this turn, it has two Blue symbols. Its number of symbols can't be increased except via this effect.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "legacy": true,
+  "mechanics": [
+   "Legacy"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BP_PLUS",
+     "to": "own",
+     "n": 2000,
+     "match": {
+      "color": "blue",
+      "noText": true
+     }
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "Then, target one of your Cost 6 or more Blue Spirits with no printed effects. During this turn, it has two Blue symbols. Its number of symbols can't be increased except via this effect."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0-v0.89.0); not yet checked against the card image."
  },
  {
   "id": "26RBS03-X01",
