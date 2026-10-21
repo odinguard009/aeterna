@@ -90,3 +90,16 @@ test('U92-4 sims draw no animation; a watched CPU match with Full runs on withou
   assert.ok(most < 40, 'cues never pile up: ' + most);
   assert.deepEqual(s.errors.concat(w.errors), []);
 });
+
+test('U92-5 phone: a scrolled field row keeps its place at once after a render (cues measure the real card places)', async () => {
+  const { page, errors } = await open('phone');
+  await board(page);
+  const r = await page.evaluate(() => {
+    const G = BS.G; for (let n = 0; n < 7; n++) { const f = BS.mkInst(window.__id); f.cores = 1; G.p.player.spirits.push(f); }
+    BS.render(); const row = () => document.querySelector('[data-scroll="player-field"]');
+    const max = row().scrollWidth - row().clientWidth; row().style.scrollBehavior = 'auto'; row().scrollLeft = max; row().style.scrollBehavior = '';
+    BS.render(); return { max, now: row().scrollLeft };
+  });
+  assert.ok(r.max > 50, JSON.stringify(r)); assert.ok(Math.abs(r.now - r.max) <= 1, JSON.stringify(r));
+  assert.deepEqual(errors, []);
+});

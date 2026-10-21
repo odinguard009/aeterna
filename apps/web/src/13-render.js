@@ -204,7 +204,7 @@ function renderBoard() {
         <div class="pc-hand-flank side-you" data-a="zone" data-v="player:hand"><div class="zone-label"><span>Hand Cnt</span></div><span class="sub-text">${pv(P.hand.length)}</span></div>
       </div>
     </div>`;
-  document.querySelectorAll('[data-scroll]').forEach(e => { if (keep[e.dataset.scroll]) e.scrollLeft = keep[e.dataset.scroll]; });
+  document.querySelectorAll('[data-scroll]').forEach(e => { if (keep[e.dataset.scroll]) { e.style.scrollBehavior = 'auto'; e.scrollLeft = keep[e.dataset.scroll]; e.style.scrollBehavior = ''; } });   // v0.92.0: at once, not smooth, so the cues measure the real card places
   const ch = document.querySelector('.step-chip.active'), cont = document.querySelector('.phase-steps-container');
   if (ch && cont) {
     const target = ch.offsetLeft - cont.clientWidth / 2 + ch.offsetWidth / 2, prev = keep.phase || 0;
