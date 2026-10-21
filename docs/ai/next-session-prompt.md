@@ -38,11 +38,6 @@
 - Permission: both tasks should run with automatic approval ("Automatically approve" in the task settings, owner-only switch).
 - Session name: "Ver. X.Y.Z" of the final version.
 
-## Parallel lanes (P1, v0.63.1; opt-in)
-- Session marks may carry a lane as second word: `LOCK ui`, `MANUAL card`, `UNLOCK ui`, and the lane end mark `LANEDONE <lane> <branch>`. A mark with a lane blocks only that lane; a mark without a lane blocks every lane (the single-lane flow is unchanged). `DONE vX.Y.Z` (the merge + release) and a lane-less `UNLOCK` end all marks. Staleness (5 h / 3 h), the 24-hour cap and the no-progress count work over both lanes.
-- Commands: `session_gate.sh manual|lock|unlock|busy <lane>`, `lanedone <lane> lane/<lane>`, `check opus <lane>`; `bash tools/session_start.sh --lane <lane>`. Flow, file ownership and the merge step: `docs/ai/lanes/README.md`.
-- The scheduled prompt below has no lane, so auto runs stay single-lane (one at a time) until the owner adds a second scheduled task for a lane; sessions never install one. Manual lanes: two chats, "Lanjutkan roadmap ui" and "Lanjutkan roadmap card".
-
 ## Installed tasks
 - Changed 2026-10-20 by the owner's request (2 runs per hour). Both use the PROMPT block with MODEL = `opus`, permission mode auto, no local device.
 - Since 2026-10-20 the tasks live in the owner's second Claude account: `trig_012vcB93WXX5MB1gnDwgKdXW` "Lanjutkan roadmap otomatis - Opus :00" and `trig_01HNrzzGPL2kxUXnyMoJkMvS` "Lanjutkan roadmap otomatis - Opus :30" (intended: every hour at :00 and :30 Asia/Jakarta; model `claude-opus-5-5`, permission mode auto). Only one account may have active tasks: the first account's tasks (`trig_013vitrkPAv2d7dSARodFJuz` ":00", `trig_01SNoK2NRwVpqyKWbGiC5yEY` ":30", `trig_013DKhuCinSGobVJqkUbzVTM` ":40", already unused) are to be turned off there by the owner.

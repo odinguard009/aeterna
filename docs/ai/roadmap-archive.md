@@ -76,3 +76,8 @@ Evidence: Fandom export BS68-BS77 (992 cards) vs `docs/rules-coverage.md` / `doc
 - Open from v0.38: Hermes / Spiral Way / Messenger Post Lv2 thresholds and green card stats unverified vs images; Removed Zone has no manual rule (built as printed, partial); (CPU Manifest: stale, checked in v0.42.0).
 - Open from v0.37: Dagda/Magic Soldier clauses; Nuadha Contract Field clauses; Goibniu LV2 (direct Brave combine by an effect).
 - Open from v0.35 (issue #3, was vault #4): the Nexus taking a Saga Brave's cost/family, Seal / Unstackable when cards need them (Ultra Manifest and the Ultimate type: v0.46.0).
+
+## P: Parallel lanes (owner, 2026-10-18; removed in v0.96.0)
+- Section of `docs/ai/next-session-prompt.md` that described them: session marks with a lane word (`LOCK ui`, `MANUAL card`, `UNLOCK ui`, `LANEDONE <lane> <branch>`), `session_start.sh --lane`, file ownership by `tools/lanes.mjs` (pre-commit hook), merge step `tools/lane_merge.sh`, notes in `docs/ai/lanes/<lane>.md`; flow in the deleted `docs/ai/lanes/README.md` (git history before v0.96.0).
+- **P1 done in v0.63.1** (opt-in lanes `ui` / `card`; flow, file ownership, merge step and limits: `docs/ai/lanes/README.md`).
+- **Limit Claude cannot lift:** sessions never create or change schedules, so auto mode stays one session at a time until the owner adds a second scheduled task for the second lane. Manual lanes (two chats, "Lanjutkan roadmap ui" / "Lanjutkan roadmap card") work now.

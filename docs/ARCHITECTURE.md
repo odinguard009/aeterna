@@ -101,9 +101,8 @@ Ratchet lists (`tests/unit/known-gaps.json`) only shrink. Hooks (`.githooks/`): 
 Match fuzzer (v0.59.6): `node tools/fuzz.mjs [--runs N] [--seed S]` plays CPU-vs-CPU matches with random legal CPU choices (`BS.setFuzz`, `fuzzPick` in `09a-cpu-eval.js`, seeded game rng); a crash, invariant break or match that does not end is saved to `tests/fuzz-cases/`, replayed by `tests/unit/fuzz596.test.mjs` (CI only, not in the quick loop). Regression job `fuzz` (v0.59.8) plays 20 fuzzed matches per run, seeded by the run id; new failing cases come back as the run artifact `fuzz-cases`.
 
 ## 7. Session tooling
-- `tools/session_start.sh`: overlap guard, hooks, baseline loop, version, Next line, playable count, open issues; `--lane ui|card` works on branch `lane/<lane>`.
-- `tools/session_gate.sh`: auto-mode switch and session lock (`check`, `lock`, `manual`, `switch`, `done`, `lanedone`, `unlock`, `on`/`off`/`status`; optional lane `ui`/`card`); rules in `docs/ai/next-session-prompt.md`.
-- Parallel lanes (v0.63.1, opt-in): `tools/lanes.mjs` (file ownership, pre-commit hook), `tools/lane_merge.sh` (merge step); flow in `docs/ai/lanes/README.md`.
+- `tools/session_start.sh`: overlap guard, hooks, baseline loop, version, Next line, playable count, open issues.
+- `tools/session_gate.sh`: auto-mode switch and session lock (`check`, `lock`, `manual`, `switch`, `done`, `unlock`, `on`/`off`/`status`); rules in `docs/ai/next-session-prompt.md`.
 - `tools/session_end_check.mjs`: game file, embedded version, release test, fresh mind map, backup branch.
 - Mind map: `docs/roadmap-data.json` -> `node tools/gen_roadmap.mjs` -> `docs/roadmap.html`; `docs/progress.html` from the CLAUDE.md Roadmap, `docs/ai/roadmap-open.md` and `CHANGELOG.md`.
 - `node tools/pack_ai.mjs [--docs|--full]`: packs the project into one Markdown file for another AI chat. `node tools/screens.mjs`: the README screenshots in `docs/images/` (removed from the README until v1.0, owner 2026-10-17).

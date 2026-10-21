@@ -4649,7 +4649,6 @@ function ocActive(i) { const oc = CARDS[i.id] && CARDS[i.id].overCount; if (!oc 
 /* Brave (manual p. 34-36): a combined Brave (inst.brave) adds its BP+ and symbol to the Spirit; one Brave per Spirit; no cost to combine or separate */
 const braveBp = i => (i.brave ? CARDS[i.brave.id].brave.bp : 0);
 /* Saga Brave (manual p. 38): a Brave with "brave.nexus" may also combine with a Grandwalker Nexus whose name matches; a Nexus treated as a Spirit cannot be braved (p. 69 Q1) */
-const isNexusBrave = (b, s) => !!s && CARDS[s.id].type === 'Nexus' && !!b && !!CARDS[b.id].brave && !!CARDS[b.id].brave.nexus;
 function braveFits(b, s) {
   const bc = CARDS[b.id].brave, k = CARDS[s.id];
   if (!bc || b === s || s.brave) return false;
@@ -5849,12 +5848,8 @@ function runHandAction(p, inst, v) {
   if (HAND_INTENTS[v]) sendIntent({ type: HAND_INTENTS[v], uid: inst.uid });
   else if (typeof v === 'string' && v.startsWith('accel:')) sendIntent({ type: 'accel', uid: inst.uid, idx: Number(v.slice(6)) });
 }
-/* the old entry points (tests and the console use them): each sends one intent and resolves when it was applied */
-const humanMirage = inst => sendIntent({ type: 'mirage', uid: inst.uid });
+/* entry points kept for the Python suite (humanCast, v20) and the console (window.BS): each sends one intent and resolves when it was applied */
 const humanCast = inst => sendIntent({ type: 'cast', uid: inst.uid });
-const humanPlay = inst => sendIntent({ type: 'summon', uid: inst.uid });
-const humanBraveSummon = inst => sendIntent({ type: 'brave', uid: inst.uid });
-const humanBraveField = (p, f, v) => sendIntent({ type: v === 'bseparate' ? 'bseparate' : 'bcombine', uid: f.uid });
 const humanAttack = f => sendIntent({ type: 'attack', uid: f.uid });
 const onNext = () => sendIntent({ type: 'next' });
 async function showCardDetail(id, ctx, uid) {
@@ -7349,13 +7344,6 @@ async function viewerReplayOf(rec, opts) {
 /* ---------------------------------------------------------------------
    EVENTS (delegation)
    --------------------------------------------------------------------- */
-function instIdByUid(uid) {
-  for (const k of ['player', 'opponent']) {
-    const p = G.p[k], all = p.hand.concat(p.spirits, p.nexus);
-    const h = all.find(i => i.uid === uid); if (h) return h.id;
-  }
-  return null;
-}
 document.addEventListener('contextmenu', e => { if (e.target.closest('.tcg-card')) e.preventDefault(); });
 /* v0.32.5: horizontal rows (Hand, Field rows, steps) scroll with a mouse too: the wheel scrolls sideways, and a mouse drag
    scrolls them; a drag never counts as a click. Touch keeps the native swipe. */

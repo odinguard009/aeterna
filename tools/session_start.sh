@@ -14,19 +14,14 @@
 #      session may still be running: print OVERLAP and exit 3 (tell the owner instead of starting parallel work).
 #      --force skips the guard (owner present and sure).
 # Optional: --with-sources adds data/sources (only needed for the Fandom import).
-# Optional: --lane ui|card (P1 parallel lanes, v0.63.1; docs/ai/lanes/README.md): the overlap guard looks only at that lane,
-#   and the session works on branch lane/<lane> (from origin/main, or the existing remote lane branch with main merged in;
-#   no force-push needed). No version bump and no generated files on a lane branch (pre-commit hook tools/lanes.mjs).
 set -euo pipefail
 
 REPO_URL="https://github.com/odinguard009/aeterna"
 DEST="${BS_DEST:-aeterna}"
-WITH_SOURCES=0; FORCE=0; BUSY=""; LANE=""; prev=""
+WITH_SOURCES=0; FORCE=0; BUSY=""
 for a in "$@"; do
   [ "$a" = "--with-sources" ] && WITH_SOURCES=1; [ "$a" = "--force" ] && FORCE=1
-  case "$a" in --lane=*) LANE="${a#--lane=}" ;; esac; [ "$prev" = "--lane" ] && LANE="$a"; prev="$a"
 done
-case "$LANE" in ""|ui|card) ;; *) echo "[session_start] unknown lane '$LANE' (use ui or card)"; exit 2 ;; esac
 
 # Already inside a clone?
 if git rev-parse --show-toplevel >/dev/null 2>&1 && [ -f "$(git rev-parse --show-toplevel)/tools/loop.mjs" ]; then
@@ -56,27 +51,14 @@ SUBJ=$(git log -1 --format=%s origin/main 2>/dev/null || git log -1 --format=%s)
 case "$SUBJ" in v[0-9]*) IS_V=1 ;; *) IS_V=0 ;; esac
 # Preferred guard (idle chain, 2026-10-16): the session state on issue #1 (LOCK / MANUAL without DONE or UNLOCK).
 # The commit-age rule below is only the fallback when gh cannot read the issue.
-if [ "$FORCE" = 0 ] && BUSY=$(bash tools/session_gate.sh busy $LANE 2>/dev/null; echo "rc=$?"); [ "${BUSY##*rc=}" != 1 ] && [ -n "${BUSY%%rc=*}" ]; then
+if [ "$FORCE" = 0 ] && BUSY=$(bash tools/session_gate.sh busy 2>/dev/null; echo "rc=$?"); [ "${BUSY##*rc=}" != 1 ] && [ -n "${BUSY%%rc=*}" ]; then
   if [ "${BUSY##*rc=}" = 3 ]; then
     echo "[session_start] OVERLAP: ${BUSY%%rc=*}" | tr -d '\n'; echo " - another session is active. Stop and tell the owner (or rerun with --force)."
     exit 3
   fi
-elif [ "$AGE_MIN" -lt 30 ] && [ "$FORCE" = 0 ] && [ "$IS_V" = 1 ] && [ -z "$LANE" ]; then
+elif [ "$AGE_MIN" -lt 30 ] && [ "$FORCE" = 0 ] && [ "$IS_V" = 1 ]; then
   echo "[session_start] OVERLAP: main changed ${AGE_MIN} min ago, another session may still be running. Stop and tell the owner (or rerun with --force)."
   exit 3
-fi
-if [ -n "$LANE" ]; then
-  B="lane/$LANE"
-  git fetch -q --depth=200 origin main 2>/dev/null || true
-  if git fetch -q --depth=200 origin "$B:refs/remotes/origin/$B" 2>/dev/null && ! git merge-base --is-ancestor "origin/$B" origin/main 2>/dev/null; then
-    git checkout -q -B "$B" "origin/$B"
-    git merge -q --no-edit origin/main || { git merge --abort; echo "[session_start] lane $LANE: merging main into $B conflicts; resolve it by hand (owner present) or finish the lane with the merge step first"; exit 4; }
-    echo "[session_start] lane $LANE: continuing $B (main merged in)"
-  else
-    git checkout -q -B "$B" origin/main
-    echo "[session_start] lane $LANE: new $B from main"
-  fi
-  echo "[session_start] lane rules: own files only (node tools/lanes.mjs --owner <path>), no version bump, shared changes as notes in docs/ai/lanes/$LANE.md; end with: bash tools/session_gate.sh lanedone $LANE $B"
 fi
 echo "[session_start] HEAD: $(git log --oneline -1)"
 echo "[session_start] baseline loop (build + lint + smoke tests)"

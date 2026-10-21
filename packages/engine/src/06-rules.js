@@ -36,7 +36,6 @@ function ocActive(i) { const oc = CARDS[i.id] && CARDS[i.id].overCount; if (!oc 
 /* Brave (manual p. 34-36): a combined Brave (inst.brave) adds its BP+ and symbol to the Spirit; one Brave per Spirit; no cost to combine or separate */
 const braveBp = i => (i.brave ? CARDS[i.brave.id].brave.bp : 0);
 /* Saga Brave (manual p. 38): a Brave with "brave.nexus" may also combine with a Grandwalker Nexus whose name matches; a Nexus treated as a Spirit cannot be braved (p. 69 Q1) */
-const isNexusBrave = (b, s) => !!s && CARDS[s.id].type === 'Nexus' && !!b && !!CARDS[b.id].brave && !!CARDS[b.id].brave.nexus;
 function braveFits(b, s) {
   const bc = CARDS[b.id].brave, k = CARDS[s.id];
   if (!bc || b === s || s.brave) return false;

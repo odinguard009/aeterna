@@ -83,8 +83,8 @@ DECISION_KINDS, cardIds, portAsk, decide, ask, info, pickFromField, askBlock, as
 ## packages/engine/src/05c-intent.js (245 lines, ~3.9k tokens) — INTENTS (v0.84.0, phase F3 part 2 = monorepo step M3 rest; docs/ai/monorepo-plan.md "Design" 1)
 INTENT_TYPES, CORE_OPS, INTENT_MAX, SEAT_LOOP, seatCan, seatLoopOpen, boardView, endTurnNow, seatTurn, handOf, fieldOf, intentNext, intentSummon, intentCast, intentMirage, intentBraveSummon, intentBraveField, intentCore, intentAttack, applyIntent, cpuPaymentPlan, cpuIntent, cpuAnswer
 
-## packages/engine/src/06-rules.js (461 lines, ~8.5k tokens) — RULES HELPERS
-fieldList, isGW, freeCores, freeTotal, totalCores, reserveTotal, minCores, isSpiritForm, isUlt, lvBase, lvNo, summonOK, spare, coresAvailable, isCountLv, lvIndex, bpOf, ocActive, braveBp, isNexusBrave, braveFits, braveTargets, combineBrave, canSeparate, separateBrave, braveAfford, braveSummon, braveRecheck, shedBrave, TOKEN_SUPPLY, tokenIdsOf, prepareTokens, tokenCoreRoom, canSendToken, sendToken, tokenHome, symTurnCols, symZeroAllOn, attackSymbols, symAttrs, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, noBlockActive, costAltActive, extraReduction, legacyPlan, effCost, legacyPay, canPlayCard, takeCores, payCost, checkDepletion, leaveEvent, removeSpirit, lostHeard, leaveStandby, releaseStandby, poss, who, draw, handUp, summon, setBurst, mirageUsable, magicFx, magicFromTrash, magicFxAt, magicTrashOK, magicSources, magicTargets, soulMagicHolder, soulMagicOK, soulMagicPick, magicUsable, magicText, castMagic, addCore, removeCore, moveSoulTo, moveCore, swapSoul, returnSoul
+## packages/engine/src/06-rules.js (460 lines, ~8.4k tokens) — RULES HELPERS
+fieldList, isGW, freeCores, freeTotal, totalCores, reserveTotal, minCores, isSpiritForm, isUlt, lvBase, lvNo, summonOK, spare, coresAvailable, isCountLv, lvIndex, bpOf, ocActive, braveBp, braveFits, braveTargets, combineBrave, canSeparate, separateBrave, braveAfford, braveSummon, braveRecheck, shedBrave, TOKEN_SUPPLY, tokenIdsOf, prepareTokens, tokenCoreRoom, canSendToken, sendToken, tokenHome, symTurnCols, symZeroAllOn, attackSymbols, symAttrs, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, noBlockActive, costAltActive, extraReduction, legacyPlan, effCost, legacyPay, canPlayCard, takeCores, payCost, checkDepletion, leaveEvent, removeSpirit, lostHeard, leaveStandby, releaseStandby, poss, who, draw, handUp, summon, setBurst, mirageUsable, magicFx, magicFromTrash, magicFxAt, magicTrashOK, magicSources, magicTargets, soulMagicHolder, soulMagicOK, soulMagicPick, magicUsable, magicText, castMagic, addCore, removeCore, moveSoulTo, moveCore, swapSoul, returnSoul
 
 ## packages/engine/src/07-turn.js (70 lines, ~1.1k tokens) — TURN FLOW
 isMainStep, setStep, beginTurn, endStep, win, matchLoop, checkInvariants
@@ -101,8 +101,8 @@ CPU_PROFILES, CPU_PROFILE_NAMES, CPU_SIM_PROFILES, cpuProfileName, cpuW, lifeVal
 ## apps/web/src/10-modals.js (146 lines, ~2.4k tokens) — MODALS (promise based)
 modalKind, paintModal, uiInfo, modal, PEEK, endPeek, paintPeek, startPeek, peekRefresh, closeModal, modalPress, PICK, clearPick, webPick, webPayment
 
-## apps/web/src/11-human.js (202 lines, ~4.4k tokens) — HUMAN ACTIONS: the dialogs of the human seat. Board actions are intent records (v0.84.0, F3 = M3 rest):
-humanCan, legalityHTML, FX_KW_START, FX_LINE_STOP, effectLines, fxMark, slashBreak, effectTextHTML, cardDetailHTML, residualHTML, cardFaceHTML, cardStripHTML, mullCardHTML, openZoom, handButtons, HAND_INTENTS, runHandAction, humanMirage, humanCast, humanPlay, humanBraveSummon, humanBraveField, humanAttack, onNext, showCardDetail, openHandModal, openFieldModal
+## apps/web/src/11-human.js (198 lines, ~4.3k tokens) — HUMAN ACTIONS: the dialogs of the human seat. Board actions are intent records (v0.84.0, F3 = M3 rest):
+humanCan, legalityHTML, FX_KW_START, FX_LINE_STOP, effectLines, fxMark, slashBreak, effectTextHTML, cardDetailHTML, residualHTML, cardFaceHTML, cardStripHTML, mullCardHTML, openZoom, handButtons, HAND_INTENTS, runHandAction, humanCast, humanAttack, onNext, showCardDetail, openHandModal, openFieldModal
 
 ## apps/web/src/12-zones.js (70 lines, ~1.6k tokens) — ZONES, LOG, RULES COVERAGE
 openZoneModal, openLogModal, showRules
@@ -143,5 +143,5 @@ startNewGame, matchSummary
 ## packages/engine/src/15b-replay.js (88 lines, ~1.8k tokens) — REPLAY RECORDS (v0.85.0, phase F4 = monorepo step M4 part 1; docs/ai/monorepo-plan.md "Design" 2)
 newPortRecord, portRecord, boardSnapshot, runPortRecord, viewerReplayOf
 
-## apps/web/src/16-events.js (222 lines, ~4.7k tokens) — EVENTS (delegation)
-instIdByUid, hScrollable, HDRAG, GAME_ACTS, gameAct, replayOf, lastReplay, runReplay, loadScenario, testSetup, defBuiltin
+## apps/web/src/16-events.js (215 lines, ~4.6k tokens) — EVENTS (delegation)
+hScrollable, HDRAG, GAME_ACTS, gameAct, replayOf, lastReplay, runReplay, loadScenario, testSetup, defBuiltin

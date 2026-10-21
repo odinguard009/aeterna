@@ -1,13 +1,6 @@
 /* ---------------------------------------------------------------------
    EVENTS (delegation)
    --------------------------------------------------------------------- */
-function instIdByUid(uid) {
-  for (const k of ['player', 'opponent']) {
-    const p = G.p[k], all = p.hand.concat(p.spirits, p.nexus);
-    const h = all.find(i => i.uid === uid); if (h) return h.id;
-  }
-  return null;
-}
 document.addEventListener('contextmenu', e => { if (e.target.closest('.tcg-card')) e.preventDefault(); });
 /* v0.32.5: horizontal rows (Hand, Field rows, steps) scroll with a mouse too: the wheel scrolls sideways, and a mouse drag
    scrolls them; a drag never counts as a click. Touch keeps the native swipe. */

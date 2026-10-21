@@ -111,12 +111,8 @@ function runHandAction(p, inst, v) {
   if (HAND_INTENTS[v]) sendIntent({ type: HAND_INTENTS[v], uid: inst.uid });
   else if (typeof v === 'string' && v.startsWith('accel:')) sendIntent({ type: 'accel', uid: inst.uid, idx: Number(v.slice(6)) });
 }
-/* the old entry points (tests and the console use them): each sends one intent and resolves when it was applied */
-const humanMirage = inst => sendIntent({ type: 'mirage', uid: inst.uid });
+/* entry points kept for the Python suite (humanCast, v20) and the console (window.BS): each sends one intent and resolves when it was applied */
 const humanCast = inst => sendIntent({ type: 'cast', uid: inst.uid });
-const humanPlay = inst => sendIntent({ type: 'summon', uid: inst.uid });
-const humanBraveSummon = inst => sendIntent({ type: 'brave', uid: inst.uid });
-const humanBraveField = (p, f, v) => sendIntent({ type: v === 'bseparate' ? 'bseparate' : 'bcombine', uid: f.uid });
 const humanAttack = f => sendIntent({ type: 'attack', uid: f.uid });
 const onNext = () => sendIntent({ type: 'next' });
 async function showCardDetail(id, ctx, uid) {

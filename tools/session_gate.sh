@@ -4,17 +4,15 @@
 #   ON / OFF [reason]   auto-mode switch; newest one wins; none yet = OFF
 #   LOCK                a scheduled (auto) session started; released by DONE or UNLOCK; stale after STALE_H hours
 #   MANUAL              a manual "Lanjutkan roadmap" session started; released by DONE or UNLOCK; stale after MANUAL_H hours
-#   DONE vX.Y.Z         a session (manual or auto) finished and sent the game file; ends every session, lanes included
+#   DONE vX.Y.Z         a session (manual or auto) finished and sent the game file; ends every session
 #   UNLOCK [lane]       a session stopped early (error, quota, ~80 calls); with a lane it ends only that lane
-#   LANEDONE lane branch  a lane session finished its branch (no release yet; the merge step ends with DONE)
 #   RANTAI ON / RANTAI OFF [reason]  chain-mode switch (owner, 2026-10-20); newest one wins; none yet = OFF
 #   DONE ... tokens=N [sub=M] [rantai]  tokens = the session's budget-counter difference plus its subagents' tokens (sub=, owner
 #                       2026-10-21); "rantai" = it was a chain continuation
 #                       (item T: "lock|manual ... budget=<start>" + "done ... budget=<end>" lets the gate compute tokens=; explicit tokens= still wins)
 #   HEMAT ON / HEMAT OFF  token-saving switch (owner, 2026-10-19); newest one wins; none yet = ON. ON = the pre-v0.68 session
 #                       (single main session, read-only subagents only as CLAUDE.md "Mode hemat" says); OFF = team session (v0.68)
-# Lanes (P1, v0.63.1; opt-in): LOCK/MANUAL/UNLOCK may carry a lane as second word (ui | card). A start with a lane
-#   blocks only that lane; a start without a lane blocks everything (the single-lane flow, unchanged).
+# A lane word on LOCK/MANUAL/UNLOCK (ui | card) is still read by the evaluator (parallel lanes were removed in v0.96.0; nothing writes it any more).
 #   any other text      owner activity: restarts the idle timer, like a new session
 # Commands (no clone needed for check/on/off/status/switch):
 #   gh api repos/odinguard009/aeterna/contents/tools/session_gate.sh --jq .content | base64 -d | bash -s <command>
@@ -23,8 +21,7 @@
 #   check opus [lane]  with a lane only sessions of that lane (or without a lane) count as "running"
 #   lock [lane]      scheduled run after the clone: LOCK, exit 3 when another session is active (in that lane)
 #   manual [lane]    manual session after session_start.sh: MANUAL, exit 3 when an auto session holds the lock (in that lane)
-#   done vX.Y.Z next=Opus|Sonnet   end of every session (manual and auto) and of the lane merge; next= is the model the next roadmap item needs
-#   lanedone <lane> <branch>  end of a lane session (its branch is pushed, the merge step releases)
+#   done vX.Y.Z next=Opus|Sonnet   end of every session (manual and auto); next= is the model the next roadmap item needs
 #   unlock [lane]    early stop / error of any session (of that lane)
 #   on | off [why]   owner switch ("otomatis on" / "otomatis off" in chat, a comment on issue #1, or the Actions workflow "Auto mode")
 #   switch           prints ON or OFF (cheap; auto sessions run it between tasks)
@@ -36,7 +33,7 @@
 #                    or "STOP <reason>"; one session over RANTAI_MAX tokens turns the switch OFF (comment "RANTAI OFF auto: ...")
 #   busy [lane]      exit 3 when a LOCK or MANUAL session is active (in that lane; used by session_start.sh)
 # Offline test: GATE_FIXTURE=1 with COMMENTS / COMMITS (tab-separated "time<TAB>first line") and GATE_NOW skips gh
-#   for the evaluator (tests/unit/gate_lanes.test.mjs); posting commands still need gh.
+#   for the evaluator (tests/unit/gate.test.mjs); posting commands still need gh.
 R=odinguard009/aeterna; L=1
 LANES="ui card"
 lane_ok() { [ -z "${1:-}" ] || case " $LANES " in *" $1 "*) return 0 ;; *) echo "unknown lane '$1' (use: $LANES)" >&2; return 1 ;; esac; }
@@ -92,7 +89,7 @@ def rows(name):
 now = t(E["GATE_NOW"]) if E.get("GATE_NOW") else dt.datetime.now(dt.timezone.utc)
 cm, co = rows("COMMENTS"), rows("COMMITS")
 word = lambda b: (b.split() or [""])[0].upper()
-SW, SES = {"ON", "OFF"}, {"LOCK", "MANUAL", "DONE", "UNLOCK", "LANEDONE"}
+SW, SES = {"ON", "OFF"}, {"LOCK", "MANUAL", "DONE", "UNLOCK"}
 LANES = E["LANES"].split()
 sw = [c for c in cm if word(c[1]) in SW]
 switch = word(sw[-1][1]) if sw else "OFF"
@@ -105,7 +102,7 @@ for ts, b in cm:
     w, ln = word(b), lane_of(b)
     if w in {"LOCK", "MANUAL"}: run[ln] = (w, ts)
     elif w == "DONE" or (w == "UNLOCK" and not ln): run = {}
-    elif w in {"UNLOCK", "LANEDONE"} and ln: run.pop(ln, None)
+    elif w == "UNLOCK" and ln: run.pop(ln, None)
 def alive(k):
     w, ts = run[k]; age_h = (now - ts).total_seconds() / 3600
     return age_h < float(E["STALE_H"] if w == "LOCK" else E["MANUAL_H"])
@@ -198,7 +195,6 @@ case "$cmd" in
             else echo "WARN no usable budget= on the session's LOCK/MANUAL (start '${st}', end $b): DONE posted without tokens= (chain mode stops)" >&2; fi
           fi
           post "DONE $a" && echo "done $a" ;;
-  lanedone) lane_ok "${1:-}" && [ -n "${1:-}" ] || { echo "usage: $0 lanedone <lane> <branch>"; exit 2; }; post "LANEDONE $1 ${2:-lane/$1}" && echo "lane $1 done" ;;
   unlock) lane_ok "${1:-}" || exit 2; post "UNLOCK${1:+ $1}" && echo "unlocked${1:+ ($1 lane)}" ;;
   on)     post "ON ${*:-}" && echo "Mode otomatis: ON" ;;
   off)    post "OFF ${*:-}" && echo "Mode otomatis: OFF" ;;
@@ -220,5 +216,5 @@ case "$cmd" in
           esac ;;
   switch|status) evaluate "$cmd" || { echo "gate error (gh api failed)"; exit 1; } ;;
   busy)   lane_ok "${1:-}" || exit 2; v=$(evaluate busy "" "${1:-}") || exit 1; echo "$v"; [ "${v%% *}" = BUSY ] && exit 3; exit 0 ;;
-  *) echo "usage: $0 check opus [lane]|lock [lane]|manual [lane]|done vX.Y.Z next=Opus|lanedone <lane> <branch>|unlock [lane]|on|off [why]|hemat on|off|status|rantai on|off|status|next|switch|status|busy [lane]  (lanes: $LANES)"; exit 2 ;;
+  *) echo "usage: $0 check opus [lane]|lock [lane]|manual [lane]|done vX.Y.Z next=Opus|unlock [lane]|on|off [why]|hemat on|off|status|rantai on|off|status|next|switch|status|busy [lane]  (lanes: $LANES)"; exit 2 ;;
 esac
