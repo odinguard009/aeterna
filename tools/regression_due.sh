@@ -5,7 +5,7 @@
 #   SKIP (reason)         -> no dispatch; the weekly scheduled Regression (Sunday) still runs everything
 # Due when any of:
 #   - no earlier Regression run is found, or the newest one did not succeed (the fix must be confirmed)
-#   - 3+ release commits (subject "vX.Y.Z ...") on main since the commit the newest Regression ran on
+#   - 3+ release commits (subject "vX.Y.Z ..." or, since v0.80, "docs: vX.Y.Z release docs"; fixed v0.94.0) on main since the commit the newest Regression ran on
 #   - core engine files changed since then (turn, battle, rules, state, zones, match, CPU, effect base/parse/resolve):
 #     these get 30 sims; everything else gets 10
 # gh failure = DUE sims=30 (never skip by accident).
@@ -18,7 +18,7 @@ last=$(gh api "repos/$REPO/actions/workflows/regression.yml/runs?branch=main&per
 sha=${last%% *}; concl=${last#* }
 if [ -z "$sha" ] || [ "$sha" = "null" ]; then echo "DUE sims=30 (no earlier Regression run)"; exit 0; fi
 cmp=$(gh api "repos/$REPO/compare/$sha...main" \
-  --jq '"\([.commits[].commit.message | select(test("^v[0-9]"))] | length) \([.files[].filename] | join(","))"' 2>/dev/null) \
+  --jq '"\([.commits[].commit.message | select(test("^v[0-9]|^docs: v[0-9]+[.][0-9]+[.][0-9]+ release docs"))] | length) \([.files[].filename] | join(","))"' 2>/dev/null) \
   || { echo "DUE sims=30 (compare failed: run it to be safe)"; exit 0; }
 rel=${cmp%% *}; files=${cmp#* }
 core=$(printf '%s\n' "$files" | tr ',' '\n' | grep -cE "$CORE" || true)
