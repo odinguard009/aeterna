@@ -7,8 +7,8 @@
 | vanilla | 6 | no effect text |
 | ready | 236 | only wired tags, most sentences tagged |
 | partly tagged | 89 | wired tags, but much of the text is not recognised by the glossary |
-| blocked | 1,432 | needs at least one partial/missing tag |
-| unknown text | 69 | text, but no glossary tag matches |
+| blocked | 1,434 | needs at least one partial/missing tag |
+| unknown text | 67 | text, but no glossary tag matches |
 
 ## Work order: tags that are the only blocker (cards unlocked when that tag is finished)
 
@@ -65,4 +65,4 @@
 | 15 | 0 | 11 | 0 | 144 | 0 |
 | 16 | 0 | 18 | 0 | 161 | 0 |
 | 17 | 3 | 1 | 0 | 25 | 0 |
-| 50 | 0 | 2 | 2 | 9 | 6 |
+| 50 | 0 | 2 | 2 | 11 | 4 |
