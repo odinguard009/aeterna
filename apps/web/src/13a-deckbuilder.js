@@ -209,6 +209,7 @@ function dbSheet(which) {             // phone: open 'filters', 'deck' or 'menu'
   const vw = $('view-deckbuilder');
   if (which === 'filters' && isPC()) { const off = vw.classList.toggle('db-rail-off'); $('db-filter-btn').setAttribute('aria-expanded', String(!off)); return; }
   vw.classList.toggle('db-open-filters', which === 'filters');
+  if (!isPC()) $('db-filter-btn').setAttribute('aria-expanded', String(which === 'filters'));
   vw.classList.toggle('db-open-deck', which === 'deck');
   vw.classList.toggle('db-open-menu', which === 'menu');
 }
