@@ -213,7 +213,7 @@ function renderBoard() {
   }
   if (SIM) checkInvariants();
 }
-function render() { renderBoard(); updateLogDrawer(); fxCues(); }
+function render() { renderBoard(); updateLogDrawer(); fxCues(); animCues(); }
 /* ---- v0.91.0 U5: one shared overlay layer #ae-fx (index.template.html) above the board, under every dialog, never hit by a tap.
    Ribbons (turn, Main / Attack step, your Flash Timing) and the match-start banner with the motto run about 1.2 s, one at a time;
    the block strip stays while the block pick is open. Sims (?sim=1) draw nothing; reduced motion keeps them static (CSS). U5b adds the animations. */
@@ -302,7 +302,7 @@ function switchView(id) {
   if (id === 'view-library') renderLibrary();
   if (id === 'view-settings') renderSettings();
 }
-function renderSettings() { $('set-hist').innerHTML = histHTML(); $('set-cpu').innerHTML = CPU_PROFILE_NAMES.map(n => `<option value="${n}">${cap(n)}</option>`).join(''); $('set-cpu').value = cpuProfileName(null); $('set-speed').value = SETTINGS.speed; $('set-sound').value = SETTINGS.sound ? 'on' : 'off';
+function renderSettings() { $('set-hist').innerHTML = histHTML(); $('set-cpu').innerHTML = CPU_PROFILE_NAMES.map(n => `<option value="${n}">${cap(n)}</option>`).join(''); $('set-cpu').value = cpuProfileName(null); $('set-speed').value = SETTINGS.speed; $('set-sound').value = SETTINGS.sound ? 'on' : 'off'; $('set-anim').value = SETTINGS.anim || animMode();
   renderSetPage(); }   // v0.68.0 U4: colour grid, Dark/Light, playmat and CPU colour rows (13d-pages.js)
 function renderLobby() {
   renderHome();

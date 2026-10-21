@@ -125,6 +125,7 @@ document.addEventListener('change', async e => {
   else if (t.id === 'set-cpu') setCpuProfile(t.value);
   else if (t.id === 'set-color') { setTheme('color', t.value); navTools(); if (G) render(); }
   else if (t.id === 'set-mode') { setTheme('mode', t.value); navTools(); if (G) render(); }
+  else if (t.id === 'set-anim') { SETTINGS.anim = ['full', 'reduced', 'off'].includes(t.value) ? t.value : 'full'; saveSettings(); }
   else if (t.id === 'set-sound') { SETTINGS.sound = t.value === 'on'; saveSettings(); navTools(); if (SETTINGS.sound) sfx('summon'); }
 });
 document.addEventListener('input', e => { if (e.target.id === 'db-search') dbSearchInput(); });

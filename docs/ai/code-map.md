@@ -128,7 +128,10 @@ AUDIO, sfx, showGameOver, ACT, ACT_Q, actFlush, webAction, sendIntent, webView, 
 ## apps/web/src/13f-replay.js (61 lines, ~1.4k tokens) — REPLAY VIEWER (v0.86.0, phase F4 part 2 = monorepo step M4 rest; formats: packages/engine/src/15b-replay.js)
 rvName, rvCards, rvField, rvSideHTML, rvFrameHTML, openViewer, replayFromRecord, replayWatch, replaySave, replayOpenFile
 
-## apps/web/src/14-images.js (152 lines, ~2.6k tokens) — CARD IMAGES
+## apps/web/src/13g-anim.js (69 lines, ~1.2k tokens) — v0.92.0 U5b LIGHT BATTLE ANIMATIONS (roadmap item U, owner 2026-10-21; docs/DESIGN.md section 0, U5b)
+animMode, ANIM, rectOf, visEl, aeFx, aeBeam, animCues
+
+## apps/web/src/14-images.js (153 lines, ~2.6k tokens) — CARD IMAGES
 IMG, IDB, normKey, idbOpen, idbTx, setImg, loadImages, shrinkImage, stripExt, findCardByFile, findCardByKey, importImages, clearImages, imgCls, imgSty, refreshViews, libMsg, renderLibrary, deckToText, textToDeck, downloadText, readFileText, libAction
 
 ## packages/engine/src/15-match.js (52 lines, ~1.1k tokens) — MATCH START / END

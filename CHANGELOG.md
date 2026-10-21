@@ -2,6 +2,16 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.92.0
+- Lane: U/I
+- Time: TIME_LINE
+- **Light battle animations (roadmap U5b): an attack beam from the attacker to its blocker or the defender's Life, the Life cores shatter when Life is lost, and short cues for summon / deploy, destroy, BP changes, level-up and draws.**
+  - Settings, Speed: new row "Animations: Full / Reduced / Off" (saved per device; Reset sets it back). Reduced keeps only short fades (no shards, no travel); the system "reduce motion" setting turns Full into Reduced. Off by default under test automation; CPU-vs-CPU sims (`?sim=1`) never draw them.
+  - Every cue lives in the U5 overlay layer (`#ae-fx`), animates only transform and opacity for 0.3-0.65 s, removes itself and never takes a tap; the engine and the CPU never wait for it (code `apps/web/src/13g-anim.js`: the board is compared with the last one after each render).
+  - Stylesheet budget kept (test B04): 7 unused old rules removed (`.lobby-title`, `.lobby-menu`, `.core-badge`, `.soulstate-zone`, `.card-art`, `.sleeve-mark`).
+  - Not in this release: cores flying between zones and the Burst flip (they need the core/Burst events, not only the board diff); listed under item U for U8.
+  - Test `tests/unit/anim92.test.mjs` (U92-1..U92-4, PC and phone). Backup `backup/v0.91.0` holds the state before the change. Revert note: `git revert` of the U5b commit (removes `13g-anim.js`, the Settings row and the CSS block "v0.92.0 U5b").
+
 ## v0.91.0
 - Lane: U/I
 - Time: about 75 min (session start to release), Opus, tokens in the DONE mark (player-view pass about 31 min of it).

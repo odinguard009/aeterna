@@ -38,9 +38,6 @@
     background: radial-gradient(circle at center, #101e2c 0%, #060b0f 100%);
     text-align: center; gap: 20px;
   }
-  .lobby-title h1 { font-size: 28px; color: var(--accent); letter-spacing: 2px; text-shadow: 0 0 10px rgba(229,169,60,0.5); }
-  .lobby-title p { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
-  .lobby-menu { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 280px; }
   .menu-btn {
     background: rgba(255,255,255,0.06); color: var(--text-main);
     border: 1px solid var(--accent); padding: 12px; border-radius: 6px;
@@ -109,7 +106,6 @@
   .ba-title { font-size: 1em; font-weight: bold; color: var(--accent); white-space: nowrap; letter-spacing: .3px; line-height: 1; }
   .ba-card { width: 100%; aspect-ratio: 63 / 88; border-radius: 4px; border: 2px dashed var(--border-line); background: rgba(0,0,0,.25); overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
   .ba-card.set-burst { border: 2px solid #e5a93c; background: repeating-linear-gradient(45deg, #1b2f6e 0 4px, #243d86 4px 8px); box-shadow: 0 0 6px rgba(229,169,60,.5); }
-  .ba-card.set-burst .sleeve-mark { font-size: 1.9em; font-weight: bold; color: #e5a93c; border: 1px solid #e5a93c; border-radius: 50%; width: 62%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.35); }
   .ba-card.set-mirage { border: 2px solid var(--card-col, var(--accent)); box-shadow: 0 0 6px var(--card-col, var(--accent)); }
   .ba-card .cface { border: 0; border-radius: 0; height: 100%; width: 100%; aspect-ratio: auto; }
   .ba-card .cface.ph { padding: 4%; }
@@ -152,9 +148,7 @@
   .zone-box { background: var(--blue-zone); border: 1px dashed var(--border-line); border-radius: 5px; padding: 3px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 10.5px; color: var(--text-muted); flex: 1; cursor: pointer; transition: background 0.15s, border-color 0.15s; }
   .zone-box:hover, .zone-box:active { background: rgba(40, 90, 140, 0.4); border-color: var(--accent); }
   .zone-box .zone-label { font-weight: bold; font-size: 10px; color: var(--accent); margin-bottom: 1px; }
-  .core-badge { background: var(--accent); color: #0b1319; font-weight: bold; border-radius: 10px; padding: 1px 8px; font-size: 12px; margin-top: 1px; }
 
-  .soulstate-zone { background: rgba(155, 81, 224, 0.3); border: 1px solid var(--color-purple); border-radius: 3px; padding: 2px 2px; font-size: 10px; font-weight: bold; color: #e0b0ff; cursor: pointer; text-align: center; }
 
   .full-center-divider { flex: none; background: var(--bg-panel); border: 1px solid var(--accent); border-radius: 6px; padding: 4px 8px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 0 12px rgba(229, 169, 60, 0.35); z-index: 10; }
   .control-top-row { display: grid; grid-template-columns: 64px minmax(0, 1fr) 64px; align-items: center; gap: 6px; width: 100%; }
@@ -320,7 +314,6 @@
   #zoom-overlay .zc-close { flex: none; align-self: center; }
   /* effect text: justified (owner request v0.32.4); the last line stays left */
   .fx-line, .fx-pay, .cface.ph .ph-txt { text-align: justify; text-align-last: left; hyphens: auto; -webkit-hyphens: auto; overflow-wrap: anywhere; }
-  .card-art { width: 100%; max-width: 180px; border-radius: 6px; margin: 0 auto 8px; display: block; border: 1px solid var(--border-line); }
   .lib-msg { font-size: 10px; color: #6fcf97; white-space: pre-wrap; min-height: 14px; }
   .lib-msg.bad { color: #eb5757; }
   .lib-area { width: 100%; height: 110px; background: rgba(0,0,0,.5); color: var(--text-main); border: 1px solid var(--border-line); border-radius: 4px; font-size: 10px; padding: 4px; user-select: text; font-family: monospace; }
@@ -645,6 +638,23 @@
   #action-modal .modal-btns { position: sticky; bottom: -16px; z-index: 2; margin: 0 -18px -16px; padding: 10px 18px 16px; background: var(--ae-panel2); }
   html.layout-mobile .modal-overlay { align-items: flex-end; }
   html.layout-mobile .modal-box { width: 100%; max-width: none; max-height: 86vh; padding-bottom: max(16px, env(safe-area-inset-bottom)); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%); }
+  /* v0.92.0 U5b: battle cues in #ae-fx (apps/web/src/13g-anim.js); transform / opacity only, each element removes itself */
+  #ae-fx [class^="ae-a-"]{position:fixed;pointer-events:none;}
+  .ae-a-sum{box-shadow:0 0 0 2px var(--you),0 0 26px var(--you);animation:aeSum .5s ease-out both;}.ae-a-sum.cpu{box-shadow:0 0 0 2px var(--cpu),0 0 26px var(--cpu);}
+  .ae-a-die{background:#000a;box-shadow:inset 0 0 0 1px var(--ae-line2);animation:aeDie .55s ease-in both;}
+  .ae-a-lv{box-shadow:0 0 0 2px #ffd447,0 0 22px #ffd447;animation:aeFade .6s ease-out both;}
+  .ae-a-bp{display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;-webkit-text-stroke:2.5px #000;paint-order:stroke;animation:aePop .65s ease-out both;}.ae-a-bp.down{color:#ff8a8a;}
+  .ae-a-beam{transform:var(--r);transform-origin:0 50%;background:linear-gradient(90deg,transparent,var(--you) 30%,#fff);clip-path:polygon(0 40%,100% 0,100% 100%,0 60%);animation:aeBeam .65s ease-out both;}.ae-a-beam.cpu{background:linear-gradient(90deg,transparent,var(--cpu) 30%,#fff);}
+  .ae-a-beam.still,.ae-a-hit{animation:aeFade .45s ease-out both;}.ae-a-hit{box-shadow:0 0 0 2px var(--cpu),0 0 20px var(--cpu);}
+  .ae-a-shard{background:linear-gradient(135deg,var(--ae-core1),var(--ae-core2) 55%,var(--ae-core3));clip-path:polygon(50% 0,100% 38%,81% 100%,19% 100%,0 38%);animation:aeShard .65s ease-out both;}
+  .tcg-card.ae-a-draw{animation:aeDraw .3s ease-out both;}
+  @keyframes aeSum{0%{opacity:0;transform:scale(1.25);}30%{opacity:1;}100%{opacity:0;transform:none;}}
+  @keyframes aeDie{0%{opacity:1;}100%{opacity:0;transform:scale(.7) rotate(-8deg);}}
+  @keyframes aeFade{0%,40%{opacity:1;}100%{opacity:0;}}
+  @keyframes aePop{0%{opacity:0;transform:scale(.6);}25%{opacity:1;transform:scale(1.15);}100%{opacity:0;transform:translateY(-26px);}}
+  @keyframes aeBeam{0%{transform:var(--r) scaleX(0);}45%{opacity:1;transform:var(--r);}100%{opacity:0;transform:var(--r);}}
+  @keyframes aeShard{0%{opacity:1;transform:none;}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(160deg) scale(.5);}}
+  @keyframes aeDraw{0%{opacity:0;transform:translateY(24px);}100%{opacity:1;transform:none;}}
   html.layout-mobile .ae-rib b { font-size: 20px; } html.layout-mobile .ae-rib.banner b { font-size: 28px; }
 
   /* =====================================================================
