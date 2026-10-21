@@ -638,6 +638,37 @@
   #action-modal .modal-btns { position: sticky; bottom: -16px; z-index: 2; margin: 0 -18px -16px; padding: 10px 18px 16px; background: var(--ae-panel2); }
   html.layout-mobile .modal-overlay { align-items: flex-end; }
   html.layout-mobile .modal-box { width: 100%; max-width: none; max-height: 86vh; padding-bottom: max(16px, env(safe-area-inset-bottom)); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%); }
+  /* v0.93.0 U6 My decks (apps/web/src/13h-decks.js; mockup v11 "My decks"): PC tiles, phone rows, more menu / action sheet */
+  .dk-msg:empty{display:none}.ae-phead .dk-msg{color:var(--you);font-size:13px}
+  .dk-hacts{display:flex;gap:8px;flex-wrap:wrap}
+  .dk-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:10px}
+  .dk-tile{position:relative;display:flex;align-items:center;gap:12px;padding:12px 14px;min-width:0;background:linear-gradient(180deg,var(--ae-panel1),var(--ae-panel2));box-shadow:inset 0 0 0 1px var(--ae-line);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
+  .dk-tile.on{box-shadow:inset 3px 0 0 var(--you),inset 0 0 0 1px var(--ae-line2)}
+  .dk-tile.open{clip-path:none;z-index:5}
+  .dk-sl{width:40px;height:56px}
+  .dk-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+  .dk-top{display:flex;align-items:center;gap:8px;min-width:0}
+  .dk-name{font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+  .dk-act{flex:none;padding:1px 8px;font-size:10px;font-weight:900;letter-spacing:.14em;background:var(--you);color:var(--you-ink);clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+  .dk-dots{display:flex;gap:4px;min-height:12px}
+  .dk-dot{display:inline-block;width:12px;height:12px;background:var(--c);clip-path:polygon(50% 0,100% 38%,81% 100%,19% 100%,0 38%)}
+  .dk-st{font-size:12px;color:var(--ae-text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dk-st.ok{color:var(--you)}.dk-st.bad{color:var(--cpu)}
+  .dk-btns{display:flex;gap:6px;flex:none;align-items:center}
+  .dk-btns .ae-ghost{min-height:36px;padding:0 12px}.dk-btns .ae-ghost:disabled{opacity:.4;cursor:not-allowed}
+  .dk-more{width:36px;height:36px;border:0;background:var(--ae-chip);color:var(--ae-text);font-size:18px;cursor:pointer;box-shadow:inset 0 0 0 1px var(--ae-line2)}
+  .dk-menu{position:absolute;right:8px;top:calc(100% - 6px);z-index:20;display:flex;flex-direction:column;min-width:210px;padding:6px 0;background:var(--ae-panel1);box-shadow:inset 0 2px 0 var(--you),inset 0 0 0 1px var(--ae-line2),0 18px 40px #000a}
+  .dk-menu button{min-height:36px;border:0;background:none;text-align:left;padding:0 14px;color:var(--ae-text);font:inherit;font-size:13px;cursor:pointer}
+  .dk-menu button:hover,.dk-menu button:focus-visible{background:var(--ae-chip)}.dk-menu .del{color:var(--cpu)}
+  .dk-mh,.dk-x{display:none}
+  .dk-h{margin:10px 0 0;font-size:13px;font-weight:900;letter-spacing:.16em;color:var(--ae-text)}.dk-h span{font-weight:400;letter-spacing:0;color:var(--ae-text3);margin-left:8px}
+  .dk-in{width:100%;height:40px;padding:0 10px;background:var(--ae-chip);color:var(--ae-text);border:0;box-shadow:inset 0 0 0 1px var(--ae-line2);font:inherit;font-size:15px}
+  .modal-btn.danger{background:var(--cpu);color:var(--cpu-ink)}
+  html.layout-mobile .dk-list{grid-template-columns:minmax(0,1fr)}
+  html.layout-mobile .dk-tile{padding:10px;gap:10px}
+  html.layout-mobile .dk-tile.open{z-index:70}html.layout-mobile #view-decks .ae-phead{flex-wrap:wrap}html.layout-mobile .dk-hacts{width:100%}html.layout-mobile .dk-hacts .ae-ghost{flex:1}
+  html.layout-mobile .dk-menu{position:fixed;left:0;right:0;top:auto;bottom:0;z-index:60;padding:12px 10px max(18px,env(safe-area-inset-bottom));min-width:0}
+  html.layout-mobile .dk-mh{display:block;padding:4px 14px 8px;font-size:11px;font-weight:900;letter-spacing:.16em;color:var(--ae-text2)}
+  html.layout-mobile .dk-x{display:block;text-align:center;color:var(--ae-text2);box-shadow:inset 0 1px 0 var(--ae-line);margin-top:6px}
   /* v0.92.0 U5b: battle cues in #ae-fx (apps/web/src/13g-anim.js); transform / opacity only, each element removes itself */
   #ae-fx [class^="ae-a-"]{position:fixed;pointer-events:none;}
   .ae-a-sum{box-shadow:0 0 0 2px var(--you),0 0 26px var(--you);animation:aeSum .5s ease-out both;}.ae-a-sum.cpu{box-shadow:0 0 0 2px var(--cpu),0 0 26px var(--cpu);}

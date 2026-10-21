@@ -2,6 +2,15 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.93.0
+- Lane: U/I
+- Time: TIME_LINE
+- **My decks page (roadmap U6): the Decks tab now opens a list of your decks with sleeve, colours, status and an ACTIVE badge; Edit, Play and a more menu with Set active, Rename, Duplicate, Deck look, Copy deck code and Delete (asks first); Import code and New deck; the prebuilt decks are read-only starter decks with Copy.**
+  - Built on the existing 8 deck slots (nothing migrates): a slot is listed when it has cards, its own name, was made by New / Import / Copy / Duplicate, or is the active deck. Play is disabled while a deck is not ready (the status says why, e.g. "37 / 40 · add 3 cards"). On the phone the rows open an action sheet instead of the menu.
+  - "Build a deck" on Home and "Edit deck" on Play still open the deck builder directly; Deck look opens the builder until U7 adds its Look tab. Copy deck code puts the card list on the clipboard (Import code reads the same text).
+  - Stylesheet budget (test B04) raised on purpose from 90 to 96 KB for U6-U8 (unused rules were trimmed first in v0.92.0).
+  - Test `tests/unit/decks93.test.mjs` (U93-1..U93-3, PC and phone); `ui65` follows the new Decks tab. Backup `backup/v0.92.0` holds the state before the change. Revert note: `git revert` of the U6 commit (removes `apps/web/src/13h-decks.js`, the `view-decks` page and the CSS block "v0.93.0 U6"; the Decks tab goes back to the deck builder).
+
 ## v0.92.0
 - Lane: U/I
 - Time: about 65 min (session start to release), Opus, tokens in the DONE mark (chain session 2; player-view pass about 24 min of it).

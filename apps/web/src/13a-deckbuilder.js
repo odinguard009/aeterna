@@ -123,8 +123,8 @@ async function dbImport() {
   dbReplace(r.deck);
   if (r.bad.length) uiInfo('Imported with skipped lines', esc(r.bad.slice(0, 8).join('\n')).replace(/\n/g, '<br>'));
 }
-async function dbExport() {
-  const txt = deckToText();
+async function dbExport(d) {
+  const txt = deckToText(d);
   const v = await modal({ title: 'Export deck list', html: `<textarea id="db-io" class="lib-area" spellcheck="false" readonly>${esc(txt)}</textarea>`, buttons: [{ label: 'Copy', cls: 'primary', value: 'copy' }, { label: 'Close', cls: 'cancel', value: null }] });
   if (v === 'copy') { try { await navigator.clipboard.writeText(txt); } catch (e) { /* clipboard blocked: the text stays selectable in the box */ } }
 }

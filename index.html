@@ -567,6 +567,36 @@ html.layout-mobile #view-playmat .ba-card.set-burst .btag { left: 0; right: 0; f
 #action-modal .modal-btns { position: sticky; bottom: -16px; z-index: 2; margin: 0 -18px -16px; padding: 10px 18px 16px; background: var(--ae-panel2); }
 html.layout-mobile .modal-overlay { align-items: flex-end; }
 html.layout-mobile .modal-box { width: 100%; max-width: none; max-height: 86vh; padding-bottom: max(16px, env(safe-area-inset-bottom)); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%); }
+.dk-msg:empty{display:none}.ae-phead .dk-msg{color:var(--you);font-size:13px}
+.dk-hacts{display:flex;gap:8px;flex-wrap:wrap}
+.dk-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:10px}
+.dk-tile{position:relative;display:flex;align-items:center;gap:12px;padding:12px 14px;min-width:0;background:linear-gradient(180deg,var(--ae-panel1),var(--ae-panel2));box-shadow:inset 0 0 0 1px var(--ae-line);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
+.dk-tile.on{box-shadow:inset 3px 0 0 var(--you),inset 0 0 0 1px var(--ae-line2)}
+.dk-tile.open{clip-path:none;z-index:5}
+.dk-sl{width:40px;height:56px}
+.dk-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.dk-top{display:flex;align-items:center;gap:8px;min-width:0}
+.dk-name{font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.dk-act{flex:none;padding:1px 8px;font-size:10px;font-weight:900;letter-spacing:.14em;background:var(--you);color:var(--you-ink);clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+.dk-dots{display:flex;gap:4px;min-height:12px}
+.dk-dot{display:inline-block;width:12px;height:12px;background:var(--c);clip-path:polygon(50% 0,100% 38%,81% 100%,19% 100%,0 38%)}
+.dk-st{font-size:12px;color:var(--ae-text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dk-st.ok{color:var(--you)}.dk-st.bad{color:var(--cpu)}
+.dk-btns{display:flex;gap:6px;flex:none;align-items:center}
+.dk-btns .ae-ghost{min-height:36px;padding:0 12px}.dk-btns .ae-ghost:disabled{opacity:.4;cursor:not-allowed}
+.dk-more{width:36px;height:36px;border:0;background:var(--ae-chip);color:var(--ae-text);font-size:18px;cursor:pointer;box-shadow:inset 0 0 0 1px var(--ae-line2)}
+.dk-menu{position:absolute;right:8px;top:calc(100% - 6px);z-index:20;display:flex;flex-direction:column;min-width:210px;padding:6px 0;background:var(--ae-panel1);box-shadow:inset 0 2px 0 var(--you),inset 0 0 0 1px var(--ae-line2),0 18px 40px #000a}
+.dk-menu button{min-height:36px;border:0;background:none;text-align:left;padding:0 14px;color:var(--ae-text);font:inherit;font-size:13px;cursor:pointer}
+.dk-menu button:hover,.dk-menu button:focus-visible{background:var(--ae-chip)}.dk-menu .del{color:var(--cpu)}
+.dk-mh,.dk-x{display:none}
+.dk-h{margin:10px 0 0;font-size:13px;font-weight:900;letter-spacing:.16em;color:var(--ae-text)}.dk-h span{font-weight:400;letter-spacing:0;color:var(--ae-text3);margin-left:8px}
+.dk-in{width:100%;height:40px;padding:0 10px;background:var(--ae-chip);color:var(--ae-text);border:0;box-shadow:inset 0 0 0 1px var(--ae-line2);font:inherit;font-size:15px}
+.modal-btn.danger{background:var(--cpu);color:var(--cpu-ink)}
+html.layout-mobile .dk-list{grid-template-columns:minmax(0,1fr)}
+html.layout-mobile .dk-tile{padding:10px;gap:10px}
+html.layout-mobile .dk-tile.open{z-index:70}html.layout-mobile #view-decks .ae-phead{flex-wrap:wrap}html.layout-mobile .dk-hacts{width:100%}html.layout-mobile .dk-hacts .ae-ghost{flex:1}
+html.layout-mobile .dk-menu{position:fixed;left:0;right:0;top:auto;bottom:0;z-index:60;padding:12px 10px max(18px,env(safe-area-inset-bottom));min-width:0}
+html.layout-mobile .dk-mh{display:block;padding:4px 14px 8px;font-size:11px;font-weight:900;letter-spacing:.16em;color:var(--ae-text2)}
+html.layout-mobile .dk-x{display:block;text-align:center;color:var(--ae-text2);box-shadow:inset 0 1px 0 var(--ae-line);margin-top:6px}
 #ae-fx [class^="ae-a-"]{position:fixed;pointer-events:none;}
 .ae-a-sum{box-shadow:0 0 0 2px var(--you),0 0 26px var(--you);animation:aeSum .5s ease-out both;}.ae-a-sum.cpu{box-shadow:0 0 0 2px var(--cpu),0 0 26px var(--cpu);}
 .ae-a-die{background:#000a;box-shadow:inset 0 0 0 1px var(--ae-line2);animation:aeDie .55s ease-in both;}
@@ -816,7 +846,7 @@ html.layout-pc .doc-card { padding: 18px 24px 20px; }
 
 <header id="app-nav" class="ae-nav">
   <span class="ae-brand" translate="no">AETERNA</span>
-  <nav id="app-tabs" class="ae-tabs" aria-label="Main"><button class="ae-tab" data-a="go-lobby" data-nav="view-lobby"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V10a8 8 0 0 1 16 0v11"/><path d="M8 21v-9a4 4 0 0 1 8 0v9"/><path d="M2 21h20"/><path d="M12 2.5v2"/></svg><span class="t-pc">Home</span><span class="t-ph">Home</span></button><button class="ae-tab" data-a="go-play" data-nav="view-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l9.5 7-3.6 11.5H6.1L2.5 9z"/><path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor"/></svg><span class="t-pc">Play</span><span class="t-ph">Play</span></button><button class="ae-tab" data-a="go-deck" data-nav="view-deckbuilder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="10" height="15" rx="1.5" transform="rotate(12 14 10.5)"/><rect x="5" y="5" width="10" height="15" rx="1.5"/><path d="M10 10.5l2 2-2 2-2-2z"/></svg><span class="t-pc">Decks</span><span class="t-ph">Decks</span></button><button class="ae-tab" data-a="go-lib" data-nav="view-library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="11" height="16" rx="1.5"/><path d="M6 7h5M6 10h5"/><circle cx="16.5" cy="15.5" r="3.5"/><path d="M19 18l2.5 2.5"/></svg><span class="t-pc">Library</span><span class="t-ph">Library</span></button><button class="ae-tab" data-a="go-howto" data-nav="view-howto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l9.5 7-3.6 11.5H6.1L2.5 9z"/><path d="M9.8 10a2.3 2.3 0 1 1 3.3 2.1c-.7.4-1.1 1-1.1 1.7v.4"/><path d="M12 17.2h.01"/></svg><span class="t-pc">How to play</span><span class="t-ph">Help</span></button></nav>
+  <nav id="app-tabs" class="ae-tabs" aria-label="Main"><button class="ae-tab" data-a="go-lobby" data-nav="view-lobby"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V10a8 8 0 0 1 16 0v11"/><path d="M8 21v-9a4 4 0 0 1 8 0v9"/><path d="M2 21h20"/><path d="M12 2.5v2"/></svg><span class="t-pc">Home</span><span class="t-ph">Home</span></button><button class="ae-tab" data-a="go-play" data-nav="view-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l9.5 7-3.6 11.5H6.1L2.5 9z"/><path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor"/></svg><span class="t-pc">Play</span><span class="t-ph">Play</span></button><button class="ae-tab" data-a="go-decks" data-nav="view-decks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="10" height="15" rx="1.5" transform="rotate(12 14 10.5)"/><rect x="5" y="5" width="10" height="15" rx="1.5"/><path d="M10 10.5l2 2-2 2-2-2z"/></svg><span class="t-pc">Decks</span><span class="t-ph">Decks</span></button><button class="ae-tab" data-a="go-lib" data-nav="view-library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="11" height="16" rx="1.5"/><path d="M6 7h5M6 10h5"/><circle cx="16.5" cy="15.5" r="3.5"/><path d="M19 18l2.5 2.5"/></svg><span class="t-pc">Library</span><span class="t-ph">Library</span></button><button class="ae-tab" data-a="go-howto" data-nav="view-howto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l9.5 7-3.6 11.5H6.1L2.5 9z"/><path d="M9.8 10a2.3 2.3 0 1 1 3.3 2.1c-.7.4-1.1 1-1.1 1.7v.4"/><path d="M12 17.2h.01"/></svg><span class="t-pc">How to play</span><span class="t-ph">Help</span></button></nav>
   <span class="ae-tools">
     <button class="gbtn" id="theme-btn" data-a="theme-pop" aria-label="Your colour" title="Your colour" aria-expanded="false" aria-controls="theme-pop"><span class="dot"></span></button>
     <span class="ae-toggle" role="group" aria-label="Mode"><button data-a="theme-mode" data-v="dark" aria-pressed="true">DARK</button><button data-a="theme-mode" data-v="light" aria-pressed="false">LIGHT</button></span>
@@ -979,6 +1009,15 @@ html.layout-pc .doc-card { padding: 18px 24px 20px; }
   <div class="db-backdrop" data-a="db-sheet" data-v=""></div>
 </div>
 
+<div id="view-decks" class="app-view ae-view">
+  <main class="ae-page dk-page">
+    <header class="ae-phead"><div class="tx"><span class="ae-eyebrow">DECKS · <span id="dk-fmt">Eternal</span></span><h1>MY DECKS</h1><p>Your decks stay on this device. <b id="dk-count">0 / 8</b> slots in use.</p><p id="dk-msg" class="dk-msg" role="status" aria-live="polite"></p></div>
+      <div class="dk-hacts"><button class="ae-ghost" data-a="dk-import">IMPORT CODE</button><button class="ae-ghost primary" data-a="dk-new">+ NEW DECK</button></div></header>
+    <section class="dk-list" id="dk-list" aria-label="My decks"></section>
+    <h2 class="dk-h">STARTER DECKS <span>read-only · Copy to edit</span></h2>
+    <section class="dk-list" id="dk-starters" aria-label="Starter decks"></section>
+  </main>
+</div>
 <div id="view-library" class="app-view ae-view">
   <main class="ae-page doc">
     <header class="ae-phead"><div class="tx"><span class="ae-eyebrow" id="lib-eyebrow">CARD LIBRARY</span><h1>LIBRARY</h1><p>Card data, your card images and deck lists. Everything stays on this device.</p></div>
@@ -1236,7 +1275,7 @@ function bindHost(h) {
    type: 'Spirit' | 'Nexus' | 'Magic'      symbol: card color     symbols: number of symbols
    reduction: {color: n}         levels: [{cores, bp}]  (Nexus levels have no bp)
    --------------------------------------------------------------------- */
-const VERSION = '0.92.0';
+const VERSION = '0.93.0';
 const CARDS = {};
 function defCard(o) {
   CARDS[o.id] = Object.assign({ type: 'Spirit', reduction: {}, symbols: 1, families: [], keywords: [], implemented: true, desc: 'Vanilla test card (no effect).', block: 'A' }, o);
@@ -4114,7 +4153,7 @@ function loadSlots() {
   try {
     const o = JSON.parse(localStorage.getItem(SLOT_KEY));
     if (o && Array.isArray(o.slots) && o.slots.length === SLOT_COUNT) {
-      SLOTS = o.slots.map((x, i) => ({ name: String(x && x.name || 'Deck ' + (i + 1)).slice(0, 24), cards: cleanDeck(x && x.cards) }));
+      SLOTS = o.slots.map((x, i) => Object.assign({ name: String(x && x.name || 'Deck ' + (i + 1)).slice(0, 24), cards: cleanDeck(x && x.cards) }, x && x.used ? { used: true } : {}));   // used: listed on My decks (v0.93.0)
       ACTIVE_SLOT = Number.isInteger(o.active) && o.active >= 0 && o.active < SLOT_COUNT ? o.active : 0; return;
     }
   } catch (e) { /* ignore */ }
@@ -6250,6 +6289,7 @@ function switchView(id) {
   if (id === 'view-lobby' || id === 'view-play') renderLobby();
   if (id === 'view-deckbuilder') { dbSheet(''); renderDeckBuilder(); }
   if (id === 'view-library') renderLibrary();
+  if (id === 'view-decks') renderDecks();
   if (id === 'view-settings') renderSettings();
 }
 function renderSettings() { $('set-hist').innerHTML = histHTML(); $('set-cpu').innerHTML = CPU_PROFILE_NAMES.map(n => `<option value="${n}">${cap(n)}</option>`).join(''); $('set-cpu').value = cpuProfileName(null); $('set-speed').value = SETTINGS.speed; $('set-sound').value = SETTINGS.sound ? 'on' : 'off'; $('set-anim').value = SETTINGS.anim || animMode();
@@ -6395,8 +6435,8 @@ async function dbImport() {
   dbReplace(r.deck);
   if (r.bad.length) uiInfo('Imported with skipped lines', esc(r.bad.slice(0, 8).join('\n')).replace(/\n/g, '<br>'));
 }
-async function dbExport() {
-  const txt = deckToText();
+async function dbExport(d) {
+  const txt = deckToText(d);
   const v = await modal({ title: 'Export deck list', html: `<textarea id="db-io" class="lib-area" spellcheck="false" readonly>${esc(txt)}</textarea>`, buttons: [{ label: 'Copy', cls: 'primary', value: 'copy' }, { label: 'Close', cls: 'cancel', value: null }] });
   if (v === 'copy') { try { await navigator.clipboard.writeText(txt); } catch (e) { /* clipboard blocked: the text stays selectable in the box */ } }
 }
@@ -6826,6 +6866,92 @@ function animCues() {
   if (full) for (const uid of now.hand) if (!prev.hand.has(uid)) { const e = document.querySelector(`.hand-area [data-a="hand"][data-v="${uid}"]`); if (e) e.classList.add('ae-a-draw'); }
 }
 /* ---------------------------------------------------------------------
+   v0.93.0 U6 MY DECKS (docs/DESIGN.md section 0, mockup docs/design/mockup-v11.html "My decks PC / phone")
+   A page on top of the 8 deck slots of packages/engine/src/04-decks.js: PC tiles / phone rows with sleeve, colours, status and
+   the ACTIVE badge; Edit, Play (disabled while the deck is not ready) and a more menu (PC) / action sheet (phone): Set active,
+   Rename, Duplicate, Deck look, Copy deck code, Delete (asks first). Import code and New deck use the first free slot; the
+   prebuilt decks are read-only starters with Copy. A slot is listed when it has cards, a name of its own, the used mark
+   (New / Import / Copy) or is the active slot.
+   --------------------------------------------------------------------- */
+let DK_MENU = -1;                                   // slot whose more menu / action sheet is open
+const dkCards = i => (i === ACTIVE_SLOT ? PLAYER_DECK : SLOTS[i].cards);
+const dkUsed = i => i === ACTIVE_SLOT || !!SLOTS[i].used || deckTotal(dkCards(i)) > 0 || !/^Deck \d+$/.test(SLOTS[i].name);
+const dkFree = () => SLOTS.findIndex((s, i) => !dkUsed(i));
+function dkStatus(cards) {
+  const t = deckTotal(cards), v = validateDeck(cards, FORMAT);
+  if (v.ok) return { ok: true, txt: `${t} cards · Ready` };
+  if (t < 40) return { ok: false, txt: `${t} / 40 · add ${40 - t} card${40 - t === 1 ? '' : 's'}` };
+  return { ok: false, txt: 'Not ready: ' + errSummary(v) };
+}
+function dkColors(cards) {                          // the deck's colours, most cards first (at most 3)
+  const n = {};
+  for (const [id, k] of Object.entries(cards)) { const c = CARDS[id]; if (c && k) for (const col of cardColors(c)) if (COLORS.includes(col)) n[col] = (n[col] || 0) + k; }
+  return Object.keys(n).sort((a, b) => n[b] - n[a]).slice(0, 3);
+}
+function dkTile(i, name, cards, starter) {
+  const st = dkStatus(cards), act = !starter && i === ACTIVE_SLOT, open = !starter && DK_MENU === i, nm = esc(name);
+  const dots = dkColors(cards).map(c => `<i class="dk-dot" style="--c:${colorVar(c)}" title="${cap(c)}"></i>`).join('');
+  const item = (a, l, cls) => `<button class="${cls || ''}" role="menuitem" data-a="${a}" data-v="${i}">${l}</button>`;
+  const menu = open ? `<div class="dk-menu" role="menu" aria-label="${nm}"><div class="dk-mh">${nm}</div>${item('dk-edit', 'Edit cards')}${item('dk-play', 'Play with this deck')}${act ? '' : item('dk-active', 'Set active')}${item('dk-rename', 'Rename…')}${item('dk-dup', 'Duplicate')}${item('dk-look', 'Deck look')}${item('dk-code', 'Copy deck code')}${item('dk-del', 'Delete… (asks first)', 'del')}<button class="dk-x" data-a="dk-more" data-v="-1">Cancel</button></div>` : '';
+  const btns = starter ? `<button class="ae-ghost primary" data-a="dk-copy" data-v="${i}" aria-label="Copy ${nm} to my decks">COPY</button>`
+    : `<button class="ae-ghost" data-a="dk-edit" data-v="${i}" aria-label="Edit ${nm}">EDIT</button><button class="ae-ghost primary" data-a="dk-play" data-v="${i}" aria-label="Play with ${nm}"${st.ok ? '' : ' disabled'}>PLAY</button><button class="dk-more" data-a="dk-more" data-v="${i}" aria-label="More actions for ${nm}" aria-haspopup="menu" aria-expanded="${open}">⋯</button>`;
+  return `<article class="dk-tile${act ? ' on' : ''}${open ? ' open' : ''}" data-v="${i}"><span class="sleeve dk-sl" aria-hidden="true"></span><div class="dk-main"><div class="dk-top"><b class="dk-name">${nm}</b>${act ? '<span class="dk-act">ACTIVE</span>' : ''}</div><div class="dk-dots">${dots}</div><div class="dk-st ${st.ok ? 'ok' : 'bad'}">${esc(st.txt)}</div></div><div class="dk-btns">${btns}</div>${menu}</article>`;
+}
+function renderDecks() {
+  if (!$('dk-list')) return;
+  const used = SLOTS.map((s, i) => i).filter(dkUsed);
+  $('dk-count').textContent = `${used.length} / ${SLOTS.length}`;
+  $('dk-list').innerHTML = used.map(i => dkTile(i, SLOTS[i].name, dkCards(i))).join('');
+  $('dk-starters').innerHTML = PREBUILT.map((d, i) => dkTile(i, d.name, d.cards, true)).join('');
+  $('dk-fmt').textContent = fmtTitle();
+}
+function dkMenu(i) { DK_MENU = DK_MENU === i ? -1 : i; renderDecks(); const f = document.querySelector('#dk-list .dk-menu button'); if (f) f.focus(); }
+function dkNewSlot(name, cards, keep) {             // the first free slot (made active unless keep); false when all 8 are in use
+  const i = dkFree();
+  if (i < 0) { uiInfo('No free deck slot', `All ${SLOTS.length} deck slots are in use. Delete a deck first.`); return false; }
+  const sl = { name: (name || SLOTS[i].name).slice(0, 24), cards: cleanDeck(cards || {}), used: true };
+  if (keep) { SLOTS[i] = sl; saveDeck(); return true; }
+  switchSlot(i); SLOTS[i] = sl; PLAYER_DECK = Object.assign({}, sl.cards); saveDeck();
+  return true;
+}
+async function dkAct(a, v) {
+  const i = Number(v); if (a !== 'dk-more') DK_MENU = -1;
+  if (a === 'dk-more') return dkMenu(i);
+  if (a === 'dk-new') { if (dkNewSlot()) switchView('view-deckbuilder'); return; }
+  if (a === 'dk-import') {
+    const back = ACTIVE_SLOT; if (!dkNewSlot()) return;
+    await dbImport();
+    if (!deckTotal(PLAYER_DECK)) { SLOTS[ACTIVE_SLOT].used = false; switchSlot(back); }
+    return renderDecks();
+  }
+  if (a === 'dk-copy') { const d = PREBUILT[i]; if (d) dkNewSlot(d.name, d.cards, true); return renderDecks(); }
+  if (!(i >= 0 && i < SLOTS.length)) return renderDecks();
+  if (a === 'dk-edit' || a === 'dk-look') { switchSlot(i); return switchView('view-deckbuilder'); }   // Deck look: the builder's Look tab comes with U7
+  if (a === 'dk-play') { if (!dkStatus(dkCards(i)).ok) return; switchSlot(i); return switchView('view-play'); }
+  if (a === 'dk-active') { switchSlot(i); renderHome(); return renderDecks(); }
+  if (a === 'dk-dup') { dkNewSlot(SLOTS[i].name.slice(0, 17) + ' (copy)', Object.assign({}, dkCards(i)), true); return renderDecks(); }
+  if (a === 'dk-code') { try { await navigator.clipboard.writeText(deckToText(dkCards(i))); $('dk-msg').textContent = `Deck code of ${SLOTS[i].name} copied. Paste it into Import code on any device.`; } catch (e) { dbExport(dkCards(i)); } return renderDecks(); }
+  if (a === 'dk-rename') {
+    const ok = await modal({ title: 'Rename deck', html: `<input id="dk-name-in" class="dk-in" maxlength="24" aria-label="Deck name" value="${esc(SLOTS[i].name)}">`, buttons: [{ label: 'Save', cls: 'primary', value: 1 }, { label: 'Cancel', cls: 'cancel', value: null }] });
+    const nv = ($('dk-name-in') || {}).value || '';
+    if (ok && nv.trim()) { SLOTS[i].name = nv.trim().slice(0, 24); SLOTS[i].used = true; saveDeck(); renderHome(); }
+    return renderDecks();
+  }
+  if (a === 'dk-del') {
+    const ok = await modal({ title: 'Delete this deck?', html: `<b>${esc(SLOTS[i].name)}</b> (${deckTotal(dkCards(i))} cards) is removed from this device. This cannot be undone.`, buttons: [{ label: 'Delete', cls: 'danger', value: 1 }, { label: 'Cancel', cls: 'cancel', value: null }] });
+    if (ok) {
+      SLOTS[i] = { name: 'Deck ' + (i + 1), cards: {} };
+      if (i === ACTIVE_SLOT) { PLAYER_DECK = {}; const o = SLOTS.findIndex((s, k) => k !== i && dkUsed(k)); if (o >= 0) switchSlot(o); else saveDeck(); } else saveDeck();
+      renderHome();
+    }
+    return renderDecks();
+  }
+}
+if (typeof document !== 'undefined') {
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && DK_MENU >= 0) { const i = DK_MENU; DK_MENU = -1; renderDecks(); const b = document.querySelector(`#dk-list [data-a="dk-more"][data-v="${i}"]`); if (b) b.focus(); } });
+  document.addEventListener('click', e => { if (DK_MENU >= 0 && !e.target.closest('.dk-menu, [data-a="dk-more"]')) { DK_MENU = -1; renderDecks(); } });
+}
+/* ---------------------------------------------------------------------
    CARD IMAGES  (user supplied files kept in IndexedDB, never uploaded)
    --------------------------------------------------------------------- */
 const IMG = {};           // card id -> blob: URL
@@ -6903,8 +7029,9 @@ function renderLibrary() {
   const ids = Object.keys(CARDS).filter(id => !CARDS[id].token && !id.startsWith('TRAIN-')), part = ids.filter(id => fxMarked(CARDS[id])).length;      // v0.79.0 (A1): two counts; v0.80.1: built-in Training cards are not counted
   $('lib-imgcount').textContent = `${Object.keys(IMG).length} image(s) loaded · ${ids.length.toLocaleString('en-US')} card(s) known: ${(ids.length - part).toLocaleString('en-US')} complete, ${part.toLocaleString('en-US')} marked "!" (effect not fully implemented)`;
 }
-function deckToText() {
-  return Object.keys(PLAYER_DECK).map(id => `${PLAYER_DECK[id]} ${id}   # ${CARDS[id].name}`).join('\n');
+function deckToText(d) {
+  d = d || PLAYER_DECK;
+  return Object.keys(d).filter(id => d[id] > 0 && CARDS[id]).map(id => `${d[id]} ${id}   # ${CARDS[id].name}`).join('\n');
 }
 function textToDeck(text) {
   const deck = {}, bad = [];
@@ -7188,6 +7315,8 @@ document.addEventListener('click', e => {
   else if (a === 'play-style') playSet('style', v);
   else if (a === 'play-speed') playSet('speed', v);
   else if (a === 'go-deck') switchView('view-deckbuilder');
+  else if (a === 'go-decks') { DK_MENU = -1; switchView('view-decks'); }
+  else if (a.startsWith('dk-')) { if (a !== 'dk-more' && $('dk-msg')) $('dk-msg').textContent = ''; dkAct(a, v); }
   else if (a === 'go-lobby') switchView('view-lobby');
   else if (a === 'go-play') switchView('view-play');
   else if (a === 'go-settings') switchView('view-settings');
@@ -7329,7 +7458,7 @@ function testSetup() {            // dev hook: a quiet board with no match loop 
   switchView('view-playmat'); render(); return G;
 }
 const defBuiltin = o => { defCard(o); BUILTIN_IDS.add(o.id); };      // test fixtures register through this so their ids stay reserved
-window.BS = { animMode, fxCueReset, aeRibbon, endOfBattle, MAT, matUse, setSection, navSync, renderHome, themePop, soulMagicOK, soulMagicHolder, soulMagicPick, THEME, THEME_COLS, setTheme, stepClick, stepTargets, get FX_STRICT() { return FX_STRICT; }, setFxStrict(v) { FX_STRICT = !!v; }, FX_WARNED, collectFx, setFuzz(o) { FUZZ = Object.assign({}, o || {}); }, get FUZZ() { return FUZZ; }, fuzzPick, ERR_LOG, errReport, onGameError, releaseStandby, leaveStandby, renderDeckBuilder, dbChange, dbUndo, dbSheet, DBF, get DB_UNDO() { return DB_UNDO.length; }, accelList, accelCost, accelOK, accelSources, useAccel, removedSummonable, summonFromRemoved, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel, highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, isSealed, soulToLife, lifeTake, braveSummonedFx, abTaxOK, payAbTax, oppAttackHandFx, sentToTrashFx, magicFxAt, summonOK, lvNo, isUlt, noBlockActive, burstFlash, cpuBurstFlash, humanAttack, cpuAttack, attackStepOver, endAttackLocked, battleEndAttack, isGW, freeCores, moveCore, swapSoul, payCost, cpuCanPlay, coresAvailable, addCore, cpuKeepMagicOrPay, nameHTML, switchView, SET_KEY, dbFilterOK, cardColors, contractToDeck, redrawHand, cpuWantsRedraw, setHeavy, refreshOne, toRemoved, fxIf, costDestroyBonus, sendToken, canSendToken, tokenHome, attackSymbols, TOKEN_SUPPLY, isSpiritForm, ocActive, braveFits, braveTargets, combineBrave, braveSummon, separateBrave, canSeparate, braveRecheck, braveAfford, cpuBrave, handButtons, minCores, openFieldModal, cpuMain, VERSION, defBuiltin, beginTurn, endStep, newGame, takeFromVoid, checkDepletion, removeSpirit, lvIndex, mirageUsable, cpuCastMain, magicFx, magicText, costAltActive, flagActive, coresSent, startAttackFx, win, recordMatch, HISTORY: () => HISTORY, toggleLog, effectTextHTML, effectLines, titleCase, liveStatusHTML, openZoom, modal, closeModal, startPeek, SETTINGS, SLOTS: () => SLOTS, get ACTIVE_SLOT() { return ACTIVE_SLOT; }, switchSlot, loadPrebuilt, PREBUILT, cpuDeckFor, saveSettings, PACK_IDS, registerPack, clearImported, summonPaid, reviveTargets, doRevive, handUp, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, soulCoreHolder, rng, seedRng, newSeed, runReplay, lastReplay, fireFxMulti, asResolving, replayOf, loadScenario, gameAct, matchSummary, get REPLAY() { return REPLAY; }, soulSource, soulToNexus, fxImmune, residualHTML, cardDetailHTML, setSimDeckB(d) { SIM_DECK_B = d; }, activatable, activateFx, cpuActivate, toSoulState, bounceCard, runActions, maybeBurst, flushBursts, summonFree, parseBurst, parseActionList, BURST_WHEN, fireFx, parseEffects, staticBp, FX_ACTIONS, removeNexus, magicUsable, magicTargets, castMagic, flashTiming, cpuFlashChoice, setFormat, validateDeck, legalityOf, banStatus, get FORMAT() { return FORMAT; }, isPC, applyLayout, testSetup, mkInst, render, takeCores, IMG, importCards, importImages, textToDeck, deckToText, parseCard, loadImages, get PLAYER_DECK() { return PLAYER_DECK; }, get G() { return G; }, startNewGame, checkInvariants, CARDS, PRESET_DECK, humanCan, onNext, engineIdle, runPortRecord, viewerReplayOf, openViewer, replayFromRecord, portRecord, boardSnapshot, sendIntent, applyIntent, seatLoopOpen, cpuAnswer, INTENT_TYPES, cpuTurn, doBattle, summon, effCost, legacyPlan, legacyPay, canBlockState, canPlayCard, setBurst, fieldList, bpOf, get SESSION() { return SESSION; }, CPU_PROFILES, cpuProfileName, cpuEval, cpuPlayScore, cpuPlayChoice, cpuLethal, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, lifeValue, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, extraReduction };
+window.BS = { renderDecks, animMode, fxCueReset, aeRibbon, endOfBattle, MAT, matUse, setSection, navSync, renderHome, themePop, soulMagicOK, soulMagicHolder, soulMagicPick, THEME, THEME_COLS, setTheme, stepClick, stepTargets, get FX_STRICT() { return FX_STRICT; }, setFxStrict(v) { FX_STRICT = !!v; }, FX_WARNED, collectFx, setFuzz(o) { FUZZ = Object.assign({}, o || {}); }, get FUZZ() { return FUZZ; }, fuzzPick, ERR_LOG, errReport, onGameError, releaseStandby, leaveStandby, renderDeckBuilder, dbChange, dbUndo, dbSheet, DBF, get DB_UNDO() { return DB_UNDO.length; }, accelList, accelCost, accelOK, accelSources, useAccel, removedSummonable, summonFromRemoved, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel, highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, isSealed, soulToLife, lifeTake, braveSummonedFx, abTaxOK, payAbTax, oppAttackHandFx, sentToTrashFx, magicFxAt, summonOK, lvNo, isUlt, noBlockActive, burstFlash, cpuBurstFlash, humanAttack, cpuAttack, attackStepOver, endAttackLocked, battleEndAttack, isGW, freeCores, moveCore, swapSoul, payCost, cpuCanPlay, coresAvailable, addCore, cpuKeepMagicOrPay, nameHTML, switchView, SET_KEY, dbFilterOK, cardColors, contractToDeck, redrawHand, cpuWantsRedraw, setHeavy, refreshOne, toRemoved, fxIf, costDestroyBonus, sendToken, canSendToken, tokenHome, attackSymbols, TOKEN_SUPPLY, isSpiritForm, ocActive, braveFits, braveTargets, combineBrave, braveSummon, separateBrave, canSeparate, braveRecheck, braveAfford, cpuBrave, handButtons, minCores, openFieldModal, cpuMain, VERSION, defBuiltin, beginTurn, endStep, newGame, takeFromVoid, checkDepletion, removeSpirit, lvIndex, mirageUsable, cpuCastMain, magicFx, magicText, costAltActive, flagActive, coresSent, startAttackFx, win, recordMatch, HISTORY: () => HISTORY, toggleLog, effectTextHTML, effectLines, titleCase, liveStatusHTML, openZoom, modal, closeModal, startPeek, SETTINGS, SLOTS: () => SLOTS, get ACTIVE_SLOT() { return ACTIVE_SLOT; }, switchSlot, loadPrebuilt, PREBUILT, cpuDeckFor, saveSettings, PACK_IDS, registerPack, clearImported, summonPaid, reviveTargets, doRevive, handUp, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, soulCoreHolder, rng, seedRng, newSeed, runReplay, lastReplay, fireFxMulti, asResolving, replayOf, loadScenario, gameAct, matchSummary, get REPLAY() { return REPLAY; }, soulSource, soulToNexus, fxImmune, residualHTML, cardDetailHTML, setSimDeckB(d) { SIM_DECK_B = d; }, activatable, activateFx, cpuActivate, toSoulState, bounceCard, runActions, maybeBurst, flushBursts, summonFree, parseBurst, parseActionList, BURST_WHEN, fireFx, parseEffects, staticBp, FX_ACTIONS, removeNexus, magicUsable, magicTargets, castMagic, flashTiming, cpuFlashChoice, setFormat, validateDeck, legalityOf, banStatus, get FORMAT() { return FORMAT; }, isPC, applyLayout, testSetup, mkInst, render, takeCores, IMG, importCards, importImages, textToDeck, deckToText, parseCard, loadImages, get PLAYER_DECK() { return PLAYER_DECK; }, get G() { return G; }, startNewGame, checkInvariants, CARDS, PRESET_DECK, humanCan, onNext, engineIdle, runPortRecord, viewerReplayOf, openViewer, replayFromRecord, portRecord, boardSnapshot, sendIntent, applyIntent, seatLoopOpen, cpuAnswer, INTENT_TYPES, cpuTurn, doBattle, summon, effCost, legacyPlan, legacyPay, canBlockState, canPlayCard, setBurst, fieldList, bpOf, get SESSION() { return SESSION; }, CPU_PROFILES, cpuProfileName, cpuEval, cpuPlayScore, cpuPlayChoice, cpuLethal, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, lifeValue, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, extraReduction };
 navSync();
 renderLobby();
 loadImages();

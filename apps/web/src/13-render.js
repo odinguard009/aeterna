@@ -300,6 +300,7 @@ function switchView(id) {
   if (id === 'view-lobby' || id === 'view-play') renderLobby();
   if (id === 'view-deckbuilder') { dbSheet(''); renderDeckBuilder(); }
   if (id === 'view-library') renderLibrary();
+  if (id === 'view-decks') renderDecks();
   if (id === 'view-settings') renderSettings();
 }
 function renderSettings() { $('set-hist').innerHTML = histHTML(); $('set-cpu').innerHTML = CPU_PROFILE_NAMES.map(n => `<option value="${n}">${cap(n)}</option>`).join(''); $('set-cpu').value = cpuProfileName(null); $('set-speed').value = SETTINGS.speed; $('set-sound').value = SETTINGS.sound ? 'on' : 'off'; $('set-anim').value = SETTINGS.anim || animMode();

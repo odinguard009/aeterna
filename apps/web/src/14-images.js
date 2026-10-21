@@ -76,8 +76,9 @@ function renderLibrary() {
   const ids = Object.keys(CARDS).filter(id => !CARDS[id].token && !id.startsWith('TRAIN-')), part = ids.filter(id => fxMarked(CARDS[id])).length;      // v0.79.0 (A1): two counts; v0.80.1: built-in Training cards are not counted
   $('lib-imgcount').textContent = `${Object.keys(IMG).length} image(s) loaded · ${ids.length.toLocaleString('en-US')} card(s) known: ${(ids.length - part).toLocaleString('en-US')} complete, ${part.toLocaleString('en-US')} marked "!" (effect not fully implemented)`;
 }
-function deckToText() {
-  return Object.keys(PLAYER_DECK).map(id => `${PLAYER_DECK[id]} ${id}   # ${CARDS[id].name}`).join('\n');
+function deckToText(d) {
+  d = d || PLAYER_DECK;
+  return Object.keys(d).filter(id => d[id] > 0 && CARDS[id]).map(id => `${d[id]} ${id}   # ${CARDS[id].name}`).join('\n');
 }
 function textToDeck(text) {
   const deck = {}, bad = [];

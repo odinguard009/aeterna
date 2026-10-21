@@ -22,9 +22,11 @@ const packLen = between('/*PACK_START*/', '/*PACK_END*/'), code = html.slice(0, 
 test('B01 index.html without the card pack stays under 700 KB', () => assert.ok(Buffer.byteLength(code) < 700e3, Buffer.byteLength(code)));
 test('B02 index.html without the card pack, gzipped, stays under 200 KB', () => { const n = gzipSync(code, { level: 9 }).length; assert.ok(n < 200e3, n); });
 test('B03 the embedded card pack stays under 1.6 MB (room for all cards; never embed staging data)', () => assert.ok(packLen < 1.6e6, packLen));
-test('B04 the stylesheet stays under 90 KB', () => {
+// v0.93.0 (U6): raised 90 -> 96 KB on purpose (roadmap item U allows it with a note): U6-U8 add the My decks page and the
+// deck builder restyle; unused rules were trimmed first in v0.92.0. The next raise needs the same kind of note.
+test('B04 the stylesheet stays under 96 KB', () => {
   const css = (html.match(/<style[\s\S]*?<\/style>/g) || []).reduce((n, s) => n + s.length, 0);
-  assert.ok(css < 90e3, css);
+  assert.ok(css < 96e3, css);
 });
 test('B05 the page has exactly one script and no external requests', () => {
   assert.equal((html.match(/<script/g) || []).length, 1);

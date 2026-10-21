@@ -33,7 +33,7 @@ for (const screen of ['pc', 'phone']) {
         tabBottom: document.getElementById('app-tabs').getBoundingClientRect().bottom, h: innerHeight };
     });
     assert.ok(r.nav, 'nav visible');
-    assert.deepEqual(r.tabs, ['view-lobby', 'view-play', 'view-deckbuilder', 'view-library', 'view-howto']);
+    assert.deepEqual(r.tabs, ['view-lobby', 'view-play', 'view-decks', 'view-library', 'view-howto']);   // v0.93.0 U6: Decks opens My decks
     assert.equal(r.cur, 'view-lobby');
     assert.match(r.motto, /GATE OPEN,\s*RELEASE!/);
     assert.match(r.sub, /^\d[\d,]* playable cards/);
@@ -42,12 +42,12 @@ for (const screen of ['pc', 'phone']) {
     assert.ok(!r.over, 'no horizontal overflow');
     if (screen === 'phone') assert.ok(Math.abs(r.tabBottom - r.h) <= 1, 'phone tab bar sits at the bottom');
     else assert.ok(r.tabBottom <= 64, 'PC tabs sit in the top bar');
-    for (const [nav, view] of [['view-play', 'view-play'], ['view-library', 'view-library'], ['view-howto', 'view-howto'], ['view-lobby', 'view-lobby']]) {
+    for (const [nav, view] of [['view-play', 'view-play'], ['view-decks', 'view-decks'], ['view-library', 'view-library'], ['view-howto', 'view-howto'], ['view-lobby', 'view-lobby']]) {
       await page.click(`#app-tabs [data-nav="${nav}"]`);
       const st = await page.evaluate(v => [document.getElementById(v).classList.contains('active'), (document.querySelector('#app-tabs [aria-current="page"]') || {}).dataset?.nav, document.body.classList.contains('has-nav')], view);
       assert.deepEqual(st, [true, nav, true], nav);
     }
-    await page.click('#app-tabs [data-nav="view-deckbuilder"]');
+    await page.click('#app-tabs [data-nav="view-decks"]'); await page.click('#view-decks [data-a="dk-edit"]');   // v0.93.0: the builder opens from My decks
     assert.equal(await page.evaluate(() => [document.getElementById('view-deckbuilder').classList.contains('active'), getComputedStyle(document.getElementById('app-nav')).display].join()), 'true,none', 'deck builder keeps its own layout (nav hidden)');
     await page.evaluate(() => BS.switchView('view-lobby'));
     assert.deepEqual(errors, []);
@@ -88,7 +88,7 @@ test('U65-3 pc: sound + history buttons, settings gear marked, nav hidden in a m
 // one shared page per screen for the small checks below
 const shared = {};
 const sp = async screen => (shared[screen] ||= await open(screen));
-const TABS = [['view-lobby', 'Home', 'Home'], ['view-play', 'Play', 'Play'], ['view-deckbuilder', 'Decks', 'Decks'], ['view-library', 'Library', 'Library'], ['view-howto', 'How to play', 'Help']];
+const TABS = [['view-lobby', 'Home', 'Home'], ['view-play', 'Play', 'Play'], ['view-decks', 'Decks', 'Decks'], ['view-library', 'Library', 'Library'], ['view-howto', 'How to play', 'Help']];
 for (const screen of ['pc', 'phone']) {
   for (const [view, pcLabel, phLabel] of TABS) {
     test(`U65-T ${screen}: the ${view} tab opens its page and shows "${screen === 'pc' ? pcLabel : phLabel}"`, async () => {
