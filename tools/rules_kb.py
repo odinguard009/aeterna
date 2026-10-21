@@ -6,16 +6,20 @@ the source text is fetched into a local cache outside the repo. Schema and refre
   python3 tools/rules_kb.py --query <text|id>   chunks whose id/title/paraphrase/citation matches (case-insensitive)
   python3 tools/rules_kb.py --list-cited        engine citations (packages/engine/src) and the chunk each resolves to;
                                                  exit 1 when a citation has no chunk and is not a known gap  [--json]
-  python3 tools/rules_kb.py --fetch             download the manual PDFs into the cache and extract one text per page
+  python3 tools/rules_kb.py --fetch             download the manuals into the cache and extract one text per page
+                                                 (PDF manuals: pdftotext; web manuals: HTML pages, ruby readings dropped)
+  python3 tools/rules_kb.py --import-html KEY   re-extract a web manual's text from HTML pages already saved in
+                                                 <cache>/KEY/html/ (pages saved with a browser when --fetch is blocked)
   python3 tools/rules_kb.py --check             recompute fingerprints from the cache; exit 1 on a changed/missing chunk,
                                                  0 with a note when no source is cached (--strict: exit 2 then)
   python3 tools/rules_kb.py --build             write recomputed fingerprints into the KB (after reviewing --check)
 Options: --kb FILE (default docs/rules/kb.json), --src-dir DIR (cache; default $AETERNA_RULES_CACHE or
 ~/.cache/aeterna-rules), --engine DIR (default packages/engine/src). Python stdlib + pdftotext (poppler) for --fetch."""
 import hashlib, json, os, re, shutil, subprocess, sys, unicodedata, urllib.request
+from html.parser import HTMLParser
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ID_RE = re.compile(r'^(ETR|STD):[a-z0-9][a-z0-9.-]*$')
+ID_RE = re.compile(r'^(ETR|STD|SJP):[a-z0-9][a-z0-9.-]*$')
 SHA_RE = re.compile(r'^[0-9a-f]{64}$')
 FOOTER = re.compile(r'^\S+ \S+ TCG Manual$')            # page footer of the Eternal manual (dropped before hashing)
 RULE_LINE = re.compile(r'^(\d+(?:-\d+)+)\s|^(\d+)\s+[A-Z]')
@@ -87,7 +91,8 @@ def section_text(base, manual, c):
         return None
     i = 0
     if c.get('anchor'):
-        i = next((k for k, l in enumerate(lines) if starts(l, c['anchor'])), None)
+        hits = [k for k, l in enumerate(lines) if starts(l, c['anchor'])]      # anchor_n: the n-th match (a web page that
+        i = hits[c.get('anchor_n', 1) - 1] if len(hits) >= c.get('anchor_n', 1) else None   # lists its headings at the top first)
         if i is None:
             return ''
     j = len(lines)
@@ -101,6 +106,58 @@ def section_text(base, manual, c):
 def manual_pages(base, manual):
     d = os.path.join(base, manual)
     return max((int(f[:-4]) for f in os.listdir(d) if f[:-4].isdigit()), default=0) if os.path.isdir(d) else 0
+
+
+# ---------- web manuals (HTML pages) ----------
+class _Text(HTMLParser):
+    """Visible text of a manual page: <rt>/<rp> (furigana readings), scripts, styles and images dropped; one line per
+    block element, so headings start their own line (anchors work as for PDF pages)."""
+    BLOCK = {'p', 'li', 'dt', 'dd', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'section', 'br', 'tr', 'ul', 'ol', 'dl'}
+    SKIP = {'rt', 'rp', 'script', 'style'}
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.out, self.skip = [''], 0
+
+    def handle_starttag(self, tag, attrs):
+        if tag in self.SKIP:
+            self.skip += 1
+        elif tag in self.BLOCK:
+            self.out.append('')
+
+    def handle_endtag(self, tag):
+        if tag in self.SKIP:
+            self.skip = max(0, self.skip - 1)
+        elif tag in self.BLOCK:
+            self.out.append('')
+
+    def handle_startendtag(self, tag, attrs):
+        if tag in self.BLOCK:
+            self.out.append('')
+
+    def handle_data(self, data):
+        if not self.skip:
+            self.out[-1] += data
+
+
+def html_text(html):
+    p = _Text()
+    p.feed(html)
+    lines = [' '.join(unicodedata.normalize('NFKC', l).split()) for l in p.out]
+    return '\n'.join(l for l in lines if l) + '\n'
+
+
+def import_html(base, key, m):
+    """<cache>/KEY/html/<file> -> <cache>/KEY/<page>.txt for every page in the manual's `html_pages`; returns the count."""
+    n = 0
+    for page, name in m.get('html_pages', {}).items():
+        f = os.path.join(base, key, 'html', name)
+        if not os.path.exists(f):
+            print(f'[rules-kb] {key}: {name} not cached (page {page})'); continue
+        with open(f, encoding='utf-8') as fh, open(os.path.join(base, key, f'{page}.txt'), 'w', encoding='utf-8') as out:
+            out.write(html_text(fh.read()))
+        n += 1
+    return n
 
 
 def fingerprint(text):
@@ -255,13 +312,28 @@ def cmd_build(kb, path, base):
 
 
 def cmd_fetch(kb, base):
-    if not shutil.which('pdftotext'):
-        print('[rules-kb] pdftotext (poppler-utils) is needed for --fetch'); return 1
+    bad = 0
     for key, m in kb['manuals'].items():
         os.makedirs(os.path.join(base, key), exist_ok=True)
-        pdf = os.path.join(base, key + '.pdf')
-        with urllib.request.urlopen(m['url'], timeout=60) as r, open(pdf, 'wb') as f:
-            f.write(r.read())
+        try:
+            if m.get('format') == 'html':
+                os.makedirs(os.path.join(base, key, 'html'), exist_ok=True)
+                for page, name in m['html_pages'].items():
+                    req = urllib.request.Request(m['url'].rsplit('/', 1)[0] + '/' + name, headers={'User-Agent': 'Mozilla/5.0'})
+                    with urllib.request.urlopen(req, timeout=60) as r, open(os.path.join(base, key, 'html', name), 'wb') as f:
+                        f.write(r.read())
+                print(f"[rules-kb] {key}: {import_html(base, key, m)} web pages extracted")
+                continue
+            if not shutil.which('pdftotext'):
+                print('[rules-kb] pdftotext (poppler-utils) is needed for PDF manuals'); bad += 1; continue
+            pdf = os.path.join(base, key + '.pdf')
+            with urllib.request.urlopen(m['url'], timeout=60) as r, open(pdf, 'wb') as f:
+                f.write(r.read())
+        except OSError as e:          # blocked network (proxy 403, the site's 302 to a consent page): the other manuals go on
+            bad += 1
+            print(f"[rules-kb] {key}: download failed ({e}); save the pages with a browser into {os.path.join(base, key)} "
+                  f"({'html/ then --import-html ' + key if m.get('format') == 'html' else key + '.pdf'})")
+            continue
         with open(pdf, 'rb') as f:
             sha = hashlib.sha256(f.read()).hexdigest()
         info = subprocess.run(['pdfinfo', pdf], capture_output=True, text=True).stdout if shutil.which('pdfinfo') else ''
@@ -269,7 +341,7 @@ def cmd_fetch(kb, base):
         for p in range(1, pages + 1):
             subprocess.run(['pdftotext', '-enc', 'UTF-8', '-f', str(p), '-l', str(p), pdf, os.path.join(base, key, f'{p}.txt')], check=True)
         print(f"[rules-kb] {key}: {pages} pages; pdf sha256 {sha[:12]} ({'same as' if sha == m.get('pdf_sha256') else 'DIFFERENT from'} the KB)")
-    return 0
+    return 1 if bad else 0
 
 
 def main():
@@ -282,6 +354,11 @@ def main():
         return cmd_list_cited(kb, arg('--engine', os.path.join(ROOT, 'packages/engine/src')), '--json' in a)
     if '--fetch' in a:
         return cmd_fetch(kb, src_dir())
+    if '--import-html' in a:
+        key = arg('--import-html', '')
+        if key not in kb['manuals']:
+            print(f'[rules-kb] unknown manual {key}'); return 1
+        print(f"[rules-kb] {key}: {import_html(src_dir(), key, kb['manuals'][key])} web pages extracted"); return 0
     if '--check' in a:
         return cmd_check(kb, src_dir(), '--strict' in a)
     if '--build' in a:

@@ -118,9 +118,9 @@ Auto verdicts trust the citation written next to the rule; a cited English VER.1
 | glossary | data/glossary/effects.json | A_BRAVE_AS_SPIRIT |  | no source cited yet |
 | glossary | data/glossary/effects.json | A_DISCARD_ALL_HAND |  | no source cited yet |
 | glossary | data/glossary/effects.json | T_DESTROYED_OPP | Eternal manual p. 28; Standard CR 12-2-1-12-1 | Depletion is not destruction (cited). 'Depleted or destroyed by the opponent' has no separate rule text; card text decides. |
-| note | docs/ai/roadmap-open.md:93 | - **First sight (2026-10-18):** 13 done, 66 partial, 85 miss... |  | no source cited yet |
-| note | docs/ai/roadmap-open.md:94 | - **How it runs (no extra sessions):** every card session's ... |  | no source cited yet |
-| note | docs/ai/roadmap-open.md:95 | - **Done when:** every row is `done`, or `missing`/`partial`... |  | no source cited yet |
+| note | docs/ai/roadmap-open.md:83 | - **First sight (2026-10-18):** 13 done, 66 partial, 85 miss... |  | no source cited yet |
+| note | docs/ai/roadmap-open.md:84 | - **How it runs (no extra sessions):** every card session's ... |  | no source cited yet |
+| note | docs/ai/roadmap-open.md:85 | - **Done when:** every row is `done`, or `missing`/`partial`... |  | no source cited yet |
 | note | docs/ai/roadmap-archive.md:62 | - Grandwalker Nexus cores (v0.42.1): cannot pay costs or be ... | Eternal manual pp. 22, 26, 42, 44 | Cores cannot pay costs / be moved (cited). Open: Soul Core on a Grandwalker Nexus, whether its cores count toward Lv (no text found). |
 | note | docs/ai/roadmap-archive.md:73 | - Open from v0.41 (Magic effect types; most clauses done in ... | Eternal manual p. 28; Standard CR 12-2-1-12-1 | Depletion is not destruction (cited). 'Depleted or destroyed by the opponent' has no separate rule text; card text decides. |
 | note | docs/ai/roadmap-archive.md:74 | - Open from v0.40: Grand-Sagitto-Nova (Ultra Advent), Bilijv... |  | no source cited yet |
@@ -280,4 +280,4 @@ Auto verdicts trust the citation written next to the rule; a cited English VER.1
 | note | docs/manual-notes.md:31 | - True Release (= Super Unleash; Standard manual 'True Relea... | Standard manual 'True Release', CR 12-2-1-1, Fandom True Release | auto: source cited |
 | note | docs/manual-notes.md:32 | - Soul Magic (Standard CR 12-2-1-2; Fandom 'Soul Magic' page... | (Standard CR 12-2-1-2; Fandom 'Soul Magic' | auto: source cited |
 | note | docs/manual-notes.md:103 | - **S1 conditions** (v0.88.0, roadmap S1 Standard Magic; fro... | xport, no manual page found yet): "If your Lif | auto: source cited |
-| note | docs/ai/roadmap-open.md:101 | - **Legacy + reveal three done in v0.69.0 (HEMAT ON card ses... | Standard CR 12-2-1-3 chunk (Q3 part 2, `d | auto: source cited |
+| note | docs/ai/roadmap-open.md:91 | - **Legacy + reveal three done in v0.69.0 (HEMAT ON card ses... | Standard CR 12-2-1-3 chunk (Q3 part 2, `d | auto: source cited |

@@ -137,7 +137,7 @@ DK_MENU, dkCards, dkUsed, dkFree, dkStatus, dkColors, dkTile, renderDecks, dkMen
 ## apps/web/src/14-images.js (155 lines, ~2.7k tokens) — CARD IMAGES
 IMG, IDB, normKey, idbOpen, idbTx, setImg, loadImages, shrinkImage, stripExt, findCardByFile, findCardByKey, importImages, clearImages, imgCls, imgSty, refreshViews, libMsg, renderLibrary, deckToText, textToDeck, downloadText, readFileText, libAction
 
-## packages/engine/src/15-match.js (52 lines, ~1.1k tokens) — MATCH START / END
+## packages/engine/src/15-match.js (56 lines, ~1.2k tokens) — MATCH START / END
 startNewGame, matchSummary
 
 ## packages/engine/src/15b-replay.js (88 lines, ~1.8k tokens) — REPLAY RECORDS (v0.85.0, phase F4 = monorepo step M4 part 1; docs/ai/monorepo-plan.md "Design" 2)

@@ -4,6 +4,17 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 
 Older releases (v0.80.0 and earlier): [CHANGELOG-archive.md](CHANGELOG-archive.md).
 
+## v0.98.0
+- Lane: U/I
+- Time: ~35 min (session start to release), Opus 5.5, tokens in the DONE mark on issue #1.
+- **Standard rules: the Japanese Standard Rule Manual Ver.1.1 (2026-10-02) was read in full and compared with the English Comprehensive Rules 1.0 the engine follows and with the engine itself (`docs/rules/standard-jp-1.1.md`, one row per section).**
+  - Result: JP 1.1 and EN 1.0 agree on every point checked; JP 1.1 adds worked examples and a Q&A page, no new rule. One engine difference was found and fixed: **the starting-hand redraw now follows turn order** (the first player decides first, so when the CPU goes first it has already kept or redrawn before you are asked; before, you always decided first). Tests SR11-01/02.
+  - Rules knowledge base: the Japanese manual is a new web manual `SJP` in `docs/rules/kb.json` with 26 sections (ids, page numbers, one-sentence paraphrases and fingerprints; no manual text). `tools/rules_kb.py` can now read web manuals: it saves the HTML pages, drops the furigana readings and fingerprints the visible text; `--import-html SJP` re-extracts pages saved another way (the official site refuses the session shell). Test K07.
+  - Ban list: still no Standard list on the official page (the 2026-09-01 list names Eternal-era cards only).
+  - `session_start.sh` prints dated reminders from their date on: 2026-12-26 (import 26RCB02 + 26RSD12, add the 26RSD12 deck recipe) and 2027-03-01 (Standard rotation on 2027-04-01: update `STANDARD_BLOCKS`).
+  - Finding for the card queue: a heavy exhaust also counts as exhausting for "when exhausted" triggers (EN CR 5-16-1); only 26RBS02-050 has such a trigger (noted in the K queue).
+  - Revert note: `git revert` of the v0.98.0 commit (the redraw order is one block in `packages/engine/src/15-match.js`).
+
 ## v0.97.0
 - Lane: U/I
 - Time: one chain session, Opus (roadmap items "format default" + "Standard decks").

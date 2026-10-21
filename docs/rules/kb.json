@@ -19,6 +19,27 @@
    "pages": 24,
    "pdf_sha256": "48fe6950040eaf5bf860b965d62996f9d0a1bb75ee9eca4b4c9a9407405b4303",
    "read": "2026-10-19"
+  },
+  "SJP": {
+   "title": "Standard Rule Manual (Japanese, web pages)",
+   "version": "Ver.1.1 (2026-10-02)",
+   "url": "https://www.battlespirits.com/rule/official-rule-manual-standard/",
+   "format": "html",
+   "pages": 12,
+   "html_pages": {
+    "2": "page02.html",
+    "3": "page03.html",
+    "4": "page04.html",
+    "5": "page05.html",
+    "6": "page06.html",
+    "7": "page07.html",
+    "8": "page08.html",
+    "9": "page09.html",
+    "10": "page10.html",
+    "11": "page11.html",
+    "12": "page12.html"
+   },
+   "read": "2026-10-21"
   }
  },
  "chunks": [
@@ -539,6 +560,259 @@
    "title": "When Destroyed (by the opponent)",
    "paraphrase": "'When Destroyed' triggers on destruction, and the 'by the opponent' form only on an opposing effect or BP comparison.",
    "sha256": "caad612c381e3c1b6414c295bd1a6d1ea95bffb55ce869669e64d2e3fda259af"
+  },
+  {
+   "id": "SJP:formats",
+   "manual": "SJP",
+   "page": 2,
+   "title": "Formats",
+   "anchor": "スタンダードとエターナル",
+   "until": "勝敗のカギを握る「コア」",
+   "paraphrase": "Two formats exist: Eternal allows every card except banned ones, Standard allows only cards with a letter block icon (from 2026) and rotates its pool; the formats also differ in some rules.",
+   "sha256": "e97beaa575d2f2ad121bd01a86fd421730b1598d7a08955374bd859d2d8157a1"
+  },
+  {
+   "id": "SJP:win",
+   "manual": "SJP",
+   "page": 2,
+   "title": "Winning",
+   "anchor": "勝利条件",
+   "paraphrase": "A player wins when the opponent has 0 Life, or when the opponent has 0 cards in their Deck during their own Start Step.",
+   "sha256": "70b0c4c94c98ca05e29961e4fb1460359d3477cb380b62b0bf22b8da0da810a5"
+  },
+  {
+   "id": "SJP:deck",
+   "manual": "SJP",
+   "page": 3,
+   "title": "Deck and card pool",
+   "anchor": "デッキ",
+   "until": "プレイシート",
+   "paraphrase": "A deck has at least 40 cards, at most 3 per card name (a trailing same-name number makes cards different), only letter-block cards, and from 2026-04-01 to 2027-03-31 only block A; about 30 cores plus 1 Soul Core per player.",
+   "sha256": "235b7fb42620c5ac6c8cf5406cb6004250760f0b163a0a622f92b8506e2ccf5d"
+  },
+  {
+   "id": "SJP:setup",
+   "manual": "SJP",
+   "page": 3,
+   "title": "Game setup",
+   "anchor": "ゲームの準備",
+   "until": "カードの基本的な見方",
+   "paraphrase": "Shuffle, put 5 cores in Life and 3 cores plus the Soul Core in the Reserve, draw 4, decide who goes first, then each player in turn order may redraw the whole hand once.",
+   "sha256": "3415b763ff1776ca0dd4a0fe695e3d7e661edd5ba7eb42ee90f4611175775747"
+  },
+  {
+   "id": "SJP:card-layout",
+   "manual": "SJP",
+   "page": 3,
+   "title": "Card layout and symbols",
+   "anchor": "カードの基本的な見方",
+   "paraphrase": "Explains cost, card type, reduction symbols, colour, family, effects, symbols (also used for cost reduction and Life damage), EX symbols used by Inherit Summon, block icon and rarity.",
+   "sha256": "7aa55da8df6182d03a3ba8962900f06b9f9ffe71da4e3deec1357baa77f1936c"
+  },
+  {
+   "id": "SJP:basics",
+   "manual": "SJP",
+   "page": 4,
+   "title": "Basic actions",
+   "paraphrase": "Overview: summon Spirits by paying cost and placing cores, attack (blocked: compare BP, ties destroy both; unblocked: Life loss equal to symbols, cores go to the Reserve), use Magic (Main or Flash, no responding to a Flash), deploy Nexuses.",
+   "sha256": "ce721290c7b94080390f044926a2623794a7970c0f2b9b2be19f189fc28b3bc1"
+  },
+  {
+   "id": "SJP:turn",
+   "manual": "SJP",
+   "page": 5,
+   "title": "Turn sequence",
+   "anchor": "ターンの流れ",
+   "paraphrase": "Eight steps: Start, Core (+1 core from the Void), Draw, Refresh (recover all, Trash cores to the Reserve), Main, Attack, Second Main, End (turn effects end); the first turn has no Core, Attack or Second Main Step; Eternal has no Second Main Step.",
+   "sha256": "fd70532b4a509127a4fc85ad1d075924c41609b2531b9ec5cfe567dbf872d0a5"
+  },
+  {
+   "id": "SJP:main-step",
+   "manual": "SJP",
+   "page": 6,
+   "title": "Main Step actions",
+   "anchor": "スピリットの召喚",
+   "anchor_n": 2,
+   "paraphrase": "In any order and as often as wanted: summon Spirits (at least Lv1 cores), deploy Nexuses (no core = Lv1), use Magic (Main or Flash part), use Flash and optional (Your Main Step) effects, and move cores freely (a Spirit below Lv1 is depleted).",
+   "sha256": "594336f8a9f7d13f94632bee209f6bac89f6951e3f46f16ed0c15e5043cda024"
+  },
+  {
+   "id": "SJP:cost",
+   "manual": "SJP",
+   "page": 7,
+   "title": "Paying costs",
+   "until": "コアの移動とその影響",
+   "paraphrase": "Cost is reduced by matching-colour Field symbols up to the reduction symbols (mandatory), the rest is paid from the Reserve or Field cards (never Life) to the Trash, then cores are placed (a Spirit needs Lv1).",
+   "sha256": "0acd09322dc99f2475007a7c6fc23a146466244a5de4f0f1a314cc84dbe90305"
+  },
+  {
+   "id": "SJP:core-move",
+   "manual": "SJP",
+   "page": 7,
+   "title": "Moving cores and depletion",
+   "anchor": "コアの移動とその影響",
+   "until": "コアとソウルコア",
+   "paraphrase": "Levels follow the cores on a card; a Spirit that drops below Lv1 is depleted (not destroyed, so When Destroyed effects do not trigger); effects caused by depletion resolve before the card goes to the Trash and its cores go to the Reserve.",
+   "sha256": "eb7563c82f600bce49c9df73c16777cbd0d961a9d98072d352c43ff712b9a5e6"
+  },
+  {
+   "id": "SJP:soul-core",
+   "manual": "SJP",
+   "page": 7,
+   "title": "Soul Core",
+   "anchor": "コアとソウルコア",
+   "paraphrase": "One of the 4 starting Reserve cores is the Soul Core; it works like a normal core but is never put anywhere except the Reserve, a Field card or the Trash unless an effect targets it; it powers True Release and Soul Magic.",
+   "sha256": "c03e8c512c0b05edbef153f085765738a22dde87b6a462d08efac4aa726e3337"
+  },
+  {
+   "id": "SJP:battle",
+   "manual": "SJP",
+   "page": 8,
+   "title": "Battle procedure",
+   "anchor": "バトルの手順",
+   "until": "フラッシュタイミングの攻防",
+   "paraphrase": "Attack (the battle goes on to Flash 1 even if the attacker left), Flash 1, one blocker, Flash 2 only after a block, resolution (Life by symbols or BP compare; a blocker that left still stops Life loss), destruction, end-of-battle then after-battle effects.",
+   "sha256": "f0112edf74d57db81522e2667c94631bb106e626b46f3c596cdc9e32e9b544bc"
+  },
+  {
+   "id": "SJP:flash",
+   "manual": "SJP",
+   "page": 8,
+   "title": "Flash timing",
+   "anchor": "フラッシュタイミングの攻防",
+   "paraphrase": "Up to two Flash timings per battle (no Main effects): the defender may use one Flash first, then the players alternate, each resolving at once, until both pass in a row; a player who passed may act again after the other uses one.",
+   "sha256": "9cda1c946be67f572b93f83fa3f0a8520751c334774a900a28403bc661e88873"
+  },
+  {
+   "id": "SJP:true-release",
+   "manual": "SJP",
+   "page": 9,
+   "title": "True Release",
+   "anchor": "真界放",
+   "anchor_n": 2,
+   "until": "継召",
+   "paraphrase": "A card with True Release in its level row also meets that level with the Soul Core on it and is then in True Release state.",
+   "sha256": "55609a4752fbafc091d856e591752b7de97214e651e3f8b3d632e8c2e59794a3"
+  },
+  {
+   "id": "SJP:inherit",
+   "manual": "SJP",
+   "page": 9,
+   "title": "Inherit Summon (keishou)",
+   "anchor": "継召",
+   "anchor_n": 2,
+   "until": "ソウルマジック",
+   "paraphrase": "While paying a cost you may remove cards with EX symbols from your Trash from the game; their EX symbols reduce the cost like Field symbols, are counted before the Field symbols, must match the card's reduction colours and cannot exceed its reduction symbols.",
+   "sha256": "de8f452722b26bea8476ce1b7774e5f8e04bf09acc4505f7953470ae4df94ca9"
+  },
+  {
+   "id": "SJP:soul-magic",
+   "manual": "SJP",
+   "page": 9,
+   "title": "Soul Magic",
+   "anchor": "ソウルマジック",
+   "anchor_n": 2,
+   "until": "トークンを出す効果",
+   "paraphrase": "A Soul Magic card may be used by paying just the Soul Core (from the Reserve or a Field card) instead of its cost while you have at least one symbol of the named colour on your Field.",
+   "sha256": "6d4416538dcdaba46363594f5bf119cc87f9eafd5ddf5ec0a09acfffe30f63cd"
+  },
+  {
+   "id": "SJP:tokens",
+   "manual": "SJP",
+   "page": 9,
+   "title": "Tokens",
+   "anchor": "トークンを出す効果",
+   "anchor_n": 2,
+   "paraphrase": "Token cards are prepared outside the deck, enter the Field only by effects, cannot be put in a deck, and an opponent's token is hidden until it is sent out; sleeve rules for tokens.",
+   "sha256": "3ed54468b7e76d1b1ea789c4031f3cd3103eb5b62e05be62c424d7c07f1c60ea"
+  },
+  {
+   "id": "SJP:effects",
+   "manual": "SJP",
+   "page": 10,
+   "title": "Effect activation and order",
+   "anchor": "効果の発揮について",
+   "anchor_n": 2,
+   "until": "重疲労",
+   "paraphrase": "Effects need no cost and trigger at their timing or apply constantly; using a Hand card is \"use\"; simultaneous effects resolve constant ones first, then timed ones in the turn player's order, and effects they trigger resolve first.",
+   "sha256": "d4b4699bbe5a159ae629232f235be3faa9ee7ca0d1c638250359b57f3b2d1a85"
+  },
+  {
+   "id": "SJP:heavy-exhaust",
+   "manual": "SJP",
+   "page": 10,
+   "title": "Heavy exhaust",
+   "anchor": "重疲労",
+   "anchor_n": 2,
+   "paraphrase": "Only an effect can heavily exhaust a Spirit (turned upside down); it counts as exhausted, cannot attack or block, one recovery makes it a normal exhausted card, and that recovery triggers \"when recovered\" effects.",
+   "sha256": "a8e6a6669bc3b78dd6b0aa25151f782b2018a71f59dddaee7d00c24d6bc74ced"
+  },
+  {
+   "id": "SJP:faq.effects",
+   "manual": "SJP",
+   "page": 11,
+   "title": "FAQ: effects in general",
+   "anchor": "効果全般について",
+   "until": "ソウルコアについて",
+   "paraphrase": "Card text beats rules; \"can\" is optional; \"cannot\" wins; \"then\" goes on after a failed part but \"if you do\" needs it in full; turn effects outlive their source; Once Per Turn is per card, No Duplicate per name; an Invoke cost must resolve in full.",
+   "sha256": "6d570664383a82597679b01295910a4faabfb95aae67f73b482f5bab8e687365"
+  },
+  {
+   "id": "SJP:faq.soul-core",
+   "manual": "SJP",
+   "page": 11,
+   "title": "FAQ: Soul Core",
+   "anchor": "ソウルコアについて",
+   "until": "コストの支払いについて",
+   "paraphrase": "Cores (Soul Core included) can be swapped between Spirits in the Main Step without depletion; when your effect moves cores off an opposing Spirit the opponent picks which; a Spirit without True Release (or at Lv1) is not in True Release state.",
+   "sha256": "5f32c552553e6129a4210f6c7a512966b09e9a1913618c51b180fe86d04d16d2"
+  },
+  {
+   "id": "SJP:faq.cost",
+   "manual": "SJP",
+   "page": 11,
+   "title": "FAQ: paying costs",
+   "anchor": "コストの支払いについて",
+   "until": "スピリットなどの状態について",
+   "paraphrase": "The cost is fixed before paying; a declared card must be paid even by depleting Spirits, otherwise it goes back and the board is restored; effect summons pay the cost unless told otherwise; a Soul-Core-only Spirit enables Soul Magic.",
+   "sha256": "551c65a1c65de9743352331ffe137cb3816e54a95ca2afb9d358805ee208a045"
+  },
+  {
+   "id": "SJP:faq.states",
+   "manual": "SJP",
+   "page": 11,
+   "title": "FAQ: waiting state and heavy exhaust",
+   "anchor": "スピリットなどの状態について",
+   "until": "指定する効果について",
+   "paraphrase": "A Spirit being destroyed, depleted or returned waits while only its own leave effects resolve (it keeps and can be referenced by other effects), then moves with its cores to the Reserve; exhausting an exhausted Spirit is not heavy exhaust.",
+   "sha256": "ea0c25394a0b8925d7cea6238a9c932f76735c7b01d9fa07542054e04b1783a8"
+  },
+  {
+   "id": "SJP:faq.targets",
+   "manual": "SJP",
+   "page": 11,
+   "title": "FAQ: targeting",
+   "anchor": "指定する効果について",
+   "until": "「BP+」や「BP-」の効果について",
+   "paraphrase": "Target effects resolve with fewer targets (none = not done), \"up to\" allows 0, an unaffectable target may be chosen but nothing counts as done, and \"all\" effects do not target and for this turn also cover Spirits summoned later.",
+   "sha256": "c6a23491a267546f2e12b6939e70d07511aa09397ec246b2c3ac81e05abff2c7"
+  },
+  {
+   "id": "SJP:faq.bp",
+   "manual": "SJP",
+   "page": 11,
+   "title": "FAQ: BP plus and minus",
+   "anchor": "「BP+」や「BP-」の効果について",
+   "paraphrase": "Current BP = the level's BP plus and minus each modifier in the order applied; a \"then if it is at 0 BP destroy it\" check happens only when the minus is applied, also for Spirits summoned later under an \"all\" minus.",
+   "sha256": "27eaf72b87e724238eb3fa01892ca65a173d40d31e1baed9fc5f02f91215751f"
+  },
+  {
+   "id": "SJP:glossary",
+   "manual": "SJP",
+   "page": 12,
+   "title": "Glossary",
+   "paraphrase": "Term list: Invoke Flash/Main, Once Per Turn/Battle and No Duplicate, heavy exhaust, depletion vs destruction, waiting state, use, tokens (not summoned or deployed, return when they leave), and timing words such as When Attacks.",
+   "sha256": "7723e061cd46623cc840f352d7a88686ee0736f03ad4f43a2a720d96d4d836e1"
   }
  ],
  "aliases": [

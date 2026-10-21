@@ -12,8 +12,13 @@ manual text. The source text lives only in a local cache outside the repo (`~/.c
 |---|---|---|---|
 | `ETR` | Eternal Rule Manual, English PDF | VER.17.0 (server date 2026-03-27) | 79 |
 | `STD` | Standard Comprehensive Rules, English PDF | Ver.1.0 (2026-04-01) | 24 |
+| `SJP` | Standard Rule Manual, Japanese web pages | Ver.1.1 (2026-10-02) | pages 02-12 (`page` = the web page number) |
 
-URLs and PDF hashes are in `kb.json` under `manuals`. The Japanese Eternal manual is Ver.17.1 (2026-05-29) and is web pages, not a
+URLs and PDF hashes are in `kb.json` under `manuals`. `SJP` is a web manual (`format: "html"`, `html_pages` maps a page number to
+its file): `--fetch` saves the pages into `<cache>/SJP/html/` and extracts the visible text with the ruby readings (furigana)
+dropped and one line per block element; when the site refuses the shell, save the pages another way and run
+`--import-html SJP`. A page that lists its own headings first uses `anchor_n` (the n-th line that starts with the anchor).
+Comparison with EN 1.0 and the engine: `standard-jp-1.1.md`. The Japanese Eternal manual is Ver.17.1 (2026-05-29) and is web pages, not a
 PDF; it is not chunked yet (sources table: `docs/manual-notes.md`).
 
 ## Schema (`schema: 1`)

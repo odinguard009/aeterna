@@ -15,11 +15,13 @@ const hasPy = !py(['--query', 'ETR:seal']).error;
 test('K01 schema: manuals, required fields, id format, unique ids', () => {
   assert.equal(KB.schema, 1);
   for (const [k, m] of Object.entries(KB.manuals)) {
-    assert.match(k, /^(ETR|STD)$/);
-    assert.ok(m.title && m.version && /^https:\/\//.test(m.url) && m.pages > 0 && /^[0-9a-f]{64}$/.test(m.pdf_sha256), k);
+    assert.match(k, /^(ETR|STD|SJP)$/);
+    assert.ok(m.title && m.version && /^https:\/\//.test(m.url) && m.pages > 0, k);
+    if (m.format === 'html') assert.ok(Object.keys(m.html_pages).length > 0 && Object.keys(m.html_pages).every((p) => +p >= 1 && +p <= m.pages), k);   // web manual: page number -> saved HTML file
+    else assert.match(m.pdf_sha256, /^[0-9a-f]{64}$/, k);
   }
   for (const c of KB.chunks) {
-    assert.match(c.id, /^(ETR|STD):[a-z0-9][a-z0-9.-]*$/, c.id);
+    assert.match(c.id, /^(ETR|STD|SJP):[a-z0-9][a-z0-9.-]*$/, c.id);
     assert.ok(c.id.startsWith(c.manual + ':') && KB.manuals[c.manual], c.id);
     assert.ok(Number.isInteger(c.page) && c.page >= 1 && c.page <= KB.manuals[c.manual].pages, c.id);
     if (c.page_end != null) assert.ok(c.page_end > c.page && c.page_end <= KB.manuals[c.manual].pages, c.id);
@@ -31,7 +33,7 @@ test('K01 schema: manuals, required fields, id format, unique ids', () => {
 });
 
 test('K02 copyright: one-sentence paraphrases, short anchors, no manual text fields', () => {
-  const allowed = new Set(['id', 'manual', 'page', 'page_end', 'cr', 'title', 'anchor', 'until', 'paraphrase', 'sha256']);
+  const allowed = new Set(['id', 'manual', 'page', 'page_end', 'cr', 'title', 'anchor', 'anchor_n', 'until', 'paraphrase', 'sha256']);
   for (const c of KB.chunks) {
     assert.deepEqual(Object.keys(c).filter((k) => !allowed.has(k)), [], c.id);
     assert.ok(c.paraphrase.length <= 260 && (c.paraphrase.match(/[.!?](\s|$)/g) || []).length === 1, `${c.id}: one sentence`);
@@ -95,5 +97,27 @@ test('K06 checker: fixture passes after --build, flags a changed or vanished sec
     r = py(['--kb', kbp, '--src-dir', join(d, 'none'), '--check']);
     assert.equal(r.status, 0); assert.match(r.stdout, /no source cached/);
     assert.equal(py(['--kb', kbp, '--src-dir', join(d, 'none'), '--check', '--strict']).status, 2);
+  } finally { rmSync(d, { recursive: true, force: true }); }
+});
+
+test('K07 web manual: --import-html drops ruby readings, anchor_n skips the page\'s heading list', { skip: !hasPy && 'python3 missing' }, () => {
+  const d = mkdtempSync(join(tmpdir(), 'rules-kb-'));
+  try {
+    const kbp = join(d, 'kb.json'), src = join(d, 'src'), html = join(src, 'SJP', 'html');
+    mkdirSync(html, { recursive: true });
+    const page = (rt) => `<main><ul><li>ALPHA</li><li>BETA</li></ul><h2>ALPHA</h2><p><ruby>漢字<rt>${rt}</rt></ruby>の説明。</p><h2>BETA</h2><p>b</p></main>`;
+    writeFileSync(join(html, 'page02.html'), page('かんじ'));
+    const fx = { schema: 1, manuals: { SJP: { title: 'W', version: '1', url: 'https://example.invalid/m/', format: 'html', pages: 2, html_pages: { 2: 'page02.html' } } },
+      chunks: [{ id: 'SJP:alpha', manual: 'SJP', page: 2, title: 'Alpha', anchor: 'ALPHA', anchor_n: 2, until: 'BETA', paraphrase: 'x.', sha256: '0'.repeat(64) }], aliases: [], known_gaps: [], named: [] };
+    writeFileSync(kbp, JSON.stringify(fx));
+    const run = (...a) => py(['--kb', kbp, '--src-dir', src, ...a]);
+    assert.equal(run('--import-html', 'SJP').status, 0);
+    assert.equal(readFileSync(join(src, 'SJP', '2.txt'), 'utf8'), 'ALPHA\nBETA\nALPHA\n漢字の説明。\nBETA\nb\n');
+    assert.equal(run('--build').status, 0);
+    assert.equal(run('--check').status, 0);
+    writeFileSync(join(html, 'page02.html'), page('かん じ'));          // another reading: the visible text is the same
+    run('--import-html', 'SJP'); assert.equal(run('--check').status, 0);
+    writeFileSync(join(html, 'page02.html'), page('かんじ').replace('説明', '解説'));
+    run('--import-html', 'SJP'); const r = run('--check'); assert.equal(r.status, 1); assert.match(r.stdout, /CHANGED SJP:alpha/);
   } finally { rmSync(d, { recursive: true, force: true }); }
 });

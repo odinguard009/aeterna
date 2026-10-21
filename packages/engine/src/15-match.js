@@ -36,13 +36,17 @@ async function startNewGame(opts) {
       const add = await ask({ title: '📜 Contract card', html: 'Your Deck has a Contract card. Add it to your starting Hand?', buttons: [{ label: 'Add to Hand', cls: 'primary', value: true }, { label: 'Keep in Deck', cls: 'cancel', value: false }] });
       if (!add) { contractToDeck(G.p.player); log('You kept the Contract card in the Deck.'); }
     }
-    // starting hand: each player may redraw once
-    if (W) { if (cpuWantsRedraw(G.p.player.hand)) { redrawHand(G.p.player); log('Your deck (CPU) redrew its starting hand.'); } }
-    else if (!SIM) {
-            const r = await ask({ title: '🎴 Starting Hand', cards: cardIds(G.p.player.hand), cardsStyle: 'mull', html: `<div style="margin-top:8px">Redraw your 4 cards? You can only do this once.</div>${G.p.player.hand.some(h => CARDS[h.id].contract) ? '<div class="mull-note">📜 A redraw returns your Contract card to the Deck too, and it cannot be added to your Hand again this game (official rules).</div>' : ''}`, wide: true, peek: true, buttons: [{ label: 'Redraw all cards', cls: 'primary', value: true }, { label: 'Keep hand', cls: 'cancel', value: false }] });
-      if (r) { redrawHand(G.p.player); log('You redrew your starting hand.'); }
+    // starting hand: each player may redraw once, in turn order (JP Standard Rule Manual 1.1 setup step 7, kb SJP:setup): the first player decides first
+    G.setupRedraw = [];
+    for (const seat of first === 'player' ? ['player', 'opponent'] : ['opponent', 'player']) {
+      if (seat === 'opponent') { if (cpuWantsRedraw(G.p.opponent.hand)) { redrawHand(G.p.opponent); log('CPU redrew its starting hand.'); } }
+      else if (W) { if (cpuWantsRedraw(G.p.player.hand)) { redrawHand(G.p.player); log('Your deck (CPU) redrew its starting hand.'); } }
+      else if (!SIM) {
+        const r = await ask({ title: '🎴 Starting Hand', cards: cardIds(G.p.player.hand), cardsStyle: 'mull', html: `<div style="margin-top:8px">Redraw your 4 cards? You can only do this once.</div>${G.p.player.hand.some(h => CARDS[h.id].contract) ? '<div class="mull-note">📜 A redraw returns your Contract card to the Deck too, and it cannot be added to your Hand again this game (official rules).</div>' : ''}`, wide: true, peek: true, buttons: [{ label: 'Redraw all cards', cls: 'primary', value: true }, { label: 'Keep hand', cls: 'cancel', value: false }] });
+        if (r) { redrawHand(G.p.player); log('You redrew your starting hand.'); }
+      }
+      G.setupRedraw.push(seat);
     }
-    if (cpuWantsRedraw(G.p.opponent.hand)) { redrawHand(G.p.opponent); log('CPU redrew its starting hand.'); }
     if (SESSION !== my) return;
     G.next = first;
     io.view({ type: 'board' });

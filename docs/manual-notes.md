@@ -10,9 +10,9 @@ Paraphrased notes from the official PDFs, so a session does not have to fetch th
 | JP rule revision notice for Eternal 17.0 | 2026-04-03, effective 2026-04-11 | https://www.battlespirits.com/news/2026/rule-manual-eternal17-revised.php | yes, 2026-10-16 (changes below) |
 | JP Ruling Changes page | newest entry 2022-07-22 (CB23 name spelling); no 2025-2026 entries | https://www.battlespirits.com/rule/revised_rule.html | yes |
 | EN Ruling Changes page (old site) | newest 2022-02-04 | https://en.battlespirits.com/rule/revised_rule/ | yes, nothing engine-relevant |
-| Standard Rule Manual, Japanese | Ver.1.1, 2026-10-02 | https://www.battlespirits.com/rule/official-rule-manual-standard/ | no (Standard format not offered) |
+| Standard Rule Manual, Japanese | Ver.1.1, 2026-10-02 | https://www.battlespirits.com/rule/official-rule-manual-standard/ | yes, 2026-10-21 (pages 02-12 through the TinyFish fetch connector; chunks `SJP:*` in `docs/rules/kb.json`; comparison with EN 1.0 and the engine: `docs/rules/standard-jp-1.1.md`) |
 | Standard Comprehensive Rules (EN PDF) | Ver.1.0, last updated 2026-04-01 | https://asia-en.battlespirits.com/pdf/comprehensive-rules-standard.pdf | yes (earlier sessions) |
-| JP rule news list (watch for new versions) | newest rule item 2026-10-02 (Standard 1.1) | https://www.battlespirits.com/news/?tags=gamerule | yes |
+| JP rule news list (watch for new versions) | newest rule item 2026-10-02 (Standard 1.1) | https://www.battlespirits.com/news/?tags=gamerule | yes, 2026-10-21 |
 
 ### Changes in the JP 17.0 revision notice and the engine area they touch
 1. Formats Eternal / Standard (Standard: block icon letters, rotation) -> deck rules (Eternal only offered).
