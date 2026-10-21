@@ -12,6 +12,7 @@ Older releases (v0.80.0 and earlier): [CHANGELOG-archive.md](CHANGELOG-archive.m
   - `packages/engine/types.d.ts`: shapes of the engine records the checker needs (card def, Magic spec, cost alternative, Brave, Contract Advent / Manifest, modal button, deck slot, port replay result), used from JSDoc in the parts.
   - Engine and protocol: 25 checker errors fixed (JSDoc types and casts; boolean sort keys written as `+(a) - +(b)`, same order): 0 left. Web: the `$()` lookup and two file-input handlers are typed as input elements: 154 -> 74. Total 179 -> 74. Tests T101-1/2.
   - CI pins TypeScript 6.0.3 (the version the baseline was counted with): the first CI run installed a newer checker that reports other errors (engine 5, web +2) and failed the lint step. With another local version the ratchet only warns; `--update-types` needs 6.0.3.
+  - CI: two runs on 2b52c96 ended with 2 failing tests of 1,442 that the CI log did not let us name (all 1,442 pass in the session); the next run (0cc237b) was green. `tools/quick-tests.mjs` now repeats every failing test with its error lines at the end of the output, written synchronously, so the tail of a CI log names them.
   - Next M5 steps (bundled with later U/I sessions): web parts to 0, then `--noImplicitAny` for the engine.
 
 ## v0.100.0
