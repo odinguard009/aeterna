@@ -8,6 +8,7 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 - **Your own sleeve picture (roadmap U7, part 2): Deck look has UPLOAD SLEEVE; the picture stays on this device per deck slot, is tinted by the chosen sleeve colour (Silver keeps it as it is) and shows on your deck pile in battle, in the deck builder and on My decks. On the phone the deck bar shows a mini preview of the deck look.**
   - Stored like the playmat (the card-image store, key `~sleeve:<slot>`, longest side 600 px); REMOVE takes it out; clearing the card images keeps it.
   - Not done: the format default (Standard first, Eternal as "Preview", owner 2026-10-21): only the training deck is legal in Standard, so the default deck and every starter deck would be unplayable on a first start. It goes with the "Standard decks" item (the official starter recipes were added to the data the same day; noted in `docs/ai/roadmap-open.md`).
+- CI (`npm test`) now runs the wall-clock budget files (`budget`, `deckbuilder52`) alone after the other files, like the quick tests since v0.93.0: the CI run of the v0.95.0 code commit failed one test under parallel load and passed on its one re-run (same commit). No check dropped.
   - Test `tests/unit/db95.test.mjs` (U95-1, U95-2). Backup `backup/v0.94.0`. Revert note: `git revert` of the U7 part 2 commit.
 
 ## v0.94.0

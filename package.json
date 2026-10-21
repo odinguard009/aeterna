@@ -11,7 +11,7 @@
     "build": "node tools/build.mjs",
     "check": "node tools/build.mjs --check",
     "lint": "node tools/lint.mjs",
-    "test": "node tools/build.mjs && node --test \"tests/unit/*.test.mjs\"",
+    "test": "node tools/build.mjs && node tools/quick-tests.mjs --full",
     "test:quick": "node tools/build.mjs && node tools/quick-tests.mjs",
     "loop": "node tools/loop.mjs",
     "test:props": "node --test tests/unit/props.test.mjs",
