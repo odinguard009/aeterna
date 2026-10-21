@@ -4,7 +4,7 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 
 ## v0.93.0
 - Lane: U/I
-- Time: TIME_LINE
+- Time: about 70 min (session start to release), Opus, tokens in the DONE mark incl. the player-view subagent (chain session 3).
 - **My decks page (roadmap U6): the Decks tab now opens a list of your decks with sleeve, colours, status and an ACTIVE badge; Edit, Play and a more menu with Set active, Rename, Duplicate, Deck look, Copy deck code and Delete (asks first); Import code and New deck; the prebuilt decks are read-only starter decks with Copy.**
   - Built on the existing 8 deck slots (nothing migrates): a slot is listed when it has cards, its own name, was made by New / Import / Copy / Duplicate, or is the active deck. Play is disabled while a deck is not ready (the status says why, e.g. "37 / 40 · add 3 cards"). On the phone the rows open an action sheet instead of the menu.
   - "Build a deck" on Home and "Edit deck" on Play still open the deck builder directly; Deck look opens the builder until U7 adds its Look tab. Copy deck code puts the card list on the clipboard (Import code reads the same text).

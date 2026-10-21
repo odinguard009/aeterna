@@ -4,8 +4,8 @@
   "tagline": "From tested engine to a simulator that plays like Aegis",
   "waitingHtml": "<b>Waiting on you:</b> nothing. The god-icon check is done (official site for BS68, Fandom for BS69–BS72); no UI change is waiting for approval.",
   "updated": "21 Oct 2026",
-  "updatedAt": "0.90.0",
-  "next": "next: the U/I queue (U5 popups in the mockup style first, then U5b light animations, U6-U8), then cards with Standard first; X1 done in v0.88.0, S1 Standard Magic 52 of 58 in v0.88.0-v0.90.0; playable 6,890 of 8,709, complete 771"
+  "updatedAt": "0.93.0",
+  "next": "next: the U/I queue (U7 deck builder with filters and Deck look, U8 audit, rules base, M5-M8, card images), then cards with Standard first; U5 popups v0.91.0, U5b animations v0.92.0, U6 My decks v0.93.0; playable 6,890 of 8,709, complete 771"
  },
  "phases": [
   {
@@ -459,8 +459,12 @@
      "t": "U3 Play setup page v0.67.0: header card, deck chip, mode cards (Match vs CPU, Watch CPU vs CPU), format / CPU deck / CPU style / speed setup rows"
     },
     {
-     "s": "later",
-     "t": "U5 overlays, U6 My decks page, U7 deck builder (filters, list/curve/look tabs, Deck look), U8 audit; card sessions alternate (U4 done v0.68.0: Settings / How to play / Library + playmat upload)"
+     "s": "done",
+     "t": "U5 popups and battle ribbons v0.91.0, U5b light battle animations v0.92.0 (Animations Full / Reduced / Off), U6 My decks page v0.93.0 (tiles / rows, more menu, starter decks)"
+    },
+    {
+     "s": "next",
+     "t": "U7 deck builder (toolbar, FILTERS panel / phone sheet, chips, Deck list / Curve / Deck look tabs, back to My decks), U8 audit (light-mode Card Detail, cores flying, Burst flip, contrast)"
     },
     {
      "s": "later",
@@ -605,7 +609,7 @@
     },
     {
      "s": "next",
-     "t": "Then (owner 2026-10-21): the whole U/I queue (U5 popups in the mockup style, U5b light animations, U6-U8, rules base, M5-M8, card images), then card packs with Standard first; L1 languages deferred; time rules (item T): mechanic sessions first, then card sessions"
+     "t": "Then (owner 2026-10-21): the rest of the U/I queue (U7 deck builder, U8 audit, rules base, M5-M8, card images), then card packs with Standard first; L1 languages deferred; subagent tokens count in the token counter (owner 2026-10-21)"
     }
    ]
   },
@@ -1195,9 +1199,33 @@
    "calls": "~45",
    "basis": "estimate (budget counter)",
    "note": "Chain session on Opus: F5 state waits in the browser suites; phase F complete; paused for the owner's roadmap update (chain-stop.md)."
+  },
+  {
+   "ver": "v0.91.0",
+   "date": "21 Oct 2026",
+   "tokens": 144125,
+   "calls": "~60",
+   "basis": "budget counter (+151,174 subagent)",
+   "note": "U5 on Opus: every popup in the mockup style, ribbons, match-start banner, block strip; payment Soul Core fix."
+  },
+  {
+   "ver": "v0.92.0",
+   "date": "21 Oct 2026",
+   "tokens": 37357,
+   "calls": "~35",
+   "basis": "budget counter (+106,094 subagent)",
+   "note": "Chain session 2: U5b light battle animations, Settings Animations Full / Reduced / Off."
+  },
+  {
+   "ver": "v0.93.0",
+   "date": "21 Oct 2026",
+   "tokens": 75000,
+   "calls": "~60",
+   "basis": "estimate (budget counter, +83,871 subagent)",
+   "note": "Chain session 3: U6 My decks; subagent tokens now count (owner); timing tests run alone in the quick set."
   }
  ],
  "updated": "21 Oct 2026",
- "updatedAt": "0.90.0",
- "next": "next: the U/I queue (U5 popups in the mockup style first, then U5b light animations, U6-U8), then cards with Standard first; X1 done in v0.88.0, S1 Standard Magic 52 of 58 in v0.88.0-v0.90.0; playable 6,890 of 8,709, complete 771"
+ "updatedAt": "0.93.0",
+ "next": "next: the U/I queue (U7 deck builder with filters and Deck look, U8 audit, rules base, M5-M8, card images), then cards with Standard first; U5 popups v0.91.0, U5b animations v0.92.0, U6 My decks v0.93.0; playable 6,890 of 8,709, complete 771"
 }
