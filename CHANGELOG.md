@@ -12,6 +12,7 @@ Older releases (v0.80.0 and earlier): [CHANGELOG-archive.md](CHANGELOG-archive.m
   - Baseline `docs/reports/cpu-bench.json` + readable `cpu-bench.md`: 240 finished, 0 errors, 0 timeouts; 6.1 turns on average; first seat wins 48.8%; idle attack 0.135 and idle summon 0.023 per own turn. Styles form a cycle: aggressive beats defensive 65%, defensive beats balanced 65%, balanced beats aggressive 65%. Colours: green and white 61%, blue 56%, yellow 49%, red 44%, purple 40%.
   - The Regression workflow has a new job `cpu-bench` (`--check`): more errors or timeouts fail it; clearly more passive turns, 20% longer games or a style losing 15 points become warnings. `docs/ai/release.md` says when to rewrite the baseline.
   - `playHeadless` takes `format` and an `onBoard` hook. Tests CB1-CB4.
+  - CI: U94-2 (deck panel tabs, Deck look saved per slot; PC and phone) failed on the first CI run with the Deck look `undefined` and passed on the re-run; it also failed in the two CI runs of 2b52c96 (v0.101.0) and once in v0.99.0. Recorded in `roadmap-open.md` as an open flaky test; the new failure list at the end of `npm test` named it.
 
 ## v0.101.0
 - Lane: U/I
