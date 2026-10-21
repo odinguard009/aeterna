@@ -71,7 +71,7 @@ test('I84-05 browser: intents run at once on a test board; in a real match the b
     out.junk = await BS.applyIntent('player', { type: 'fly' });
     out.next = await BS.sendIntent({ type: 'next' }); out.step = BS.G.step;
     // real match: answer prompts, then summon / NEXT through the seat loop
-    BS.startNewGame({ seed: 5 });
+    BS.startNewGame({ seed: 5, deckA: BS.PREBUILT.find(x => x.id === 'mitra').cards, deckB: BS.PREBUILT.find(x => x.id === 'train').cards });      // pinned: the default decks changed in v0.97.0
     const t0 = Date.now(); let sent = 0, ok = 0;
     while (Date.now() - t0 < 60000 && BS.G && !BS.G.over && BS.G.turnNo < 4) {
       await sleep(30);

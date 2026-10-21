@@ -38,8 +38,9 @@ let SCRIPT = null;   // the joined script is the same for every match of a proce
 function script() { return SCRIPT || (SCRIPT = new vm.Script(engineScript() + EXPORTS, { filename: 'aeterna-engine.js' })); }
 
 /** A fresh engine in its own vm context (no DOM). Returns the export object (live getters for G). */
-export function loadEngine({ sim = true } = {}) {
-  const store = new Map();
+// format: the headless host plays Eternal unless told otherwise (the game's own default is Standard since v0.97.0; recorded matches and the sims were made under Eternal rules).
+export function loadEngine({ sim = true, format = 'eternal' } = {}) {
+  const store = new Map([['bse.format', format]]);
   const ctx = {
     console, setTimeout, clearTimeout, setInterval, clearInterval, queueMicrotask, structuredClone, URLSearchParams, TextDecoder, TextEncoder, atob, btoa,
     location: { search: sim ? '?sim=1' : '' },          // sim: false = the rules of a real web match (coin toss, Starting Hand prompts), no delays

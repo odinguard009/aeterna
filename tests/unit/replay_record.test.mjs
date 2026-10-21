@@ -61,7 +61,7 @@ test('R85-05 browser: a real match record (cut while the human is asked) replays
   const rec = await page.evaluate(async () => {
     /* eslint-disable no-undef */
     const sleep = ms => new Promise(res => setTimeout(res, ms));
-    BS.startNewGame({ seed: 11 });
+    BS.startNewGame({ seed: 11, deckA: BS.PREBUILT.find(x => x.id === 'mitra').cards, deckB: BS.PREBUILT.find(x => x.id === 'train').cards });      // pinned: the default decks changed in v0.97.0
     const t0 = Date.now(); let n0 = -1, n1 = -1, last = null; const skip = new Set();   // item T: a summon whose payment was cancelled is not tried again
     while (Date.now() - t0 < 60000 && BS.G && !BS.G.over && BS.G.turnNo < 4) {
       await sleep(30);
