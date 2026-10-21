@@ -96,7 +96,7 @@ What to build next (v0.69.1): `python3 tools/pack_plan.py` orders the compile_v2
 | Release file check | `tests/unit/release.test.mjs` | `RELEASE_FILE=... npm run -s test:release` |
 | GitHub | `.github/workflows/ci.yml` (every push), `regression.yml` (dispatched once per session), `auto-mode.yml` | `docs/ai/release.md` |
 
-Ratchet lists (`tests/unit/known-gaps.json`) only shrink. Hooks (`.githooks/`): pre-push runs build check, lint, quick tests, `tools/check_renames.py` and the brand guard; commit-msg runs the brand guard.
+Ratchet lists (`tests/unit/known-gaps.json`, the type baseline `tools/type-baseline.json`) only shrink. Types (M5): `tools/lint.mjs` runs the TypeScript checker on the build with `packages/engine/types.d.ts` (record shapes the engine names in JSDoc); engine and protocol parts have no checker errors, web parts may not exceed their baseline. Hooks (`.githooks/`): pre-push runs build check, lint, quick tests, `tools/check_renames.py` and the brand guard; commit-msg runs the brand guard.
 
 Match fuzzer (v0.59.6): `node tools/fuzz.mjs [--runs N] [--seed S]` plays CPU-vs-CPU matches with random legal CPU choices (`BS.setFuzz`, `fuzzPick` in `09a-cpu-eval.js`, seeded game rng); a crash, invariant break or match that does not end is saved to `tests/fuzz-cases/`, replayed by `tests/unit/match_fuzzer.test.mjs` (CI only, not in the quick loop). Regression job `fuzz` (v0.59.8) plays 20 fuzzed matches per run, seeded by the run id; new failing cases come back as the run artifact `fuzz-cases`.
 

@@ -1,0 +1,16 @@
+{
+ "note": "M5 type ratchet (tools/lint.mjs): checker errors allowed per source part. Engine and protocol parts are not listed, so they must stay at 0. Lower with `node tools/lint.mjs --update-types`; never raise by hand without a reason in the commit.",
+ "parts": {
+  "apps/web/src/00b-errors.js": 6,
+  "apps/web/src/10-modals.js": 1,
+  "apps/web/src/11-human.js": 3,
+  "apps/web/src/13-render.js": 24,
+  "apps/web/src/13a-deckbuilder.js": 13,
+  "apps/web/src/13b-nav.js": 4,
+  "apps/web/src/13d-pages.js": 2,
+  "apps/web/src/13e-host.js": 1,
+  "apps/web/src/13h-decks.js": 3,
+  "apps/web/src/14-images.js": 2,
+  "apps/web/src/16-events.js": 15
+ }
+}

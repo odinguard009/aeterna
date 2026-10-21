@@ -141,7 +141,7 @@ const FX_ACTIONS = {
       m = Math.min(m, c.p.hand.length); let last = null; c.ctx.discardedCost = null;
       for (let j = 0; j < m && c.p.hand.length; j++) {
         let d;
-        if (c.p.cpu) d = c.p.hand.slice().sort((x, y) => (CARDS[x.id].cost - CARDS[y.id].cost) || ((CARDS[x.id].type === 'Nexus') - (CARDS[y.id].type === 'Nexus')))[0];
+        if (c.p.cpu) d = c.p.hand.slice().sort((x, y) => (CARDS[x.id].cost - CARDS[y.id].cost) || (+(CARDS[x.id].type === 'Nexus') - +(CARDS[y.id].type === 'Nexus')))[0];
         else {
           const v = await ask({ title: `✨ ${nm}`, peek: true, html: `Discard a card from your Hand (${m - j} left).`, buttons: c.p.hand.slice(0, 12).map(x => ({ label: `${CARDS[x.id].name} (cost ${CARDS[x.id].cost})`, cls: 'primary', value: x.uid })) });
           d = c.p.hand.find(x => x.uid === v) || c.p.hand[0];

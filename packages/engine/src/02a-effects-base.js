@@ -216,6 +216,7 @@ async function chooseCard(c, L, title, text, optional) {
   if (!L.length) return null;
   if (c.p.cpu) return L.slice().sort((a, b) => CARDS[b.id].cost - CARDS[a.id].cost)[0];
   const ids = Array.from(new Set(L.map(x => x.id))).slice(0, 8);
+  /** @type {AskButton[]} */
   const buttons = ids.map(i => ({ label: CARDS[i].name, value: i }));
   if (optional) buttons.push({ label: 'Skip', cls: 'cancel', value: null });
   const id = await ask({ title, peek: true, wide: true, html: text, cards: cardIds(ids), buttons });

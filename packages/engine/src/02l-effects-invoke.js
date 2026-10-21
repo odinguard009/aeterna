@@ -65,7 +65,7 @@ async function payInvokeCost(p, f, c) {
   }
   if (c.exhaustOwn) {
     const L = exhaustOwnCands(p, f, c.exhaustOwn); if (!L.length) return false;
-    const t = p.cpu ? L.slice().sort((a, b) => (a === f) - (b === f) || (a.cores - b.cores))[0]
+    const t = p.cpu ? L.slice().sort((a, b) => +(a === f) - +(b === f) || (a.cores - b.cores))[0]
       : await fxPickTarget({ p, opp: G.p[other(p.key)], src: f, ctx: {} }, L, `✨ <b>${esc(nm)}</b><br>Tap one of your refreshed ${c.exhaustOwn.kind === 'nexus' ? 'Nexuses' : 'Spirits'} to exhaust (the cost).`);
     if (!t) return false;
     t.exhausted = true; log(`${nm}: ${CARDS[t.id].name} is exhausted (cost).`); return true;

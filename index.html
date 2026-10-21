@@ -1171,7 +1171,7 @@ const SYMBOL_KINDS = ['ultimate', 'god'];          // special symbols besides th
    match seed/turn/step and the input record of the running match, enough to replay it) and "Close". The page keeps its own
    error handling (the events are not cancelled), so tests and the console still see every error.
    --------------------------------------------------------------------- */
-const $ = id => document.getElementById(id);   // DOM lookup for the web parts (moved from 00-config.js in v0.82.0: the engine has no DOM)
+const $ = id => /** @type {HTMLInputElement} */ (document.getElementById(id));   // DOM lookup for the web parts, typed as an input element for the checker (most lookups read .value / .checked / .files; moved from 00-config.js in v0.82.0: the engine has no DOM)
 const ERR_LOG = [];
 function errReport() {
   const lines = ['Aeterna error report', 'version: ' + (typeof VERSION !== 'undefined' ? VERSION : '?'), 'time: ' + new Date().toISOString()];
@@ -1293,13 +1293,14 @@ function bindHost(h) {
    type: 'Spirit' | 'Nexus' | 'Magic'      symbol: card color     symbols: number of symbols
    reduction: {color: n}         levels: [{cores, bp}]  (Nexus levels have no bp)
    --------------------------------------------------------------------- */
-const VERSION = '0.100.0';
+const VERSION = '0.101.0';
 const CARDS = {};
 function defCard(o) {
   CARDS[o.id] = Object.assign({ type: 'Spirit', reduction: {}, symbols: 1, families: [], keywords: [], implemented: true, desc: 'Vanilla test card (no effect).', block: 'A' }, o);
   CARDS[o.id].countLv = isCountLv(CARDS[o.id]);
 }
 // Generic vanilla Training cards (neutral names, no real card): a plain deck for sims and a first-run fallback
+/** @type {[string, string, number, number, number, number[][]][]} */
 const TRAIN = [
   ['01', 'Ember Pup', 1, 1, 1, [[1, 2000], [2, 3000]]], ['02', 'Spark Lizard', 2, 1, 1, [[1, 3000], [2, 4000], [3, 5000]]],
   ['03', 'Flame Hound', 2, 1, 1, [[1, 2000], [2, 4000], [3, 6000]]], ['04', 'Magma Guard', 3, 1, 1, [[1, 4000], [2, 6000]]],
@@ -1704,6 +1705,7 @@ async function chooseCard(c, L, title, text, optional) {
   if (!L.length) return null;
   if (c.p.cpu) return L.slice().sort((a, b) => CARDS[b.id].cost - CARDS[a.id].cost)[0];
   const ids = Array.from(new Set(L.map(x => x.id))).slice(0, 8);
+  /** @type {AskButton[]} */
   const buttons = ids.map(i => ({ label: CARDS[i].name, value: i }));
   if (optional) buttons.push({ label: 'Skip', cls: 'cancel', value: null });
   const id = await ask({ title, peek: true, wide: true, html: text, cards: cardIds(ids), buttons });
@@ -1868,7 +1870,7 @@ const FX_ACTIONS = {
       m = Math.min(m, c.p.hand.length); let last = null; c.ctx.discardedCost = null;
       for (let j = 0; j < m && c.p.hand.length; j++) {
         let d;
-        if (c.p.cpu) d = c.p.hand.slice().sort((x, y) => (CARDS[x.id].cost - CARDS[y.id].cost) || ((CARDS[x.id].type === 'Nexus') - (CARDS[y.id].type === 'Nexus')))[0];
+        if (c.p.cpu) d = c.p.hand.slice().sort((x, y) => (CARDS[x.id].cost - CARDS[y.id].cost) || (+(CARDS[x.id].type === 'Nexus') - +(CARDS[y.id].type === 'Nexus')))[0];
         else {
           const v = await ask({ title: `✨ ${nm}`, peek: true, html: `Discard a card from your Hand (${m - j} left).`, buttons: c.p.hand.slice(0, 12).map(x => ({ label: `${CARDS[x.id].name} (cost ${CARDS[x.id].cost})`, cls: 'primary', value: x.uid })) });
           d = c.p.hand.find(x => x.uid === v) || c.p.hand[0];
@@ -3452,7 +3454,7 @@ async function payInvokeCost(p, f, c) {
   }
   if (c.exhaustOwn) {
     const L = exhaustOwnCands(p, f, c.exhaustOwn); if (!L.length) return false;
-    const t = p.cpu ? L.slice().sort((a, b) => (a === f) - (b === f) || (a.cores - b.cores))[0]
+    const t = p.cpu ? L.slice().sort((a, b) => +(a === f) - +(b === f) || (a.cores - b.cores))[0]
       : await fxPickTarget({ p, opp: G.p[other(p.key)], src: f, ctx: {} }, L, `✨ <b>${esc(nm)}</b><br>Tap one of your refreshed ${c.exhaustOwn.kind === 'nexus' ? 'Nexuses' : 'Spirits'} to exhaust (the cost).`);
     if (!t) return false;
     t.exhausted = true; log(`${nm}: ${CARDS[t.id].name} is exhausted (cost).`); return true;
@@ -3975,7 +3977,7 @@ function parseCard(o) {
     if (effect && !MAGIC_FX[effect]) err2.push(`unknown "magic.effect" "${effect}" (use ${Object.keys(MAGIC_FX).join(', ')})`);
     const value = m.value == null ? 0 : Number(m.value);
     if (!int(value, 0, 99999)) err2.push('invalid "magic.value"');
-    magic = { timing: Array.from(new Set(timing)), effect, value };
+    magic = /** @type {MagicSpec} */ ({ timing: Array.from(new Set(timing)), effect, value });
     if (m.noMain === true) magic.noMain = true;           // v0.44 "(Can't Use in Main)"
     if (m.trashUse != null) {                              // v0.47 "while you control X, you can use this card from the Trash" (+ "when used from the Trash, instead ...", then banish)
       const t = m.trashUse, o2 = {};
@@ -4014,7 +4016,7 @@ function parseCard(o) {
   if (o.costAlt != null) {
     const a = o.costAlt;
     if (!a || typeof a !== 'object' || !int(Number(a.cost), 0, 30)) return { errors: ['invalid "costAlt" (use {"cost":3,"if":{...},"once":true})'] };
-    costAlt = { cost: Number(a.cost), once: a.once === true };
+    costAlt = /** @type {CostAlt} */ ({ cost: Number(a.cost), once: a.once === true });
     if (a.if != null) { const cr = parseCond(a.if); if (cr.error) return { errors: [cr.error] }; costAlt.if = cr.cond; }
   }
   let brave = null, overCount = null;
@@ -4023,7 +4025,7 @@ function parseCard(o) {
     const strs = x => x == null || (Array.isArray(x) && x.length <= 6 && x.every(y => typeof y === 'string' && y.trim()));
     if (b == null && levels.length) { /* v0.51.2: no combine data in the Fandom export (460 Braves): loads as a Spirit only and never combines (braveFits needs .brave) */ }
     else if (!b || typeof b !== 'object' || !int(Number(b.bp), 0, 99999) || !strs(b.family) || !strs(b.name) || (b.costGe != null && !int(b.costGe, 0, 30)) || (b.nexus != null && (typeof b.nexus !== 'object' || !b.nexus.name || !strs(b.nexus.name)))) err2.push('a Brave needs "brave": {"bp":5000,"family":[...],"name":[...],"costGe":N,"nexus":{"name":[...]}} (family/name/costGe/nexus optional)');
-    else { brave = { bp: Number(b.bp) }; if (b.family) brave.family = b.family.slice(); if (b.name) brave.name = b.name.slice(); if (b.costGe != null) brave.costGe = b.costGe; if (b.nexus) brave.nexus = { name: b.nexus.name.slice() }; }
+    else { brave = /** @type {BraveSpec} */ ({ bp: Number(b.bp) }); if (b.family) brave.family = b.family.slice(); if (b.name) brave.name = b.name.slice(); if (b.costGe != null) brave.costGe = b.costGe; if (b.nexus) brave.nexus = { name: b.nexus.name.slice() }; }
   } else if (o.brave != null) err2.push('"brave" is only for Brave cards');
   if (o.overCount != null) {          // {"count":4,"bp":5000}: Over Count condition and BP+ (manual p. 60)
     const a = o.overCount;
@@ -4038,8 +4040,8 @@ function parseCard(o) {
   if (mirage && !keywords.includes('MIRAGE')) keywords.push('MIRAGE');
   if (magic && magic.timing.includes('FLASH') && !keywords.includes('FLASH')) keywords.push('FLASH');
   let contractAdvent = null, manifest = null;
-  if (o.contractAdvent != null) { const a = o.contractAdvent; if (!a || typeof a !== 'object' || typeof a.family !== 'string' || !a.family || (a.counterGe != null && !int(a.counterGe, 0, 30)) || (a.turn != null && !['YOURS', 'EITHER'].includes(a.turn)) || (a.seal != null && a.seal !== true) || !['Spirit', 'Ultimate'].includes(type)) return { errors: ['invalid "contractAdvent" (use {"family":"Awakened Dragon","counterGe":2,"turn":"YOURS"|"EITHER","seal":true} on a Spirit/Ultimate)'] }; contractAdvent = { family: a.family, counterGe: a.counterGe || 0, turn: a.turn || 'YOURS' }; if (a.seal) contractAdvent.seal = true; if (!keywords.includes('CONTRACT_ADVENT')) keywords.push('CONTRACT_ADVENT'); if (!keywords.includes('FLASH')) keywords.push('FLASH'); }
-  if (o.manifest != null) { const a = o.manifest; if (!a || typeof a !== 'object' || typeof a.name !== 'string' || !a.name || (a.counterGe != null && !int(a.counterGe, 0, 30)) || (a.turn != null && !['YOURS', 'EITHER_ATTACK', 'YOUR_ATTACK'].includes(a.turn)) || (a.ultra != null && a.ultra !== true) || (a.seal != null && a.seal !== true) || (a.ultra && a.seal) || !['Spirit', 'Ultimate'].includes(type)) return { errors: ['invalid "manifest" (use {"name":"Contractor Mitra","counterGe":6,"turn":"YOURS"|"EITHER_ATTACK","ultra":true|"seal":true} on a Spirit/Ultimate)'] }; manifest = { name: a.name, counterGe: a.counterGe || 0, turn: a.turn || 'YOURS' }; if (a.ultra) manifest.ultra = true; if (a.seal) manifest.seal = true; if (!keywords.includes('MANIFEST')) keywords.push('MANIFEST'); if (!keywords.includes('FLASH')) keywords.push('FLASH'); }
+  if (o.contractAdvent != null) { const a = o.contractAdvent; if (!a || typeof a !== 'object' || typeof a.family !== 'string' || !a.family || (a.counterGe != null && !int(a.counterGe, 0, 30)) || (a.turn != null && !['YOURS', 'EITHER'].includes(a.turn)) || (a.seal != null && a.seal !== true) || !['Spirit', 'Ultimate'].includes(type)) return { errors: ['invalid "contractAdvent" (use {"family":"Awakened Dragon","counterGe":2,"turn":"YOURS"|"EITHER","seal":true} on a Spirit/Ultimate)'] }; contractAdvent = /** @type {ContractAdventSpec} */ ({ family: a.family, counterGe: a.counterGe || 0, turn: a.turn || 'YOURS' }); if (a.seal) contractAdvent.seal = true; if (!keywords.includes('CONTRACT_ADVENT')) keywords.push('CONTRACT_ADVENT'); if (!keywords.includes('FLASH')) keywords.push('FLASH'); }
+  if (o.manifest != null) { const a = o.manifest; if (!a || typeof a !== 'object' || typeof a.name !== 'string' || !a.name || (a.counterGe != null && !int(a.counterGe, 0, 30)) || (a.turn != null && !['YOURS', 'EITHER_ATTACK', 'YOUR_ATTACK'].includes(a.turn)) || (a.ultra != null && a.ultra !== true) || (a.seal != null && a.seal !== true) || (a.ultra && a.seal) || !['Spirit', 'Ultimate'].includes(type)) return { errors: ['invalid "manifest" (use {"name":"Contractor Mitra","counterGe":6,"turn":"YOURS"|"EITHER_ATTACK","ultra":true|"seal":true} on a Spirit/Ultimate)'] }; manifest = /** @type {ManifestSpec} */ ({ name: a.name, counterGe: a.counterGe || 0, turn: a.turn || 'YOURS' }); if (a.ultra) manifest.ultra = true; if (a.seal) manifest.seal = true; if (!keywords.includes('MANIFEST')) keywords.push('MANIFEST'); if (!keywords.includes('FLASH')) keywords.push('FLASH'); }
   /* v0.46 Ultimate summon condition ({{sumcon|...}}): an fxIf condition on the owner, checked for every summon and Advent of the card */
   const ctrlOK = q => [].concat(q).length > 0 && [].concat(q).every(x => x && typeof x === 'object' && ['Spirit', 'Ultimate', 'Both'].includes(x.type) && (x.n == null || int(x.n, 1, 5))
     && (x.colors == null || (Array.isArray(x.colors) && x.colors.length && x.colors.every(y => COLORS.includes(y)))) && (x.costGe == null || int(x.costGe, 0, 20)) && (x.family == null || (typeof x.family === 'string' && x.family))
@@ -4163,7 +4165,7 @@ const stdDeck = (id, name, recipe) => ({
   get missing() { let m = 0; for (const [k, n] of Object.entries(recipe)) if (!CARDS[k]) m += n; return m; },
 });
 const prebuiltFmt = d => d.format || 'eternal';
-const prebuiltOrder = format => PREBUILT.map((d, i) => ({ d, i })).sort((a, b) => (prebuiltFmt(b.d) === format) - (prebuiltFmt(a.d) === format) || a.i - b.i);      // decks of the chosen format first, index kept for COPY
+const prebuiltOrder = format => PREBUILT.map((d, i) => ({ d, i })).sort((a, b) => +(prebuiltFmt(b.d) === format) - +(prebuiltFmt(a.d) === format) || a.i - b.i);      // decks of the chosen format first, index kept for COPY
 const prebuiltLabel = d => d.name + (d.missing ? ` (incomplete, ${d.missing} missing)` : '');
 const PREBUILT = [
   { id: 'train', name: 'Training Red (generic vanilla cards)', cards: PRESET_DECK },
@@ -4186,7 +4188,9 @@ const PREBUILT = [
 ];
 const defaultDeck = () => Object.assign({}, PREBUILT.find(d => d.id === 'std02').cards);     // first-run and "Default" deck: the Standard starter 26RSD02 (most complete cards of the ten, 27 of 40 on 2026-10-21)
 const SLOT_KEY = 'bse.slots.v1', SLOT_COUNT = 8;
-let SLOTS = null, ACTIVE_SLOT = 0;
+/** @type {DeckSlot[]} */
+let SLOTS = null;
+let ACTIVE_SLOT = 0;
 function loadSlots() {
   try {
     const o = JSON.parse(localStorage.getItem(SLOT_KEY));
@@ -6189,6 +6193,7 @@ const sleeveImgCss = (sel, i, tint) => SLEEVE_IMG[i] ? `${sel}{background:url("$
 function applyLook() {                                // your side of the board (and the hand row) takes the active deck's look; the CPU keeps the default
   const L = deckLook(ACTIVE_SLOT), css = `#view-playmat .side-you{--sl-tint:${SLEEVE_TINTS[L.sleeve]};${coreVars('core', L.core)};${coreVars('soul', L.soul)}}` + sleeveImgCss('#view-playmat .side-you .sleeve,.db-mini .sleeve', ACTIVE_SLOT, L.sleeve)
     + SLOTS.map((s, i) => sleeveImgCss(`.dk-tile[data-v="${i}"]:not(.st) .dk-sl`, i, deckLook(i).sleeve)).join('');
+  /** @type {HTMLElement} */
   let s = $('ae-look'); if (!s) { s = document.createElement('style'); s.id = 'ae-look'; document.head.appendChild(s); }
   if (s.textContent !== css) s.textContent = css;
 }
@@ -6908,7 +6913,7 @@ async function replayOpenFile(file) {
   if (o && o.v === 1 && o.kind === 'aeterna-viewer') await openViewer(o);
   else await replayFromRecord(o);
 }
-document.addEventListener('change', e => { const t = e.target; if (t.id === 'in-replay' && t.files && t.files[0]) { const f = t.files[0]; t.value = ''; replayOpenFile(f); } });
+document.addEventListener('change', e => { const t = /** @type {HTMLInputElement} */ (e.target); if (t.id === 'in-replay' && t.files && t.files[0]) { const f = t.files[0]; t.value = ''; replayOpenFile(f); } });
 /* ---------------------------------------------------------------------
    v0.92.0 U5b LIGHT BATTLE ANIMATIONS (roadmap item U, owner 2026-10-21; docs/DESIGN.md section 0, U5b)
    After every board render the page compares the board with the last one and plays short cues in the shared overlay layer
@@ -7175,7 +7180,7 @@ function downloadText(name, text) {
 }
 function readFileText(f) { return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result)); r.onerror = () => rej(r.error); r.readAsText(f); }); }
 document.addEventListener('change', async e => {
-  const t = e.target;
+  const t = /** @type {HTMLInputElement} */ (e.target);
   if (t.id === 'in-cards' && t.files[0]) {
     try {
       const r = importCards(await readFileText(t.files[0]));
@@ -7323,7 +7328,8 @@ function boardSnapshot() {
 }
 /** Re-runs a port record in this engine (any host: headless, or the web page when no match is open). Every decision is
  *  answered from the record in order (same seat and kind, else "diverged at answer N"); the host is restored afterwards.
- *  Resolves { ok, reason, at, total, over, final, same, cut, sameCut, build, recBuild, frames? } (frames: viewer: true). */
+ *  Resolves { ok, reason, at, total, over, final, same, cut, sameCut, build, recBuild, frames? } (frames: viewer: true).
+ * @returns {Promise<PortRunResult>} */
 async function runPortRecord(rec, opts) {
   opts = opts || {};
   if (rec && rec.port && rec.port.v === 2) rec = rec.port;           // a fuzz case file
@@ -7349,6 +7355,7 @@ async function runPortRecord(rec, opts) {
   if (rec.format && rec.format !== FORMAT) setFormat(rec.format);
   if (SIM) { SIM_HUMAN = (rec.human || []).includes('player'); CPU_SIM_PROFILES = Object.assign({}, rec.cpu && rec.cpu.profiles); FUZZ = Object.assign({}, rec.cpu && rec.cpu.fuzz); }
   const t0 = Date.now(), timeoutMs = opts.timeoutMs || 60000;
+  /** @type {PortRunResult} */
   let res;
   try {
     startNewGame({ seed: rec.seed, deckA: rec.deckA, deckB: rec.deckB, noHistory: true, watch: !!rec.watch }).catch(e => { if (e !== ABORT && errors.length < 3) errors.push(String(e && e.message)); });

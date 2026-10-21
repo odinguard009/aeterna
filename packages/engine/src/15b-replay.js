@@ -36,7 +36,8 @@ function boardSnapshot() {
 }
 /** Re-runs a port record in this engine (any host: headless, or the web page when no match is open). Every decision is
  *  answered from the record in order (same seat and kind, else "diverged at answer N"); the host is restored afterwards.
- *  Resolves { ok, reason, at, total, over, final, same, cut, sameCut, build, recBuild, frames? } (frames: viewer: true). */
+ *  Resolves { ok, reason, at, total, over, final, same, cut, sameCut, build, recBuild, frames? } (frames: viewer: true).
+ * @returns {Promise<PortRunResult>} */
 async function runPortRecord(rec, opts) {
   opts = opts || {};
   if (rec && rec.port && rec.port.v === 2) rec = rec.port;           // a fuzz case file
@@ -62,6 +63,7 @@ async function runPortRecord(rec, opts) {
   if (rec.format && rec.format !== FORMAT) setFormat(rec.format);
   if (SIM) { SIM_HUMAN = (rec.human || []).includes('player'); CPU_SIM_PROFILES = Object.assign({}, rec.cpu && rec.cpu.profiles); FUZZ = Object.assign({}, rec.cpu && rec.cpu.fuzz); }
   const t0 = Date.now(), timeoutMs = opts.timeoutMs || 60000;
+  /** @type {PortRunResult} */
   let res;
   try {
     startNewGame({ seed: rec.seed, deckA: rec.deckA, deckB: rec.deckB, noHistory: true, watch: !!rec.watch }).catch(e => { if (e !== ABORT && errors.length < 3) errors.push(String(e && e.message)); });

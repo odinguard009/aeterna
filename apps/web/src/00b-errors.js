@@ -4,7 +4,7 @@
    match seed/turn/step and the input record of the running match, enough to replay it) and "Close". The page keeps its own
    error handling (the events are not cancelled), so tests and the console still see every error.
    --------------------------------------------------------------------- */
-const $ = id => document.getElementById(id);   // DOM lookup for the web parts (moved from 00-config.js in v0.82.0: the engine has no DOM)
+const $ = id => /** @type {HTMLInputElement} */ (document.getElementById(id));   // DOM lookup for the web parts, typed as an input element for the checker (most lookups read .value / .checked / .files; moved from 00-config.js in v0.82.0: the engine has no DOM)
 const ERR_LOG = [];
 function errReport() {
   const lines = ['Aeterna error report', 'version: ' + (typeof VERSION !== 'undefined' ? VERSION : '?'), 'time: ' + new Date().toISOString()];

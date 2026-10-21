@@ -58,4 +58,4 @@ async function replayOpenFile(file) {
   if (o && o.v === 1 && o.kind === 'aeterna-viewer') await openViewer(o);
   else await replayFromRecord(o);
 }
-document.addEventListener('change', e => { const t = e.target; if (t.id === 'in-replay' && t.files && t.files[0]) { const f = t.files[0]; t.value = ''; replayOpenFile(f); } });
+document.addEventListener('change', e => { const t = /** @type {HTMLInputElement} */ (e.target); if (t.id === 'in-replay' && t.files && t.files[0]) { const f = t.files[0]; t.value = ''; replayOpenFile(f); } });

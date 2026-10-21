@@ -99,7 +99,7 @@ function downloadText(name, text) {
 }
 function readFileText(f) { return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result)); r.onerror = () => rej(r.error); r.readAsText(f); }); }
 document.addEventListener('change', async e => {
-  const t = e.target;
+  const t = /** @type {HTMLInputElement} */ (e.target);
   if (t.id === 'in-cards' && t.files[0]) {
     try {
       const r = importCards(await readFileText(t.files[0]));

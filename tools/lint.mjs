@@ -5,6 +5,10 @@
 // typos the checker can name, duplicate keys/declarations, unreachable code, impossible comparisons).
 // DOM typing noise (EventTarget.closest, implicit any, ...) is ignored on purpose: the code is untyped JS.
 // Plus a few house rules: no `debugger`, no leftover `console.log`.
+// M5 types (v0.101.0): every other checker error is counted per source part against tools/type-baseline.json (a ratchet:
+// a part may not get more errors than its baseline; a part missing there, every engine and protocol part included,
+// must have none). The engine's record shapes are in packages/engine/types.d.ts. `node tools/lint.mjs --update-types`
+// lowers the baseline after a part got cleaner (it never raises it).
 import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -34,12 +38,15 @@ function tscBin() {
 const [bin, pre] = tscBin();
 let out = '';
 try {
-  out = execFileSync(bin, [...pre, '--allowJs', '--checkJs', '--noEmit', '--strict', 'false', '--lib', 'dom,es2022', '--target', 'es2022', '--skipLibCheck', join(ROOT, 'build/game.js')], { encoding: 'utf8' });
+  out = execFileSync(bin, [...pre, '--allowJs', '--checkJs', '--noEmit', '--strict', 'false', '--lib', 'dom,es2022', '--target', 'es2022', '--skipLibCheck', join(ROOT, 'packages/engine/types.d.ts'), join(ROOT, 'build/game.js')], { encoding: 'utf8' });
 } catch (e) { out = (e.stdout || '') + (e.stderr || ''); }
 
-const findings = [];
+const findings = [], perPart = {};
+if (/types\.d\.ts\(\d+,\d+\): error/.test(out)) findings.push('packages/engine/types.d.ts: ' + out.split('\n').filter(l => l.includes('types.d.ts(')).join(' | '));
 for (const m of out.matchAll(/game\.js\((\d+),(\d+)\): error TS(\d+): (.*)/g)) {
   const code = Number(m[3]), msg = m[4];
+  const part = where(Number(m[1])).replace(/:\d+$/, '');
+  perPart[part] = (perPart[part] || 0) + 1;
   if (!REAL.has(code)) continue;
   if (ALLOW.some(([c, t]) => c === code && msg.includes(t))) continue;
   findings.push(`${where(Number(m[1]))}:${m[2]}  TS${code} ${msg}`);
@@ -48,5 +55,20 @@ js.split('\n').forEach((l, i) => {
   if (/^\s*debugger\b|[;{}]\s*debugger\s*;/.test(l)) findings.push(`${where(i + 1)}  house rule: remove "debugger"`);
   if (/\bconsole\.log\(/.test(l)) findings.push(`${where(i + 1)}  house rule: remove console.log (use log() for the game log)`);
 });
+// type ratchet
+const BASE_FILE = join(ROOT, 'tools/type-baseline.json');
+const base = JSON.parse(readFileSync(BASE_FILE, 'utf8'));
+for (const [part, n] of Object.entries(perPart)) {
+  const allowed = base.parts[part] || 0;
+  if (n > allowed) findings.push(`${part}  types: ${n} checker errors, baseline ${allowed} (fix the new ones; tools/type-baseline.json)`);
+}
+const total = Object.values(perPart).reduce((a, b) => a + b, 0);
+const engineN = Object.entries(perPart).filter(([k]) => k.startsWith('packages/')).reduce((a, [, n]) => a + n, 0);
+if (process.argv.includes('--update-types')) {
+  const parts = {};
+  for (const [k, n] of Object.entries(base.parts).sort()) if (Math.min(n, perPart[k] || 0) > 0) parts[k] = Math.min(n, perPart[k] || 0);
+  writeFileSync(BASE_FILE, JSON.stringify({ note: base.note, parts }, null, 1) + '\n');
+  console.log(`types: baseline updated (${Object.values(parts).reduce((a, b) => a + b, 0)} errors allowed)`);
+}
 if (findings.length) { console.log(findings.join('\n')); console.log(`lint: ${findings.length} finding(s)`); process.exit(1); }
-console.log('lint: clean');
+console.log(`lint: clean (types: ${total} checker errors, engine + protocol ${engineN})`);

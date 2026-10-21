@@ -40,7 +40,7 @@ const stdDeck = (id, name, recipe) => ({
   get missing() { let m = 0; for (const [k, n] of Object.entries(recipe)) if (!CARDS[k]) m += n; return m; },
 });
 const prebuiltFmt = d => d.format || 'eternal';
-const prebuiltOrder = format => PREBUILT.map((d, i) => ({ d, i })).sort((a, b) => (prebuiltFmt(b.d) === format) - (prebuiltFmt(a.d) === format) || a.i - b.i);      // decks of the chosen format first, index kept for COPY
+const prebuiltOrder = format => PREBUILT.map((d, i) => ({ d, i })).sort((a, b) => +(prebuiltFmt(b.d) === format) - +(prebuiltFmt(a.d) === format) || a.i - b.i);      // decks of the chosen format first, index kept for COPY
 const prebuiltLabel = d => d.name + (d.missing ? ` (incomplete, ${d.missing} missing)` : '');
 const PREBUILT = [
   { id: 'train', name: 'Training Red (generic vanilla cards)', cards: PRESET_DECK },
@@ -63,7 +63,9 @@ const PREBUILT = [
 ];
 const defaultDeck = () => Object.assign({}, PREBUILT.find(d => d.id === 'std02').cards);     // first-run and "Default" deck: the Standard starter 26RSD02 (most complete cards of the ten, 27 of 40 on 2026-10-21)
 const SLOT_KEY = 'bse.slots.v1', SLOT_COUNT = 8;
-let SLOTS = null, ACTIVE_SLOT = 0;
+/** @type {DeckSlot[]} */
+let SLOTS = null;
+let ACTIVE_SLOT = 0;
 function loadSlots() {
   try {
     const o = JSON.parse(localStorage.getItem(SLOT_KEY));

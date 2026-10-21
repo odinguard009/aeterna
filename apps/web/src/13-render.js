@@ -166,6 +166,7 @@ const sleeveImgCss = (sel, i, tint) => SLEEVE_IMG[i] ? `${sel}{background:url("$
 function applyLook() {                                // your side of the board (and the hand row) takes the active deck's look; the CPU keeps the default
   const L = deckLook(ACTIVE_SLOT), css = `#view-playmat .side-you{--sl-tint:${SLEEVE_TINTS[L.sleeve]};${coreVars('core', L.core)};${coreVars('soul', L.soul)}}` + sleeveImgCss('#view-playmat .side-you .sleeve,.db-mini .sleeve', ACTIVE_SLOT, L.sleeve)
     + SLOTS.map((s, i) => sleeveImgCss(`.dk-tile[data-v="${i}"]:not(.st) .dk-sl`, i, deckLook(i).sleeve)).join('');
+  /** @type {HTMLElement} */
   let s = $('ae-look'); if (!s) { s = document.createElement('style'); s.id = 'ae-look'; document.head.appendChild(s); }
   if (s.textContent !== css) s.textContent = css;
 }

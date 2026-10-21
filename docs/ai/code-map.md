@@ -14,13 +14,13 @@ THEME_KEY, THEME_COLS, THEME, applyTheme, setTheme
 ## packages/protocol/src/00p-protocol.js (33 lines, ~0.6k tokens) — HOST PORT (v0.82.0, phase F2 = monorepo step M2; docs/ai/monorepo-plan.md "Design" 1)
 VIEW_TYPES, HOST_NONE, io, bindHost
 
-## packages/engine/src/01-cards.js (32 lines, ~0.6k tokens) — CARD DATABASE (Training cards + the built-in pack is registered further below)
+## packages/engine/src/01-cards.js (33 lines, ~0.6k tokens) — CARD DATABASE (Training cards + the built-in pack is registered further below)
 VERSION, CARDS, defCard, TRAIN, PRESET_DECK
 
 ## packages/engine/src/01a-card-pack.js (166 lines, ~2.4k tokens) — CARD PACK CODEC (v0.51.0; this part must load before 03-imported-cards.js: its consts are used at load): compact, synchronous format of the built-in card pack
 packBlockOf, packCards, unpackCards, INF_LBASE, INF_LEXT, INF_DBASE, INF_DEXT, INF_ORDER, inflateRaw, packBytes, loadPack
 
-## packages/engine/src/02a-effects-base.js (239 lines, ~5.7k tokens) — EFFECT ENGINE
+## packages/engine/src/02a-effects-base.js (240 lines, ~5.8k tokens) — EFFECT ENGINE
 FX_STRICT, FX_WARNED, fxUnknown, FX_COND_KEYS, FX_TRIGGERS, FX_TRIGGER_TEXT, BR_IDX, fxEntries, fxMatch, canBlockState, fxIf, ctrlCount, spiritCount, PER_TYPES, perOk, perCount, ownerOf, STATIC_FLAGS, fxImmune, unaffectedBy, flagActive, costDestroyBonus, coresSent, staticBp, takeFromVoid, releaseCores, removeNexus, fxPickTarget, toSoulState, chooseCard, bounceCard, SOUL_SRC, hasMatch
 
 ## packages/engine/src/02b-effects-actions.js (516 lines, ~13.9k tokens)
@@ -68,11 +68,11 @@ endOfBattle
 ## packages/engine/src/02p-effects-shared-shapes.js (187 lines, ~3.8k tokens)
 cardTeams, allHaveShapeOK, allHaveOK
 
-## packages/engine/src/03-imported-cards.js (215 lines, ~5.6k tokens) — IMPORTED CARD DATA
+## packages/engine/src/03-imported-cards.js (215 lines, ~5.7k tokens) — IMPORTED CARD DATA
 COLORS, BUILTIN_IDS, CARDS_KEY, IMPORTED, CARDS_VER, parseCard, registerImported, saveImported, importCards, clearImported, PACK_IDS, registerPack, TOKEN_IDS, registerTokens
 
-## packages/engine/src/04-decks.js (105 lines, ~2.9k tokens) — DECK STORAGE AND VALIDATION
-deckTotal, cleanDeck, validateDeck, fmtName, fmtButton, setFormat, errSummary, stdDeck, prebuiltFmt, prebuiltOrder, prebuiltLabel, PREBUILT, defaultDeck, SLOT_KEY, SLOTS, loadSlots, PLAYER_DECK, saveDeck, switchSlot, loadPrebuilt, CPU_DECK_NAME, cpuDeckFor
+## packages/engine/src/04-decks.js (107 lines, ~2.9k tokens) — DECK STORAGE AND VALIDATION
+deckTotal, cleanDeck, validateDeck, fmtName, fmtButton, setFormat, errSummary, stdDeck, prebuiltFmt, prebuiltOrder, prebuiltLabel, PREBUILT, defaultDeck, SLOT_KEY, SLOTS, ACTIVE_SLOT, loadSlots, PLAYER_DECK, saveDeck, switchSlot, loadPrebuilt, CPU_DECK_NAME, cpuDeckFor
 
 ## packages/engine/src/05-state.js (67 lines, ~1.3k tokens) — GAME STATE
 SET_KEY, SETTINGS, SPEEDS, saveSettings, G, fnv, recIn, SIM_DECK_B, SIM_HUMAN, DELAYS, delay, engineIdle, wait, log, mkInst, newPlayer, contractToDeck, redrawHand, cpuWantsRedraw, newGame
@@ -107,7 +107,7 @@ humanCan, legalityHTML, FX_KW_START, FX_LINE_STOP, effectLines, fxMark, slashBre
 ## apps/web/src/12-zones.js (70 lines, ~1.6k tokens) — ZONES, LOG, RULES COVERAGE
 openZoneModal, openLogModal, showRules
 
-## apps/web/src/13-render.js (345 lines, ~7.6k tokens) — RENDERING
+## apps/web/src/13-render.js (346 lines, ~7.7k tokens) — RENDERING
 nameHTML, isPC, applyLayout, _rz, colorVar, cardColors, isMulti, colorSty, symSlices, symCount, isUltimate, cardCls, rebMark, symBadgeHTML, handCardHTML, gemsHTML, fieldCardHTML, rowHTML, burstAreaHTML, soulAreaHTML, fieldAreaHTML, zoneBox, pv, pileHTML, lifePlate, resPlate, STEP_WARN, stepTargets, stepWarn, stepClick, SLEEVE_TINTS, CORE_LOOKS, deckLook, coreVars, SLEEVE_IMG, sleeveImgCss, applyLook, renderBoard, render, CUE, fxCueReset, aeRibbon, aeStrip, fxCues, LOG_OPEN, updateLogDrawer, toggleLog, magBtnHTML, liveStatusHTML, HIST_KEY, HISTORY, recordMatch, histHTML, lifeTxt, switchView, renderSettings, renderLobby
 
 ## apps/web/src/13a-deckbuilder.js (266 lines, ~5.6k tokens) — DECK BUILDER (v0.53.0 redesign; list performance from v0.52.1)
@@ -140,7 +140,7 @@ IMG, IDB, normKey, idbOpen, idbTx, setImg, loadImages, shrinkImage, stripExt, fi
 ## packages/engine/src/15-match.js (56 lines, ~1.2k tokens) — MATCH START / END
 startNewGame, matchSummary
 
-## packages/engine/src/15b-replay.js (88 lines, ~1.8k tokens) — REPLAY RECORDS (v0.85.0, phase F4 = monorepo step M4 part 1; docs/ai/monorepo-plan.md "Design" 2)
+## packages/engine/src/15b-replay.js (90 lines, ~1.9k tokens) — REPLAY RECORDS (v0.85.0, phase F4 = monorepo step M4 part 1; docs/ai/monorepo-plan.md "Design" 2)
 newPortRecord, portRecord, boardSnapshot, runPortRecord, viewerReplayOf
 
 ## apps/web/src/16-events.js (215 lines, ~4.7k tokens) — EVENTS (delegation)

@@ -67,7 +67,7 @@ function parseCard(o) {
     if (effect && !MAGIC_FX[effect]) err2.push(`unknown "magic.effect" "${effect}" (use ${Object.keys(MAGIC_FX).join(', ')})`);
     const value = m.value == null ? 0 : Number(m.value);
     if (!int(value, 0, 99999)) err2.push('invalid "magic.value"');
-    magic = { timing: Array.from(new Set(timing)), effect, value };
+    magic = /** @type {MagicSpec} */ ({ timing: Array.from(new Set(timing)), effect, value });
     if (m.noMain === true) magic.noMain = true;           // v0.44 "(Can't Use in Main)"
     if (m.trashUse != null) {                              // v0.47 "while you control X, you can use this card from the Trash" (+ "when used from the Trash, instead ...", then banish)
       const t = m.trashUse, o2 = {};
@@ -106,7 +106,7 @@ function parseCard(o) {
   if (o.costAlt != null) {
     const a = o.costAlt;
     if (!a || typeof a !== 'object' || !int(Number(a.cost), 0, 30)) return { errors: ['invalid "costAlt" (use {"cost":3,"if":{...},"once":true})'] };
-    costAlt = { cost: Number(a.cost), once: a.once === true };
+    costAlt = /** @type {CostAlt} */ ({ cost: Number(a.cost), once: a.once === true });
     if (a.if != null) { const cr = parseCond(a.if); if (cr.error) return { errors: [cr.error] }; costAlt.if = cr.cond; }
   }
   let brave = null, overCount = null;
@@ -115,7 +115,7 @@ function parseCard(o) {
     const strs = x => x == null || (Array.isArray(x) && x.length <= 6 && x.every(y => typeof y === 'string' && y.trim()));
     if (b == null && levels.length) { /* v0.51.2: no combine data in the Fandom export (460 Braves): loads as a Spirit only and never combines (braveFits needs .brave) */ }
     else if (!b || typeof b !== 'object' || !int(Number(b.bp), 0, 99999) || !strs(b.family) || !strs(b.name) || (b.costGe != null && !int(b.costGe, 0, 30)) || (b.nexus != null && (typeof b.nexus !== 'object' || !b.nexus.name || !strs(b.nexus.name)))) err2.push('a Brave needs "brave": {"bp":5000,"family":[...],"name":[...],"costGe":N,"nexus":{"name":[...]}} (family/name/costGe/nexus optional)');
-    else { brave = { bp: Number(b.bp) }; if (b.family) brave.family = b.family.slice(); if (b.name) brave.name = b.name.slice(); if (b.costGe != null) brave.costGe = b.costGe; if (b.nexus) brave.nexus = { name: b.nexus.name.slice() }; }
+    else { brave = /** @type {BraveSpec} */ ({ bp: Number(b.bp) }); if (b.family) brave.family = b.family.slice(); if (b.name) brave.name = b.name.slice(); if (b.costGe != null) brave.costGe = b.costGe; if (b.nexus) brave.nexus = { name: b.nexus.name.slice() }; }
   } else if (o.brave != null) err2.push('"brave" is only for Brave cards');
   if (o.overCount != null) {          // {"count":4,"bp":5000}: Over Count condition and BP+ (manual p. 60)
     const a = o.overCount;
@@ -130,8 +130,8 @@ function parseCard(o) {
   if (mirage && !keywords.includes('MIRAGE')) keywords.push('MIRAGE');
   if (magic && magic.timing.includes('FLASH') && !keywords.includes('FLASH')) keywords.push('FLASH');
   let contractAdvent = null, manifest = null;
-  if (o.contractAdvent != null) { const a = o.contractAdvent; if (!a || typeof a !== 'object' || typeof a.family !== 'string' || !a.family || (a.counterGe != null && !int(a.counterGe, 0, 30)) || (a.turn != null && !['YOURS', 'EITHER'].includes(a.turn)) || (a.seal != null && a.seal !== true) || !['Spirit', 'Ultimate'].includes(type)) return { errors: ['invalid "contractAdvent" (use {"family":"Awakened Dragon","counterGe":2,"turn":"YOURS"|"EITHER","seal":true} on a Spirit/Ultimate)'] }; contractAdvent = { family: a.family, counterGe: a.counterGe || 0, turn: a.turn || 'YOURS' }; if (a.seal) contractAdvent.seal = true; if (!keywords.includes('CONTRACT_ADVENT')) keywords.push('CONTRACT_ADVENT'); if (!keywords.includes('FLASH')) keywords.push('FLASH'); }
-  if (o.manifest != null) { const a = o.manifest; if (!a || typeof a !== 'object' || typeof a.name !== 'string' || !a.name || (a.counterGe != null && !int(a.counterGe, 0, 30)) || (a.turn != null && !['YOURS', 'EITHER_ATTACK', 'YOUR_ATTACK'].includes(a.turn)) || (a.ultra != null && a.ultra !== true) || (a.seal != null && a.seal !== true) || (a.ultra && a.seal) || !['Spirit', 'Ultimate'].includes(type)) return { errors: ['invalid "manifest" (use {"name":"Contractor Mitra","counterGe":6,"turn":"YOURS"|"EITHER_ATTACK","ultra":true|"seal":true} on a Spirit/Ultimate)'] }; manifest = { name: a.name, counterGe: a.counterGe || 0, turn: a.turn || 'YOURS' }; if (a.ultra) manifest.ultra = true; if (a.seal) manifest.seal = true; if (!keywords.includes('MANIFEST')) keywords.push('MANIFEST'); if (!keywords.includes('FLASH')) keywords.push('FLASH'); }
+  if (o.contractAdvent != null) { const a = o.contractAdvent; if (!a || typeof a !== 'object' || typeof a.family !== 'string' || !a.family || (a.counterGe != null && !int(a.counterGe, 0, 30)) || (a.turn != null && !['YOURS', 'EITHER'].includes(a.turn)) || (a.seal != null && a.seal !== true) || !['Spirit', 'Ultimate'].includes(type)) return { errors: ['invalid "contractAdvent" (use {"family":"Awakened Dragon","counterGe":2,"turn":"YOURS"|"EITHER","seal":true} on a Spirit/Ultimate)'] }; contractAdvent = /** @type {ContractAdventSpec} */ ({ family: a.family, counterGe: a.counterGe || 0, turn: a.turn || 'YOURS' }); if (a.seal) contractAdvent.seal = true; if (!keywords.includes('CONTRACT_ADVENT')) keywords.push('CONTRACT_ADVENT'); if (!keywords.includes('FLASH')) keywords.push('FLASH'); }
+  if (o.manifest != null) { const a = o.manifest; if (!a || typeof a !== 'object' || typeof a.name !== 'string' || !a.name || (a.counterGe != null && !int(a.counterGe, 0, 30)) || (a.turn != null && !['YOURS', 'EITHER_ATTACK', 'YOUR_ATTACK'].includes(a.turn)) || (a.ultra != null && a.ultra !== true) || (a.seal != null && a.seal !== true) || (a.ultra && a.seal) || !['Spirit', 'Ultimate'].includes(type)) return { errors: ['invalid "manifest" (use {"name":"Contractor Mitra","counterGe":6,"turn":"YOURS"|"EITHER_ATTACK","ultra":true|"seal":true} on a Spirit/Ultimate)'] }; manifest = /** @type {ManifestSpec} */ ({ name: a.name, counterGe: a.counterGe || 0, turn: a.turn || 'YOURS' }); if (a.ultra) manifest.ultra = true; if (a.seal) manifest.seal = true; if (!keywords.includes('MANIFEST')) keywords.push('MANIFEST'); if (!keywords.includes('FLASH')) keywords.push('FLASH'); }
   /* v0.46 Ultimate summon condition ({{sumcon|...}}): an fxIf condition on the owner, checked for every summon and Advent of the card */
   const ctrlOK = q => [].concat(q).length > 0 && [].concat(q).every(x => x && typeof x === 'object' && ['Spirit', 'Ultimate', 'Both'].includes(x.type) && (x.n == null || int(x.n, 1, 5))
     && (x.colors == null || (Array.isArray(x.colors) && x.colors.length && x.colors.every(y => COLORS.includes(y)))) && (x.costGe == null || int(x.costGe, 0, 20)) && (x.family == null || (typeof x.family === 'string' && x.family))

@@ -3,13 +3,14 @@
    type: 'Spirit' | 'Nexus' | 'Magic'      symbol: card color     symbols: number of symbols
    reduction: {color: n}         levels: [{cores, bp}]  (Nexus levels have no bp)
    --------------------------------------------------------------------- */
-const VERSION = '0.100.0';
+const VERSION = '0.101.0';
 const CARDS = {};
 function defCard(o) {
   CARDS[o.id] = Object.assign({ type: 'Spirit', reduction: {}, symbols: 1, families: [], keywords: [], implemented: true, desc: 'Vanilla test card (no effect).', block: 'A' }, o);
   CARDS[o.id].countLv = isCountLv(CARDS[o.id]);
 }
 // Generic vanilla Training cards (neutral names, no real card): a plain deck for sims and a first-run fallback
+/** @type {[string, string, number, number, number, number[][]][]} */
 const TRAIN = [
   ['01', 'Ember Pup', 1, 1, 1, [[1, 2000], [2, 3000]]], ['02', 'Spark Lizard', 2, 1, 1, [[1, 3000], [2, 4000], [3, 5000]]],
   ['03', 'Flame Hound', 2, 1, 1, [[1, 2000], [2, 4000], [3, 6000]]], ['04', 'Magma Guard', 3, 1, 1, [[1, 4000], [2, 6000]]],

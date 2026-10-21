@@ -4,6 +4,15 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 
 Older releases (v0.80.0 and earlier): [CHANGELOG-archive.md](CHANGELOG-archive.md).
 
+## v0.101.0
+- Lane: U/I
+- Time: ~20 min (chain continuation of v0.100.0), Opus 5.5; tokens in the DONE mark on issue #1.
+- **M5 part 1: type checks with a ratchet (no game change).**
+  - `tools/lint.mjs` (loop, pre-push, CI) now counts every TypeScript checker error on the built game per source part against `tools/type-baseline.json`: a part may not get more errors than its baseline, and engine and protocol parts (not listed) must have none. `node tools/lint.mjs --update-types` lowers the baseline after a cleanup. The lint line shows the totals.
+  - `packages/engine/types.d.ts`: shapes of the engine records the checker needs (card def, Magic spec, cost alternative, Brave, Contract Advent / Manifest, modal button, deck slot, port replay result), used from JSDoc in the parts.
+  - Engine and protocol: 25 checker errors fixed (JSDoc types and casts; boolean sort keys written as `+(a) - +(b)`, same order): 0 left. Web: the `$()` lookup and two file-input handlers are typed as input elements: 154 -> 74. Total 179 -> 74. Tests T101-1/2.
+  - Next M5 steps (bundled with later U/I sessions): web parts to 0, then `--noImplicitAny` for the engine.
+
 ## v0.100.0
 - Lane: U/I
 - Time: ~25 min (session start to release), Opus 5.5, scheduled auto session; tokens in the DONE mark on issue #1.
