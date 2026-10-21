@@ -4,7 +4,7 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 
 ## v0.91.0
 - Lane: U/I
-- Time: TIME_LINE
+- Time: about 75 min (session start to release), Opus, tokens in the DONE mark (player-view pass about 31 min of it).
 - **Battle popups in the new style (roadmap U5): every dialog, prompt and pick bar now uses the mockup v11 look, and the battle gets ribbons for the turn, the step, your Flash Timing and the match start ("GATE OPEN, RELEASE!").**
   - Dialogs: cut-corner panel with a side-colour bar and a kind chip (EFFECT, FLASH TIMING, BURST, PAYMENT, MATCH SETUP, RESULT, ...), skewed buttons; yellow is used only for the "yes" of a yes/no prompt, "Cancel" / "Skip" / "Pass" are grey instead of red. On the phone dialogs open as bottom sheets. DEFEAT shows in the CPU colour.
   - Block prompt: a "BLOCK?" chevron strip across the board centre in the CPU colour while you choose a blocker, with a grey "Do not block".
