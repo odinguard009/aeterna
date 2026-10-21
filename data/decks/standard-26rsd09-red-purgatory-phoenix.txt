@@ -1,0 +1,16 @@
+3 26RSD09-001   # Lalyre
+3 26RSD09-002   # Marugris
+3 26RSD09-003   # Laben-Miles
+2 26RSD09-004   # Faltex
+3 26RSD09-005   # The Archer Coupiel
+3 26RSD09-006   # Tookamolu
+2 26RSD09-007   # The ThreeTreasures Cornix
+2 26RSD09-008   # The Heaven-Piercing Spinard
+2 26RSD09-009   # The Silver-Clad Assipha
+3 26RSD09-010   # The Floating Crag Link
+3 26RSD09-011   # The Ravine of Mighty Winds
+2 26RSD09-012   # Blaze Draw
+3 26RSD09-013   # Hot Shot
+2 26RSD01-014   # Flame Hurricane
+2 26RSD09-X01   # The HundredEyes Boreowl
+2 26RSD09-X02   # The PurgatoryPhoenix Zekuga-Ignate

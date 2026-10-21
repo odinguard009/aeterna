@@ -1,0 +1,16 @@
+3 26RSD10-001   # Thispressa
+3 26RSD10-002   # Hodio
+2 26RSD10-003   # Sharky
+3 26RSD10-004   # Monocowl
+3 26RSD10-005   # Glan-Silus
+3 26RSD10-006   # Calling to the Beyond, Sireni
+2 26RSD10-007   # Lamydoneus
+2 26RSD10-008   # Colossal Miltoni
+2 26RSD10-009   # The BurgWhelmer Balaculus
+3 26RSD10-010   # Bubble Trap
+3 26RSD10-011   # The Forgewater Vent
+2 26RSD10-012   # Abyss Call
+3 26RSD10-013   # Swordish Comes
+2 26RSD03-014   # Tentacle Attack
+2 26RSD10-X01   # The TwinWaterFang Raena-Helena
+2 26RSD10-X02   # The AberrantWhale DeepCaesar-Abyss

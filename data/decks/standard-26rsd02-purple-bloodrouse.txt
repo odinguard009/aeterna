@@ -1,0 +1,16 @@
+3 26RSD02-001   # Sclouse
+3 26RSD02-002   # Firalba
+3 26RSD02-003   # Medici-Cattery
+2 26RSD02-004   # Garsis
+3 26RSD02-005   # Boogilugar
+2 26RSD02-006   # Ram Toker
+2 26RSD02-007   # Lady Lamica
+3 26RSD02-008   # Ogrul
+3 26RSD02-009   # Utmost Depth: The Bloodrouse Mountain Range
+3 26RSD02-010   # The Violet Witherlands
+3 26RSD02-011   # Dark Hang
+2 26RSD02-012   # Blood Sip
+2 26RSD02-013   # Rainy Poison
+2 26RSD02-014   # Soul Bite
+2 26RSD02-X01   # The HeadNurse Nephila
+2 26RSD02-X02   # Emperor Perigorouge

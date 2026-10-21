@@ -1,0 +1,16 @@
+3 26RSD04-001   # Atun
+3 26RSD04-002   # Nonril
+3 26RSD04-003   # Arsinus
+2 26RSD04-004   # The HeavyClaw Forclawer
+3 26RSD04-005   # Chimeniruga
+2 26RSD04-006   # Dabity
+2 26RSD04-007   # Junks
+2 26RSD04-008   # The MightyArm Anatoma
+3 26RSD04-009   # The Quarry Plain
+3 26RSD04-010   # Utmost Depth: The White Heaven Plain
+2 26RSD04-011   # The Menhir Circle
+3 26RSD04-012   # Rock Drilling
+3 26RSD04-013   # Dream Rotor
+2 26RSD04-014   # Defensive Gate
+2 26RSD04-X01   # The ContinentalShip Matanda
+2 26RSD04-X02   # The TrueGateMinister Savatoma

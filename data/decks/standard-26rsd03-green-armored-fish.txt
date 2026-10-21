@@ -1,0 +1,16 @@
+2 26RSD03-001   # Flutty
+3 26RSD03-002   # Puffer
+2 26RSD03-003   # Rassehead
+3 26RSD03-004   # Straray
+3 26RSD03-005   # Mola Moula
+2 26RSD03-006   # The OceanPhantom Coela-Canth
+2 26RSD03-007   # Garizarot
+3 26RSD03-008   # The HeavyJaws Dorogoliath
+2 26RSD03-009   # The TransparentHood Olindias
+3 26RSD03-010   # Utmost Depth: The Emerald Abyss
+3 26RSD03-011   # The Bubble Cluster Realm
+3 26RSD03-012   # Hand Molt
+3 26RSD03-013   # Vortex Shave
+2 26RSD03-014   # Tentacle Attack
+2 26RSD03-X01   # The ArmoredHands Squid
+2 26RSD03-X02   # The DeepNest Duntekleo

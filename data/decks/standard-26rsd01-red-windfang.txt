@@ -1,0 +1,16 @@
+3 26RSD01-001   # Mushakko
+3 26RSD01-002   # Gen-Bor
+2 26RSD01-003   # Rowamiku
+3 26RSD01-004   # Haarier
+3 26RSD01-005   # Goon-Gata
+2 26RSD01-006   # Cupell
+2 26RSD01-007   # Griffar
+2 26RSD01-008   # Sertarius
+2 26RSD01-009   # The FlyingAce Reufalx
+3 26RSD01-010   # Utmost Depth: The Windfang Crag
+3 26RSD01-011   # The Floating Stone Realm
+3 26RSD01-012   # Break Claw
+3 26RSD01-013   # Offering Draw
+2 26RSD01-014   # Flame Hurricane
+2 26RSD01-X01   # The FlyingScarlet Rensis
+2 26RSD01-X02   # The FlyingIron Akurai

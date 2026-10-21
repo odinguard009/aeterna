@@ -1,0 +1,16 @@
+3 26RSD08-001   # Amaruna
+2 26RSD08-002   # ［Evil Sacred Origin］Chaori Pegasuros
+3 26RSD08-003   # ［Silver Cat Origin］Jakomina Kit
+3 26RSD08-004   # ［Seven Stars Origin］Hokuto Apollonia
+3 26RSD08-005   # Lucxia Lance
+2 26RSD08-006   # ［ArcAnge Origin］Rarapha El
+2 26RSD08-007   # ［Conviction Origin］Jeanne Doraniece
+2 26RSD08-008   # ［Dark King Origin］Griffiar d'Arc
+2 26RSD08-009   # ［Dark Dragon Origin］Tyara Norsauran
+3 26RSD08-010   # Yellow Rise Stage
+3 26RSD08-011   # Yellow Rise: The Swordian Performance
+3 26RSD08-012   # Angelic Feather Song
+3 26RSD08-013   # Twilight Fantasia Song
+2 26RSD08-014   # Shining Sword Song
+2 26RSD08-X01   # ［Mega Thunder Origin］Zelotia
+2 26RSD08-X02   # ［Shining Origin］Rei-Ohba

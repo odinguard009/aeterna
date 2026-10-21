@@ -1,0 +1,16 @@
+3 26RSD06-001   # Nausa
+3 26RSD06-002   # Deertora
+2 26RSD06-003   # Melrak
+2 26RSD06-004   # Rhiceros
+3 26RSD06-005   # Slouth
+2 26RSD06-006   # Svarris
+3 26RSD06-007   # Armalido
+2 26RSD06-008   # The TreeShadow Felio
+3 26RSD06-009   # The Misty Forest
+3 26RSD06-010   # Utmost Depth: The Extreme Giant Tree
+3 26RSD06-011   # The Barrage Forest
+3 26RSD06-012   # Feeding Draw
+2 26RSD06-013   # Stem Lance
+2 26RSD06-014   # Full Stomach
+2 26RSD06-X01   # The ShieldHorn Gigantherion
+2 26RSD06-X02   # The ExtremeTree Elephas

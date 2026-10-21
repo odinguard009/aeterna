@@ -1,0 +1,16 @@
+3 26RSD05-001   # Quill
+3 26RSD05-002   # Amaru
+2 26RSD05-003   # Raniraya
+3 26RSD05-004   # Divaes
+3 26RSD05-005   # Lucance
+2 26RSD05-006   # Semarogue
+2 26RSD05-007   # The SearchingThunder Pelborg
+2 26RSD05-008   # The CelestialThunderFist Wigil
+3 26RSD05-009   # The Thunder Driftways
+3 26RSD05-010   # Utmost Depth: The Peaks of Great Thunder Mountain
+3 26RSD05-011   # Fire Pillar
+3 26RSD05-012   # Rebirth Thunder
+2 26RSD05-013   # Nestling
+2 26RSD05-014   # Triple Thunder
+2 26RSD05-X01   # The EruptingThunder Palecoeurl
+2 26RSD05-X02   # The SpellThunder Lucnas
