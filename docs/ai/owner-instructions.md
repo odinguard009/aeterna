@@ -112,3 +112,8 @@ Agreed plan: phase F (effect schema + validator, host port M2/M3, replays M4, te
 ## Time efficiency (2026-10-21, chat)
 - The owner asked why v0.89.0 took so long (about 69 minutes from the v0.88.0 release to the v0.89.0 release for 9 cards) and whether it can be made faster. Suggestions given: mechanic sessions separate from card sessions, group cards by shared mechanic, rank by cards unlocked, write docs while CI runs, add a time line per release.
 - Owner: "oke, saya menerima saran anda asal tidak ada kompromi pada hasil". Recorded as item T in `docs/ai/roadmap-open.md` (rules live there).
+
+## Roadmap audit fixes, layout deferred (2026-10-21, chat)
+- After a full audit of the non-card roadmap and a UI audit: "tunda dulu masalah layout, sarankan penyelesaian masalah dari hasil full audit dulu" / (after the proposal) "oke masukan semua rencana perbaikan itu". Applied: U/I queue `docs cleanup, format default, Standard decks, Standard rules, U8a, Q3 + Q4, M5, CPU benchmark, M6, M7, M8, card images`, the "Audit fixes" and "Deferred UI" notes under item L in `docs/ai/roadmap-open.md`, and the M6-M8 additions in `docs/ai/monorepo-plan.md`.
+- Earlier the same day: "majukan format default dan Standard decks" (applied in bad8a65); the owner finds the battle animations not impressive enough and wants the CrossOver style, phone popups that rise from the bottom to the centre within thumb reach, and bigger PC elements; all of that is in "Deferred UI" until the owner lifts it (mockup `claude/layout-proposal.html` in the owner's Project).
+

@@ -50,6 +50,13 @@ npm workspaces (built into npm, no registry needed for local packages) instead o
   - Applied to our plan: **M6** server = rooms with quick match, private room codes and vs-bot seats, guests allowed, seat-filtered views from our `io` port (no Colyseus needed; Node built-ins + one WebSocket library), single process (no Redis). **M7** = accounts (Discord OAuth and email magic link, both optional for casual play), decks, match history and replays (our port records) in Postgres; ranked later. **M8** = lobby (quick match, private room code, vs CPU offline) and account panel in `apps/web`; the offline single file stays untouched.
   - Free hosting (checked 2026-10-21; re-check before deploying): Oracle Cloud Always Free Arm VM (cut to 2 OCPU / 12 GB on 2026-06-15) runs the server and Postgres in Docker; or Render free web service (sleeps after 15 min without traffic, about 1 min to wake, 750 h/month) with Neon free Postgres (1 GB per project, suspends after 5 min idle; Render's own free Postgres expires after 30 days). Hosting, a domain and the email sender stay the owner's decision; nothing is deployed by a session.
 
+## Additions from the roadmap audit (owner, 2026-10-21)
+- **M6, one engine per room:** `loadEngine()` in `packages/engine/headless.mjs` already gives each match its own `node:vm` context (the engine keeps global state such as `G`); M6 uses one context per room and adds a test that measures memory and start time per room (target: written down before choosing a room limit).
+- **M6, CPU seats on the server:** the server's vs-bot seat answers through the port (`cpuAnswer`); the offline CPU seat that still decides inline (M3 note, v0.84.0) moves to the port first, behaviour unchanged (sims and Regression must match).
+- **M6, hidden cards never leave the server:** the test from the card-image plan (step 5) moves here: a seat-filtered view never contains a hidden card's ID (opposing hand, deck, face-down Burst), checked on the wire.
+- **M6 / M7 time:** npm packages (WebSocket, Postgres client) install only in GitHub Actions, so these sessions wait on CI for every server test; plan them as longer sessions and keep the pure parts (rooms, views, timeouts) testable without packages.
+- **Owner decisions before any deployment (not before building):** privacy policy and terms (accounts keep emails), card names and card images on a public server, hosting, domain, email sender. Sessions write these down; none of them blocks M6-M8 code.
+
 ## Rules for every phase
 - Offline game behaviour never changes in a migration step; the player-view check runs after M1, M2, M3, M8.
 - Backup branch before M1, M2, M3 and M6.
