@@ -13,7 +13,11 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 if [ "${1:-}" = "--end" ]; then
   REPO=odinguard009/aeterna; OUT=${OUT:-/mnt/user-data/outputs}; ver=$(node -p "require('./package.json').version")
-  sha=$(git rev-parse HEAD); echo "[end] v$ver at ${sha:0:7}"
+  head=$(git rev-parse HEAD)
+  # CI ignores docs/**, *.md and .claude/** (ci.yml paths-ignore): a docs-only HEAD never gets a CI run, so wait on the newest commit that CI does run on
+  # (v0.90 time review: waiting on the docs-only HEAD burned the full ~15 min timeout in every release); fall back to HEAD when none is in the clone
+  sha=$(git log -1 --format=%H -- . ':(exclude,glob)docs/**' ':(exclude,glob)**/*.md' ':(exclude,glob).claude/**' 2>/dev/null); sha=${sha:-$head}
+  echo "[end] v$ver at ${head:0:7} (CI commit ${sha:0:7})"
   # 1. CI on the pushed commit (needed for the GitHub Release); up to ~15 min
   for i in $(seq 1 60); do
     ci=$(gh api "repos/$REPO/actions/workflows/ci.yml/runs?head_sha=$sha&per_page=1" --jq '.workflow_runs[0] | "\(.status) \(.conclusion // "-") \(.id)"' 2>/dev/null || echo "gh-error - -")
