@@ -4,6 +4,8 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 
 ## v0.90.0
 - Lane: K
+- Time: about 35 min (session start to release), Opus, about 24,000 tokens (chain session 3).
+- S1 is closed for now (item T.2): the 6 Standard Magic cards left each need a mechanic no other blocked card shares; they are listed in the K queue of `docs/ai/roadmap-open.md`, and the next sessions take the U/I queue (U5 first).
 - **Standard Magic, part 3 (roadmap S1): 4 more Standard Magic cards in the library: Awakening (complete), Vermillion Roar, Thunder Shutter and Massive Grow (partial).** Playable 6,886 -> 6,890, complete 770 -> 771; Standard block A 668 of 674 playable.
   - Effect format schema v4 (`docs/ai/effect-format.md`, `packages/engine/src/02p-effects-standard.js`): match fields `keyword` ("a Spirit with Clash": the card prints the keyword head "Clash (...)", a card that only mentions it does not count) and `noText` ("with no printed effects"); `SUMMON_HAND` also takes a colour / `noText` match and marks the summoned card for `DESTROY_PICKED` ("When this battle ends, destroy the summoned"); action `OWN_CORE_TO_LIFE` ("Send a core, besides [Soul Core], from it to your Life").
   - Still out of the library (6): Guard Effect (can't be targeted by opposing Magic), Sacrifice Strike (Rumble number), Boost Energy (a Nexus treated as a Spirit), Furious Anger (loses a symbol), Howling Song and Twilight Fantasia Song (granted effects).
