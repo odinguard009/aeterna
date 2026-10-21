@@ -202,11 +202,11 @@
 
 <div id="log-drawer"><div class="ld-head"><span>📜 Game Log</span><button class="btn-nav-small" data-a="log-close">Close ✕</button></div><div class="ld-body" id="ld-body"></div></div>
 <div id="peek-bar"><div id="peek-text"></div><div id="peek-btns"></div></div>
-<div id="pick-bar"><div id="pick-text"></div><div id="pick-btns"></div></div>
+<div id="pick-bar"><div id="pick-text" role="status" aria-live="polite"></div><div id="pick-btns"></div></div>
 <div id="zoom-overlay" data-a="zoomclose"></div>
 <div id="ae-fx" aria-hidden="true"><div class="ae-strip" hidden></div></div>
 <div id="action-modal" class="modal-overlay">
-  <div class="modal-box">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-card-title">
     <div id="modal-card-title" class="modal-title">Zone Details</div>
     <div id="modal-card-desc" class="modal-desc">Zone Information</div>
     <div id="modal-actions" class="modal-btns"></div>

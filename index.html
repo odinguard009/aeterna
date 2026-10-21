@@ -215,8 +215,8 @@ header h1 { font-size: 11px; }
 }
 .modal-overlay { position: fixed; inset: 0; background: #07090dcc; display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
 .modal-overlay.active { opacity: 1; pointer-events: auto; }
-.modal-box { position: relative; background: linear-gradient(180deg, var(--ae-panel1), var(--ae-panel2)); color: var(--ae-text); border-radius: 0; padding: 18px 18px 16px; width: 88%; max-width: 380px; text-align: center; max-height: 80vh; overflow-y: auto; box-shadow: inset 0 4px 0 var(--you), inset 0 0 0 1px var(--ae-line2); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px)); }
-.modal-title { color: var(--ae-text); font-size: 15px; font-weight: 900; letter-spacing: .06em; margin-bottom: 8px; }
+.modal-box { position: relative; background: linear-gradient(180deg, var(--ae-panel1), var(--ae-panel2)); color: var(--ae-text); border-radius: 0; padding: 18px 18px 16px; width: 88%; max-width: 380px; text-align: center; max-height: 80vh; overflow-y: auto; overscroll-behavior: contain; box-shadow: inset 0 4px 0 var(--you), inset 0 0 0 1px var(--ae-line2); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px)); }
+.modal-title { color: var(--ae-text); font-size: 15px; font-weight: 900; letter-spacing: .06em; margin-bottom: 8px; text-wrap: balance; }
 .modal-box[data-kind]::before { content: attr(data-kind); display: table; margin: 0 auto 8px; padding: 2px 14px; font-size: 10px; font-weight: 900; letter-spacing: .18em; background: var(--you); color: var(--you-ink); clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%); }
 .modal-box.lose { box-shadow: inset 0 4px 0 var(--cpu), inset 0 0 0 1px var(--ae-line2); } .modal-box.lose::before { background: var(--cpu); color: var(--cpu-ink); }
 .modal-box[data-kind="RESULT"] .modal-title { font-size: 26px; font-style: italic; letter-spacing: .08em; }
@@ -997,11 +997,11 @@ html.layout-pc .doc-card { padding: 18px 24px 20px; }
 
 <div id="log-drawer"><div class="ld-head"><span>📜 Game Log</span><button class="btn-nav-small" data-a="log-close">Close ✕</button></div><div class="ld-body" id="ld-body"></div></div>
 <div id="peek-bar"><div id="peek-text"></div><div id="peek-btns"></div></div>
-<div id="pick-bar"><div id="pick-text"></div><div id="pick-btns"></div></div>
+<div id="pick-bar"><div id="pick-text" role="status" aria-live="polite"></div><div id="pick-btns"></div></div>
 <div id="zoom-overlay" data-a="zoomclose"></div>
 <div id="ae-fx" aria-hidden="true"><div class="ae-strip" hidden></div></div>
 <div id="action-modal" class="modal-overlay">
-  <div class="modal-box">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-card-title">
     <div id="modal-card-title" class="modal-title">Zone Details</div>
     <div id="modal-card-desc" class="modal-desc">Zone Information</div>
     <div id="modal-actions" class="modal-btns"></div>
