@@ -6,6 +6,7 @@ Older releases (v0.80.0 and earlier): [CHANGELOG-archive.md](CHANGELOG-archive.m
 
 ## v0.100.0
 - Lane: U/I
+- Time: ~25 min (session start to release), Opus 5.5, scheduled auto session; tokens in the DONE mark on issue #1.
 - **Q3 part 2 + Q4: tests cite rule chunks, one-card verify skill.**
   - Tests cite rules knowledge base chunks as `<id>@<pin>` (pin = first 8 hex digits of the section fingerprint): `// rules:` comments in 15 Node test files and a `rules` array in 6 scenario boards (40 citations of 25 chunks). `python3 tools/rules_kb.py --list-tests` reports `UNKNOWN` ids and `STALE` pins (the section changed after a manual refresh); `--pin-tests` re-pins them once the tests were re-checked; `--query` prints the line to copy. Tests K08-K09 (`rules_kb.test.mjs`).
   - New skill `bs-card-verify` (evidence -> trace -> test -> verdict for one "card X is wrong" report) with `tools/card_verify.py <id>`: the card as the game has it, the Fandom export row and every differing field, rule chunks for its keywords (with pins) and the tests that name it. Tests CV1-CV3.
