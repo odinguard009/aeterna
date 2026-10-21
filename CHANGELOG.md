@@ -2,6 +2,15 @@
 
 Release notes, newest first. Each version also has a GitHub Release with the game file attached (from v0.57.1 on; earlier versions are listed here only). Issue numbers up to v0.57.0 refer to the owner's private archive.
 
+## v0.91.0
+- Lane: U/I
+- Time: TIME_LINE
+- **Battle popups in the new style (roadmap U5): every dialog, prompt and pick bar now uses the mockup v11 look, and the battle gets ribbons for the turn, the step, your Flash Timing and the match start ("GATE OPEN, RELEASE!").**
+  - Dialogs: cut-corner panel with a side-colour bar and a kind chip (EFFECT, FLASH TIMING, BURST, PAYMENT, MATCH SETUP, RESULT, ...), skewed buttons; yellow is used only for the "yes" of a yes/no prompt, "Cancel" / "Skip" / "Pass" are grey instead of red. On the phone dialogs open as bottom sheets. DEFEAT shows in the CPU colour.
+  - Block prompt: a "BLOCK?" chevron strip across the board centre in the CPU colour while you choose a blocker, with a grey "Do not block".
+  - One shared overlay layer (`#ae-fx`) for the ribbons; it never takes a tap, sits under every dialog, draws nothing in CPU-vs-CPU sims and stays still with reduced motion. Checklist of every popup: `docs/DESIGN.md` section 0 (U5).
+  - Titles, button values and test ids are unchanged. Test `tests/unit/ui91.test.mjs` (U91-1..U91-5, PC and phone). Backup `backup/v0.90.0` holds the state before the change. Revert note: `git revert` of the U5 commit (CSS in `src/styles.css`, `apps/web/src/10-modals.js`, `apps/web/src/13-render.js`, the `#ae-fx` line in `src/index.template.html`).
+
 ## v0.90.0
 - Lane: K
 - Time: about 35 min (session start to release), Opus, about 24,000 tokens (chain session 3).

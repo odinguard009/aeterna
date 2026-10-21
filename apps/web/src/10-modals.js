@@ -1,13 +1,25 @@
 /* ---------------------------------------------------------------------
    MODALS (promise based)
    --------------------------------------------------------------------- */
+/* v0.91.0 U5 (docs/DESIGN.md U5 checklist): every modal names its kind in a chip (CSS draws it from data-kind) and a yes/no prompt
+   (one primary button, the rest cancel) paints its primary yellow, the only yellow of the UI; titles, values and data-mi stay as they were */
+function modalKind(c) {
+  const t = c.title || '', vis = (c.buttons || []).filter(b => !b.hidden);
+  return /Flash Timing/.test(t) ? 'FLASH TIMING' : /^Pay for /.test(t) ? 'PAYMENT' : /VICTORY|DEFEAT|MATCH OVER/.test(t) ? 'RESULT'
+    : /Burst/.test(t) ? 'BURST' : /Order of triggered/.test(t) ? 'EFFECT ORDER' : /^(✨|🛡|⚡)/.test(t) ? 'EFFECT'
+    : /Coin|Starting Hand|Contract card/.test(t) ? 'MATCH SETUP' : /Card Detail/.test(t) ? 'CARD'
+    : /AREA|ZONE|SOUL STATE|TRASH|DECK|HAND|LIFE|RESERVE|COUNT|VOID|BANISHED/.test(t) ? 'ZONE'
+    : vis.length <= 1 ? 'INFO' : 'CHOICE';
+}
 function paintModal() {
-  const c = MODAL.cfg;
+  const c = MODAL.cfg, kind = modalKind(c), vis = (c.buttons || []).filter(b => !b.hidden);
+  const yes = kind !== 'RESULT' && kind !== 'MATCH SETUP' && vis.length >= 2 && vis.filter(b => /\bprimary\b/.test(b.cls || '')).length === 1 && vis.every(b => /\b(primary|cancel)\b/.test(b.cls || ''));
   $('modal-card-title').textContent = c.title || '';
   $('modal-card-desc').innerHTML = c.html || '';
-  const mb = document.querySelector('#action-modal .modal-box'); if (mb) mb.classList.toggle('wide', !!c.wide);
+  const mb = document.querySelector('#action-modal .modal-box');
+  if (mb) { mb.classList.toggle('wide', !!c.wide); mb.dataset.kind = kind; mb.classList.toggle('lose', kind === 'RESULT' && /DEFEAT/.test(c.title)); }
   $('modal-actions').innerHTML = (c.buttons || []).map((b, i) => b.hidden ? '' :
-    `<button class="modal-btn ${b.cls || ''}" ${b.dis ? 'disabled' : ''} data-mi="${i}">${esc(titleCase(b.label))}</button>`).join('')
+    `<button class="modal-btn ${b.cls || ''}${yes && /\bprimary\b/.test(b.cls || '') ? ' yes' : ''}" ${b.dis ? 'disabled' : ''} data-mi="${i}">${esc(titleCase(b.label))}</button>`).join('')
     + (c.peek && G ? '<button class="modal-btn blue" data-peek="1">🔍 View Field</button>' : '');
 }
 /* a message of the page itself (log, glossary, import notes): a plain modal, not an engine decision, so it is not part of the port record */
@@ -17,6 +29,7 @@ function modal(cfg) {
     if (MODAL && MODAL.resolve) { const r = MODAL.resolve; MODAL = null; r(null); }
     MODAL = { resolve: v => { recIn({ m: v === undefined ? null : v }); resolve(v); }, cfg };
     paintModal();
+    if (/Flash Timing/.test(cfg.title || '')) aeRibbon('YOUR FLASH TIMING'); else if (/VICTORY|DEFEAT|MATCH OVER/.test(cfg.title || '')) aeRibbon(null);
     $('action-modal').classList.add('active');
   });
 }
@@ -53,7 +66,7 @@ function modalPress(i) {
 let PICK = null;
 function clearPick() {
   if (!PICK) return;
-  const r = PICK.res; PICK = null; document.documentElement.classList.remove('picking'); $('pick-bar').classList.remove('active'); r(null);
+  const r = PICK.res; PICK = null; document.documentElement.classList.remove('picking'); $('pick-bar').classList.remove('active'); aeStrip(null); r(null);
 }
 /* the field pick of a 'pick' decision (05b-decide.js); decide() throws ABORT when the match changed meanwhile */
 function webPick(cfg) {
@@ -61,12 +74,13 @@ function webPick(cfg) {
   return new Promise(res => {
     PICK = { uids: new Set(cfg.uids), mark: cfg.mark, buttons: cfg.buttons || [], res };
     $('pick-text').innerHTML = cfg.text;
+    aeStrip(/\bblock\b/i.test(cfg.text || '') && /attacks/.test(cfg.text || '') ? 'BLOCK?' : null);
     $('pick-btns').innerHTML = PICK.buttons.map((b, i) => `<button class="modal-btn ${b.cls || ''}" data-pk="${i}">${esc(titleCase(b.label))}</button>`).join('');
     document.documentElement.classList.add('picking'); $('pick-bar').classList.add('active');
     render();
     setTimeout(() => { const e = document.querySelector('.tcg-card.pickable'); if (e) e.scrollIntoView({ inline: 'center', block: 'nearest' }); }, 60);
   }).then(v => {
-    document.documentElement.classList.remove('picking'); $('pick-bar').classList.remove('active');
+    document.documentElement.classList.remove('picking'); $('pick-bar').classList.remove('active'); aeStrip(null);
     PICK = null; if (G) render();
     recIn({ k: 'pick', v: v === undefined ? null : v });
     return v;

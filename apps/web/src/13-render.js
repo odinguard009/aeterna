@@ -213,7 +213,36 @@ function renderBoard() {
   }
   if (SIM) checkInvariants();
 }
-function render() { renderBoard(); updateLogDrawer(); }
+function render() { renderBoard(); updateLogDrawer(); fxCues(); }
+/* ---- v0.91.0 U5: one shared overlay layer #ae-fx (index.template.html) above the board, under every dialog, never hit by a tap.
+   Ribbons (turn, Main / Attack step, your Flash Timing) and the match-start banner with the motto run about 1.2 s, one at a time;
+   the block strip stays while the block pick is open. Sims (?sim=1) draw nothing; reduced motion keeps them static (CSS). U5b adds the animations. */
+let CUE = { g: null, turn: 0, step: -1, act: '' };
+function fxCueReset() { CUE = { g: null, turn: 0, step: -1, act: '' }; }
+function aeRibbon(text, opt) {
+  const L = $('ae-fx'); if (!L) return;
+  L.querySelectorAll('.ae-rib').forEach(r => r.remove()); clearTimeout(aeRibbon.t);
+  if (!text || SIM) return;
+  const r = document.createElement('div'); opt = opt || {};
+  r.className = 'ae-rib' + (opt.cpu ? ' cpu' : '') + (opt.banner ? ' banner' : '');
+  r.innerHTML = (opt.eyebrow ? `<span class="ae-rib-e">${esc(opt.eyebrow)}</span>` : '') + `<b>${esc(text)}</b>`;
+  L.appendChild(r);
+  aeRibbon.t = setTimeout(() => r.remove(), opt.banner ? 1800 : 1200);
+}
+function aeStrip(text) {
+  const L = $('ae-fx'), s = L && L.querySelector('.ae-strip'); if (!s) return;
+  s.hidden = !text; s.textContent = text || ''; $('pick-bar').classList.toggle('blk', !!text);
+}
+function fxCues() {
+  if (SIM || !G) return;
+  const fresh = CUE.g !== G, turn = G.turnNo, step = G.step, act = G.active;
+  const prev = CUE; CUE = { g: G, turn, step, act, ban: fresh ? turn <= 1 : prev.ban };
+  if (G.over) return;
+  if (CUE.ban) { if (!MODAL) { CUE.ban = false; aeRibbon('GATE OPEN, RELEASE!', { banner: true, eyebrow: 'MATCH START' }); } return; }   // after coin toss and starting hand
+  if (fresh) return;
+  if (turn !== prev.turn || act !== prev.act) return aeRibbon(`${act === 'player' ? 'PLAYER' : 'OPPONENT'} TURN ${turn}`, { cpu: act !== 'player' });
+  if (step !== prev.step && /^(MAIN|ATTACK)/.test(G.steps[step] || '')) aeRibbon(`${G.steps[step]} STEP`, { cpu: act !== 'player' });
+}
 /* ---- game log drawer ---- */
 let LOG_OPEN = false;
 function updateLogDrawer() {

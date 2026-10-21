@@ -182,17 +182,16 @@ html.layout-pc .inline-next-btn { width: 54px; height: 54px; }
 .tcg-card .core-tag { font-size: 11.5cqw; font-weight: bold; background: var(--accent); color: #000; padding: 1px 3px; border-radius: 2px; text-align: center; white-space: nowrap; flex: none; display: flex; align-items: center; justify-content: center; gap: 2px; }
 .tcg-card .core-tag.soul-active { background: linear-gradient(135deg, #d9383a 0%, #e0e0e0 100%); color: #000; border: 1px solid #fff; font-weight: 900; }
 .stack-badge { position: absolute; bottom: 2px; left: 2px; background: rgba(0,0,0,0.85); color: #e5a93c; border: 1px solid #e5a93c; font-size: 9cqw; font-weight: bold; padding: 0px 2px; border-radius: 2px; }
-#pick-bar { position: fixed; left: 50%; top: 6px; transform: translate(-50%, -140%); z-index: 90; width: min(94vw, 520px); background: var(--bg-panel); border: 2px solid #6fcf97; border-radius: 8px; padding: 8px 10px; text-align: center; font-size: 12px; line-height: 1.35; box-shadow: 0 6px 20px rgba(0,0,0,.7); transition: transform .2s; pointer-events: none; }
+#pick-bar, #peek-bar { position: fixed; left: 50%; top: 6px; transform: translate(-50%, -160%); z-index: 90; width: min(94vw, 520px); background: var(--ae-panel1); color: var(--ae-text); padding: 12px 14px 10px; text-align: center; font-size: 12px; line-height: 1.4; box-shadow: inset 0 3px 0 var(--you), inset 0 0 0 1px var(--ae-line2), 0 14px 30px #0009; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px)); transition: transform .2s; pointer-events: none; }
 #pick-bar.active { transform: translate(-50%, 0); pointer-events: auto; }
-#peek-bar { position: fixed; left: 50%; top: 6px; transform: translate(-50%, -160%); z-index: 95; width: min(94vw, 520px); background: var(--bg-panel); border: 2px solid var(--accent); border-radius: 8px; padding: 8px 10px; text-align: center; font-size: 12px; line-height: 1.35; box-shadow: 0 6px 20px rgba(0,0,0,.7); transition: transform .2s; pointer-events: none; }
+#peek-bar { z-index: 95; } #pick-bar.blk { box-shadow: inset 0 3px 0 var(--cpu), inset 0 0 0 1px var(--ae-line2), 0 14px 30px #0009; }
 #peek-bar.active { transform: translate(-50%, 0); pointer-events: auto; }
 #peek-btns { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 6px; align-items: center; }
-#peek-btns .modal-btn { margin: 0; padding: 6px 12px; width: auto; }
+#peek-btns .modal-btn, #pick-btns .modal-btn { margin: 0; padding: 0 16px; width: auto; flex: none; height: 34px; }
 .modal-overlay.active.peeking, .modal-overlay.peeking { opacity: 0 !important; pointer-events: none !important; }
 .sel-badge { position: absolute; top: 3px; left: 50%; transform: translateX(-50%); background: #6fcf97; color: #06210f; font-weight: bold; border-radius: 9px; padding: 0 7px; font-size: 12px; z-index: 3; }
 #pick-btns { display: flex; gap: 6px; justify-content: center; margin-top: 6px; }
 #pick-btns:empty { display: none; }
-#pick-btns .modal-btn { margin: 0; padding: 6px 14px; width: auto; }
 html.picking .tcg-card:not(.pickable):not(.pick-att) { opacity: .4; }
 .tcg-card.pickable { box-shadow: 0 0 0 3px #6fcf97, 0 0 14px 3px rgba(111,207,151,.9) !important; animation: pickPulse 1s infinite alternate; }
 .tcg-card.pick-att { box-shadow: 0 0 0 3px #eb5757, 0 0 14px 3px rgba(235,87,87,.9) !important; }
@@ -214,17 +213,20 @@ header h1 { font-size: 11px; }
 .step-chip { padding: 2px 8px; }
 .hand-container-wrapper { height: calc(var(--card-w) * 1.42 + 6px); }
 }
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.modal-overlay { position: fixed; inset: 0; background: #07090dcc; display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
 .modal-overlay.active { opacity: 1; pointer-events: auto; }
-.modal-box { background: var(--bg-panel); border: 2px solid var(--accent); border-radius: 8px; padding: 14px; width: 85%; max-width: 310px; text-align: center; max-height: 80vh; overflow-y: auto; }
-.modal-title { color: var(--accent); font-size: 13px; font-weight: bold; margin-bottom: 6px; }
-.modal-desc { font-size: 10px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.35; }
-.modal-btns { display: flex; flex-direction: column; gap: 6px; }
-.modal-btn { background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border-line); padding: 7px; border-radius: 5px; font-size: 11px; font-weight: bold; cursor: pointer; }
-.modal-btn.primary { background: var(--accent); color: #0b1319; }
-.modal-btn.blue { background: #2f80ed; color: #fff; }
-.modal-btn.purple { background: #9b51e0; color: #fff; }
-.modal-btn.cancel { background: #d9383a; color: #fff; }
+.modal-box { position: relative; background: linear-gradient(180deg, var(--ae-panel1), var(--ae-panel2)); color: var(--ae-text); border-radius: 0; padding: 18px 18px 16px; width: 88%; max-width: 380px; text-align: center; max-height: 80vh; overflow-y: auto; box-shadow: inset 0 4px 0 var(--you), inset 0 0 0 1px var(--ae-line2); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px)); }
+.modal-title { color: var(--ae-text); font-size: 15px; font-weight: 900; letter-spacing: .06em; margin-bottom: 8px; }
+.modal-box[data-kind]::before { content: attr(data-kind); display: table; margin: 0 auto 8px; padding: 2px 14px; font-size: 10px; font-weight: 900; letter-spacing: .18em; background: var(--you); color: var(--you-ink); clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%); }
+.modal-box.lose { box-shadow: inset 0 4px 0 var(--cpu), inset 0 0 0 1px var(--ae-line2); } .modal-box.lose::before { background: var(--cpu); color: var(--cpu-ink); }
+.modal-box[data-kind="RESULT"] .modal-title { font-size: 26px; font-style: italic; letter-spacing: .08em; }
+.modal-desc { font-size: 12px; color: var(--ae-text2); margin-bottom: 14px; line-height: 1.45; }
+.modal-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.modal-btn { flex: 1 1 140px; min-height: 40px; background: var(--ae-chip); color: var(--ae-text); border: 0; box-shadow: inset 0 0 0 1px var(--ae-line2); padding: 6px 18px; border-radius: 0; font-size: 12.5px; font-weight: 900; letter-spacing: .06em; cursor: pointer; clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%); touch-action: manipulation; }
+.modal-btn:not(:disabled):hover { filter: brightness(1.15); } .modal-btn:focus-visible { outline: 2px solid var(--ae-text); outline-offset: -4px; }
+.modal-btn.primary { background: var(--you); color: var(--you-ink); box-shadow: 0 0 18px var(--you-soft); } .modal-btn.yes { background: #ffd447; color: #1b1600; }
+.modal-btn.blue { box-shadow: inset 0 -3px 0 #3aa0ff, inset 0 0 0 1px var(--ae-line2); }
+.modal-btn.purple { box-shadow: inset 0 -3px 0 var(--ae-soulstate), inset 0 0 0 1px var(--ae-line2); }
 .modal-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .glossary-pill { display: inline-block; background: rgba(229,169,60,0.2); color: var(--accent); border: 1px solid var(--accent); border-radius: 3px; padding: 1px 4px; font-size: 8px; font-weight: bold; margin: 1px; cursor: pointer; }
 .pay-row { display: flex; align-items: center; gap: 6px; font-size: 10px; margin: 4px 0; text-align: left; color: var(--text-main); }
@@ -248,7 +250,7 @@ header h1 { font-size: 11px; }
 .tcg-card.has-img .name, .tcg-card.has-img .cost { display: none; }
 .tcg-card.has-img .bp { position: absolute; bottom: 2px; left: 2px; right: 2px; background: rgba(0,0,0,.72); color: #fff; }
 .tcg-card.has-img .core-tag { position: absolute; top: 2px; left: 2px; }
-.modal-box.wide { max-width: 520px; width: 94%; }
+.modal-box.wide { max-width: 560px; width: 94%; }
 .mull-list { display: grid; grid-template-columns: repeat(4, minmax(0, 116px)); justify-content: center; gap: 6px; }
 .mull-card .cface { border-width: 1px; border-radius: 4px; }
 @media (max-height: 560px) and (orientation: landscape) { .mull-list { grid-template-columns: repeat(4, minmax(0, 78px)); } .mull-card .cface.ph .ph-txt { display: none; } }
@@ -430,7 +432,7 @@ background: var(--bg-panel); color: var(--text-main); border: 1px solid var(--co
 --ae-soulstate: #7b45cf; --ae-burst: #a3329e;
 }
 .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-#view-playmat, #log-drawer {
+#view-playmat, #log-drawer, #action-modal, #pick-bar, #peek-bar, #zoom-overlay {
 --bg-main: var(--ae-board2); --bg-panel: var(--ae-panel1); --accent: var(--you); --text-main: var(--ae-text); --text-muted: var(--ae-text2);
 --border-line: var(--ae-line2); --blue-zone: var(--ae-chip); --turn: var(--you); color: var(--ae-text);
 }
@@ -559,6 +561,19 @@ html.layout-mobile #view-playmat .ba-card.set-burst .btag { left: 0; right: 0; f
 #view-playmat .step-chip { touch-action: manipulation; }
 #view-playmat .step-chip:not(.active):hover { box-shadow: inset 0 0 0 1px var(--turn); color: var(--ae-text); }
 #view-playmat .inline-next-btn:not(:disabled):hover { filter: brightness(1.12); }
+#ae-fx { position: fixed; inset: 0; z-index: 80; pointer-events: none; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.ae-rib, .ae-strip { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; }
+.ae-rib { --rc: var(--you); height: 64px; background: linear-gradient(90deg, transparent, #0b0e13e6 18%, #0b0e13e6 82%, transparent); box-shadow: inset 0 2px 0 var(--rc), inset 0 -2px 0 var(--rc); animation: aeRib 1.2s ease-out both; }
+.ae-rib.cpu { --rc: var(--cpu); }
+.ae-rib b { font-size: 26px; font-weight: 900; font-style: italic; letter-spacing: .14em; color: var(--rc); text-shadow: 0 0 18px #000; }
+.ae-rib.banner { height: 120px; animation-duration: 1.8s; } .ae-rib.banner b { font-size: 40px; color: #fff; } .ae-rib-e { font-size: 11px; font-weight: 900; letter-spacing: .3em; color: var(--rc); }
+.ae-strip { height: 44px; font-size: 20px; font-weight: 900; font-style: italic; letter-spacing: .3em; background: #000c; box-shadow: inset 0 2px 0 var(--cpu), inset 0 -2px 0 var(--cpu); clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 50%, 100% 100%, 0 100%, 22px 50%); }
+.ae-strip[hidden] { display: none; }
+@keyframes aeRib { 0% { opacity: 0; transform: scaleY(.2); } 15%, 80% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .ae-rib { animation: none; } #pick-bar, #peek-bar, .modal-overlay { transition: none; } }
+html.layout-mobile .modal-overlay { align-items: flex-end; }
+html.layout-mobile .modal-box { width: 100%; max-width: none; max-height: 86vh; padding-bottom: max(16px, env(safe-area-inset-bottom)); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%); }
+html.layout-mobile .ae-rib b { font-size: 20px; } html.layout-mobile .ae-rib.banner b { font-size: 28px; }
 #app-nav, #view-lobby { color-scheme: dark; }
 :root[data-mode="light"] #app-nav, :root[data-mode="light"] #view-lobby { color-scheme: light; }
 #app-nav { display: none; }
@@ -983,6 +998,7 @@ html.layout-pc .doc-card { padding: 18px 24px 20px; }
 <div id="peek-bar"><div id="peek-text"></div><div id="peek-btns"></div></div>
 <div id="pick-bar"><div id="pick-text"></div><div id="pick-btns"></div></div>
 <div id="zoom-overlay" data-a="zoomclose"></div>
+<div id="ae-fx" aria-hidden="true"><div class="ae-strip" hidden></div></div>
 <div id="action-modal" class="modal-overlay">
   <div class="modal-box">
     <div id="modal-card-title" class="modal-title">Zone Details</div>
@@ -1210,7 +1226,7 @@ function bindHost(h) {
    type: 'Spirit' | 'Nexus' | 'Magic'      symbol: card color     symbols: number of symbols
    reduction: {color: n}         levels: [{cores, bp}]  (Nexus levels have no bp)
    --------------------------------------------------------------------- */
-const VERSION = '0.90.0';
+const VERSION = '0.91.0';
 const CARDS = {};
 function defCard(o) {
   CARDS[o.id] = Object.assign({ type: 'Spirit', reduction: {}, symbols: 1, families: [], keywords: [], implemented: true, desc: 'Vanilla test card (no effect).', block: 'A' }, o);
@@ -5507,13 +5523,25 @@ function setCpuProfile(name, side) {
 /* ---------------------------------------------------------------------
    MODALS (promise based)
    --------------------------------------------------------------------- */
+/* v0.91.0 U5 (docs/DESIGN.md U5 checklist): every modal names its kind in a chip (CSS draws it from data-kind) and a yes/no prompt
+   (one primary button, the rest cancel) paints its primary yellow, the only yellow of the UI; titles, values and data-mi stay as they were */
+function modalKind(c) {
+  const t = c.title || '', vis = (c.buttons || []).filter(b => !b.hidden);
+  return /Flash Timing/.test(t) ? 'FLASH TIMING' : /^Pay for /.test(t) ? 'PAYMENT' : /VICTORY|DEFEAT|MATCH OVER/.test(t) ? 'RESULT'
+    : /Burst/.test(t) ? 'BURST' : /Order of triggered/.test(t) ? 'EFFECT ORDER' : /^(✨|🛡|⚡)/.test(t) ? 'EFFECT'
+    : /Coin|Starting Hand|Contract card/.test(t) ? 'MATCH SETUP' : /Card Detail/.test(t) ? 'CARD'
+    : /AREA|ZONE|SOUL STATE|TRASH|DECK|HAND|LIFE|RESERVE|COUNT|VOID|BANISHED/.test(t) ? 'ZONE'
+    : vis.length <= 1 ? 'INFO' : 'CHOICE';
+}
 function paintModal() {
-  const c = MODAL.cfg;
+  const c = MODAL.cfg, kind = modalKind(c), vis = (c.buttons || []).filter(b => !b.hidden);
+  const yes = kind !== 'RESULT' && kind !== 'MATCH SETUP' && vis.length >= 2 && vis.filter(b => /\bprimary\b/.test(b.cls || '')).length === 1 && vis.every(b => /\b(primary|cancel)\b/.test(b.cls || ''));
   $('modal-card-title').textContent = c.title || '';
   $('modal-card-desc').innerHTML = c.html || '';
-  const mb = document.querySelector('#action-modal .modal-box'); if (mb) mb.classList.toggle('wide', !!c.wide);
+  const mb = document.querySelector('#action-modal .modal-box');
+  if (mb) { mb.classList.toggle('wide', !!c.wide); mb.dataset.kind = kind; mb.classList.toggle('lose', kind === 'RESULT' && /DEFEAT/.test(c.title)); }
   $('modal-actions').innerHTML = (c.buttons || []).map((b, i) => b.hidden ? '' :
-    `<button class="modal-btn ${b.cls || ''}" ${b.dis ? 'disabled' : ''} data-mi="${i}">${esc(titleCase(b.label))}</button>`).join('')
+    `<button class="modal-btn ${b.cls || ''}${yes && /\bprimary\b/.test(b.cls || '') ? ' yes' : ''}" ${b.dis ? 'disabled' : ''} data-mi="${i}">${esc(titleCase(b.label))}</button>`).join('')
     + (c.peek && G ? '<button class="modal-btn blue" data-peek="1">🔍 View Field</button>' : '');
 }
 /* a message of the page itself (log, glossary, import notes): a plain modal, not an engine decision, so it is not part of the port record */
@@ -5523,6 +5551,7 @@ function modal(cfg) {
     if (MODAL && MODAL.resolve) { const r = MODAL.resolve; MODAL = null; r(null); }
     MODAL = { resolve: v => { recIn({ m: v === undefined ? null : v }); resolve(v); }, cfg };
     paintModal();
+    if (/Flash Timing/.test(cfg.title || '')) aeRibbon('YOUR FLASH TIMING'); else if (/VICTORY|DEFEAT|MATCH OVER/.test(cfg.title || '')) aeRibbon(null);
     $('action-modal').classList.add('active');
   });
 }
@@ -5559,7 +5588,7 @@ function modalPress(i) {
 let PICK = null;
 function clearPick() {
   if (!PICK) return;
-  const r = PICK.res; PICK = null; document.documentElement.classList.remove('picking'); $('pick-bar').classList.remove('active'); r(null);
+  const r = PICK.res; PICK = null; document.documentElement.classList.remove('picking'); $('pick-bar').classList.remove('active'); aeStrip(null); r(null);
 }
 /* the field pick of a 'pick' decision (05b-decide.js); decide() throws ABORT when the match changed meanwhile */
 function webPick(cfg) {
@@ -5567,12 +5596,13 @@ function webPick(cfg) {
   return new Promise(res => {
     PICK = { uids: new Set(cfg.uids), mark: cfg.mark, buttons: cfg.buttons || [], res };
     $('pick-text').innerHTML = cfg.text;
+    aeStrip(/\bblock\b/i.test(cfg.text || '') && /attacks/.test(cfg.text || '') ? 'BLOCK?' : null);
     $('pick-btns').innerHTML = PICK.buttons.map((b, i) => `<button class="modal-btn ${b.cls || ''}" data-pk="${i}">${esc(titleCase(b.label))}</button>`).join('');
     document.documentElement.classList.add('picking'); $('pick-bar').classList.add('active');
     render();
     setTimeout(() => { const e = document.querySelector('.tcg-card.pickable'); if (e) e.scrollIntoView({ inline: 'center', block: 'nearest' }); }, 60);
   }).then(v => {
-    document.documentElement.classList.remove('picking'); $('pick-bar').classList.remove('active');
+    document.documentElement.classList.remove('picking'); $('pick-bar').classList.remove('active'); aeStrip(null);
     PICK = null; if (G) render();
     recIn({ k: 'pick', v: v === undefined ? null : v });
     return v;
@@ -6123,7 +6153,36 @@ function renderBoard() {
   }
   if (SIM) checkInvariants();
 }
-function render() { renderBoard(); updateLogDrawer(); }
+function render() { renderBoard(); updateLogDrawer(); fxCues(); }
+/* ---- v0.91.0 U5: one shared overlay layer #ae-fx (index.template.html) above the board, under every dialog, never hit by a tap.
+   Ribbons (turn, Main / Attack step, your Flash Timing) and the match-start banner with the motto run about 1.2 s, one at a time;
+   the block strip stays while the block pick is open. Sims (?sim=1) draw nothing; reduced motion keeps them static (CSS). U5b adds the animations. */
+let CUE = { g: null, turn: 0, step: -1, act: '' };
+function fxCueReset() { CUE = { g: null, turn: 0, step: -1, act: '' }; }
+function aeRibbon(text, opt) {
+  const L = $('ae-fx'); if (!L) return;
+  L.querySelectorAll('.ae-rib').forEach(r => r.remove()); clearTimeout(aeRibbon.t);
+  if (!text || SIM) return;
+  const r = document.createElement('div'); opt = opt || {};
+  r.className = 'ae-rib' + (opt.cpu ? ' cpu' : '') + (opt.banner ? ' banner' : '');
+  r.innerHTML = (opt.eyebrow ? `<span class="ae-rib-e">${esc(opt.eyebrow)}</span>` : '') + `<b>${esc(text)}</b>`;
+  L.appendChild(r);
+  aeRibbon.t = setTimeout(() => r.remove(), opt.banner ? 1800 : 1200);
+}
+function aeStrip(text) {
+  const L = $('ae-fx'), s = L && L.querySelector('.ae-strip'); if (!s) return;
+  s.hidden = !text; s.textContent = text || ''; $('pick-bar').classList.toggle('blk', !!text);
+}
+function fxCues() {
+  if (SIM || !G) return;
+  const fresh = CUE.g !== G, turn = G.turnNo, step = G.step, act = G.active;
+  const prev = CUE; CUE = { g: G, turn, step, act, ban: fresh ? turn <= 1 : prev.ban };
+  if (G.over) return;
+  if (CUE.ban) { if (!MODAL) { CUE.ban = false; aeRibbon('GATE OPEN, RELEASE!', { banner: true, eyebrow: 'MATCH START' }); } return; }   // after coin toss and starting hand
+  if (fresh) return;
+  if (turn !== prev.turn || act !== prev.act) return aeRibbon(`${act === 'player' ? 'PLAYER' : 'OPPONENT'} TURN ${turn}`, { cpu: act !== 'player' });
+  if (step !== prev.step && /^(MAIN|ATTACK)/.test(G.steps[step] || '')) aeRibbon(`${G.steps[step]} STEP`, { cpu: act !== 'player' });
+}
 /* ---- game log drawer ---- */
 let LOG_OPEN = false;
 function updateLogDrawer() {
@@ -7190,7 +7249,7 @@ function testSetup() {            // dev hook: a quiet board with no match loop 
   switchView('view-playmat'); render(); return G;
 }
 const defBuiltin = o => { defCard(o); BUILTIN_IDS.add(o.id); };      // test fixtures register through this so their ids stay reserved
-window.BS = { endOfBattle, MAT, matUse, setSection, navSync, renderHome, themePop, soulMagicOK, soulMagicHolder, soulMagicPick, THEME, THEME_COLS, setTheme, stepClick, stepTargets, get FX_STRICT() { return FX_STRICT; }, setFxStrict(v) { FX_STRICT = !!v; }, FX_WARNED, collectFx, setFuzz(o) { FUZZ = Object.assign({}, o || {}); }, get FUZZ() { return FUZZ; }, fuzzPick, ERR_LOG, errReport, onGameError, releaseStandby, leaveStandby, renderDeckBuilder, dbChange, dbUndo, dbSheet, DBF, get DB_UNDO() { return DB_UNDO.length; }, accelList, accelCost, accelOK, accelSources, useAccel, removedSummonable, summonFromRemoved, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel, highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, isSealed, soulToLife, lifeTake, braveSummonedFx, abTaxOK, payAbTax, oppAttackHandFx, sentToTrashFx, magicFxAt, summonOK, lvNo, isUlt, noBlockActive, burstFlash, cpuBurstFlash, humanAttack, cpuAttack, attackStepOver, endAttackLocked, battleEndAttack, isGW, freeCores, moveCore, swapSoul, payCost, cpuCanPlay, coresAvailable, addCore, cpuKeepMagicOrPay, nameHTML, switchView, SET_KEY, dbFilterOK, cardColors, contractToDeck, redrawHand, cpuWantsRedraw, setHeavy, refreshOne, toRemoved, fxIf, costDestroyBonus, sendToken, canSendToken, tokenHome, attackSymbols, TOKEN_SUPPLY, isSpiritForm, ocActive, braveFits, braveTargets, combineBrave, braveSummon, separateBrave, canSeparate, braveRecheck, braveAfford, cpuBrave, handButtons, minCores, openFieldModal, cpuMain, VERSION, defBuiltin, beginTurn, endStep, newGame, takeFromVoid, checkDepletion, removeSpirit, lvIndex, mirageUsable, cpuCastMain, magicFx, magicText, costAltActive, flagActive, coresSent, startAttackFx, win, recordMatch, HISTORY: () => HISTORY, toggleLog, effectTextHTML, effectLines, titleCase, liveStatusHTML, openZoom, modal, closeModal, startPeek, SETTINGS, SLOTS: () => SLOTS, get ACTIVE_SLOT() { return ACTIVE_SLOT; }, switchSlot, loadPrebuilt, PREBUILT, cpuDeckFor, saveSettings, PACK_IDS, registerPack, clearImported, summonPaid, reviveTargets, doRevive, handUp, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, soulCoreHolder, rng, seedRng, newSeed, runReplay, lastReplay, fireFxMulti, asResolving, replayOf, loadScenario, gameAct, matchSummary, get REPLAY() { return REPLAY; }, soulSource, soulToNexus, fxImmune, residualHTML, cardDetailHTML, setSimDeckB(d) { SIM_DECK_B = d; }, activatable, activateFx, cpuActivate, toSoulState, bounceCard, runActions, maybeBurst, flushBursts, summonFree, parseBurst, parseActionList, BURST_WHEN, fireFx, parseEffects, staticBp, FX_ACTIONS, removeNexus, magicUsable, magicTargets, castMagic, flashTiming, cpuFlashChoice, setFormat, validateDeck, legalityOf, banStatus, get FORMAT() { return FORMAT; }, isPC, applyLayout, testSetup, mkInst, render, takeCores, IMG, importCards, importImages, textToDeck, deckToText, parseCard, loadImages, get PLAYER_DECK() { return PLAYER_DECK; }, get G() { return G; }, startNewGame, checkInvariants, CARDS, PRESET_DECK, humanCan, onNext, engineIdle, runPortRecord, viewerReplayOf, openViewer, replayFromRecord, portRecord, boardSnapshot, sendIntent, applyIntent, seatLoopOpen, cpuAnswer, INTENT_TYPES, cpuTurn, doBattle, summon, effCost, legacyPlan, legacyPay, canBlockState, canPlayCard, setBurst, fieldList, bpOf, get SESSION() { return SESSION; }, CPU_PROFILES, cpuProfileName, cpuEval, cpuPlayScore, cpuPlayChoice, cpuLethal, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, lifeValue, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, extraReduction };
+window.BS = { fxCueReset, aeRibbon, endOfBattle, MAT, matUse, setSection, navSync, renderHome, themePop, soulMagicOK, soulMagicHolder, soulMagicPick, THEME, THEME_COLS, setTheme, stepClick, stepTargets, get FX_STRICT() { return FX_STRICT; }, setFxStrict(v) { FX_STRICT = !!v; }, FX_WARNED, collectFx, setFuzz(o) { FUZZ = Object.assign({}, o || {}); }, get FUZZ() { return FUZZ; }, fuzzPick, ERR_LOG, errReport, onGameError, releaseStandby, leaveStandby, renderDeckBuilder, dbChange, dbUndo, dbSheet, DBF, get DB_UNDO() { return DB_UNDO.length; }, accelList, accelCost, accelOK, accelSources, useAccel, removedSummonable, summonFromRemoved, cpuAccelScore, cpuAccelMain, cpuAccelFlash, cpuSilverWheel, highSpeedOK, highSpeedSources, highSpeedSummon, cpuHighSpeed, isSealed, soulToLife, lifeTake, braveSummonedFx, abTaxOK, payAbTax, oppAttackHandFx, sentToTrashFx, magicFxAt, summonOK, lvNo, isUlt, noBlockActive, burstFlash, cpuBurstFlash, humanAttack, cpuAttack, attackStepOver, endAttackLocked, battleEndAttack, isGW, freeCores, moveCore, swapSoul, payCost, cpuCanPlay, coresAvailable, addCore, cpuKeepMagicOrPay, nameHTML, switchView, SET_KEY, dbFilterOK, cardColors, contractToDeck, redrawHand, cpuWantsRedraw, setHeavy, refreshOne, toRemoved, fxIf, costDestroyBonus, sendToken, canSendToken, tokenHome, attackSymbols, TOKEN_SUPPLY, isSpiritForm, ocActive, braveFits, braveTargets, combineBrave, braveSummon, separateBrave, canSeparate, braveRecheck, braveAfford, cpuBrave, handButtons, minCores, openFieldModal, cpuMain, VERSION, defBuiltin, beginTurn, endStep, newGame, takeFromVoid, checkDepletion, removeSpirit, lvIndex, mirageUsable, cpuCastMain, magicFx, magicText, costAltActive, flagActive, coresSent, startAttackFx, win, recordMatch, HISTORY: () => HISTORY, toggleLog, effectTextHTML, effectLines, titleCase, liveStatusHTML, openZoom, modal, closeModal, startPeek, SETTINGS, SLOTS: () => SLOTS, get ACTIVE_SLOT() { return ACTIVE_SLOT; }, switchSlot, loadPrebuilt, PREBUILT, cpuDeckFor, saveSettings, PACK_IDS, registerPack, clearImported, summonPaid, reviveTargets, doRevive, handUp, contractAdventTargets, doContractAdvent, manifestTargets, doManifest, soulCoreHolder, rng, seedRng, newSeed, runReplay, lastReplay, fireFxMulti, asResolving, replayOf, loadScenario, gameAct, matchSummary, get REPLAY() { return REPLAY; }, soulSource, soulToNexus, fxImmune, residualHTML, cardDetailHTML, setSimDeckB(d) { SIM_DECK_B = d; }, activatable, activateFx, cpuActivate, toSoulState, bounceCard, runActions, maybeBurst, flushBursts, summonFree, parseBurst, parseActionList, BURST_WHEN, fireFx, parseEffects, staticBp, FX_ACTIONS, removeNexus, magicUsable, magicTargets, castMagic, flashTiming, cpuFlashChoice, setFormat, validateDeck, legalityOf, banStatus, get FORMAT() { return FORMAT; }, isPC, applyLayout, testSetup, mkInst, render, takeCores, IMG, importCards, importImages, textToDeck, deckToText, parseCard, loadImages, get PLAYER_DECK() { return PLAYER_DECK; }, get G() { return G; }, startNewGame, checkInvariants, CARDS, PRESET_DECK, humanCan, onNext, engineIdle, runPortRecord, viewerReplayOf, openViewer, replayFromRecord, portRecord, boardSnapshot, sendIntent, applyIntent, seatLoopOpen, cpuAnswer, INTENT_TYPES, cpuTurn, doBattle, summon, effCost, legacyPlan, legacyPay, canBlockState, canPlayCard, setBurst, fieldList, bpOf, get SESSION() { return SESSION; }, CPU_PROFILES, cpuProfileName, cpuEval, cpuPlayScore, cpuPlayChoice, cpuLethal, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, lifeValue, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, extraReduction };
 navSync();
 renderLobby();
 loadImages();

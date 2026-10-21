@@ -206,17 +206,17 @@
   .tcg-card .core-tag.soul-active { background: linear-gradient(135deg, #d9383a 0%, #e0e0e0 100%); color: #000; border: 1px solid #fff; font-weight: 900; }
   .stack-badge { position: absolute; bottom: 2px; left: 2px; background: rgba(0,0,0,0.85); color: #e5a93c; border: 1px solid #e5a93c; font-size: 9cqw; font-weight: bold; padding: 0px 2px; border-radius: 2px; }
 
-  #pick-bar { position: fixed; left: 50%; top: 6px; transform: translate(-50%, -140%); z-index: 90; width: min(94vw, 520px); background: var(--bg-panel); border: 2px solid #6fcf97; border-radius: 8px; padding: 8px 10px; text-align: center; font-size: 12px; line-height: 1.35; box-shadow: 0 6px 20px rgba(0,0,0,.7); transition: transform .2s; pointer-events: none; }
+  #pick-bar, #peek-bar { position: fixed; left: 50%; top: 6px; transform: translate(-50%, -160%); z-index: 90; width: min(94vw, 520px); background: var(--ae-panel1); color: var(--ae-text); padding: 12px 14px 10px; text-align: center; font-size: 12px; line-height: 1.4; box-shadow: inset 0 3px 0 var(--you), inset 0 0 0 1px var(--ae-line2), 0 14px 30px #0009; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px)); transition: transform .2s; pointer-events: none; }
   #pick-bar.active { transform: translate(-50%, 0); pointer-events: auto; }
-  #peek-bar { position: fixed; left: 50%; top: 6px; transform: translate(-50%, -160%); z-index: 95; width: min(94vw, 520px); background: var(--bg-panel); border: 2px solid var(--accent); border-radius: 8px; padding: 8px 10px; text-align: center; font-size: 12px; line-height: 1.35; box-shadow: 0 6px 20px rgba(0,0,0,.7); transition: transform .2s; pointer-events: none; }
+  #peek-bar { z-index: 95; } #pick-bar.blk { box-shadow: inset 0 3px 0 var(--cpu), inset 0 0 0 1px var(--ae-line2), 0 14px 30px #0009; }
   #peek-bar.active { transform: translate(-50%, 0); pointer-events: auto; }
   #peek-btns { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 6px; align-items: center; }
-  #peek-btns .modal-btn { margin: 0; padding: 6px 12px; width: auto; }
+  #peek-btns .modal-btn, #pick-btns .modal-btn { margin: 0; padding: 0 16px; width: auto; flex: none; height: 34px; }
   .modal-overlay.active.peeking, .modal-overlay.peeking { opacity: 0 !important; pointer-events: none !important; }
   .sel-badge { position: absolute; top: 3px; left: 50%; transform: translateX(-50%); background: #6fcf97; color: #06210f; font-weight: bold; border-radius: 9px; padding: 0 7px; font-size: 12px; z-index: 3; }
   #pick-btns { display: flex; gap: 6px; justify-content: center; margin-top: 6px; }
   #pick-btns:empty { display: none; }
-  #pick-btns .modal-btn { margin: 0; padding: 6px 14px; width: auto; }
+
   html.picking .tcg-card:not(.pickable):not(.pick-att) { opacity: .4; }
   .tcg-card.pickable { box-shadow: 0 0 0 3px #6fcf97, 0 0 14px 3px rgba(111,207,151,.9) !important; animation: pickPulse 1s infinite alternate; }
   .tcg-card.pick-att { box-shadow: 0 0 0 3px #eb5757, 0 0 14px 3px rgba(235,87,87,.9) !important; }
@@ -238,17 +238,21 @@
     .step-chip { padding: 2px 8px; }
     .hand-container-wrapper { height: calc(var(--card-w) * 1.42 + 6px); }
   }
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+  .modal-overlay { position: fixed; inset: 0; background: #07090dcc; display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
   .modal-overlay.active { opacity: 1; pointer-events: auto; }
-  .modal-box { background: var(--bg-panel); border: 2px solid var(--accent); border-radius: 8px; padding: 14px; width: 85%; max-width: 310px; text-align: center; max-height: 80vh; overflow-y: auto; }
-  .modal-title { color: var(--accent); font-size: 13px; font-weight: bold; margin-bottom: 6px; }
-  .modal-desc { font-size: 10px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.35; }
-  .modal-btns { display: flex; flex-direction: column; gap: 6px; }
-  .modal-btn { background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border-line); padding: 7px; border-radius: 5px; font-size: 11px; font-weight: bold; cursor: pointer; }
-  .modal-btn.primary { background: var(--accent); color: #0b1319; }
-  .modal-btn.blue { background: #2f80ed; color: #fff; }
-  .modal-btn.purple { background: #9b51e0; color: #fff; }
-  .modal-btn.cancel { background: #d9383a; color: #fff; }
+  .modal-box { position: relative; background: linear-gradient(180deg, var(--ae-panel1), var(--ae-panel2)); color: var(--ae-text); border-radius: 0; padding: 18px 18px 16px; width: 88%; max-width: 380px; text-align: center; max-height: 80vh; overflow-y: auto; box-shadow: inset 0 4px 0 var(--you), inset 0 0 0 1px var(--ae-line2); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px)); }
+  .modal-title { color: var(--ae-text); font-size: 15px; font-weight: 900; letter-spacing: .06em; margin-bottom: 8px; }
+  .modal-box[data-kind]::before { content: attr(data-kind); display: table; margin: 0 auto 8px; padding: 2px 14px; font-size: 10px; font-weight: 900; letter-spacing: .18em; background: var(--you); color: var(--you-ink); clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%); }
+  .modal-box.lose { box-shadow: inset 0 4px 0 var(--cpu), inset 0 0 0 1px var(--ae-line2); } .modal-box.lose::before { background: var(--cpu); color: var(--cpu-ink); }
+  .modal-box[data-kind="RESULT"] .modal-title { font-size: 26px; font-style: italic; letter-spacing: .08em; }
+  .modal-desc { font-size: 12px; color: var(--ae-text2); margin-bottom: 14px; line-height: 1.45; }
+  .modal-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .modal-btn { flex: 1 1 140px; min-height: 40px; background: var(--ae-chip); color: var(--ae-text); border: 0; box-shadow: inset 0 0 0 1px var(--ae-line2); padding: 6px 18px; border-radius: 0; font-size: 12.5px; font-weight: 900; letter-spacing: .06em; cursor: pointer; clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%); touch-action: manipulation; }
+  .modal-btn:not(:disabled):hover { filter: brightness(1.15); } .modal-btn:focus-visible { outline: 2px solid var(--ae-text); outline-offset: -4px; }
+  .modal-btn.primary { background: var(--you); color: var(--you-ink); box-shadow: 0 0 18px var(--you-soft); } .modal-btn.yes { background: #ffd447; color: #1b1600; }
+  .modal-btn.blue { box-shadow: inset 0 -3px 0 #3aa0ff, inset 0 0 0 1px var(--ae-line2); }
+  .modal-btn.purple { box-shadow: inset 0 -3px 0 var(--ae-soulstate), inset 0 0 0 1px var(--ae-line2); }
+
   .modal-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
   .glossary-pill { display: inline-block; background: rgba(229,169,60,0.2); color: var(--accent); border: 1px solid var(--accent); border-radius: 3px; padding: 1px 4px; font-size: 8px; font-weight: bold; margin: 1px; cursor: pointer; }
@@ -275,7 +279,7 @@
   .tcg-card.has-img .name, .tcg-card.has-img .cost { display: none; }
   .tcg-card.has-img .bp { position: absolute; bottom: 2px; left: 2px; right: 2px; background: rgba(0,0,0,.72); color: #fff; }
   .tcg-card.has-img .core-tag { position: absolute; top: 2px; left: 2px; }
-  .modal-box.wide { max-width: 520px; width: 94%; }
+  .modal-box.wide { max-width: 560px; width: 94%; }
   .mull-list { display: grid; grid-template-columns: repeat(4, minmax(0, 116px)); justify-content: center; gap: 6px; }
   .mull-card .cface { border-width: 1px; border-radius: 4px; }
   @media (max-height: 560px) and (orientation: landscape) { .mull-list { grid-template-columns: repeat(4, minmax(0, 78px)); } .mull-card .cface.ph .ph-txt { display: none; } }
@@ -476,7 +480,7 @@
   .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
   /* battle screen ground: graphite board with a faint 60-degree lattice; old names alias the new tokens here */
-  #view-playmat, #log-drawer {
+  #view-playmat, #log-drawer, #action-modal, #pick-bar, #peek-bar, #zoom-overlay {
     --bg-main: var(--ae-board2); --bg-panel: var(--ae-panel1); --accent: var(--you); --text-main: var(--ae-text); --text-muted: var(--ae-text2);
     --border-line: var(--ae-line2); --blue-zone: var(--ae-chip); --turn: var(--you); color: var(--ae-text);
   }
@@ -625,6 +629,22 @@
   #view-playmat .step-chip { touch-action: manipulation; }
   #view-playmat .step-chip:not(.active):hover { box-shadow: inset 0 0 0 1px var(--turn); color: var(--ae-text); }
   #view-playmat .inline-next-btn:not(:disabled):hover { filter: brightness(1.12); }
+
+  /* v0.91.0 U5: popups in the mockup v11 style (rules above at .modal-box / #pick-bar) + the shared overlay layer #ae-fx:
+     ribbons (turn, step, your Flash Timing), match-start banner with the motto, block strip. Phone: dialogs are bottom sheets. */
+  #ae-fx { position: fixed; inset: 0; z-index: 80; pointer-events: none; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .ae-rib, .ae-strip { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; }
+  .ae-rib { --rc: var(--you); height: 64px; background: linear-gradient(90deg, transparent, #0b0e13e6 18%, #0b0e13e6 82%, transparent); box-shadow: inset 0 2px 0 var(--rc), inset 0 -2px 0 var(--rc); animation: aeRib 1.2s ease-out both; }
+  .ae-rib.cpu { --rc: var(--cpu); }
+  .ae-rib b { font-size: 26px; font-weight: 900; font-style: italic; letter-spacing: .14em; color: var(--rc); text-shadow: 0 0 18px #000; }
+  .ae-rib.banner { height: 120px; animation-duration: 1.8s; } .ae-rib.banner b { font-size: 40px; color: #fff; } .ae-rib-e { font-size: 11px; font-weight: 900; letter-spacing: .3em; color: var(--rc); }
+  .ae-strip { height: 44px; font-size: 20px; font-weight: 900; font-style: italic; letter-spacing: .3em; background: #000c; box-shadow: inset 0 2px 0 var(--cpu), inset 0 -2px 0 var(--cpu); clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 50%, 100% 100%, 0 100%, 22px 50%); }
+  .ae-strip[hidden] { display: none; }
+  @keyframes aeRib { 0% { opacity: 0; transform: scaleY(.2); } 15%, 80% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .ae-rib { animation: none; } #pick-bar, #peek-bar, .modal-overlay { transition: none; } }
+  html.layout-mobile .modal-overlay { align-items: flex-end; }
+  html.layout-mobile .modal-box { width: 100%; max-width: none; max-height: 86vh; padding-bottom: max(16px, env(safe-area-inset-bottom)); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%); }
+  html.layout-mobile .ae-rib b { font-size: 20px; } html.layout-mobile .ae-rib.banner b { font-size: 28px; }
 
   /* =====================================================================
      v0.65.0 U2: lobby navigation + Home (docs/DESIGN.md section 0, mockup docs/design/mockup-v11.html "Lobby PC" / "Lobby phone").
