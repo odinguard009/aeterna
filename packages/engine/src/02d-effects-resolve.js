@@ -130,7 +130,7 @@ function soulToLife(p, holder) {
 function lifeTake(p, m, dest) {                          // m Life cores leave to 'reserve' | 'trash' | a card on the Field; returns how many left
   m = Math.min(m, p.life); if (m <= 0) return 0;
   const soul = p.lifeSoul && m >= p.life, n = m - (soul ? 1 : 0);
-  p.life -= m; if (soul) p.lifeSoul = false;
+  p.life -= m; if (soul) p.lifeSoul = false; p.lifeRedTurn = G.turnNo;      // v0.88 S1: condition lifeReduced
   if (dest === 'reserve') { p.reserve.n += n; if (soul) p.reserve.soul = true; }
   else if (dest === 'trash') { p.trashCores.n += n; if (soul) p.trashCores.soul = true; }
   else { dest.cores += n; if (soul) dest.soul = true; }

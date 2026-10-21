@@ -24,7 +24,7 @@ async function beginTurn(key) {
 }
 async function endStep(key) {
   setStep(G.steps.length - 1);
-  for (const k of ['player', 'opponent']) for (const f of fieldList(G.p[k])) f.bpMod = 0;
+  for (const k of ['player', 'opponent']) for (const f of fieldList(G.p[k])) { f.bpMod = 0; if (f.noABTurn != null) { f.noAB = false; f.noABTurn = null; } }   // v0.88 S1: "during this turn, can't attack/block" ends
   log(`${who(G.p[key])} ${G.p[key].cpu ? 'ends' : 'end'} the turn.`);
   await wait(300);
 }

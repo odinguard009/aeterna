@@ -1,0 +1,9 @@
+{
+  "name": "s1-sharp-thorn-life-reduced",
+  "about": "S1 Standard Magic (v0.88.0), condition lifeReduced: Sharp Thorn (26RBS03-097) destroys an opposing Cost 4 or less Spirit, or a Cost 7 or less one when your Life was reduced this turn. The opponent controls only a Cost 5 Spirit, so the Magic is usable only after a Life core left the player's Life this turn.",
+  "turn": 4, "active": "opponent", "step": 5,
+  "players": {
+    "player": { "reserve": 6, "hand": ["26RBS03-097"], "spirits": [] },
+    "opponent": { "reserve": 3, "spirits": [ { "id": "BS01-016", "cores": 1, "as": "big" } ] }
+  }
+}

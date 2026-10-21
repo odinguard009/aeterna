@@ -1,6 +1,6 @@
 {
  "stats": {
-  "cards": 7843,
+  "cards": 7804,
   "per_saga": {
    "1": 787,
    "2": 333,
@@ -19,23 +19,23 @@
    "15": 357,
    "16": 334,
    "17": 110,
-   "50": 541
+   "50": 502
   },
   "tokens": 3,
   "missing_page": 3,
-  "skipped_curated": 863,
+  "skipped_curated": 902,
   "number_conflicts": 5,
   "nexus_levels_added": 716,
   "nexus_levels_missing": 43,
   "level_problems": 3,
-  "image_problems": 580,
-  "merged": 111,
+  "image_problems": 569,
+  "merged": 110,
   "brave_unparsed": 171,
   "ut_lines_added": 119,
   "odd_reduction": 809,
   "brave_no_data": 2,
   "ut_lines_missing": 1,
-  "without_image": 578
+  "without_image": 567
  },
  "tokens": [
   "BS73-T001",
@@ -784,6 +784,7 @@
   "26RSD01-005",
   "26RSD01-007",
   "26RSD01-009",
+  "26RSD01-014",
   "26RSD01-X02",
   "26RSD02-001",
   "26RSD02-002",
@@ -793,6 +794,8 @@
   "26RSD02-006",
   "26RSD02-007",
   "26RSD02-008",
+  "26RSD02-012",
+  "26RSD02-013",
   "26RSD02-014",
   "26RSD02-X01",
   "26RSD03-002",
@@ -812,12 +815,15 @@
   "26RSD05-004",
   "26RSD05-005",
   "26RSD05-008",
+  "26RSD05-012",
+  "26RSD05-014",
   "26RSD05-X02",
   "26RSD06-002",
   "26RSD06-003",
   "26RSD06-004",
   "26RSD06-005",
   "26RSD06-007",
+  "26RSD06-013",
   "26RBS01-001",
   "26RBS01-002",
   "26RBS01-003",
@@ -850,11 +856,22 @@
   "26RBS01-090",
   "26RBS01-097",
   "26RBS01-110",
+  "26RBS01-112",
+  "26RBS01-114",
+  "26RBS01-115",
+  "26RBS01-116",
+  "26RBS01-117",
+  "26RBS01-118",
+  "26RBS01-120",
   "26RBS01-121",
+  "26RBS01-122",
+  "26RBS01-126",
   "26RBS01-X07",
   "26RSD07-002",
   "26RSD07-003",
   "26RSD07-006",
+  "26RSD07-013",
+  "26RSD07-014",
   "26RCB01-001",
   "26RCB01-006",
   "26RCB01-010",
@@ -869,6 +886,14 @@
   "26RCB01-040",
   "26RCB01-041",
   "26RCB01-044",
+  "26RCB01-061",
+  "26RCB01-062",
+  "26RCB01-063",
+  "26RCB01-067",
+  "26RCB01-068",
+  "26RCB01-069",
+  "26RCB01-070",
+  "26RCB01-071",
   "26RCB01-X01",
   "26RBS02-002",
   "26RBS02-004",
@@ -886,6 +911,12 @@
   "26RBS02-051",
   "26RBS02-058",
   "26RBS02-064",
+  "26RDB01-056",
+  "26RDB01-059",
+  "26RDB01-062",
+  "26RDB01-063",
+  "26RSD08-012",
+  "26RSD08-014",
   "26RSD09-002",
   "26RSD09-003",
   "26RSD09-005",
@@ -896,6 +927,7 @@
   "26RSD10-005",
   "26RSD10-006",
   "26RSD10-007",
+  "26RSD10-012",
   "26RBS03-010",
   "26RBS03-011",
   "26RBS03-012",
@@ -910,7 +942,14 @@
   "26RBS03-068",
   "26RBS03-071",
   "26RBS03-072",
-  "26RBS03-074"
+  "26RBS03-074",
+  "26RBS03-087",
+  "26RBS03-089",
+  "26RBS03-090",
+  "26RBS03-091",
+  "26RBS03-092",
+  "26RBS03-096",
+  "26RBS03-097"
  ],
  "number_conflicts": [
   {
@@ -4142,11 +4181,6 @@
    "problem": "ambiguous name (2 files, none in set 26RCB01)"
   },
   {
-   "id": "26RCB01-062",
-   "name": "Burai Kick",
-   "problem": "ambiguous name (2 files, none in set 26RCB01)"
-  },
-  {
    "id": "26RCB01-065",
    "name": "Guard Vent",
    "problem": "ambiguous name (2 files, none in set 26RCB01)"
@@ -4154,21 +4188,6 @@
   {
    "id": "26RCB01-066",
    "name": "Strike Vent",
-   "problem": "ambiguous name (2 files, none in set 26RCB01)"
-  },
-  {
-   "id": "26RCB01-067",
-   "name": "Shoot Vent",
-   "problem": "ambiguous name (2 files, none in set 26RCB01)"
-  },
-  {
-   "id": "26RCB01-068",
-   "name": "Sword Vent",
-   "problem": "ambiguous name (2 files, none in set 26RCB01)"
-  },
-  {
-   "id": "26RCB01-069",
-   "name": "Final Vent",
    "problem": "ambiguous name (2 files, none in set 26RCB01)"
   },
   {
@@ -4552,33 +4571,8 @@
    "problem": "no image"
   },
   {
-   "id": "26RBS03-087",
-   "name": "Flame Storm",
-   "problem": "no image"
-  },
-  {
    "id": "26RBS03-088",
    "name": "Evil Hazard",
-   "problem": "no image"
-  },
-  {
-   "id": "26RBS03-089",
-   "name": "Grand Theft",
-   "problem": "no image"
-  },
-  {
-   "id": "26RBS03-090",
-   "name": "Binding Kelp",
-   "problem": "no image"
-  },
-  {
-   "id": "26RBS03-091",
-   "name": "Bubble Shield",
-   "problem": "no image"
-  },
-  {
-   "id": "26RBS03-092",
-   "name": "Dream Powder",
    "problem": "no image"
   },
   {
@@ -4594,16 +4588,6 @@
   {
    "id": "26RBS03-095",
    "name": "Furious Anger",
-   "problem": "no image"
-  },
-  {
-   "id": "26RBS03-096",
-   "name": "Flash Run",
-   "problem": "no image"
-  },
-  {
-   "id": "26RBS03-097",
-   "name": "Sharp Thorn",
    "problem": "no image"
   },
   {
@@ -4780,7 +4764,6 @@
   "BS74-076",
   "BS74-083",
   "BS75-085",
-  "26RSD01-014",
   "26RSD09-001",
   "26RSD09-004",
   "26RSD10-013"

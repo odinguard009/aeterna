@@ -48,7 +48,8 @@ function parseCond(c) {
     const okCtrl = k === 'ctrl' && [].concat(v).length > 0 && [].concat(v).every(x => x && typeof x === 'object' && ['Spirit', 'Ultimate', 'Both'].includes(x.type) && (x.n == null || (Number.isInteger(x.n) && x.n >= 1 && x.n <= 5))
       && (x.colors == null || (Array.isArray(x.colors) && x.colors.length && x.colors.every(y => COLORS.includes(y)))) && (x.costGe == null || Number.isInteger(x.costGe)) && (x.family == null || (typeof x.family === 'string' && x.family))
       && (x.exhausted == null || x.exhausted === true) && Object.keys(x).every(y => ['n', 'type', 'colors', 'costGe', 'family', 'exhausted'].includes(y)));   // v0.71 "if you control any <colour/family> Spirit/Ultimate" (same shape as summonIf.ctrl)
-    if (!okInt && !okStr && !okBool && !okCol && !okStep && !okCtrl && !okNexus) return { error: `unknown or invalid condition "${k}" (byOpp, byOppFx, hasSymbol, lifeLe, anyLifeLe, counterGe, soulGe, oppHandGe, voidGe, soulLe, putGe, lifeGe, oppRemovedGe, removedGe, oppSpiritsLe, oppNexusGe, oppNoAB, oppRemovedSpirit, controlName, hasName, soulOn, nexusBraved, oppTurn, attackStep, step, prev, utHit, burstSet, oppBurstSet, ctrl, fewerSpirits, nexusGe)` };
+    const okS1 = (k === 'lifeReduced' && typeof v === 'boolean') || (k === 'allHave' && allHaveShapeOK(v) && Object.keys(v).every(y => ['family', 'team', 'costIn', 'spiritsOnly'].includes(y)));   // v0.88 S1 (02p)
+    if (!okInt && !okStr && !okBool && !okCol && !okStep && !okCtrl && !okNexus && !okS1) return { error: `unknown or invalid condition "${k}" (byOpp, byOppFx, hasSymbol, lifeLe, anyLifeLe, counterGe, soulGe, oppHandGe, voidGe, soulLe, putGe, lifeGe, oppRemovedGe, removedGe, oppSpiritsLe, oppNexusGe, oppNoAB, oppRemovedSpirit, controlName, hasName, soulOn, nexusBraved, oppTurn, attackStep, step, prev, utHit, burstSet, oppBurstSet, ctrl, fewerSpirits, nexusGe, lifeReduced, allHave)` };
   }
   return { cond: Object.assign({}, c) };
 }

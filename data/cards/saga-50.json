@@ -4848,6 +4848,332 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RBS01-112",
+  "name": "Skull Blast",
+  "name_jp": "スカルブラスト",
+  "type": "Magic",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Dark Puce"
+  ],
+  "text": "Flash\nTarget a \"Dark Puce\" family Spirit you control. Destroy it. If you've done so, target an opposing Spirit. Send two cores from it to the Reserve. (The opponent chooses which cores to send.)",
+  "image": "26RBS01-112.png",
+  "block": "A",
+  "saga": 50,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY_OWN",
+     "match": {
+      "family": [
+       "Dark Puce"
+      ]
+     }
+    },
+    {
+     "do": "OPP_CORES_TO_RESERVE",
+     "targets": 1,
+     "each": 2,
+     "if": {
+      "prev": true
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-114",
+  "name": "Suicide Attack",
+  "name_jp": "スーサイドアタック",
+  "type": "Magic",
+  "color": "purple",
+  "cost": 7,
+  "reduction": {
+   "purple": 4
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Dark Puce"
+  ],
+  "text": "(Legacy)\nFlash\nTarget one of your Cost 6 or more Purple Spirits. Destroy it. If you've done so, target an opposing exhausted Spirit. Destroy it.",
+  "image": "26RBS01-114.png",
+  "block": "A",
+  "saga": 50,
+  "legacy": true,
+  "mechanics": [
+   "Legacy"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY_OWN",
+     "match": {
+      "color": "purple",
+      "costGe": 6
+     }
+    },
+    {
+     "do": "DESTROY",
+     "costLe": 30,
+     "exhaustedOnly": true,
+     "if": {
+      "prev": true
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-115",
+  "name": "Wave Ride",
+  "name_jp": "ウェーブライド",
+  "type": "Magic",
+  "color": "green",
+  "cost": 5,
+  "reduction": {
+   "green": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Oceanic Green"
+  ],
+  "text": "Flash\nTarget an opposing Spirit. Exhaust it. Then, target one of your Cost 8 or more \"Oceanic Green\" family Spirits. Refresh it.",
+  "image": "26RBS01-115.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "EXHAUST_OPP",
+     "n": 1
+    },
+    {
+     "do": "REFRESH_SPIRIT",
+     "match": {
+      "family": [
+       "Oceanic Green"
+      ],
+      "costGe": 8
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-116",
+  "name": "Double Vortex",
+  "name_jp": "ダブルヴォーテックス",
+  "type": "Magic",
+  "color": "green",
+  "cost": 5,
+  "reduction": {
+   "green": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Oceanic Green"
+  ],
+  "text": "{{Soul Magic|g}}\nFlash\nTarget two opposing Cost 4 or less Spirits. Exhaust them.",
+  "image": "26RBS01-116.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "soulMagic": "green",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "EXHAUST_OPP",
+     "n": 2,
+     "costLe": 4
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-117",
+  "name": "Hydro Force",
+  "name_jp": "ハイドロフォース",
+  "type": "Magic",
+  "color": "green",
+  "cost": 7,
+  "reduction": {
+   "green": 4
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Oceanic Green"
+  ],
+  "text": "(Legacy)\nFlash\nTarget an \"Oceanic Green\" family Spirit you control. During this turn, give it +7000 BP. Then, during this turn, when only the opposing Spirit is destroyed by comparing BP with it, draw two cards.",
+  "image": "26RBS01-117.png",
+  "block": "A",
+  "saga": 50,
+  "legacy": true,
+  "mechanics": [
+   "Legacy"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BP_TARGET",
+     "n": 7000,
+     "to": "pick",
+     "match": {
+      "family": [
+       "Oceanic Green"
+      ]
+     }
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "Then, during this turn, when only the opposing Spirit is destroyed by comparing BP with it, draw two cards."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-118",
+  "name": "Fast Travel",
+  "name_jp": "ファストトラベル",
+  "type": "Magic",
+  "color": "white",
+  "cost": 5,
+  "reduction": {
+   "white": 2
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Mineroid"
+  ],
+  "text": "Flash\nTarget a White Spirit you control. Refresh it. Also, if it's the opposing Attack Step, during this turn, it gains +2000 BP.",
+  "image": "26RBS01-118.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "REFRESH_SPIRIT",
+     "match": {
+      "color": "white"
+     }
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "Also, if it's the opposing Attack Step, during this turn, it gains +2000 BP."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RBS01-120",
+  "name": "Punish Gate",
+  "name_jp": "バニッシュゲート",
+  "type": "Magic",
+  "color": "white",
+  "cost": 6,
+  "reduction": {
+   "white": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Leucomyst"
+  ],
+  "text": "{{Soul Magic|w}}\nFlash\nTarget an opposing 7000 BP or less Spirit. Return it to the Hand. If your Life was reduced this turn, return it to the deckbottom instead.",
+  "image": "26RBS01-120 (1).png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "soulMagic": "white",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BOUNCE_OPP",
+     "kind": "spirit",
+     "to": "hand",
+     "bpLe": 7000,
+     "if": {
+      "lifeReduced": false
+     }
+    },
+    {
+     "do": "BOUNCE_OPP",
+     "kind": "spirit",
+     "to": "deckBottom",
+     "bpLe": 7000,
+     "if": {
+      "lifeReduced": true
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
   "id": "26RBS01-121",
   "name": "Life Link",
   "name_jp": "ライフリンク",
@@ -4906,6 +5232,48 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image."
  },
  {
+  "id": "26RBS01-122",
+  "name": "Bolt Grid",
+  "name_jp": "ボルトグリッド",
+  "type": "Magic",
+  "color": "yellow",
+  "cost": 5,
+  "reduction": {
+   "yellow": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Topaz",
+   "Echochant"
+  ],
+  "text": "{{Soul Magic|y}}\nFlash\nTarget an opposing Cost 4 or less Spirit. During this turn, it can't attack/block.",
+  "image": "26RBS01-122.png",
+  "block": "A",
+  "saga": 50,
+  "soulMagic": "yellow",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "CANT_ATTACK_BLOCK",
+     "n": 1,
+     "turn": true,
+     "costLe": 4
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
   "id": "26RBS01-124",
   "name": "Find Treasure",
   "name_jp": "ファインドトレジャー",
@@ -4946,6 +5314,52 @@
    "{{Soul Magic|b}} Main Target a Cost 5 or less Blue Nexus card in your Trash. Deploy it without paying the cost."
   ],
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
+ },
+ {
+  "id": "26RBS01-126",
+  "name": "Merciless Blow",
+  "name_jp": "マーシレスブロウ",
+  "type": "Magic",
+  "color": "blue",
+  "cost": 6,
+  "reduction": {
+   "blue": 3
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Cyantree"
+  ],
+  "text": "(Legacy)\n\nFlash\nTarget an opposing Cost 5 or less Spirit. Destroy it. Then, if your Life was reduced this turn, target an opposing Cost 3 or less Spirit. Destroy it.",
+  "image": "26RBS01-126.png",
+  "block": "A",
+  "saga": 50,
+  "legacy": true,
+  "mechanics": [
+   "Legacy"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY",
+     "costLe": 5
+    },
+    {
+     "do": "DESTROY",
+     "costLe": 3,
+     "if": {
+      "lifeReduced": true
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
  },
  {
   "id": "26RBS01-X01",
@@ -13289,6 +13703,238 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
  },
  {
+  "id": "26RBS03-087",
+  "name": "Flame Storm",
+  "name_jp": "フレイムストーム",
+  "type": "Magic",
+  "color": "red",
+  "cost": 6,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Red Cloud"
+  ],
+  "text": "{{Soul Magic|r}}\nFlash\nTarget up to three opposing Spirits with a total BP up to 7000. Destroy them. If your Life was reduced this turn, the targeting BP becomes up to 10000 instead.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "soulMagic": "red",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY_TOTAL",
+     "total": 7000,
+     "if": {
+      "lifeReduced": false
+     }
+    },
+    {
+     "do": "DESTROY_TOTAL",
+     "total": 10000,
+     "if": {
+      "lifeReduced": true
+     }
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "Target up to three opposing Spirits (the limit of three targets is not enforced: any number within the total BP is destroyed)."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-089",
+  "name": "Grand Theft",
+  "name_jp": "グランドセフト",
+  "type": "Magic",
+  "color": "purple",
+  "cost": 7,
+  "reduction": {
+   "purple": 4
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Dark Puce"
+  ],
+  "text": "{{Soul Magic|p}}\nFlash\nTarget an opposing Spirit with one core on it. Destroy it. If your Life was reduced this turn, target two Spirits instead.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "soulMagic": "purple",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY",
+     "coresLe": 1
+    },
+    {
+     "do": "DESTROY",
+     "coresLe": 1,
+     "if": {
+      "lifeReduced": true
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-090",
+  "name": "Binding Kelp",
+  "name_jp": "バインディングケルプ",
+  "type": "Magic",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Oceanic Green"
+  ],
+  "text": "Flash\nTarget an opposing Spirit with one core or less on it. Exhaust it.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "EXHAUST_OPP",
+     "n": 1,
+     "coresLe": 1
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-091",
+  "name": "Bubble Shield",
+  "name_jp": "バブルシールド",
+  "type": "Magic",
+  "color": "green",
+  "cost": 6,
+  "reduction": {
+   "green": 3
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Abyssen"
+  ],
+  "text": "{{Soul Magic|g}}\nFlash\nTarget an opposing Spirit. Exhaust it. Then, if it's the opposing Attack Step, target an opposing Cost 3 or less Spirit. Exhaust it.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "soulMagic": "green",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "EXHAUST_OPP",
+     "n": 1
+    },
+    {
+     "do": "EXHAUST_OPP",
+     "n": 1,
+     "costLe": 3,
+     "if": {
+      "oppTurn": true,
+      "attackStep": true
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-092",
+  "name": "Dream Powder",
+  "name_jp": "ドリームパウダー",
+  "type": "Magic",
+  "color": "white",
+  "cost": 4,
+  "reduction": {
+   "white": 2
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Wollaguard"
+  ],
+  "text": "Flash\nTarget an opposing 5000 BP or less Spirit. Return it to the Hand. If your Life was reduced this turn, change the targeting BP to 12000 or less instead.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BOUNCE_OPP",
+     "kind": "spirit",
+     "to": "hand",
+     "bpLe": 5000,
+     "if": {
+      "lifeReduced": false
+     }
+    },
+    {
+     "do": "BOUNCE_OPP",
+     "kind": "spirit",
+     "to": "hand",
+     "bpLe": 12000,
+     "if": {
+      "lifeReduced": true
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
   "id": "26RBS03-093",
   "name": "Luminous Recovery",
   "name_jp": "ルミナスリカバリー",
@@ -13369,6 +14015,108 @@
    "{{Soul Magic|w}} Main Target up to three opposing Cost 3 or less Nexuses. Return them to the Hand."
   ],
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
+ },
+ {
+  "id": "26RBS03-096",
+  "name": "Flash Run",
+  "name_jp": "フラッシュラン",
+  "type": "Magic",
+  "color": "yellow",
+  "cost": 6,
+  "reduction": {
+   "yellow": 4
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Topaz"
+  ],
+  "text": "{{Soul Magic|y}}\nFlash\nIf all your Spirits are Cost 2/4/6/8 with \"Topaz\" family, target one of your Cost 6/8 Spirits. Refresh it.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "soulMagic": "yellow",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "REFRESH_SPIRIT",
+     "match": {
+      "costGe": 6
+     },
+     "if": {
+      "allHave": {
+       "family": "Topaz",
+       "costIn": [
+        2,
+        4,
+        6,
+        8
+       ],
+       "spiritsOnly": true
+      }
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RBS03-097",
+  "name": "Sharp Thorn",
+  "name_jp": "シャープソーン",
+  "type": "Magic",
+  "color": "blue",
+  "cost": 5,
+  "reduction": {
+   "blue": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Cyantree"
+  ],
+  "text": "{{Soul Magic|b}}\nFlash\nTarget an opposing Cost 4 or less Spirit. Destroy it. If your Life was reduced this turn, the targeting cost becomes 7 or less instead.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "soulMagic": "blue",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY",
+     "costLe": 4,
+     "if": {
+      "lifeReduced": false
+     }
+    },
+    {
+     "do": "DESTROY",
+     "costLe": 7,
+     "if": {
+      "lifeReduced": true
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
  },
  {
   "id": "26RBS03-X01",
@@ -16387,6 +17135,144 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
  },
  {
+  "id": "26RCB01-061",
+  "name": "Spear Victory",
+  "name_jp": "スピアビクトリー",
+  "type": "Magic",
+  "color": "red",
+  "cost": 3,
+  "reduction": {
+   "red": 2
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "GAIM"
+  ],
+  "text": "Flash\nTarget one of your \"GAIM\" family Spirits. During this turn, give it +3000 BP. If that's \"Kamen Rider Baron\", give it +5000 BP instead.",
+  "image": "26RCB01-061.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BP_TARGET",
+     "n": 3000,
+     "to": "pick",
+     "match": {
+      "family": [
+       "GAIM"
+      ]
+     }
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "If that's \"Kamen Rider Baron\", give it +5000 BP instead."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RCB01-062",
+  "name": "Burai Kick",
+  "name_jp": "無頼キック",
+  "type": "Magic",
+  "color": "red",
+  "cost": 6,
+  "reduction": {
+   "red": 4
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "GAIM"
+  ],
+  "text": "{{Soul Magic|r}}\nFlash\nIf all your Spirits/Nexuses have the \"GAIM\" family, target an opposing 5000 BP or less Spirit. Destroy it.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "soulMagic": "red",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY",
+     "bpLe": 5000,
+     "if": {
+      "allHave": {
+       "family": "GAIM"
+      }
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RCB01-063",
+  "name": "Impact Banish",
+  "name_jp": "インパクトバニッシュ",
+  "type": "Magic",
+  "color": "purple",
+  "cost": 7,
+  "reduction": {
+   "purple": 4
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "ZEZTZ"
+  ],
+  "text": "(Legacy)\nFlash\nTarget an opposing Spirit with one core on it. Destroy it. If all your Spirits/Nexuses have the \"ZEZTZ\" family, target two Spirits instead.",
+  "image": "26RCB01-063.png",
+  "block": "A",
+  "saga": 50,
+  "legacy": true,
+  "mechanics": [
+   "Legacy"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY",
+     "coresLe": 1
+    },
+    {
+     "do": "DESTROY",
+     "coresLe": 1,
+     "if": {
+      "allHave": {
+       "family": "ZEZTZ"
+      }
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
   "id": "26RCB01-064",
   "name": "Advent",
   "name_jp": "アドベント",
@@ -16429,6 +17315,243 @@
    "Main Reveal three cards from your decktop. Among them, add a \"Mirror Monster\" family card, and a \"RYUKI\" family Magic card to the Hand. Return any remaining cards to the deckbottom in any order."
   ],
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
+ },
+ {
+  "id": "26RCB01-067",
+  "name": "Shoot Vent",
+  "name_jp": "シュートベント",
+  "type": "Magic",
+  "color": "white",
+  "cost": 5,
+  "reduction": {
+   "white": 3
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "RYUKI"
+  ],
+  "text": "Flash\nIf all your Spirits/Nexuses have the \"RYUKI\" family, target an opposing 3000 BP or less Spirit. Return it to the deckbottom.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BOUNCE_OPP",
+     "kind": "spirit",
+     "to": "deckBottom",
+     "bpLe": 3000,
+     "if": {
+      "allHave": {
+       "family": "RYUKI"
+      }
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RCB01-068",
+  "name": "Sword Vent",
+  "name_jp": "ソードベント",
+  "type": "Magic",
+  "color": "white",
+  "cost": 5,
+  "reduction": {
+   "white": 3
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "RYUKI"
+  ],
+  "text": "{{Soul Magic|w}}\nFlash\nTarget one of your \"RYUKI\" & \"Kamen\" family Spirits. During this battle, give it +4000 BP. Then, during this battle, when only the opposing Spirit is destroyed by comparing BP with it, draw a card.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "soulMagic": "white",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BP_TARGET",
+     "n": 4000,
+     "to": "pick",
+     "battle": true,
+     "match": {
+      "familyAll": [
+       "RYUKI",
+       "Kamen"
+      ]
+     }
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "Then, during this battle, when only the opposing Spirit is destroyed by comparing BP with it, draw a card."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RCB01-069",
+  "name": "Final Vent",
+  "name_jp": "ファイナルベント",
+  "type": "Magic",
+  "color": "white",
+  "cost": 6,
+  "reduction": {
+   "white": 4
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "RYUKI"
+  ],
+  "text": "(Legacy)\nFlash\nIf all your Spirits/Nexuses have the \"RYUKI\" family, target one of your \"RYUKI\" & \"Kamen\" family Spirits. Refresh it.",
+  "image": null,
+  "block": "A",
+  "saga": 50,
+  "legacy": true,
+  "mechanics": [
+   "Legacy"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "REFRESH_SPIRIT",
+     "match": {
+      "familyAll": [
+       "RYUKI",
+       "Kamen"
+      ]
+     },
+     "if": {
+      "allHave": {
+       "family": "RYUKI"
+      }
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RCB01-070",
+  "name": "Critical Dead",
+  "name_jp": "クリティカルデッド",
+  "type": "Magic",
+  "color": "blue",
+  "cost": 3,
+  "reduction": {
+   "blue": 1
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "EX-AID"
+  ],
+  "text": "Flash\nTarget one of your Cost 4 or more \"Kamen Rider Genm\". Destroy it. If you've done so, target an opposing Cost 5 or less Spirit. Destroy it.",
+  "image": "26RCB01-070.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY_OWN",
+     "match": {
+      "name": [
+       "Kamen Rider Genm"
+      ],
+      "costGe": 4
+     }
+    },
+    {
+     "do": "DESTROY",
+     "costLe": 5,
+     "if": {
+      "prev": true
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RCB01-071",
+  "name": "Mighty Critical Strike",
+  "name_jp": "マイティクリティカルストライク",
+  "type": "Magic",
+  "color": "blue",
+  "cost": 6,
+  "reduction": {
+   "blue": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "EX-AID"
+  ],
+  "text": "{{Soul Magic|b}}\nFlash\nIf all your Spirits/Nexuses have the \"EX-AID\" family, target an opposing Cost 3 or less Spirit. Destroy it. For each Spirit/Nexus you control, the target cost gets +1.",
+  "image": "26RCB01-071.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "soulMagic": "blue",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY",
+     "costLe": 3,
+     "if": {
+      "allHave": {
+       "family": "EX-AID"
+      }
+     }
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "For each Spirit/Nexus you control, the target cost gets +1."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
  },
  {
   "id": "26RCB01-X01",
@@ -18920,6 +20043,54 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
  },
  {
+  "id": "26RDB01-056",
+  "name": "Sengoku Fire Dance",
+  "name_jp": "戦国焔舞",
+  "type": "Magic",
+  "color": "red",
+  "cost": 5,
+  "reduction": {
+   "red": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Diva"
+  ],
+  "text": "{{Soul Magic|r}}\n[Team: Red Stella]\n\nFlash\nIf all your Spirits/Nexuses have Red Stella, target an opposing 4000 BP or less Spirit. Destroy it. If you control two or more exhausted Spirits, the targeting BP becomes 6000 or less instead.",
+  "image": "26RDB01-056.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "soulMagic": "red",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY",
+     "bpLe": 4000,
+     "if": {
+      "allHave": {
+       "team": "Red Stella"
+      }
+     }
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "If you control two or more exhausted Spirits, the targeting BP becomes 6000 or less instead."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
   "id": "26RDB01-057",
   "name": "Hand Bloom",
   "name_jp": "ハンドブルーム",
@@ -18958,6 +20129,49 @@
    "Main Show all your Hand to the opponent. Return them to the deckbottom in any order. If all the cards returned have Green Wave, draw three cards."
   ],
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
+ },
+ {
+  "id": "26RDB01-059",
+  "name": "Deep Strike",
+  "name_jp": "ディープストライク",
+  "type": "Magic",
+  "color": "green",
+  "cost": 5,
+  "reduction": {
+   "green": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Diva"
+  ],
+  "text": "{{Soul Magic|g}}\n[Team: Green Wave]\n\nFlash\nTarget an opposing Spirit. Exhaust it. Then, if all your Spirits/Nexuses have Green Wave, you can pay one cost. If you've done so, target an opposing exhausted Spirit. Heavy exhaust it.",
+  "image": "26RDB01-059.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "soulMagic": "green",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "EXHAUST_OPP",
+     "n": 1
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "Then, if all your Spirits/Nexuses have Green Wave, you can pay one cost. If you've done so, target an opposing exhausted Spirit. Heavy exhaust it."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
  },
  {
   "id": "26RDB01-060",
@@ -19041,6 +20255,118 @@
    "Main Target a Blue Beat Nexus card in your Trash. Return it to the Hand. If there's in your Reserve, instead, change the target to any Blue Beat Spirit card/Nexus card."
   ],
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
+ },
+ {
+  "id": "26RDB01-062",
+  "name": "Greed Shout",
+  "name_jp": "グリードシャウト",
+  "type": "Magic",
+  "color": "blue",
+  "cost": 5,
+  "reduction": {
+   "blue": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Diva"
+  ],
+  "text": "{{Soul Magic|b}}\n[Team: Blue Beat]\n\nFlash\nIf all your Spirits/Nexuses have Blue Beat, target an opposing Cost 3 or less Spirit. Destroy it. If your Life was reduced this turn, target three Spirits instead.",
+  "image": "26RDB01-062.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "soulMagic": "blue",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY",
+     "costLe": 3,
+     "if": {
+      "allHave": {
+       "team": "Blue Beat"
+      }
+     }
+    },
+    {
+     "do": "DESTROY",
+     "costLe": 3,
+     "if": {
+      "allHave": {
+       "team": "Blue Beat"
+      },
+      "lifeReduced": true
+     }
+    },
+    {
+     "do": "DESTROY",
+     "costLe": 3,
+     "if": {
+      "allHave": {
+       "team": "Blue Beat"
+      },
+      "lifeReduced": true
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RDB01-063",
+  "name": "Gigan Song",
+  "name_jp": "ギガンソング",
+  "type": "Magic",
+  "color": "blue",
+  "cost": 6,
+  "reduction": {
+   "blue": 4
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Diva"
+  ],
+  "text": "(Legacy)\n[Team: Blue Beat]\n\nFlash\nIf all your Spirits/Nexuses have Blue Beat, target an opposing Cost 4 or less Spirit. Destroy it. When used using Legacy, the targeting cost becomes 6 or less instead.",
+  "image": "26RDB01-063.png",
+  "block": "A",
+  "saga": 50,
+  "legacy": true,
+  "mechanics": [
+   "Legacy"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY",
+     "costLe": 4,
+     "if": {
+      "allHave": {
+       "team": "Blue Beat"
+      }
+     }
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "When used using Legacy, the targeting cost becomes 6 or less instead."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
  },
  {
   "id": "26RDB01-X01",
@@ -19951,6 +21277,56 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
  },
  {
+  "id": "26RSD01-014",
+  "name": "Flame Hurricane",
+  "name_jp": "フレイムハリケーン",
+  "type": "Magic",
+  "color": "red",
+  "cost": 6,
+  "reduction": {
+   "red": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Windfang"
+  ],
+  "text": "{{Soul Magic|r}}\nFlash\nTarget an opposing 7000 BP or less Spirit. Destroy it. If your Life was reduced during this turn, the targeting BP becomes 10000 instead.",
+  "image": "26RSD01-014.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "soulMagic": "red",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY",
+     "bpLe": 7000,
+     "if": {
+      "lifeReduced": false
+     }
+    },
+    {
+     "do": "DESTROY",
+     "bpLe": 10000,
+     "if": {
+      "lifeReduced": true
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
   "id": "26RSD01-X01",
   "name": "The FlyingScarlet Rensis",
   "name_jp": "飛赫レンシス",
@@ -20628,6 +22004,87 @@
    "Main Target one of your \"Bloodrouse\" family Spirits. Destroy it. If you've done so, put a core from the Void to your Reserve."
   ],
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
+ },
+ {
+  "id": "26RSD02-012",
+  "name": "Blood Sip",
+  "name_jp": "ブラッドシップ",
+  "type": "Magic",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Bloodrouse"
+  ],
+  "text": "Flash\nTarget an opposing Spirit. Send cores from it to the Reserve until one core remains. (The opponent choses which cores to send)",
+  "image": "26RSD02-012.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "OPP_CORES_TO_RESERVE",
+     "targets": 1,
+     "each": 1,
+     "untilOne": true
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RSD02-013",
+  "name": "Rainy Poison",
+  "name_jp": "レイニーポイズン",
+  "type": "Magic",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Bloodrouse"
+  ],
+  "text": "(Legacy)\nFlash\nTarget one of your Spirits. During this turn, give it +2000 BP. Then, if your Life was reduced this turn, during this turn, your Life can't be reduced by the attacks of opposing Spirits with one core on them.",
+  "image": "26RSD02-013.png",
+  "block": "A",
+  "saga": 50,
+  "legacy": true,
+  "mechanics": [
+   "Legacy"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BP_TARGET",
+     "n": 2000,
+     "to": "pick"
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "Then, if your Life was reduced this turn, during this turn, your Life can't be reduced by the attacks of opposing Spirits with one core on them."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
  },
  {
   "id": "26RSD02-014",
@@ -22534,6 +23991,45 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
  },
  {
+  "id": "26RSD05-012",
+  "name": "Rebirth Thunder",
+  "name_jp": "リバースサンダー",
+  "type": "Magic",
+  "color": "yellow",
+  "cost": 3,
+  "reduction": {
+   "yellow": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Thunder Dragon"
+  ],
+  "text": "When your \"Thunder Dragon\" family Spirits are destroyed, you can return this card from the Trash to your Hand. You can only use this effect of the same card name once per turn.\n\nFlash\nTarget an opposing Spirit. During this turn, give it -2000 BP. Then, destroy it if it has 0 BP.",
+  "image": "26RSD05-012.png",
+  "block": "A",
+  "saga": 50,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BP_MINUS",
+     "n": 2000,
+     "zeroDestroy": true
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "When your \"Thunder Dragon\" family Spirits are destroyed, you can return this card from the Trash to your Hand. You can only use this effect of the same card name once per turn."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
   "id": "26RSD05-013",
   "name": "Nestling",
   "name_jp": "ネストリング",
@@ -22575,6 +24071,57 @@
    "(Legacy) Main Show up to two \"Thunder Dragon\" family cards from your Hand to the opponent. Return them to the deckbottom in any order. If two cards are returned, draw three cards."
   ],
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
+ },
+ {
+  "id": "26RSD05-014",
+  "name": "Triple Thunder",
+  "name_jp": "トリプルサンダー",
+  "type": "Magic",
+  "color": "yellow",
+  "cost": 6,
+  "reduction": {
+   "yellow": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Thunder Dragon"
+  ],
+  "text": "{{Soul Magic|y}}\nFlash\nTarget an opposing Spirit. During this turn, give it -2000 BP. Then, destroy it if it's 0 BP. These happen three times.",
+  "image": "26RSD05-014.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "soulMagic": "yellow",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BP_MINUS",
+     "n": 2000,
+     "zeroDestroy": true
+    },
+    {
+     "do": "BP_MINUS",
+     "n": 2000,
+     "zeroDestroy": true
+    },
+    {
+     "do": "BP_MINUS",
+     "n": 2000,
+     "zeroDestroy": true
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
  },
  {
   "id": "26RSD05-X01",
@@ -23221,6 +24768,49 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
  },
  {
+  "id": "26RSD06-013",
+  "name": "Stem Lance",
+  "name_jp": "ステムランス",
+  "type": "Magic",
+  "color": "blue",
+  "cost": 5,
+  "reduction": {
+   "blue": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Ferobeast"
+  ],
+  "text": "{{Soul Magic|b}}\nFlash\nTarget an opposing Cost 4 or below Spirit. Destroy it. When choosing the target, you can target one of your Nexuses. Destroy it. For each cost of the Nexus destroyed, the target cost increases by +1 instead.",
+  "image": "26RSD06-013.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "soulMagic": "blue",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "DESTROY",
+     "costLe": 4
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "When choosing the target, you can target one of your Nexuses. Destroy it. For each cost of the Nexus destroyed, the target cost increases by +1 instead."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
   "id": "26RSD06-014",
   "name": "Full Stomach",
   "name_jp": "フルストマック",
@@ -23831,6 +25421,97 @@
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
  },
  {
+  "id": "26RSD07-013",
+  "name": "Catastrom Crusher",
+  "name_jp": "カタストロム・クラッシャー",
+  "type": "Magic",
+  "color": "purple",
+  "cost": 4,
+  "reduction": {
+   "purple": 2
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "ZEZTZ"
+  ],
+  "text": "Flash\nIf all your Spirits/Nexuses have the \"ZEZTZ\" family, target an opposing Spirit. Send a core, besides , from it to the Reserve.",
+  "image": "26RSD07-013.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "OPP_CORES_TO_RESERVE",
+     "targets": 1,
+     "each": 1,
+     "if": {
+      "allHave": {
+       "family": "ZEZTZ"
+      }
+     }
+    }
+   ]
+  },
+  "fxComplete": true,
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RSD07-014",
+  "name": "Breakam Slash",
+  "name_jp": "ブレイカムスラッシュ",
+  "type": "Magic",
+  "color": "purple",
+  "cost": 5,
+  "reduction": {
+   "purple": 3
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "ZEZTZ"
+  ],
+  "text": "{{Soul Magic|p||If you control any Purple symbol, you can use it with just the .}}\nFlash\nTarget one of your \"ZEZTZ\" family Spirits. During this battle, give it +3000 BP. Then, if it has Form Change, draw a card.",
+  "image": "26RSD07-014.png",
+  "block": "A",
+  "saga": 50,
+  "soulMagic": "purple",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BP_TARGET",
+     "n": 3000,
+     "to": "pick",
+     "battle": true,
+     "match": {
+      "family": [
+       "ZEZTZ"
+      ]
+     }
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "Then, if it has Form Change, draw a card."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
   "id": "26RSD07-X01",
   "name": "Kamen Rider Zeztz Catastrom",
   "name_jp": "仮面ライダーゼッツ カタストロム",
@@ -24367,6 +26048,96 @@
    "[LV2] (True Release) (Either Attack Step) {{Invoke|Flash}} If you used any \"Sword Eye\" family Magic card this turn, exhaust this Nexus ▶ Target an opposing 4000 BP or less Spirit. Return it to the Hand."
   ],
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
+ },
+ {
+  "id": "26RSD08-012",
+  "name": "Angelic Feather Song",
+  "name_jp": "エンジェリックフェザーソング",
+  "type": "Magic",
+  "color": "yellow",
+  "cost": 5,
+  "reduction": {
+   "yellow": 2
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Diva",
+   "Sword Eye"
+  ],
+  "text": "[Team: Yellow Rise]\n\nFlash\nTarget an opposing Spirit. During this turn, give it -2000 BP. Then, if it has 0 BP, destroy it. Then, if there are two or more \"Sword Eye\" family Magic cards in your Trash, target one of your Cost 5 or more \"Sword Eye\" family Spirits. Refresh it.",
+  "image": "26RSD08-012.png",
+  "block": "A",
+  "saga": 50,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BP_MINUS",
+     "n": 2000,
+     "zeroDestroy": true
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "Then, if there are two or more \"Sword Eye\" family Magic cards in your Trash, target one of your Cost 5 or more \"Sword Eye\" family Spirits. Refresh it."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
+ },
+ {
+  "id": "26RSD08-014",
+  "name": "Shining Sword Song",
+  "name_jp": "シャイニングソードソング",
+  "type": "Magic",
+  "color": "yellow",
+  "cost": 7,
+  "reduction": {
+   "yellow": 3
+  },
+  "symbols": 1,
+  "levels": [],
+  "families": [
+   "Diva",
+   "Sword Eye"
+  ],
+  "text": "{{Soul Magic|y}}\n[Team: Yellow Rise]\n\nFlash\nIf all your Spirits/Nexuses have Yellow Rise, target an opposing Spirit. During this turn, give it -3000 BP. Then, if it has 0 BP, destroy it. For each Yellow Rise Spirit you control, this BP- decreases 1000 further.",
+  "image": "26RSD08-014.png",
+  "block": "A",
+  "saga": 50,
+  "ex_symbols": 1,
+  "soulMagic": "yellow",
+  "mechanics": [
+   "Soul Magic"
+  ],
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BP_MINUS",
+     "n": 3000,
+     "zeroDestroy": true,
+     "if": {
+      "allHave": {
+       "team": "Yellow Rise"
+      }
+     }
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "For each Yellow Rise Spirit you control, this BP- decreases 1000 further."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
  },
  {
   "id": "26RSD08-X01",
@@ -25508,6 +27279,50 @@
    "[LV1-2] (Your Attack Step) All your attacking Green Spirits gain +2000 BP."
   ],
   "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects compiled by tools/compile_effects.py (v0.52.0) with the v2 clause grammar of tools/compile_v2.py (v0.61.0) and smoke-checked; not yet checked against the card image. Partial card (v0.79.0, roadmap item A1): the printed paragraphs in \"residual\" do not run yet; the card shows a \"!\" mark in the Library and the deck builder."
+ },
+ {
+  "id": "26RSD10-012",
+  "name": "Abyss Call",
+  "name_jp": "アビスコール",
+  "type": "Magic",
+  "color": "green",
+  "cost": 3,
+  "reduction": {
+   "green": 1
+  },
+  "symbols": 0,
+  "levels": [],
+  "families": [
+   "Abyssen"
+  ],
+  "text": "Flash\nTarget one of your \"Abyssen\" family Spirits. During this turn, give it +2000 BP. Then, during this battle, when only the opposing Spirit is destroyed by it via BP comparison, draw a card.",
+  "image": "26RSD10-012.png",
+  "block": "A",
+  "saga": 50,
+  "magic": {
+   "timing": [
+    "FLASH"
+   ],
+   "effect": "ACTIONS",
+   "value": 0,
+   "actions": [
+    {
+     "do": "BP_TARGET",
+     "n": 2000,
+     "to": "pick",
+     "match": {
+      "family": [
+       "Abyssen"
+      ]
+     }
+    }
+   ]
+  },
+  "fxComplete": false,
+  "residual": [
+   "Then, during this battle, when only the opposing Spirit is destroyed by it via BP comparison, draw a card."
+  ],
+  "note": "Stats and text from the owner-supplied Fandom export (owner decision 2026-10-14); effects hand-written for roadmap S1 Standard Magic (v0.88.0); not yet checked against the card image."
  },
  {
   "id": "26RSD10-013",

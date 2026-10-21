@@ -447,6 +447,22 @@
       "status": "partial",
       "test": "invoke68.test.mjs:INV68-05",
       "note": "Costs built: pay N, exhaust/destroy this card, exhaust one of your (family) Nexuses/Spirits, discard a family card. Open: conditional costs ('If ..., exhaust this Spirit'), core moves, returning cards, Change templates."
+    },
+    {
+      "id": "S1-LIFE-88",
+      "rule": "'If your Life was reduced (during) this turn': true when any core left the owner's Life during the current turn (attack or effect); checked when the effect resolves; 'X instead' = the bound or target count changes.",
+      "source": "Card texts of the Standard Magic Sharp Thorn, Punish Gate, Flame Hurricane (Fandom export); manual-notes 'S1 conditions'",
+      "status": "enforced",
+      "test": "s1magic88.test.mjs:S88-01",
+      "note": "v0.88.0 S1: condition lifeReduced (p.lifeRedTurn set by lifeTake)."
+    },
+    {
+      "id": "S1-ALLHAVE-88",
+      "rule": "'If all your Spirits/Nexuses have X' (family or [Team: X]) and 'If all your Spirits are Cost 2/4/6/8 with the X family': every card of that kind on your Field matches; none at all = not met.",
+      "source": "Card texts Burai Kick, Sengoku Fire Dance, Flash Run (Fandom export); manual-notes 'S1 conditions'",
+      "status": "partial",
+      "test": "s1magic88.test.mjs:S88-03",
+      "note": "v0.88.0 S1: condition allHave (02p-effects-standard.js). The empty-Field reading (not met) is not yet confirmed by a manual or Q&A."
     }
   ]
 }

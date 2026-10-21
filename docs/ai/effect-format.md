@@ -1,4 +1,4 @@
-# Effect format (schema v1, F1 in v0.81.0)
+# Effect format (schema v2; v1 = F1 in v0.81.0)
 
 Card effects are data. A card in `data/cards/saga-*.json` (built into `data/cards/all-cards.json`) carries its effects in JSON that the engine reads through `parseCard` (`packages/engine/src/03-imported-cards.js`), `parseEffects` / `parseBurst` / `parseActionList` (`02c-effects-parse.js`) and the action table `FX_ACTIONS` (`02b`-`02o`). This file is the human description; the machine-readable list is **`packages/engine/fx-schema.json`**, generated from the engine source by `tools/fx_schema.mjs` (never edit it by hand).
 
@@ -40,3 +40,4 @@ Test FS02 (`tests/unit/fxschema81.test.mjs`) compares the schema with the live e
 
 ## Versions
 - v1 (v0.81.0): first schema: 77 actions, 27 triggers, 33 conditions, 10 STATIC flags, 6 Burst timings.
+- v2 (v0.88.0, S1 Standard Magic): conditions `lifeReduced`, `allHave`; match field `familyAll`; action `DESTROY_OWN`; fields `EXHAUST_OPP.coresLe`, `CANT_ATTACK_BLOCK.turn` / `costLe` (additions only, every v1 card stays valid).
