@@ -77,3 +77,21 @@ jobs:
           name: fuzz-cases
           path: tests/fuzz-cases/*.json
           if-no-files-found: ignore
+  # v0.102.0: CPU benchmark (tools/cpu_bench.mjs): 240 CPU-vs-CPU matches with the ten Standard starters on the headless engine
+  # (Node only, ~2-3 min), compared with docs/reports/cpu-bench.json. FAIL (more errors or timeouts) fails the job; WARN lines
+  # (more passive turns, longer games, a style losing win rate) become warnings for the next session to read.
+  cpu-bench:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: CPU benchmark against the baseline
+        run: |
+          node tools/cpu_bench.mjs --check > bench.log 2>&1; code=$?
+          cat bench.log
+          grep -E "^WARN " bench.log | while IFS= read -r l; do echo "::warning::$l"; done
+          grep -E "^FAIL " bench.log | while IFS= read -r l; do echo "::error::$l"; done
+          exit $code

@@ -4,6 +4,15 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 
 Older releases (v0.80.0 and earlier): [CHANGELOG-archive.md](CHANGELOG-archive.md).
 
+## v0.102.0
+- Lane: U/I
+- Time: ~25 min (chain continuation of v0.101.0), Opus 5.5; tokens in the DONE mark on issue #1.
+- **CPU benchmark (no game change).**
+  - `tools/cpu_bench.mjs`: 240 CPU-vs-CPU matches with the ten Standard starter decks on the headless engine (no browser, ~2 min): every ordered deck pair twice (balanced vs balanced) and the three CPU styles against each other on ten deck pairs, both seats. Fixed seeds, so a build always gives the same numbers. Per match: winner, turns, errors, timeout, and two passivity counts at each End Step of the CPU's own turn (a ready attacker kept back with no attack made; a payable card kept with nothing played).
+  - Baseline `docs/reports/cpu-bench.json` + readable `cpu-bench.md`: 240 finished, 0 errors, 0 timeouts; 6.1 turns on average; first seat wins 48.8%; idle attack 0.135 and idle summon 0.023 per own turn. Styles form a cycle: aggressive beats defensive 65%, defensive beats balanced 65%, balanced beats aggressive 65%. Colours: green and white 61%, blue 56%, yellow 49%, red 44%, purple 40%.
+  - The Regression workflow has a new job `cpu-bench` (`--check`): more errors or timeouts fail it; clearly more passive turns, 20% longer games or a style losing 15 points become warnings. `docs/ai/release.md` says when to rewrite the baseline.
+  - `playHeadless` takes `format` and an `onBoard` hook. Tests CB1-CB4.
+
 ## v0.101.0
 - Lane: U/I
 - Time: ~20 min (chain continuation of v0.100.0), Opus 5.5; tokens in the DONE mark on issue #1.

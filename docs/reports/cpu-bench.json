@@ -1,0 +1,132 @@
+{
+ "build": "0.102.0",
+ "note": "Baseline of tools/cpu_bench.mjs (fixed seeds). Rewrite with --write only when the CPU or the Standard decks changed on purpose.",
+ "summary": {
+  "matches": 240,
+  "finished": 240,
+  "timeouts": 0,
+  "errors": 0,
+  "avgTurns": 6.1,
+  "firstSeatWin": 48.8,
+  "idleAttackPerTurn": 0.135,
+  "idleSummonPerTurn": 0.023,
+  "decks": {
+   "std01": {
+    "games": 36,
+    "wins": 16,
+    "winPct": 44.4
+   },
+   "std02": {
+    "games": 36,
+    "wins": 12,
+    "winPct": 33.3
+   },
+   "std03": {
+    "games": 36,
+    "wins": 22,
+    "winPct": 61.1
+   },
+   "std04": {
+    "games": 36,
+    "wins": 22,
+    "winPct": 61.1
+   },
+   "std05": {
+    "games": 36,
+    "wins": 16,
+    "winPct": 44.4
+   },
+   "std06": {
+    "games": 36,
+    "wins": 20,
+    "winPct": 55.6
+   },
+   "std07": {
+    "games": 36,
+    "wins": 17,
+    "winPct": 47.2
+   },
+   "std08": {
+    "games": 36,
+    "wins": 19,
+    "winPct": 52.8
+   },
+   "std09": {
+    "games": 36,
+    "wins": 16,
+    "winPct": 44.4
+   },
+   "std10": {
+    "games": 36,
+    "wins": 20,
+    "winPct": 55.6
+   }
+  },
+  "colours": {
+   "red": {
+    "games": 72,
+    "wins": 32,
+    "winPct": 44.4
+   },
+   "purple": {
+    "games": 72,
+    "wins": 29,
+    "winPct": 40.3
+   },
+   "green": {
+    "games": 36,
+    "wins": 22,
+    "winPct": 61.1
+   },
+   "white": {
+    "games": 36,
+    "wins": 22,
+    "winPct": 61.1
+   },
+   "yellow": {
+    "games": 72,
+    "wins": 35,
+    "winPct": 48.6
+   },
+   "blue": {
+    "games": 72,
+    "wins": 40,
+    "winPct": 55.6
+   }
+  },
+  "styles": {
+   "aggressive": {
+    "games": 40,
+    "wins": 20,
+    "winPct": 50
+   },
+   "balanced": {
+    "games": 40,
+    "wins": 20,
+    "winPct": 50
+   },
+   "defensive": {
+    "games": 40,
+    "wins": 20,
+    "winPct": 50
+   }
+  },
+  "stylePairs": {
+   "aggressive vs balanced": {
+    "games": 20,
+    "wins": 7,
+    "winPct": 35
+   },
+   "balanced vs defensive": {
+    "games": 20,
+    "wins": 7,
+    "winPct": 35
+   },
+   "aggressive vs defensive": {
+    "games": 20,
+    "wins": 13,
+    "winPct": 65
+   }
+  }
+ }
+}

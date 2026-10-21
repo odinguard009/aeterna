@@ -30,7 +30,7 @@ export function firstAnswer(seat, d) {
 const EXPORTS = `
 ;globalThis.__engine = { io, bindHost, VIEW_TYPES, DECISION_KINDS, cpuTurn, cpuAnswer, applyIntent, INTENT_TYPES, portRecord, boardSnapshot, runPortRecord, setFormat, ABORT,
   setReplayFast() { REPLAY = { fast: true, i: 0 }; }, get FORMAT() { return FORMAT; }, startNewGame, PREBUILT, PRESET_DECK, VERSION, CARDS, matchSummary, checkInvariants,
-  setSimDeckB(d) { SIM_DECK_B = d; }, setSimHuman(v) { SIM_HUMAN = !!v; }, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, setFuzz(o) { FUZZ = Object.assign({}, o || {}); },
+  setSimDeckB(d) { SIM_DECK_B = d; }, canPlayCard, abTaxOK, STEPS, setSimHuman(v) { SIM_HUMAN = !!v; }, setSimProfiles(o) { CPU_SIM_PROFILES = Object.assign({}, o || {}); }, setFuzz(o) { FUZZ = Object.assign({}, o || {}); },
   get G() { return G; }, get SIM() { return SIM; } };
 `;
 
@@ -59,8 +59,9 @@ const deckOf = (E, d) => (typeof d === 'string' ? (E.PREBUILT.find(x => x.id ===
 /** Plays one CPU-vs-CPU match to the end. deckA/deckB: a prebuilt id ('red', 'mitra', ...) or a {cardId: count} map.
  *  Checks the rules invariants after every board view. Resolves a plain summary; never rejects. */
 // real: true plays a web match (coin toss, Starting Hand prompts; the first seat is always human): records replay in the page.
-export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', timeoutMs = 60000, profiles = null, fuzz = null, human = false, answer = firstAnswer, real = false } = {}) {
-  const E = loadEngine({ sim: !real }), views = {}, errors = [], decisions = [], acted = { ok: 0, refused: 0 };
+// format: 'eternal' (default) or 'standard'; onBoard(E): called after every board view (tools/cpu_bench.mjs counts idle turns there).
+export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', timeoutMs = 60000, profiles = null, fuzz = null, human = false, answer = firstAnswer, real = false, format = 'eternal', onBoard = null } = {}) {
+  const E = loadEngine({ sim: !real, format }), views = {}, errors = [], decisions = [], acted = { ok: 0, refused: 0 };
   let logs = 0;
   const A = deckOf(E, deckA), B = deckOf(E, deckB);
   if (!A || !B) return { over: false, errors: ['unknown deck ' + (A ? deckB : deckA)] };
@@ -72,6 +73,7 @@ export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', t
       views[ev.type] = (views[ev.type] || 0) + 1;
       if (ev.type === 'acted') { acted[ev.ok ? 'ok' : 'refused']++; return; }
       if (ev.type === 'board' && E.G && errors.length < 3) { try { E.checkInvariants(); } catch (e) { errors.push('invariant: ' + e.message); } }
+      if (ev.type === 'board' && E.G && onBoard) onBoard(E);
     },
     log() { logs++; },
     async decide(seat, d) {
