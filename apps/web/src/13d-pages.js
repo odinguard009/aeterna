@@ -17,9 +17,9 @@ function matUse(blob) {
   if (MAT.url) r.style.setProperty('--ae-mat', `url("${MAT.url}")`); else r.style.removeProperty('--ae-mat');
 }
 // keep a big playmat light: longest side at most 1600 px, JPEG (the board is at most a full screen)
-async function shrinkMat(file) {
+async function shrinkMat(file, max) {
   try {
-    const bmp = await createImageBitmap(file), k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+    const bmp = await createImageBitmap(file), k = Math.min(1, (max || 1600) / Math.max(bmp.width, bmp.height));
     const cv = document.createElement('canvas'); cv.width = Math.max(1, Math.round(bmp.width * k)); cv.height = Math.max(1, Math.round(bmp.height * k));
     cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height);
     return (await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.85))) || file;

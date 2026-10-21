@@ -118,9 +118,21 @@ function dbTab(v) {
 function renderDbLook() {
   const L = deckLook(ACTIVE_SLOT), grid = (k, list, sw) => `<div class="db-lk"><div class="db-stat-h">${k === 'soul' ? 'Soul Core' : k === 'core' ? 'Core' : 'Sleeve'}</div><div class="db-lkg">${Object.keys(list).map(n =>
     `<button class="db-lkb" data-a="db-look" data-v="${k}:${n}" aria-pressed="${L[k] === n}" title="${cap(n)}">${sw(n)}<span>${cap(n)}</span></button>`).join('')}</div></div>`;
-  $('db-look').innerHTML = grid('sleeve', SLEEVE_TINTS, n => `<span class="sleeve" style="--sl-tint:${SLEEVE_TINTS[n]}" aria-hidden="true"></span>`)
+  $('db-look').innerHTML = `<div class="db-lkup"><label class="ae-ghost ae-upl"><span>UPLOAD SLEEVE</span><input id="db-sl-up" type="file" accept="image/*" aria-label="Upload a sleeve picture"></label>${SLEEVE_IMG[ACTIVE_SLOT] ? '<span class="db-mini"><span class="sleeve" aria-hidden="true"></span></span><button class="ae-ghost" data-a="db-sl-clear">REMOVE</button>' : ''}</div>` + grid('sleeve', SLEEVE_TINTS, n => `<span class="sleeve" style="--sl-tint:${SLEEVE_TINTS[n]}" aria-hidden="true"></span>`)
     + grid('core', CORE_LOOKS, n => `<i class="g-core" style="${coreVars('core', n)}" aria-hidden="true"></i>`)
     + grid('soul', CORE_LOOKS, n => `<i class="g-soul" style="${coreVars('soul', n)}" aria-hidden="true"></i>`);
+}
+const SLEEVE_BLOB = {};
+async function dbSleeveSet(file) {                   // v0.95.0: longest side 600 px; same store as the card images and the playmat
+  if (!file || !/^image\//.test(file.type)) return uiInfo('Not an image', 'Choose a picture file (PNG, JPEG, WebP) for the sleeve.');
+  const i = ACTIVE_SLOT, blob = await shrinkMat(file, 600);
+  if (SLEEVE_IMG[i]) URL.revokeObjectURL(SLEEVE_IMG[i]);
+  SLEEVE_IMG[i] = URL.createObjectURL(blob); SLEEVE_BLOB[i] = blob; await idbTx('readwrite', st => st.put(blob, '~sleeve:' + i));
+  applyLook(); renderDbLook();
+}
+async function dbSleeveClear() {
+  const i = ACTIVE_SLOT; if (SLEEVE_IMG[i]) URL.revokeObjectURL(SLEEVE_IMG[i]); delete SLEEVE_IMG[i]; delete SLEEVE_BLOB[i];
+  await idbTx('readwrite', st => st.delete('~sleeve:' + i)); applyLook(); renderDbLook();
 }
 function dbLook(v) {
   const [k, n] = v.split(':'); if (!['sleeve', 'core', 'soul'].includes(k) || !(k === 'sleeve' ? SLEEVE_TINTS : CORE_LOOKS)[n]) return;
@@ -201,7 +213,8 @@ function renderDbDeck(v) {
   if (v.ok) chk.push([true, `Legal in ${fmtName(FORMAT)}`]);
   $('db-check').innerHTML = chk.map(([ok, t]) => `<li class="${ok ? 'ok' : 'bad'}">${esc(t)}</li>`).join('');
   $('db-undo').disabled = !DB_UNDO.length;
-  $('db-deckbar').innerHTML = `<span>Deck <b>${v.total}</b>/40</span><span class="${ok ? 'ok' : 'bad'}">${ok ? 'legal' : 'not legal'}</span><span class="db-deckbar-up">▲</span>`;
+  const L = deckLook(ACTIVE_SLOT);
+  $('db-deckbar').innerHTML = `<span class="db-mini" aria-hidden="true"><span class="sleeve mini" style="--sl-tint:${SLEEVE_TINTS[L.sleeve]}"></span><i class="g-core" style="${coreVars('core', L.core)}"></i><i class="g-soul" style="${coreVars('soul', L.soul)}"></i></span><span>Deck <b>${v.total}</b>/40</span><span class="${ok ? 'ok' : 'bad'}">${ok ? 'legal' : 'not legal'}</span><span class="db-deckbar-up">▲</span>`;
   $('db-deckbar').className = 'db-deckbar ' + (ok ? 'ok' : 'bad'); $('db-deckbar').title = txt;
   $('db-topcount').textContent = `${v.total}/40`; $('db-topcount').className = 'db-topcount ' + (ok ? 'ok' : 'bad');
 }

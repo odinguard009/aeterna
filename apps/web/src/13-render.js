@@ -160,8 +160,12 @@ function deckLook(i) {
   return { sleeve: SLEEVE_TINTS[l.sleeve] ? l.sleeve : 'silver', core: CORE_LOOKS[l.core] ? l.core : 'blue', soul: CORE_LOOKS[l.soul] ? l.soul : 'red' };
 }
 const coreVars = (k, n) => CORE_LOOKS[n].map((c, j) => `--ae-${k}${j + 1}:${c}`).join(';');
+/* v0.95.0 U7 part 2: your own sleeve picture per deck slot (IndexedDB key '~sleeve:<slot>'), multiplied with the tint (Silver = as it is) */
+const SLEEVE_IMG = {};
+const sleeveImgCss = (sel, i, tint) => SLEEVE_IMG[i] ? `${sel}{background:url("${SLEEVE_IMG[i]}") center/cover${tint === 'silver' ? '' : `,${SLEEVE_TINTS[tint]}`};background-blend-mode:multiply}${sel}::before,${sel}::after{display:none}` : '';
 function applyLook() {                                // your side of the board (and the hand row) takes the active deck's look; the CPU keeps the default
-  const L = deckLook(ACTIVE_SLOT), css = `#view-playmat .side-you{--sl-tint:${SLEEVE_TINTS[L.sleeve]};${coreVars('core', L.core)};${coreVars('soul', L.soul)}}`;
+  const L = deckLook(ACTIVE_SLOT), css = `#view-playmat .side-you{--sl-tint:${SLEEVE_TINTS[L.sleeve]};${coreVars('core', L.core)};${coreVars('soul', L.soul)}}` + sleeveImgCss('#view-playmat .side-you .sleeve,.db-mini .sleeve', ACTIVE_SLOT, L.sleeve)
+    + SLOTS.map((s, i) => sleeveImgCss(`.dk-tile[data-v="${i}"]:not(.st) .dk-sl`, i, deckLook(i).sleeve)).join('');
   let s = $('ae-look'); if (!s) { s = document.createElement('style'); s.id = 'ae-look'; document.head.appendChild(s); }
   if (s.textContent !== css) s.textContent = css;
 }
