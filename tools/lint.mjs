@@ -8,7 +8,8 @@
 // M5 types (v0.101.0): every other checker error is counted per source part against tools/type-baseline.json (a ratchet:
 // a part may not get more errors than its baseline; a part missing there, every engine and protocol part included,
 // must have none). The engine's record shapes are in packages/engine/types.d.ts. `node tools/lint.mjs --update-types`
-// lowers the baseline after a part got cleaner (it never raises it).
+// lowers the baseline after a part got cleaner (it never raises it). Counts depend on the checker version: CI pins
+// TypeScript 6.0.3 (.github/workflows/ci.yml); another version only warns about the ratchet instead of failing.
 import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -36,6 +37,9 @@ function tscBin() {
   try { return execFileSync('npx', ['--no-install', 'tsc', '-v']) && ['npx', ['--no-install', 'tsc']]; } catch { return ['tsc', []]; }
 }
 const [bin, pre] = tscBin();
+const TS_PIN = '6.0.3';
+let tsVer = '?';
+try { tsVer = String(execFileSync(bin, [...pre, '-v'], { encoding: 'utf8' })).replace(/^Version /, '').trim(); } catch { /* reported by the run below */ }
 let out = '';
 try {
   out = execFileSync(bin, [...pre, '--allowJs', '--checkJs', '--noEmit', '--strict', 'false', '--lib', 'dom,es2022', '--target', 'es2022', '--skipLibCheck', join(ROOT, 'packages/engine/types.d.ts'), join(ROOT, 'build/game.js')], { encoding: 'utf8' });
@@ -56,19 +60,21 @@ js.split('\n').forEach((l, i) => {
   if (/\bconsole\.log\(/.test(l)) findings.push(`${where(i + 1)}  house rule: remove console.log (use log() for the game log)`);
 });
 // type ratchet
-const BASE_FILE = join(ROOT, 'tools/type-baseline.json');
+const BASE_FILE = join(ROOT, 'tools/type-baseline.json'), ratchetWarn = [];
 const base = JSON.parse(readFileSync(BASE_FILE, 'utf8'));
 for (const [part, n] of Object.entries(perPart)) {
   const allowed = base.parts[part] || 0;
-  if (n > allowed) findings.push(`${part}  types: ${n} checker errors, baseline ${allowed} (fix the new ones; tools/type-baseline.json)`);
+  if (n > allowed) (tsVer === TS_PIN ? findings : ratchetWarn).push(`${part}  types: ${n} checker errors, baseline ${allowed} (fix the new ones; tools/type-baseline.json)`);
 }
 const total = Object.values(perPart).reduce((a, b) => a + b, 0);
 const engineN = Object.entries(perPart).filter(([k]) => k.startsWith('packages/')).reduce((a, [, n]) => a + n, 0);
+if (process.argv.includes('--update-types') && tsVer !== TS_PIN) { console.log(`types: --update-types needs TypeScript ${TS_PIN} (found ${tsVer})`); process.exit(1); }
 if (process.argv.includes('--update-types')) {
   const parts = {};
   for (const [k, n] of Object.entries(base.parts).sort()) if (Math.min(n, perPart[k] || 0) > 0) parts[k] = Math.min(n, perPart[k] || 0);
   writeFileSync(BASE_FILE, JSON.stringify({ note: base.note, parts }, null, 1) + '\n');
   console.log(`types: baseline updated (${Object.values(parts).reduce((a, b) => a + b, 0)} errors allowed)`);
 }
+if (ratchetWarn.length) console.log(ratchetWarn.join('\n') + `\nlint: type ratchet only warns (TypeScript ${tsVer}, baseline counted with ${TS_PIN})`);
 if (findings.length) { console.log(findings.join('\n')); console.log(`lint: ${findings.length} finding(s)`); process.exit(1); }
 console.log(`lint: clean (types: ${total} checker errors, engine + protocol ${engineN})`);

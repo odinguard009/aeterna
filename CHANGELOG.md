@@ -11,6 +11,7 @@ Older releases (v0.80.0 and earlier): [CHANGELOG-archive.md](CHANGELOG-archive.m
   - `tools/lint.mjs` (loop, pre-push, CI) now counts every TypeScript checker error on the built game per source part against `tools/type-baseline.json`: a part may not get more errors than its baseline, and engine and protocol parts (not listed) must have none. `node tools/lint.mjs --update-types` lowers the baseline after a cleanup. The lint line shows the totals.
   - `packages/engine/types.d.ts`: shapes of the engine records the checker needs (card def, Magic spec, cost alternative, Brave, Contract Advent / Manifest, modal button, deck slot, port replay result), used from JSDoc in the parts.
   - Engine and protocol: 25 checker errors fixed (JSDoc types and casts; boolean sort keys written as `+(a) - +(b)`, same order): 0 left. Web: the `$()` lookup and two file-input handlers are typed as input elements: 154 -> 74. Total 179 -> 74. Tests T101-1/2.
+  - CI pins TypeScript 6.0.3 (the version the baseline was counted with): the first CI run installed a newer checker that reports other errors (engine 5, web +2) and failed the lint step. With another local version the ratchet only warns; `--update-types` needs 6.0.3.
   - Next M5 steps (bundled with later U/I sessions): web parts to 0, then `--noImplicitAny` for the engine.
 
 ## v0.100.0
