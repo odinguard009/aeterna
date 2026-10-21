@@ -1,4 +1,4 @@
-/* v0.77 Void destinations (pack bundle, docs/mechanics/pack77.md), wrapped onto VOID_TO_CARD like the 02m filters:
+/* v0.77 Void destinations (pack bundle, docs/mechanics/effect-depletes-void-choices.md), wrapped onto VOID_TO_CARD like the 02m filters:
    to: 'attacker'  "When your X Spirit attacks, put a core from the Void to that Spirit" (the attacking Spirit of the
                    ALLY_ATTACKS / ATTACKS event, only while it is still on its owner's Field)
    orReserve: true "Put a core from the Void to your Spirit/Reserve" / "to this Spirit, or your Reserve": the owner picks

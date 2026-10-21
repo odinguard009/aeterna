@@ -1,6 +1,6 @@
 // v0.41.5: Fandom's gold reduction icon = our `ultimate` reduction symbol (issue #5 icon check). No browser.
 // Evidence: Fandom lists a gold symbol on 241 Ultimate cards, the engine gives Ultimates the `ultimate` symbol attribute, and manual p. 40
-// says the Ultimate symbol pays Ultimate reduction symbols. Engine matching is proven in rules32.test.mjs (R06, R18).
+// says the Ultimate symbol pays Ultimate reduction symbols. Engine matching is proven in symbol_cost_reduction.test.mjs (R06, R18).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';

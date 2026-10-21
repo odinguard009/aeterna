@@ -1,4 +1,4 @@
-// v0.77.0 bundle (plan W, 3-4 packs per release from docs/reports/pack-plan.md "Measured order"; rules: docs/mechanics/pack77.md):
+// v0.77.0 bundle (plan W, 3-4 packs per release from docs/reports/pack-plan.md "Measured order"; rules: docs/mechanics/effect-depletes-void-choices.md):
 //  1. "When this effect destroys / depletes any Spirit, draw a card." after the action it watches (DESTROY thenDraw,
 //     OPP_CORES_TO_RESERVE drawPerDepleted); "If it depletes, draw a card.";
 //  2. Void destinations: "your Spirit/Reserve", "this Spirit, or your Reserve" (orReserve), "that Spirit" after

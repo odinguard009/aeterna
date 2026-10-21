@@ -139,7 +139,7 @@
 | T_DESTROYED_OPP | trigger | (When Destroyed by the Opponent) | DESTROYED + if {byOpp:true} (v0.55) | partial | 139 |
 | K_STANDARD_INVOKE | keyword | {{Invoke|Flash}} / {{Invoke|Main}} <cost> ▶ <effect> | ACTIVATE {invoke:true, timing, when, once, oncePer, cost} (v0.68, 02l-effects-invoke.js) | partial | 108 |
 | S1_LIFE_REDUCED | condition | If your Life was reduced (during) this turn | if {lifeReduced: true|false} (v0.88, 02a fxIf; lifeTake records p.lifeRedTurn) | wired | 10 |
-| S1_ALL_HAVE | condition | If all your Spirits/Nexuses have the X family / have <Team>; If all your Spirits are Cost 2/4/6/8 with the X family | if {allHave: {family|team|costIn, spiritsOnly}} (v0.88, 02p-effects-standard.js; teams from the [Team: X] / [Teams: X/Y] head line) | partial | 42 |
+| S1_ALL_HAVE | condition | If all your Spirits/Nexuses have the X family / have <Team>; If all your Spirits are Cost 2/4/6/8 with the X family | if {allHave: {family|team|costIn, spiritsOnly}} (v0.88, 02p-effects-shared-shapes.js; teams from the [Team: X] / [Teams: X/Y] head line) | partial | 42 |
 | S1_DESTROY_OWN | action | Target one of your X Spirits. Destroy it. If you've done so, ... | DESTROY_OWN {match} (v0.88, 02p) | wired | 4 |
 | S1_LIFE_SHIELD | action | During this turn, your Life can't be reduced by its attack. | LIFE_SHIELD {n} (v0.89, 02p; 08-battle) | wired | 2 |
 | S1_BLOCK_EXHAUSTED_OPP | action | Target an opposing Spirit. During this battle, it can block even while exhausted. | BLOCK_EXHAUSTED_OPP (v0.89, 02p; canBlockState) | wired | 4 |

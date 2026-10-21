@@ -5,7 +5,7 @@ description: "Use when testing or hunting hidden bugs in the Aeterna HTML game w
 
 # Aeterna tester (v0.30+)
 
-Repo: odinguard009/aeterna. `index.html` is BUILT from `src/` (`node tools/build.mjs`); never edit it by hand. CLAUDE.md loads automatically: do not re-read it. Release copies go to `/mnt/user-data/outputs/aeterna-vX.Y.Z.html`.
+Repo: odinguard009/aeterna. `index.html` is BUILT from `packages/` and `apps/web/` (`node tools/build.mjs`); never edit it by hand. CLAUDE.md loads automatically: do not re-read it. Release copies go to `/mnt/user-data/outputs/aeterna-vX.Y.Z.html`.
 
 ## Two test layers (cheapest first)
 1. **Node layer** (`tests/unit/*.test.mjs`, `node --test`, headless Chromium, nothing to install):

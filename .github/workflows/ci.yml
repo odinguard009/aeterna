@@ -23,7 +23,7 @@ jobs:
           node-version: 22
       - name: Install dev tools (Playwright + TypeScript only)
         run: npm install --no-save playwright typescript && npx playwright install --with-deps chromium
-      - name: index.html is the build of src/
+      - name: index.html is the build of its sources
         run: npm run check
       - name: Lint
         run: npm run lint

@@ -23,7 +23,7 @@ test('VD74-01 compiler: Void cores to the Reserve or to one of your Spirits (col
     [{ do: 'VOID_TO_CARD', n: 2, to: 'anySpirit', match: { family: ['Terra Dragon', 'Ocean Emperor'] } }]);
   const o = compile('[LV1] (When Summoned) You can put a core from the Void to any "Winged Beast" family Spirit you control.');
   assert.deepEqual([o.effects[0].optional, o.effects[0].actions[0].match], [true, { family: ['Winged Beast'] }], JSON.stringify(o));
-  // v0.75 reads Trash, two colours, "each to every" and "this Spirit, and refresh it" (tests/unit/pack75.test.mjs PK75-01)
+  // v0.75 reads Trash, two colours, "each to every" and "this Spirit, and refresh it" (tests/unit/void_to_trash_reveal.test.mjs PK75-01)
   assert.equal(typeof acts('[LV1] (When Summoned) Put a core from the Void to a Spirit.'), 'string', 'an unmarked "a Spirit" stays in review');
 });
 

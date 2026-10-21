@@ -1,4 +1,4 @@
-// Build and source layout (no browser): index.html must always be the exact build of src/.
+// Build and source layout (no browser): index.html must always be the exact build of its sources (packages/, apps/web/).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
@@ -31,7 +31,7 @@ test('B05 no part keeps an embedded card pack (the build fills it from data/)', 
   for (const f of parts) assert.doesNotMatch(rd(f), /BUILTIN_PACK = \[/, f);
 });
 test('B06 the template has the CSS and JS markers once each and is a full page', () => {
-  const t = rd('src/index.template.html');
+  const t = rd('apps/web/index.template.html');
   assert.equal(t.split('/*@@CSS@@*/\n').length, 2); assert.equal(t.split('/*@@JS@@*/\n').length, 2);
   assert.match(t, /^<!DOCTYPE html>/i); assert.match(t, /<\/html>\n$/);
 });

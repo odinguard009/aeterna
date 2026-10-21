@@ -5,7 +5,7 @@
 # With no VERSION: every "## vX.Y.Z" heading of CHANGELOG.md from v0.57.1 on (older versions live in the private archive).
 # For each version without a release: tag + release vX.Y.Z on the newest main commit that still carries that version
 # (so later fixes of the same version are included), body = that version's CHANGELOG section, asset aeterna-vX.Y.Z.html
-# (the committed index.html of that commit; CI checks that index.html is the build of src/).
+# (the committed index.html of that commit; CI checks that index.html is the build of its sources).
 # DRY_RUN=1 prints the plan only; CI_OK=1 (set by the workflow after a green CI run on HEAD_SHA) adds the CI line. Needs full history (actions/checkout fetch-depth: 0) and GH_TOKEN with contents: write.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"

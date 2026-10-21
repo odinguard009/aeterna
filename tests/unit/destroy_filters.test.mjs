@@ -1,4 +1,4 @@
-// v0.76.0 bundle (plan W, 3-4 packs per release from docs/reports/pack-plan.md "Measured order"; rules: docs/mechanics/pack76.md):
+// v0.76.0 bundle (plan W, 3-4 packs per release from docs/reports/pack-plan.md "Measured order"; rules: docs/mechanics/destroy-filters-conditions.md):
 //  1. destroy filters: "with BP equal or inferior to this Spirit's" (bpLeSelf), "with the same BP as this Spirit" (bpEqSelf),
 //     "with two or more symbols" (symbolsGe), "with a cost equal or less than the number of <X> you control" (costLePer);
 //  2. condition clauses: "If you control any exhausted <colour/family> Spirit, ..." (ctrl.exhausted), 'If you control any "Name", ...'

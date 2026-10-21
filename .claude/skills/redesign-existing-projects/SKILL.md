@@ -4,7 +4,7 @@ description: Upgrades existing websites and apps to premium quality. Audits curr
 ---
 > **Aeterna project notes (read first; they win over anything below).** Vendored from Leonxlnx/taste-skill `skills/redesign-skill` at f624f37 (2026-10-14), MIT, see `LICENSE` in this folder; only this note was added.
 > - `docs/DESIGN.md` is the design system: its tokens, type, components and do/don't override the generic advice here.
-> - One offline HTML file: no network images (ignore the placeholder-photo advice), no web fonts, no CDNs, no new frameworks (vanilla CSS in `src/styles.css`, markup in `src/index.template.html`, UI code in `apps/web/src/`).
+> - One offline HTML file: no network images (ignore the placeholder-photo advice), no web fonts, no CDNs, no new frameworks (vanilla CSS in `apps/web/styles.css`, markup in `apps/web/index.template.html`, UI code in `apps/web/src/`).
 > - Keep every function, test id and both layouts (PC + phone); no rules or engine changes; one screen per session with a backup branch and before/after screenshots (`node tools/screens.mjs <dir>`).
 > - Neutral public name only (brand guard); no card art.
 

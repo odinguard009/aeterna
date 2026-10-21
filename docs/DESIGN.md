@@ -57,7 +57,7 @@ Sources: aegis-digi.online live site, 2026-10-18 (home, play setup, practice mat
 - **Density:** PC shows everything at once; phone shows the board and puts secondary information behind one tap (sheet or menu), never behind a scroll inside a scroll.
 
 ## 2. Colour (tokens, prefix `--ae-`)
-All colours are CSS custom properties on `:root` in `src/styles.css`. Old names (`--bg-main`, `--accent`, ...) stay as aliases until every rule uses the new ones.
+All colours are CSS custom properties on `:root` in `apps/web/styles.css`. Old names (`--bg-main`, `--accent`, ...) stay as aliases until every rule uses the new ones.
 
 | Role | Token | Dark (default) | Notes |
 |---|---|---|---|
@@ -146,7 +146,7 @@ Studied on four printed cards from the Fandom wiki (block A 26RBS01-002 Spirit, 
 - Landscape phone uses the PC layout only when the height allows the hand fan (current rule).
 
 ## 9. Agent prompt guide
-1. Read this file and `docs/aegis-study.md` (UI patterns); find code with `docs/ai/code-map.md` (UI is `apps/web/src/` + `src/styles.css` + `src/index.template.html`).
+1. Read this file and `docs/aegis-study.md` (UI patterns); find code with `docs/ai/code-map.md` (UI is `apps/web/src/` + `apps/web/styles.css` + `apps/web/index.template.html`).
 2. Tokens first: add the `--ae-*` tokens and map the old variables to them, then restyle the screen of the current U item.
 3. For direction or polish use the skill `redesign-existing-projects`; for the final check use `web-design-guidelines` (offline copy of the rules inside the skill).
 4. Before/after screenshots with `node tools/screens.mjs <dir>`; the player-view pass (`bs-playwright-tester`) must stay green.

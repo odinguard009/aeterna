@@ -1,5 +1,5 @@
 # v0.26: seeded randomness, match input record + replay, named scenarios (ideas from the Aegis study). Every chk() is one numbered test.
-# Run: python3 tests/make_fixtures.py && python3 tests/suites/v26_tests.py      (no fixtures needed)
+# Run: python3 tests/make_fixtures.py && python3 tests/suites/seed_replay_tests.py      (no fixtures needed)
 from playwright.sync_api import sync_playwright
 from waits import settle, ready
 import json, sys, time, os, glob

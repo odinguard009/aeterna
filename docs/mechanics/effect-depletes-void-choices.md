@@ -28,11 +28,11 @@ sentences of "sentence: target an opposing" (Standard block A first).
 6. "Target X, destroy it." (comma) reads like "Target X. Destroy it."
 
 ## Built
-- Engine: module `02n-effects-pack77.js` (`VOID_TO_CARD` `orReserve` / `to: 'attacker'`, `OPP_CORES_TO_RESERVE`
+- Engine: module `02n-effects-void-destinations.js` (`VOID_TO_CARD` `orReserve` / `to: 'attacker'`, `OPP_CORES_TO_RESERVE`
   `costLe` / `exhaustedOnly` / `coresLe` / `keepOne` / `untilOne`); conditions `fewerSpirits`, `nexusGe` (02a, 02c).
 - Compiler (`tools/compile_v2.py`): `WHEN_FX` tail joined onto the sentence before it, `OPP_CORES_T`, Void
   destinations, "gain N core(s)" wording, the two conditions, the comma target pair.
-- Tests: `tests/unit/pack77.test.mjs` (PK77-01..05); generators in `tests/unit/lib/fx-props.mjs` for the new shapes.
+- Tests: `tests/unit/effect_destroys_void_choices.test.mjs` (PK77-01..05); generators in `tests/unit/lib/fx-props.mjs` for the new shapes.
 
 ## Measured
 - Scratch recompile: **+23 cards** (11 of them Standard block A).

@@ -1,5 +1,5 @@
 # v0.27 (user request): every card zone / card prompt shows card images like the starting-hand screen, in a strip that scrolls sideways. Every chk() is one numbered test.
-# Run: python3 tests/make_fixtures.py && python3 tests/suites/v27_tests.py      (no fixtures needed)
+# Run: python3 tests/make_fixtures.py && python3 tests/suites/card_image_strips_tests.py      (no fixtures needed)
 from playwright.sync_api import sync_playwright
 from waits import settle, ready
 import json, sys, time

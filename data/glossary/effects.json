@@ -1319,7 +1319,7 @@
     "kind": "condition",
     "meaning": "If all your Spirits/Nexuses have the X family / have <Team>; If all your Spirits are Cost 2/4/6/8 with the X family",
     "pattern": "If all your Spirits(/Nexuses)? (are Cost [0-9/]+ with|have)",
-    "engine": "if {allHave: {family|team|costIn, spiritsOnly}} (v0.88, 02p-effects-standard.js; teams from the [Team: X] / [Teams: X/Y] head line)",
+    "engine": "if {allHave: {family|team|costIn, spiritsOnly}} (v0.88, 02p-effects-shared-shapes.js; teams from the [Team: X] / [Teams: X/Y] head line)",
     "status": "partial",
     "example": "{\"do\":\"DESTROY\",\"bpLe\":5000,\"if\":{\"allHave\":{\"family\":\"GAIM\"}}}",
     "rule": "Engine house reading of the Standard card texts (rules audit, 2026-10-21): every card on your Field of the named kind must match; with no such card the condition is not met (an empty Field has nothing that 'has' the family). Team = the card's printed [Team: X] attribute, like a family."

@@ -1,5 +1,5 @@
 // Shared headless browser for the Node unit tests (node --test). One Chromium per test file, one page per helper call.
-// The game file is the repo's index.html (always rebuilt from src/ first by `npm test`), so no copy is needed.
+// The game file is the repo's index.html (always rebuilt from its sources first by `npm test`), so no copy is needed.
 import { loadPlaywright } from './pw.mjs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { join, dirname } from 'node:path';

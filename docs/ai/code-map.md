@@ -35,10 +35,10 @@ fxCan, runActions, fireFx, collectFx, fxValid, fireFxMulti, asResolving, flushDe
 ## packages/engine/src/02e-effects-removed.js (148 lines, ~3.3k tokens) — v0.38 GREEN (Contractor Hermes / Lionheart): Heavy Exhaust, the Removed Zone, exhaust effects, "the opponent can't activate Burst effects".
 setHeavy, refreshOne, toRemoved, fromHandRemoved, _nm, handSafe, handLocked, pickOppSpirits
 
-## packages/engine/src/02f-effects-purple.js (75 lines, ~1.8k tokens) — v0.39 PURPLE (Contractor Hades / Sorcerer): Deck-to-Trash (mill), discarding from the Hand, sending opposing cores to the Reserve, once-per-turn Count.
+## packages/engine/src/02f-effects-mill-discard.js (75 lines, ~1.8k tokens) — v0.39 PURPLE (Contractor Hades / Sorcerer): Deck-to-Trash (mill), discarding from the Hand, sending opposing cores to the Reserve, once-per-turn Count.
 _pn
 
-## packages/engine/src/02g-effects-yellow.js (85 lines, ~1.9k tokens) — v0.40 YELLOW (Contractor Indra / Thunderive): "can't attack/block" (permanent flag noAB), drawing from the bottom of the Deck, discarding the whole Hand,
+## packages/engine/src/02g-effects-attack-lock.js (85 lines, ~1.9k tokens) — v0.40 YELLOW (Contractor Indra / Thunderive): "can't attack/block" (permanent flag noAB), drawing from the bottom of the Deck, discarding the whole Hand,
 
 
 ## packages/engine/src/02h-effects-magic.js (141 lines, ~3.2k tokens) — v0.41 MAGIC effect types (Dana Draw, Whirling Tide, Magic Bullet, Hades Disaster, Thunder Counter, Lightning Tempest).
@@ -56,16 +56,16 @@ trashSafe
 ## packages/engine/src/02l-effects-invoke.js (174 lines, ~3.8k tokens) — v0.68 INVOKE (Standard activations): "{{Invoke|Flash}}" / "{{Invoke|Main}}" + "<cost> ▶ <effect>".
 INVOKE_WHEN, INVOKE_COSTS, invokeMatchOK, invokeParse, invokeWhenOK, exhaustOwnCands, discardCands, invokeCostOK, payInvokeCost, usedThisBattle, markUsedBattle, bpBattle, addBattleBp, invokeCostText, ownTargetCands, cpuInvokeOK
 
-## packages/engine/src/02m-effects-filters.js (30 lines, ~0.6k tokens)
+## packages/engine/src/02m-effects-destroy-filters.js (30 lines, ~0.6k tokens)
 
 
-## packages/engine/src/02n-effects-pack77.js (64 lines, ~1.4k tokens)
+## packages/engine/src/02n-effects-void-destinations.js (64 lines, ~1.4k tokens)
 
 
 ## packages/engine/src/02o-effects-battle-end.js (66 lines, ~1.3k tokens)
 endOfBattle
 
-## packages/engine/src/02p-effects-standard.js (187 lines, ~3.8k tokens)
+## packages/engine/src/02p-effects-shared-shapes.js (187 lines, ~3.8k tokens)
 cardTeams, allHaveShapeOK, allHaveOK
 
 ## packages/engine/src/03-imported-cards.js (215 lines, ~5.6k tokens) — IMPORTED CARD DATA

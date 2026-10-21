@@ -3562,7 +3562,7 @@ function cpuInvokeOK(p, f, e, timing) {
     for (const t of c.opp.spirits.slice()) if (before.has(t) && (t.bpMod || 0) < before.get(t) && bpOf(t) === 0 && !fxImmune(c.opp, t, c)) { removeSpirit(c.opp, t, 'destroyed', true); checkDepletion(c.opp); }
   };
 })();
-/* v0.76 destroy filters (pack bundle, docs/mechanics/pack76.md), wrapped onto DESTROY like the 02l filters:
+/* v0.76 destroy filters (pack bundle, docs/mechanics/destroy-filters-conditions.md), wrapped onto DESTROY like the 02l filters:
    bpLeSelf  "with BP equal or inferior to this Spirit's" (the source's BP when it resolves)
    bpEqSelf  "with the same BP as this Spirit"
    symbolsGe "with two or more symbols" (printed symbols, like symbolsLe)
@@ -3592,7 +3592,7 @@ function cpuInvokeOK(p, f, e, timing) {
     return 'destroy 1 opposing Spirit/Ultimate with ' + f + (a.exhaustedOnly ? ' (exhausted only)' : '') + (a.thenDraw ? ', then draw ' + a.thenDraw : '') + (a.noFx ? "; the effects of the destroyed target can't activate" : '');
   };
 })();
-/* v0.77 Void destinations (pack bundle, docs/mechanics/pack77.md), wrapped onto VOID_TO_CARD like the 02m filters:
+/* v0.77 Void destinations (pack bundle, docs/mechanics/effect-depletes-void-choices.md), wrapped onto VOID_TO_CARD like the 02m filters:
    to: 'attacker'  "When your X Spirit attacks, put a core from the Void to that Spirit" (the attacking Spirit of the
                    ALLY_ATTACKS / ATTACKS event, only while it is still on its owner's Field)
    orReserve: true "Put a core from the Void to your Spirit/Reserve" / "to this Spirit, or your Reserve": the owner picks

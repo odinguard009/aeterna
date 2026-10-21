@@ -1,7 +1,7 @@
 from waits import settle, ready  # v0.87.0 (F5): state waits instead of fixed times
 # v0.25: Grandwalker core effects (Erimakilizard, Magmatodon, Cladoselache, Sphinott-Hauser, Ometeotl Soul Core, Pachyrhachis, Magmazosia),
 # Soul Core rules from the official Eternal manual, Manifest timing, card "residual" lists. Every chk() is one numbered test.
-# Run: python3 tests/make_fixtures.py && PYTHONPATH=tests python3 tests/suites/v25_tests.py
+# Run: python3 tests/make_fixtures.py && PYTHONPATH=tests python3 tests/suites/grandwalker_core_effects_tests.py
 src = open('/tmp/claude-0/t4/mitra_tests.py').read()
 exec(src.split("MITRA_FX =")[0])
 def new_page(b, w=1280, h=800):

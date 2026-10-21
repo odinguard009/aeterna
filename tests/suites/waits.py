@@ -3,7 +3,7 @@
 #   settle(pg)  the action has run as far as it can on its own: a prompt (modal) or a field pick is open, or the
 #               promise in window.pr has settled and no engine pause (delay) is running (BS.engineIdle()).
 # A wait that runs out does not fail by itself (the check after it does), so a slow runner only costs time.
-# tests/unit/waits87.test.mjs keeps the count of fixed wait_for_timeout calls in tests/suites shrink-only.
+# tests/unit/suite_waits.test.mjs keeps the count of fixed wait_for_timeout calls in tests/suites shrink-only.
 SETTLE = """() => { const w = window;
   if (typeof MODAL !== 'undefined' && MODAL) return true;
   if (typeof PICK !== 'undefined' && PICK) return true;

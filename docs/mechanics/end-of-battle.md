@@ -36,7 +36,7 @@ Fifth bundle release (plan W, rows "sentence: at the end", "no trigger: When onl
 - Compiler: Curse / Brilliance keyword paragraphs, ally battle heads (`ally_win`, step window side), (When Battles)
   before an end-of-battle body (`compile_effects.py`); "At the end of battle, X.", "Destroy this Spirit.",
   "refresh that Spirit", "give a Spirit you control +N BP" (`compile_v2.py`).
-- Tests: `tests/unit/pack78.test.mjs` (PK78-01..05).
+- Tests: `tests/unit/curse_brilliance_end_battle.test.mjs` (PK78-01..05).
 
 ## Measured
 - Scratch recompile: **+23 cards** (24 compiled; BS06-058 held back: its export prints "[LV1][LV2][LV2]").

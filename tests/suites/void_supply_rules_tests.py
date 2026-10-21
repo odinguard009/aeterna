@@ -1,6 +1,6 @@
 # v0.29: the Void is an unlimited core supply (CR 4-8-1/4-8-2), plus direct tests for the official setup, turn steps, battle and
 # deck-out rules (docs/manual-notes.md). Every label starts with the obligation id from data/kb/rule-obligations.json.
-# Run: python3 tests/make_fixtures.py && python3 tests/suites/v29_tests.py      (no fixtures needed)
+# Run: python3 tests/make_fixtures.py && python3 tests/suites/void_supply_rules_tests.py      (no fixtures needed)
 from playwright.sync_api import sync_playwright
 from waits import settle, ready
 import json, os, subprocess, sys, time

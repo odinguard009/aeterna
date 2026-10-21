@@ -1,6 +1,6 @@
 # v0.28: "By doing X, do Y" (Eternal Rule Manual FAQ Q5) and the trigger loop (turn player orders simultaneous effects of both players;
 # an effect caused by a resolving effect resolves right after it, before older pending effects). Every chk() is one numbered test.
-# Run: python3 tests/make_fixtures.py && python3 tests/suites/v28_tests.py      (no fixtures needed; ZT-* cards exist only inside this test page)
+# Run: python3 tests/make_fixtures.py && python3 tests/suites/by_doing_trigger_loop_tests.py      (no fixtures needed; ZT-* cards exist only inside this test page)
 import os as _os_repo
 _REPO = _os_repo.path.abspath(_os_repo.path.join(_os_repo.path.dirname(_os_repo.path.abspath(__file__)), '..', '..'))
 from playwright.sync_api import sync_playwright

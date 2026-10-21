@@ -466,7 +466,7 @@
    "data": "",
    "lever": ""
   },
-  "note": "verified 2026-10-19: only card-specific code (02b-effects-actions.js Agateram, 02g-effects-yellow.js Vajrawurm cost); no generic handler",
+  "note": "verified 2026-10-19: only card-specific code (02b-effects-actions.js Agateram, 02g-effects-attack-lock.js Vajrawurm cost); no generic handler",
   "verified": true
  },
  {
@@ -742,7 +742,7 @@
    "data": "",
    "lever": ""
   },
-  "note": "AWAKEN action 02b-effects-actions.js and compiler \"Flash - Awaken\" paragraph; test only tests/suites/v19_tests.py (Sabecaulus), no unit test; the 11 waiting texts wait on other paragraphs (A4 2026-10-19)",
+  "note": "AWAKEN action 02b-effects-actions.js and compiler \"Flash - Awaken\" paragraph; test only tests/suites/red_mechanics_tests.py (Sabecaulus), no unit test; the 11 waiting texts wait on other paragraphs (A4 2026-10-19)",
   "verified": true
  },
  {

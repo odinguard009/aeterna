@@ -28,7 +28,7 @@
 | Grand Field | missing | 31 | 39 | ··· | - | no engine/compiler/test match (A4 grep 2026-10-19) |
 | Catalyze | missing | 29 | 16 | ··· | - | verified 2026-10-19: no engine code |
 | Immortality | missing | 26 | 47 | ··· | - | verified 2026-10-19: no engine code; only K_NETHER_IMMORTALITY in data/glossary/effects.json |
-| Unleash | partial | 26 | 32 | ··· | K_UNLEASH | verified 2026-10-19: only card-specific code (02b-effects-actions.js Agateram, 02g-effects-yellow.js Vajrawurm cost); no generic handler |
+| Unleash | partial | 26 | 32 | ··· | K_UNLEASH | verified 2026-10-19: only card-specific code (02b-effects-actions.js Agateram, 02g-effects-attack-lock.js Vajrawurm cost); no generic handler |
 | EX symbol (Standard) | partial | 24 | 24 | RD· | - | EX symbols count as symbols (v0.62.0); Legacy (pays with EX-symbol cards) missing |
 | Trigger Counter | missing | 24 | 21 | ··· | - | 02i-effects-keywords.js says Guard / Trigger Counter cards are not wired (A4 2026-10-19) |
 | Clash | partial | 23 | 66 | ··· | - | verified 2026-10-19: compiler Clash paragraph -> STATIC MUST_BLOCK self (compile_effects.py, v0.49; v0.66 adds (During Attack) / "Opposing Spirits must block") |
@@ -48,7 +48,7 @@
 | Twinkle Seal | missing | 12 | 12 | ··· | A_SEAL | no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable |
 | Astral Unleash | missing | 11 | 1 | ··· | K_UNLEASH | no code for the variant in the engine or the compilers (A4 grep 2026-10-19); base handler reusable |
 | Astromulet | missing | 11 | 1 | ··· | - | no engine/compiler/test match (A4 grep 2026-10-19) |
-| Awaken | partial | 11 | 45 | ··· | A_AWAKEN | AWAKEN action 02b-effects-actions.js and compiler "Flash - Awaken" paragraph; test only tests/suites/v19_tests.py (Sabecaulus), no unit test; the 11 waiting texts wait on other paragraphs (A4 2026-10-19) |
+| Awaken | partial | 11 | 45 | ··· | A_AWAKEN | AWAKEN action 02b-effects-actions.js and compiler "Flash - Awaken" paragraph; test only tests/suites/red_mechanics_tests.py (Sabecaulus), no unit test; the 11 waiting texts wait on other paragraphs (A4 2026-10-19) |
 | Form Change | missing | 11 | 11 | ··· | - | no engine/compiler/test match (A4 grep 2026-10-19) |
 | Ice Wall | missing | 11 | 13 | ··· | - | no engine/compiler/test match (A4 grep 2026-10-19) |
 | Whirlwind | missing | 11 | 3 | ··· | - | no engine/compiler/test match (A4 grep 2026-10-19) |

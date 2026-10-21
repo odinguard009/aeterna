@@ -1,4 +1,4 @@
-/* v0.76 destroy filters (pack bundle, docs/mechanics/pack76.md), wrapped onto DESTROY like the 02l filters:
+/* v0.76 destroy filters (pack bundle, docs/mechanics/destroy-filters-conditions.md), wrapped onto DESTROY like the 02l filters:
    bpLeSelf  "with BP equal or inferior to this Spirit's" (the source's BP when it resolves)
    bpEqSelf  "with the same BP as this Spirit"
    symbolsGe "with two or more symbols" (printed symbols, like symbolsLe)

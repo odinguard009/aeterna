@@ -8,7 +8,7 @@ def chk(n,c,x=''): res.append(bool(c)); print(('PASS ' if c else 'FAIL ')+f'[{le
 D=_os_repo.path.join(_REPO, 'data/cards/')
 allt=open(_os_repo.path.join(_REPO, 'build/all-cards.json')).read(); sg={f:open(f).read() for f in sorted(glob.glob(D+'saga-[0-9][0-9].json'))}
 n_all=len(json.loads(allt))     # v0.34: every card imports (the Brave card BS76-060 too)
-# importCards refuses more than 3000 cards per call (v24_tests D10), so the full list goes in chunks of 2500 (as tools/promote_compiled.mjs does)
+# importCards refuses more than 3000 cards per call (cleanup_review_tests D10), so the full list goes in chunks of 2500 (as tools/promote_compiled.mjs does)
 CH=[json.dumps(json.loads(allt)[k:k+2500]) for k in range(0,n_all,2500)]
 def import_chunked(pg):
     tot=0; bad=[]

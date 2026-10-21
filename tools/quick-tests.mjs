@@ -8,10 +8,10 @@ import { ensureAllCards } from './all_cards.mjs';
 ensureAllCards();                                         // build/all-cards.json (generated, not in git) must exist before the test files read it
 
 const FULL = process.argv.includes('--full');           // v0.95.0: npm test (CI) = every file, no BS_QUICK, timing files alone too
-const SLOW = new Set(FULL ? [] : ['props.test.mjs', 'fuzz596.test.mjs']);      // v0.59.6: the fuzz replays run in CI (npm test)
+const SLOW = new Set(FULL ? [] : ['props.test.mjs', 'match_fuzzer.test.mjs']);      // v0.59.6: the fuzz replays run in CI (npm test)
 // v0.93.0: files with wall-clock limits (B09-B17: page ready, deck builder open, search) run alone after the parallel batch;
 // under 3 parallel files B15 measured 355 ms against its 300 ms limit (alone ~100-200 ms). No check is dropped (item T.7).
-const TIMING = new Set(['budget.test.mjs', 'deckbuilder52.test.mjs']);
+const TIMING = new Set(['budget.test.mjs', 'deckbuilder_performance.test.mjs']);
 const files = readdirSync('tests/unit')
   .filter((f) => f.endsWith('.test.mjs') && !SLOW.has(f) && !TIMING.has(f))
   .sort()

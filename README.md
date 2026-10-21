@@ -22,7 +22,7 @@ Planned UI languages: English (now), then Japanese, Thai and Chinese.
 ## Architecture
 ```mermaid
 flowchart LR
-  src["src/ (template, styles, script parts)"] --> build["tools/build.mjs"]
+  src["packages/ + apps/web/ (template, styles, script parts)"] --> build["tools/build.mjs"]
   data["data/cards (playable cards)"] --> build
   build --> game["index.html (single file)"]
   fandom["card text export"] --> import["import + effect compiler"] --> data
@@ -31,7 +31,7 @@ flowchart LR
 Build, runtime, effect engine, card data pipeline, compiler, tests and tooling: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Development
-Only Node 20+, Playwright and TypeScript are needed (no npm packages to install). `index.html` is generated: edit `src/`, then build.
+Only Node 20+, Playwright and TypeScript are needed (no npm packages to install). `index.html` is generated: edit `packages/` or `apps/web/`, then build.
 ```
 node tools/build.mjs     # build index.html
 npm run -s loop          # build + lint + smoke tests + changed test files

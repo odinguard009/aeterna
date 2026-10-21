@@ -24,11 +24,11 @@ and "sentence: (once per turn:".
    the same name.
 
 ## Built
-- Engine: `DESTROY` `bpLeSelf`, `bpEqSelf`, `symbolsGe`, `costLePer` (`02m-effects-filters.js`); fxIf `ctrl.exhausted`.
+- Engine: `DESTROY` `bpLeSelf`, `bpEqSelf`, `symbolsGe`, `costLePer` (`02m-effects-destroy-filters.js`); fxIf `ctrl.exhausted`.
 - Compiler: `selector()` post filters, `cond_of` exhausted / quoted name, target pairs after an "If you control"
   lead, `RETURN_TRASH` by quoted names (any card) and "Cost N or more", "By discarding" in `own_grammar`,
   `trig_effects` reads the same-name limit head; `self_bound_ok` keeps leave-trigger self-BP texts in review.
-- Tests: `tests/unit/pack76.test.mjs` (PK76-01..05).
+- Tests: `tests/unit/destroy_filters.test.mjs` (PK76-01..05).
 
 ## Measured
 - Scratch recompile: **+14 cards** (6 of them Standard block A).

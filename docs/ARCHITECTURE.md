@@ -6,14 +6,14 @@ How the pieces fit. Other docs link here instead of repeating it. Rules for agen
 The shipped game is ONE offline HTML file. Never edit `index.html` or `build/`.
 
 ```
-src/index.template.html   page shell with /*@@CSS@@*/ and /*@@JS@@*/ marker lines
-src/styles.css            all CSS
+apps/web/index.template.html   page shell with /*@@CSS@@*/ and /*@@JS@@*/ marker lines
+apps/web/styles.css            all CSS
 packages/engine/src/NN-*.js  engine parts: config, card pack codec, effects, state, rules, turn, battle, CPU, zones, match
 apps/web/src/NN-*.js         UI parts: error catcher, modals, human input, render, deck builder, images, events
                           both folders are joined in file-name order as ONE classic script (tools/src_parts.mjs)
 build/all-cards.json built-in card pack, compressed and embedded between /*PACK_START*/ and /*PACK_END*/
         |
-        v  node tools/build.mjs   (--check: CI guard that index.html is the build of src/)
+        v  node tools/build.mjs   (--check: CI guard that index.html is the build of its sources)
 index.html                + build/game.js (joined script for ESLint)
                           + docs/ai/code-map.md, docs/progress.html, docs/roadmap.html (regenerated)
 ```
@@ -90,7 +90,7 @@ What to build next (v0.69.1): `python3 tools/pack_plan.py` orders the compile_v2
 |---|---|---|
 | Node unit + engine tests | `tests/unit/*.test.mjs` (quiet board via `BS.testSetup()`) | `npm test`; quick subset `npm run -s loop` |
 | Property tests | `tests/unit/props.test.mjs` | `npm run test:props` |
-| Generated action tests (v0.69.2) | `tests/unit/fxprops692.test.mjs` + `tests/unit/lib/fx-props.mjs`: one quiet board per action of every shipped card with complete effects, built from the action JSON (synthetic `FXP-` fixtures); uncovered shapes listed by FX01 | `node --test tests/unit/fxprops692.test.mjs` |
+| Generated action tests (v0.69.2) | `tests/unit/fx_generated_cases.test.mjs` + `tests/unit/lib/fx-props.mjs`: one quiet board per action of every shipped card with complete effects, built from the action JSON (synthetic `FXP-` fixtures); uncovered shapes listed by FX01 | `node --test tests/unit/fx_generated_cases.test.mjs` |
 | Scenarios | `tests/scenarios/*.json`, loaded with `BS.loadScenario(spec)` | used by unit and Python tests |
 | Python Playwright suites (UI flows, sims) | `tests/suites`, `tests/legacy` | `python3 tests/run_all.py --only <names>`; full run only on GitHub |
 | Release file check | `tests/unit/release.test.mjs` | `RELEASE_FILE=... npm run -s test:release` |
@@ -98,7 +98,7 @@ What to build next (v0.69.1): `python3 tools/pack_plan.py` orders the compile_v2
 
 Ratchet lists (`tests/unit/known-gaps.json`) only shrink. Hooks (`.githooks/`): pre-push runs build check, lint, quick tests, `tools/check_renames.py` and the brand guard; commit-msg runs the brand guard.
 
-Match fuzzer (v0.59.6): `node tools/fuzz.mjs [--runs N] [--seed S]` plays CPU-vs-CPU matches with random legal CPU choices (`BS.setFuzz`, `fuzzPick` in `09a-cpu-eval.js`, seeded game rng); a crash, invariant break or match that does not end is saved to `tests/fuzz-cases/`, replayed by `tests/unit/fuzz596.test.mjs` (CI only, not in the quick loop). Regression job `fuzz` (v0.59.8) plays 20 fuzzed matches per run, seeded by the run id; new failing cases come back as the run artifact `fuzz-cases`.
+Match fuzzer (v0.59.6): `node tools/fuzz.mjs [--runs N] [--seed S]` plays CPU-vs-CPU matches with random legal CPU choices (`BS.setFuzz`, `fuzzPick` in `09a-cpu-eval.js`, seeded game rng); a crash, invariant break or match that does not end is saved to `tests/fuzz-cases/`, replayed by `tests/unit/match_fuzzer.test.mjs` (CI only, not in the quick loop). Regression job `fuzz` (v0.59.8) plays 20 fuzzed matches per run, seeded by the run id; new failing cases come back as the run artifact `fuzz-cases`.
 
 ## 7. Session tooling
 - `tools/session_start.sh`: overlap guard, hooks, baseline loop, version, Next line, playable count, open issues.

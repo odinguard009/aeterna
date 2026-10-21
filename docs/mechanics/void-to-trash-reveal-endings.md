@@ -29,7 +29,7 @@ effect outside a battle trigger") plus row 9 ("v2 destroy: count all").
   colours), `REVEAL_REST` / `REVEAL_IF`, `v_destroy` (count all, exhausted only), ", and effects of the destroyed ...
   can't activate" (`noFx`), ", and when destroys, draw" (`thenDraw`); `tools/compile_effects.py` passes `battle` to a
   Flash Magic's sentences.
-- Tests: `tests/unit/pack75.test.mjs` (PK75-01..06), fx-props generator `VOID_TO_TRASH`.
+- Tests: `tests/unit/void_to_trash_reveal.test.mjs` (PK75-01..06), fx-props generator `VOID_TO_TRASH`.
 
 ## Measured
 - Scratch recompile: **+23 cards** (estimate of the four rows ~63 plus row 9 ~9; ratio ~1/3, better than v0.74.0's 1/4).

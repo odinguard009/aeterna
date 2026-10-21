@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const NAMES = ['YnMgZXRlcm5hbA==', 'YnMtZXRlcm5hbA==', 'YmF0dGxlIHNwaXJpdHM=', 'YmFuZGFp', 'Z3VhcmRpbm8=', 'Z21haWw=']
   .map((b) => Buffer.from(b, 'base64').toString('utf8'));
-const FILES = ['README.md', 'CHANGELOG.md', 'package.json', 'src/index.template.html', 'packages/engine/src/00-config.js', 'packages/engine/src/01-cards.js',
+const FILES = ['README.md', 'CHANGELOG.md', 'package.json', 'apps/web/index.template.html', 'packages/engine/src/00-config.js', 'packages/engine/src/01-cards.js',
   'apps/web/src/13-render.js', 'docs/progress.html', 'docs/roadmap.html'];
 
 const hits = (text) => NAMES.filter((n) => text.toLowerCase().includes(n));

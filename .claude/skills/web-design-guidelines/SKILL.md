@@ -13,6 +13,6 @@ Adapted from vercel-labs/agent-skills `skills/web-design-guidelines` (MIT per th
 
 ## How it works
 1. Read `rules.md` in this folder (all rules and the output format). Refresh the snapshot only on purpose, in its own commit: `curl -sS https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md -o .claude/skills/web-design-guidelines/rules.md`, and note the new commit/date above.
-2. Files: the ones given; otherwise the screen changed in this session, out of `src/styles.css`, `src/index.template.html` and `apps/web/src/*.js`. Find the relevant part with `docs/ai/code-map.md` + `grep -n`; never read `index.html` or `build/`.
+2. Files: the ones given; otherwise the screen changed in this session, out of `apps/web/styles.css`, `apps/web/index.template.html` and `apps/web/src/*.js`. Find the relevant part with `docs/ai/code-map.md` + `grep -n`; never read `index.html` or `build/`.
 3. Check against every rule; output findings in the terse `file:line` format the rules ask for.
 4. Aeterna filter before fixing: drop rules about frameworks we do not use (React props such as `onKeyDown`, `htmlFor`, `<Link>`, Tailwind classes: apply their intent in vanilla HTML/CSS/JS), forms with server requests, and anything `docs/DESIGN.md` decides otherwise. Fix the rest in the same session when it is part of the screen being changed; list the others in `docs/ai/roadmap-open.md` under item U.

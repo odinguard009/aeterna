@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """One command for the regression, with a short summary (only failing test lines are printed).
   python3 tests/run_all.py                       -> fixtures + every suite + legacy + 30 sims (the full pre-release run)
-  python3 tests/run_all.py --only v28,mitra      -> just these suites (substring match), no legacy, no sims (quick check while working)
+  python3 tests/run_all.py --only by_doing,mitra      -> just these suites (substring match), no legacy, no sims (quick check while working)
   python3 tests/run_all.py --part 1              -> part 1 of 3 (suites split so each part fits a 10-minute tool call); --part legacy / --part sims
   python3 tests/run_all.py --sims 10             -> number of CPU-vs-CPU games (split over Red-vs-white, Red mirror, white mirror)
 Writes tests/last-run.json (per suite: passed/total and the failing test names). Exit code 1 when anything failed."""
 import argparse, json, os, re, shutil, subprocess, sys, time
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 SUITES = os.path.join(ROOT, 'tests', 'suites')
-NO_FIXTURES = {'v24_tests', 'v26_tests', 'v27_tests', 'v28_tests', 'v29_tests'}          # these must run without the TST prototype cards
-LEGACY = ['fx', 'scen60', 'mag', 'burst', 'hid', 'std', 'fmt', 'deep']   # legacy/imp and legacy/sizes removed 2026-10-19
+NO_FIXTURES = {'cleanup_review_tests', 'seed_replay_tests', 'card_image_strips_tests', 'by_doing_trigger_loop_tests', 'void_supply_rules_tests'}          # these must run without the TST prototype cards
+LEGACY = ['effect_scenarios', 'scenario_prompts', 'magic_flow', 'burst_layout', 'hscroll_layout', 'standard_steps', 'deck_formats', 'modal_pick_flow']   # legacy/imp and legacy/sizes removed 2026-10-19
 def suites():
     return sorted(f[:-3] for f in os.listdir(SUITES) if f.endswith('.py') and not f.endswith('_sims.py') and f != 'waits.py')   # waits.py: helper (v0.87.0)
 def run(cmd, env_fixtures, timeout=900):
@@ -53,7 +53,7 @@ def main():
         for f in os.listdir(ROOT):
             if f.endswith('.png'): os.remove(os.path.join(ROOT, f))       # legacy suites drop screenshots in the repo root
     if sims:
-        plan = [('v25_sims.py', [str((sims + 2) // 3), 'A', 'white']), ('v25_sims.py', [str((sims + 1) // 3), 'B', 'mirror']), ('mitra_sims.py', [str(sims // 3), 'M', 'mirror'])]
+        plan = [('red_cpu_sims.py', [str((sims + 2) // 3), 'A', 'white']), ('red_cpu_sims.py', [str((sims + 1) // 3), 'B', 'mirror']), ('mitra_sims.py', [str(sims // 3), 'M', 'mirror'])]
         for script, args in plan:
             if args[0] == '0': continue
             out, s = run([sys.executable, os.path.join(SUITES, script)] + args, False, timeout=1800)

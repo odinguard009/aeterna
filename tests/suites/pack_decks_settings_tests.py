@@ -32,7 +32,7 @@ with sync_playwright() as p:
     chk('pack: cards are not stored as imports', ev(pg, "(localStorage.getItem('bse.cards.v4')||'[]')").count('BS75') == 0)
     chk('pack: legacy test cards still exist', ev(pg, "!!BS.CARDS['TRAIN-01']&&!!BS.CARDS['TST-001']"))
     _all = json.loads(ALL); r = {'ok': 0, 'bad': []}
-    for k in range(0, len(_all), 2500):        # importCards refuses more than 3000 cards per call (v24_tests D10): import in chunks like tools/promote_compiled.mjs
+    for k in range(0, len(_all), 2500):        # importCards refuses more than 3000 cards per call (cleanup_review_tests D10): import in chunks like tools/promote_compiled.mjs
         rr = pg.evaluate("(t)=>BS.importCards(t)", json.dumps(_all[k:k+2500])); r['ok'] += rr['ok']; r['bad'] += rr['bad']
     chk(f'import all-cards.json over the pack: {PACK_N} ok, none rejected', r['ok'] == PACK_N and not r['bad'], r)
     ev(pg, "BS.clearImported()")

@@ -1,5 +1,5 @@
 # v0.25 CPU-vs-CPU sims: the Red prebuilt deck (Crimson / Lava Fish with Ometeotl) against the white Mitra deck or itself.
-# Usage: python3 tests/make_fixtures.py && python3 tests/suites/v25_sims.py 10 tagA white   (or: ... 10 tagB mirror)
+# Usage: python3 tests/make_fixtures.py && python3 tests/suites/red_cpu_sims.py 10 tagA white   (or: ... 10 tagB mirror)
 from playwright.sync_api import sync_playwright
 from waits import settle, ready
 import sys, time, json

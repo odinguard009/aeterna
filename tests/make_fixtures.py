@@ -19,7 +19,7 @@ red = [c for c in cards if c['color'] == 'red' and (c['id'][:4] in ('BS75', 'BS7
 json.dump(white, open('/tmp/claude-0/fixtures/white_mitra_awakened_dragon.json', 'w'), ensure_ascii=False)
 json.dump(red, open('/tmp/claude-0/fixtures/red_cards_BS75_BS76.json', 'w'), ensure_ascii=False)
 shutil.copy(os.path.join(root, 'tests', 'suites', 'mitra_tests.py'), '/tmp/claude-0/t4/mitra_tests.py')
-# legacy/hid.py uploads a card picture: a small solid PNG made here (no image library needed)
+# legacy/hscroll_layout.py uploads a card picture: a small solid PNG made here (no image library needed)
 import struct, zlib
 def _png(w, h, rgb):
     raw = b''.join(b'\x00' + bytes(rgb) * w for _ in range(h))

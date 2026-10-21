@@ -28,7 +28,7 @@ Nested actions (`BY.cost`, `BY.then`, `END_BATTLE.then`, `SOUL_TO_NEXUS_THEN.the
 - lists: `FX_TRIGGERS`, `FX_COND_KEYS`, `STATIC_FLAGS`, `BURST_WHEN`, `MAGIC_FX`, `MAGIC_TIMINGS`;
 - effect / Burst / Magic / card fields: what `parseEffects` + `invokeParse` (`e.x`), `parseBurst` (`b.x`), `parseCard` (`o.x`, `c.x`, `m.x`) read; `metaFields` are data-only card fields the engine ignores (note, mechanics, name_jp, ...);
 - per action: every `a.<field>` in its `FX_ACTIONS` entry, in the wrappers that extend it (`const D = FX_ACTIONS.DESTROY; D.chk = ...` in an IIFE, with the local helpers those use) and in helper functions `f(c, a)` it calls; `actionFields` (do, if, cost) come from `runActions`.
-Test FS02 (`tests/unit/fxschema81.test.mjs`) compares the schema with the live engine (action names, Burst timings, trigger and flag lists).
+Test FS02 (`tests/unit/fx_schema.test.mjs`) compares the schema with the live engine (action names, Burst timings, trigger and flag lists).
 
 ## Validator
 `node tools/fx_validate.mjs` (shipped cards, schema + `BS.parseCard`; exit 1 on any error), `--static` (no browser; run by `npm run loop`), `--staged` (also compiles the staged pool with `tools/compile_v2.py --partial` and writes `docs/reports/fx-validate.md`; staged errors are reported, not fatal; CI runs this). It reports: schema out of date; unknown card, effect, Burst, Magic, match or condition field; unknown trigger, action, STATIC flag, Burst timing or Magic effect; an action field the action's code never reads (it would be silently ignored); a bad `residual` (over 12 entries, empty, over 400 characters = `parseCard` drops the card); `fxComplete: true` with a residual. Gate: zero errors on shipped cards (test FS03).

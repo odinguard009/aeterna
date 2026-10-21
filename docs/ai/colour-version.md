@@ -13,12 +13,12 @@ Distilled from v0.37 blue, v0.38 green, v0.39 purple. Follow it instead of redis
 - Card images only for fields the export lacks or that look wrong: contact sheet of ~20 cropped corners per image, never one image per card. Fields that stay unverified get a `note` on the card and a line in the release notes.
 
 ## 3. Engine
-- New actions / triggers / conditions in one file per colour: `packages/engine/src/02g-effects-<colour>.js` (pattern: `02e-effects-removed.js`, `02f-effects-purple.js`); follow skill bs-effect-mechanic-adder.
+- New actions / triggers / conditions in one file per mechanic: `packages/engine/src/02<letter>-effects-<mechanic>.js` named by what it does, never by a colour or a release (pattern: `02e-effects-removed.js`, `02f-effects-mill-discard.js`); follow skill bs-effect-mechanic-adder.
 - Every new keyword: glossary entry with an official `rule` note (or marked partial), `python3 tools/check_obligations.py`.
 - Residual text stays listed on the card; never invent effects.
 
 ## 4. Tests and checks
-- `tests/unit/<colour><minor>.test.mjs`, 20+ tests (template: `purple39.test.mjs`); `npm run -s loop` while working.
+- `tests/unit/<colour><minor>.test.mjs`, 20+ tests (template: `contractor_hades_deck.test.mjs`); `npm run -s loop` while working.
 - Legacy suites (v17, v21, v22, v24) read card and Contractor counts from `build/all-cards.json` (since v0.39.1): no edit needed for a new deck.
 - Sims: through the Regression workflow (dispatch in `release.md`), plus a few seeded games of the new deck vs red / white / the previous colour. Report wins honestly ("untuned").
 

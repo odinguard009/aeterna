@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// Builds the shipped single file index.html from src/.
+// Builds the shipped single file index.html from packages/ and apps/web/.
 //   node tools/build.mjs           -> writes index.html (+ build/game.js, the joined script for ESLint)
-//   node tools/build.mjs --check   -> exits 1 when index.html is not the build of src/ (CI guard)
-// src/index.template.html : page shell with the /*@@CSS@@*/ and /*@@JS@@*/ marker lines
-// src/styles.css          : all CSS
+//   node tools/build.mjs --check   -> exits 1 when index.html is not the build of its sources (CI guard)
+// apps/web/index.template.html : page shell with the /*@@CSS@@*/ and /*@@JS@@*/ marker lines
+// apps/web/styles.css          : all CSS
 // packages/engine/src/NN-name.js + apps/web/src/NN-name.js : the game script, joined in file-name order
 //                           across both folders as ONE classic script (tools/src_parts.mjs)
 //                           (top-level functions stay global: inline handlers, window.BS and tests rely on that)
@@ -62,10 +62,10 @@ export function buildParts(opts = {}) {   // opts.cards: build with another card
   const parts = srcParts(ROOT), files = parts.map(p => p.name);
   const cards = opts.cards || allCards();
   const js = joinScript(parts, cards);
-  const tpl = rd('src/index.template.html');
+  const tpl = rd('apps/web/index.template.html');
   for (const m of ['/*@@CSS@@*/\n', '/*@@JS@@*/\n']) if (tpl.split(m).length !== 2) throw new Error('template marker missing: ' + m.trim());
-  // v0.86.0: the page carries the stylesheet without comments and indentation (src/styles.css keeps both; budget B04)
-  const css = rd('src/styles.css').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]+/gm, '').replace(/\n{2,}/g, '\n');
+  // v0.86.0: the page carries the stylesheet without comments and indentation (apps/web/styles.css keeps both; budget B04)
+  const css = rd('apps/web/styles.css').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]+/gm, '').replace(/\n{2,}/g, '\n');
   const html = tpl.replace('/*@@CSS@@*/\n', () => css).replace('/*@@JS@@*/\n', () => js);
   return { html, js, files, cards: cards.length };
 }
