@@ -160,7 +160,7 @@ function dbChange(id, d) {
 function dbReplace(deck) { dbSnap(); PLAYER_DECK = deck; saveDeck(); renderDeckBuilder(); }
 async function dbClear() {                       // v0.99 U8a: Clear asks first (Undo still brings the deck back)
   const n = Object.values(PLAYER_DECK).reduce((t, x) => t + x, 0);
-  if (n && !(await modal({ title: 'Clear the deck?', html: `All ${n} cards leave this deck. Undo brings them back.`, buttons: [{ label: 'Clear deck', cls: 'danger', value: 1 }, { label: 'Cancel', cls: 'cancel', value: 0 }] }))) return;
+  if (n && !(await modal({ uiOnly: true, title: 'Clear the deck?', html: `All ${n} cards leave this deck. Undo brings them back.`, buttons: [{ label: 'Clear deck', cls: 'danger', value: 1 }, { label: 'Cancel', cls: 'cancel', value: 0 }] }))) return;
   dbSheet(''); SLOTS[ACTIVE_SLOT].key = null; dbReplace({});
 }
 function dbUndo() { if (!DB_UNDO.length) return; PLAYER_DECK = JSON.parse(DB_UNDO.pop()); saveDeck(); renderDeckBuilder(); }
@@ -173,7 +173,7 @@ function dbKey(id) {                // the deck's Key Spirit mark: one Spirit pe
 }
 async function dbImport() {
   DB_IO = '';
-  const v = await modal({ title: 'Import deck list', html: '<div class="db-io-hint">One card per line: <b>3 BS44-001</b> or <b>3x Card Name</b>. The current cards in this slot are replaced (Undo brings them back).</div><textarea id="db-io" class="lib-area" spellcheck="false"></textarea>', buttons: [{ label: 'Import', cls: 'primary', value: 'ok' }, { label: 'Cancel', cls: 'cancel', value: null }] });
+  const v = await modal({ uiOnly: true, title: 'Import deck list', html: '<div class="db-io-hint">One card per line: <b>3 BS44-001</b> or <b>3x Card Name</b>. The current cards in this slot are replaced (Undo brings them back).</div><textarea id="db-io" class="lib-area" spellcheck="false"></textarea>', buttons: [{ label: 'Import', cls: 'primary', value: 'ok' }, { label: 'Cancel', cls: 'cancel', value: null }] });
   if (v !== 'ok') return;
   const r = textToDeck(DB_IO);
   if (!deckTotal(r.deck)) { uiInfo('Nothing imported', 'No cards recognised.' + (r.bad.length ? '<br>' + r.bad.slice(0, 8).map(esc).join('<br>') : '')); return; }
@@ -183,7 +183,7 @@ async function dbImport() {
 }
 async function dbExport(d) {
   const txt = deckToText(d, SLOTS[ACTIVE_SLOT].key);
-  const v = await modal({ title: 'Export deck list', html: `<textarea id="db-io" class="lib-area" spellcheck="false" readonly>${esc(txt)}</textarea>`, buttons: [{ label: 'Copy', cls: 'primary', value: 'copy' }, { label: 'Close', cls: 'cancel', value: null }] });
+  const v = await modal({ uiOnly: true, title: 'Export deck list', html: `<textarea id="db-io" class="lib-area" spellcheck="false" readonly>${esc(txt)}</textarea>`, buttons: [{ label: 'Copy', cls: 'primary', value: 'copy' }, { label: 'Close', cls: 'cancel', value: null }] });
   if (v === 'copy') { try { await navigator.clipboard.writeText(txt); } catch (e) { /* clipboard blocked: the text stays selectable in the box */ } }
 }
 

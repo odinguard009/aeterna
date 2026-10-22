@@ -73,13 +73,13 @@ async function dkAct(a, v) {
   if (a === 'dk-dup') { dkNewSlot(SLOTS[i].name.slice(0, 17) + ' (copy)', Object.assign({}, dkCards(i)), true, SLOTS[i].key); return renderDecks(); }
   if (a === 'dk-code') { try { await navigator.clipboard.writeText(deckToText(dkCards(i), SLOTS[i].key)); $('dk-msg').textContent = `Deck code of ${SLOTS[i].name} copied. Paste it into Import code on any device.`; } catch (e) { dbExport(dkCards(i)); } return renderDecks(); }
   if (a === 'dk-rename') {
-    const ok = await modal({ title: 'Rename deck', html: `<input id="dk-name-in" class="dk-in" maxlength="24" autocomplete="off" aria-label="Deck name" value="${esc(SLOTS[i].name)}">`, buttons: [{ label: 'Save', cls: 'primary', value: 1 }, { label: 'Cancel', cls: 'cancel', value: null }] });
+    const ok = await modal({ uiOnly: true, title: 'Rename deck', html: `<input id="dk-name-in" class="dk-in" maxlength="24" autocomplete="off" aria-label="Deck name" value="${esc(SLOTS[i].name)}">`, buttons: [{ label: 'Save', cls: 'primary', value: 1 }, { label: 'Cancel', cls: 'cancel', value: null }] });
     const nv = ($('dk-name-in') || {}).value || '';
     if (ok && nv.trim()) { SLOTS[i].name = nv.trim().slice(0, 24); SLOTS[i].used = true; saveDeck(); renderHome(); }
     return renderDecks();
   }
   if (a === 'dk-del') {
-    const ok = await modal({ title: 'Delete this deck?', html: `<b>${esc(SLOTS[i].name)}</b> (${deckTotal(dkCards(i))} cards) is removed from this device. This cannot be undone.`, buttons: [{ label: 'Delete', cls: 'danger', value: 1 }, { label: 'Cancel', cls: 'cancel', value: null }] });
+    const ok = await modal({ uiOnly: true, title: 'Delete this deck?', html: `<b>${esc(SLOTS[i].name)}</b> (${deckTotal(dkCards(i))} cards) is removed from this device. This cannot be undone.`, buttons: [{ label: 'Delete', cls: 'danger', value: 1 }, { label: 'Cancel', cls: 'cancel', value: null }] });
     if (ok) {
       SLOTS[i] = { name: 'Deck ' + (i + 1), cards: {} };
       if (i === ACTIVE_SLOT) { PLAYER_DECK = {}; const o = SLOTS.findIndex((s, k) => k !== i && dkUsed(k)); if (o >= 0) switchSlot(o); else saveDeck(); } else saveDeck();

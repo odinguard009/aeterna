@@ -23,11 +23,14 @@ function paintModal() {
     + (c.peek && G ? '<button class="modal-btn blue" data-peek="1">🔍 View Field</button>' : '');
 }
 /* a message of the page itself (log, glossary, import notes): a plain modal, not an engine decision, so it is not part of the port record */
-function uiInfo(title, html) { return modal({ title, html, buttons: [{ label: 'Close', cls: 'cancel', value: null }] }); }
+function uiInfo(title, html) { return modal({ uiOnly: true, title, html, buttons: [{ label: 'Close', cls: 'cancel', value: null }] }); }
 function modal(cfg) {
   return new Promise(resolve => {
     if (MODAL && MODAL.resolve) { const r = MODAL.resolve; MODAL = null; r(null); }
-    MODAL = { resolve: v => { recIn({ m: v === undefined ? null : v }); resolve(v); }, cfg };
+    /* v0.104.0 (A1e fix): only modals that stand for an engine decision go into the input record; UI-only dialogs
+       (card menus, zone views, info/confirm prompts) are not part of a match's record, so replaying a record now hits
+       exactly one recorded answer per engine prompt (a UI menu's answer used to close the replay's own modal and diverge). */
+    MODAL = { resolve: v => { if (!cfg.uiOnly) recIn({ m: v === undefined ? null : v }); resolve(v); }, cfg };
     paintModal();
     if (/Flash Timing/.test(cfg.title || '')) aeRibbon('YOUR FLASH TIMING'); else if (/VICTORY|DEFEAT|MATCH OVER/.test(cfg.title || '')) aeRibbon(null);
     $('action-modal').classList.add('active');

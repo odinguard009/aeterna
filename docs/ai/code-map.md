@@ -98,10 +98,10 @@ cpuCanPlay, cpuLevelUp, cpuBurstFlash, cpuFlashChoice, cpuCastMain, cpuMain, cpu
 ## packages/engine/src/09a-cpu-eval.js (120 lines, ~2k tokens) — CPU EVALUATION POLICY (v0.32, Aegis study point 7)
 CPU_PROFILES, CPU_PROFILE_NAMES, CPU_SIM_PROFILES, cpuProfileName, cpuW, lifeValue, lifeLoss, symOf, unitValue, cpuEval, cpuPlayScore, FUZZ, fuzzPick, cpuPlayChoice, cpuKeepMagicOrPay, cpuLethal, guardNeed, cpuAttackScore, cpuAttackChoice, cpuBlockScore, cpuChooseBlock, setCpuProfile
 
-## apps/web/src/10-modals.js (146 lines, ~2.4k tokens) — MODALS (promise based)
+## apps/web/src/10-modals.js (149 lines, ~2.5k tokens) — MODALS (promise based)
 modalKind, paintModal, uiInfo, modal, PEEK, endPeek, paintPeek, startPeek, peekRefresh, closeModal, modalPress, PICK, clearPick, webPick, webPayment
 
-## apps/web/src/11-human.js (198 lines, ~4.3k tokens) — HUMAN ACTIONS: the dialogs of the human seat. Board actions are intent records (v0.84.0, F3 = M3 rest):
+## apps/web/src/11-human.js (198 lines, ~4.4k tokens) — HUMAN ACTIONS: the dialogs of the human seat. Board actions are intent records (v0.84.0, F3 = M3 rest):
 humanCan, legalityHTML, FX_KW_START, FX_LINE_STOP, effectLines, fxMark, slashBreak, effectTextHTML, cardDetailHTML, residualHTML, cardFaceHTML, cardStripHTML, mullCardHTML, openZoom, handButtons, HAND_INTENTS, runHandAction, humanCast, humanAttack, onNext, showCardDetail, openHandModal, openFieldModal
 
 ## apps/web/src/12-zones.js (70 lines, ~1.6k tokens) — ZONES, LOG, RULES COVERAGE
@@ -122,7 +122,7 @@ PLAY_SPEEDS, playChips, renderPlay, playSet
 ## apps/web/src/13d-pages.js (54 lines, ~1k tokens) — SETTINGS, HOW TO PLAY, LIBRARY PAGES (v0.68.0, UI/UX overhaul U4; docs/DESIGN.md section 0, mockup docs/design/mockup-v11.html "Settings")
 MAT_KEY, MAT, matUse, shrinkMat, matSet, matClear, setMsg, setSection, renderSetPage
 
-## apps/web/src/13e-host.js (80 lines, ~1.2k tokens) — WEB HOST (v0.82.0, phase F2 = M2): the browser answers the engine's port (packages/protocol/src/00p-protocol.js).
+## apps/web/src/13e-host.js (81 lines, ~1.3k tokens) — WEB HOST (v0.82.0, phase F2 = M2): the browser answers the engine's port (packages/protocol/src/00p-protocol.js).
 AUDIO, sfx, showGameOver, ACT, ACT_Q, actFlush, webAction, sendIntent, webView, sfxOf, choiceHTML, webDecide
 
 ## apps/web/src/13f-replay.js (61 lines, ~1.4k tokens) — REPLAY VIEWER (v0.86.0, phase F4 part 2 = monorepo step M4 rest; formats: packages/engine/src/15b-replay.js)

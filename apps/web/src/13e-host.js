@@ -19,6 +19,7 @@ function sfx(kind) {                                   // tiny synthesized sound
 function showGameOver() {
   const youWon = G.winner === 'player', W = !!G.watch;
   modal({
+    uiOnly: true,
     title: W ? '🏁 MATCH OVER' : youWon ? '🏆 VICTORY' : '💀 DEFEAT', html: esc(G.last),
     buttons: [{ label: W ? 'Watch again' : 'Rematch', cls: 'primary', value: 'again' }, { label: 'Back to Lobby', value: 'lobby' }, { label: 'Close', cls: 'cancel', value: null }]
   }).then(v => {

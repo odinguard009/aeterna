@@ -120,7 +120,7 @@ function gameAct(a, v) {
   else if (a === 'zone') { const [k, z] = v.split(':'); openZoneModal(k, z); }
   else if (a === 'next') onNext();
   else if (a === 'leave') {
-    modal({ title: 'Leave the match?', html: 'The current match will be lost.', buttons: [{ label: 'Stay', cls: 'primary', value: false }, { label: 'Exit to Lobby', cls: 'cancel', value: true }] })
+    modal({ uiOnly: true, title: 'Leave the match?', html: 'The current match will be lost.', buttons: [{ label: 'Stay', cls: 'primary', value: false }, { label: 'Exit to Lobby', cls: 'cancel', value: true }] })
       .then(r => { if (r) { SESSION++; clearPick(); G = null; switchView('view-lobby'); } });
   }
 }

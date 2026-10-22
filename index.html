@@ -5669,11 +5669,14 @@ function paintModal() {
     + (c.peek && G ? '<button class="modal-btn blue" data-peek="1">🔍 View Field</button>' : '');
 }
 /* a message of the page itself (log, glossary, import notes): a plain modal, not an engine decision, so it is not part of the port record */
-function uiInfo(title, html) { return modal({ title, html, buttons: [{ label: 'Close', cls: 'cancel', value: null }] }); }
+function uiInfo(title, html) { return modal({ uiOnly: true, title, html, buttons: [{ label: 'Close', cls: 'cancel', value: null }] }); }
 function modal(cfg) {
   return new Promise(resolve => {
     if (MODAL && MODAL.resolve) { const r = MODAL.resolve; MODAL = null; r(null); }
-    MODAL = { resolve: v => { recIn({ m: v === undefined ? null : v }); resolve(v); }, cfg };
+    /* v0.104.0 (A1e fix): only modals that stand for an engine decision go into the input record; UI-only dialogs
+       (card menus, zone views, info/confirm prompts) are not part of a match's record, so replaying a record now hits
+       exactly one recorded answer per engine prompt (a UI menu's answer used to close the replay's own modal and diverge). */
+    MODAL = { resolve: v => { if (!cfg.uiOnly) recIn({ m: v === undefined ? null : v }); resolve(v); }, cfg };
     paintModal();
     if (/Flash Timing/.test(cfg.title || '')) aeRibbon('YOUR FLASH TIMING'); else if (/VICTORY|DEFEAT|MATCH OVER/.test(cfg.title || '')) aeRibbon(null);
     $('action-modal').classList.add('active');
@@ -5920,7 +5923,7 @@ async function showCardDetail(id, ctx, uid) {
     if (inst) buttons = handButtons(G.p.player, inst, false);
   }
   buttons.push({ label: 'Close', cls: 'cancel', value: null });
-  const v = await modal({ title: '🎴 Card Detail', html: cardDetailHTML(card), buttons });
+  const v = await modal({ uiOnly: true, title: '🎴 Card Detail', html: cardDetailHTML(card), buttons });
   if (inst) { runHandAction(G.p.player, inst, v); return; }
   if (ctx === 'deck' && (v === 'add' || v === 'sub')) {
     dbChange(id, v === 'add' ? 1 : -1); showCardDetail(id, 'deck');
@@ -5931,7 +5934,7 @@ async function openHandModal(uid) {
   const card = CARDS[inst.id], c = effCost(p, card);
   const buttons = handButtons(p, inst, true);
   buttons.push({ label: '✖ Cancel', cls: 'cancel', value: null });
-  const v = await modal({ title: card.name, wide: true, html: cardStripHTML([inst]) + effectTextHTML(card, true) + `<div class="fx-pay">You pay ${c} (after reduction)</div>`, buttons });
+  const v = await modal({ uiOnly: true, title: card.name, wide: true, html: cardStripHTML([inst]) + effectTextHTML(card, true) + `<div class="fx-pay">You pay ${c} (after reduction)</div>`, buttons });
   if (!G || !G.p.player.hand.includes(inst)) return;
   if (v === 'detail') showCardDetail(inst.id, 'hand', inst.uid);
   else runHandAction(p, inst, v);
@@ -5976,7 +5979,7 @@ async function openFieldModal(key, kind, uid) {
     else buttons.push({ label: '⚔ Attack', cls: 'primary', value: 'attack' });
   }
   buttons.push({ label: '✖ Cancel', cls: 'cancel', value: null });
-  const v = await modal({ title: card.name, wide: f.under.length > 0, html, buttons });
+  const v = await modal({ uiOnly: true, title: card.name, wide: f.under.length > 0, html, buttons });
   if (!G || G.over) return;
   if (v === 'detail') { showCardDetail(f.id); return; }
   if (!mine) return;
@@ -6004,7 +6007,7 @@ function openZoneModal(key, zone) {
     case 'burst': {
       const b = p.mirage || p.burst, vis = b && (b.mirage || mine);
       desc = !b ? 'The Burst / Mirage Area is empty.' : [p.mirage ? `Mirage set face up: ${CARDS[p.mirage.id].name}` : '', p.burst ? (mine ? `Burst set face down: ${CARDS[p.burst.id].name}` : 'A Burst is set (face down).') : ''].filter(Boolean).join(' · ');
-      if (vis) { modal({ title: `${label} BURST / MIRAGE AREA`, wide: true, html: esc(desc) + cardStripHTML([p.mirage, mine ? p.burst : null].filter(Boolean)), buttons: [{ label: '🔎 Full Card Details', cls: 'blue', value: 'detail' }, { label: 'Close', cls: 'cancel', value: null }] }).then(v => { if (v === 'detail') showCardDetail(b.id); }); return; }
+      if (vis) { modal({ uiOnly: true, title: `${label} BURST / MIRAGE AREA`, wide: true, html: esc(desc) + cardStripHTML([p.mirage, mine ? p.burst : null].filter(Boolean)), buttons: [{ label: '🔎 Full Card Details', cls: 'blue', value: 'detail' }, { label: 'Close', cls: 'cancel', value: null }] }).then(v => { if (v === 'detail') showCardDetail(b.id); }); return; }
       break; }
     case 'void': desc = `Void: ${p.void} core${p.void === 1 ? '' : 's'}`; break;
     case 'soulstate': {
@@ -6012,7 +6015,7 @@ function openZoneModal(key, zone) {
       const rv = mine && humanCan() ? reviveTargets(p) : [];
       const ca = mine && humanCan() && isMainStep() ? cadvSources(p).filter(x => p.soulState.includes(x) && contractAdventTargets(p, x, 'main').length) : [];
       if (rv.length || ca.length) {
-        modal({ title: `${label} SOUL STATE`, wide: true, html: esc(desc) + cardStripHTML(list, 'Cards'), buttons: rv.map(t => ({ label: `⚡ Revive: deploy ${CARDS[t.id].name}`, cls: 'primary', value: 'r' + t.uid })).concat(ca.map(t => ({ label: `✨ Contract Advent: ${CARDS[t.id].name}`, cls: 'purple', value: 'c' + t.uid }))).concat([{ label: 'Close', cls: 'cancel', value: null }]) })
+        modal({ uiOnly: true, title: `${label} SOUL STATE`, wide: true, html: esc(desc) + cardStripHTML(list, 'Cards'), buttons: rv.map(t => ({ label: `⚡ Revive: deploy ${CARDS[t.id].name}`, cls: 'primary', value: 'r' + t.uid })).concat(ca.map(t => ({ label: `✨ Contract Advent: ${CARDS[t.id].name}`, cls: 'purple', value: 'c' + t.uid }))).concat([{ label: 'Close', cls: 'cancel', value: null }]) })
           .then(async v => {
             if (typeof v !== 'string' || !humanCan()) return;
             const t = rv.find(x => 'r' + x.uid === v); if (t) { await sendIntent({ type: 'revive', uid: t.uid }); return; }
@@ -6025,14 +6028,14 @@ function openZoneModal(key, zone) {
       desc = `Banished cards: ${p.removed.length}`; list = p.removed.slice();
       const rs = mine && humanCan() && isMainStep() ? removedSummonable(p) : [];      // v0.50: Accel Spirits can be summoned from here
       if (rs.length) {
-        modal({ title: `${label} REMOVED ZONE`, wide: true, html: esc(desc) + cardStripHTML(list, 'Cards'), buttons: rs.map(t => ({ label: `🎴 Summon ${CARDS[t.id].name} (Pay ${effCost(p, CARDS[t.id])})`, cls: 'primary', value: 'z' + t.uid })).concat([{ label: 'Close', cls: 'cancel', value: null }]) })
+        modal({ uiOnly: true, title: `${label} REMOVED ZONE`, wide: true, html: esc(desc) + cardStripHTML(list, 'Cards'), buttons: rs.map(t => ({ label: `🎴 Summon ${CARDS[t.id].name} (Pay ${effCost(p, CARDS[t.id])})`, cls: 'primary', value: 'z' + t.uid })).concat([{ label: 'Close', cls: 'cancel', value: null }]) })
           .then(async v => { const t = rs.find(x => 'z' + x.uid === v); if (t && humanCan()) await sendIntent({ type: 'summonRemoved', uid: t.uid }); });
         return;
       }
       break; }
   }
   const head = zone === 'trash' ? 'Cards (newest first)' : 'Cards';
-  modal({ title: `${label} ${zone.toUpperCase()}`, wide: list.length > 0, html: esc(desc) + cardStripHTML(list, head), buttons: [{ label: 'Close', cls: 'cancel', value: null }] });
+  modal({ uiOnly: true, title: `${label} ${zone.toUpperCase()}`, wide: list.length > 0, html: esc(desc) + cardStripHTML(list, head), buttons: [{ label: 'Close', cls: 'cancel', value: null }] });
 }
 function openLogModal() {
   if (!G) return;
@@ -6566,7 +6569,7 @@ function dbChange(id, d) {
 function dbReplace(deck) { dbSnap(); PLAYER_DECK = deck; saveDeck(); renderDeckBuilder(); }
 async function dbClear() {                       // v0.99 U8a: Clear asks first (Undo still brings the deck back)
   const n = Object.values(PLAYER_DECK).reduce((t, x) => t + x, 0);
-  if (n && !(await modal({ title: 'Clear the deck?', html: `All ${n} cards leave this deck. Undo brings them back.`, buttons: [{ label: 'Clear deck', cls: 'danger', value: 1 }, { label: 'Cancel', cls: 'cancel', value: 0 }] }))) return;
+  if (n && !(await modal({ uiOnly: true, title: 'Clear the deck?', html: `All ${n} cards leave this deck. Undo brings them back.`, buttons: [{ label: 'Clear deck', cls: 'danger', value: 1 }, { label: 'Cancel', cls: 'cancel', value: 0 }] }))) return;
   dbSheet(''); SLOTS[ACTIVE_SLOT].key = null; dbReplace({});
 }
 function dbUndo() { if (!DB_UNDO.length) return; PLAYER_DECK = JSON.parse(DB_UNDO.pop()); saveDeck(); renderDeckBuilder(); }
@@ -6579,7 +6582,7 @@ function dbKey(id) {                // the deck's Key Spirit mark: one Spirit pe
 }
 async function dbImport() {
   DB_IO = '';
-  const v = await modal({ title: 'Import deck list', html: '<div class="db-io-hint">One card per line: <b>3 BS44-001</b> or <b>3x Card Name</b>. The current cards in this slot are replaced (Undo brings them back).</div><textarea id="db-io" class="lib-area" spellcheck="false"></textarea>', buttons: [{ label: 'Import', cls: 'primary', value: 'ok' }, { label: 'Cancel', cls: 'cancel', value: null }] });
+  const v = await modal({ uiOnly: true, title: 'Import deck list', html: '<div class="db-io-hint">One card per line: <b>3 BS44-001</b> or <b>3x Card Name</b>. The current cards in this slot are replaced (Undo brings them back).</div><textarea id="db-io" class="lib-area" spellcheck="false"></textarea>', buttons: [{ label: 'Import', cls: 'primary', value: 'ok' }, { label: 'Cancel', cls: 'cancel', value: null }] });
   if (v !== 'ok') return;
   const r = textToDeck(DB_IO);
   if (!deckTotal(r.deck)) { uiInfo('Nothing imported', 'No cards recognised.' + (r.bad.length ? '<br>' + r.bad.slice(0, 8).map(esc).join('<br>') : '')); return; }
@@ -6589,7 +6592,7 @@ async function dbImport() {
 }
 async function dbExport(d) {
   const txt = deckToText(d, SLOTS[ACTIVE_SLOT].key);
-  const v = await modal({ title: 'Export deck list', html: `<textarea id="db-io" class="lib-area" spellcheck="false" readonly>${esc(txt)}</textarea>`, buttons: [{ label: 'Copy', cls: 'primary', value: 'copy' }, { label: 'Close', cls: 'cancel', value: null }] });
+  const v = await modal({ uiOnly: true, title: 'Export deck list', html: `<textarea id="db-io" class="lib-area" spellcheck="false" readonly>${esc(txt)}</textarea>`, buttons: [{ label: 'Copy', cls: 'primary', value: 'copy' }, { label: 'Close', cls: 'cancel', value: null }] });
   if (v === 'copy') { try { await navigator.clipboard.writeText(txt); } catch (e) { /* clipboard blocked: the text stays selectable in the box */ } }
 }
 
@@ -6834,6 +6837,7 @@ function sfx(kind) {                                   // tiny synthesized sound
 function showGameOver() {
   const youWon = G.winner === 'player', W = !!G.watch;
   modal({
+    uiOnly: true,
     title: W ? '🏁 MATCH OVER' : youWon ? '🏆 VICTORY' : '💀 DEFEAT', html: esc(G.last),
     buttons: [{ label: W ? 'Watch again' : 'Rematch', cls: 'primary', value: 'again' }, { label: 'Back to Lobby', value: 'lobby' }, { label: 'Close', cls: 'cancel', value: null }]
   }).then(v => {
@@ -6926,7 +6930,7 @@ async function openViewer(R) {
   let i = 0;
   const last = R.frames.length - 1, start = k => { let j = k; while (j > 0 && R.frames[j - 1].t === R.frames[k].t) j--; return j; };
   for (;;) {
-    const v = await modal({ title: '▶ Replay', wide: true, html: rvFrameHTML(R, i), buttons: [
+    const v = await modal({ uiOnly: true, title: '▶ Replay', wide: true, html: rvFrameHTML(R, i), buttons: [
       { label: '⏮ Start', value: 'first', dis: i === 0 }, { label: '◀ Turn', value: 'tprev', dis: i === 0 }, { label: '◀ Back', cls: 'blue', value: 'prev', dis: i === 0 },
       { label: 'Next ▶', cls: 'primary', value: 'next', dis: i === last }, { label: 'Turn ▶', value: 'tnext', dis: i === last }, { label: 'End ⏭', value: 'end', dis: i === last },
       { label: '💾 Save', cls: 'blue', value: 'save' }, { label: 'Close', cls: 'cancel', value: null }] });
@@ -7099,13 +7103,13 @@ async function dkAct(a, v) {
   if (a === 'dk-dup') { dkNewSlot(SLOTS[i].name.slice(0, 17) + ' (copy)', Object.assign({}, dkCards(i)), true, SLOTS[i].key); return renderDecks(); }
   if (a === 'dk-code') { try { await navigator.clipboard.writeText(deckToText(dkCards(i), SLOTS[i].key)); $('dk-msg').textContent = `Deck code of ${SLOTS[i].name} copied. Paste it into Import code on any device.`; } catch (e) { dbExport(dkCards(i)); } return renderDecks(); }
   if (a === 'dk-rename') {
-    const ok = await modal({ title: 'Rename deck', html: `<input id="dk-name-in" class="dk-in" maxlength="24" autocomplete="off" aria-label="Deck name" value="${esc(SLOTS[i].name)}">`, buttons: [{ label: 'Save', cls: 'primary', value: 1 }, { label: 'Cancel', cls: 'cancel', value: null }] });
+    const ok = await modal({ uiOnly: true, title: 'Rename deck', html: `<input id="dk-name-in" class="dk-in" maxlength="24" autocomplete="off" aria-label="Deck name" value="${esc(SLOTS[i].name)}">`, buttons: [{ label: 'Save', cls: 'primary', value: 1 }, { label: 'Cancel', cls: 'cancel', value: null }] });
     const nv = ($('dk-name-in') || {}).value || '';
     if (ok && nv.trim()) { SLOTS[i].name = nv.trim().slice(0, 24); SLOTS[i].used = true; saveDeck(); renderHome(); }
     return renderDecks();
   }
   if (a === 'dk-del') {
-    const ok = await modal({ title: 'Delete this deck?', html: `<b>${esc(SLOTS[i].name)}</b> (${deckTotal(dkCards(i))} cards) is removed from this device. This cannot be undone.`, buttons: [{ label: 'Delete', cls: 'danger', value: 1 }, { label: 'Cancel', cls: 'cancel', value: null }] });
+    const ok = await modal({ uiOnly: true, title: 'Delete this deck?', html: `<b>${esc(SLOTS[i].name)}</b> (${deckTotal(dkCards(i))} cards) is removed from this device. This cannot be undone.`, buttons: [{ label: 'Delete', cls: 'danger', value: 1 }, { label: 'Cancel', cls: 'cancel', value: null }] });
     if (ok) {
       SLOTS[i] = { name: 'Deck ' + (i + 1), cards: {} };
       if (i === ACTIVE_SLOT) { PLAYER_DECK = {}; const o = SLOTS.findIndex((s, k) => k !== i && dkUsed(k)); if (o >= 0) switchSlot(o); else saveDeck(); } else saveDeck();
@@ -7252,7 +7256,7 @@ document.addEventListener('change', async e => {
   else if (t.id === 'play-cpu') { SETTINGS.cpuDeck = t.value; saveSettings(); renderLobby(); }
   else if (t.id === 'db-slot') { switchSlot(Number(t.value)); DB_UNDO.length = 0; renderDeckBuilder(); }
   else if (t.id === 'db-name') { SLOTS[ACTIVE_SLOT].name = (t.value.trim() || 'Deck ' + (ACTIVE_SLOT + 1)).slice(0, 24); saveDeck(); renderDeckBuilder(); }
-  else if (t.id === 'db-preset') { const id = t.value; t.value = ''; if (id) { if (deckTotal(PLAYER_DECK) > 0) { const ok = await modal({ title: 'Replace this deck?', html: `Load "${esc((PREBUILT.find(d => d.id === id) || {}).name || id)}" into slot ${ACTIVE_SLOT + 1}? The current cards in the slot are replaced.`, buttons: [{ label: 'Replace', cls: 'primary', value: true }, { label: 'Cancel', cls: 'cancel', value: false }] }); if (!ok) return; } dbSnap(); loadPrebuilt(id); renderDeckBuilder(); } }
+  else if (t.id === 'db-preset') { const id = t.value; t.value = ''; if (id) { if (deckTotal(PLAYER_DECK) > 0) { const ok = await modal({ uiOnly: true, title: 'Replace this deck?', html: `Load "${esc((PREBUILT.find(d => d.id === id) || {}).name || id)}" into slot ${ACTIVE_SLOT + 1}? The current cards in the slot are replaced.`, buttons: [{ label: 'Replace', cls: 'primary', value: true }, { label: 'Cancel', cls: 'cancel', value: false }] }); if (!ok) return; } dbSnap(); loadPrebuilt(id); renderDeckBuilder(); } }
   else if (t.id === 'db-sl-up' && t.files && t.files[0]) { const f = t.files[0]; t.value = ''; await dbSleeveSet(f); }
   else if (t.id === 'set-mat' && t.files && t.files[0]) { const f = t.files[0]; t.value = ''; await matSet(f); }
   else if (t.id === 'set-speed') { SETTINGS.speed = SPEEDS[t.value] ? t.value : 'normal'; saveSettings(); }
@@ -7557,7 +7561,7 @@ function gameAct(a, v) {
   else if (a === 'zone') { const [k, z] = v.split(':'); openZoneModal(k, z); }
   else if (a === 'next') onNext();
   else if (a === 'leave') {
-    modal({ title: 'Leave the match?', html: 'The current match will be lost.', buttons: [{ label: 'Stay', cls: 'primary', value: false }, { label: 'Exit to Lobby', cls: 'cancel', value: true }] })
+    modal({ uiOnly: true, title: 'Leave the match?', html: 'The current match will be lost.', buttons: [{ label: 'Stay', cls: 'primary', value: false }, { label: 'Exit to Lobby', cls: 'cancel', value: true }] })
       .then(r => { if (r) { SESSION++; clearPick(); G = null; switchView('view-lobby'); } });
   }
 }

@@ -31,7 +31,7 @@ async function openViewer(R) {
   let i = 0;
   const last = R.frames.length - 1, start = k => { let j = k; while (j > 0 && R.frames[j - 1].t === R.frames[k].t) j--; return j; };
   for (;;) {
-    const v = await modal({ title: '▶ Replay', wide: true, html: rvFrameHTML(R, i), buttons: [
+    const v = await modal({ uiOnly: true, title: '▶ Replay', wide: true, html: rvFrameHTML(R, i), buttons: [
       { label: '⏮ Start', value: 'first', dis: i === 0 }, { label: '◀ Turn', value: 'tprev', dis: i === 0 }, { label: '◀ Back', cls: 'blue', value: 'prev', dis: i === 0 },
       { label: 'Next ▶', cls: 'primary', value: 'next', dis: i === last }, { label: 'Turn ▶', value: 'tnext', dis: i === last }, { label: 'End ⏭', value: 'end', dis: i === last },
       { label: '💾 Save', cls: 'blue', value: 'save' }, { label: 'Close', cls: 'cancel', value: null }] });

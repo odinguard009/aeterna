@@ -14,7 +14,7 @@ function openZoneModal(key, zone) {
     case 'burst': {
       const b = p.mirage || p.burst, vis = b && (b.mirage || mine);
       desc = !b ? 'The Burst / Mirage Area is empty.' : [p.mirage ? `Mirage set face up: ${CARDS[p.mirage.id].name}` : '', p.burst ? (mine ? `Burst set face down: ${CARDS[p.burst.id].name}` : 'A Burst is set (face down).') : ''].filter(Boolean).join(' · ');
-      if (vis) { modal({ title: `${label} BURST / MIRAGE AREA`, wide: true, html: esc(desc) + cardStripHTML([p.mirage, mine ? p.burst : null].filter(Boolean)), buttons: [{ label: '🔎 Full Card Details', cls: 'blue', value: 'detail' }, { label: 'Close', cls: 'cancel', value: null }] }).then(v => { if (v === 'detail') showCardDetail(b.id); }); return; }
+      if (vis) { modal({ uiOnly: true, title: `${label} BURST / MIRAGE AREA`, wide: true, html: esc(desc) + cardStripHTML([p.mirage, mine ? p.burst : null].filter(Boolean)), buttons: [{ label: '🔎 Full Card Details', cls: 'blue', value: 'detail' }, { label: 'Close', cls: 'cancel', value: null }] }).then(v => { if (v === 'detail') showCardDetail(b.id); }); return; }
       break; }
     case 'void': desc = `Void: ${p.void} core${p.void === 1 ? '' : 's'}`; break;
     case 'soulstate': {
@@ -22,7 +22,7 @@ function openZoneModal(key, zone) {
       const rv = mine && humanCan() ? reviveTargets(p) : [];
       const ca = mine && humanCan() && isMainStep() ? cadvSources(p).filter(x => p.soulState.includes(x) && contractAdventTargets(p, x, 'main').length) : [];
       if (rv.length || ca.length) {
-        modal({ title: `${label} SOUL STATE`, wide: true, html: esc(desc) + cardStripHTML(list, 'Cards'), buttons: rv.map(t => ({ label: `⚡ Revive: deploy ${CARDS[t.id].name}`, cls: 'primary', value: 'r' + t.uid })).concat(ca.map(t => ({ label: `✨ Contract Advent: ${CARDS[t.id].name}`, cls: 'purple', value: 'c' + t.uid }))).concat([{ label: 'Close', cls: 'cancel', value: null }]) })
+        modal({ uiOnly: true, title: `${label} SOUL STATE`, wide: true, html: esc(desc) + cardStripHTML(list, 'Cards'), buttons: rv.map(t => ({ label: `⚡ Revive: deploy ${CARDS[t.id].name}`, cls: 'primary', value: 'r' + t.uid })).concat(ca.map(t => ({ label: `✨ Contract Advent: ${CARDS[t.id].name}`, cls: 'purple', value: 'c' + t.uid }))).concat([{ label: 'Close', cls: 'cancel', value: null }]) })
           .then(async v => {
             if (typeof v !== 'string' || !humanCan()) return;
             const t = rv.find(x => 'r' + x.uid === v); if (t) { await sendIntent({ type: 'revive', uid: t.uid }); return; }
@@ -35,14 +35,14 @@ function openZoneModal(key, zone) {
       desc = `Banished cards: ${p.removed.length}`; list = p.removed.slice();
       const rs = mine && humanCan() && isMainStep() ? removedSummonable(p) : [];      // v0.50: Accel Spirits can be summoned from here
       if (rs.length) {
-        modal({ title: `${label} REMOVED ZONE`, wide: true, html: esc(desc) + cardStripHTML(list, 'Cards'), buttons: rs.map(t => ({ label: `🎴 Summon ${CARDS[t.id].name} (Pay ${effCost(p, CARDS[t.id])})`, cls: 'primary', value: 'z' + t.uid })).concat([{ label: 'Close', cls: 'cancel', value: null }]) })
+        modal({ uiOnly: true, title: `${label} REMOVED ZONE`, wide: true, html: esc(desc) + cardStripHTML(list, 'Cards'), buttons: rs.map(t => ({ label: `🎴 Summon ${CARDS[t.id].name} (Pay ${effCost(p, CARDS[t.id])})`, cls: 'primary', value: 'z' + t.uid })).concat([{ label: 'Close', cls: 'cancel', value: null }]) })
           .then(async v => { const t = rs.find(x => 'z' + x.uid === v); if (t && humanCan()) await sendIntent({ type: 'summonRemoved', uid: t.uid }); });
         return;
       }
       break; }
   }
   const head = zone === 'trash' ? 'Cards (newest first)' : 'Cards';
-  modal({ title: `${label} ${zone.toUpperCase()}`, wide: list.length > 0, html: esc(desc) + cardStripHTML(list, head), buttons: [{ label: 'Close', cls: 'cancel', value: null }] });
+  modal({ uiOnly: true, title: `${label} ${zone.toUpperCase()}`, wide: list.length > 0, html: esc(desc) + cardStripHTML(list, head), buttons: [{ label: 'Close', cls: 'cancel', value: null }] });
 }
 function openLogModal() {
   if (!G) return;

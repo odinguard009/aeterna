@@ -128,7 +128,7 @@ async function showCardDetail(id, ctx, uid) {
     if (inst) buttons = handButtons(G.p.player, inst, false);
   }
   buttons.push({ label: 'Close', cls: 'cancel', value: null });
-  const v = await modal({ title: '🎴 Card Detail', html: cardDetailHTML(card), buttons });
+  const v = await modal({ uiOnly: true, title: '🎴 Card Detail', html: cardDetailHTML(card), buttons });
   if (inst) { runHandAction(G.p.player, inst, v); return; }
   if (ctx === 'deck' && (v === 'add' || v === 'sub')) {
     dbChange(id, v === 'add' ? 1 : -1); showCardDetail(id, 'deck');
@@ -139,7 +139,7 @@ async function openHandModal(uid) {
   const card = CARDS[inst.id], c = effCost(p, card);
   const buttons = handButtons(p, inst, true);
   buttons.push({ label: '✖ Cancel', cls: 'cancel', value: null });
-  const v = await modal({ title: card.name, wide: true, html: cardStripHTML([inst]) + effectTextHTML(card, true) + `<div class="fx-pay">You pay ${c} (after reduction)</div>`, buttons });
+  const v = await modal({ uiOnly: true, title: card.name, wide: true, html: cardStripHTML([inst]) + effectTextHTML(card, true) + `<div class="fx-pay">You pay ${c} (after reduction)</div>`, buttons });
   if (!G || !G.p.player.hand.includes(inst)) return;
   if (v === 'detail') showCardDetail(inst.id, 'hand', inst.uid);
   else runHandAction(p, inst, v);
@@ -184,7 +184,7 @@ async function openFieldModal(key, kind, uid) {
     else buttons.push({ label: '⚔ Attack', cls: 'primary', value: 'attack' });
   }
   buttons.push({ label: '✖ Cancel', cls: 'cancel', value: null });
-  const v = await modal({ title: card.name, wide: f.under.length > 0, html, buttons });
+  const v = await modal({ uiOnly: true, title: card.name, wide: f.under.length > 0, html, buttons });
   if (!G || G.over) return;
   if (v === 'detail') { showCardDetail(f.id); return; }
   if (!mine) return;
