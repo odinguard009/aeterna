@@ -136,7 +136,54 @@ One home for the complete UI list. Structure from `docs/DESIGN.md`; build target
 - Replay divergence: UI-only card menu answers (`detail`) recorded as decisions break replay import (F-1 finding (e)); do not record UI-only menus.
 - Deck builder Escape, Library card grid, deck-code notes (U8a leftovers).
 
-## Sources used for the v12 proposal
+## H. Phone-only pieces (per-device layouts live in the same parts; the v12 mockup showed only 2 phone screens, v13 shows every page as a phone layout)
+| Piece | Status |
+|---|---|
+| Phone header variants per page (back arrows, page titles, upload icons) | shipped |
+| Phone Settings (rows full width, side menu becomes a select / group chips) | shipped — v13 mockup |
+| Phone Library + How to play (docs list, glossary accordion) | shipped — v13 mockup |
+| Phone My decks: rows with sleeve + tap opens an action sheet (Play / Edit / Set active / Rename / Duplicate / Look / Copy code / Delete) | shipped v0.93.0 |
+| Phone Deck builder: scrollable toolbar, filter sheet from the bottom, deck sheet stays minimized above the keyboard | shipped v0.94.0 |
+| Phone Match history: list + replay viewer full screen | shipped v0.86.0 |
+| Phone Starting Hand (2x3 card grid + KEEP HAND / REDRAW in the thumb zone) | v13 (audit) |
+| Phone card zoom: Full-screen card page (see J., the card info page replaces the small zoom on phone) | v13 |
+| Phone error notice + ganti deck confirm sheets | shipped v0.59.5 |
+| Phone hint line above the hand row (the PC hint bar content, one line) | v12/v13 |
+
+## I. Player profile and sign-in (owner request 2026-10-22; typed into the game only after approval — sign-in belongs to M6-M8, the profile page is local already)
+| Piece | Where it would live | Status |
+|---|---|---|
+| Avatar chip in the lobby nav / phone header (mini sleeve as avatar + player name) — opens the profile popover | `13b-nav.js` | v13 proposal |
+| Profile popover menu (Profile, Sign in, Settings, Quit) | — | v13 |
+| Profile page (PC + phone): identity card (banner + avatar + editable display name), local "saved on this device" note | `13d-pages.js` | v13 |
+| Player stats block: matches played, wins / losses, favourite colour, most used deck (derived from the match history records that already exist) | — | v13 |
+| Sign-in state card: "Offline profile" today; later "Signed in as …" for online (M8). Login form mock: player name + passcode, stay logged in on this device, Play offline | `13e-host.js`, monorepo M8 | v13 (login barulah saat online) |
+| Player name shows in battle: turn band "PLAYER TURN" keeps working + zone tags / cards get the name on hover; CPU keeps "CPU · deck name" | `13-render.js` | v13 |
+| Opponent profile chip (CPU style + seed + rating later) in the Play page setup | — | v13 |
+
+## J. Card info page (owner request 2026-10-22; today only the zoom dialog exists)
+| Piece | Status |
+|---|---|
+| Entry points: Library grid, every card shown anywhere (hover / long press → "Full info"), the zoom dialog's "Full info" button, "How to play" keyword chips | v13 |
+| PC layout: big art + set / card number / legality chips on the left; name, cost and reduction, colour and kind, level rows with BP and core count, per-level effect text with keyword chips, (When Attacks) / Burst / Accel blocks, "!" residual note, Magic Flash wording, Nexus level-down rule mention | v13 |
+| Phone layout: the same stacked, art first, effects under fold, sticky bottom action row | v13 |
+| Actions: ADD TO DECK (deck picker), OPEN IN BUILDER, prev / next card in the same filter, CLOSE | v13 |
+| Related data: copies owned (image status), ban list status per format, keyword glossary links | v13 |
+
+## K. Type and casing rules (owner 2026-10-22: "banyak huruf besar-kecil berbeda dalam satu field / pop up")
+- Labels, plates, chips, buttons: **UPPERCASE, letterspaced** (enforced by CSS `text-transform` so code and text stay normal).
+- Titles and questions in dialogs: **sentence case** (not upper, not italic shouting).
+- Body copy: sentence case; card names always Title Case; keywords always Title Case inside text with the chip look.
+- Numbers: tabular numerals everywhere (`font-variant-numeric: tabular-nums`).
+- Never mix two casing styles in one field; the small caps look comes from the CSS, not from typing.
+
+## L. Animation budget (owner 2026-10-22: "pastikan tidak memberatkan game")
+- CSS keyframes only (`transform` / `opacity`); no JS per-frame work; element rects are read once when a cue lands (current `visEl` behaviour, after the render, not per frame).
+- Hard caps per cue: ≤ 600 ms, ≤ 6 moving elements, no layout reads inside the animation, pause when the browser tab is hidden.
+- Gate: Settings Animations Full / Reduced / Off; Off is forced for CPU-vs-CPU watches, `?sim=1`, Regression and the benchmarks; `prefers-reduced-motion` = Reduced.
+- Measure: `tools/cpu_bench.mjs` must report the same numbers with Full and Off (test note); the engine never waits on an animation — effects run from the render diff only.
+
+## Sources used for the v12→v13 proposal
 - Live study: aegis-digi.online home + play page, PC 1280x800 (screens 2026-10-22; pattern: deck chip (+ mode -> setup -> one START) and one confirm sentence before the primary button).
 - CrossOver, the licensed console game by FuRyu (Nov 2024): repo's own studied notes in `docs/DESIGN.md` section 0 (17:04, board / banners / ribbons / prompts / effect panel / result) + official art (announcement image, mood only).
 - Limitation recorded: YouTube frame capture is blocked headless ("Sign in to confirm you're not a bot", 2026-10-22), so no new video frames were taken; the CrossOver reference stands on the repo's earlier live study.
