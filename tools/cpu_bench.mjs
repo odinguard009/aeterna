@@ -24,6 +24,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 export const BASE_FILE = join(ROOT, 'docs/reports/cpu-bench.json');
 export const DECKS = ['std01', 'std02', 'std03', 'std04', 'std05', 'std06', 'std07', 'std08', 'std09', 'std10'];
 export const STYLES = ['balanced', 'aggressive', 'defensive'];
+export const KEYS = { std01: '26RSD01-001', std02: '26RSD02-001', std03: '26RSD03-002', std04: '26RSD04-001', std05: '26RSD05-001', std06: '26RSD06-001', std07: '26RSD07-003', std08: '26RSD08-001', std09: '26RSD09-001', std10: '26RSD10-001' };   // the starters' Key Spirit (04-decks.js prebuilt keys, v0.103.0); tests/unit/key_spirit.test.mjs keeps the table honest
 
 /** The match list: [{ kind, a, b, pa, pb, seed }]. */
 export function plan({ quick = false } = {}) {
@@ -61,7 +62,7 @@ export async function playOne(m, { timeoutMs = 60000 } = {}) {
       if (!cur.played && p.hand.some(h => { try { return E.canPlayCard(p, h); } catch { return false; } })) idle.summon++;
     }
   };
-  const r = await playHeadless({ seed: m.seed, deckA: m.a, deckB: m.b, format: 'standard', profiles: { player: m.pa, opponent: m.pb }, timeoutMs, onBoard });
+  const r = await playHeadless({ seed: m.seed, deckA: m.a, deckB: m.b, format: 'standard', profiles: { player: m.pa, opponent: m.pb }, timeoutMs, onBoard, keyA: KEYS[m.a] || null, keyB: KEYS[m.b] || null });   // the starters' Key Spirit rules ride with the deck (v0.103.0)
   return { ...m, over: r.over, winner: r.over ? (r.winner === 'player' ? 'a' : r.winner === 'opponent' ? 'b' : 'draw') : null, turns: r.turn || 0,
     errors: (r.errors || []).slice(0, 2), idleAttack: idle.attack, idleSummon: idle.summon, ownTurns: idle.turns };
 }

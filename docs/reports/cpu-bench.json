@@ -1,50 +1,50 @@
 {
- "build": "0.102.0",
+ "build": "0.103.0",
  "note": "Baseline of tools/cpu_bench.mjs (fixed seeds). Rewrite with --write only when the CPU or the Standard decks changed on purpose.",
  "summary": {
   "matches": 240,
   "finished": 240,
   "timeouts": 0,
   "errors": 0,
-  "avgTurns": 6.1,
-  "firstSeatWin": 48.8,
-  "idleAttackPerTurn": 0.135,
+  "avgTurns": 6,
+  "firstSeatWin": 45,
+  "idleAttackPerTurn": 0.141,
   "idleSummonPerTurn": 0.023,
   "decks": {
    "std01": {
     "games": 36,
-    "wins": 16,
-    "winPct": 44.4
+    "wins": 20,
+    "winPct": 55.6
    },
    "std02": {
+    "games": 36,
+    "wins": 10,
+    "winPct": 27.8
+   },
+   "std03": {
+    "games": 36,
+    "wins": 26,
+    "winPct": 72.2
+   },
+   "std04": {
+    "games": 36,
+    "wins": 18,
+    "winPct": 50
+   },
+   "std05": {
     "games": 36,
     "wins": 12,
     "winPct": 33.3
    },
-   "std03": {
-    "games": 36,
-    "wins": 22,
-    "winPct": 61.1
-   },
-   "std04": {
-    "games": 36,
-    "wins": 22,
-    "winPct": 61.1
-   },
-   "std05": {
+   "std06": {
     "games": 36,
     "wins": 16,
     "winPct": 44.4
    },
-   "std06": {
+   "std07": {
     "games": 36,
     "wins": 20,
     "winPct": 55.6
-   },
-   "std07": {
-    "games": 36,
-    "wins": 17,
-    "winPct": 47.2
    },
    "std08": {
     "games": 36,
@@ -53,57 +53,57 @@
    },
    "std09": {
     "games": 36,
-    "wins": 16,
-    "winPct": 44.4
+    "wins": 21,
+    "winPct": 58.3
    },
    "std10": {
     "games": 36,
-    "wins": 20,
-    "winPct": 55.6
+    "wins": 18,
+    "winPct": 50
    }
   },
   "colours": {
    "red": {
     "games": 72,
-    "wins": 32,
-    "winPct": 44.4
+    "wins": 41,
+    "winPct": 56.9
    },
    "purple": {
     "games": 72,
-    "wins": 29,
-    "winPct": 40.3
+    "wins": 30,
+    "winPct": 41.7
    },
    "green": {
     "games": 36,
-    "wins": 22,
-    "winPct": 61.1
+    "wins": 26,
+    "winPct": 72.2
    },
    "white": {
     "games": 36,
-    "wins": 22,
-    "winPct": 61.1
+    "wins": 18,
+    "winPct": 50
    },
    "yellow": {
     "games": 72,
-    "wins": 35,
-    "winPct": 48.6
+    "wins": 31,
+    "winPct": 43.1
    },
    "blue": {
     "games": 72,
-    "wins": 40,
-    "winPct": 55.6
+    "wins": 34,
+    "winPct": 47.2
    }
   },
   "styles": {
    "aggressive": {
     "games": 40,
-    "wins": 20,
-    "winPct": 50
+    "wins": 18,
+    "winPct": 45
    },
    "balanced": {
     "games": 40,
-    "wins": 20,
-    "winPct": 50
+    "wins": 22,
+    "winPct": 55
    },
    "defensive": {
     "games": 40,
@@ -114,18 +114,18 @@
   "stylePairs": {
    "aggressive vs balanced": {
     "games": 20,
-    "wins": 7,
-    "winPct": 35
+    "wins": 6,
+    "winPct": 30
    },
    "balanced vs defensive": {
     "games": 20,
-    "wins": 7,
-    "winPct": 35
+    "wins": 8,
+    "winPct": 40
    },
    "aggressive vs defensive": {
     "games": 20,
-    "wins": 13,
-    "winPct": 65
+    "wins": 12,
+    "winPct": 60
    }
   }
  }

@@ -2,8 +2,8 @@
 
 Top-level names per source part. Find the part here, then `grep -n "<name>" <part path>` and read only that range.
 
-## packages/engine/src/00-config.js (92 lines, ~2.8k tokens)
-SIM, STEPS, STEPS_STANDARD, FORMAT_KEY, FORMAT, STANDARD_BLOCKS, BAN_LIST_INFO, BANNED, LIMITED1, normCardNo, BAN_LISTS, banStatus, maxCopies, standardLegal, legalityOf, ABORT, other, esc, cap, TC_MINOR, titleCase, RNG_STATE, seedRng, rng, newSeed, shuffle, removeFrom, KEYWORD_GLOSSARY, MAGIC_FX, MAGIC_TIMINGS, SYMBOL_KINDS
+## packages/engine/src/00-config.js (95 lines, ~2.9k tokens)
+SIM, STEPS, STEPS_STANDARD, FORMAT_KEY, FORMAT, STANDARD_BLOCKS, BAN_LIST_INFO, BANNED, LIMITED1, normCardNo, BAN_LISTS, banStatus, maxCopies, standardLegal, legalityOf, ABORT, other, esc, cap, TC_MINOR, titleCase, RNG_STATE, KEY_WEIGHT, seedRng, rng, newSeed, shuffle, removeFrom, KEYWORD_GLOSSARY, MAGIC_FX, MAGIC_TIMINGS, SYMBOL_KINDS
 
 ## apps/web/src/00b-errors.js (49 lines, ~0.9k tokens) — IN-GAME ERROR CATCHER (v0.59.5, Q1 quality bundle, Aegis idea)
 $, ERR_LOG, errReport, errNotice, onGameError
@@ -71,11 +71,11 @@ cardTeams, allHaveShapeOK, allHaveOK
 ## packages/engine/src/03-imported-cards.js (215 lines, ~5.7k tokens) — IMPORTED CARD DATA
 COLORS, BUILTIN_IDS, CARDS_KEY, IMPORTED, CARDS_VER, parseCard, registerImported, saveImported, importCards, clearImported, PACK_IDS, registerPack, TOKEN_IDS, registerTokens
 
-## packages/engine/src/04-decks.js (107 lines, ~2.9k tokens) — DECK STORAGE AND VALIDATION
-deckTotal, cleanDeck, validateDeck, fmtName, fmtButton, setFormat, errSummary, stdDeck, prebuiltFmt, prebuiltOrder, prebuiltLabel, PREBUILT, defaultDeck, SLOT_KEY, SLOTS, ACTIVE_SLOT, loadSlots, PLAYER_DECK, saveDeck, switchSlot, loadPrebuilt, CPU_DECK_NAME, cpuDeckFor
+## packages/engine/src/04-decks.js (122 lines, ~3.4k tokens) — DECK STORAGE AND VALIDATION
+deckTotal, cleanDeck, validateDeck, keyOfDeck, pickKey, fmtName, fmtButton, setFormat, errSummary, stdDeck, prebuiltFmt, prebuiltOrder, prebuiltLabel, PREBUILT, defaultDeck, SLOT_KEY, SLOTS, ACTIVE_SLOT, loadSlots, PLAYER_DECK, saveDeck, switchSlot, loadPrebuilt, CPU_DECK_NAME, cpuDeckFor
 
-## packages/engine/src/05-state.js (67 lines, ~1.3k tokens) — GAME STATE
-SET_KEY, SETTINGS, SPEEDS, saveSettings, G, fnv, recIn, SIM_DECK_B, SIM_HUMAN, DELAYS, delay, engineIdle, wait, log, mkInst, newPlayer, contractToDeck, redrawHand, cpuWantsRedraw, newGame
+## packages/engine/src/05-state.js (68 lines, ~1.3k tokens) — GAME STATE
+SET_KEY, SETTINGS, SPEEDS, saveSettings, G, fnv, recIn, SIM_DECK_B, SIM_DECK_B_KEY, SIM_HUMAN, DELAYS, delay, engineIdle, wait, log, mkInst, newPlayer, contractToDeck, redrawHand, cpuWantsRedraw, newGame
 
 ## packages/engine/src/05b-decide.js (91 lines, ~2.2k tokens) — DECISIONS (v0.83.0, phase F3 = monorepo step M3 part 1; docs/ai/monorepo-plan.md "Design" 1)
 DECISION_KINDS, cardIds, portAsk, decide, ask, info, pickFromField, askBlock, askPayment, uniqById, prepareHumanMagic, humanFlashChoice
@@ -83,8 +83,8 @@ DECISION_KINDS, cardIds, portAsk, decide, ask, info, pickFromField, askBlock, as
 ## packages/engine/src/05c-intent.js (245 lines, ~3.9k tokens) — INTENTS (v0.84.0, phase F3 part 2 = monorepo step M3 rest; docs/ai/monorepo-plan.md "Design" 1)
 INTENT_TYPES, CORE_OPS, INTENT_MAX, SEAT_LOOP, seatCan, seatLoopOpen, boardView, endTurnNow, seatTurn, handOf, fieldOf, intentNext, intentSummon, intentCast, intentMirage, intentBraveSummon, intentBraveField, intentCore, intentAttack, applyIntent, cpuPaymentPlan, cpuIntent, cpuAnswer
 
-## packages/engine/src/06-rules.js (460 lines, ~8.4k tokens) — RULES HELPERS
-fieldList, isGW, freeCores, freeTotal, totalCores, reserveTotal, minCores, isSpiritForm, isUlt, lvBase, lvNo, summonOK, spare, coresAvailable, isCountLv, lvIndex, bpOf, ocActive, braveBp, braveFits, braveTargets, combineBrave, canSeparate, separateBrave, braveAfford, braveSummon, braveRecheck, shedBrave, TOKEN_SUPPLY, tokenIdsOf, prepareTokens, tokenCoreRoom, canSendToken, sendToken, tokenHome, symTurnCols, symZeroAllOn, attackSymbols, symAttrs, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, noBlockActive, costAltActive, extraReduction, legacyPlan, effCost, legacyPay, canPlayCard, takeCores, payCost, checkDepletion, leaveEvent, removeSpirit, lostHeard, leaveStandby, releaseStandby, poss, who, draw, handUp, summon, setBurst, mirageUsable, magicFx, magicFromTrash, magicFxAt, magicTrashOK, magicSources, magicTargets, soulMagicHolder, soulMagicOK, soulMagicPick, magicUsable, magicText, castMagic, addCore, removeCore, moveSoulTo, moveCore, swapSoul, returnSoul
+## packages/engine/src/06-rules.js (471 lines, ~8.7k tokens) — RULES HELPERS
+fieldList, isGW, freeCores, freeTotal, totalCores, reserveTotal, minCores, isSpiritForm, isUlt, lvBase, lvNo, summonOK, spare, coresAvailable, isCountLv, lvIndex, bpOf, ocActive, braveBp, braveFits, braveTargets, combineBrave, canSeparate, separateBrave, braveAfford, braveSummon, braveRecheck, shedBrave, TOKEN_SUPPLY, tokenIdsOf, prepareTokens, tokenCoreRoom, canSendToken, sendToken, tokenHome, symTurnCols, symZeroAllOn, attackSymbols, symAttrs, symbolAttrs, fieldSymbols, symbolsOn, reductionOf, noBlockActive, costAltActive, extraReduction, legacyPlan, effCost, legacyPay, canPlayCard, takeCores, payCost, checkDepletion, leaveEvent, removeSpirit, lostHeard, leaveStandby, releaseStandby, poss, who, keyDrawActive, drawKeyFirst, draw, handUp, summon, setBurst, mirageUsable, magicFx, magicFromTrash, magicFxAt, magicTrashOK, magicSources, magicTargets, soulMagicHolder, soulMagicOK, soulMagicPick, magicUsable, magicText, castMagic, addCore, removeCore, moveSoulTo, moveCore, swapSoul, returnSoul
 
 ## packages/engine/src/07-turn.js (70 lines, ~1.1k tokens) — TURN FLOW
 isMainStep, setStep, beginTurn, endStep, win, matchLoop, checkInvariants
@@ -110,8 +110,8 @@ openZoneModal, openLogModal, showRules
 ## apps/web/src/13-render.js (346 lines, ~7.7k tokens) — RENDERING
 nameHTML, isPC, applyLayout, _rz, colorVar, cardColors, isMulti, colorSty, symSlices, symCount, isUltimate, cardCls, rebMark, symBadgeHTML, handCardHTML, gemsHTML, fieldCardHTML, rowHTML, burstAreaHTML, soulAreaHTML, fieldAreaHTML, zoneBox, pv, pileHTML, lifePlate, resPlate, STEP_WARN, stepTargets, stepWarn, stepClick, SLEEVE_TINTS, CORE_LOOKS, deckLook, coreVars, SLEEVE_IMG, sleeveImgCss, applyLook, renderBoard, render, CUE, fxCueReset, aeRibbon, aeStrip, fxCues, LOG_OPEN, updateLogDrawer, toggleLog, magBtnHTML, liveStatusHTML, HIST_KEY, HISTORY, recordMatch, histHTML, lifeTxt, switchView, renderSettings, renderLobby
 
-## apps/web/src/13a-deckbuilder.js (266 lines, ~5.6k tokens) — DECK BUILDER (v0.53.0 redesign; list performance from v0.52.1)
-DB_COLORS, DB_TYPES, DB_COSTS, DBF, DB_UNDO, DB_IO, dbArr, dbTypeOf, dbSetOf, dbFilterOK, DBV, DB_GAP, DB_COLL, dbIndex, dbSets, dbActiveCount, DB_SORTS, dbFilter, fxMarked, FX_MARK_LBL, fxMarkHTML, dbCardHTML, dbWindow, dbScroll, dbSearchInput, dbChip, renderDbRail, renderDbChips, dbUnchip, DB_TAB, dbTab, renderDbLook, SLEEVE_BLOB, dbSleeveSet, dbSleeveClear, dbLook, dbToggle, dbResetFilters, dbSnap, dbCanAdd, dbChange, dbReplace, dbClear, dbUndo, dbTap, dbImport, dbExport, dbStatsHTML, dbRowsHTML, renderDbDeck, dbSheet, renderDeckBuilder
+## apps/web/src/13a-deckbuilder.js (273 lines, ~5.9k tokens) — DECK BUILDER (v0.53.0 redesign; list performance from v0.52.1)
+DB_COLORS, DB_TYPES, DB_COSTS, DBF, DB_UNDO, DB_IO, dbArr, dbTypeOf, dbSetOf, dbFilterOK, DBV, DB_GAP, DB_COLL, dbIndex, dbSets, dbActiveCount, DB_SORTS, dbFilter, fxMarked, FX_MARK_LBL, fxMarkHTML, dbCardHTML, dbWindow, dbScroll, dbSearchInput, dbChip, renderDbRail, renderDbChips, dbUnchip, DB_TAB, dbTab, renderDbLook, SLEEVE_BLOB, dbSleeveSet, dbSleeveClear, dbLook, dbToggle, dbResetFilters, dbSnap, dbCanAdd, dbChange, dbReplace, dbClear, dbUndo, dbTap, dbKey, dbImport, dbExport, dbStatsHTML, dbRowsHTML, renderDbDeck, dbSheet, renderDeckBuilder
 
 ## apps/web/src/13b-nav.js (60 lines, ~1.1k tokens) — APP NAVIGATION + HOME (v0.65.0, UI/UX overhaul U2; docs/DESIGN.md section 0, mockup docs/design/mockup-v11.html)
 NAV_HIDDEN, navSync, navTools, themePop, navTheme, navSound, navHistory, fmtTitle, renderHome
@@ -131,17 +131,17 @@ rvName, rvCards, rvField, rvSideHTML, rvFrameHTML, openViewer, replayFromRecord,
 ## apps/web/src/13g-anim.js (70 lines, ~1.3k tokens) — v0.92.0 U5b LIGHT BATTLE ANIMATIONS (roadmap item U, owner 2026-10-21; docs/DESIGN.md section 0, U5b)
 animMode, ANIM, rectOf, visEl, aeFx, aeBeam, animCues
 
-## apps/web/src/13h-decks.js (95 lines, ~2.1k tokens) — v0.93.0 U6 MY DECKS (docs/DESIGN.md section 0, mockup docs/design/mockup-v11.html "My decks PC / phone")
+## apps/web/src/13h-decks.js (97 lines, ~2.2k tokens) — v0.93.0 U6 MY DECKS (docs/DESIGN.md section 0, mockup docs/design/mockup-v11.html "My decks PC / phone")
 DK_MENU, dkCards, dkUsed, dkFree, dkStatus, dkColors, dkTile, renderDecks, dkMenu, dkNewSlot, dkAct
 
-## apps/web/src/14-images.js (155 lines, ~2.8k tokens) — CARD IMAGES
+## apps/web/src/14-images.js (164 lines, ~2.9k tokens) — CARD IMAGES
 IMG, IDB, normKey, idbOpen, idbTx, setImg, loadImages, shrinkImage, stripExt, findCardByFile, findCardByKey, importImages, clearImages, imgCls, imgSty, refreshViews, libMsg, renderLibrary, deckToText, textToDeck, downloadText, readFileText, libAction
 
-## packages/engine/src/15-match.js (56 lines, ~1.2k tokens) — MATCH START / END
+## packages/engine/src/15-match.js (60 lines, ~1.4k tokens) — MATCH START / END
 startNewGame, matchSummary
 
 ## packages/engine/src/15b-replay.js (90 lines, ~1.9k tokens) — REPLAY RECORDS (v0.85.0, phase F4 = monorepo step M4 part 1; docs/ai/monorepo-plan.md "Design" 2)
 newPortRecord, portRecord, boardSnapshot, runPortRecord, viewerReplayOf
 
-## apps/web/src/16-events.js (215 lines, ~4.7k tokens) — EVENTS (delegation)
+## apps/web/src/16-events.js (216 lines, ~4.7k tokens) — EVENTS (delegation)
 hScrollable, HDRAG, GAME_ACTS, gameAct, replayOf, lastReplay, runReplay, loadScenario, testSetup, defBuiltin
