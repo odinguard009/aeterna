@@ -10,8 +10,8 @@ let DK_MENU = -1;                                   // slot whose more menu / ac
 const dkCards = i => (i === ACTIVE_SLOT ? PLAYER_DECK : SLOTS[i].cards);
 const dkUsed = i => i === ACTIVE_SLOT || !!SLOTS[i].used || deckTotal(dkCards(i)) > 0 || !/^Deck \d+$/.test(SLOTS[i].name);
 const dkFree = () => SLOTS.findIndex((s, i) => !dkUsed(i));
-function dkStatus(cards) {
-  const t = deckTotal(cards), v = validateDeck(cards, FORMAT);
+function dkStatus(cards, key) {
+  const t = deckTotal(cards), v = validateDeck(cards, FORMAT, key);
   if (v.ok) return { ok: true, txt: `${t} cards · Ready` };
   if (t < 40) return { ok: false, txt: `${t} / 40 · add ${40 - t} card${40 - t === 1 ? '' : 's'}` };
   return { ok: false, txt: 'Not ready: ' + errSummary(v) };
@@ -22,13 +22,14 @@ function dkColors(cards) {                          // the deck's colours, most 
   return Object.keys(n).sort((a, b) => n[b] - n[a]).slice(0, 3);
 }
 function dkTile(i, name, cards, starter) {
-  const st = dkStatus(cards), act = !starter && i === ACTIVE_SLOT, open = !starter && DK_MENU === i, nm = esc(name);
+  const key = starter ? ((PREBUILT[i] || {}).key || null) : (SLOTS[i] && SLOTS[i].key || null);
+  const st = dkStatus(cards, key), act = !starter && i === ACTIVE_SLOT, open = !starter && DK_MENU === i, nm = esc(name), kb = key && CARDS[key] ? '<span class="dk-key" title="Key Spirit: draws favour it">KEY</span>' : '';
   const dots = dkColors(cards).map(c => `<i class="dk-dot" style="--c:${colorVar(c)}" title="${cap(c)}"></i>`).join('');
   const item = (a, l, cls) => `<button class="${cls || ''}" role="menuitem" data-a="${a}" data-v="${i}">${l}</button>`;
   const menu = open ? `<div class="dk-menu" role="menu" aria-label="${nm}"><div class="dk-mh">${nm}</div>${item('dk-edit', 'Edit cards')}${item('dk-play', 'Play with this deck')}${act ? '' : item('dk-active', 'Set active')}${item('dk-rename', 'Rename…')}${item('dk-dup', 'Duplicate')}${item('dk-look', 'Deck look')}${item('dk-code', 'Copy deck code')}${item('dk-del', 'Delete…', 'del')}<button class="dk-x" data-a="dk-more" data-v="-1">Cancel</button></div>` : '';
   const btns = starter ? `<button class="ae-ghost primary" data-a="dk-copy" data-v="${i}" aria-label="Copy ${nm} to my decks">COPY</button>`
     : `<button class="ae-ghost" data-a="dk-edit" data-v="${i}" aria-label="Edit ${nm}">EDIT</button><button class="ae-ghost primary" data-a="dk-play" data-v="${i}" aria-label="Play with ${nm}"${st.ok ? '' : ' disabled'}>PLAY</button><button class="dk-more" data-a="dk-more" data-v="${i}" aria-label="More actions for ${nm}" aria-haspopup="menu" aria-expanded="${open}">⋯</button>`;
-  return `<article class="dk-tile${starter ? ' st' : ''}${act ? ' on' : ''}${open ? ' open' : ''}" data-v="${i}"><span class="sleeve dk-sl" style="--sl-tint:${SLEEVE_TINTS[starter ? 'silver' : deckLook(i).sleeve]}" aria-hidden="true"></span><div class="dk-main"><div class="dk-top"><b class="dk-name" title="${nm}">${nm}</b>${act ? '<span class="dk-act">ACTIVE</span>' : ''}</div><div class="dk-dots">${dots}</div><div class="dk-st ${st.ok ? 'ok' : 'bad'}">${esc(st.txt)}</div></div><div class="dk-btns">${btns}</div>${menu}</article>`;
+  return `<article class="dk-tile${starter ? ' st' : ''}${act ? ' on' : ''}${open ? ' open' : ''}" data-v="${i}"><span class="sleeve dk-sl" style="--sl-tint:${SLEEVE_TINTS[starter ? 'silver' : deckLook(i).sleeve]}" aria-hidden="true"></span><div class="dk-main"><div class="dk-top"><b class="dk-name" title="${nm}">${nm}</b>${kb}${act ? '<span class="dk-act">ACTIVE</span>' : ''}</div><div class="dk-dots">${dots}</div><div class="dk-st ${st.ok ? 'ok' : 'bad'}">${esc(st.txt)}</div></div><div class="dk-btns">${btns}</div>${menu}</article>`;
 }
 function renderDecks() {
   if (!$('dk-list')) return;
@@ -45,10 +46,11 @@ function dkMenu(i) {
   if (m.scrollIntoView && getComputedStyle(m).position !== 'fixed') m.scrollIntoView({ block: 'nearest' });   // PC: the last tile's menu stays on screen
   const f = m.querySelector('button'); if (f) f.focus({ preventScroll: true });
 }
-function dkNewSlot(name, cards, keep) {             // the first free slot (made active unless keep); false when all 8 are in use
+function dkNewSlot(name, cards, keep, key) {        // the first free slot (made active unless keep); false when all 8 are in use
   const i = dkFree();
   if (i < 0) { uiInfo('No free deck slot', `All ${SLOTS.length} deck slots are in use. Delete a deck first.`); return false; }
   const sl = { name: (name || SLOTS[i].name).slice(0, 24), cards: cleanDeck(cards || {}), used: true };
+  const k = keyOfDeck(sl.cards, key); if (k) sl.key = k;   // copied starters / duplicates bring their Key Spirit (v0.103.0)
   if (keep) { SLOTS[i] = sl; saveDeck(); return true; }
   switchSlot(i); SLOTS[i] = sl; PLAYER_DECK = Object.assign({}, sl.cards); saveDeck();
   return true;
@@ -63,13 +65,13 @@ async function dkAct(a, v) {
     if (!deckTotal(PLAYER_DECK)) { SLOTS[ACTIVE_SLOT].used = false; switchSlot(back); }
     return renderDecks();
   }
-  if (a === 'dk-copy') { const d = PREBUILT[i]; if (d) dkNewSlot(d.name, d.cards, true); return renderDecks(); }
+  if (a === 'dk-copy') { const d = PREBUILT[i]; if (d) dkNewSlot(d.name, d.cards, true, d.key); return renderDecks(); }
   if (!(i >= 0 && i < SLOTS.length)) return renderDecks();
   if (a === 'dk-edit' || a === 'dk-look') { switchSlot(i); return switchView('view-deckbuilder'); }   // Deck look: the builder's Look tab comes with U7
-  if (a === 'dk-play') { if (!dkStatus(dkCards(i)).ok) return; switchSlot(i); return switchView('view-play'); }
+  if (a === 'dk-play') { if (!dkStatus(dkCards(i), SLOTS[i] && SLOTS[i].key).ok) return; switchSlot(i); return switchView('view-play'); }
   if (a === 'dk-active') { switchSlot(i); renderHome(); return renderDecks(); }
-  if (a === 'dk-dup') { dkNewSlot(SLOTS[i].name.slice(0, 17) + ' (copy)', Object.assign({}, dkCards(i)), true); return renderDecks(); }
-  if (a === 'dk-code') { try { await navigator.clipboard.writeText(deckToText(dkCards(i))); $('dk-msg').textContent = `Deck code of ${SLOTS[i].name} copied. Paste it into Import code on any device.`; } catch (e) { dbExport(dkCards(i)); } return renderDecks(); }
+  if (a === 'dk-dup') { dkNewSlot(SLOTS[i].name.slice(0, 17) + ' (copy)', Object.assign({}, dkCards(i)), true, SLOTS[i].key); return renderDecks(); }
+  if (a === 'dk-code') { try { await navigator.clipboard.writeText(deckToText(dkCards(i), SLOTS[i].key)); $('dk-msg').textContent = `Deck code of ${SLOTS[i].name} copied. Paste it into Import code on any device.`; } catch (e) { dbExport(dkCards(i)); } return renderDecks(); }
   if (a === 'dk-rename') {
     const ok = await modal({ title: 'Rename deck', html: `<input id="dk-name-in" class="dk-in" maxlength="24" autocomplete="off" aria-label="Deck name" value="${esc(SLOTS[i].name)}">`, buttons: [{ label: 'Save', cls: 'primary', value: 1 }, { label: 'Cancel', cls: 'cancel', value: null }] });
     const nv = ($('dk-name-in') || {}).value || '';

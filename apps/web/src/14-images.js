@@ -76,22 +76,31 @@ function renderLibrary() {
   const ids = Object.keys(CARDS).filter(id => !CARDS[id].token && !id.startsWith('TRAIN-')), part = ids.filter(id => fxMarked(CARDS[id])).length;      // v0.79.0 (A1): two counts; v0.80.1: built-in Training cards are not counted
   $('lib-imgcount').textContent = `${Object.keys(IMG).length} image(s) loaded · ${ids.length.toLocaleString('en-US')} card(s) known: ${(ids.length - part).toLocaleString('en-US')} complete, ${part.toLocaleString('en-US')} marked "!" (effect not fully implemented)`;
 }
-function deckToText(d) {
+function deckToText(d, key) {          // key: the deck's marked Key Spirit (v0.103.0) becomes a "KEY <id>" line
   d = d || PLAYER_DECK;
-  return Object.keys(d).filter(id => d[id] > 0 && CARDS[id]).map(id => `${d[id]} ${id}   # ${CARDS[id].name}`).join('\n');
+  const lines = Object.keys(d).filter(id => d[id] > 0 && CARDS[id]).map(id => `${d[id]} ${id}   # ${CARDS[id].name}`);
+  if (key && CARDS[key]) lines.push(`KEY ${key}   # ${CARDS[key].name}`);
+  return lines.join('\n');
 }
 function textToDeck(text) {
   const deck = {}, bad = [];
+  let key = null, keyLines = 0;
   text.split(/\r?\n/).forEach((raw, i) => {
     const line = raw.replace(/#.*$/, '').trim(); if (!line) return;
+    const km = line.match(/^KEY\s+(.+)$/i);
+    if (km) {                          // the Key Spirit marker line (v0.103.0); at most one
+      if (keyLines) bad.push(`line ${i + 1}: only one KEY line is allowed`);
+      else { const kid = findCardByKey(km[1]); if (!kid) bad.push(`line ${i + 1}: KEY "${km[1].trim()}" not found`); else key = kid; }
+      keyLines++; return;
+    }
     let m = line.match(/^(\d+)\s*[xX]?\s+(.+)$/) || line.match(/^(.+?)\s+[xX](\d+)$/);
-    let n, key;
-    if (m && /^\d+$/.test(m[1])) { n = Number(m[1]); key = m[2]; } else if (m) { key = m[1]; n = Number(m[2]); } else { key = line; n = 1; }
-    const id = findCardByKey(key);
-    if (!id) { bad.push(`line ${i + 1}: "${key.trim()}" not found`); return; }
+    let n, nm;
+    if (m && /^\d+$/.test(m[1])) { n = Number(m[1]); nm = m[2]; } else if (m) { nm = m[1]; n = Number(m[2]); } else { nm = line; n = 1; }
+    const id = findCardByKey(nm);
+    if (!id) { bad.push(`line ${i + 1}: "${nm.trim()}" not found`); return; }
     deck[id] = Math.min(3, (deck[id] || 0) + n);
   });
-  return { deck, bad };
+  return { deck, bad, key };
 }
 function downloadText(name, text) {
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: 'application/json' })); a.download = name;

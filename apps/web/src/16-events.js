@@ -95,6 +95,7 @@ document.addEventListener('click', e => {
   else if (a === 'dbinfo') showCardDetail(v, 'deck');
   else if (a === 'db-chip') { const i = v.indexOf(':'); dbToggle(v.slice(0, i), v.slice(i + 1)); }
   else if (a === 'db-row') { const i = v.lastIndexOf(':'); dbChange(v.slice(0, i), Number(v.slice(i + 1))); }
+  else if (a === 'db-key') dbKey(v);
   else if (a === 'db-freset') dbResetFilters();
   else if (a === 'db-sheet') dbSheet(v || '');
   else if (a === 'db-undo') dbUndo();

@@ -153,3 +153,83 @@ test('KEY-6 the port record carries both keys (keyW) and a full match replays id
   assert.equal(rep2.ok, true, rep2.reason);
   assert.equal(rep2.same, true, 'the keyless match replays identically too');
 });
+
+test('KEY-7 deck code round trip with the KEY marker line (old codes unchanged)', async () => {
+  const r = await ev(() => {
+    const d = { '26RSD01-001': 3, '26RSD01-002': 3 }, K = '26RSD01-001';
+    const txt = BS.deckToText(d, K);
+    const back = BS.textToDeck(txt);
+    const legacy = BS.textToDeck('3 26RSD01-001\n3 26RSD01-002   # plain line');
+    const two = BS.textToDeck(`3 26RSD01-001\nKEY ${K}\nKEY 26RSD01-002`);
+    const unknown = BS.textToDeck('3 26RSD01-001\nKEY BS99-XXX');
+    const plain = BS.deckToText(d);
+    return { last: txt.split('\n').pop(), nBack: back.deck['26RSD01-001'], kBack: back.key, legacyKey: legacy.key, legacyBad: legacy.bad.length, twoBad: two.bad.some(b => /one KEY line/.test(b)), twoKey: two.key, unknownBad: unknown.bad.some(b => /KEY "BS99-XXX" not found/.test(b)), plainOk: !/KEY/.test(plain) };
+  });
+  assert.ok(/KEY 26RSD01-001/.test(r.last), 'the export ends with the KEY line: ' + r.last);
+  assert.equal(r.nBack, 3, 'the marked deck round-trips');
+  assert.equal(r.kBack, '26RSD01-001', 'the marker comes back as the key');
+  assert.equal(r.legacyKey, null, 'a code without a KEY line imports without a key');
+  assert.equal(r.legacyBad, 0, 'old deck codes stay valid');
+  assert.ok(r.twoBad, 'a second KEY line is an error');
+  assert.equal(r.twoKey, '26RSD01-001', 'the first KEY line still applies');
+  assert.ok(r.unknownBad, 'an unknown KEY card is an error');
+  assert.ok(r.plainOk, 'an unmarked deck exports without a KEY line');
+});
+
+test('KEY-8 deck builder: the KEY button toggles the mark, the last copy leaving clears it, import/export ride the marker', async () => {
+  const r = await ev(async () => {
+    BS.loadPrebuilt('std01');
+    BS.switchView('view-deckbuilder'); BS.renderDeckBuilder();
+    const onId = '26RSD01-001';
+    const btn = () => document.querySelector(`.db-row-key[data-v="${onId}"]`);
+    const wasOn = btn().classList.contains('on'), pressed = btn().getAttribute('aria-pressed');
+    btn().click();
+    const off = !BS.SLOTS()[BS.ACTIVE_SLOT].key, offOn = !btn().classList.contains('on'), offPressed = btn().getAttribute('aria-pressed') === 'false';
+    const ids = [...document.querySelectorAll('#db-dk-list .db-row-key')].map(x => x.dataset.v).filter(id => id !== onId);
+    document.querySelector(`.db-row-key[data-v="${ids[0]}"]`).click();
+    const setKey = BS.SLOTS()[BS.ACTIVE_SLOT].key, setOn = document.querySelector(`.db-row-key[data-v="${ids[0]}"]`).classList.contains('on');
+    while ((BS.PLAYER_DECK[setKey] || 0) > 0) BS.dbChange(setKey, -1);
+    const cleared = !BS.SLOTS()[BS.ACTIVE_SLOT].key;
+    document.querySelector('[data-a="db-import"]').click(); await new Promise(x => setTimeout(x, 20));
+    const ta = document.getElementById('db-io'); ta.value = `3 ${onId}\n3 26RSD01-002\nKEY ${onId}`; ta.dispatchEvent(new Event('input', { bubbles: true }));
+    document.querySelector('#action-modal [data-mi="0"]').click(); await new Promise(x => setTimeout(x, 30));
+    const impKey = BS.SLOTS()[BS.ACTIVE_SLOT].key;
+    document.querySelector('[data-a="db-export"]').click(); await new Promise(x => setTimeout(x, 20));
+    const out = document.getElementById('db-io').value; BS.closeModal();
+    return { wasOn, pressed, off, offOn, offPressed, ids, setKey, setOn, cleared, impKey, outHas: /KEY 26RSD01-001/.test(out) };
+  });
+  assert.ok(errors.length === 0, 'page errors: ' + errors.join(' | '));
+  assert.ok(r.wasOn && r.pressed === 'true', 'the starter arrives with its Key marked and aria-pressed');
+  assert.ok(r.off && r.offOn && r.offPressed, 'pressing again unmarks the Key Spirit (button state follows)');
+  assert.ok(r.ids.length > 3, 'Spirit rows carry the KEY button; non-Spirits do not');
+  assert.ok(r.setKey && r.setKey !== '26RSD01-001' && r.setKey === r.ids[0] && r.setOn, 'marking another Spirit works');
+  assert.ok(r.cleared, 'removing the last copy clears the mark');
+  assert.equal(r.impKey, '26RSD01-001', 'the KEY line of an imported code marks the Key Spirit');
+  assert.ok(r.outHas, 'exporting a marked deck shows the KEY line');
+});
+
+test('KEY-9 My decks: tiles show the KEY badge, Copy and Duplicate bring it along', async () => {
+  const r = await ev(async () => {
+    BS.switchView('view-decks'); BS.renderDecks();
+    const mineKey = !!document.querySelector('#dk-list .dk-tile .dk-key');
+    const startKeys = document.querySelectorAll('#dk-starters .dk-tile .dk-key').length;
+    const startBtn = document.querySelector('#dk-starters .dk-tile [data-a="dk-copy"]');
+    const startId = startBtn ? Number(startBtn.getAttribute('data-v')) : -1;
+    startBtn.click(); await new Promise(x => setTimeout(x, 10));
+    const starterKey = (BS.PREBUILT[startId] || {}).key || null;
+    const copied = BS.SLOTS().findIndex((s, i) => s.key === starterKey && s.key);
+    BS.renderDecks();
+    const copyTile = [...document.querySelectorAll('#dk-list .dk-tile')].find(t => t.querySelector('.dk-key') && t.getAttribute('data-v') == String(copied));
+    const copyBadge = !!copyTile;
+    const more = document.querySelector(`#dk-list [data-a="dk-more"][data-v="${copied}"]`);
+    more.click(); await new Promise(x => setTimeout(x, 10));
+    document.querySelector('#dk-list [data-a="dk-dup"]').click(); await new Promise(x => setTimeout(x, 10));
+    const withKey = BS.SLOTS().filter(s => s.key === starterKey).length;
+    return { mineKey, startKeys, starterKey, copied, copyBadge, withKey };
+  });
+  assert.ok(errors.length === 0, 'page errors: ' + errors.join(' | '));
+  assert.ok(r.mineKey, 'the active deck tile shows the KEY badge');
+  assert.ok(r.startKeys >= 10, 'the starter tiles show their Key Spirit badges');
+  assert.ok(r.copied >= 0 && r.copyBadge, 'COPY of a starter keeps its Key (tile ' + r.copied + ', key ' + r.starterKey + ')');
+  assert.ok(r.starterKey ? r.withKey >= 2 : r.withKey >= 1, 'Duplicate carried the Key Spirit: ' + r.withKey + ' slot(s) now carry ' + r.starterKey);
+});

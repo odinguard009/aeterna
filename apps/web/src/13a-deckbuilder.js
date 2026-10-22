@@ -153,7 +153,7 @@ function dbChange(id, d) {
   if (d > 0 && !dbCanAdd(id)) return false;
   if (d < 0 && n <= 0) return false;
   dbSnap();
-  if (n + d > 0) PLAYER_DECK[id] = n + d; else delete PLAYER_DECK[id];
+  if (n + d > 0) PLAYER_DECK[id] = n + d; else { delete PLAYER_DECK[id]; if (SLOTS[ACTIVE_SLOT].key === id) delete SLOTS[ACTIVE_SLOT].key; }   // the last copy leaves: the Key mark goes with it (v0.103.0)
   saveDeck(); DBV.pulse = d > 0 ? id : ''; renderDeckBuilder(); DBV.pulse = '';
   return true;
 }
@@ -161,21 +161,28 @@ function dbReplace(deck) { dbSnap(); PLAYER_DECK = deck; saveDeck(); renderDeckB
 async function dbClear() {                       // v0.99 U8a: Clear asks first (Undo still brings the deck back)
   const n = Object.values(PLAYER_DECK).reduce((t, x) => t + x, 0);
   if (n && !(await modal({ title: 'Clear the deck?', html: `All ${n} cards leave this deck. Undo brings them back.`, buttons: [{ label: 'Clear deck', cls: 'danger', value: 1 }, { label: 'Cancel', cls: 'cancel', value: 0 }] }))) return;
-  dbSheet(''); dbReplace({});
+  dbSheet(''); SLOTS[ACTIVE_SLOT].key = null; dbReplace({});
 }
 function dbUndo() { if (!DB_UNDO.length) return; PLAYER_DECK = JSON.parse(DB_UNDO.pop()); saveDeck(); renderDeckBuilder(); }
 function dbTap(id) { if (!dbChange(id, 1)) showCardDetail(id, 'deck'); }   // illegal or at max: the detail says why
+function dbKey(id) {                // the deck's Key Spirit mark: one Spirit per deck; unmark by pressing again (v0.103.0)
+  if (!CARDS[id] || CARDS[id].type !== 'Spirit') return;
+  if (SLOTS[ACTIVE_SLOT].key === id) delete SLOTS[ACTIVE_SLOT].key;
+  else SLOTS[ACTIVE_SLOT].key = PLAYER_DECK[id] > 0 ? id : undefined;
+  saveDeck(); renderDeckBuilder();
+}
 async function dbImport() {
   DB_IO = '';
   const v = await modal({ title: 'Import deck list', html: '<div class="db-io-hint">One card per line: <b>3 BS44-001</b> or <b>3x Card Name</b>. The current cards in this slot are replaced (Undo brings them back).</div><textarea id="db-io" class="lib-area" spellcheck="false"></textarea>', buttons: [{ label: 'Import', cls: 'primary', value: 'ok' }, { label: 'Cancel', cls: 'cancel', value: null }] });
   if (v !== 'ok') return;
   const r = textToDeck(DB_IO);
   if (!deckTotal(r.deck)) { uiInfo('Nothing imported', 'No cards recognised.' + (r.bad.length ? '<br>' + r.bad.slice(0, 8).map(esc).join('<br>') : '')); return; }
+  SLOTS[ACTIVE_SLOT].key = r.key && CARDS[r.key] ? r.key : null;      // the KEY line marks the deck's Key Spirit (v0.103.0)
   dbReplace(r.deck);
   if (r.bad.length) uiInfo('Imported with skipped lines', esc(r.bad.slice(0, 8).join('\n')).replace(/\n/g, '<br>'));
 }
 async function dbExport(d) {
-  const txt = deckToText(d);
+  const txt = deckToText(d, SLOTS[ACTIVE_SLOT].key);
   const v = await modal({ title: 'Export deck list', html: `<textarea id="db-io" class="lib-area" spellcheck="false" readonly>${esc(txt)}</textarea>`, buttons: [{ label: 'Copy', cls: 'primary', value: 'copy' }, { label: 'Close', cls: 'cancel', value: null }] });
   if (v === 'copy') { try { await navigator.clipboard.writeText(txt); } catch (e) { /* clipboard blocked: the text stays selectable in the box */ } }
 }
@@ -203,9 +210,9 @@ function dbRowsHTML() {
     if (!g.length) return '';
     const tot = g.reduce((s, id) => s + PLAYER_DECK[id], 0);
     return `<div class="db-grp"><div class="db-grp-h">${t} <span>${tot}</span></div>` + g.map(id => {
-      const c = CARDS[id], n = PLAYER_DECK[id], bad = legalityOf(id, FORMAT);
+      const c = CARDS[id], n = PLAYER_DECK[id], bad = legalityOf(id, FORMAT), isKey = SLOTS[ACTIVE_SLOT].key === id;
       return `<div class="db-row${bad ? ' bad' : ''}" style="${colorSty(c)}"><span class="db-row-cost">${c.cost}</span><button class="db-row-name" data-a="dbinfo" data-v="${id}" title="${esc(id)}">${esc(c.name)}${fxMarkHTML(c)}${bad ? ' 🚫' : ''}</button>
-        <button class="db-row-btn" data-a="db-row" data-v="${id}:-1" aria-label="Remove one ${esc(c.name)}">−</button><span class="db-row-n">${n}</span><button class="db-row-btn" data-a="db-row" data-v="${id}:1" aria-label="Add one ${esc(c.name)}"${dbCanAdd(id) ? '' : ' disabled'}>+</button></div>`;
+        ${c.type === 'Spirit' ? `<button class="db-row-key${isKey ? ' on' : ''}" data-a="db-key" data-v="${id}" aria-pressed="${isKey}" aria-label="${isKey ? 'Unmark ' : 'Mark '}${esc(c.name)} as the deck's Key Spirit" title="${isKey ? 'Draws favour this Spirit: tap to unmark' : 'Mark this Spirit: while no copy is in the Hand or on the Field, draws favour it'}">KEY</button>` : ''}<button class="db-row-btn" data-a="db-row" data-v="${id}:-1" aria-label="Remove one ${esc(c.name)}">−</button><span class="db-row-n">${n}</span><button class="db-row-btn" data-a="db-row" data-v="${id}:1" aria-label="Add one ${esc(c.name)}"${dbCanAdd(id) ? '' : ' disabled'}>+</button></div>`;
     }).join('') + '</div>';
   }).join('');
 }
@@ -234,7 +241,7 @@ function dbSheet(which) {             // phone: open 'filters', 'deck' or 'menu'
 }
 
 function renderDeckBuilder() {
-  const v = validateDeck(PLAYER_DECK);
+  const v = validateDeck(PLAYER_DECK, null, SLOTS[ACTIVE_SLOT].key);
   const fb = $('db-format'); if (fb) fb.textContent = fmtButton(FORMAT);
   const ds = $('db-slot');
   if (ds) {
