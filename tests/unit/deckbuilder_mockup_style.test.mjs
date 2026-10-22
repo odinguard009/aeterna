@@ -70,9 +70,18 @@ for (const screen of ['pc', 'phone']) {
       try { assert.deepEqual(actual, expected, `U94-2 ${screen} ${stage}`); }
       catch (e) { e.message += `\nU94-2 ${screen} ${stage} diagnostics (actual state): ${JSON.stringify(await diagNow())}`; throw e; }
     };
+    // phase 2 (still "never skip the test"): wait for the state itself instead of racing it. Before the reload the save must
+    // actually be in localStorage (a write that never arrives is a real failure); after it, the restored slot is awaited the
+    // same way. Timing races on a loaded box used to be read as a lost look; the bounded wait keeps the failure it loses.
     for (const v of ['sleeve:jade', 'core:red', 'soul:gold']) await page.click(`#db-look [data-v="${v}"]`);
     await lookAssert('after clicks, before reload', { sleeve: 'jade', core: 'red', soul: 'gold' });
+    try {
+      await page.waitForFunction(v => { const raw = localStorage.getItem('bse.slots.v1'); let p = null; try { p = JSON.parse(raw || 'null'); } catch (x) {} const sp = p && p.slots ? p.slots[BS.ACTIVE_SLOT] : null; return JSON.stringify(sp && sp.look || null) === JSON.stringify(v); }, { sleeve: 'jade', core: 'red', soul: 'gold' }, { timeout: 8000 });
+    } catch (e) {
+      throw new Error(`U94-2 ${screen}: the look never reached localStorage before the reload; diagnostics: ${JSON.stringify(await diagNow())}`);
+    }
     await page.reload(); await page.waitForFunction(() => !!window.BS);
+    await page.waitForFunction(() => BS.SLOTS()[BS.ACTIVE_SLOT] && BS.SLOTS()[BS.ACTIVE_SLOT].look, null, { timeout: 8000 }).catch(() => {});
     await lookAssert('after reload', { sleeve: 'jade', core: 'red', soul: 'gold' });
     assert.deepEqual(errors, [], 'U94-2 page errors must stay empty');
   });
