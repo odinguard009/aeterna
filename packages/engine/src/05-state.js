@@ -13,6 +13,7 @@ const fnv = (h, t) => { let x = h == null ? 2166136261 : h; for (let i = 0; i < 
 /* v0.26 input record: every prompt answer (m), field pick (k:'pick') and board action (a) of the human, in order */
 function recIn(o) { if (G && G.rec && !G.rec.closed && !G.over) { let x = o; try { x = JSON.parse(JSON.stringify(o)); } catch (e) { G.rec.lossy = true; x = { lossy: true }; } G.rec.inputs.push(x); } }
 let SIM_DECK_B = null;   // test hook (?sim=1 only): the second CPU deck
+let SIM_DECK_B_KEY = null;   // test hook (?sim=1 only): the second CPU deck's Key Spirit (v0.103.0)
 let SIM_HUMAN = false;   // test hook (?sim=1 only, v0.83.0): the first seat is a human whose prompts go through io.decide (headless scripted answers)
 let DELAYS = 0;          // v0.87.0 (F5): engine pauses still running; engineIdle() lets tests wait on the state instead of a fixed time
 const delay = ms => new Promise(r => { DELAYS++; setTimeout(() => { DELAYS--; r(); }, SIM || (REPLAY && REPLAY.fast) ? 0 : Math.round(ms * (SPEEDS[SETTINGS.speed] || 1))); });

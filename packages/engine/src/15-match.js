@@ -12,10 +12,14 @@ async function startNewGame(opts) {
   const my = SESSION;
   const deckB = opts.deckB || (SIM ? (SIM_DECK_B || PRESET_DECK) : cpuDeckFor(FORMAT));
   G = newGame(deckA, deckB, FORMAT);
+  // Key Spirit (Aeterna house rule, v0.103.0): a recorded key wins (replay/port); else the deck's marked key — the CPU seat's key is already resolved by cpuDeckFor/setSimDeckB
+  const keyA = opts.keyA != null ? keyOfDeck(deckA, opts.keyA) : (!SIM && !opts.deckA ? keyOfDeck(PLAYER_DECK, SLOTS[ACTIVE_SLOT].key) : null);
+  const keyB = opts.keyB != null ? keyOfDeck(deckB, opts.keyB) : keyOfDeck(deckB, SIM ? SIM_DECK_B_KEY : CPU_KEY);
+  G.p.player.keySpirit = keyA || null; G.p.opponent.keySpirit = keyB || null;
   const W = !SIM && !!opts.watch;   // U3 "Watch CPU vs CPU": the CPU plays your deck too, at the chosen speed, no history entry
   if (W) { G.watch = true; G.p.player.cpu = true; G.p.player.name = 'Your deck'; }
-  G.rec = { v: 1, build: VERSION, seed, format: FORMAT, sim: SIM, deckA: Object.assign({}, deckA), deckB: Object.assign({}, deckB), inputs: [] };
-  G.prec = newPortRecord(seed, deckA, deckB, W);         // v0.85.0 (F4 = M4): the host-independent input record, 15b-replay.js
+  G.rec = { v: 1, build: VERSION, seed, format: FORMAT, sim: SIM, deckA: Object.assign({}, deckA), deckB: Object.assign({}, deckB), inputs: [], keyA: keyA || null, keyB: keyB || null, keyW: KEY_WEIGHT };
+  G.prec = newPortRecord(seed, deckA, deckB, W, keyA || null, keyB || null);         // v0.85.0 (F4 = M4): the host-independent input record, 15b-replay.js
   if (!SIM && !W && !opts.noHistory) G.meta = { fmt: FORMAT, you: opts.deckA ? 'Replay' : SLOTS[ACTIVE_SLOT].name, cpu: opts.deckB ? 'Replay' : CPU_DECK_NAME, done: false };
   io.view({ type: 'screen', id: 'view-playmat' });
   io.view({ type: 'board' });

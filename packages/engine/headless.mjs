@@ -60,11 +60,12 @@ const deckOf = (E, d) => (typeof d === 'string' ? (E.PREBUILT.find(x => x.id ===
  *  Checks the rules invariants after every board view. Resolves a plain summary; never rejects. */
 // real: true plays a web match (coin toss, Starting Hand prompts; the first seat is always human): records replay in the page.
 // format: 'eternal' (default) or 'standard'; onBoard(E): called after every board view (tools/cpu_bench.mjs counts idle turns there).
-export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', timeoutMs = 60000, profiles = null, fuzz = null, human = false, answer = firstAnswer, real = false, format = 'eternal', onBoard = null } = {}) {
+export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', timeoutMs = 60000, profiles = null, fuzz = null, human = false, answer = firstAnswer, real = false, format = 'eternal', onBoard = null, keyA: keyAOpt = null, keyB: keyBOpt = null } = {}) {
   const E = loadEngine({ sim: !real, format }), views = {}, errors = [], decisions = [], acted = { ok: 0, refused: 0 };
   let logs = 0;
   const A = deckOf(E, deckA), B = deckOf(E, deckB);
   if (!A || !B) return { over: false, errors: ['unknown deck ' + (A ? deckB : deckA)] };
+  const keyA = keyAOpt != null ? (keyAOpt || null) : null, keyB = keyBOpt != null ? (keyBOpt || null) : null;   // Key Spirit per seat ONLY when the caller asks (v0.103.0; no hidden auto-keys: sims stay identical)
   E.bindHost({
     name: 'headless',
     view(ev) {
@@ -89,7 +90,7 @@ export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', t
   });
   for (const k of Object.keys(E.PRESET_DECK)) delete E.PRESET_DECK[k];
   Object.assign(E.PRESET_DECK, A);
-  E.setSimDeckB(B);
+  E.setSimDeckB(B, keyB);
   if (profiles) E.setSimProfiles(profiles);
   if (fuzz) E.setFuzz(fuzz);
   E.setSimHuman(human);
@@ -97,7 +98,7 @@ export async function playHeadless({ seed = 1, deckA = 'red', deckB = 'mitra', t
   process.on('unhandledRejection', onRej);
   const t0 = Date.now();
   try {
-    await E.startNewGame(real ? { seed, deckA: A, deckB: B, noHistory: true } : { seed });   // real: the rules of a web match, the first seat is human
+    await E.startNewGame(real ? { seed, deckA: A, deckB: B, noHistory: true, keyA, keyB } : { seed, keyA, keyB });   // real: the rules of a web match, the first seat is human
     while (!(E.G && E.G.over) && !errors.length && Date.now() - t0 < timeoutMs) {
       await new Promise(r => setTimeout(r, 2));
     }

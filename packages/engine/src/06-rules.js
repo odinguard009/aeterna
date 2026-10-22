@@ -309,9 +309,20 @@ function releaseStandby(force) {
 const poss = p => (p.key === 'player' && !p.cpu ? 'Your' : p.name + "'s");
 const who = p => (p.key === 'player' && !p.cpu ? 'You' : p.name);
 
+/* Key Spirit draws (Aeterna house rule, v0.103.0): while a deck's marked Key Spirit has no copy in the Hand or on the Field,
+   every draw from the Deck favours its copies (weight KEY_WEIGHT per copy vs 1). The weighted pick reads the seeded RNG exactly
+   once, and only while the rule is active, so decks without a Key Spirit draw exactly as before (replay/sim determinism). */
+const keyDrawActive = p => !!p.keySpirit && !(G && G.over) && !p.hand.some(h => h.id === p.keySpirit) && !fieldList(p).some(f => f.id === p.keySpirit);
+function drawKeyFirst(p) {                       // the picked Key copy moves to the front first, so the following natural draws keep their order
+  const ks = p.keySpirit; let tot = 0;
+  for (const d of p.deck) tot += d.id === ks ? KEY_WEIGHT : 1;
+  let r = rng() * tot, ix = p.deck.length - 1;
+  for (let i = 0; i < p.deck.length; i++) { r -= p.deck[i].id === ks ? KEY_WEIGHT : 1; if (r < 0) { ix = i; break; } }
+  if (ix) p.deck.unshift(p.deck.splice(ix, 1)[0]);
+}
 function draw(p, n) {
   let k = 0;
-  for (; k < n && p.deck.length; k++) p.hand.push(p.deck.shift());
+  for (; k < n && p.deck.length; k++) { if (p.keySpirit && keyDrawActive(p)) drawKeyFirst(p); p.hand.push(p.deck.shift()); }
   return k;
 }
 /* the owner's Hand increased through one of the owner's own effects: the opponent sees an "opposing Hand increase by an opposing effect" */

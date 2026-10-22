@@ -4,6 +4,11 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 
 Older releases (v0.80.0 and earlier): [CHANGELOG-archive.md](CHANGELOG-archive.md).
 
+## v0.103.0
+- Lane: U/I
+- Time: TBD (session start to release), Opus; tokens in the DONE mark.
+- **Key Spirit (Aeterna house rule).**
+
 ## v0.102.0
 - Lane: U/I
 - Time: ~25 min (chain continuation of v0.101.0), Opus 5.5; tokens in the DONE mark on issue #1.

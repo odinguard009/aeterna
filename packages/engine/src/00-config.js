@@ -44,6 +44,9 @@ const titleCase = s => { let first = true; return String(s == null ? '' : s).spl
   if (/[A-Za-z]/.test(w)) first = false; return w; }).join(' '); };
 /* v0.26 seeded randomness: every match has a seed (G.rec.seed), so the same seed + decks + inputs replay the same match (idea from the Aegis input record). mulberry32. */
 let RNG_STATE = 1;
+/* Aeterna house rule (owner, 2026-10-21): the Key Spirit — one Spirit card per deck marked in the deck builder; while no copy of it is
+   in the Hand or on the Field, draws from the Deck favour its copies. 2x per copy to start, sized by cpu_bench (docs/mechanics/key-spirit.md). */
+const KEY_WEIGHT = 2;
 function seedRng(seed) { RNG_STATE = (seed >>> 0) || 1; }
 function rng() { let t = RNG_STATE = (RNG_STATE + 0x6D2B79F5) | 0; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }
 const newSeed = () => (Math.floor(Math.random() * 4294967295) >>> 0) || 1;
