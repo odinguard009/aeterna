@@ -11,6 +11,7 @@ name the card. Exit 0 when the card exists, 1 when it is in neither data/cards n
 import glob, json, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+relpath = lambda p: os.path.relpath(p, ROOT).replace('\\', '/')   # repo-style POSIX paths on every OS (test CV2)
 # keyword in the card text -> rule chunks (first match per chunk); extend when a new chunk covers a keyword
 KEYWORDS = [
     (r'(?<!/)\bBrave\b(?!/)|\bcombine', ['ETR:brave.basics', 'ETR:brave.combine']), (r'Saga Brave', ['ETR:brave.saga']),
@@ -33,7 +34,7 @@ def rows(pattern):
     for fp in sorted(glob.glob(os.path.join(ROOT, pattern))):
         d = json.load(open(fp, encoding='utf-8'))
         for c in (d if isinstance(d, list) else d.get('cards', [])):
-            yield os.path.relpath(fp, ROOT), c
+            yield relpath(fp), c
 
 
 def find(cid):
@@ -104,7 +105,7 @@ def dossier(cid):
         with open(t, encoding='utf-8', errors='replace') as f:
             hits = [n for n, ln in enumerate(f, 1) if cid in ln]
         if hits:
-            tests.append(f"{os.path.relpath(t, ROOT)}:{','.join(map(str, hits[:5]))}{' …' if len(hits) > 5 else ''}")
+            tests.append(f"{relpath(t)}:{','.join(map(str, hits[:5]))}{' …' if len(hits) > 5 else ''}")
     return {'id': cid, 'file': fp, 'playable': fp.startswith('data/cards'), 'name': c.get('name'), 'type': c.get('type'),
             'color': c.get('color'), 'cost': c.get('cost'), 'reduction': c.get('reduction'), 'symbols': c.get('symbols'),
             'levels': c.get('levels'), 'families': c.get('families'), 'text': text, 'effects': c.get('effects'),

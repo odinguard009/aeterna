@@ -62,8 +62,9 @@ for (const screen of ['pc', 'phone']) {
     await page.evaluate(() => BS.switchView('view-settings'));
     await page.setInputFiles('#set-mat', { name: 'mat.png', mimeType: 'image/png', buffer: PNG });
     await page.waitForFunction(() => document.documentElement.classList.contains('has-mat'));
+    // the image store read after a reload is idle-tolerant: under the parallel quick loop a bare 5 s timed out on a 2-core box
     await page.reload(); await page.waitForFunction(() => !!window.BS);
-    await page.waitForFunction(() => document.documentElement.classList.contains('has-mat'), null, { timeout: 5000 });
+    await page.waitForFunction(() => document.documentElement.classList.contains('has-mat'), null, { timeout: 20000 });
     const r = await page.evaluate(() => {
       BS.switchView('view-playmat'); const cs = getComputedStyle(document.getElementById('view-playmat'));
       const row = getComputedStyle(document.documentElement).getPropertyValue('--ae-rowbg').trim();

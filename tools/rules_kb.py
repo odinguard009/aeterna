@@ -273,7 +273,7 @@ def test_citations(kb, tests_dir):
     by_id = {c['id']: c for c in kb['chunks']}
     rows = []
     for fp in test_files(tests_dir):
-        rel = os.path.relpath(fp, ROOT) if fp.startswith(ROOT) else fp
+        rel = os.path.relpath(fp, ROOT).replace('\\', '/') if fp.startswith(ROOT) else fp.replace('\\', '/')   # POSIX-style paths on every OS (K08)
         with open(fp, encoding='utf-8') as f:
             for n, ln in enumerate(f, 1):
                 for m in TEST_CITE.finditer(ln):
@@ -338,7 +338,7 @@ def cmd_pin_tests(kb, tests_dir):
         for r in stale:
             if r['file'] == fp:
                 text = text.replace(f"{r['id']}@{r['pin']}", f"{r['id']}@{r['current']}")
-        with open(full, 'w', encoding='utf-8') as f:
+        with open(full, 'w', encoding='utf-8', newline='') as f:   # newline='': keep the file's own EOLs (Windows text mode would add CR)
             f.write(text)
         print(f'[rules-kb] re-pinned {fp}')
     print(f'[rules-kb] {len(stale)} stale test citations re-pinned')

@@ -3,20 +3,23 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { join } from 'node:path';
-import { ROOT } from './lib/game.mjs';
+import { join, delimiter } from 'node:path';
+import { ROOT, BASH } from './lib/game.mjs';
 
 const NOW = '2026-10-19T12:00:00Z';
 const ago = (min) => new Date(Date.parse(NOW) - min * 60000).toISOString().replace('.000', '');
 const rows = (list) => list.map(([min, body]) => `${ago(min)}\t${body}`).join('\n');
 function gate(args, comments, commits = [], extraEnv = {}) {
-  const r = spawnSync('bash', [join(ROOT, 'tools/session_gate.sh'), ...args], {
+  const r = spawnSync(BASH, [join(ROOT, 'tools/session_gate.sh'), ...args], {
     encoding: 'utf8',
     env: { ...process.env, GATE_FIXTURE: '1', GATE_NOW: NOW, COMMENTS: rows(comments), COMMITS: rows(commits), STOP_FILE: '0', ...extraEnv },
   });
   return { out: r.stdout.trim(), code: r.status, err: r.stderr.trim() };
 }
 const ON = [600, 'ON'];
+/* G21: the RANTAI-off post must fail as it would in CI, without touching gh and WITHOUT dropping python3 from PATH
+   (the evaluator runs in python; a bare fake PATH broke it on Windows) — strip only gh from PATH. */
+const NO_GH_PATH = (process.env.PATH || '').split(delimiter).filter(p => !/[/\\]gh(\.exe)?$/i.test(p) && !/GitHub\.cli/i.test(p)).join(delimiter);
 
 test('G01 no session marker: free, check GO after the idle time', () => {
   assert.equal(gate(['busy'], [ON]).out, 'FREE');
@@ -96,7 +99,7 @@ test('G21 rantai: default OFF, chain sum, budget reached, single session over th
   assert.match(gate(['rantai', 'status'], [RON, [100, 'RANTAI OFF auto: x'], [50, 'rantai on']]).out, /^Mode rantai: ON .* 0 \/ /);
   assert.equal(gate(['rantai', 'maybe'], [ON]).code, 2);
   // over the budget: posts "RANTAI OFF auto" (needs gh), so only the evaluator verdict is checked through a failing post
-  const r = gate(['rantai', 'next'], [RON, [50, 'DONE v0.81.3 next=Opus tokens=650000']], [], { PATH: '/nonexistent-for-gh:/usr/bin:/bin' });
+  const r = gate(['rantai', 'next'], [RON, [50, 'DONE v0.81.3 next=Opus tokens=650000']], [], { PATH: NO_GH_PATH });
   assert.match(r.out, /STOP session v0\.81\.3 used 650000 tokens \(> 600000\) \(Mode rantai: OFF\)/);
 });
 

@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { ROOT } from './lib/game.mjs';
+import { ROOT, BASH } from './lib/game.mjs';
 
 const rd = p => readFileSync(join(ROOT, p), 'utf8');
 const VERSION = rd('packages/engine/src/01-cards.js').match(/const VERSION = '([^']+)'/)[1];
@@ -44,7 +44,7 @@ test('C597-06 release workflow runs after CI on main with contents: write and ca
 test('C597-07 make_releases.sh dry run plans the HEAD commit version with its CHANGELOG title and skips bad input', { skip: !existsSync(join(ROOT, '.git')) }, () => {
   // the version of the committed HEAD (before the version commit exists, that is the previous release)
   const VERSION = JSON.parse(execFileSync('git', ['show', 'HEAD:package.json'], { cwd: ROOT, encoding: 'utf8' })).version;
-  const out = execFileSync('bash', ['tools/make_releases.sh', 'HEAD', VERSION, '0.50.0', 'x;y'], { cwd: ROOT, env: { ...process.env, DRY_RUN: '1' }, encoding: 'utf8' });
+  const out = execFileSync(BASH, ['tools/make_releases.sh', 'HEAD', VERSION, '0.50.0', 'x;y'], { cwd: ROOT, env: { ...process.env, DRY_RUN: '1' }, encoding: 'utf8' });
   const title = (rd('CHANGELOG.md') + rd('CHANGELOG-archive.md')).split(`## v${VERSION}`)[1].split('\n').find(l => l.startsWith('- ') && !l.startsWith('- Lane:')).replace(/^- /, '').replace(/\*\*|`/g, '').replace(/[(:].*$/, '').replace(/[ .,;]+$/, '').slice(0, 70);
   assert.match(out, new RegExp(`would release v${VERSION.replace(/\./g, '\\.')} at [0-9a-f]{7}: v${VERSION.replace(/\./g, '\\.')} - `));
   assert.ok(out.includes(`- ${title} (`), 'title from the first CHANGELOG bullet after the Lane bullet: ' + title);

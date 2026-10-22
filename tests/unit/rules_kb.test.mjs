@@ -112,7 +112,8 @@ test('K07 web manual: --import-html drops ruby readings, anchor_n skips the page
     writeFileSync(kbp, JSON.stringify(fx));
     const run = (...a) => py(['--kb', kbp, '--src-dir', src, ...a]);
     assert.equal(run('--import-html', 'SJP').status, 0);
-    assert.equal(readFileSync(join(src, 'SJP', '2.txt'), 'utf8'), 'ALPHA\nBETA\nALPHA\n漢字の説明。\nBETA\nb\n');
+    // Python text-mode stdout/file writes use the OS newline (CRLF on Windows): compare EOL-normalized (K07, Windows portability)
+    assert.equal(readFileSync(join(src, 'SJP', '2.txt'), 'utf8').replace(/\r\n/g, '\n'), 'ALPHA\nBETA\nALPHA\n漢字の説明。\nBETA\nb\n');
     assert.equal(run('--build').status, 0);
     assert.equal(run('--check').status, 0);
     writeFileSync(join(html, 'page02.html'), page('かん じ'));          // another reading: the visible text is the same

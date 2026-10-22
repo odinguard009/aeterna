@@ -20,6 +20,9 @@ function eternalCopy() {
   return pathToFileURL(dst).href;
 }
 export const GAME_URL = eternalCopy();
+/** bash for the .sh-tool tests: CI and the cloud sessions have `bash` on PATH; a bare Windows checkout has only Git for
+    Windows' bash one level up in the toolchain dir (repo AGENTS.md). Set BASH_BIN to override. */
+export const BASH = process.env.BASH_BIN || (existsSync(join(ROOT, '../tools/git/bin/bash.exe')) ? join(ROOT, '../tools/git/bin/bash.exe') : 'bash');
 export const WHITE = { 'BS74-CX03': 3, 'BS74-072': 3, 'BS74-038': 3, 'BS74-040': 2, 'BS74-041': 3, 'BS74-042': 3, 'BS74-043': 2, 'BS74-045': 2, 'BS74-047': 2, 'BS74-048': 2, 'BS74-049': 2, 'BS74-050': 2, 'BS75-028': 3, 'BS75-030': 2, 'BS75-035': 3, 'BS75-037': 1, 'BS75-041': 1, 'BS75-X08': 1 };
 
 let browser = null;
