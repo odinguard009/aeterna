@@ -40,14 +40,14 @@ function setMsg(t, bad) { const m = $('set-msg'); if (!m) return; m.textContent 
 // section menu: jump to the section and mark it (all sections stay on the page, so every control is reachable by scrolling)
 function setSection(id) {
   const s = $('set-s-' + id); if (!s) return;
-  document.querySelectorAll('#set-menu [data-a="set-sec"]').forEach(b => { if (b.dataset.v === id) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+  dqa('#set-menu [data-a="set-sec"]').forEach(b => { if (b.dataset.v === id) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
   if (s.scrollIntoView) s.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 }
 // Appearance rows + the rest of the page state (called from renderSettings in 13-render.js)
 function renderSetPage() {
   const g = $('set-color');
   if (g) g.innerHTML = THEME_COLS.map(c => `<button class="pcol" data-a="theme-color" data-v="${c.id}" aria-pressed="${c.id === THEME.color}" style="--c:${THEME.mode === 'light' ? c.l : c.d}"><i></i>${esc(c.name.replace(/ \(.*\)$/, ''))}</button>`).join('');
-  document.querySelectorAll('#set-mode [data-a="theme-mode"]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === THEME.mode)));
+  dqa('#set-mode [data-a="theme-mode"]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === THEME.mode)));
   const cc = $('set-cpucol'); if (cc) cc.textContent = THEME.color === 'red' ? 'Blue' : 'Crimson';
   const mc = $('set-mat-clear'); if (mc) mc.disabled = !MAT.url;
   const im = $('set-imgs'); if (im) { const n = Object.keys(IMG).length; im.textContent = `${n} image${n === 1 ? '' : 's'} loaded. Add or remove them in the Library; they stay on this device.`; }

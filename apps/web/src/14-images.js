@@ -139,8 +139,8 @@ document.addEventListener('change', async e => {
   else if (t.id === 'set-anim') { if (['full', 'reduced', 'off'].includes(t.value)) SETTINGS.anim = t.value; else delete SETTINGS.anim; saveSettings(); }
   else if (t.id === 'set-sound') { SETTINGS.sound = t.value === 'on'; saveSettings(); navTools(); if (SETTINGS.sound) sfx('summon'); }
 });
-document.addEventListener('input', e => { if (e.target.id === 'db-search') dbSearchInput(); });
-document.addEventListener('scroll', e => { if (e.target && e.target.id === 'db-card-list') dbScroll(); }, true);
+document.addEventListener('input', e => { if (evT(e).id === 'db-search') dbSearchInput(); });
+document.addEventListener('scroll', e => { const t = /** @type {HTMLElement} */ (e.target); if (t && t.id === 'db-card-list') dbScroll(); }, true);
 window.addEventListener('resize', () => { if ($('view-deckbuilder').classList.contains('active')) { DBV.rowH = 0; dbWindow(true); } });
 function libAction(a) {
   if (a === 'lib-template') {

@@ -76,7 +76,7 @@ function dbWindow(force) {             // renders the rows around the visible pa
   const pad = h => h > 0 ? `<div class="db-spacer" style="grid-column:1/-1;height:${h}px"></div>` : '';
   el.innerHTML = pad(r0 * rowH - DB_GAP) + list.slice(from, to).map(dbCardHTML).join('') + pad((rows - r1) * rowH - DB_GAP);
   el.scrollTop = top;
-  const first = el.querySelector('.tcg-card'), h = first ? first.offsetHeight + DB_GAP : 0;
+  const first = elq(el, '.tcg-card'), h = first ? first.offsetHeight + DB_GAP : 0;
   if (h > DB_GAP && Math.abs(h - DBV.rowH) > 0.5) { DBV.rowH = h; dbWindow(true); }   // first measurement (or a layout change)
 }
 function dbScroll() { if (!DBV.raf) DBV.raf = requestAnimationFrame(() => { DBV.raf = 0; if ($('view-deckbuilder').classList.contains('active')) dbWindow(false); }); }
@@ -113,7 +113,7 @@ let DB_TAB = 'list';
 function dbTab(v) {
   DB_TAB = ['list', 'curve', 'look'].includes(v) ? v : 'list';
   const d = $('db-deck'); ['list', 'curve', 'look'].forEach(k => d.classList.toggle('tab-' + k, k === DB_TAB));
-  d.querySelectorAll('[data-a="db-tab"]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.v === DB_TAB)));
+  dqa('[data-a="db-tab"]', d).forEach(b => b.setAttribute('aria-selected', String(b.dataset.v === DB_TAB)));
   if (DB_TAB === 'look') renderDbLook();
 }
 function renderDbLook() {
@@ -253,7 +253,7 @@ function renderDeckBuilder() {
   dbFilter(); dbWindow(true);
 }
 document.addEventListener('contextmenu', e => {
-  const c = e.target.closest && e.target.closest('#db-card-list [data-a="dbcard"]');
+  const c = evC(e, '#db-card-list [data-a="dbcard"]');
   if (c) { e.preventDefault(); showCardDetail(c.dataset.v, 'deck'); }
 });
 document.addEventListener('keydown', e => {
@@ -262,12 +262,13 @@ document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && MODAL && (MODAL.cfg.buttons || []).some(b => b.value === null && !b.dis)) { e.preventDefault(); closeModal(null); }
     return;
   }
-  const t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT');
+  const t = evT(e), typing = t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT';
   if (e.key === '/' && !typing) { e.preventDefault(); $('db-search').focus(); }
-  else if (e.key === 'Escape' && t && t.id === 'db-search') { t.value = ''; renderDeckBuilder(); }
+  else if (e.key === 'Escape' && t.id === 'db-search') { evV(e).value = ''; renderDeckBuilder(); }
   else if (e.key === 'Escape') dbSheet('');
 });
 document.addEventListener('input', e => {
-  if (e.target.id === 'db-io') DB_IO = e.target.value;
-  else if (e.target.id === 'db-family') { DBF.family = e.target.value; dbSearchInput(); }
+  const t = evV(e);
+  if (t.id === 'db-io') DB_IO = t.value;
+  else if (t.id === 'db-family') { DBF.family = t.value; dbSearchInput(); }
 });

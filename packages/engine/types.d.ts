@@ -32,3 +32,6 @@ interface PortRunResult {
   ok: boolean; reason: string; at?: number; total?: number; over?: boolean; final?: any; same?: boolean; cut?: any;
   sameCut?: boolean; build?: string; recBuild?: string; frames?: any[];
 }
+/* Web-only globals written by apps/web (never the engine): the test-hook object `window.BS` (16-events.js) and the
+   dev board refs `window.SC` the same part exposes. Declared so `window.*` uses in the web parts type-check. */
+interface Window { BS?: unknown; SC?: unknown }

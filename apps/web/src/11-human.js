@@ -150,7 +150,8 @@ async function openFieldModal(key, kind, uid) {
   const k = lvIndex(f);
   const stack = f.under.length ? cardStripHTML(f.under, 'Under this card') : '';
   const html = `${esc(card.token ? 'Token Spirit' : card.type)} · Lv${k + lvBase(card)}${isSpiritForm(card) ? ' · ' + bpOf(f) + ' BP' : ''} · Cores ${f.cores}${f.soul ? ' + Soul Core' : ''}${f.exhausted ? ' · Exhausted' : ''}${f.brave ? ' · Brave: ' + esc(CARDS[f.brave.id].name) + ' (+' + CARDS[f.brave.id].brave.bp + ' BP)' : ''}${ocActive(f) ? ' · Over Count active' : ''}${stack}`;
-  const buttons = [{ label: '🔎 Full Card Details', cls: 'blue', value: 'detail' }];
+  /** the empty-cell + info buttons: cls is optional (plain disabled info buttons have none). */
+  const buttons = /** @type {{label: string, cls?: string, value: string | null, dis?: boolean, hidden?: boolean}[]} */ ([{ label: '🔎 Full Card Details', cls: 'blue', value: 'detail' }]);
   if (mine && isMainStep()) {
     for (const { idx, e } of activatable(p, f, 'MAIN')) buttons.push({ label: `⚡ Activate: ${fxDescribe(e)}`.slice(0, 140), cls: 'primary', value: 'act:' + idx });
     if (card.type === 'Brave' && card.brave && p.spirits.includes(f)) buttons.push({ label: '🗡 Combine with a Spirit (Brave)…', cls: 'primary', value: 'bcombine', dis: !braveTargets(p, f).length });

@@ -1,12 +1,12 @@
 /* ---------------------------------------------------------------------
    EVENTS (delegation)
    --------------------------------------------------------------------- */
-document.addEventListener('contextmenu', e => { if (e.target.closest('.tcg-card')) e.preventDefault(); });
+document.addEventListener('contextmenu', e => { if (evC(e, '.tcg-card')) e.preventDefault(); });
 /* v0.32.5: horizontal rows (Hand, Field rows, steps) scroll with a mouse too: the wheel scrolls sideways, and a mouse drag
    scrolls them; a drag never counts as a click. Touch keeps the native swipe. */
 const hScrollable = el => el && el.scrollWidth > el.clientWidth + 1;
 document.addEventListener('wheel', e => {
-  const el = e.target.closest && e.target.closest('[data-scroll]');
+  const el = e.target && e.target instanceof Element ? evC(e, '[data-scroll]') : null;   // v0.32.5: closest only when the target is an element
   if (!hScrollable(el) || e.ctrlKey || Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
   const max = el.scrollWidth - el.clientWidth, before = el.scrollLeft, next = Math.max(0, Math.min(max, before + e.deltaY * (e.deltaMode === 1 ? 32 : 1)));
   if (next === before) return;
@@ -15,7 +15,7 @@ document.addEventListener('wheel', e => {
 let HDRAG = null;
 document.addEventListener('pointerdown', e => {
   if (e.pointerType !== 'mouse' || e.button !== 0) return;
-  const el = e.target.closest && e.target.closest('[data-scroll]');
+  const el = e.target && e.target instanceof Element ? evC(e, '[data-scroll]') : null;
   HDRAG = hScrollable(el) ? { el, x: e.clientX, left: el.scrollLeft, moved: false } : null;
 });
 document.addEventListener('pointermove', e => {
@@ -34,27 +34,27 @@ document.addEventListener('pointerup', () => {
   HDRAG = null;
 });
 document.addEventListener('click', e => {
-  const mg = e.target.closest && e.target.closest('[data-a="mag"]'); if (!mg) return;
+  const mg = e.target instanceof Element ? evC(e, '[data-a="mag"]') : null; if (!mg) return;
   e.stopPropagation(); e.preventDefault(); openZoom(mg.dataset.v, mg.dataset.u != null ? Number(mg.dataset.u) : null);
 }, true);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { const z = $('zoom-overlay'); if (z) z.classList.remove('active'); } });
 document.addEventListener('click', e => {
-  const peekBtn = e.target.closest('[data-peek]');
+  const peekBtn = evC(e, '[data-peek]');
   if (peekBtn) { startPeek(); return; }
-  const pfn = e.target.closest('[data-peekfn]');
+  const pfn = evC(e, '[data-peekfn]');
   if (pfn && PEEK) { if (pfn.dataset.peekfn === 'back') endPeek(); else { const b = PEEK.btns[Number(pfn.dataset.peekfn)]; if (b && !b.dis) b.act(); } return; }
   if (PEEK) {
-    const pe = e.target.closest('[data-a]');
+    const pe = evC(e, '[data-a]');
     if (pe && !['zoom', 'zoomclose', 'zoominfo'].includes(pe.dataset.a)) {
       if (pe.dataset.a === 'field' && PEEK.cfg.onFieldTap) PEEK.cfg.onFieldTap(Number(pe.dataset.v.split(':')[2]));
       return;
     }
   }
-  const pkb = e.target.closest('[data-pk]');
+  const pkb = evC(e, '[data-pk]');
   if (pkb && PICK) { PICK.res(PICK.buttons[Number(pkb.dataset.pk)].value); return; }
-  const mi = e.target.closest('[data-mi]');
+  const mi = evC(e, '[data-mi]');
   if (mi) { modalPress(Number(mi.dataset.mi)); return; }
-  const el = e.target.closest('[data-a]'); if (!el) return;
+  const el = evC(e, '[data-a]'); if (!el) return;
   const a = el.dataset.a, v = el.dataset.v;
   if (a === 'start') startNewGame();
   else if (a === 'watch') startNewGame({ watch: true });

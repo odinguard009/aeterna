@@ -20,8 +20,9 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const REAL = new Set([1005, 1117, 1128, 2300, 2304, 2349, 2367, 2393, 2451, 2551, 2552, 2554, 2555, 2588, 2630, 7027, 7028]);
-// accepted findings: [code, text fragment] (keep this list short and explained)
-const ALLOW = [[2551, 'webkitAudioContext']];          // old Safari fallback, intentionally feature-tested
+// accepted findings: [code, text fragment] (keep this list short and explained). Empty since v0.104.0 (M5 part 2):
+// the Safari webkitAudioContext fallback that used to be allowed here is now cast in 13e-host.js instead.
+const ALLOW = [];
 
 const { js } = buildParts();
 mkdirSync(join(ROOT, 'build'), { recursive: true });

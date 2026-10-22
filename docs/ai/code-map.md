@@ -5,8 +5,8 @@ Top-level names per source part. Find the part here, then `grep -n "<name>" <par
 ## packages/engine/src/00-config.js (95 lines, ~2.9k tokens)
 SIM, STEPS, STEPS_STANDARD, FORMAT_KEY, FORMAT, STANDARD_BLOCKS, BAN_LIST_INFO, BANNED, LIMITED1, normCardNo, BAN_LISTS, banStatus, maxCopies, standardLegal, legalityOf, ABORT, other, esc, cap, TC_MINOR, titleCase, RNG_STATE, KEY_WEIGHT, seedRng, rng, newSeed, shuffle, removeFrom, KEYWORD_GLOSSARY, MAGIC_FX, MAGIC_TIMINGS, SYMBOL_KINDS
 
-## apps/web/src/00b-errors.js (49 lines, ~0.9k tokens) — IN-GAME ERROR CATCHER (v0.59.5, Q1 quality bundle, Aegis idea)
-$, ERR_LOG, errReport, errNotice, onGameError
+## apps/web/src/00b-errors.js (57 lines, ~1.1k tokens) — IN-GAME ERROR CATCHER (v0.59.5, Q1 quality bundle, Aegis idea)
+$, dq, dqa, elq, evT, evC, evV, ERR_LOG, errReport, errNotice, onGameError
 
 ## apps/web/src/00c-theme.js (41 lines, ~0.7k tokens) — THEME (v0.63.0, UI/UX overhaul U1; docs/DESIGN.md section 0)
 THEME_KEY, THEME_COLS, THEME, applyTheme, setTheme
@@ -101,16 +101,16 @@ CPU_PROFILES, CPU_PROFILE_NAMES, CPU_SIM_PROFILES, cpuProfileName, cpuW, lifeVal
 ## apps/web/src/10-modals.js (149 lines, ~2.5k tokens) — MODALS (promise based)
 modalKind, paintModal, uiInfo, modal, PEEK, endPeek, paintPeek, startPeek, peekRefresh, closeModal, modalPress, PICK, clearPick, webPick, webPayment
 
-## apps/web/src/11-human.js (198 lines, ~4.4k tokens) — HUMAN ACTIONS: the dialogs of the human seat. Board actions are intent records (v0.84.0, F3 = M3 rest):
+## apps/web/src/11-human.js (199 lines, ~4.4k tokens) — HUMAN ACTIONS: the dialogs of the human seat. Board actions are intent records (v0.84.0, F3 = M3 rest):
 humanCan, legalityHTML, FX_KW_START, FX_LINE_STOP, effectLines, fxMark, slashBreak, effectTextHTML, cardDetailHTML, residualHTML, cardFaceHTML, cardStripHTML, mullCardHTML, openZoom, handButtons, HAND_INTENTS, runHandAction, humanCast, humanAttack, onNext, showCardDetail, openHandModal, openFieldModal
 
 ## apps/web/src/12-zones.js (70 lines, ~1.6k tokens) — ZONES, LOG, RULES COVERAGE
 openZoneModal, openLogModal, showRules
 
-## apps/web/src/13-render.js (346 lines, ~7.7k tokens) — RENDERING
+## apps/web/src/13-render.js (348 lines, ~7.7k tokens) — RENDERING
 nameHTML, isPC, applyLayout, _rz, colorVar, cardColors, isMulti, colorSty, symSlices, symCount, isUltimate, cardCls, rebMark, symBadgeHTML, handCardHTML, gemsHTML, fieldCardHTML, rowHTML, burstAreaHTML, soulAreaHTML, fieldAreaHTML, zoneBox, pv, pileHTML, lifePlate, resPlate, STEP_WARN, stepTargets, stepWarn, stepClick, SLEEVE_TINTS, CORE_LOOKS, deckLook, coreVars, SLEEVE_IMG, sleeveImgCss, applyLook, renderBoard, render, CUE, fxCueReset, aeRibbon, aeStrip, fxCues, LOG_OPEN, updateLogDrawer, toggleLog, magBtnHTML, liveStatusHTML, HIST_KEY, HISTORY, recordMatch, histHTML, lifeTxt, switchView, renderSettings, renderLobby
 
-## apps/web/src/13a-deckbuilder.js (273 lines, ~5.9k tokens) — DECK BUILDER (v0.53.0 redesign; list performance from v0.52.1)
+## apps/web/src/13a-deckbuilder.js (274 lines, ~5.9k tokens) — DECK BUILDER (v0.53.0 redesign; list performance from v0.52.1)
 DB_COLORS, DB_TYPES, DB_COSTS, DBF, DB_UNDO, DB_IO, dbArr, dbTypeOf, dbSetOf, dbFilterOK, DBV, DB_GAP, DB_COLL, dbIndex, dbSets, dbActiveCount, DB_SORTS, dbFilter, fxMarked, FX_MARK_LBL, fxMarkHTML, dbCardHTML, dbWindow, dbScroll, dbSearchInput, dbChip, renderDbRail, renderDbChips, dbUnchip, DB_TAB, dbTab, renderDbLook, SLEEVE_BLOB, dbSleeveSet, dbSleeveClear, dbLook, dbToggle, dbResetFilters, dbSnap, dbCanAdd, dbChange, dbReplace, dbClear, dbUndo, dbTap, dbKey, dbImport, dbExport, dbStatsHTML, dbRowsHTML, renderDbDeck, dbSheet, renderDeckBuilder
 
 ## apps/web/src/13b-nav.js (60 lines, ~1.1k tokens) — APP NAVIGATION + HOME (v0.65.0, UI/UX overhaul U2; docs/DESIGN.md section 0, mockup docs/design/mockup-v11.html)

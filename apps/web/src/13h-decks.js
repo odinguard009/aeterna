@@ -90,8 +90,8 @@ async function dkAct(a, v) {
 }
 if (typeof document !== 'undefined') {
   document.addEventListener('keydown', e => {   // Rename: Enter saves; Escape closes the Rename / Delete dialogs (not engine decisions)
-    if (MODAL && /^(Rename deck|Delete this deck\?)$/.test(MODAL.cfg.title)) { if (e.key === 'Escape') closeModal(null); else if (e.key === 'Enter' && e.target.id === 'dk-name-in') modalPress(0); }
+    if (MODAL && /^(Rename deck|Delete this deck\?)$/.test(MODAL.cfg.title)) { if (e.key === 'Escape') closeModal(null); else if (e.key === 'Enter' && evT(e).id === 'dk-name-in') modalPress(0); }
   });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && DK_MENU >= 0) { const i = DK_MENU; DK_MENU = -1; renderDecks(); const b = document.querySelector(`#dk-list [data-a="dk-more"][data-v="${i}"]`); if (b) b.focus(); } });
-  document.addEventListener('click', e => { if (DK_MENU >= 0 && !e.target.closest('.dk-menu, [data-a="dk-more"]')) { DK_MENU = -1; renderDecks(); } });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && DK_MENU >= 0) { const i = DK_MENU; DK_MENU = -1; renderDecks(); const b = dq(`#dk-list [data-a="dk-more"][data-v="${i}"]`); if (b) b.focus(); } });
+  document.addEventListener('click', e => { if (DK_MENU >= 0 && !evC(e, '.dk-menu, [data-a="dk-more"]')) { DK_MENU = -1; renderDecks(); } });
 }

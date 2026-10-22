@@ -1178,6 +1178,14 @@ const SYMBOL_KINDS = ['ultimate', 'god'];          // special symbols besides th
    error handling (the events are not cancelled), so tests and the console still see every error.
    --------------------------------------------------------------------- */
 const $ = id => /** @type {HTMLInputElement} */ (document.getElementById(id));   // DOM lookup for the web parts, typed as an input element for the checker (most lookups read .value / .checked / .files; moved from 00-config.js in v0.82.0: the engine has no DOM)
+/* typed DOM lookups for the checker (M5 part 2): the web parts read value/dataset/style/hidden/offset* on query results
+   and on the target of delegated listeners, which the generic Element / EventTarget types lack. Same objects at runtime. */
+const dq = s => /** @type {HTMLElement} */ (document.querySelector(s));                        // first match in the document
+const dqa = (s, el) => /** @type {NodeListOf<HTMLElement>} */ ((el || document).querySelectorAll(s));   // every match (under el)
+const elq = (el, s) => /** @type {HTMLElement} */ (el.querySelector(s));                       // first match under el
+const evT = e => /** @type {HTMLElement} */ (e.target);              // a delegated listener's target (always an element here)
+const evC = (e, s) => /** @type {HTMLElement | null} */ (evT(e).closest(s));   // ...and the card/act element it belongs to
+const evV = e => /** @type {HTMLInputElement} */ (e.target);         // ...when it is an input/textarea (value, .value writes)
 const ERR_LOG = [];
 function errReport() {
   const lines = ['Aeterna error report', 'version: ' + (typeof VERSION !== 'undefined' ? VERSION : '?'), 'time: ' + new Date().toISOString()];
@@ -1199,9 +1207,9 @@ function errNotice() {
     n = document.createElement('div'); n.id = 'err-notice'; n.setAttribute('role', 'alert');
     n.innerHTML = '<span id="err-notice-text"></span><button type="button" id="err-copy">Copy report</button><button type="button" id="err-close">Close</button><textarea id="err-text" readonly hidden></textarea>';
     document.body.appendChild(n);
-    n.querySelector('#err-close').onclick = () => n.remove();
-    n.querySelector('#err-copy').onclick = async () => {
-      const txt = errReport(), box = n.querySelector('#err-text'), b = n.querySelector('#err-copy');
+    elq(n, '#err-close').onclick = () => n.remove();
+    elq(n, '#err-copy').onclick = async () => {
+      const txt = errReport(), box = /** @type {HTMLTextAreaElement} */ (elq(n, '#err-text')), b = elq(n, '#err-copy');
       let ok = false;
       try { await navigator.clipboard.writeText(txt); ok = true; } catch (e) { /* clipboard blocked: show the text to select by hand */ }
       if (ok) b.textContent = 'Copied'; else { box.hidden = false; box.value = txt; box.focus(); box.select(); }
@@ -5662,7 +5670,7 @@ function paintModal() {
   const yes = kind !== 'RESULT' && kind !== 'MATCH SETUP' && vis.length >= 2 && vis.filter(b => /\bprimary\b/.test(b.cls || '')).length === 1 && vis.every(b => /\b(primary|cancel)\b/.test(b.cls || ''));
   $('modal-card-title').textContent = c.title || '';
   $('modal-card-desc').innerHTML = c.html || '';
-  const mb = document.querySelector('#action-modal .modal-box');
+  const mb = dq('#action-modal .modal-box');
   if (mb) { mb.classList.toggle('wide', !!c.wide); mb.dataset.kind = kind; mb.classList.toggle('lose', kind === 'RESULT' && /DEFEAT/.test(c.title)); }
   $('modal-actions').innerHTML = (c.buttons || []).map((b, i) => b.hidden ? '' :
     `<button class="modal-btn ${b.cls || ''}${yes && /\bprimary\b/.test(b.cls || '') ? ' yes' : ''}" ${b.dis ? 'disabled' : ''} data-mi="${i}">${esc(titleCase(b.label))}</button>`).join('')
@@ -5945,7 +5953,8 @@ async function openFieldModal(key, kind, uid) {
   const k = lvIndex(f);
   const stack = f.under.length ? cardStripHTML(f.under, 'Under this card') : '';
   const html = `${esc(card.token ? 'Token Spirit' : card.type)} · Lv${k + lvBase(card)}${isSpiritForm(card) ? ' · ' + bpOf(f) + ' BP' : ''} · Cores ${f.cores}${f.soul ? ' + Soul Core' : ''}${f.exhausted ? ' · Exhausted' : ''}${f.brave ? ' · Brave: ' + esc(CARDS[f.brave.id].name) + ' (+' + CARDS[f.brave.id].brave.bp + ' BP)' : ''}${ocActive(f) ? ' · Over Count active' : ''}${stack}`;
-  const buttons = [{ label: '🔎 Full Card Details', cls: 'blue', value: 'detail' }];
+  /** the empty-cell + info buttons: cls is optional (plain disabled info buttons have none). */
+  const buttons = /** @type {{label: string, cls?: string, value: string | null, dis?: boolean, hidden?: boolean}[]} */ ([{ label: '🔎 Full Card Details', cls: 'blue', value: 'detail' }]);
   if (mine && isMainStep()) {
     for (const { idx, e } of activatable(p, f, 'MAIN')) buttons.push({ label: `⚡ Activate: ${fxDescribe(e)}`.slice(0, 140), cls: 'primary', value: 'act:' + idx });
     if (card.type === 'Brave' && card.brave && p.spirits.includes(f)) buttons.push({ label: '🗡 Combine with a Spirit (Brave)…', cls: 'primary', value: 'bcombine', dis: !braveTargets(p, f).length });
@@ -6188,10 +6197,11 @@ function stepTargets() {                      // [index NEXT goes to, End index]
 }
 function stepWarn(text, i) {
   STEP_WARN = { text, i, at: Date.now() };
-  const w = document.querySelector('.step-warn'); if (w) { w.querySelector('.sw-t').textContent = text; w.hidden = false; }
-  const b = document.querySelector(`.step-chip[data-v="${i}"]`); if (b) { b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); }
-  clearTimeout(stepWarn.t); stepWarn.t = setTimeout(() => { STEP_WARN = null; const x = document.querySelector('.step-warn'); if (x) x.hidden = true; }, 2200);
+  const w = dq('.step-warn'); if (w) { elq(w, '.sw-t').textContent = text; w.hidden = false; }
+  const b = dq(`.step-chip[data-v="${i}"]`); if (b) { b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); }
+  clearTimeout(stepWarn.t); stepWarn.t = setTimeout(() => { STEP_WARN = null; const x = dq('.step-warn'); if (x) x.hidden = true; }, 2200);
 }
+stepWarn.t = 0;   // the timer id lives on the function; initialized so the checker accepts the property
 function stepClick(i) {
   if (!G) return;
   i = Number(i); const name = s => (G.steps[s] || '').toLowerCase().replace(/(^|\s)\w/g, m => m.toUpperCase());
@@ -6237,7 +6247,7 @@ function renderBoard() {
   const app = $('app'); if (!app || !G) return;
   applyLook();
   const keep = {};
-  document.querySelectorAll('[data-scroll]').forEach(e => { keep[e.dataset.scroll] = e.scrollLeft; });
+  dqa('[data-scroll]').forEach(e => { keep[e.dataset.scroll] = e.scrollLeft; });
   const P = G.p.player, O = G.p.opponent, stepName = G.steps[G.step];
   const cpuTurn = G.active !== 'player', nextOff = !humanCan() || !(G.step === 4 || G.step === 5 || (G.format === 'standard' && G.step === 6));
   const turnLbl = G.over ? '<span>GAME</span> <span>OVER</span>' : cpuTurn ? '<span>OPPONENT</span> <span>TURN</span>' : '<span>PLAYER</span> <span>TURN</span>';
@@ -6287,8 +6297,8 @@ function renderBoard() {
         <div class="pc-hand-flank side-you" data-a="zone" data-v="player:hand"><div class="zone-label"><span>Hand Cnt</span></div><span class="sub-text">${pv(P.hand.length)}</span></div>
       </div>
     </div>`;
-  document.querySelectorAll('[data-scroll]').forEach(e => { if (keep[e.dataset.scroll]) { e.style.scrollBehavior = 'auto'; e.scrollLeft = keep[e.dataset.scroll]; e.style.scrollBehavior = ''; } });   // v0.92.0: at once, not smooth, so the cues measure the real card places
-  const ch = document.querySelector('.step-chip.active'), cont = document.querySelector('.phase-steps-container');
+  dqa('[data-scroll]').forEach(e => { if (keep[e.dataset.scroll]) { e.style.scrollBehavior = 'auto'; e.scrollLeft = keep[e.dataset.scroll]; e.style.scrollBehavior = ''; } });   // v0.92.0: at once, not smooth, so the cues measure the real card places
+  const ch = dq('.step-chip.active'), cont = dq('.phase-steps-container');
   if (ch && cont) {
     const target = ch.offsetLeft - cont.clientWidth / 2 + ch.offsetWidth / 2, prev = keep.phase || 0;
     cont.style.scrollBehavior = 'auto'; cont.scrollLeft = prev; void cont.offsetWidth;
@@ -6312,8 +6322,9 @@ function aeRibbon(text, opt) {
   L.appendChild(r);
   aeRibbon.t = setTimeout(() => r.remove(), opt.banner ? 1800 : 1200);
 }
+aeRibbon.t = 0;   // the timer id lives on the function; initialized so the checker accepts the property
 function aeStrip(text) {
-  const L = $('ae-fx'), s = L && L.querySelector('.ae-strip'); if (!s) return;
+  const L = $('ae-fx'), s = L && elq(L, '.ae-strip'); if (!s) return;
   s.hidden = !text; s.textContent = text || ''; $('pick-bar').classList.toggle('blk', !!text);
   s.style.top = '';                                // v0.99 U8a: sit just above the step band's log line instead of covering it
   const lg = text && visEl('#view-playmat .control-log-row'), r = lg && lg.getBoundingClientRect();
@@ -6349,12 +6360,12 @@ function liveStatusHTML(inst) {
   return `<div class="live-st">Now: Lv${lvNo(inst)} · ${inst.cores} core${inst.cores === 1 ? '' : 's'}${inst.soul ? ' + Soul' : ''}${isSpiritForm(c) ? ' · ' + bpOf(inst) + ' BP' : ''}${inst.heavy ? ' · heavy exhausted' : inst.exhausted ? ' · exhausted' : ''}</div>`;
 }
 document.addEventListener('keydown', e => {
-  const t = e.target, tag = t && t.tagName; if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || e.ctrlKey || e.metaKey || e.altKey) return;
+  const t = evT(e), tag = t.tagName; if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || e.ctrlKey || e.metaKey || e.altKey) return;
   if (!$('view-playmat').classList.contains('active') || !G) return;
   const modalOpen = $('action-modal').classList.contains('active');
   if (e.key === 'l' || e.key === 'L') { toggleLog(); return; }
   if (e.key === 'Escape' && LOG_OPEN) { toggleLog(false); return; }
-  if ((e.key === ' ' || e.key === 'Enter') && !modalOpen && !PICK && !PEEK) { const b = document.querySelector('.inline-next-btn'); if (b && !b.disabled && humanCan()) { e.preventDefault(); b.click(); } }
+  if ((e.key === ' ' || e.key === 'Enter') && !modalOpen && !PICK && !PEEK) { const b = /** @type {HTMLButtonElement} */ (dq('.inline-next-btn')); if (b && !b.disabled && humanCan()) { e.preventDefault(); b.click(); } }
 });
 /* ---- match history ---- */
 const HIST_KEY = 'bse.history.v1';
@@ -6485,7 +6496,7 @@ function dbWindow(force) {             // renders the rows around the visible pa
   const pad = h => h > 0 ? `<div class="db-spacer" style="grid-column:1/-1;height:${h}px"></div>` : '';
   el.innerHTML = pad(r0 * rowH - DB_GAP) + list.slice(from, to).map(dbCardHTML).join('') + pad((rows - r1) * rowH - DB_GAP);
   el.scrollTop = top;
-  const first = el.querySelector('.tcg-card'), h = first ? first.offsetHeight + DB_GAP : 0;
+  const first = elq(el, '.tcg-card'), h = first ? first.offsetHeight + DB_GAP : 0;
   if (h > DB_GAP && Math.abs(h - DBV.rowH) > 0.5) { DBV.rowH = h; dbWindow(true); }   // first measurement (or a layout change)
 }
 function dbScroll() { if (!DBV.raf) DBV.raf = requestAnimationFrame(() => { DBV.raf = 0; if ($('view-deckbuilder').classList.contains('active')) dbWindow(false); }); }
@@ -6522,7 +6533,7 @@ let DB_TAB = 'list';
 function dbTab(v) {
   DB_TAB = ['list', 'curve', 'look'].includes(v) ? v : 'list';
   const d = $('db-deck'); ['list', 'curve', 'look'].forEach(k => d.classList.toggle('tab-' + k, k === DB_TAB));
-  d.querySelectorAll('[data-a="db-tab"]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.v === DB_TAB)));
+  dqa('[data-a="db-tab"]', d).forEach(b => b.setAttribute('aria-selected', String(b.dataset.v === DB_TAB)));
   if (DB_TAB === 'look') renderDbLook();
 }
 function renderDbLook() {
@@ -6662,7 +6673,7 @@ function renderDeckBuilder() {
   dbFilter(); dbWindow(true);
 }
 document.addEventListener('contextmenu', e => {
-  const c = e.target.closest && e.target.closest('#db-card-list [data-a="dbcard"]');
+  const c = evC(e, '#db-card-list [data-a="dbcard"]');
   if (c) { e.preventDefault(); showCardDetail(c.dataset.v, 'deck'); }
 });
 document.addEventListener('keydown', e => {
@@ -6671,14 +6682,15 @@ document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && MODAL && (MODAL.cfg.buttons || []).some(b => b.value === null && !b.dis)) { e.preventDefault(); closeModal(null); }
     return;
   }
-  const t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT');
+  const t = evT(e), typing = t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT';
   if (e.key === '/' && !typing) { e.preventDefault(); $('db-search').focus(); }
-  else if (e.key === 'Escape' && t && t.id === 'db-search') { t.value = ''; renderDeckBuilder(); }
+  else if (e.key === 'Escape' && t.id === 'db-search') { evV(e).value = ''; renderDeckBuilder(); }
   else if (e.key === 'Escape') dbSheet('');
 });
 document.addEventListener('input', e => {
-  if (e.target.id === 'db-io') DB_IO = e.target.value;
-  else if (e.target.id === 'db-family') { DBF.family = e.target.value; dbSearchInput(); }
+  const t = evV(e);
+  if (t.id === 'db-io') DB_IO = t.value;
+  else if (t.id === 'db-family') { DBF.family = t.value; dbSearchInput(); }
 });
 /* ---------------------------------------------------------------------
    APP NAVIGATION + HOME (v0.65.0, UI/UX overhaul U2; docs/DESIGN.md section 0, mockup docs/design/mockup-v11.html)
@@ -6692,7 +6704,7 @@ function navSync(id) {
   const v = id || (document.querySelector('.app-view.active') || {}).id || 'view-lobby';
   document.body.dataset.view = v;
   document.body.classList.toggle('has-nav', !NAV_HIDDEN.includes(v));
-  document.querySelectorAll('#app-tabs .ae-tab').forEach(b => { if (b.dataset.nav === v) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+  dqa('#app-tabs .ae-tab').forEach(b => { if (b.dataset.nav === v) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
   document.querySelectorAll('.ae-tools [data-a="go-settings"]').forEach(b => { if (v === 'view-settings') b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
   themePop(false);
   navTools();
@@ -6700,7 +6712,7 @@ function navSync(id) {
 // colour diamond, Dark/Light toggles and the sound button show the saved state
 function navTools() {
   if (typeof document === 'undefined') return;
-  document.querySelectorAll('[data-a="theme-mode"]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === THEME.mode)));
+  dqa('[data-a="theme-mode"]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === THEME.mode)));
   const sb = $('sound-btn'); if (sb) { sb.setAttribute('aria-pressed', String(!!SETTINGS.sound)); const l = 'Sound: ' + (SETTINGS.sound ? 'on' : 'off'); sb.title = l; sb.setAttribute('aria-label', l); }
   const g = $('theme-grid');
   if (g) g.innerHTML = THEME_COLS.map(c => `<button class="pcol" data-a="theme-color" data-v="${c.id}" aria-pressed="${c.id === THEME.color}" style="--c:${THEME.mode === 'light' ? c.l : c.d}"><i></i>${esc(c.name.replace(/ \(.*\)$/, ''))}</button>`).join('');
@@ -6709,7 +6721,7 @@ function themePop(open) {
   const p = $('theme-pop'), b = $('theme-btn'); if (!p || !b) return;
   const on = open === undefined ? p.hidden : !!open;
   p.hidden = !on; b.setAttribute('aria-expanded', String(on));
-  if (on && open === undefined) { const f = p.querySelector('.pcol[aria-pressed="true"]'); if (f) f.focus(); }   // keyboard users land inside the picker
+  if (on && open === undefined) { const f = elq(p, '.pcol[aria-pressed="true"]'); if (f) f.focus(); }   // keyboard users land inside the picker
 }
 function navTheme(key, val) {
   setTheme(key, val); navTools();
@@ -6738,7 +6750,7 @@ function renderHome() {
 }
 if (typeof document !== 'undefined') {
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('theme-pop') && !$('theme-pop').hidden) { themePop(false); $('theme-btn').focus(); } });
-  document.addEventListener('click', e => { const p = $('theme-pop'); if (p && !p.hidden && !e.target.closest('#theme-pop, #theme-btn')) themePop(false); });
+  document.addEventListener('click', e => { const p = $('theme-pop'); if (p && !p.hidden && !evC(e, '#theme-pop, #theme-btn')) themePop(false); });
 }
 /* ---------------------------------------------------------------------
    PLAY SETUP PAGE (v0.67.0, UI/UX overhaul U3; docs/DESIGN.md section 0 "Play = deck chip + mode cards + setup chips")
@@ -6804,14 +6816,14 @@ function setMsg(t, bad) { const m = $('set-msg'); if (!m) return; m.textContent 
 // section menu: jump to the section and mark it (all sections stay on the page, so every control is reachable by scrolling)
 function setSection(id) {
   const s = $('set-s-' + id); if (!s) return;
-  document.querySelectorAll('#set-menu [data-a="set-sec"]').forEach(b => { if (b.dataset.v === id) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+  dqa('#set-menu [data-a="set-sec"]').forEach(b => { if (b.dataset.v === id) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
   if (s.scrollIntoView) s.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 }
 // Appearance rows + the rest of the page state (called from renderSettings in 13-render.js)
 function renderSetPage() {
   const g = $('set-color');
   if (g) g.innerHTML = THEME_COLS.map(c => `<button class="pcol" data-a="theme-color" data-v="${c.id}" aria-pressed="${c.id === THEME.color}" style="--c:${THEME.mode === 'light' ? c.l : c.d}"><i></i>${esc(c.name.replace(/ \(.*\)$/, ''))}</button>`).join('');
-  document.querySelectorAll('#set-mode [data-a="theme-mode"]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === THEME.mode)));
+  dqa('#set-mode [data-a="theme-mode"]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === THEME.mode)));
   const cc = $('set-cpucol'); if (cc) cc.textContent = THEME.color === 'red' ? 'Blue' : 'Crimson';
   const mc = $('set-mat-clear'); if (mc) mc.disabled = !MAT.url;
   const im = $('set-imgs'); if (im) { const n = Object.keys(IMG).length; im.textContent = `${n} image${n === 1 ? '' : 's'} loaded. Add or remove them in the Library; they stay on this device.`; }
@@ -6826,7 +6838,7 @@ let AUDIO = null;
 function sfx(kind) {                                   // tiny synthesized sounds, no files
   if (!SETTINGS.sound || SIM) return;
   try {
-    AUDIO = AUDIO || new (window.AudioContext || window.webkitAudioContext)();
+    AUDIO = AUDIO || new (window.AudioContext || (/** @type {any} */ (window)).webkitAudioContext)();
     const tones = { attack: [330, 0.09, 'square'], hit: [150, 0.14, 'sawtooth'], destroy: [90, 0.2, 'sawtooth'], summon: [520, 0.1, 'triangle'], card: [700, 0.04, 'sine'], win: [880, 0.35, 'triangle'], lose: [110, 0.4, 'sine'] }[kind];
     if (!tones) return;
     const o = AUDIO.createOscillator(), g = AUDIO.createGain(); o.type = tones[2]; o.frequency.value = tones[0];
@@ -7120,10 +7132,10 @@ async function dkAct(a, v) {
 }
 if (typeof document !== 'undefined') {
   document.addEventListener('keydown', e => {   // Rename: Enter saves; Escape closes the Rename / Delete dialogs (not engine decisions)
-    if (MODAL && /^(Rename deck|Delete this deck\?)$/.test(MODAL.cfg.title)) { if (e.key === 'Escape') closeModal(null); else if (e.key === 'Enter' && e.target.id === 'dk-name-in') modalPress(0); }
+    if (MODAL && /^(Rename deck|Delete this deck\?)$/.test(MODAL.cfg.title)) { if (e.key === 'Escape') closeModal(null); else if (e.key === 'Enter' && evT(e).id === 'dk-name-in') modalPress(0); }
   });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && DK_MENU >= 0) { const i = DK_MENU; DK_MENU = -1; renderDecks(); const b = document.querySelector(`#dk-list [data-a="dk-more"][data-v="${i}"]`); if (b) b.focus(); } });
-  document.addEventListener('click', e => { if (DK_MENU >= 0 && !e.target.closest('.dk-menu, [data-a="dk-more"]')) { DK_MENU = -1; renderDecks(); } });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && DK_MENU >= 0) { const i = DK_MENU; DK_MENU = -1; renderDecks(); const b = dq(`#dk-list [data-a="dk-more"][data-v="${i}"]`); if (b) b.focus(); } });
+  document.addEventListener('click', e => { if (DK_MENU >= 0 && !evC(e, '.dk-menu, [data-a="dk-more"]')) { DK_MENU = -1; renderDecks(); } });
 }
 /* ---------------------------------------------------------------------
    CARD IMAGES  (user supplied files kept in IndexedDB, never uploaded)
@@ -7266,8 +7278,8 @@ document.addEventListener('change', async e => {
   else if (t.id === 'set-anim') { if (['full', 'reduced', 'off'].includes(t.value)) SETTINGS.anim = t.value; else delete SETTINGS.anim; saveSettings(); }
   else if (t.id === 'set-sound') { SETTINGS.sound = t.value === 'on'; saveSettings(); navTools(); if (SETTINGS.sound) sfx('summon'); }
 });
-document.addEventListener('input', e => { if (e.target.id === 'db-search') dbSearchInput(); });
-document.addEventListener('scroll', e => { if (e.target && e.target.id === 'db-card-list') dbScroll(); }, true);
+document.addEventListener('input', e => { if (evT(e).id === 'db-search') dbSearchInput(); });
+document.addEventListener('scroll', e => { const t = /** @type {HTMLElement} */ (e.target); if (t && t.id === 'db-card-list') dbScroll(); }, true);
 window.addEventListener('resize', () => { if ($('view-deckbuilder').classList.contains('active')) { DBV.rowH = 0; dbWindow(true); } });
 function libAction(a) {
   if (a === 'lib-template') {
@@ -7442,12 +7454,12 @@ async function viewerReplayOf(rec, opts) {
 /* ---------------------------------------------------------------------
    EVENTS (delegation)
    --------------------------------------------------------------------- */
-document.addEventListener('contextmenu', e => { if (e.target.closest('.tcg-card')) e.preventDefault(); });
+document.addEventListener('contextmenu', e => { if (evC(e, '.tcg-card')) e.preventDefault(); });
 /* v0.32.5: horizontal rows (Hand, Field rows, steps) scroll with a mouse too: the wheel scrolls sideways, and a mouse drag
    scrolls them; a drag never counts as a click. Touch keeps the native swipe. */
 const hScrollable = el => el && el.scrollWidth > el.clientWidth + 1;
 document.addEventListener('wheel', e => {
-  const el = e.target.closest && e.target.closest('[data-scroll]');
+  const el = e.target && e.target instanceof Element ? evC(e, '[data-scroll]') : null;   // v0.32.5: closest only when the target is an element
   if (!hScrollable(el) || e.ctrlKey || Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
   const max = el.scrollWidth - el.clientWidth, before = el.scrollLeft, next = Math.max(0, Math.min(max, before + e.deltaY * (e.deltaMode === 1 ? 32 : 1)));
   if (next === before) return;
@@ -7456,7 +7468,7 @@ document.addEventListener('wheel', e => {
 let HDRAG = null;
 document.addEventListener('pointerdown', e => {
   if (e.pointerType !== 'mouse' || e.button !== 0) return;
-  const el = e.target.closest && e.target.closest('[data-scroll]');
+  const el = e.target && e.target instanceof Element ? evC(e, '[data-scroll]') : null;
   HDRAG = hScrollable(el) ? { el, x: e.clientX, left: el.scrollLeft, moved: false } : null;
 });
 document.addEventListener('pointermove', e => {
@@ -7475,27 +7487,27 @@ document.addEventListener('pointerup', () => {
   HDRAG = null;
 });
 document.addEventListener('click', e => {
-  const mg = e.target.closest && e.target.closest('[data-a="mag"]'); if (!mg) return;
+  const mg = e.target instanceof Element ? evC(e, '[data-a="mag"]') : null; if (!mg) return;
   e.stopPropagation(); e.preventDefault(); openZoom(mg.dataset.v, mg.dataset.u != null ? Number(mg.dataset.u) : null);
 }, true);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { const z = $('zoom-overlay'); if (z) z.classList.remove('active'); } });
 document.addEventListener('click', e => {
-  const peekBtn = e.target.closest('[data-peek]');
+  const peekBtn = evC(e, '[data-peek]');
   if (peekBtn) { startPeek(); return; }
-  const pfn = e.target.closest('[data-peekfn]');
+  const pfn = evC(e, '[data-peekfn]');
   if (pfn && PEEK) { if (pfn.dataset.peekfn === 'back') endPeek(); else { const b = PEEK.btns[Number(pfn.dataset.peekfn)]; if (b && !b.dis) b.act(); } return; }
   if (PEEK) {
-    const pe = e.target.closest('[data-a]');
+    const pe = evC(e, '[data-a]');
     if (pe && !['zoom', 'zoomclose', 'zoominfo'].includes(pe.dataset.a)) {
       if (pe.dataset.a === 'field' && PEEK.cfg.onFieldTap) PEEK.cfg.onFieldTap(Number(pe.dataset.v.split(':')[2]));
       return;
     }
   }
-  const pkb = e.target.closest('[data-pk]');
+  const pkb = evC(e, '[data-pk]');
   if (pkb && PICK) { PICK.res(PICK.buttons[Number(pkb.dataset.pk)].value); return; }
-  const mi = e.target.closest('[data-mi]');
+  const mi = evC(e, '[data-mi]');
   if (mi) { modalPress(Number(mi.dataset.mi)); return; }
-  const el = e.target.closest('[data-a]'); if (!el) return;
+  const el = evC(e, '[data-a]'); if (!el) return;
   const a = el.dataset.a, v = el.dataset.v;
   if (a === 'start') startNewGame();
   else if (a === 'watch') startNewGame({ watch: true });

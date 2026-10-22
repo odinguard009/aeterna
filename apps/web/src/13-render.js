@@ -125,10 +125,11 @@ function stepTargets() {                      // [index NEXT goes to, End index]
 }
 function stepWarn(text, i) {
   STEP_WARN = { text, i, at: Date.now() };
-  const w = document.querySelector('.step-warn'); if (w) { w.querySelector('.sw-t').textContent = text; w.hidden = false; }
-  const b = document.querySelector(`.step-chip[data-v="${i}"]`); if (b) { b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); }
-  clearTimeout(stepWarn.t); stepWarn.t = setTimeout(() => { STEP_WARN = null; const x = document.querySelector('.step-warn'); if (x) x.hidden = true; }, 2200);
+  const w = dq('.step-warn'); if (w) { elq(w, '.sw-t').textContent = text; w.hidden = false; }
+  const b = dq(`.step-chip[data-v="${i}"]`); if (b) { b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); }
+  clearTimeout(stepWarn.t); stepWarn.t = setTimeout(() => { STEP_WARN = null; const x = dq('.step-warn'); if (x) x.hidden = true; }, 2200);
 }
+stepWarn.t = 0;   // the timer id lives on the function; initialized so the checker accepts the property
 function stepClick(i) {
   if (!G) return;
   i = Number(i); const name = s => (G.steps[s] || '').toLowerCase().replace(/(^|\s)\w/g, m => m.toUpperCase());
@@ -174,7 +175,7 @@ function renderBoard() {
   const app = $('app'); if (!app || !G) return;
   applyLook();
   const keep = {};
-  document.querySelectorAll('[data-scroll]').forEach(e => { keep[e.dataset.scroll] = e.scrollLeft; });
+  dqa('[data-scroll]').forEach(e => { keep[e.dataset.scroll] = e.scrollLeft; });
   const P = G.p.player, O = G.p.opponent, stepName = G.steps[G.step];
   const cpuTurn = G.active !== 'player', nextOff = !humanCan() || !(G.step === 4 || G.step === 5 || (G.format === 'standard' && G.step === 6));
   const turnLbl = G.over ? '<span>GAME</span> <span>OVER</span>' : cpuTurn ? '<span>OPPONENT</span> <span>TURN</span>' : '<span>PLAYER</span> <span>TURN</span>';
@@ -224,8 +225,8 @@ function renderBoard() {
         <div class="pc-hand-flank side-you" data-a="zone" data-v="player:hand"><div class="zone-label"><span>Hand Cnt</span></div><span class="sub-text">${pv(P.hand.length)}</span></div>
       </div>
     </div>`;
-  document.querySelectorAll('[data-scroll]').forEach(e => { if (keep[e.dataset.scroll]) { e.style.scrollBehavior = 'auto'; e.scrollLeft = keep[e.dataset.scroll]; e.style.scrollBehavior = ''; } });   // v0.92.0: at once, not smooth, so the cues measure the real card places
-  const ch = document.querySelector('.step-chip.active'), cont = document.querySelector('.phase-steps-container');
+  dqa('[data-scroll]').forEach(e => { if (keep[e.dataset.scroll]) { e.style.scrollBehavior = 'auto'; e.scrollLeft = keep[e.dataset.scroll]; e.style.scrollBehavior = ''; } });   // v0.92.0: at once, not smooth, so the cues measure the real card places
+  const ch = dq('.step-chip.active'), cont = dq('.phase-steps-container');
   if (ch && cont) {
     const target = ch.offsetLeft - cont.clientWidth / 2 + ch.offsetWidth / 2, prev = keep.phase || 0;
     cont.style.scrollBehavior = 'auto'; cont.scrollLeft = prev; void cont.offsetWidth;
@@ -249,8 +250,9 @@ function aeRibbon(text, opt) {
   L.appendChild(r);
   aeRibbon.t = setTimeout(() => r.remove(), opt.banner ? 1800 : 1200);
 }
+aeRibbon.t = 0;   // the timer id lives on the function; initialized so the checker accepts the property
 function aeStrip(text) {
-  const L = $('ae-fx'), s = L && L.querySelector('.ae-strip'); if (!s) return;
+  const L = $('ae-fx'), s = L && elq(L, '.ae-strip'); if (!s) return;
   s.hidden = !text; s.textContent = text || ''; $('pick-bar').classList.toggle('blk', !!text);
   s.style.top = '';                                // v0.99 U8a: sit just above the step band's log line instead of covering it
   const lg = text && visEl('#view-playmat .control-log-row'), r = lg && lg.getBoundingClientRect();
@@ -286,12 +288,12 @@ function liveStatusHTML(inst) {
   return `<div class="live-st">Now: Lv${lvNo(inst)} · ${inst.cores} core${inst.cores === 1 ? '' : 's'}${inst.soul ? ' + Soul' : ''}${isSpiritForm(c) ? ' · ' + bpOf(inst) + ' BP' : ''}${inst.heavy ? ' · heavy exhausted' : inst.exhausted ? ' · exhausted' : ''}</div>`;
 }
 document.addEventListener('keydown', e => {
-  const t = e.target, tag = t && t.tagName; if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || e.ctrlKey || e.metaKey || e.altKey) return;
+  const t = evT(e), tag = t.tagName; if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || e.ctrlKey || e.metaKey || e.altKey) return;
   if (!$('view-playmat').classList.contains('active') || !G) return;
   const modalOpen = $('action-modal').classList.contains('active');
   if (e.key === 'l' || e.key === 'L') { toggleLog(); return; }
   if (e.key === 'Escape' && LOG_OPEN) { toggleLog(false); return; }
-  if ((e.key === ' ' || e.key === 'Enter') && !modalOpen && !PICK && !PEEK) { const b = document.querySelector('.inline-next-btn'); if (b && !b.disabled && humanCan()) { e.preventDefault(); b.click(); } }
+  if ((e.key === ' ' || e.key === 'Enter') && !modalOpen && !PICK && !PEEK) { const b = /** @type {HTMLButtonElement} */ (dq('.inline-next-btn')); if (b && !b.disabled && humanCan()) { e.preventDefault(); b.click(); } }
 });
 /* ---- match history ---- */
 const HIST_KEY = 'bse.history.v1';

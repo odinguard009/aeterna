@@ -16,7 +16,7 @@ function paintModal() {
   const yes = kind !== 'RESULT' && kind !== 'MATCH SETUP' && vis.length >= 2 && vis.filter(b => /\bprimary\b/.test(b.cls || '')).length === 1 && vis.every(b => /\b(primary|cancel)\b/.test(b.cls || ''));
   $('modal-card-title').textContent = c.title || '';
   $('modal-card-desc').innerHTML = c.html || '';
-  const mb = document.querySelector('#action-modal .modal-box');
+  const mb = dq('#action-modal .modal-box');
   if (mb) { mb.classList.toggle('wide', !!c.wide); mb.dataset.kind = kind; mb.classList.toggle('lose', kind === 'RESULT' && /DEFEAT/.test(c.title)); }
   $('modal-actions').innerHTML = (c.buttons || []).map((b, i) => b.hidden ? '' :
     `<button class="modal-btn ${b.cls || ''}${yes && /\bprimary\b/.test(b.cls || '') ? ' yes' : ''}" ${b.dis ? 'disabled' : ''} data-mi="${i}">${esc(titleCase(b.label))}</button>`).join('')

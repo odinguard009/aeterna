@@ -10,7 +10,7 @@ function navSync(id) {
   const v = id || (document.querySelector('.app-view.active') || {}).id || 'view-lobby';
   document.body.dataset.view = v;
   document.body.classList.toggle('has-nav', !NAV_HIDDEN.includes(v));
-  document.querySelectorAll('#app-tabs .ae-tab').forEach(b => { if (b.dataset.nav === v) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+  dqa('#app-tabs .ae-tab').forEach(b => { if (b.dataset.nav === v) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
   document.querySelectorAll('.ae-tools [data-a="go-settings"]').forEach(b => { if (v === 'view-settings') b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
   themePop(false);
   navTools();
@@ -18,7 +18,7 @@ function navSync(id) {
 // colour diamond, Dark/Light toggles and the sound button show the saved state
 function navTools() {
   if (typeof document === 'undefined') return;
-  document.querySelectorAll('[data-a="theme-mode"]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === THEME.mode)));
+  dqa('[data-a="theme-mode"]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === THEME.mode)));
   const sb = $('sound-btn'); if (sb) { sb.setAttribute('aria-pressed', String(!!SETTINGS.sound)); const l = 'Sound: ' + (SETTINGS.sound ? 'on' : 'off'); sb.title = l; sb.setAttribute('aria-label', l); }
   const g = $('theme-grid');
   if (g) g.innerHTML = THEME_COLS.map(c => `<button class="pcol" data-a="theme-color" data-v="${c.id}" aria-pressed="${c.id === THEME.color}" style="--c:${THEME.mode === 'light' ? c.l : c.d}"><i></i>${esc(c.name.replace(/ \(.*\)$/, ''))}</button>`).join('');
@@ -27,7 +27,7 @@ function themePop(open) {
   const p = $('theme-pop'), b = $('theme-btn'); if (!p || !b) return;
   const on = open === undefined ? p.hidden : !!open;
   p.hidden = !on; b.setAttribute('aria-expanded', String(on));
-  if (on && open === undefined) { const f = p.querySelector('.pcol[aria-pressed="true"]'); if (f) f.focus(); }   // keyboard users land inside the picker
+  if (on && open === undefined) { const f = elq(p, '.pcol[aria-pressed="true"]'); if (f) f.focus(); }   // keyboard users land inside the picker
 }
 function navTheme(key, val) {
   setTheme(key, val); navTools();
@@ -56,5 +56,5 @@ function renderHome() {
 }
 if (typeof document !== 'undefined') {
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('theme-pop') && !$('theme-pop').hidden) { themePop(false); $('theme-btn').focus(); } });
-  document.addEventListener('click', e => { const p = $('theme-pop'); if (p && !p.hidden && !e.target.closest('#theme-pop, #theme-btn')) themePop(false); });
+  document.addEventListener('click', e => { const p = $('theme-pop'); if (p && !p.hidden && !evC(e, '#theme-pop, #theme-btn')) themePop(false); });
 }

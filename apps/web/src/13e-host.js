@@ -8,7 +8,7 @@ let AUDIO = null;
 function sfx(kind) {                                   // tiny synthesized sounds, no files
   if (!SETTINGS.sound || SIM) return;
   try {
-    AUDIO = AUDIO || new (window.AudioContext || window.webkitAudioContext)();
+    AUDIO = AUDIO || new (window.AudioContext || (/** @type {any} */ (window)).webkitAudioContext)();
     const tones = { attack: [330, 0.09, 'square'], hit: [150, 0.14, 'sawtooth'], destroy: [90, 0.2, 'sawtooth'], summon: [520, 0.1, 'triangle'], card: [700, 0.04, 'sine'], win: [880, 0.35, 'triangle'], lose: [110, 0.4, 'sine'] }[kind];
     if (!tones) return;
     const o = AUDIO.createOscillator(), g = AUDIO.createGain(); o.type = tones[2]; o.frequency.value = tones[0];
