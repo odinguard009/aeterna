@@ -50,22 +50,36 @@ for (const screen of ['pc', 'phone']) {
   test(`U94-2 ${screen}: deck panel tabs (list, curve and check, look) and the Deck look saved per slot`, async () => {
     const { page, errors } = await open(screen);
     if (screen === 'phone') await page.evaluate(() => { BS.dbSheet('deck'); return 1; });
-    const pane = () => page.evaluate(() => ['list', 'curve', 'look'].filter(k => { const e = document.querySelector(`#db-deck [data-pane="${k}"]`); return e && e.getBoundingClientRect().height > 0; }));
-    assert.deepEqual(await pane(), ['list']);
+    const pane = () => page.evaluate(() => ['list', 'curve', 'look'].filter(k => document.getElementById('db-deck').classList.contains(`tab-${k}`)));
+    const waitForPane = tab => page.waitForFunction(tab => {
+      const deck = document.getElementById('db-deck'), button = deck && deck.querySelector(`[data-a="db-tab"][data-v="${tab}"]`);
+      return !!button && deck.classList.contains(`tab-${tab}`) && button.getAttribute('aria-selected') === 'true';
+    }, tab);
+    const expectedLook = { sleeve: 'jade', core: 'red', soul: 'gold' };
+    const waitForLook = () => page.waitForFunction(expected => {
+      const bs = window.BS, look = bs && bs.SLOTS()[bs.ACTIVE_SLOT]?.look;
+      return !!look && look.sleeve === expected.sleeve && look.core === expected.core && look.soul === expected.soul;
+    }, expectedLook);
+    await waitForPane('list');
+    assert.deepEqual(await pane(), ['list'], 'stage: initial list tab');
     await page.click('#db-deck [data-a="db-tab"][data-v="curve"]');
-    assert.deepEqual(await pane(), ['curve']);
-    assert.ok(await page.evaluate(() => document.querySelectorAll('#db-check li').length >= 2), 'deck check list');
+    await waitForPane('curve');
+    assert.deepEqual(await pane(), ['curve'], 'stage: curve tab selected');
+    assert.ok(await page.evaluate(() => document.querySelectorAll('#db-check li').length >= 2), 'stage: deck check list rendered');
     await page.click('#db-deck [data-a="db-tab"][data-v="look"]');
-    assert.deepEqual(await pane(), ['look']);
-    assert.equal(await page.evaluate(() => document.querySelector('#db-deck [data-a="db-tab"][data-v="look"]').getAttribute('aria-selected')), 'true');
+    await waitForPane('look');
+    assert.deepEqual(await pane(), ['look'], 'stage: look tab selected');
+    assert.equal(await page.evaluate(() => document.querySelector('#db-deck [data-a="db-tab"][data-v="look"]').getAttribute('aria-selected')), 'true', 'stage: look tab announces selection');
     const n = await page.evaluate(() => ['sleeve', 'core', 'soul'].map(k => document.querySelectorAll(`#db-look [data-v^="${k}:"]`).length));
-    assert.deepEqual(n, [6, 9, 9]);
-    assert.deepEqual(await page.evaluate(() => [...document.querySelectorAll('#db-look [aria-pressed="true"]')].map(b => b.dataset.v)), ['sleeve:silver', 'core:blue', 'soul:red'], 'defaults');
+    assert.deepEqual(n, [6, 9, 9], 'stage: all look options rendered');
+    assert.deepEqual(await page.evaluate(() => [...document.querySelectorAll('#db-look [aria-pressed="true"]')].map(b => b.dataset.v)), ['sleeve:silver', 'core:blue', 'soul:red'], 'stage: default look selected');
     for (const v of ['sleeve:jade', 'core:red', 'soul:gold']) await page.click(`#db-look [data-v="${v}"]`);
-    assert.deepEqual(await page.evaluate(() => BS.SLOTS()[BS.ACTIVE_SLOT].look), { sleeve: 'jade', core: 'red', soul: 'gold' });
+    await waitForLook();
+    assert.deepEqual(await page.evaluate(() => BS.SLOTS()[BS.ACTIVE_SLOT].look), expectedLook, 'stage: selected look saved in active slot');
     await page.reload(); await page.waitForFunction(() => !!window.BS);
-    assert.deepEqual(await page.evaluate(() => BS.SLOTS()[BS.ACTIVE_SLOT].look), { sleeve: 'jade', core: 'red', soul: 'gold' }, 'kept after a reload');
-    assert.deepEqual(errors, []);
+    await waitForLook();
+    assert.deepEqual(await page.evaluate(() => BS.SLOTS()[BS.ACTIVE_SLOT].look), expectedLook, 'stage: saved look restored after reload');
+    assert.deepEqual(errors, [], 'stage: no page errors');
   });
 }
 
