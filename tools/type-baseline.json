@@ -1,5 +1,5 @@
 {
- "note": "M5 type ratchet (tools/lint.mjs): checker errors allowed per source part. Engine and protocol parts are not listed, so they must stay at 0. Lower with `node tools/lint.mjs --update-types`; never raise by hand without a reason in the commit.",
+ "note": "M5 type ratchet (tools/lint.mjs): checker errors allowed per source part. Engine and protocol parts are not listed, so they must stay at 0. Lower with `node tools/lint.mjs --update-types`; never raise by hand without a reason in the commit. The lint fails hard (exit 1) when TypeScript is missing from node_modules, instead of printing a false clean.",
  "parts": {
   "apps/web/src/00b-errors.js": 6,
   "apps/web/src/10-modals.js": 1,

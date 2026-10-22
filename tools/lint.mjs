@@ -34,6 +34,9 @@ for (const p of parts) { starts.push([line, p.rel]); line += readFileSync(join(R
 const where = n => { let cur = starts[0]; for (const s of starts) if (s[0] <= n) cur = s; return `${cur[1]}:${n - cur[0] + 1}`; };
 
 function tscBin() {
+  // resolve the checker by file first (node_modules/typescript has no PATH games to play on Windows), then PATH
+  const local = join(ROOT, 'node_modules', 'typescript', 'bin', 'tsc');
+  try { if (readFileSync(local, 'utf8')) return ['node', [local]]; } catch { /* not installed here */ }
   try { return execFileSync('npx', ['--no-install', 'tsc', '-v']) && ['npx', ['--no-install', 'tsc']]; } catch { return ['tsc', []]; }
 }
 const [bin, pre] = tscBin();
@@ -44,6 +47,11 @@ let out = '';
 try {
   out = execFileSync(bin, [...pre, '--allowJs', '--checkJs', '--noEmit', '--strict', 'false', '--lib', 'dom,es2022', '--target', 'es2022', '--skipLibCheck', join(ROOT, 'packages/engine/types.d.ts'), join(ROOT, 'build/game.js')], { encoding: 'utf8' });
 } catch (e) { out = (e.stdout || '') + (e.stderr || ''); }
+// no TypeScript = no type checker = a false green was printed here (fixed 2026-10-23): fail loudly instead
+if (tsVer === '?') {
+  console.log('lint: TypeScript is missing, so the type checker just ran on nothing (this used to pass as "clean"): install it first — npm install (devDependencies pin typescript@' + TS_PIN + ') or npm install --no-save typescript@' + TS_PIN);
+  process.exit(1);
+}
 
 const findings = [], perPart = {};
 if (/types\.d\.ts\(\d+,\d+\): error/.test(out)) findings.push('packages/engine/types.d.ts: ' + out.split('\n').filter(l => l.includes('types.d.ts(')).join(' | '));
