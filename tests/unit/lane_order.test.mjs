@@ -2,6 +2,7 @@
 // tools/lane_next.mjs decides the next lane from docs/ai/roadmap-open.md; CHANGELOG.md keeps the "- Lane:" bullet.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import { lanesOf, nextLane, uiQueue } from '../../tools/lane_next.mjs';
 
 const log = (...lanes) => '# Changelog\n\nintro\n\n' + lanes.map((l, i) => `## v0.9.${lanes.length - i}\n${l ? `- Lane: ${l}\n` : ''}- notes\n`).join('\n');
@@ -34,4 +35,9 @@ test('LN05 queue empty or missing: K', () => {
   assert.deepEqual(uiQueue(rm(QE)), []);
   assert.equal(nextLane(log('U/I', 'U/I'), rm(QE)).lane, 'K');
   assert.equal(nextLane('# Changelog\n', rm()).lane, 'K');
+});
+
+test('LN06 the tool prints its one line when run as a script (was silent on Windows: file URL compare)', () => {
+  const out = execFileSync(process.execPath, ['tools/lane_next.mjs'], { encoding: 'utf8' }).trim();
+  assert.match(out, /^LANE (K|U\/I) \(/);
 });

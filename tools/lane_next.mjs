@@ -10,6 +10,7 @@
 // takes the other lane's first ready item and writes the Lane: of what it actually did.
 // Usage: node tools/lane_next.mjs   (called by tools/session_start.sh)
 import { readFileSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
 
 export function lanesOf(changelog) {
   const out = [];
@@ -37,7 +38,9 @@ export function nextLane(_changelog, roadmap) {
   return { lane: 'K', why: 'U/I queue is empty: cards, Standard first' };
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+/* Windows note (2026-10-23): `file://` + a bare argv path never matched on Windows (no file:/// + slashes), so the tool
+   printed nothing; normalize through pathToFileURL so session_start.sh shows the lane there too (tests/unit/lane_order.test.mjs). */
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const r = nextLane(readFileSync('CHANGELOG.md', 'utf8'), readFileSync('docs/ai/roadmap-open.md', 'utf8'));
   console.log(`LANE ${r.lane} (${r.why}; other lane when this one has no ready item)`);
 }
