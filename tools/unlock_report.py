@@ -63,7 +63,7 @@ L += [f'- {p}: {n}' for p, n in pair.most_common(8)]
 L += ['', '## Per Saga (staged cards)', '', '| Saga | ' + ' | '.join(CLASSES) + ' |', '|---' * (len(CLASSES) + 1) + '|']
 for s in sorted(per_saga, key=lambda x: int(x) if x.isdigit() else 99):
     L.append(f'| {s} | ' + ' | '.join(str(per_saga[s][k]) for k in CLASSES) + ' |')
-open(os.path.join(root, 'docs/reports/unlock-report.md'), 'w', encoding='utf8').write('\n'.join(L) + '\n')
+open(os.path.join(root, 'docs/reports/unlock-report.md'), 'w', encoding='utf8', newline='').write('\n'.join(L) + '\n')
 # v0.80.0 (A2 prep c): machine-readable counts for tools/build.mjs (README line), so the build never parses Markdown
 json.dump({'playable': len(playable), 'total': total, 'complete': complete_n, 'staged': len(staged)},
           open(os.path.join(root, 'docs/reports/card-counts.json'), 'w', encoding='utf8'), indent=1)

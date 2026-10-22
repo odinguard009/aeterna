@@ -21,9 +21,9 @@ if '--update' in sys.argv:
 allc = []
 for s, cards in sorted(data.items()):
     L = sorted(cards.values(), key=lambda c: (c['id'].split('-')[0], c['id']))
-    json.dump(L, open(os.path.join(root, f'saga-{s:02d}.json'), 'w', encoding='utf-8'), indent=1, ensure_ascii=False); allc += L
+    json.dump(L, open(os.path.join(root, f'saga-{s:02d}.json'), 'w', encoding='utf-8', newline=''), indent=1, ensure_ascii=False); allc += L   # newline='': no CRLF churn on Windows
 ids = collections.Counter(c['id'] for c in allc)
 assert not [i for i, n in ids.items() if n > 1], 'duplicate IDs'
 os.makedirs(os.path.join(root, '..', 'build'), exist_ok=True)
-json.dump(allc, open(os.path.join(root, '..', 'build', 'all-cards.json'), 'w', encoding='utf-8'), indent=1, ensure_ascii=False)
+json.dump(allc, open(os.path.join(root, '..', 'build', 'all-cards.json'), 'w', encoding='utf-8', newline=''), indent=1, ensure_ascii=False)
 print(len(allc), 'cards in', len(data), 'Saga files ->', 'build/all-cards.json')
