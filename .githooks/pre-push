@@ -24,5 +24,5 @@ if [ -n "$(printf '%s' "$files" | tr -d '[:space:]')" ] && [ -z "$code" ]; then
   echo "[pre-push] docs-only push (same paths CI skips): build, lint and brand guard ok; quick tests skipped"; exit 0
 fi
 python3 tools/check_renames.py || { echo "[pre-push] tests still use removed names / old labels (fix them before the Regression run)"; exit 1; }
-out=$(npm run -s test:quick 2>&1) || { echo "$out" | grep -E "^not ok|^# (pass|fail)"; echo "[pre-push] quick tests failing"; exit 1; }
+out=$(npm run -s test:quick 2>&1) || { echo "$out" | grep -E "^not ok|^✖|failing"; echo "[pre-push] quick tests failing"; exit 1; }
 echo "[pre-push] build, lint, stale-reference check and quick tests ok"

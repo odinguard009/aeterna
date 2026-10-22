@@ -268,9 +268,9 @@ def main():
         return
     os.makedirs(OUT, exist_ok=True)
     for s, cards in out.items():
-        with open(os.path.join(OUT, 'saga-%02d.json' % s), 'w', encoding='utf-8') as f:   # one card per line: small, diff-friendly
+        with open(os.path.join(OUT, 'saga-%02d.json' % s), 'w', encoding='utf-8', newline='') as f:   # one card per line: small, diff-friendly (newline='': no CRLF churn on Windows)
             f.write('[\n' + ',\n'.join(json.dumps(c, ensure_ascii=False) for c in cards) + '\n]\n')
-    json.dump({'stats': stats, **rep}, open(os.path.join(OUT, 'report.json'), 'w', encoding='utf-8'), indent=1, ensure_ascii=False)
+    json.dump({'stats': stats, **rep}, open(os.path.join(OUT, 'report.json'), 'w', encoding='utf-8', newline=''), indent=1, ensure_ascii=False)
     print('wrote', len(out), 'files + report.json to data/import/')
 
 
