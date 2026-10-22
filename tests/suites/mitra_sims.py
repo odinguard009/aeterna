@@ -3,8 +3,8 @@ from waits import settle, ready
 import sys, time, json
 N = int(sys.argv[1]); TAG = sys.argv[2]; MODE = sys.argv[3] if len(sys.argv) > 3 else 'mirror'
 F = "file:///mnt/user-data/outputs/wip.html"
-WH = open('/tmp/claude-0/fixtures/white_mitra_awakened_dragon.json').read()
-RED = open('/tmp/claude-0/fixtures/red_cards_BS75_BS76.json').read()
+WH = open('/tmp/claude-0/fixtures/white_mitra_awakened_dragon.json', encoding='utf-8').read()
+RED = open('/tmp/claude-0/fixtures/red_cards_BS75_BS76.json', encoding='utf-8').read()
 DECK = {'BS74-CX03':3,'BS74-072':3,'BS74-038':3,'BS74-040':2,'BS74-041':3,'BS74-042':3,'BS74-043':2,'BS74-045':2,'BS74-047':2,'BS74-048':2,'BS74-049':2,'BS74-050':2,'BS75-028':3,'BS75-030':2,'BS75-035':3,'BS75-037':1,'BS75-041':1,'BS75-X08':1}
 out = {'games': 0, 'finished': 0, 'inv': [], 'errs': [], 'maxturn': 0, 'soul': 0, 'activate': 0, 'void': 0, 'bounce': 0, 'neo': 0, 'wins': {}}
 with sync_playwright() as p:

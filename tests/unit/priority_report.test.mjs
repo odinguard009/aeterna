@@ -11,7 +11,7 @@ const py = (code) => JSON.parse(execFileSync('python3', ['-c', `import sys, json
 const NO_SRC = !existsSync(join(ROOT, 'data/sources/fandom-nexus-levels.tsv')) && 'data/sources not checked out (light clone)';
 const staged = () => readdirJson('data/import').flat();
 function readdirJson(dir) {
-  return execFileSync('python3', ['-c', `import glob, json; print(json.dumps([json.load(open(f)) for f in sorted(glob.glob('${dir}/saga-[0-9][0-9].json'))]))`], { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20 })
+  return execFileSync('python3', ['-c', `import glob, json; print(json.dumps([json.load(open(f, encoding='utf-8')) for f in sorted(glob.glob('${dir}/saga-[0-9][0-9].json'))]))`], { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20 })
     .trim().split('\n').map(JSON.parse)[0];
 }
 

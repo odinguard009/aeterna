@@ -24,7 +24,7 @@ test('C59-01 step-prefixed attack triggers compile to ALLY_ATTACKS / OPP_ATTACKS
   assert.match(compile('[LV1] (When Attacks) That Spirit gains +3000 BP.').review, /^sentence/);      // "that Spirit" only after an ally trigger
 });
 test('C59-02 the promoted cards carry the new triggers', () => {
-  const ids = py(`print(json.dumps([c['id'] for c in json.load(open('build/all-cards.json')) if any(e.get('trigger') in ('OPP_ATTACKS',) or (e.get('match') or {}).get('noUlt') for e in c.get('effects') or [])]))`);
+  const ids = py(`print(json.dumps([c['id'] for c in json.load(open('build/all-cards.json', encoding='utf-8')) if any(e.get('trigger') in ('OPP_ATTACKS',) or (e.get('match') or {}).get('noUlt') for e in c.get('effects') or [])]))`);
   for (const id of ['BS11-031', 'BS18-021', 'BS21-016', 'BS21-032']) assert.ok(ids.includes(id), id);
 });
 

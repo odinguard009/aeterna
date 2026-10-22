@@ -3,7 +3,7 @@
 import os
 try:
     from playwright.sync_api import Page
-    _JS = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fixtures', 'prototype_cards.js')).read()
+    _JS = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fixtures', 'prototype_cards.js'), encoding='utf-8').read()
     _orig = Page.goto
     def goto(self, url, *a, **k):
         r = _orig(self, url, *a, **k)

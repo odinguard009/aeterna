@@ -161,14 +161,14 @@ def row_of(r, final, text):
 
 def main():
     if '--offline' in sys.argv:
-        cache = json.load(open(CACHE))
+        cache = json.load(open(CACHE, encoding='utf-8'))
     else:
         sp = pages(SETS)
         cache = {'sets': {s: sp[s][1] for s in SETS}, 'cards': {}}
         titles = sorted({r['title'] for s in SETS for r in set_rows(s, cache['sets'][s])})
         cache['cards'] = {t: list(v) for t, v in pages(titles).items()}
         os.makedirs(os.path.dirname(CACHE), exist_ok=True)
-        json.dump(cache, open(CACHE, 'w'), ensure_ascii=False)
+        json.dump(cache, open(CACHE, 'w', encoding='utf-8'), ensure_ascii=False)
     rows, per_set = [], {}
     for s in SETS:
         rs = set_rows(s, cache['sets'].get(s))
@@ -181,7 +181,7 @@ def main():
             'notes': ['Standard block A (26R) set pages and card pages, read with tools/fetch_fandom_std.py.',
                       'Same row format as fandom-cards-bs01-bs77.json; one row per card number on the set pages.'],
             'cards': rows}
-    with open(OUT, 'w') as fh:
+    with open(OUT, 'w', encoding='utf-8') as fh:
         fh.write(json.dumps({k: v for k, v in data.items() if k != 'cards'}, ensure_ascii=False)[:-1] +
                  ', "cards": [\n' + ',\n'.join(json.dumps(c, ensure_ascii=False) for c in rows) + '\n]}\n')
     print(json.dumps({'rows': len(rows), 'per_set': per_set, 'missing': sum(1 for c in rows if c['missing']),

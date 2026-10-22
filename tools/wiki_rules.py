@@ -132,7 +132,7 @@ def report():
     for w, t, pl, fmt, m in used:
         L.append(f'| [{t}]({WIKI}{urllib.parse.quote(t.replace(" ", "_"))}) | {w} | {pl} | {fmt or "-"} | {(m["id"] + " " + m["status"]) if m else "-"} |')
     L += ['', f'Keyword pages with no staged card: {len(rows) - len(used)} (other games\' crossover keywords and retired forms).', '']
-    open(OUT, 'w').write('\n'.join(L))
+    open(OUT, 'w', encoding='utf-8').write('\n'.join(L))
     print(f'wiki_rules: {len(used)} used keyword pages, {len(rmap)} mapped blockers -> docs/reports/wiki-rules-index.md')
 
 

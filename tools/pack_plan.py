@@ -128,7 +128,7 @@ def main(a):
     L += [f'| {f} | {v:,} |' for f, v in fam.most_common()]
     L += ['', 'Packs for sessions: take consecutive rows of one family (e.g. all step timing heads) so one engine change '
           'serves them together; then re-run this tool, since every finished blocker changes the order.', '']
-    open(out, 'w').write('\n'.join(L))
+    open(out, 'w', encoding='utf-8').write('\n'.join(L))
     print(f'pack_plan: {len(rows)} steps, {len(done):,} cards (upper bound) -> {os.path.relpath(out, ROOT)}')
 
 

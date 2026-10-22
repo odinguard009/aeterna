@@ -116,7 +116,7 @@ test('B60-13 the source table has one row per Fandom page, 441 pages', { skip: N
   assert.equal(r, 441);
 });
 test('B60-14 import report lists Braves left without data', () => {
-  const r = py('import_fandom', `print(json.dumps(json.load(open('data/import/report.json'))['stats'].get('brave_unparsed', 0)))`);
+  const r = py('import_fandom', `print(json.dumps(json.load(open('data/import/report.json', encoding='utf-8'))['stats'].get('brave_unparsed', 0)))`);
   assert.ok(r > 100 && r < 200, String(r));
 });
 test('B60-15 braved paragraph forms: [When Braved], When Braved, During Brave, During Spirit Brave', () => {

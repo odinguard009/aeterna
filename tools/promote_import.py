@@ -11,14 +11,14 @@ a = sys.argv[1:]
 while a:
     x = a.pop(0)
     if x == '--list':                                   # deck file lines: "<count> <id>   # name" (a bare id works too)
-        for l in open(a.pop(0)):
+        for l in open(a.pop(0), encoding='utf-8'):
             t = l.split('#')[0].split()
             if t: ids.append(t[-1])
     else: ids.append(x)
 staged = {}
 for f in sorted(glob.glob(os.path.join(root, 'data/import/saga-[0-9][0-9].json'))):
-    for c in json.load(open(f)): staged[c['id']] = c
-have = {c['id'] for f in glob.glob(os.path.join(root, 'data/cards/saga-[0-9][0-9].json')) for c in json.load(open(f))}
+    for c in json.load(open(f, encoding='utf-8')): staged[c['id']] = c
+have = {c['id'] for f in glob.glob(os.path.join(root, 'data/cards/saga-[0-9][0-9].json')) for c in json.load(open(f, encoding='utf-8'))}
 out, skipped, missing = [], [], []
 for i in ids:
     if i in have: skipped.append(i); continue
@@ -31,6 +31,6 @@ for i in ids:
     out.append(n)
 if missing: sys.exit('not in data/import: ' + ', '.join(missing))
 if out:
-    tmp = os.path.join(root, 'build_promote.tmp.json'); json.dump(out, open(tmp, 'w'), ensure_ascii=False)
+    tmp = os.path.join(root, 'build_promote.tmp.json'); json.dump(out, open(tmp, 'w', encoding='utf-8'), ensure_ascii=False)
     subprocess.check_call([sys.executable, os.path.join(root, 'tools/build_cards.py'), '--update', tmp]); os.remove(tmp)
 print(f'promoted {len(out)}, already present {len(skipped)}' + (': ' + ', '.join(skipped) if skipped else ''))

@@ -9,9 +9,9 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 STATUS = {'enforced', 'partial', 'equivalent', 'open'}
 NEEDS_TEST = {'enforced', 'partial', 'equivalent'}
 def main():
-    data = json.load(open(os.path.join(ROOT, 'data', 'kb', 'rule-obligations.json')))
-    notes = open(os.path.join(ROOT, 'docs', 'manual-notes.md')).read()
-    try: last = json.load(open(os.path.join(ROOT, 'tests', 'last-run.json')))
+    data = json.load(open(os.path.join(ROOT, 'data', 'kb', 'rule-obligations.json'), encoding='utf-8'))
+    notes = open(os.path.join(ROOT, 'docs', 'manual-notes.md'), encoding='utf-8').read()
+    try: last = json.load(open(os.path.join(ROOT, 'tests', 'last-run.json'), encoding='utf-8'))
     except Exception: last = {}
     probs, seen = [], set()
     for o in data.get('obligations', []):
@@ -35,7 +35,7 @@ def main():
             suite, label = t.split(':', 1)
             path = os.path.join(ROOT, 'tests', 'unit' if suite.endswith('.mjs') else 'suites', suite)
             if not os.path.exists(path): probs.append(f'{oid}: suite {suite} not found'); continue
-            if label not in open(path).read(): probs.append(f'{oid}: label {label!r} not in {suite}')
+            if label not in open(path, encoding='utf-8').read(): probs.append(f'{oid}: label {label!r} not in {suite}')
             r = last.get(suite[:-3])
             if r and any(label in f for f in r.get('fails', [])): probs.append(f'{oid}: proving test fails in the last run')
     counts = {s: sum(1 for o in data['obligations'] if o.get('status') == s) for s in sorted(STATUS)}

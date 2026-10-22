@@ -19,11 +19,11 @@ def eternal_copy(src, dst):
     assert t != s, "default-format line not found in the build"
     open(dst, 'w', encoding='utf-8').write(t)
 eternal_copy(os.path.join(root, 'index.html'), '/mnt/user-data/outputs/wip.html')
-_deck = {l.split('#')[0].split()[-1] for l in open(os.path.join(root, 'data/decks/white-mitra-awakened-dragon.txt')) if l.split('#')[0].split()}
+_deck = {l.split('#')[0].split()[-1] for l in open(os.path.join(root, 'data/decks/white-mitra-awakened-dragon.txt'), encoding='utf-8') if l.split('#')[0].split()}
 white = [c for c in cards if c['id'] in _deck]      # the white deck's 18 cards (v0.50: taken from the deck file, since the pack now holds more white cards)
 red = [c for c in cards if c['color'] == 'red' and (c['id'][:4] in ('BS75', 'BS76') or c['type'] == 'Nexus')]
-json.dump(white, open('/tmp/claude-0/fixtures/white_mitra_awakened_dragon.json', 'w'), ensure_ascii=False)
-json.dump(red, open('/tmp/claude-0/fixtures/red_cards_BS75_BS76.json', 'w'), ensure_ascii=False)
+json.dump(white, open('/tmp/claude-0/fixtures/white_mitra_awakened_dragon.json', 'w', encoding='utf-8'), ensure_ascii=False)
+json.dump(red, open('/tmp/claude-0/fixtures/red_cards_BS75_BS76.json', 'w', encoding='utf-8'), ensure_ascii=False)
 shutil.copy(os.path.join(root, 'tests', 'suites', 'mitra_tests.py'), '/tmp/claude-0/t4/mitra_tests.py')
 # legacy/hscroll_layout.py uploads a card picture: a small solid PNG made here (no image library needed)
 import struct, zlib

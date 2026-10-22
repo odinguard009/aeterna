@@ -91,14 +91,14 @@ with sync_playwright() as p:
     files = sorted(glob.glob(os.path.join(SCEN, '*.json')))
     pg = page(b); loaded = []
     for f in files:
-        spec = json.load(open(f)); r = ev(pg, "(s)=>{const r=BS.loadScenario(s);return [r.ok===true, r.error||'', (()=>{try{BS.checkInvariants();return 'ok'}catch(e){return e.message}})()]}", spec)
+        spec = json.load(open(f, encoding='utf-8')); r = ev(pg, "(s)=>{const r=BS.loadScenario(s);return [r.ok===true, r.error||'', (()=>{try{BS.checkInvariants();return 'ok'}catch(e){return e.message}})()]}", spec)
         loaded.append([os.path.basename(f)] + r)
     chk('24 every scenario file loads with consistent cores/cards', len(files) >= 4 and all(x[1] and x[3] == 'ok' for x in loaded), loaded)
-    chk('25 scenario names match their file names', all(json.load(open(f))['name'] + '.json' == os.path.basename(f) for f in files))
+    chk('25 scenario names match their file names', all(json.load(open(f, encoding='utf-8'))['name'] + '.json' == os.path.basename(f) for f in files))
     chk('26 loadScenario rejects an unknown card', ev(pg, "/unknown card/.test(BS.loadScenario({players:{player:{hand:['NOPE-1']}}}).error||'')"))
     chk('27 loadScenario rejects two Soul Cores and duplicate aliases', ev(pg, "/Soul Core/.test(BS.loadScenario({players:{player:{nexus:[{id:'BS74-CX01',soul:true},{id:'BS74-CX03',soul:true}]}}}).error||'')&&/twice/.test(BS.loadScenario({players:{player:{hand:[{id:'BS75-001',as:'a'},{id:'BS75-002',as:'a'}]}}}).error||'')"))
     def scen(name):
-        pg = page(b); r = ev(pg, "(s)=>BS.loadScenario(s)", json.load(open(os.path.join(SCEN, name + '.json')))); return pg, r
+        pg = page(b); r = ev(pg, "(s)=>BS.loadScenario(s)", json.load(open(os.path.join(SCEN, name + '.json'), encoding='utf-8'))); return pg, r
     pg, r = scen('erimakilizard-life3-takes-all-cores')
     ev(pg, "(async()=>{await BS.fireFx(BS.G.p.player,'ALLY_ATTACKS',SC.attacker,{attacker:SC.attacker})})();1"); settle(pg)
     chk('28 scenario erimakilizard-life3: all 4 cores of one Nexus go to the Void', ev(pg, "SC.mitra.cores===0&&SC.zeus.cores===1"), ev(pg, "[SC.mitra.cores,SC.zeus.cores]"))

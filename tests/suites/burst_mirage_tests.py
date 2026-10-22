@@ -6,7 +6,7 @@ PACK_N = len(_CARDS); CONTRACTORS = sorted(c['id'] for c in _CARDS if c['type'] 
 import os as _os_repo
 _REPO = _os_repo.path.abspath(_os_repo.path.join(_os_repo.path.dirname(_os_repo.path.abspath(__file__)), '..', '..'))
 import json
-src = open('/tmp/claude-0/t4/mitra_tests.py').read()
+src = open('/tmp/claude-0/t4/mitra_tests.py', encoding='utf-8').read()
 exec(src.split("MITRA_FX =")[0])
 def run(pg, js, ms=700):
     pg.evaluate("(()=>{window.pr=(async()=>{" + js + "})().catch(e=>console.error(e));return 1})()"); settle(pg)
@@ -50,7 +50,7 @@ with sync_playwright() as p:
     chk('CPU sets a Mirage that has a real effect', ev(pg, "P.mirage===mi&&inv()==='ok'"), ev(pg, "[!!P.mirage,inv()]"))
     chk('V21 page errors', not errs, errs)
     # glossary consistency
-    G = json.load(open(_os_repo.path.join(_REPO, 'data/glossary/effects.json')))
+    G = json.load(open(_os_repo.path.join(_REPO, 'data/glossary/effects.json'), encoding='utf-8'))
     chk('glossary: unique ids and required fields', len({g['id'] for g in G}) == len(G) and all(g.get('kind') and g.get('meaning') and g.get('status') in ('wired', 'partial', 'missing') for g in G))
     import re
     known = set(ev(pg, "Object.keys(BS.FX_ACTIONS)")) | set(ev(pg, "FX_TRIGGERS")) | {'MUST_BLOCK', 'NO_RETURN', 'CORES_DRAW'}
@@ -62,7 +62,7 @@ with sync_playwright() as p:
     chk('glossary: every wired trigger/action names a real engine trigger or action', not bad, bad)
     chk('glossary: every wired entry has a rule note or an example or engine text', all(g.get('engine') for g in G if g['status'] == 'wired'))
     chk('glossary: official rule notes present for core timing/keyword entries', all(g.get('rule') for g in G if g['id'] in ('T_SUMMONED', 'T_ATTACKS', 'T_ACTIVATE', 'C_ONCE', 'K_BURST', 'K_MIRAGE', 'K_ADVENT', 'S_UNAFFECTED', 'K_SEAL')))
-    tags = json.load(open(_os_repo.path.join(_REPO, 'data/glossary/card-tags.json')))
+    tags = json.load(open(_os_repo.path.join(_REPO, 'data/glossary/card-tags.json'), encoding='utf-8'))
     chk('glossary: card-tags covers every card', len(tags) == PACK_N)
     chk('glossary: every rule note cites an official source', all(('Rule Manual' in g['rule'] or 'Comprehensive' in g['rule'] or 'Eternal' in g['rule'] or 'Standard' in g['rule'] or 'Engine' in g['rule']) for g in G if g.get('rule')))
 print('TOTAL %d/%d' % (sum(res), len(res)))

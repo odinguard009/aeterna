@@ -10,7 +10,7 @@ docs/rules-audit-verdicts.json win; the rest is classified from the citation wor
 import json, re, sys, os, collections
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 P = lambda *a: os.path.join(ROOT, *a)
-V = json.load(open(P('docs/rules-audit-verdicts.json')))
+V = json.load(open(P('docs/rules-audit-verdicts.json'), encoding='utf-8'))
 CITE = re.compile(r'(Rule Manual|manual|Comprehensive|\bCR\b|FAQ)[^.;|]*?(p\.|pp\.|sec\.|Q\d|\d+-\d+|page)', re.I)
 HOUSE = re.compile(r'house reading|ruling chosen|card text|no manual|no (Eternal|official|rule) |not covered|built as printed|Engine:', re.I)
 

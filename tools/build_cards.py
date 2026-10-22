@@ -9,11 +9,11 @@ root = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'c
 def load(): 
     d = {}
     for f in sorted(glob.glob(os.path.join(root, 'saga-[0-9][0-9].json'))):
-        s = int(os.path.basename(f)[5:7]); d[s] = {c['id']: c for c in json.load(open(f))}
+        s = int(os.path.basename(f)[5:7]); d[s] = {c['id']: c for c in json.load(open(f, encoding='utf-8'))}
     return d
 data = load()
 if '--update' in sys.argv:
-    for c in json.load(open(sys.argv[sys.argv.index('--update') + 1])):
+    for c in json.load(open(sys.argv[sys.argv.index('--update') + 1], encoding='utf-8')):
         if not isinstance(c.get('saga'), int): sys.exit('card without a numeric "saga": ' + str(c.get('id')))
         for s in data:
             data[s].pop(c['id'], None)                       # an ID lives in exactly one Saga file
@@ -21,9 +21,9 @@ if '--update' in sys.argv:
 allc = []
 for s, cards in sorted(data.items()):
     L = sorted(cards.values(), key=lambda c: (c['id'].split('-')[0], c['id']))
-    json.dump(L, open(os.path.join(root, f'saga-{s:02d}.json'), 'w'), indent=1, ensure_ascii=False); allc += L
+    json.dump(L, open(os.path.join(root, f'saga-{s:02d}.json'), 'w', encoding='utf-8'), indent=1, ensure_ascii=False); allc += L
 ids = collections.Counter(c['id'] for c in allc)
 assert not [i for i, n in ids.items() if n > 1], 'duplicate IDs'
 os.makedirs(os.path.join(root, '..', 'build'), exist_ok=True)
-json.dump(allc, open(os.path.join(root, '..', 'build', 'all-cards.json'), 'w'), indent=1, ensure_ascii=False)
+json.dump(allc, open(os.path.join(root, '..', 'build', 'all-cards.json'), 'w', encoding='utf-8'), indent=1, ensure_ascii=False)
 print(len(allc), 'cards in', len(data), 'Saga files ->', 'build/all-cards.json')

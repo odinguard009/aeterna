@@ -2,7 +2,7 @@ from waits import settle, ready  # v0.87.0 (F5): state waits instead of fixed ti
 # Contract Advent / Manifest tests (v0.14.0). Every chk() is one numbered test.
 import sys, re
 sys.argv = [sys.argv[0]] + sys.argv[1:]
-src = open('/tmp/claude-0/t4/mitra_tests.py').read()
+src = open('/tmp/claude-0/t4/mitra_tests.py', encoding='utf-8').read()
 head = src.split("MITRA_FX =")[0]          # shared helpers + SETUP
 exec(head)
 def inv(pg): return ev(pg, "inv()")

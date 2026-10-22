@@ -1,6 +1,6 @@
 from waits import settle, ready  # v0.87.0 (F5): state waits instead of fixed times
 # v0.23: Grandwalker Nexus cores go to the Void; Revival and "summon/deploy" effects pay the cost (official Eternal rules).
-src = open('/tmp/claude-0/t4/mitra_tests.py').read()
+src = open('/tmp/claude-0/t4/mitra_tests.py', encoding='utf-8').read()
 exec(src.split("MITRA_FX =")[0])
 def new_page(b, w=1280, h=800):
     ctx = b.new_context(viewport={'width': w, 'height': h}); pg = ctx.new_page(); errs = []

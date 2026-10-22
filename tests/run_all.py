@@ -68,9 +68,9 @@ def main():
             print(f"{'ok ' if good else 'BAD'} sims {script} {args[2]}: {d.get('finished')}/{d.get('games')} finished, invariant errors {len(d.get('inv', []))}, page errors {len(d.get('errs', []))} ({s}s)")
     report['_meta'] = {'version': re.search(r"const VERSION = '([^']+)'", open(os.path.join(ROOT, 'index.html')).read()).group(1), 'time': time.strftime('%Y-%m-%d %H:%M'), 'args': vars(a)}
     path = os.path.join(ROOT, 'tests', 'last-run.json')
-    try: old = json.load(open(path)) if a.part else {}
+    try: old = json.load(open(path, encoding='utf-8')) if a.part else {}
     except Exception: old = {}
-    old.update(report); json.dump(old, open(path, 'w'), indent=1)
+    old.update(report); json.dump(old, open(path, 'w', encoding='utf-8'), indent=1)
     t = sum(r['total'] for k, r in report.items() if k != '_meta'); f = sum(len(r['fails']) for k, r in report.items() if k != '_meta')
     print(f"SUMMARY {t - f}/{t} checks ok, {f} failing")
     sys.exit(1 if bad else 0)

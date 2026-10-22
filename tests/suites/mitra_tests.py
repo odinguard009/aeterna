@@ -3,7 +3,7 @@ from playwright.sync_api import sync_playwright
 from waits import settle, ready
 import json, sys, time
 F = "file:///mnt/user-data/outputs/" + (sys.argv[1] if len(sys.argv) > 1 else "wip.html")
-WH = open('/tmp/claude-0/fixtures/white_mitra_awakened_dragon.json').read()
+WH = open('/tmp/claude-0/fixtures/white_mitra_awakened_dragon.json', encoding='utf-8').read()
 res = []
 def chk(n, c, x=''):
     res.append(bool(c)); print(('PASS ' if c else 'FAIL ') + f'[{len(res)}] ' + n, x if not c else '')

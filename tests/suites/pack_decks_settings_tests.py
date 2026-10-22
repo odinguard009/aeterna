@@ -1,6 +1,6 @@
 # v0.17.0: built-in pack, deck slots, prebuilt decks, CPU deck choice, settings, PLAY page. Every chk() is one numbered test.
 import json as _json_c, os as _os_c  # counts come from the card data, so a new colour needs no edit here
-_CARDS = _json_c.load(open(_os_c.path.join(_os_c.path.dirname(_os_c.path.abspath(__file__)), '..', '..', 'build', 'all-cards.json')))
+_CARDS = _json_c.load(open(_os_c.path.join(_os_c.path.dirname(_os_c.path.abspath(__file__)), '..', '..', 'build', 'all-cards.json'), encoding='utf-8'))
 PACK_N = len(_CARDS); CONTRACTORS = sorted(c['id'] for c in _CARDS if c['type'] == 'Nexus' and '-CX' in c['id'])
 import os as _os_repo
 _REPO = _os_repo.path.abspath(_os_repo.path.join(_os_repo.path.dirname(_os_repo.path.abspath(__file__)), '..', '..'))
@@ -8,7 +8,7 @@ from playwright.sync_api import sync_playwright
 from waits import settle, ready
 import json, time, random
 F = "file:///mnt/user-data/outputs/wip.html"
-ALL = open(_os_repo.path.join(_REPO, 'build/all-cards.json')).read()
+ALL = open(_os_repo.path.join(_REPO, 'build/all-cards.json'), encoding='utf-8').read()
 WHITE = json.dumps([c for c in json.loads(ALL) if c['color'] == 'white'])
 res = []
 random.seed(17)

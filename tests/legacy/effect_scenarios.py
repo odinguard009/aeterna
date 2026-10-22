@@ -1,7 +1,7 @@
 import json
 from playwright.sync_api import sync_playwright
 F="file:///mnt/user-data/outputs/aeterna-v0.11.1.html"
-RED=open('/tmp/claude-0/fixtures/red_cards_BS75_BS76.json').read()
+RED=open('/tmp/claude-0/fixtures/red_cards_BS75_BS76.json', encoding='utf-8').read()
 bad=[]
 def chk(n,c,x=''):
     print(('PASS ' if c else 'FAIL ')+n,x)

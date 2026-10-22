@@ -64,6 +64,6 @@ test('C61-04 filters the engine lacks stay in review with a lever reason', () =>
 });
 
 test('C61-05 the v2 promotion (v0.61.0) is in the card data', () => {
-  const r = py(`print(json.dumps({c['id']: c.get('note', '') for c in json.load(open('build/all-cards.json')) if 'compile_v2' in c.get('note', '')}))`);
+  const r = py(`print(json.dumps({c['id']: c.get('note', '') for c in json.load(open('build/all-cards.json', encoding='utf-8')) if 'compile_v2' in c.get('note', '')}))`);
   for (const id of ['BS22-066', 'BS23-012', 'BS25-039', 'BS26-024', 'BS27-024', 'BS34-011', 'BS36-014', 'BS36-030', 'BS48-090', 'BS59-022']) assert.ok(id in r, id);
 });

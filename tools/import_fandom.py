@@ -46,7 +46,7 @@ def norm(name):
 
 def build_image_index():
     by_set, by_name = collections.defaultdict(list), collections.defaultdict(list)
-    for entries in json.load(open(IDX)).values():
+    for entries in json.load(open(IDX, encoding='utf-8')).values():
         for meta, name, fname in entries:
             code = next((m.group(1) for t in meta if (m := SET_RE.match(t))), None)
             by_set[(code, norm(name))].append(fname)
@@ -192,15 +192,15 @@ def convert(r, image):
 
 def main():
     check = '--check' in sys.argv
-    rows = json.load(open(SRC))['cards']
+    rows = json.load(open(SRC, encoding='utf-8'))['cards']
     if os.path.exists(SRC_STD):                 # block A rows win over the same numbers listed in a BS set (e.g. BS75 box promos)
-        std = json.load(open(SRC_STD))['cards']
+        std = json.load(open(SRC_STD, encoding='utf-8'))['cards']
         std_ids = {r['id'] for r in std}
         rows = [r for r in rows if r['id'] not in std_ids] + std
     by_set, by_name = build_image_index()
     braves = brave_table()
     nexus_lv, uts = nexus_table(), ut_table()
-    have = {c['id'] for f in glob.glob(os.path.join(ROOT, 'data/cards/saga-[0-9][0-9].json')) for c in json.load(open(f))
+    have = {c['id'] for f in glob.glob(os.path.join(ROOT, 'data/cards/saga-[0-9][0-9].json')) for c in json.load(open(f, encoding='utf-8'))
             if not (c.get('residual') and 'Partial card (v0.79.0' in (c.get('note') or ''))}      # v0.79.0 (A1): partial cards keep their staging record
     rep = collections.defaultdict(list)
     groups = collections.OrderedDict()
@@ -268,9 +268,9 @@ def main():
         return
     os.makedirs(OUT, exist_ok=True)
     for s, cards in out.items():
-        with open(os.path.join(OUT, 'saga-%02d.json' % s), 'w') as f:   # one card per line: small, diff-friendly
+        with open(os.path.join(OUT, 'saga-%02d.json' % s), 'w', encoding='utf-8') as f:   # one card per line: small, diff-friendly
             f.write('[\n' + ',\n'.join(json.dumps(c, ensure_ascii=False) for c in cards) + '\n]\n')
-    json.dump({'stats': stats, **rep}, open(os.path.join(OUT, 'report.json'), 'w'), indent=1, ensure_ascii=False)
+    json.dump({'stats': stats, **rep}, open(os.path.join(OUT, 'report.json'), 'w', encoding='utf-8'), indent=1, ensure_ascii=False)
     print('wrote', len(out), 'files + report.json to data/import/')
 
 

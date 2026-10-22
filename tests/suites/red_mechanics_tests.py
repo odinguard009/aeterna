@@ -1,7 +1,7 @@
 from waits import settle, ready  # v0.87.0 (F5): state waits instead of fixed times
 # v0.19 red card mechanics. Every chk() is one numbered test.
 import sys, random
-src = open('/tmp/claude-0/t4/mitra_tests.py').read()
+src = open('/tmp/claude-0/t4/mitra_tests.py', encoding='utf-8').read()
 exec(src.split("MITRA_FX =")[0])
 def run(pg, js, ms=600):
     pg.evaluate("(()=>{window.pr=(async()=>{" + js + "})().catch(e=>console.error(e));return 1})()"); settle(pg)

@@ -1,6 +1,6 @@
 # v0.24: code review / cleanup suite. Every chk() is one numbered test. Needs PYTHONPATH with the fixtures helper for fixture checks only.
 import json as _json_c, os as _os_c  # counts come from the card data, so a new colour needs no edit here
-_CARDS = _json_c.load(open(_os_c.path.join(_os_c.path.dirname(_os_c.path.abspath(__file__)), '..', '..', 'build', 'all-cards.json')))
+_CARDS = _json_c.load(open(_os_c.path.join(_os_c.path.dirname(_os_c.path.abspath(__file__)), '..', '..', 'build', 'all-cards.json'), encoding='utf-8'))
 PACK_N = len(_CARDS); CONTRACTORS = sorted(c['id'] for c in _CARDS if c['type'] == 'Nexus' and '-CX' in c['id'] and c.get('levels'))   # BS76/BS77 CX Flagbearers have no levels yet (Flag Contract, open in roadmap-open.md): not Count-level
 from playwright.sync_api import sync_playwright
 from waits import settle, ready
@@ -60,7 +60,7 @@ with sync_playwright() as p:
     chk('C15 at most one Contract card family per deck rule is enforced', ev(pg, "(()=>{const d={'BS74-CX03':1,'BS71-CX01':1};d['BS74-072']=38;return !BS.validateDeck(d,'eternal').ok})()"))
     # ---- D. security / privacy
     chk('D1 no network request other than the page itself', all(u.startswith('file://') or u.startswith('data:') for u in reqs), [u for u in reqs if not (u.startswith('file://') or u.startswith('data:'))][:3])
-    src = open('/mnt/user-data/outputs/wip.html').read()
+    src = open('/mnt/user-data/outputs/wip.html', encoding='utf-8').read()
     chk('D2 source has no fetch/XHR/WebSocket/eval/Function constructor', not re.search(r'\bfetch\(|XMLHttpRequest|WebSocket|\beval\(|new Function|sendBeacon|importScripts', src))
     chk('D3 no external script or stylesheet tags', not re.search(r'<script[^>]+src=|<link[^>]+href="http', src))
     xss = [{"id": "XSS-1", "name": "<img src=x onerror=window.__x=1>", "type": "Spirit", "color": "red", "cost": 1, "levels": [{"cores": 1, "bp": 1000}], "text": "<script>window.__x=1</script>", "families": ["<b>x</b>"]}]

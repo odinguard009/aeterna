@@ -1,7 +1,7 @@
 from waits import settle, ready  # v0.87.0 (F5): state waits instead of fixed times
 # v0.15.0 tests: opposing Hand increase (Temple, Nao Burst), Life-hit (Banve), ally lost (Do), Revive. Every chk() is one numbered test.
 import sys, random
-src = open('/tmp/claude-0/t4/mitra_tests.py').read()
+src = open('/tmp/claude-0/t4/mitra_tests.py', encoding='utf-8').read()
 exec(src.split("MITRA_FX =")[0])
 random.seed(15)
 def run(pg, js, ms=700):
