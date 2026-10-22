@@ -23,5 +23,9 @@
   "engines": {
     "node": ">=20"
   },
+  "devDependencies": {
+    "playwright": "1.64.1",
+    "typescript": "6.0.3"
+  },
   "description": "Fan-made trading card game play simulator (single-file web game). Dev tools need only Node 20+, Playwright and TypeScript."
 }
