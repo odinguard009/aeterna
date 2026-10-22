@@ -61,11 +61,20 @@ for (const screen of ['pc', 'phone']) {
     const n = await page.evaluate(() => ['sleeve', 'core', 'soul'].map(k => document.querySelectorAll(`#db-look [data-v^="${k}:"]`).length));
     assert.deepEqual(n, [6, 9, 9]);
     assert.deepEqual(await page.evaluate(() => [...document.querySelectorAll('#db-look [aria-pressed="true"]')].map(b => b.dataset.v)), ['sleeve:silver', 'core:blue', 'soul:red'], 'defaults');
+    // U94-2 flaky phase 1 (roadmap-open, "never skip the test"): stage messages + storage diagnostics on failure; behaviour otherwise unchanged.
+    const diagNow = () => page.evaluate(() => { try { const raw = localStorage.getItem('bse.slots.v1'); let p = null; try { p = JSON.parse(raw); } catch (x) {} const a = BS.ACTIVE_SLOT, sp = p && Array.isArray(p.slots) ? (p.slots[a] || null) : null, s = (BS.SLOTS()[a] || null);
+      return { u94: sessionStorage.getItem('u94'), rawLen: raw == null ? null : raw.length, parseOk: p ? 1 : 0, savedActive: p ? p.active : null, savedLook: sp && sp.look ? sp.look : null, active: a, memLook: s ? s.look : null }; } catch (x) { return { diagError: String(x && x.message).slice(0, 160) }; } });
+    const lookAssert = async (stage, expected) => {    // the same read as before: a missing slot / look still fails the test, now with stage + diagnostics
+      let actual; try { actual = await page.evaluate(() => BS.SLOTS()[BS.ACTIVE_SLOT].look); }
+      catch (e) { e.message = `U94-2 ${screen} ${stage}: slot read threw: ${String(e && e.message).slice(0, 200)}; diagnostics (actual state): ${JSON.stringify(await diagNow())}`; throw e; }
+      try { assert.deepEqual(actual, expected, `U94-2 ${screen} ${stage}`); }
+      catch (e) { e.message += `\nU94-2 ${screen} ${stage} diagnostics (actual state): ${JSON.stringify(await diagNow())}`; throw e; }
+    };
     for (const v of ['sleeve:jade', 'core:red', 'soul:gold']) await page.click(`#db-look [data-v="${v}"]`);
-    assert.deepEqual(await page.evaluate(() => BS.SLOTS()[BS.ACTIVE_SLOT].look), { sleeve: 'jade', core: 'red', soul: 'gold' });
+    await lookAssert('after clicks, before reload', { sleeve: 'jade', core: 'red', soul: 'gold' });
     await page.reload(); await page.waitForFunction(() => !!window.BS);
-    assert.deepEqual(await page.evaluate(() => BS.SLOTS()[BS.ACTIVE_SLOT].look), { sleeve: 'jade', core: 'red', soul: 'gold' }, 'kept after a reload');
-    assert.deepEqual(errors, []);
+    await lookAssert('after reload', { sleeve: 'jade', core: 'red', soul: 'gold' });
+    assert.deepEqual(errors, [], 'U94-2 page errors must stay empty');
   });
 }
 
