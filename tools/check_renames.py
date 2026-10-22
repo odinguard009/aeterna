@@ -33,7 +33,8 @@ def title_case(s):
     return ' '.join(out)
 
 def removed_lines(base):
-    try: diff = subprocess.run(['git', 'diff', base, '--', 'packages/engine/src', 'apps/web/src'], capture_output=True, text=True, check=True).stdout
+    # text=True needs the encoding spelled out: diff hunks carry the card data's Japanese text (a cp1252 read would die in the reader thread)
+    try: diff = subprocess.run(['git', 'diff', base, '--', 'packages/engine/src', 'apps/web/src'], capture_output=True, text=True, encoding='utf-8', errors='replace', check=True).stdout
     except Exception: return []
     return [l[1:] for l in diff.splitlines() if l.startswith('-') and not l.startswith('---')]
 
