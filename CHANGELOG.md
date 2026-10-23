@@ -4,6 +4,19 @@ Release notes, newest first. Each version also has a GitHub Release with the gam
 
 Older releases (v0.80.0 and earlier): [CHANGELOG-archive.md](CHANGELOG-archive.md).
 
+## v0.104.0
+- Lane: U/I
+- Time: ~550 min wall-clock (23:56 Oct 22 session start → 09:05 release, incl. the owner's away gaps), GLM 5.3 Flash; tokens not counted (no gate counter in this harness).
+- **Audit fixes (owner 2026-10-22: "saya setuju dengan semua saran. kerjakan" — all findings of the repo audit round, one commit per task).**
+  - Windows/CI tooling: `tools/lane_next.mjs` compares script URLs through `pathToFileURL` (its lane print never fired on Windows); every generated-file writer got explicit `encoding='utf-8'` + `newline=''` so the build is LF-stable on every OS; the Windows quick-loop fixes (POSIX paths in card_verify/rules_kb, a BASH resolver in the test lib, the gh-less PATH keeping `python3`, CRLF-normalized fixture files, a 20 s reload wait for U68-3); `check_renames.py` reads diff text as UTF-8 (cp1252 died on the Japanese card lines in the pre-push hook).
+  - Lint: `tools/lint.mjs` hard-fails with an install hint when `node_modules/typescript` is missing (no more false clean) and resolves tsc from the node_modules file; all 74 web type checker errors are fixed in the sources (typed DOM helpers `dq/dqa/elq/evT/evC/evV` in 00b-errors.js, local JSDoc casts, `window.BS`/`window.SC` declared), so the ratchet baseline in `tools/type-baseline.json` is emptied to 0 errors and the ALLOW list is gone; `tools/ts_list.mjs` is kept as a debugging helper (not a gate).
+  - Card-count rule (audit finding: two counted-incomplete cards): a card whose whole printed effect is one flag-implemented mechanic (highSpeed, the colour-symbol flags) now counts complete; BS33-022 and BS54-021 keep the flag but are demoted to partial (`fxComplete:false` + residual + a partial note tail); complete count 771 → **780**; `import_fandom` staging report regenerated (I30 pins its totals).
+  - Replay correctness (audit finding A1e): UI-only modals no longer write into the input record — `modal()` got a `uiOnly` flag and all ten UI-only call sites (card details, rule hint, deck view, clear-deck confirm, ...) are tagged; engine decision modals still record, so human replays that opened a card menu no longer diverge (the `seed_replay_tests` / `card_image_strips_tests` #26 pins stay as-is).
+  - Flaky test U94-2 fixed at the cause: the deckbuilder mockup-style test now waits for state (the save must be in localStorage before the reload; the restored look is awaited) instead of racing it — never skipped.
+  - Repo setup: Playwright 1.64.1 and TypeScript 6.0.3 are pinned devDependencies (a bare checkout installs the real toolchain); `.gitattributes` keeps `packages/`, `apps/`, `tools/` and the tests LF on every OS (no renormalization churn — unchanged files stay untouched); AGENTS.md's Windows notes now describe the fixed toolchain; the mind map (`docs/roadmap-data.json`, regenerated `docs/roadmap.html`) records the session and the closed audit round (the plan changed, so it updated outside the every-3rd cadence).
+  - Tests: `npm run -s loop` + `npm run check` green; the Python Playwright suites that touch the replay fix were patched for correctness only and not executed locally (fixture paths are cloud-only in this checkout) — they run in Regression. Transient honest note: two pre-push attempts flaked under parallel load (one "quick tests failing" retry, one stale connection) and both identical retries passed.
+  - Revert note: `git revert` the twelve task commits in reverse order (through `7ed7ee2`); no engine decision changed, only tooling, docs, the two demoted card rows and the record gate — old saves and replays load either way.
+
 ## v0.103.0
 - Lane: U/I
 - Time: ~155 min (08:35 session start → release, incl. the sizing bench and the owner's concurrent docs commit), GLM 5.3; tokens in the DONE mark on issue #1.
