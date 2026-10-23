@@ -8,7 +8,7 @@ Fan-made, offline single-file trading-card-game simulator (human vs CPU). `index
 - Planned work is GitHub Issues plus `docs/ai/roadmap-open.md` (item L = lane order and next item).
 
 ## Build and verify
-- `node tools/build.mjs` regenerates `index.html`, `build/game.js`, `docs/ai/code-map.md`, `docs/progress.html`, `docs/roadmap.html` and the README "Current build" line. Commit them; never hand-edit them (mind map source is `docs/roadmap-data.json`).
+- `node tools/build.mjs` regenerates `index.html`, `build/game.js`, `docs/ai/code-map.md`, `docs/progress.html`, `docs/roadmap.html` and the README "Current build" line. Commit the tracked ones (index.html, docs); `build/` is git-ignored; never hand-edit any of them (mind map source is `docs/roadmap-data.json`).
 - `npm run -s loop` = build + lint + brand guard + effect-format check + smoke/changed tests (~15 s). Run it once per batch of edits, not per file. `-- --full` runs every quick test (~3 min; pre-push and CI do this).
 - `npm run check` fails until all generated files are rebuilt, `CHANGELOG.md`'s newest `## vX.Y.Z` equals `VERSION` in `packages/engine/src/01-cards.js`, and `docs/reports/card-counts.json` matches `data/cards`.
 - One test file: `node --test tests/unit/<name>.test.mjs`. Python Playwright suites are for UI flows only: `python3 tests/make_fixtures.py` once, then `python3 tests/run_all.py --only <name>`.
@@ -33,11 +33,11 @@ Fan-made, offline single-file trading-card-game simulator (human vs CPU). `index
 ## This Windows checkout
 - PowerShell blocks `npm.ps1`/`npx.ps1` (unsigned): use `npm.cmd` / `npx.cmd`, or call `node tools/<tool>.mjs` directly.
 - `core.autocrlf` must be `false`: CRLF working files break the build with `template marker missing: /*@@CSS@@*/`. Fix with `git config core.autocrlf false`, then delete the file and `git checkout -- <file>`.
-- Toolchain is installed user-scope here: Python 3.12 (with a `python3.exe` shim), Playwright + TypeScript 6.0.3 in `node_modules/` (git-ignored), Chromium browsers, GitHub CLI. A shell started before the install may not see the new PATH; prepend `%LOCALAPPDATA%\Programs\Python\Python312` and the `GitHub.cli_*\bin` dir if `python3` or `gh` is "not found".
-- Set `PYTHONUTF8=1` before running tests: without it Python reads the card JSON as cp1252 and the Python-backed tests fail with `UnicodeDecodeError`.
-- `node tools/lane_next.mjs` prints nothing on Windows (compares `import.meta.url` with a Windows path); take the lane from item L in `docs/ai/roadmap-open.md` instead.
-- No `bash` on PATH, but Git's bash is at `..\tools\git\bin\bash.exe`; use it for `tools/session_start.sh` / `session_gate.sh`.
+- Toolchain is installed user-scope here: Python 3.12 (with a `python3.exe` shim), GitHub CLI, Chromium browsers; Playwright + TypeScript 6.0.3 are pinned devDependencies, so `npm.cmd install` brings them. A shell started before an install may not see the new PATH; prepend `%LOCALAPPDATA%\Programs\Python\Python312` and the `GitHub.cli_*\bin` dir if `python3` or `gh` is "not found" (git push needs `python3` for check_renames).
+- Python tools flag: every tool opens JSON/text with explicit UTF-8 and writes generated text with `newline=''` (LF on every OS), so no `PYTHONUTF8=1` chore; ad-hoc print probes still want `PYTHONIOENCODING=utf-8` (cp1252 console).
+- `node tools/lane_next.mjs` prints its lane on Windows too; item L in `docs/ai/roadmap-open.md` stays the source of truth.
+- No `bash` on PATH, but Git's bash is at `..\tools\git\bin\bash.exe`; the bash-backed unit tests resolve it themselves (`BASH` in `tests/unit/lib/game.mjs`, env `BASH_BIN` overrides).
 - `gh` is installed but not logged in — `gh auth login` once (owner) before issue reads or Regression dispatches.
-- `tools/lint.mjs` prints `lint: clean (types: 0)` when TypeScript is missing, so a green lint without `node_modules/typescript` proves nothing.
+- `tools/lint.mjs` fails hard with an install hint when `node_modules/typescript` is missing (no more false clean); the checker must be at 0 errors (`tools/type-baseline.json` empty).
 - Hooks are enabled in this clone (`core.hooksPath=.githooks`); the commit identity is the owner's noreply address.
 - `origin` is `odinguard009/aeterna-experiment`, while `docs/ai/release.md` and the issue/Regression commands target `odinguard009/aeterna`. Confirm which repo before dispatching workflows or creating releases.
